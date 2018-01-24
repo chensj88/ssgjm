@@ -414,7 +414,7 @@
                     </a>
 
                     <ul class="submenu">
-                        <li><a href="user/userinfo.do"><i class="icon-double-angle-right"></i>用户信息</a></li>
+                        <li><a href="admin/user/userinfo.do"><i class="icon-double-angle-right"></i>用户信息</a></li>
                         <li><a href="views/admin/user/roleinfo.jsp"><i class="icon-double-angle-right"></i>角色信息</a></li>
                         <li><a href="views/admin/user/functioninfo.jsp"><i class="icon-double-angle-right"></i>功能信息</a></li>
                         <li><a href="views/admin/user/userauthinfo.jsp"><i class="icon-double-angle-right"></i>角色权限配置</a></li>

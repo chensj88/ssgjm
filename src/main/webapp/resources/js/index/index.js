@@ -212,7 +212,7 @@ jQuery(function($) {
             //         $(data).appendTo($('#jspContent'));
             //     }
             // });
-            $('#coniframe').attr('src',Common.getRootPath() + '/admin/' +src);
+            $('#coniframe').attr('src',Common.getRootPath() + '/' +src);
         }else {
             var content = '<h1>控制台<small><i class="icon-double-angle-right"></i>'+title+'</small></h1>';
             pageHeader.empty();
