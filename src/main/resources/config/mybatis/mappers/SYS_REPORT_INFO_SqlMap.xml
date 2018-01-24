@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysReportInfoDao">
+
+    <resultMap id="sysReportInfoResultForList" type="sysReportInfo">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="REPORT_CODE" property="reportCode" jdbcType="VARCHAR"/>
+        <result column="REPORT_NAME" property="reportName" jdbcType="VARCHAR"/>
+        <result column="REPORT_TYPE" property="reportType" jdbcType="INTEGER"/>
+        <result column="PAPER_FORMAT" property="paperFormat" jdbcType="INTEGER"/>
+        <result column="PRD_USE_SCOPE" property="prdUseScope" jdbcType="VARCHAR"/>
+        <result column="PRD_USER" property="prdUser" jdbcType="VARCHAR"/>
+        <result column="REPOET_DESC" property="repoetDesc" jdbcType="LONGVARCHAR"/>
+        <result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT"/>
+        <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="sysReportInfoResult" type="sysReportInfo" extends="sysReportInfoResultForList">
+    </resultMap>
+
+    <sql id="sf-sysReportInfo">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="reportCode != null and reportCode != ''">and t.REPORT_CODE = #{reportCode}</if>
+        <if test="reportName != null and reportName != ''">and t.REPORT_NAME = #{reportName}</if>
+        <if test="(reportType != null and reportType != '') or reportType == 0">and t.REPORT_TYPE = #{reportType}</if>
+        <if test="(paperFormat != null and paperFormat != '') or paperFormat == 0">and t.PAPER_FORMAT = #{paperFormat}
+        </if>
+        <if test="prdUseScope != null and prdUseScope != ''">and t.PRD_USE_SCOPE = #{prdUseScope}</if>
+        <if test="prdUser != null and prdUser != ''">and t.PRD_USER = #{prdUser}</if>
+        <if test="repoetDesc != null and repoetDesc != ''">and t.REPOET_DESC = #{repoetDesc}</if>
+        <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">and t.LAST_UPDATOR = #{lastUpdator}
+        </if>
+        <if test="lastUpdateTime != null and lastUpdateTime != ''">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
+    </sql>
+
+    <select id="selectSysReportInfo" resultMap="sysReportInfoResult" parameterType="sysReportInfo">
+        select * from SYS_REPORT_INFO t where 1 = 1
+        <include refid="sf-sysReportInfo"/>
+    </select>
+
+    <select id="selectSysReportInfoList" resultMap="sysReportInfoResultForList" parameterType="sysReportInfo">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from SYS_REPORT_INFO t where 1 = 1
+        <include refid="sf-sysReportInfo"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectSysReportInfoCount" resultType="int" parameterType="sysReportInfo">
+        select count(*) from SYS_REPORT_INFO t where 1 = 1
+        <include refid="sf-sysReportInfo"/>
+    </select>
+
+    <select id="selectSysReportInfoPaginatedList" resultMap="sysReportInfoResult" parameterType="sysReportInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from SYS_REPORT_INFO t where 1 = 1
+        <include refid="sf-sysReportInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertSysReportInfo" parameterType="sysReportInfo">
+        <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
+        </selectKey>
+        insert into SYS_REPORT_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="reportCode != null and reportCode != ''">REPORT_CODE,</if>
+            <if test="reportName != null and reportName != ''">REPORT_NAME,</if>
+            <if test="(reportType != null and reportType != '') or reportType == 0">REPORT_TYPE,</if>
+            <if test="(paperFormat != null and paperFormat != '') or paperFormat == 0">PAPER_FORMAT,</if>
+            <if test="prdUseScope != null and prdUseScope != ''">PRD_USE_SCOPE,</if>
+            <if test="prdUser != null and prdUser != ''">PRD_USER,</if>
+            <if test="repoetDesc != null and repoetDesc != ''">REPOET_DESC,</if>
+            <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR,</if>
+            <if test="lastUpdateTime != null and lastUpdateTime != ''">LAST_UPDATE_TIME,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="reportCode != null and reportCode != ''">#{reportCode, jdbcType=VARCHAR},</if>
+            <if test="reportName != null and reportName != ''">#{reportName, jdbcType=VARCHAR},</if>
+            <if test="(reportType != null and reportType != '') or reportType == 0">#{reportType, jdbcType=INTEGER},
+            </if>
+            <if test="(paperFormat != null and paperFormat != '') or paperFormat == 0">
+                #{paperFormat, jdbcType=INTEGER},
+            </if>
+            <if test="prdUseScope != null and prdUseScope != ''">#{prdUseScope, jdbcType=VARCHAR},</if>
+            <if test="prdUser != null and prdUser != ''">#{prdUser, jdbcType=VARCHAR},</if>
+            <if test="repoetDesc != null and repoetDesc != ''">#{repoetDesc, jdbcType=LONGVARCHAR},</if>
+            <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">
+                #{lastUpdator, jdbcType=BIGINT},
+            </if>
+            <if test="lastUpdateTime != null and lastUpdateTime != ''">#{lastUpdateTime, jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysReportInfo" parameterType="SysReportInfo">
+        update SYS_REPORT_INFO
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="reportCode != null and reportCode != ''">REPORT_CODE = #{reportCode, jdbcType=VARCHAR},</if>
+                <if test="reportName != null and reportName != ''">REPORT_NAME = #{reportName, jdbcType=VARCHAR},</if>
+                <if test="(reportType != null and reportType != '') or reportType == 0">REPORT_TYPE =
+                    #{reportType, jdbcType=INTEGER},
+                </if>
+                <if test="(paperFormat != null and paperFormat != '') or paperFormat == 0">PAPER_FORMAT =
+                    #{paperFormat, jdbcType=INTEGER},
+                </if>
+                <if test="prdUseScope != null and prdUseScope != ''">PRD_USE_SCOPE = #{prdUseScope, jdbcType=VARCHAR},
+                </if>
+                <if test="prdUser != null and prdUser != ''">PRD_USER = #{prdUser, jdbcType=VARCHAR},</if>
+                <if test="repoetDesc != null and repoetDesc != ''">REPOET_DESC = #{repoetDesc, jdbcType=LONGVARCHAR},
+                </if>
+                <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR =
+                    #{lastUpdator, jdbcType=BIGINT},
+                </if>
+                <if test="lastUpdateTime != null and lastUpdateTime != ''">LAST_UPDATE_TIME =
+                    #{lastUpdateTime, jdbcType=TIMESTAMP},
+                </if>
+            </trim>
+        </set>
+        where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </update>
+
+    <delete id="deleteSysReportInfo" parameterType="SysReportInfo">
+        delete from SYS_REPORT_INFO where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </delete>
+
+</mapper>

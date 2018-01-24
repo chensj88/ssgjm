@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.EtOnlineUserDao">
+
+    <resultMap id="etOnlineUserResultForList" type="etOnlineUser">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="PM_ID" property="pmId" jdbcType="BIGINT"/>
+        <result column="C_ID" property="cId" jdbcType="BIGINT"/>
+        <result column="USER_CODE" property="userCode" jdbcType="VARCHAR"/>
+        <result column="C_NAME" property="cName" jdbcType="VARCHAR"/>
+        <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR"/>
+        <result column="RESPONSE_DEPT" property="responseDept" jdbcType="VARCHAR"/>
+        <result column="RESPONSE_SITE" property="responseSite" jdbcType="VARCHAR"/>
+        <result column="TELEPHONE" property="telephone" jdbcType="VARCHAR"/>
+        <result column="WECHAT_NO" property="wechatNo" jdbcType="VARCHAR"/>
+        <result column="EMAIL" property="email" jdbcType="VARCHAR"/>
+        <result column="LODGING" property="lodging" jdbcType="VARCHAR"/>
+        <result column="CREATOR" property="creator" jdbcType="BIGINT"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="OPERATOR" property="operator" jdbcType="BIGINT"/>
+        <result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="etOnlineUserResult" type="etOnlineUser" extends="etOnlineUserResultForList">
+    </resultMap>
+
+    <sql id="sf-etOnlineUser">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
+        <if test="(cId != null and cId != '') or cId == 0">and t.C_ID = #{cId}</if>
+        <if test="userCode != null and userCode != ''">and t.USER_CODE = #{userCode}</if>
+        <if test="cName != null and cName != ''">and t.C_NAME = #{cName}</if>
+        <if test="roleName != null and roleName != ''">and t.ROLE_NAME = #{roleName}</if>
+        <if test="responseDept != null and responseDept != ''">and t.RESPONSE_DEPT = #{responseDept}</if>
+        <if test="responseSite != null and responseSite != ''">and t.RESPONSE_SITE = #{responseSite}</if>
+        <if test="telephone != null and telephone != ''">and t.TELEPHONE = #{telephone}</if>
+        <if test="wechatNo != null and wechatNo != ''">and t.WECHAT_NO = #{wechatNo}</if>
+        <if test="email != null and email != ''">and t.EMAIL = #{email}</if>
+        <if test="lodging != null and lodging != ''">and t.LODGING = #{lodging}</if>
+        <if test="(creator != null and creator != '') or creator == 0">and t.CREATOR = #{creator}</if>
+        <if test="createTime != null and createTime != ''">and t.CREATE_TIME = #{createTime}</if>
+        <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
+        <if test="operatorTime != null and operatorTime != ''">and t.OPERATOR_TIME = #{operatorTime}</if>
+    </sql>
+
+    <select id="selectEtOnlineUser" resultMap="etOnlineUserResult" parameterType="etOnlineUser">
+        select * from ET_ONLINE_USER t where 1 = 1
+        <include refid="sf-etOnlineUser"/>
+    </select>
+
+    <select id="selectEtOnlineUserList" resultMap="etOnlineUserResultForList" parameterType="etOnlineUser">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from ET_ONLINE_USER t where 1 = 1
+        <include refid="sf-etOnlineUser"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectEtOnlineUserCount" resultType="int" parameterType="etOnlineUser">
+        select count(*) from ET_ONLINE_USER t where 1 = 1
+        <include refid="sf-etOnlineUser"/>
+    </select>
+
+    <select id="selectEtOnlineUserPaginatedList" resultMap="etOnlineUserResult" parameterType="etOnlineUser">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from ET_ONLINE_USER t where 1 = 1
+        <include refid="sf-etOnlineUser"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertEtOnlineUser" parameterType="etOnlineUser">
+        <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
+        </selectKey>
+        insert into ET_ONLINE_USER
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID,</if>
+            <if test="(cId != null and cId != '') or cId == 0">C_ID,</if>
+            <if test="userCode != null and userCode != ''">USER_CODE,</if>
+            <if test="cName != null and cName != ''">C_NAME,</if>
+            <if test="roleName != null and roleName != ''">ROLE_NAME,</if>
+            <if test="responseDept != null and responseDept != ''">RESPONSE_DEPT,</if>
+            <if test="responseSite != null and responseSite != ''">RESPONSE_SITE,</if>
+            <if test="telephone != null and telephone != ''">TELEPHONE,</if>
+            <if test="wechatNo != null and wechatNo != ''">WECHAT_NO,</if>
+            <if test="email != null and email != ''">EMAIL,</if>
+            <if test="lodging != null and lodging != ''">LODGING,</if>
+            <if test="(creator != null and creator != '') or creator == 0">CREATOR,</if>
+            <if test="createTime != null and createTime != ''">CREATE_TIME,</if>
+            <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
+            <if test="operatorTime != null and operatorTime != ''">OPERATOR_TIME,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="(pmId != null and pmId != '') or pmId == 0">#{pmId, jdbcType=BIGINT},</if>
+            <if test="(cId != null and cId != '') or cId == 0">#{cId, jdbcType=BIGINT},</if>
+            <if test="userCode != null and userCode != ''">#{userCode, jdbcType=VARCHAR},</if>
+            <if test="cName != null and cName != ''">#{cName, jdbcType=VARCHAR},</if>
+            <if test="roleName != null and roleName != ''">#{roleName, jdbcType=VARCHAR},</if>
+            <if test="responseDept != null and responseDept != ''">#{responseDept, jdbcType=VARCHAR},</if>
+            <if test="responseSite != null and responseSite != ''">#{responseSite, jdbcType=VARCHAR},</if>
+            <if test="telephone != null and telephone != ''">#{telephone, jdbcType=VARCHAR},</if>
+            <if test="wechatNo != null and wechatNo != ''">#{wechatNo, jdbcType=VARCHAR},</if>
+            <if test="email != null and email != ''">#{email, jdbcType=VARCHAR},</if>
+            <if test="lodging != null and lodging != ''">#{lodging, jdbcType=VARCHAR},</if>
+            <if test="(creator != null and creator != '') or creator == 0">#{creator, jdbcType=BIGINT},</if>
+            <if test="createTime != null and createTime != ''">#{createTime, jdbcType=TIMESTAMP},</if>
+            <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
+            <if test="operatorTime != null and operatorTime != ''">#{operatorTime, jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+
+    <update id="updateEtOnlineUser" parameterType="EtOnlineUser">
+        update ET_ONLINE_USER
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID = #{pmId, jdbcType=BIGINT},</if>
+                <if test="(cId != null and cId != '') or cId == 0">C_ID = #{cId, jdbcType=BIGINT},</if>
+                <if test="userCode != null and userCode != ''">USER_CODE = #{userCode, jdbcType=VARCHAR},</if>
+                <if test="cName != null and cName != ''">C_NAME = #{cName, jdbcType=VARCHAR},</if>
+                <if test="roleName != null and roleName != ''">ROLE_NAME = #{roleName, jdbcType=VARCHAR},</if>
+                <if test="responseDept != null and responseDept != ''">RESPONSE_DEPT =
+                    #{responseDept, jdbcType=VARCHAR},
+                </if>
+                <if test="responseSite != null and responseSite != ''">RESPONSE_SITE =
+                    #{responseSite, jdbcType=VARCHAR},
+                </if>
+                <if test="telephone != null and telephone != ''">TELEPHONE = #{telephone, jdbcType=VARCHAR},</if>
+                <if test="wechatNo != null and wechatNo != ''">WECHAT_NO = #{wechatNo, jdbcType=VARCHAR},</if>
+                <if test="email != null and email != ''">EMAIL = #{email, jdbcType=VARCHAR},</if>
+                <if test="lodging != null and lodging != ''">LODGING = #{lodging, jdbcType=VARCHAR},</if>
+                <if test="(creator != null and creator != '') or creator == 0">CREATOR = #{creator, jdbcType=BIGINT},
+                </if>
+                <if test="createTime != null and createTime != ''">CREATE_TIME = #{createTime, jdbcType=TIMESTAMP},</if>
+                <if test="(operator != null and operator != '') or operator == 0">OPERATOR =
+                    #{operator, jdbcType=BIGINT},
+                </if>
+                <if test="operatorTime != null and operatorTime != ''">OPERATOR_TIME =
+                    #{operatorTime, jdbcType=TIMESTAMP},
+                </if>
+            </trim>
+        </set>
+        where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </update>
+
+    <delete id="deleteEtOnlineUser" parameterType="EtOnlineUser">
+        delete from ET_ONLINE_USER where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </delete>
+
+</mapper>

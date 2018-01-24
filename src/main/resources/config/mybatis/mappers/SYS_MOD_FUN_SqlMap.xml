@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysModFunDao">
+
+    <resultMap id="sysModFunResultForList" type="sysModFun">
+        <result column="MOD_ID" property="modId" jdbcType="BIGINT"/>
+        <result column="FUN_CODE" property="funCode" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="sysModFunResult" type="sysModFun" extends="sysModFunResultForList">
+    </resultMap>
+
+    <sql id="sf-sysModFun">
+        <if test="(modId != null and modId != '') or modId == 0">and t.MOD_ID = #{modId}</if>
+        <if test="funCode != null and funCode != ''">and t.FUN_CODE = #{funCode}</if>
+    </sql>
+
+    <select id="selectSysModFun" resultMap="sysModFunResult" parameterType="sysModFun">
+        select * from SYS_MOD_FUN t where 1 = 1
+        <include refid="sf-sysModFun"/>
+    </select>
+
+    <select id="selectSysModFunList" resultMap="sysModFunResultForList" parameterType="sysModFun">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from SYS_MOD_FUN t where 1 = 1
+        <include refid="sf-sysModFun"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectSysModFunCount" resultType="int" parameterType="sysModFun">
+        select count(*) from SYS_MOD_FUN t where 1 = 1
+        <include refid="sf-sysModFun"/>
+    </select>
+
+    <select id="selectSysModFunPaginatedList" resultMap="sysModFunResult" parameterType="sysModFun">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from SYS_MOD_FUN t where 1 = 1
+        <include refid="sf-sysModFun"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertSysModFun" parameterType="sysModFun">
+        <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
+        </selectKey>
+        insert into SYS_MOD_FUN
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(modId != null and modId != '') or modId == 0">MOD_ID,</if>
+            <if test="funCode != null and funCode != ''">FUN_CODE,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(modId != null and modId != '') or modId == 0">#{modId, jdbcType=BIGINT},</if>
+            <if test="funCode != null and funCode != ''">#{funCode, jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysModFun" parameterType="SysModFun">
+        update SYS_MOD_FUN
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(modId != null and modId != '') or modId == 0">MOD_ID = #{modId, jdbcType=BIGINT},</if>
+                <if test="funCode != null and funCode != ''">FUN_CODE = #{funCode, jdbcType=VARCHAR},</if>
+            </trim>
+        </set>
+        where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </update>
+
+    <delete id="deleteSysModFun" parameterType="SysModFun">
+        delete from SYS_MOD_FUN where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </delete>
+
+</mapper>

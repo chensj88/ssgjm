@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysOrganizationDao">
+
+    <resultMap id="sysOrganizationResultForList" type="sysOrganization">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="FID" property="fid" jdbcType="BIGINT"/>
+        <result column="GRADE" property="grade" jdbcType="BIGINT"/>
+        <result column="JGLX" property="jglx" jdbcType="INTEGER"/>
+        <result column="ORGCODE" property="orgcode" jdbcType="VARCHAR"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="JGQC" property="jgqc" jdbcType="VARCHAR"/>
+        <result column="PY" property="py" jdbcType="VARCHAR"/>
+        <result column="FDNCODE" property="fdncode" jdbcType="LONGVARCHAR"/>
+        <result column="BBXH" property="bbxh" jdbcType="VARCHAR"/>
+        <result column="YJBM" property="yjbm" jdbcType="BIGINT"/>
+        <result column="SSGS" property="ssgs" jdbcType="BIGINT"/>
+        <result column="ZT" property="zt" jdbcType="INTEGER"/>
+        <result column="GXSJ" property="gxsj" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="sysOrganizationResult" type="sysOrganization" extends="sysOrganizationResultForList">
+    </resultMap>
+
+    <sql id="sf-sysOrganization">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(fid != null and fid != '') or fid == 0">and t.FID = #{fid}</if>
+        <if test="(grade != null and grade != '') or grade == 0">and t.GRADE = #{grade}</if>
+        <if test="(jglx != null and jglx != '') or jglx == 0">and t.JGLX = #{jglx}</if>
+        <if test="orgcode != null and orgcode != ''">and t.ORGCODE = #{orgcode}</if>
+        <if test="name != null and name != ''">and t.NAME = #{name}</if>
+        <if test="jgqc != null and jgqc != ''">and t.JGQC = #{jgqc}</if>
+        <if test="py != null and py != ''">and t.PY = #{py}</if>
+        <if test="fdncode != null and fdncode != ''">and t.FDNCODE = #{fdncode}</if>
+        <if test="bbxh != null and bbxh != ''">and t.BBXH = #{bbxh}</if>
+        <if test="(yjbm != null and yjbm != '') or yjbm == 0">and t.YJBM = #{yjbm}</if>
+        <if test="(ssgs != null and ssgs != '') or ssgs == 0">and t.SSGS = #{ssgs}</if>
+        <if test="(zt != null and zt != '') or zt == 0">and t.ZT = #{zt}</if>
+        <if test="gxsj != null and gxsj != ''">and t.GXSJ = #{gxsj}</if>
+    </sql>
+
+    <select id="selectSysOrganization" resultMap="sysOrganizationResult" parameterType="sysOrganization">
+        select * from SYS_ORGANIZATION t where 1 = 1
+        <include refid="sf-sysOrganization"/>
+    </select>
+
+    <select id="selectSysOrganizationList" resultMap="sysOrganizationResultForList" parameterType="sysOrganization">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from SYS_ORGANIZATION t where 1 = 1
+        <include refid="sf-sysOrganization"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectSysOrganizationCount" resultType="int" parameterType="sysOrganization">
+        select count(*) from SYS_ORGANIZATION t where 1 = 1
+        <include refid="sf-sysOrganization"/>
+    </select>
+
+    <select id="selectSysOrganizationPaginatedList" resultMap="sysOrganizationResult" parameterType="sysOrganization">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from SYS_ORGANIZATION t where 1 = 1
+        <include refid="sf-sysOrganization"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertSysOrganization" parameterType="sysOrganization">
+        <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
+        </selectKey>
+        insert into SYS_ORGANIZATION
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="(fid != null and fid != '') or fid == 0">FID,</if>
+            <if test="(grade != null and grade != '') or grade == 0">GRADE,</if>
+            <if test="(jglx != null and jglx != '') or jglx == 0">JGLX,</if>
+            <if test="orgcode != null and orgcode != ''">ORGCODE,</if>
+            <if test="name != null and name != ''">NAME,</if>
+            <if test="jgqc != null and jgqc != ''">JGQC,</if>
+            <if test="py != null and py != ''">PY,</if>
+            <if test="fdncode != null and fdncode != ''">FDNCODE,</if>
+            <if test="bbxh != null and bbxh != ''">BBXH,</if>
+            <if test="(yjbm != null and yjbm != '') or yjbm == 0">YJBM,</if>
+            <if test="(ssgs != null and ssgs != '') or ssgs == 0">SSGS,</if>
+            <if test="(zt != null and zt != '') or zt == 0">ZT,</if>
+            <if test="gxsj != null and gxsj != ''">GXSJ,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="(fid != null and fid != '') or fid == 0">#{fid, jdbcType=BIGINT},</if>
+            <if test="(grade != null and grade != '') or grade == 0">#{grade, jdbcType=BIGINT},</if>
+            <if test="(jglx != null and jglx != '') or jglx == 0">#{jglx, jdbcType=INTEGER},</if>
+            <if test="orgcode != null and orgcode != ''">#{orgcode, jdbcType=VARCHAR},</if>
+            <if test="name != null and name != ''">#{name, jdbcType=VARCHAR},</if>
+            <if test="jgqc != null and jgqc != ''">#{jgqc, jdbcType=VARCHAR},</if>
+            <if test="py != null and py != ''">#{py, jdbcType=VARCHAR},</if>
+            <if test="fdncode != null and fdncode != ''">#{fdncode, jdbcType=LONGVARCHAR},</if>
+            <if test="bbxh != null and bbxh != ''">#{bbxh, jdbcType=VARCHAR},</if>
+            <if test="(yjbm != null and yjbm != '') or yjbm == 0">#{yjbm, jdbcType=BIGINT},</if>
+            <if test="(ssgs != null and ssgs != '') or ssgs == 0">#{ssgs, jdbcType=BIGINT},</if>
+            <if test="(zt != null and zt != '') or zt == 0">#{zt, jdbcType=INTEGER},</if>
+            <if test="gxsj != null and gxsj != ''">#{gxsj, jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysOrganization" parameterType="SysOrganization">
+        update SYS_ORGANIZATION
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(fid != null and fid != '') or fid == 0">FID = #{fid, jdbcType=BIGINT},</if>
+                <if test="(grade != null and grade != '') or grade == 0">GRADE = #{grade, jdbcType=BIGINT},</if>
+                <if test="(jglx != null and jglx != '') or jglx == 0">JGLX = #{jglx, jdbcType=INTEGER},</if>
+                <if test="orgcode != null and orgcode != ''">ORGCODE = #{orgcode, jdbcType=VARCHAR},</if>
+                <if test="name != null and name != ''">NAME = #{name, jdbcType=VARCHAR},</if>
+                <if test="jgqc != null and jgqc != ''">JGQC = #{jgqc, jdbcType=VARCHAR},</if>
+                <if test="py != null and py != ''">PY = #{py, jdbcType=VARCHAR},</if>
+                <if test="fdncode != null and fdncode != ''">FDNCODE = #{fdncode, jdbcType=LONGVARCHAR},</if>
+                <if test="bbxh != null and bbxh != ''">BBXH = #{bbxh, jdbcType=VARCHAR},</if>
+                <if test="(yjbm != null and yjbm != '') or yjbm == 0">YJBM = #{yjbm, jdbcType=BIGINT},</if>
+                <if test="(ssgs != null and ssgs != '') or ssgs == 0">SSGS = #{ssgs, jdbcType=BIGINT},</if>
+                <if test="(zt != null and zt != '') or zt == 0">ZT = #{zt, jdbcType=INTEGER},</if>
+                <if test="gxsj != null and gxsj != ''">GXSJ = #{gxsj, jdbcType=TIMESTAMP},</if>
+            </trim>
+        </set>
+        where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </update>
+
+    <delete id="deleteSysOrganization" parameterType="SysOrganization">
+        delete from SYS_ORGANIZATION where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </delete>
+
+</mapper>

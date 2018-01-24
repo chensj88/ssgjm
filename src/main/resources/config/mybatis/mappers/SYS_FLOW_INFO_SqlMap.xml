@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysFlowInfoDao">
+
+    <resultMap id="sysFlowInfoResultForList" type="sysFlowInfo">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="FLOW_TYPE" property="flowType" jdbcType="VARCHAR"/>
+        <result column="FLOW_PID" property="flowPid" jdbcType="BIGINT"/>
+        <result column="FLOW_CODE" property="flowCode" jdbcType="VARCHAR"/>
+        <result column="FLOW_NAME" property="flowName" jdbcType="VARCHAR"/>
+        <result column="FLOW_DESC" property="flowDesc" jdbcType="LONGVARCHAR"/>
+        <result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT"/>
+        <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="sysFlowInfoResult" type="sysFlowInfo" extends="sysFlowInfoResultForList">
+    </resultMap>
+
+    <sql id="sf-sysFlowInfo">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="flowType != null and flowType != ''">and t.FLOW_TYPE = #{flowType}</if>
+        <if test="(flowPid != null and flowPid != '') or flowPid == 0">and t.FLOW_PID = #{flowPid}</if>
+        <if test="flowCode != null and flowCode != ''">and t.FLOW_CODE = #{flowCode}</if>
+        <if test="flowName != null and flowName != ''">and t.FLOW_NAME = #{flowName}</if>
+        <if test="flowDesc != null and flowDesc != ''">and t.FLOW_DESC = #{flowDesc}</if>
+        <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">and t.LAST_UPDATOR = #{lastUpdator}
+        </if>
+        <if test="lastUpdateTime != null and lastUpdateTime != ''">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
+    </sql>
+
+    <select id="selectSysFlowInfo" resultMap="sysFlowInfoResult" parameterType="sysFlowInfo">
+        select * from SYS_FLOW_INFO t where 1 = 1
+        <include refid="sf-sysFlowInfo"/>
+    </select>
+
+    <select id="selectSysFlowInfoList" resultMap="sysFlowInfoResultForList" parameterType="sysFlowInfo">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from SYS_FLOW_INFO t where 1 = 1
+        <include refid="sf-sysFlowInfo"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectSysFlowInfoCount" resultType="int" parameterType="sysFlowInfo">
+        select count(*) from SYS_FLOW_INFO t where 1 = 1
+        <include refid="sf-sysFlowInfo"/>
+    </select>
+
+    <select id="selectSysFlowInfoPaginatedList" resultMap="sysFlowInfoResult" parameterType="sysFlowInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from SYS_FLOW_INFO t where 1 = 1
+        <include refid="sf-sysFlowInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertSysFlowInfo" parameterType="sysFlowInfo">
+        <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
+        </selectKey>
+        insert into SYS_FLOW_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="flowType != null and flowType != ''">FLOW_TYPE,</if>
+            <if test="(flowPid != null and flowPid != '') or flowPid == 0">FLOW_PID,</if>
+            <if test="flowCode != null and flowCode != ''">FLOW_CODE,</if>
+            <if test="flowName != null and flowName != ''">FLOW_NAME,</if>
+            <if test="flowDesc != null and flowDesc != ''">FLOW_DESC,</if>
+            <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR,</if>
+            <if test="lastUpdateTime != null and lastUpdateTime != ''">LAST_UPDATE_TIME,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="flowType != null and flowType != ''">#{flowType, jdbcType=VARCHAR},</if>
+            <if test="(flowPid != null and flowPid != '') or flowPid == 0">#{flowPid, jdbcType=BIGINT},</if>
+            <if test="flowCode != null and flowCode != ''">#{flowCode, jdbcType=VARCHAR},</if>
+            <if test="flowName != null and flowName != ''">#{flowName, jdbcType=VARCHAR},</if>
+            <if test="flowDesc != null and flowDesc != ''">#{flowDesc, jdbcType=LONGVARCHAR},</if>
+            <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">
+                #{lastUpdator, jdbcType=BIGINT},
+            </if>
+            <if test="lastUpdateTime != null and lastUpdateTime != ''">#{lastUpdateTime, jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysFlowInfo" parameterType="SysFlowInfo">
+        update SYS_FLOW_INFO
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="flowType != null and flowType != ''">FLOW_TYPE = #{flowType, jdbcType=VARCHAR},</if>
+                <if test="(flowPid != null and flowPid != '') or flowPid == 0">FLOW_PID = #{flowPid, jdbcType=BIGINT},
+                </if>
+                <if test="flowCode != null and flowCode != ''">FLOW_CODE = #{flowCode, jdbcType=VARCHAR},</if>
+                <if test="flowName != null and flowName != ''">FLOW_NAME = #{flowName, jdbcType=VARCHAR},</if>
+                <if test="flowDesc != null and flowDesc != ''">FLOW_DESC = #{flowDesc, jdbcType=LONGVARCHAR},</if>
+                <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR =
+                    #{lastUpdator, jdbcType=BIGINT},
+                </if>
+                <if test="lastUpdateTime != null and lastUpdateTime != ''">LAST_UPDATE_TIME =
+                    #{lastUpdateTime, jdbcType=TIMESTAMP},
+                </if>
+            </trim>
+        </set>
+        where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </update>
+
+    <delete id="deleteSysFlowInfo" parameterType="SysFlowInfo">
+        delete from SYS_FLOW_INFO where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </delete>
+
+</mapper>

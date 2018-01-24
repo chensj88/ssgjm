@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.PmisContractInfoDao">
+
+    <resultMap id="pmisContractInfoResultForList" type="pmisContractInfo">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="ZHTXX" property="zhtxx" jdbcType="BIGINT"/>
+        <result column="HTYHF" property="htyhf" jdbcType="BIGINT"/>
+        <result column="CODE" property="code" jdbcType="VARCHAR"/>
+        <result column="DAMC" property="damc" jdbcType="VARCHAR"/>
+        <result column="NAME" property="name" jdbcType="LONGVARCHAR"/>
+        <result column="XDAZRQ" property="xdazrq" jdbcType="VARCHAR"/>
+        <result column="SQRQ" property="sqrq" jdbcType="VARCHAR"/>
+        <result column="SXRQ" property="sxrq" jdbcType="VARCHAR"/>
+        <result column="QDNY" property="qdny" jdbcType="VARCHAR"/>
+        <result column="NF" property="nf" jdbcType="VARCHAR"/>
+        <result column="HTLX" property="htlx" jdbcType="VARCHAR"/>
+        <result column="KPLX" property="kplx" jdbcType="INTEGER"/>
+        <result column="XMLX" property="xmlx" jdbcType="INTEGER"/>
+        <result column="SFGQ" property="sfgq" jdbcType="INTEGER"/>
+        <result column="HTJE" property="htje" jdbcType="BIGINT"/>
+        <result column="KHXX" property="khxx" jdbcType="BIGINT"/>
+        <result column="HTQYF" property="htqyf" jdbcType="VARCHAR"/>
+        <result column="QYGS" property="qygs" jdbcType="BIGINT"/>
+        <result column="HTQDRY" property="htqdry" jdbcType="BIGINT"/>
+        <result column="HTGZRY" property="htgzry" jdbcType="BIGINT"/>
+        <result column="XSSSJG" property="xsssjg" jdbcType="BIGINT"/>
+        <result column="ZBJG" property="zbjg" jdbcType="BIGINT"/>
+        <result column="XSSSGS" property="xsssgs" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <resultMap id="pmisContractInfoResult" type="pmisContractInfo" extends="pmisContractInfoResultForList">
+    </resultMap>
+
+    <sql id="sf-pmisContractInfo">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(zhtxx != null and zhtxx != '') or zhtxx == 0">and t.ZHTXX = #{zhtxx}</if>
+        <if test="(htyhf != null and htyhf != '') or htyhf == 0">and t.HTYHF = #{htyhf}</if>
+        <if test="code != null and code != ''">and t.CODE = #{code}</if>
+        <if test="damc != null and damc != ''">and t.DAMC = #{damc}</if>
+        <if test="name != null and name != ''">and t.NAME = #{name}</if>
+        <if test="xdazrq != null and xdazrq != ''">and t.XDAZRQ = #{xdazrq}</if>
+        <if test="sqrq != null and sqrq != ''">and t.SQRQ = #{sqrq}</if>
+        <if test="sxrq != null and sxrq != ''">and t.SXRQ = #{sxrq}</if>
+        <if test="qdny != null and qdny != ''">and t.QDNY = #{qdny}</if>
+        <if test="nf != null and nf != ''">and t.NF = #{nf}</if>
+        <if test="htlx != null and htlx != ''">and t.HTLX = #{htlx}</if>
+        <if test="(kplx != null and kplx != '') or kplx == 0">and t.KPLX = #{kplx}</if>
+        <if test="(xmlx != null and xmlx != '') or xmlx == 0">and t.XMLX = #{xmlx}</if>
+        <if test="(sfgq != null and sfgq != '') or sfgq == 0">and t.SFGQ = #{sfgq}</if>
+        <if test="(htje != null and htje != '') or htje == 0">and t.HTJE = #{htje}</if>
+        <if test="(khxx != null and khxx != '') or khxx == 0">and t.KHXX = #{khxx}</if>
+        <if test="htqyf != null and htqyf != ''">and t.HTQYF = #{htqyf}</if>
+        <if test="(qygs != null and qygs != '') or qygs == 0">and t.QYGS = #{qygs}</if>
+        <if test="(htqdry != null and htqdry != '') or htqdry == 0">and t.HTQDRY = #{htqdry}</if>
+        <if test="(htgzry != null and htgzry != '') or htgzry == 0">and t.HTGZRY = #{htgzry}</if>
+        <if test="(xsssjg != null and xsssjg != '') or xsssjg == 0">and t.XSSSJG = #{xsssjg}</if>
+        <if test="(zbjg != null and zbjg != '') or zbjg == 0">and t.ZBJG = #{zbjg}</if>
+        <if test="(xsssgs != null and xsssgs != '') or xsssgs == 0">and t.XSSSGS = #{xsssgs}</if>
+    </sql>
+
+    <select id="selectPmisContractInfo" resultMap="pmisContractInfoResult" parameterType="pmisContractInfo">
+        select * from PMIS_CONTRACT_INFO t where 1 = 1
+        <include refid="sf-pmisContractInfo"/>
+    </select>
+
+    <select id="selectPmisContractInfoList" resultMap="pmisContractInfoResultForList" parameterType="pmisContractInfo">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from PMIS_CONTRACT_INFO t where 1 = 1
+        <include refid="sf-pmisContractInfo"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectPmisContractInfoCount" resultType="int" parameterType="pmisContractInfo">
+        select count(*) from PMIS_CONTRACT_INFO t where 1 = 1
+        <include refid="sf-pmisContractInfo"/>
+    </select>
+
+    <select id="selectPmisContractInfoPaginatedList" resultMap="pmisContractInfoResult"
+            parameterType="pmisContractInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from PMIS_CONTRACT_INFO t where 1 = 1
+        <include refid="sf-pmisContractInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertPmisContractInfo" parameterType="pmisContractInfo">
+        <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
+        </selectKey>
+        insert into PMIS_CONTRACT_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="(zhtxx != null and zhtxx != '') or zhtxx == 0">ZHTXX,</if>
+            <if test="(htyhf != null and htyhf != '') or htyhf == 0">HTYHF,</if>
+            <if test="code != null and code != ''">CODE,</if>
+            <if test="damc != null and damc != ''">DAMC,</if>
+            <if test="name != null and name != ''">NAME,</if>
+            <if test="xdazrq != null and xdazrq != ''">XDAZRQ,</if>
+            <if test="sqrq != null and sqrq != ''">SQRQ,</if>
+            <if test="sxrq != null and sxrq != ''">SXRQ,</if>
+            <if test="qdny != null and qdny != ''">QDNY,</if>
+            <if test="nf != null and nf != ''">NF,</if>
+            <if test="htlx != null and htlx != ''">HTLX,</if>
+            <if test="(kplx != null and kplx != '') or kplx == 0">KPLX,</if>
+            <if test="(xmlx != null and xmlx != '') or xmlx == 0">XMLX,</if>
+            <if test="(sfgq != null and sfgq != '') or sfgq == 0">SFGQ,</if>
+            <if test="(htje != null and htje != '') or htje == 0">HTJE,</if>
+            <if test="(khxx != null and khxx != '') or khxx == 0">KHXX,</if>
+            <if test="htqyf != null and htqyf != ''">HTQYF,</if>
+            <if test="(qygs != null and qygs != '') or qygs == 0">QYGS,</if>
+            <if test="(htqdry != null and htqdry != '') or htqdry == 0">HTQDRY,</if>
+            <if test="(htgzry != null and htgzry != '') or htgzry == 0">HTGZRY,</if>
+            <if test="(xsssjg != null and xsssjg != '') or xsssjg == 0">XSSSJG,</if>
+            <if test="(zbjg != null and zbjg != '') or zbjg == 0">ZBJG,</if>
+            <if test="(xsssgs != null and xsssgs != '') or xsssgs == 0">XSSSGS,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="(zhtxx != null and zhtxx != '') or zhtxx == 0">#{zhtxx, jdbcType=BIGINT},</if>
+            <if test="(htyhf != null and htyhf != '') or htyhf == 0">#{htyhf, jdbcType=BIGINT},</if>
+            <if test="code != null and code != ''">#{code, jdbcType=VARCHAR},</if>
+            <if test="damc != null and damc != ''">#{damc, jdbcType=VARCHAR},</if>
+            <if test="name != null and name != ''">#{name, jdbcType=LONGVARCHAR},</if>
+            <if test="xdazrq != null and xdazrq != ''">#{xdazrq, jdbcType=VARCHAR},</if>
+            <if test="sqrq != null and sqrq != ''">#{sqrq, jdbcType=VARCHAR},</if>
+            <if test="sxrq != null and sxrq != ''">#{sxrq, jdbcType=VARCHAR},</if>
+            <if test="qdny != null and qdny != ''">#{qdny, jdbcType=VARCHAR},</if>
+            <if test="nf != null and nf != ''">#{nf, jdbcType=VARCHAR},</if>
+            <if test="htlx != null and htlx != ''">#{htlx, jdbcType=VARCHAR},</if>
+            <if test="(kplx != null and kplx != '') or kplx == 0">#{kplx, jdbcType=INTEGER},</if>
+            <if test="(xmlx != null and xmlx != '') or xmlx == 0">#{xmlx, jdbcType=INTEGER},</if>
+            <if test="(sfgq != null and sfgq != '') or sfgq == 0">#{sfgq, jdbcType=INTEGER},</if>
+            <if test="(htje != null and htje != '') or htje == 0">#{htje, jdbcType=BIGINT},</if>
+            <if test="(khxx != null and khxx != '') or khxx == 0">#{khxx, jdbcType=BIGINT},</if>
+            <if test="htqyf != null and htqyf != ''">#{htqyf, jdbcType=VARCHAR},</if>
+            <if test="(qygs != null and qygs != '') or qygs == 0">#{qygs, jdbcType=BIGINT},</if>
+            <if test="(htqdry != null and htqdry != '') or htqdry == 0">#{htqdry, jdbcType=BIGINT},</if>
+            <if test="(htgzry != null and htgzry != '') or htgzry == 0">#{htgzry, jdbcType=BIGINT},</if>
+            <if test="(xsssjg != null and xsssjg != '') or xsssjg == 0">#{xsssjg, jdbcType=BIGINT},</if>
+            <if test="(zbjg != null and zbjg != '') or zbjg == 0">#{zbjg, jdbcType=BIGINT},</if>
+            <if test="(xsssgs != null and xsssgs != '') or xsssgs == 0">#{xsssgs, jdbcType=BIGINT},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePmisContractInfo" parameterType="PmisContractInfo">
+        update PMIS_CONTRACT_INFO
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(zhtxx != null and zhtxx != '') or zhtxx == 0">ZHTXX = #{zhtxx, jdbcType=BIGINT},</if>
+                <if test="(htyhf != null and htyhf != '') or htyhf == 0">HTYHF = #{htyhf, jdbcType=BIGINT},</if>
+                <if test="code != null and code != ''">CODE = #{code, jdbcType=VARCHAR},</if>
+                <if test="damc != null and damc != ''">DAMC = #{damc, jdbcType=VARCHAR},</if>
+                <if test="name != null and name != ''">NAME = #{name, jdbcType=LONGVARCHAR},</if>
+                <if test="xdazrq != null and xdazrq != ''">XDAZRQ = #{xdazrq, jdbcType=VARCHAR},</if>
+                <if test="sqrq != null and sqrq != ''">SQRQ = #{sqrq, jdbcType=VARCHAR},</if>
+                <if test="sxrq != null and sxrq != ''">SXRQ = #{sxrq, jdbcType=VARCHAR},</if>
+                <if test="qdny != null and qdny != ''">QDNY = #{qdny, jdbcType=VARCHAR},</if>
+                <if test="nf != null and nf != ''">NF = #{nf, jdbcType=VARCHAR},</if>
+                <if test="htlx != null and htlx != ''">HTLX = #{htlx, jdbcType=VARCHAR},</if>
+                <if test="(kplx != null and kplx != '') or kplx == 0">KPLX = #{kplx, jdbcType=INTEGER},</if>
+                <if test="(xmlx != null and xmlx != '') or xmlx == 0">XMLX = #{xmlx, jdbcType=INTEGER},</if>
+                <if test="(sfgq != null and sfgq != '') or sfgq == 0">SFGQ = #{sfgq, jdbcType=INTEGER},</if>
+                <if test="(htje != null and htje != '') or htje == 0">HTJE = #{htje, jdbcType=BIGINT},</if>
+                <if test="(khxx != null and khxx != '') or khxx == 0">KHXX = #{khxx, jdbcType=BIGINT},</if>
+                <if test="htqyf != null and htqyf != ''">HTQYF = #{htqyf, jdbcType=VARCHAR},</if>
+                <if test="(qygs != null and qygs != '') or qygs == 0">QYGS = #{qygs, jdbcType=BIGINT},</if>
+                <if test="(htqdry != null and htqdry != '') or htqdry == 0">HTQDRY = #{htqdry, jdbcType=BIGINT},</if>
+                <if test="(htgzry != null and htgzry != '') or htgzry == 0">HTGZRY = #{htgzry, jdbcType=BIGINT},</if>
+                <if test="(xsssjg != null and xsssjg != '') or xsssjg == 0">XSSSJG = #{xsssjg, jdbcType=BIGINT},</if>
+                <if test="(zbjg != null and zbjg != '') or zbjg == 0">ZBJG = #{zbjg, jdbcType=BIGINT},</if>
+                <if test="(xsssgs != null and xsssgs != '') or xsssgs == 0">XSSSGS = #{xsssgs, jdbcType=BIGINT},</if>
+            </trim>
+        </set>
+        where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </update>
+
+    <delete id="deletePmisContractInfo" parameterType="PmisContractInfo">
+        delete from PMIS_CONTRACT_INFO where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </delete>
+
+</mapper>

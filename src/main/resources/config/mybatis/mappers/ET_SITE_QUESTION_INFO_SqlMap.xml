@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.EtSiteQuestionInfoDao">
+
+    <resultMap id="etSiteQuestionInfoResultForList" type="etSiteQuestionInfo">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="PM_ID" property="pmId" jdbcType="BIGINT"/>
+        <result column="C_ID" property="cId" jdbcType="BIGINT"/>
+        <result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR"/>
+        <result column="SITE_NAME" property="siteName" jdbcType="VARCHAR"/>
+        <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR"/>
+        <result column="MENU_NAME" property="menuName" jdbcType="VARCHAR"/>
+        <result column="QUESTION_TYPE" property="questionType" jdbcType="VARCHAR"/>
+        <result column="QUESTION_DESC" property="questionDesc" jdbcType="LONGVARCHAR"/>
+        <result column="IMG_PATH" property="imgPath" jdbcType="LONGVARCHAR"/>
+        <result column="OPER_TYPE" property="operType" jdbcType="INTEGER"/>
+        <result column="PRIORITY" property="priority" jdbcType="INTEGER"/>
+        <result column="ALLOCATE_USER" property="allocateUser" jdbcType="BIGINT"/>
+        <result column="IS_OPERATION" property="isOperation" jdbcType="INTEGER"/>
+        <result column="REMARK" property="remark" jdbcType="LONGVARCHAR"/>
+        <result column="CREATOR" property="creator" jdbcType="BIGINT"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="OPERATOR" property="operator" jdbcType="BIGINT"/>
+        <result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="etSiteQuestionInfoResult" type="etSiteQuestionInfo" extends="etSiteQuestionInfoResultForList">
+    </resultMap>
+
+    <sql id="sf-etSiteQuestionInfo">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
+        <if test="(cId != null and cId != '') or cId == 0">and t.C_ID = #{cId}</if>
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="siteName != null and siteName != ''">and t.SITE_NAME = #{siteName}</if>
+        <if test="productName != null and productName != ''">and t.PRODUCT_NAME = #{productName}</if>
+        <if test="menuName != null and menuName != ''">and t.MENU_NAME = #{menuName}</if>
+        <if test="questionType != null and questionType != ''">and t.QUESTION_TYPE = #{questionType}</if>
+        <if test="questionDesc != null and questionDesc != ''">and t.QUESTION_DESC = #{questionDesc}</if>
+        <if test="imgPath != null and imgPath != ''">and t.IMG_PATH = #{imgPath}</if>
+        <if test="(operType != null and operType != '') or operType == 0">and t.OPER_TYPE = #{operType}</if>
+        <if test="(priority != null and priority != '') or priority == 0">and t.PRIORITY = #{priority}</if>
+        <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0">and t.ALLOCATE_USER =
+            #{allocateUser}
+        </if>
+        <if test="(isOperation != null and isOperation != '') or isOperation == 0">and t.IS_OPERATION = #{isOperation}
+        </if>
+        <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
+        <if test="(creator != null and creator != '') or creator == 0">and t.CREATOR = #{creator}</if>
+        <if test="createTime != null and createTime != ''">and t.CREATE_TIME = #{createTime}</if>
+        <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
+        <if test="operatorTime != null and operatorTime != ''">and t.OPERATOR_TIME = #{operatorTime}</if>
+    </sql>
+
+    <select id="selectEtSiteQuestionInfo" resultMap="etSiteQuestionInfoResult" parameterType="etSiteQuestionInfo">
+        select * from ET_SITE_QUESTION_INFO t where 1 = 1
+        <include refid="sf-etSiteQuestionInfo"/>
+    </select>
+
+    <select id="selectEtSiteQuestionInfoList" resultMap="etSiteQuestionInfoResultForList"
+            parameterType="etSiteQuestionInfo">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from ET_SITE_QUESTION_INFO t where 1 = 1
+        <include refid="sf-etSiteQuestionInfo"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectEtSiteQuestionInfoCount" resultType="int" parameterType="etSiteQuestionInfo">
+        select count(*) from ET_SITE_QUESTION_INFO t where 1 = 1
+        <include refid="sf-etSiteQuestionInfo"/>
+    </select>
+
+    <select id="selectEtSiteQuestionInfoPaginatedList" resultMap="etSiteQuestionInfoResult"
+            parameterType="etSiteQuestionInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from ET_SITE_QUESTION_INFO t where 1 = 1
+        <include refid="sf-etSiteQuestionInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertEtSiteQuestionInfo" parameterType="etSiteQuestionInfo">
+        <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
+        </selectKey>
+        insert into ET_SITE_QUESTION_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID,</if>
+            <if test="(cId != null and cId != '') or cId == 0">C_ID,</if>
+            <if test="serialNo != null and serialNo != ''">SERIAL_NO,</if>
+            <if test="siteName != null and siteName != ''">SITE_NAME,</if>
+            <if test="productName != null and productName != ''">PRODUCT_NAME,</if>
+            <if test="menuName != null and menuName != ''">MENU_NAME,</if>
+            <if test="questionType != null and questionType != ''">QUESTION_TYPE,</if>
+            <if test="questionDesc != null and questionDesc != ''">QUESTION_DESC,</if>
+            <if test="imgPath != null and imgPath != ''">IMG_PATH,</if>
+            <if test="(operType != null and operType != '') or operType == 0">OPER_TYPE,</if>
+            <if test="(priority != null and priority != '') or priority == 0">PRIORITY,</if>
+            <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0">ALLOCATE_USER,</if>
+            <if test="(isOperation != null and isOperation != '') or isOperation == 0">IS_OPERATION,</if>
+            <if test="remark != null and remark != ''">REMARK,</if>
+            <if test="(creator != null and creator != '') or creator == 0">CREATOR,</if>
+            <if test="createTime != null and createTime != ''">CREATE_TIME,</if>
+            <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
+            <if test="operatorTime != null and operatorTime != ''">OPERATOR_TIME,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="(pmId != null and pmId != '') or pmId == 0">#{pmId, jdbcType=BIGINT},</if>
+            <if test="(cId != null and cId != '') or cId == 0">#{cId, jdbcType=BIGINT},</if>
+            <if test="serialNo != null and serialNo != ''">#{serialNo, jdbcType=VARCHAR},</if>
+            <if test="siteName != null and siteName != ''">#{siteName, jdbcType=VARCHAR},</if>
+            <if test="productName != null and productName != ''">#{productName, jdbcType=VARCHAR},</if>
+            <if test="menuName != null and menuName != ''">#{menuName, jdbcType=VARCHAR},</if>
+            <if test="questionType != null and questionType != ''">#{questionType, jdbcType=VARCHAR},</if>
+            <if test="questionDesc != null and questionDesc != ''">#{questionDesc, jdbcType=LONGVARCHAR},</if>
+            <if test="imgPath != null and imgPath != ''">#{imgPath, jdbcType=LONGVARCHAR},</if>
+            <if test="(operType != null and operType != '') or operType == 0">#{operType, jdbcType=INTEGER},</if>
+            <if test="(priority != null and priority != '') or priority == 0">#{priority, jdbcType=INTEGER},</if>
+            <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0">
+                #{allocateUser, jdbcType=BIGINT},
+            </if>
+            <if test="(isOperation != null and isOperation != '') or isOperation == 0">
+                #{isOperation, jdbcType=INTEGER},
+            </if>
+            <if test="remark != null and remark != ''">#{remark, jdbcType=LONGVARCHAR},</if>
+            <if test="(creator != null and creator != '') or creator == 0">#{creator, jdbcType=BIGINT},</if>
+            <if test="createTime != null and createTime != ''">#{createTime, jdbcType=TIMESTAMP},</if>
+            <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
+            <if test="operatorTime != null and operatorTime != ''">#{operatorTime, jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+
+    <update id="updateEtSiteQuestionInfo" parameterType="EtSiteQuestionInfo">
+        update ET_SITE_QUESTION_INFO
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID = #{pmId, jdbcType=BIGINT},</if>
+                <if test="(cId != null and cId != '') or cId == 0">C_ID = #{cId, jdbcType=BIGINT},</if>
+                <if test="serialNo != null and serialNo != ''">SERIAL_NO = #{serialNo, jdbcType=VARCHAR},</if>
+                <if test="siteName != null and siteName != ''">SITE_NAME = #{siteName, jdbcType=VARCHAR},</if>
+                <if test="productName != null and productName != ''">PRODUCT_NAME = #{productName, jdbcType=VARCHAR},
+                </if>
+                <if test="menuName != null and menuName != ''">MENU_NAME = #{menuName, jdbcType=VARCHAR},</if>
+                <if test="questionType != null and questionType != ''">QUESTION_TYPE =
+                    #{questionType, jdbcType=VARCHAR},
+                </if>
+                <if test="questionDesc != null and questionDesc != ''">QUESTION_DESC =
+                    #{questionDesc, jdbcType=LONGVARCHAR},
+                </if>
+                <if test="imgPath != null and imgPath != ''">IMG_PATH = #{imgPath, jdbcType=LONGVARCHAR},</if>
+                <if test="(operType != null and operType != '') or operType == 0">OPER_TYPE =
+                    #{operType, jdbcType=INTEGER},
+                </if>
+                <if test="(priority != null and priority != '') or priority == 0">PRIORITY =
+                    #{priority, jdbcType=INTEGER},
+                </if>
+                <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0">ALLOCATE_USER =
+                    #{allocateUser, jdbcType=BIGINT},
+                </if>
+                <if test="(isOperation != null and isOperation != '') or isOperation == 0">IS_OPERATION =
+                    #{isOperation, jdbcType=INTEGER},
+                </if>
+                <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
+                <if test="(creator != null and creator != '') or creator == 0">CREATOR = #{creator, jdbcType=BIGINT},
+                </if>
+                <if test="createTime != null and createTime != ''">CREATE_TIME = #{createTime, jdbcType=TIMESTAMP},</if>
+                <if test="(operator != null and operator != '') or operator == 0">OPERATOR =
+                    #{operator, jdbcType=BIGINT},
+                </if>
+                <if test="operatorTime != null and operatorTime != ''">OPERATOR_TIME =
+                    #{operatorTime, jdbcType=TIMESTAMP},
+                </if>
+            </trim>
+        </set>
+        where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </update>
+
+    <delete id="deleteEtSiteQuestionInfo" parameterType="EtSiteQuestionInfo">
+        delete from ET_SITE_QUESTION_INFO where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </delete>
+
+</mapper>

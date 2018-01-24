@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysFlowAnswerDao">
+
+    <resultMap id="sysFlowAnswerResultForList" type="sysFlowAnswer">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="QUES_ID" property="quesId" jdbcType="BIGINT"/>
+        <result column="ANSWER_PID" property="answerPid" jdbcType="INTEGER"/>
+        <result column="ANSWER_CODE" property="answerCode" jdbcType="VARCHAR"/>
+        <result column="ANSWER_CONTENT" property="answerContent" jdbcType="VARCHAR"/>
+        <result column="QUES_DESC" property="quesDesc" jdbcType="LONGVARCHAR"/>
+        <result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT"/>
+        <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="sysFlowAnswerResult" type="sysFlowAnswer" extends="sysFlowAnswerResultForList">
+    </resultMap>
+
+    <sql id="sf-sysFlowAnswer">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(quesId != null and quesId != '') or quesId == 0">and t.QUES_ID = #{quesId}</if>
+        <if test="(answerPid != null and answerPid != '') or answerPid == 0">and t.ANSWER_PID = #{answerPid}</if>
+        <if test="answerCode != null and answerCode != ''">and t.ANSWER_CODE = #{answerCode}</if>
+        <if test="answerContent != null and answerContent != ''">and t.ANSWER_CONTENT = #{answerContent}</if>
+        <if test="quesDesc != null and quesDesc != ''">and t.QUES_DESC = #{quesDesc}</if>
+        <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">and t.LAST_UPDATOR = #{lastUpdator}
+        </if>
+        <if test="lastUpdateTime != null and lastUpdateTime != ''">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
+    </sql>
+
+    <select id="selectSysFlowAnswer" resultMap="sysFlowAnswerResult" parameterType="sysFlowAnswer">
+        select * from SYS_FLOW_ANSWER t where 1 = 1
+        <include refid="sf-sysFlowAnswer"/>
+    </select>
+
+    <select id="selectSysFlowAnswerList" resultMap="sysFlowAnswerResultForList" parameterType="sysFlowAnswer">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from SYS_FLOW_ANSWER t where 1 = 1
+        <include refid="sf-sysFlowAnswer"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectSysFlowAnswerCount" resultType="int" parameterType="sysFlowAnswer">
+        select count(*) from SYS_FLOW_ANSWER t where 1 = 1
+        <include refid="sf-sysFlowAnswer"/>
+    </select>
+
+    <select id="selectSysFlowAnswerPaginatedList" resultMap="sysFlowAnswerResult" parameterType="sysFlowAnswer">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from SYS_FLOW_ANSWER t where 1 = 1
+        <include refid="sf-sysFlowAnswer"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertSysFlowAnswer" parameterType="sysFlowAnswer">
+        <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
+        </selectKey>
+        insert into SYS_FLOW_ANSWER
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="(quesId != null and quesId != '') or quesId == 0">QUES_ID,</if>
+            <if test="(answerPid != null and answerPid != '') or answerPid == 0">ANSWER_PID,</if>
+            <if test="answerCode != null and answerCode != ''">ANSWER_CODE,</if>
+            <if test="answerContent != null and answerContent != ''">ANSWER_CONTENT,</if>
+            <if test="quesDesc != null and quesDesc != ''">QUES_DESC,</if>
+            <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR,</if>
+            <if test="lastUpdateTime != null and lastUpdateTime != ''">LAST_UPDATE_TIME,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="(quesId != null and quesId != '') or quesId == 0">#{quesId, jdbcType=BIGINT},</if>
+            <if test="(answerPid != null and answerPid != '') or answerPid == 0">#{answerPid, jdbcType=INTEGER},</if>
+            <if test="answerCode != null and answerCode != ''">#{answerCode, jdbcType=VARCHAR},</if>
+            <if test="answerContent != null and answerContent != ''">#{answerContent, jdbcType=VARCHAR},</if>
+            <if test="quesDesc != null and quesDesc != ''">#{quesDesc, jdbcType=LONGVARCHAR},</if>
+            <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">
+                #{lastUpdator, jdbcType=BIGINT},
+            </if>
+            <if test="lastUpdateTime != null and lastUpdateTime != ''">#{lastUpdateTime, jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysFlowAnswer" parameterType="SysFlowAnswer">
+        update SYS_FLOW_ANSWER
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(quesId != null and quesId != '') or quesId == 0">QUES_ID = #{quesId, jdbcType=BIGINT},</if>
+                <if test="(answerPid != null and answerPid != '') or answerPid == 0">ANSWER_PID =
+                    #{answerPid, jdbcType=INTEGER},
+                </if>
+                <if test="answerCode != null and answerCode != ''">ANSWER_CODE = #{answerCode, jdbcType=VARCHAR},</if>
+                <if test="answerContent != null and answerContent != ''">ANSWER_CONTENT =
+                    #{answerContent, jdbcType=VARCHAR},
+                </if>
+                <if test="quesDesc != null and quesDesc != ''">QUES_DESC = #{quesDesc, jdbcType=LONGVARCHAR},</if>
+                <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR =
+                    #{lastUpdator, jdbcType=BIGINT},
+                </if>
+                <if test="lastUpdateTime != null and lastUpdateTime != ''">LAST_UPDATE_TIME =
+                    #{lastUpdateTime, jdbcType=TIMESTAMP},
+                </if>
+            </trim>
+        </set>
+        where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </update>
+
+    <delete id="deleteSysFlowAnswer" parameterType="SysFlowAnswer">
+        delete from SYS_FLOW_ANSWER where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </delete>
+
+</mapper>

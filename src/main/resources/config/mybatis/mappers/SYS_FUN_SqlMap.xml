@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysFunDao">
+
+    <resultMap id="sysFunResultForList" type="sysFun">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="FUN_CODE" property="funCode" jdbcType="VARCHAR"/>
+        <result column="FUN_NAME" property="funName" jdbcType="VARCHAR"/>
+        <result column="ICON_PATH" property="iconPath" jdbcType="VARCHAR"/>
+        <result column="ORDER_VALUE" property="orderValue" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="sysFunResult" type="sysFun" extends="sysFunResultForList">
+    </resultMap>
+
+    <sql id="sf-sysFun">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="funCode != null and funCode != ''">and t.FUN_CODE = #{funCode}</if>
+        <if test="funName != null and funName != ''">and t.FUN_NAME = #{funName}</if>
+        <if test="iconPath != null and iconPath != ''">and t.ICON_PATH = #{iconPath}</if>
+        <if test="(orderValue != null and orderValue != '') or orderValue == 0">and t.ORDER_VALUE = #{orderValue}</if>
+    </sql>
+
+    <select id="selectSysFun" resultMap="sysFunResult" parameterType="sysFun">
+        select * from SYS_FUN t where 1 = 1
+        <include refid="sf-sysFun"/>
+    </select>
+
+    <select id="selectSysFunList" resultMap="sysFunResultForList" parameterType="sysFun">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from SYS_FUN t where 1 = 1
+        <include refid="sf-sysFun"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectSysFunCount" resultType="int" parameterType="sysFun">
+        select count(*) from SYS_FUN t where 1 = 1
+        <include refid="sf-sysFun"/>
+    </select>
+
+    <select id="selectSysFunPaginatedList" resultMap="sysFunResult" parameterType="sysFun">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from SYS_FUN t where 1 = 1
+        <include refid="sf-sysFun"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertSysFun" parameterType="sysFun">
+        <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
+        </selectKey>
+        insert into SYS_FUN
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="funCode != null and funCode != ''">FUN_CODE,</if>
+            <if test="funName != null and funName != ''">FUN_NAME,</if>
+            <if test="iconPath != null and iconPath != ''">ICON_PATH,</if>
+            <if test="(orderValue != null and orderValue != '') or orderValue == 0">ORDER_VALUE,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="funCode != null and funCode != ''">#{funCode, jdbcType=VARCHAR},</if>
+            <if test="funName != null and funName != ''">#{funName, jdbcType=VARCHAR},</if>
+            <if test="iconPath != null and iconPath != ''">#{iconPath, jdbcType=VARCHAR},</if>
+            <if test="(orderValue != null and orderValue != '') or orderValue == 0">#{orderValue, jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateSysFun" parameterType="SysFun">
+        update SYS_FUN
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="funCode != null and funCode != ''">FUN_CODE = #{funCode, jdbcType=VARCHAR},</if>
+                <if test="funName != null and funName != ''">FUN_NAME = #{funName, jdbcType=VARCHAR},</if>
+                <if test="iconPath != null and iconPath != ''">ICON_PATH = #{iconPath, jdbcType=VARCHAR},</if>
+                <if test="(orderValue != null and orderValue != '') or orderValue == 0">ORDER_VALUE =
+                    #{orderValue, jdbcType=INTEGER},
+                </if>
+            </trim>
+        </set>
+        where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </update>
+
+    <delete id="deleteSysFun" parameterType="SysFun">
+        delete from SYS_FUN where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </delete>
+
+</mapper>
