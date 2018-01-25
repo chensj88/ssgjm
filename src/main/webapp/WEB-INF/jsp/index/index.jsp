@@ -376,7 +376,6 @@
 
                     </a>
                     <ul class="submenu">
-<<<<<<< HEAD
                         <li><a href="admin/productInfo/product.do"><i class="icon-double-angle-right"></i>产品信息</a></li>
                         <li><a href="admin/productLineInfo/productLine.do"><i class="icon-double-angle-right"></i>产品条线信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>基础数据类型信息</a></li>
@@ -385,7 +384,6 @@
                         <li><a href="#"><i class="icon-double-angle-right"></i>软硬件设备类型信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>报表单据信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>流程调研问卷清单</a></li>
-=======
                         <li><a href="#"><i class="icon-double-angle-right"></i>合同信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>系统信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>模块信息</a></li>
@@ -395,8 +393,6 @@
                         <li><a href="#"><i class="icon-double-angle-right"></i>软硬件信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>单据&报表信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>流程调研问卷信息</a></li>
->>>>>>> 0cda393f446c298e237fc4125e4f971a277302fd
-
                     </ul>
                 </li>
 
@@ -552,11 +548,9 @@
                                 <small>(v1.0)</small>
                             </strong>
                             ,我们致力于提升实施服务质量.
-<<<<<<< HEAD
-                        </div> --> 
+                        </div> -->
                         <div class="row" id="jspContent" style="height: 500px">
                             <iframe id="coniframe" height="100%" width="100%" frameborder="0" scrolling="yes"></iframe>
-=======
                         </div>
 
                         <div class="row">
@@ -916,7 +910,7 @@
                                     </div><!-- /widget-body -->
                                 </div><!-- /widget-box -->
                             </div>
->>>>>>> 0cda393f446c298e237fc4125e4f971a277302fd
+>>>>>>> 代码提交陈蒯
                         </div>
 
                         <div class="hr hr32 hr-dotted"></div>
