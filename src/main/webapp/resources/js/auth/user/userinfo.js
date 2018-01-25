@@ -165,13 +165,11 @@ Page.prototype.bindEvent = function () {
     $('#modifyUser').on('click', function () {
         var arrselections = $("#userTable").bootstrapTable('getSelections');
         if (arrselections.length > 1) {
-            //toastr.warning('只能选择一行进行编辑');
-            Ewin.alert('只能选择一行进行编辑');
+            toastr.warning('只能选择一行进行编辑');
             return;
         }
         if (arrselections.length <= 0) {
-            //toastr.warning('请选择有效数据');
-            Ewin.alert('请选择有效数据');
+            toastr.warning('请选择有效数据');
             return;
         }
         var userId = arrselections[0].id;
@@ -255,13 +253,11 @@ Page.prototype.bindEvent = function () {
     $('#deleteUser').on('click', function () {
         var arrselections = $("#userTable").bootstrapTable('getSelections');
         if (arrselections.length > 1) {
-           // toastr.warning('只能选择一行进行编辑');
-            Ewin.alert('只能选择一行进行编辑');
+            toastr.warning('只能选择一行进行编辑');
             return;
         }
         if (arrselections.length <= 0) {
-            //toastr.warning('请选择有效数据');
-            Ewin.alert('只能选择一行进行编辑');
+            toastr.warning('请选择有效数据');
             return;
         }
         var userId = arrselections[0].userId;

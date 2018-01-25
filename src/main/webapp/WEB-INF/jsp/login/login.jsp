@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/commons/header.jsp" %>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,8 +11,6 @@
     <!-- basic styles -->
     <link href="<%=basePath%>/resources/assets/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="<%=basePath%>/resources/assets/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="<%=basePath%>/resources/bootstrap/css/bootstrapValidator.min.css">
-    <link rel="shortcut icon" href="<%=basePath%>/resources/img/logo.ico">
     <!--[if IE 7]>
     <link rel="stylesheet" href="<%=basePath%>/resources/assets/css/font-awesome-ie7.min.css" />
     <![endif]-->
@@ -70,7 +67,7 @@
 
                                     <div class="space-6"></div>
 
-                                    <form id="loginSub" method="post" action="<%=basePath%>login/home.do" >
+                                    <form id="loginSub" method="post" action="<%=basePath%>home/home.do" >
                                         <fieldset>
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
@@ -94,7 +91,7 @@
                                                     <span class="lbl"> 记住密码</span>
                                                 </label>
 
-                                                <button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
+                                                <button id="sub_btn"  type="button" class="width-35 pull-right btn btn-sm btn-primary">
                                                     <i class="icon-key"></i>
                                                     登陆
                                                 </button>
@@ -122,27 +119,7 @@
 
 <!--[if !IE]> -->
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-<!-- <![endif]-->
-
-<!--[if IE]>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<![endif]-->
-
-<!--[if !IE]> -->
-
-<script type="text/javascript">
-    window.jQuery || document.write("<script src='<%=basePath%>/resources/assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
-</script>
-
-<!-- <![endif]-->
-
-<!--[if IE]>
-<script type="text/javascript">
-    window.jQuery || document.write("<script src='<%=basePath%>/resources/assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
-</script>
-<![endif]-->
+<script src="<%=basePath%>/resources/assets/js/jquery-2.0.3.min.js"></script>
 
 <script type="text/javascript">
     if("ontouchend" in document) document.write("<script src='<%=basePath%>/resources/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
@@ -155,66 +132,36 @@
         jQuery('.widget-box.visible').removeClass('visible');
         jQuery('#'+id).addClass('visible');
     }
-    $('#loginSub').bootstrapValidator({
-        message: '这个值没有被验证',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            username: {
-                message: '用户名还没有验证',
-                validators: {
-                    notEmpty: {
-                        message: '用户名不能为空'
-                    },
-                    stringLength: {
-                        min: 1,
-                        max: 16,
-                        message: '用户名长度在1到16位之间'
-                    }
-                }
-            },
-            password: {
-                message: '密码还没有验证',
-                validators: {
-                    notEmpty: {
-                        message: '密码不能为空'
-                    },
-                    stringLength: {
-                        min: 6,
-                        max: 16,
-                        message: '密码长度在6到16之间'
-                    },
-                    different: {
-                        field: 'Username',
-                        message: '密码不能和用户名相同'
-                    }
-                }
-            },
-        }
-    }).on('success.form.bv', function (e) {
-        // Prevent form submission
-        e.preventDefault();
-        // Get the form instance
-        var $form = $(e.target);
-        // Get the BootstrapValidator instance
-        var bv = $form.data('bootstrapValidator');
-        // Use Ajax to submit form data
-        $.post("<%=basePath%>login/home.do", $form.serialize(), function (data) {
-            console.log(data)
-            if (data.Status == "ok") {
-                window.location.href = "/Home/Index";
-            }
-            else if (data.Status == "error") {
-                alert(data.Message);
-            }
-            else {
-                alert("未知错误");
-            }
-        });
-    });
+
+   //登陆判断
+   $("#sub_btn").click(function() {
+       var username = $("#username").val();
+       if(username == null || username == ''){
+           alert("用户名不能为空!");
+           return false;
+       }
+       var password = $("#password").val();
+       if(password == null || password ==''){
+           alert("密码不能为空!");
+           return false;
+       }
+       $.ajax({
+           type: "POST",
+           url:"<%=basePath%>login/check.do",
+           data:{"username":username,"password":password},
+           dataType:"json",
+           error: function(request) {
+               alert("服务端错误，或网络不稳定，本次操作被终止。");
+           },
+           success: function(data) {
+               if(data.status) {
+                   $("#loginSub").submit();
+               } else {
+                   alert("输入不正确，请重新输入");
+               }
+           }
+       });
+   });
 
 
 </script>
