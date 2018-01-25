@@ -17,17 +17,15 @@
 </head>
 <body>
 <!--表格区域  -->
-<table id="userTable"></table>
+<table id="flowTable"></table>
 <!--toolbar区域  -->
 <div class="btn-group" id="btntoolbar">
-    <button id="addUser" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
-    <button id="modifyUser" class="btn btn-default" type="button"><span class="glyphicon glyphicon-edit"></span>修改
-    </button>
-    <button id="deleteUser" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span>删除
-    </button>
+    <button id="addFlow" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
+    <button id="modifyFlow" class="btn btn-default" type="button"><span class="glyphicon glyphicon-edit"></span>修改</button>
+    <button id="deleteFlow" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span>删除</button>
 </div>
 <!--模态框  -->
-<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userFormModal">
+<div class="modal fade" id="flowModal" tabindex="-1" role="dialog" aria-labelledby="flowFormModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content" style="width:450px;">
             <div class="modal-header">
@@ -39,11 +37,11 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
-                        <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="userForm">
+                        <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="flowForm">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="userid">登录名</label>
+                                <label class="col-sm-2 control-label" for="flowid">登录名</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="userid" name="userid"
+                                    <input type="text" class="form-control" id="flowid" name="flowid"
                                            placeholder="请输入登录名">
                                 </div>
                             </div>
@@ -79,9 +77,9 @@
 
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="userType">用户类型</label>
+                                <label class="col-sm-2 control-label" for="flowType">用户类型</label>
                                 <div class="col-sm-6">
-                                    <select class="form-control" name="userType" id="userType">
+                                    <select class="form-control" name="flowType" id="flowType">
                                         <option value="0">医院</option>
                                         <option value="1">公司</option>
                                     </select>
@@ -91,7 +89,7 @@
                             <input type="hidden" name="password" id="password">
                             <input type="reset" style="display:none;"/>
                             <div class="col-sm-8 text-center">
-                                <button class="btn btn-primary" id="saveUser" type="submit">保存</button>
+                                <button class="btn btn-primary" id="saveFlow" type="submit">保存</button>
                                 <button class="btn btn-danger" data-dismiss="modal">取消</button>
                             </div>
                         </form>
@@ -110,5 +108,5 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/language/zh_CN.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/toastr.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/js/auth/user/userinfo.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/js/auth/flow/flowinfo.js"></script>
 </html>
