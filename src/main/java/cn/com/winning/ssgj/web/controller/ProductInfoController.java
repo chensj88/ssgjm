@@ -40,7 +40,7 @@ public class ProductInfoController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(ProductInfoController.class);
 	@Autowired
 	private SSGJHelper ssgjHelper;
-	@RequestMapping(value = "/test.do")
+	@RequestMapping(value = "/product.do")
 	public String userinfo(HttpServletRequest request, Model model){
 		return "auth/module/productInfo";
 	}
