@@ -1,3 +1,4 @@
+<%@ page import="cn.com.winning.ssgj.domain.SysUserInfo" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/commons/header.jsp" %>
 <!DOCTYPE html>
@@ -263,7 +264,8 @@
                         <img class="nav-user-photo" src="<%=basePath%>resources/assets/avatars/user.jpg" alt="Jason's Photo" />
                         <span class="user-info">
 									<small>欢迎光临,</small>
-									陈蒯
+									<%--<%=((SysUserInfo)request.getAttribute("user")).getYhmc()%>--%>
+                                    admin
 								</span>
 
                         <i class="icon-caret-down"></i>
@@ -561,6 +563,11 @@
 </script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/index/index.js"></script>
+<script type="text/javascript">
+    $(function () {
+        console.log(<%=request.getSession().getAttribute("user") %>);
+    });
+</script>
 </body>
 </html>
 

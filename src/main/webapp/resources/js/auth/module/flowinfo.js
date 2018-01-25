@@ -14,13 +14,10 @@ function Page() {
 
 Page.prototype.init = function () {
     this.editObj = null;
-    this.status = {};
-    this.sex = {};
-    this.flowType = {};
     this.initDataGrid();
     this.bindEvent();
     this.validateForm();
-}
+};
 /**
  * 初始化Table
  */
@@ -28,7 +25,6 @@ Page.prototype.initDataGrid = function () {
     $('#flowTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/flow/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
-        // contentType: "application/x-www-form-urlencoded",//必须要有！！！！ POST必须有
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         pagination: true,                   // 是否显示分页（*）
         sortable: true,                     // 是否启用排序
@@ -83,53 +79,36 @@ Page.prototype.initDataGrid = function () {
             width: '40px',
             align: 'center'
         }, {
-            field: "flowid",
-            title: "登录名",
+            field: "flowCode",
+            title: "流程编号",
             width: '40px',
             align: 'center'
         }, {
-            field: "yhmc",
-            title: "用户名称",
+            field: "flowName",
+            title: "流程名称",
             width: '40px',
             align: 'center'
         }, {
             field: "name",
-            title: "用户姓名",
+            title: "流程类型",
             width: '40px',
-            align: 'center'
-        }, {
-            field: "email",
-            title: "邮箱",
-            width: '40px',
-            align: 'center'
-        }, {
-            field: 'mobile',
-            title: '手机号码',
-            width: '40px',
-            align: 'center'
-        }, {
-            field: 'status',
-            title: '允许登陆',
-            width: '40px',
-            formatter: function (value) {
-                if (value == '1') {
-                    return '是';
-                } else if (value = '1') {
-                    return '否';
+            align: 'center',
+            formatter :function (value) {
+                if( value == '0'){
+                    return '流程大类';
+                }else {
+                    return '流程小类';
                 }
-            },
+            }
+        }, {
+            field: "flowParentCode",
+            title: "上级流程编号",
+            width: '40px',
             align: 'center'
         }, {
-            field: 'flowType',
-            title: '用户类型',
+            field: 'flowParentName',
+            title: '上级流程名称',
             width: '40px',
-            formatter: function (value) {
-                if (value == '1') {
-                    return '公司';
-                } else {
-                    return '医院';
-                }
-            },
             align: 'center'
         }, {
             title: '操作',
@@ -143,7 +122,7 @@ Page.prototype.initDataGrid = function () {
             }
         }],
     });
-}
+};
 /**
  * 按钮绑定事件
  */
@@ -320,7 +299,7 @@ Page.prototype.bindEvent = function () {
             });
         }
     });
-}
+};
 /**
  * 表单验证
  */
@@ -393,4 +372,4 @@ Page.prototype.validateForm = function () {
             }
         }
     });
-}
+};

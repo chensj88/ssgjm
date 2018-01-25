@@ -45,13 +45,15 @@ public class UserController extends BaseController {
 	}
 	/**
      * 用户信息列表
-     * @param userInfo
+     * @param row
      * @return
      */
 	@RequestMapping("/list.do")
 	@ResponseBody
-	@ILog(operationName="用户信息列表",operationType="list")
-	public Map<String, Object> list(SysUserInfo userInfo) {
+	public Map<String, Object> list(Row row) {
+		System.out.println(row);
+		SysUserInfo userInfo = new SysUserInfo();
+		userInfo.setRow(row);
 		List<SysUserInfo> userInfos = getFacade().getSysUserInfoService().getSysUserInfoPaginatedList(userInfo);
 		int total =  getFacade().getSysUserInfoService().getSysUserInfoCount(userInfo);
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -67,7 +69,6 @@ public class UserController extends BaseController {
      */
 	@RequestMapping("/getById.do")
 	@ResponseBody
-	@ILog(operationName="通过用户ID查询用户信息",operationType="getUserByUserId")
 	public  Map<String, Object> getUserByUserId(SysUserInfo user){
 		user =  super.getFacade().getSysUserInfoService().getSysUserInfo(user);
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -83,7 +84,6 @@ public class UserController extends BaseController {
 	@RequestMapping("/deleteById.do")
 	@ResponseBody
 	@Transactional
-	@ILog(operationName="通过用户ID删除用户信息",operationType="deleteUserById")
 	public  Map<String, Object> deleteUserById(SysUserInfo user) {
 		user.setStatus(Integer.valueOf(Constants.User.USER_STATUS_LOCKED));
         getFacade().getSysUserInfoService().modifySysUserInfo(user);
@@ -99,7 +99,6 @@ public class UserController extends BaseController {
 	@RequestMapping("/add.do")
 	@ResponseBody
 	@Transactional
-	@ILog(operationName="添加用户",operationType="addUser")
 	public Map<String, Object> addUser(SysUserInfo user)  {
 		user.setId(ssgjHelper.createUserId());
 		//医院用户需要新建时候需要重置密码

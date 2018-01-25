@@ -33,7 +33,7 @@ public class LoginController extends BaseController{
 
     @RequestMapping(value = "/check.do")
     @ResponseBody
-    public Map<String,Boolean> check(String username, String password){
+    public Map<String,Boolean> check(HttpServletRequest request,String username, String password){
         Map<String,Boolean> map = new HashMap<String,Boolean>();
         SysUserInfo info = new SysUserInfo();
         info.setYhmc(username);
@@ -43,12 +43,16 @@ public class LoginController extends BaseController{
             info.setPassword(MD5.stringMD5(password));
             info = super.getFacade().getSysUserInfoService().getSysUserInfo(info);
             if(info!=null && !"".equals(info)){
+                request.getSession().setAttribute("user",info);
                 map.put("status",true); //登陆成功
+                System.out.println(0);
             }else {
                 map.put("status",false);
+                System.out.println(1);
             }
         }else {
             map.put("status", false);
+            System.out.println(2);
         }
         return map;
     }

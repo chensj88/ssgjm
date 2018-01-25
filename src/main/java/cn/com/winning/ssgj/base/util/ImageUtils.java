@@ -24,8 +24,7 @@ import com.sun.jimi.core.options.JPGOptions;
 public class ImageUtils {
 	private static final Logger logger = LoggerFactory.getLogger(ImageUtils.class);
 
-	public static boolean ergodDirectory(String directory) throws FileNotFoundException, IOException {
-		try {
+	public static boolean ergodDirectory(String directory) {
 			File file = new File(directory);
 			if (file.isDirectory()) {
 				String[] fileList = file.list();
@@ -37,9 +36,7 @@ public class ImageUtils {
 					}
 				}
 			}
-		} catch (FileNotFoundException e) {
-			System.err.println("FileNotFound");
-		}
+
 
 		return true;
 	}
