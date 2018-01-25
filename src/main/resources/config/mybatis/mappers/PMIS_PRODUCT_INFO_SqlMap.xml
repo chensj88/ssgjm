@@ -84,8 +84,8 @@
     </select>
 
     <insert id="insertPmisProductInfo" parameterType="pmisProductInfo">
-        <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
-        </selectKey>
+       <!-- <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
+        </selectKey>-->
         insert into PMIS_PRODUCT_INFO
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(id != null and id != '') or id == 0">ID,</if>
