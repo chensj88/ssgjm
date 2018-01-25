@@ -20,7 +20,7 @@ Page.prototype.init = function () {
     this.initDataGrid();
     this.bindEvent();
 //    this.validateForm();
-}
+};
 /**
  * 初始化Table
  */
@@ -126,7 +126,7 @@ Page.prototype.initDataGrid = function () {
             }
         }],
     });
-}
+};
 function edit(id,name,code,gnms,cptx) {
     $('#cpmc').val(name);
     $('#code').val(code);
@@ -298,7 +298,7 @@ Page.prototype.bindEvent = function () {
             });
 //        }
     });
-}
+};
 ///**
 // * 表单验证
 // */

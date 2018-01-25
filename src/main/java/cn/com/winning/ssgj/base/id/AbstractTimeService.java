@@ -69,11 +69,8 @@ public abstract class AbstractTimeService implements TimeService {
     }
 
     public final boolean isCutoff(int calField, long newTimeInMillis, long oldTimeInMillis) {
-        if (getCalendarField(calField, newTimeInMillis) - getCalendarField(calField, oldTimeInMillis) > 0) {
-            return true;
-        }
+        return getCalendarField(calField, newTimeInMillis) - getCalendarField(calField, oldTimeInMillis) > 0;
 
-        return false;
     }
 
     private Calendar getCalendar() {

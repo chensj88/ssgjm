@@ -19,13 +19,13 @@ Page.prototype.init = function () {
     this.initDataGrid();
     this.bindEvent();
     this.validateForm();
-}
+};
 /**
  * 初始化下拉列表值
  */
 Page.prototype.initCodes = function () {
     Common.getCodes(Common.CODETYPE_ID_FUNC_TYPE, _self.funcType, $('#funcType'), '前台功能');
-}
+};
 /**
  * 初始化Table
  */
@@ -134,7 +134,7 @@ Page.prototype.initDataGrid = function () {
             }
         },],
     });
-}
+};
 /**
  * 按钮绑定事件
  */
@@ -310,7 +310,7 @@ Page.prototype.bindEvent = function () {
             });
         }
     });
-}
+};
 /**
  * 表单验证
  */
@@ -363,4 +363,4 @@ Page.prototype.validateForm = function () {
             }
         }
     });
-}
+};

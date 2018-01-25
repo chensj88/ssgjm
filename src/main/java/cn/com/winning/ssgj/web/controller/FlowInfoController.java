@@ -35,7 +35,7 @@ public class FlowInfoController extends BaseController {
         return "auth/module/flowinfo";
     }
 
-    @RequestMapping(value = "list.do")
+    @RequestMapping(value = "/list.do")
     @ResponseBody
     public Map<String,Object> getFlowList(Row row){
         SysFlowInfo flowInfo = new SysFlowInfo();
@@ -46,6 +46,7 @@ public class FlowInfoController extends BaseController {
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("data",flowInfos);
+        System.out.println(flowInfos);
         return result;
 
     }

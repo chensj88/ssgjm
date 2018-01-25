@@ -131,4 +131,20 @@ public class SysFlowInfo extends BaseDomain implements Serializable {
     public void setFlowParentName(String flowParentName) {
         this.flowParentName = flowParentName;
     }
+
+    @Override
+    public String toString() {
+        return "SysFlowInfo{" +
+                "id=" + id +
+                ", flowType='" + flowType + '\'' +
+                ", flowPid=" + flowPid +
+                ", flowCode='" + flowCode + '\'' +
+                ", flowName='" + flowName + '\'' +
+                ", flowDesc='" + flowDesc + '\'' +
+                ", lastUpdator=" + lastUpdator +
+                ", lastUpdateTime=" + lastUpdateTime +
+                ", flowParentCode='" + flowParentCode + '\'' +
+                ", flowParentName='" + flowParentName + '\'' +
+                '}';
+    }
 }

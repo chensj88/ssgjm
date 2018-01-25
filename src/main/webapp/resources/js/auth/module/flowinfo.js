@@ -134,7 +134,6 @@ Page.prototype.bindEvent = function () {
     $('#addFlow').on('click', function () {
         $("input[type=reset]").trigger("click");
         $('#flowId').val('');
-        $('#password').val('');
         $('#flowModal').modal('show');
     });
     /**

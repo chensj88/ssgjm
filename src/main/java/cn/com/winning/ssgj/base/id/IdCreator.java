@@ -9,8 +9,8 @@ package cn.com.winning.ssgj.base.id;
  */
 public interface IdCreator<T> {
 
-    public abstract T create();
+    T create();
 
-    public abstract T create(int i);
+    T create(int i);
 
 }

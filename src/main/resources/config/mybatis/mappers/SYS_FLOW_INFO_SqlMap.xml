@@ -8,9 +8,11 @@
         <result column="FLOW_PID" property="flowPid" jdbcType="BIGINT"/>
         <result column="FLOW_CODE" property="flowCode" jdbcType="VARCHAR"/>
         <result column="FLOW_NAME" property="flowName" jdbcType="VARCHAR"/>
-        <result column="FLOW_DESC" property="flowDesc" jdbcType="LONGVARCHAR"/>
+        <result column="FLOW_DESC" property="flowDesc" jdbcType="VARCHAR"/>
         <result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT"/>
         <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP"/>
+        <result column="FLOW_PARENT_CODE" property="flowParentCode" jdbcType="VARCHAR"/>
+        <result column="FLOW_PARENT_NAME" property="flowParentName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="sysFlowInfoResult" type="sysFlowInfo" extends="sysFlowInfoResultForList">
@@ -48,8 +50,11 @@
 
     <select id="selectSysFlowInfoPaginatedList" resultMap="sysFlowInfoResult" parameterType="sysFlowInfo">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
-        from SYS_FLOW_INFO t where 1 = 1
+        select t.*,t1.FLOW_CODE AS FLOW_PARENT_CODE,
+        t1.FLOW_NAME AS FLOW_PARENT_NAME,ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_FLOW_INFO t
+        left join SYS_FLOW_INFO t1 on t.FLOW_PID = t1.ID
+        where 1 = 1
         <include refid="sf-sysFlowInfo"/>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}

@@ -20,7 +20,7 @@ Page.prototype.init = function () {
     this.initDataGrid();
     this.bindEvent();
     this.validateForm();
-}
+};
 /**
  * 初始化Table
  */
@@ -143,7 +143,7 @@ Page.prototype.initDataGrid = function () {
             }
         }],
     });
-}
+};
 /**
  * 按钮绑定事件
  */
@@ -320,7 +320,7 @@ Page.prototype.bindEvent = function () {
             });
         }
     });
-}
+};
 /**
  * 表单验证
  */
@@ -393,4 +393,4 @@ Page.prototype.validateForm = function () {
             }
         }
     });
-}
+};

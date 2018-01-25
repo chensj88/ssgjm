@@ -23,7 +23,7 @@ public class FtpUtils {
 
 	private static boolean isEnabledFtpUpload = Boolean.valueOf(FtpPropertiesLoader.getProperty("ftp.isenabledftpupload")).booleanValue();// required
 
-	private static String server = FtpPropertiesLoader.getProperty("ftp.server");;// required
+	private static String server = FtpPropertiesLoader.getProperty("ftp.server");// required
 
 	private static String username = FtpPropertiesLoader.getProperty("ftp.username"); // required
 
@@ -37,7 +37,7 @@ public class FtpUtils {
 		return uploadFile(remote, new FileInputStream(file));
 	}
 
-	public static boolean uploadFile(final String remote, final InputStream is) throws IOException {
+	public static boolean uploadFile(final String remote, final InputStream is) {
 		if (isEnabledFtpUpload) {
 			logger.info("====开启FTP服务器上传功能====");
 			boolean success = false; // 初始表示上传失败

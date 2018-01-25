@@ -65,8 +65,7 @@ public class BaseController extends BaseSpringMvcMybatisController{
     /**
      * @date 将一个 Map 对象转化为一个 JavaBean
      */
-    public static void convertMap(Map<String, Object> map, Object obj) throws IntrospectionException, IllegalAccessException, InstantiationException,
-            InvocationTargetException {
+    public static void convertMap(Map<String, Object> map, Object obj) {
         if (map == null || obj == null) {
             return;
         }

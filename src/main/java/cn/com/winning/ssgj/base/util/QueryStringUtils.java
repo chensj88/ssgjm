@@ -14,7 +14,7 @@ import org.apache.commons.lang.StringUtils;
 
 @SuppressWarnings("rawtypes") 
 public class QueryStringUtils {
-	public static final String serialize(HttpServletRequest request, String[] filterParameterNames) throws UnsupportedEncodingException {
+	public static final String serialize(HttpServletRequest request, String[] filterParameterNames) {
 		Enumeration e = request.getParameterNames();
 
 		List<String> queryStrings = new ArrayList<String>();
@@ -54,7 +54,7 @@ public class QueryStringUtils {
 
 		int i = 0;
 		for (String key : keySet) {
-			kvs[i] = (key + "=" + URLEncoder.encode((String) map.get(key), "UTF-8"));
+			kvs[i] = (key + "=" + URLEncoder.encode(map.get(key), "UTF-8"));
 			i++;
 		}
 		return prefix + StringUtils.join(kvs, "&");

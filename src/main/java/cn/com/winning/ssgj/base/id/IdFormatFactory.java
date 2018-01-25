@@ -101,8 +101,8 @@ public class IdFormatFactory {
         }
     }
 
-    abstract interface IdFormatter {
-        public abstract void generate(Object object, StringBuffer result);
+    interface IdFormatter {
+        void generate(Object object, StringBuffer result);
     }
 
 

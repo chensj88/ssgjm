@@ -27,7 +27,7 @@ public class SqlTimeService extends AbstractTimeService {
         this.dataSource = dataSource;
     }
 
-    protected long remoteTimestamp() throws SQLException {
+    protected long remoteTimestamp() {
         Connection conn = null;
         try {
             conn = this.dataSource.getConnection();

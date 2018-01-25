@@ -563,11 +563,11 @@
 </script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/index/index.js"></script>
-<script type="text/javascript">
-    $(function () {
-        console.log(<%=request.getSession().getAttribute("user") %>);
-    });
-</script>
+<%--<script type="text/javascript">--%>
+    <%--$(function () {--%>
+        <%--console.log(<%=request.getSession().getAttribute("user") %>);--%>
+    <%--});
+</script>--%>
 </body>
 </html>
 

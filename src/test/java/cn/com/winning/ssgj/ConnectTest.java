@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj;
 
+import cn.com.winning.ssgj.base.util.MD5;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -25,5 +26,11 @@ public class ConnectTest {
             e.printStackTrace();
         }
 
+    }
+
+    @Test
+    public void testMD5(){
+        String md5 = MD5.stringMD5("admin");
+        System.out.println(md5);
     }
 }

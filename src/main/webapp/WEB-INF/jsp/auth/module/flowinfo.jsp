@@ -108,5 +108,5 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/language/zh_CN.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/toastr.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/js/auth/flow/flowinfo.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/js/auth/module/flowinfo.js"></script>
 </html>
