@@ -13,6 +13,7 @@
         <result column="PY" property="py" jdbcType="VARCHAR"/>
         <result column="BBH" property="bbh" jdbcType="VARCHAR"/>
         <result column="GNMS" property="gnms" jdbcType="VARCHAR"/>
+        <result column="cptxName" property="cptxName" jdbcType="VARCHAR"/>
         <result column="XSSX" property="xssx" jdbcType="VARCHAR"/>
         <result column="CPXSPX" property="cpxspx" jdbcType="VARCHAR"/>
         <result column="CPDJ" property="cpdj" jdbcType="VARCHAR"/>
@@ -75,8 +76,8 @@
 
     <select id="selectPmisProductInfoPaginatedList" resultMap="pmisProductInfoResult" parameterType="pmisProductInfo">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
-        from PMIS_PRODUCT_INFO t where 1 = 1
+        select t.*,l.NAME cptxName, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from PMIS_PRODUCT_INFO t left join PMIS_PRODUCT_LINE_INFO l  on CAST(t.CPTX AS DECIMAL) = l.ID where 1 = 1
         <include refid="sf-pmisProductInfo"/>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}

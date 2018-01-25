@@ -376,7 +376,7 @@
 
                     </a>
                     <ul class="submenu">
-                        <li><a href="#"><i class="icon-double-angle-right"></i>产品信息</a></li>
+                        <li><a href="admin/productInfo/test.do"><i class="icon-double-angle-right"></i>产品信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>产品条线信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>基础数据类型信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>业务流程信息</a></li>
@@ -525,7 +525,7 @@
                     <div class="col-xs-12">
                         <!-- PAGE CONTENT BEGINS -->
 
-                        <div class="alert alert-block alert-success">
+                       <!-- <div class="alert alert-block alert-success">
                             <button type="button" class="close" data-dismiss="alert">
                                 <i class="icon-remove"></i>
                             </button>
@@ -538,7 +538,7 @@
                                 <small>(v1.0)</small>
                             </strong>
                             ,我们致力于提升实施服务质量.
-                        </div>
+                        </div> --> 
                         <div class="row" id="jspContent" style="height: 500px">
                             <iframe id="coniframe" height="100%" width="100%" frameborder="0" scrolling="yes"></iframe>
                         </div>

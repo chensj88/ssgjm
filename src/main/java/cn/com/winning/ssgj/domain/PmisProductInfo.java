@@ -42,7 +42,9 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
     private String cpxspx;
 
     private String cpdj;
-
+    
+    private String cptxName;
+    
     private String cptx;
 
     private String cpzxsx;
@@ -61,7 +63,17 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
 
     private Integer zt;
 
-    public PmisProductInfo() {
+
+
+	public String getCptxName() {
+		return cptxName;
+	}
+
+	public void setCptxName(String cptxName) {
+		this.cptxName = cptxName;
+	}
+
+	public PmisProductInfo() {
 
     }
 

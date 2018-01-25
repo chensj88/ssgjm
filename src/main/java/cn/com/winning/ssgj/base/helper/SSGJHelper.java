@@ -56,6 +56,9 @@ public class SSGJHelper {
     @Autowired
     @Qualifier("logIdService")
     private StepSequenceFactory logIdService;
+    @Autowired
+    @Qualifier("productIdService")
+    private StepSequenceFactory productIdService;
 
     /**
      * 获取用户ID信息
@@ -138,6 +141,10 @@ public class SSGJHelper {
      */
     public long createLogId(){
         return (long) logIdService.create();
+    }
+    
+    public long createPuductId(){
+    	return (long) productIdService.create();
     }
     /**
      * 密码加密
