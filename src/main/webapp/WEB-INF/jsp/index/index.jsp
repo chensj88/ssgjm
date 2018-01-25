@@ -377,7 +377,7 @@
                     </a>
                     <ul class="submenu">
                         <li><a href="admin/productInfo/product.do"><i class="icon-double-angle-right"></i>产品信息</a></li>
-                        <li><a href="#"><i class="icon-double-angle-right"></i>产品条线信息</a></li>
+                        <li><a href="admin/productLineInfo/productLine.do"><i class="icon-double-angle-right"></i>产品条线信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>基础数据类型信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>业务流程信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>第三方接口类型信息</a></li>

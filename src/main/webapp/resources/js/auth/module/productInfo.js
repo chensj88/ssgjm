@@ -76,36 +76,36 @@ Page.prototype.initDataGrid = function () {
             valign: 'middle',
             title: '单选框',
             halign: 'middle',
-            width: '10px',
+            width: '13px',
         }, {
             field: "id",
             title: "ID",
-            width: '40px',
+            width: '30px',
             align: 'center'
         }, {
             field: "name",
             title: "产品名称",
-            width: '40px',
+            width: '55px',
             align: 'center'
         }, {
             field: "code",
             title: "产品编号",
-            width: '40px',
+            width: '45px',
             align: 'center'
         }, {
             field: "gnms",
             title: "功能描述",
-            width: '40px',
+            width: '50px',
             align: 'center'
         }, {
             field: "cptxName",
             title: "产品条线",
-            width: '40px',
+            width: '45px',
             align: 'center'
         },{
             field: "zt",
             title: "状态",
-            width: '40px',
+            width: '20px',
             formatter: function (value) {
                 if (value == '1') {
                     return '生效';
@@ -118,9 +118,9 @@ Page.prototype.initDataGrid = function () {
             title: '操作',
             field: 'id',
             align: 'center',
-            width: '80px',
+            width: '40px',
             formatter: function (value, row, index) {
-                var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.name +"','"+row.code +"','"+row.gnms + "','"+row.cptx+"')  mce_href='#' >编辑</a> ";
+                var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.name +"','"+row.code +"','"+row.gnms + "','"+row.cptxName+"')  mce_href='#' >编辑</a> ";
                 var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
                 return e + d;
             }

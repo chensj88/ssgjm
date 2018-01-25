@@ -4,13 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.domain.PmisProductInfo;
-import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
-import cn.com.winning.ssgj.service.PmisProductInfoService;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import cn.com.winning.ssgj.base.annoation.ILog;
-import cn.com.winning.ssgj.base.util.RequestUtil;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 
@@ -89,7 +84,6 @@ public class ProductInfoController extends BaseController {
 	@Transactional
 	@ILog(operationName="通过产品ID删除产品信息",operationType="deleteById")
 	public  Map<String, Object> deleteById(PmisProductInfo t) {
-		System.err.println(t);
 		t.setZt(2);
         getFacade().getPmisProductInfoService().modifyPmisProductInfo(t);
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -106,12 +100,6 @@ public class ProductInfoController extends BaseController {
 	@Transactional
 	@ILog(operationName="添加产品信息",operationType="addProductInfo")
 	public Map<String, Object> addProductInfo(PmisProductInfo t)  {
-//		user.setId(ssgjHelper.createUserId());
-//		//医院用户需要新建时候需要重置密码
-//		if(Constants.User.USER_TYPE_HOSPITAL.equals(user.getUserType())){
-//			user.setPassword(MD5.stringMD5(user.getUserid()));
-//		}
-//        getFacade().getSysUserInfoService().createSysUserInfo(user);
 		Long id = ssgjHelper.createPuductId();
 		t.setId(id);
 		t.setZt(1);
@@ -131,7 +119,6 @@ public class ProductInfoController extends BaseController {
 	@Transactional
 	@ILog(operationName="修改产品信息",operationType="update")
 	public Map<String, Object> updateUser(PmisProductInfo t) {
-		System.err.println(t);
         getFacade().getPmisProductInfoService().modifyPmisProductInfo(t);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", Constants.SUCCESS);
