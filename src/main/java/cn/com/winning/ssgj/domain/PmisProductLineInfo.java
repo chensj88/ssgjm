@@ -11,7 +11,7 @@ import cn.com.winning.ssgj.domain.BaseDomain;
  * @author SSGJ
  * @date 2018-01-18 10:11:46
  */
-
+ 
 @Alias("pmisProductLineInfo")
 public class PmisProductLineInfo extends BaseDomain implements Serializable {
 

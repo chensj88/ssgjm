@@ -50,7 +50,7 @@ public class ProductLineInfoController extends BaseController {
 	@ILog(operationName="产品条线信息列表",operationType="list")
 	public Map<String, Object> list(Row row) {
 		PmisProductLineInfo productInfo = new PmisProductLineInfo();
-		productInfo.setRow(row);
+		productInfo.setRow(row); 
 		List<PmisProductLineInfo> productInfos = getFacade().getPmisProductLineInfoService().getPmisProductLineInfoPaginatedList(productInfo);
 		int total =  getFacade().getPmisProductLineInfoService().getPmisProductLineInfoCount(productInfo);
 		Map<String, Object> map = new HashMap<String, Object>();

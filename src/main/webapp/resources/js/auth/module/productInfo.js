@@ -5,7 +5,7 @@
  */
 $(function () {
     new Page();
-});
+}); 
 
 function Page() {
     _self = this;

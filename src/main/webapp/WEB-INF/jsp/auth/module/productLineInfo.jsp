@@ -51,7 +51,7 @@
     </button> 
     <button id="deleteProductInfo" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span>删除
     </button>
-</div>-->
+</div>--> 
 <!--模态框  -->
 <div class="modal fade" id="productInfoModal" tabindex="-1" role="dialog" aria-labelledby="productInfoModal">
     <div class="modal-dialog" role="document">

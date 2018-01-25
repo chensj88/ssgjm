@@ -170,7 +170,7 @@ function edit(id,name,code,gnms,cptx) {
     $('#id').val(id);
     $('#productInfoModal').modal('show');
 }
-/**
+/** 
  * 按钮绑定事件
  */
 Page.prototype.bindEvent = function () {
