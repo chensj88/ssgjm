@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -38,22 +37,15 @@ public class UserController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	private SSGJHelper ssgjHelper;
-
-	@RequestMapping(value = "/userinfo.do")
-	public String userinfo(HttpServletRequest request, Model model){
-		return "auth/user/userinfo";
-	}
 	/**
      * 用户信息列表
-     * @param row
+     * @param userInfo
      * @return
      */
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@ILog(operationName="用户信息列表",operationType="list")
-	public Map<String, Object> list(Row row) {
-		SysUserInfo userInfo = new SysUserInfo();
-		userInfo.setRow(row);
+	public Map<String, Object> list(SysUserInfo userInfo) {
 		List<SysUserInfo> userInfos = getFacade().getSysUserInfoService().getSysUserInfoPaginatedList(userInfo);
 		int total =  getFacade().getSysUserInfoService().getSysUserInfoCount(userInfo);
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -71,7 +63,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	@ILog(operationName="通过用户ID查询用户信息",operationType="getUserByUserId")
 	public  Map<String, Object> getUserByUserId(SysUserInfo user){
-		user =  getFacade().getSysUserInfoService().getSysUserInfo(user);
+		user =  super.getFacade().getSysUserInfoService().getSysUserInfo(user);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("data", user);
 		map.put("status", Constants.SUCCESS);

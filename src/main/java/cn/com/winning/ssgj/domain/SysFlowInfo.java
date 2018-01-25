@@ -36,6 +36,18 @@ public class SysFlowInfo extends BaseDomain implements Serializable {
 
     private Date lastUpdateTime;
 
+    /**
+     *  上级流程代码
+     */
+     private String  flowParentCode;
+
+     /**
+      * 上级流程名称
+      */
+      private String flowParentName ;
+
+
+
     public SysFlowInfo() {
 
     }
@@ -104,4 +116,19 @@ public class SysFlowInfo extends BaseDomain implements Serializable {
         this.lastUpdateTime = lastUpdateTime;
     }
 
+    public String getFlowParentCode() {
+        return flowParentCode;
+    }
+
+    public void setFlowParentCode(String flowParentCode) {
+        this.flowParentCode = flowParentCode;
+    }
+
+    public String getFlowParentName() {
+        return flowParentName;
+    }
+
+    public void setFlowParentName(String flowParentName) {
+        this.flowParentName = flowParentName;
+    }
 }

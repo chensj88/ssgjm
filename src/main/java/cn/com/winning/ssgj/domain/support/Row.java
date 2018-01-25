@@ -59,14 +59,4 @@ public class Row implements Serializable {
     public void setFirst(Integer first) {
         this.first = first;
     }
-
-    @Override
-    public String toString() {
-        return "Row{" +
-                "first=" + first +
-                ", count=" + count +
-                ", sort='" + sort + '\'' +
-                ", order='" + order + '\'' +
-                '}';
-    }
 }

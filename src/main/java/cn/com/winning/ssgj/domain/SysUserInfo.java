@@ -14,8 +14,6 @@ import cn.com.winning.ssgj.domain.BaseDomain;
 @Alias("sysUserInfo")
 public class SysUserInfo extends BaseDomain implements Serializable {
 
-    private static final long serialVersionUID = -1L;
-
     private Long id;
 
     private Integer status;
