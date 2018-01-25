@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -37,6 +38,11 @@ public class UserController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	private SSGJHelper ssgjHelper;
+
+	@RequestMapping(value = "/userinfo.do")
+	public String userinfoPage(HttpServletRequest request, Model model){
+		return "auth/user/userinfo";
+	}
 	/**
      * 用户信息列表
      * @param userInfo

@@ -27,4 +27,6 @@ public class FlowInfoController extends BaseController {
     public String gotoPage(HttpServletRequest request, Model model) {
         return "auth/module/flowinfo";
     }
+
+
 }

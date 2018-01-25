@@ -4,15 +4,16 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>控制台 - Bootstrap后台管理系统模版Ace下载</title>
-    <meta name="keywords" content="Bootstrap后台管理系统模版Ace下载" />
-    <meta name="description" content="Bootstrap后台管理系统模版Ace下载" />
+    <title>控制台 - 实施工具</title>
+    <meta name="keywords" content="卫宁健康实施工具" />
+    <meta name="description" content="卫宁健康实施工具" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- basic styles -->
-    <link href="<%=basePath%>/resources/assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="<%=basePath%>/resources/assets/css/font-awesome.min.css" />
+    <link href="<%=basePath%>resources/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/font-awesome.min.css" />
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
     <!--[if IE 7]>
-    <link rel="stylesheet" href="<%=basePath%>/resources/assets/css/font-awesome-ie7.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/font-awesome-ie7.min.css" />
     <![endif]-->
     <!-- page specific plugin styles -->
     <!-- fonts -->
@@ -20,11 +21,11 @@
 
     <!-- ace styles -->
 
-    <link rel="stylesheet" href="<%=basePath%>/resources/assets/css/ace.min.css" />
-    <link rel="stylesheet" href="<%=basePath%>/resources/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace-rtl.min.css" />
 
     <!--[if lte IE 8]>
-    <link rel="stylesheet" href="<%=basePath%>/resources/assets/css/ace-ie.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace-ie.min.css" />
     <![endif]-->
 
     <!-- inline styles related to this page -->
@@ -32,9 +33,9 @@
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 
     <!--[if lt IE 9]>
-    <script src="<%=basePath%>/resources/assets/js/html5shiv.js"></script>
-    <script src="<%=basePath%>/resources/assets/js/respond.min.js"></script>
-    <script src="<%=basePath%>/resources/bootstrap/js/bootstrapValidator.min.js"></script>
+    <script src="<%=basePath%>resources/assets/js/html5shiv.js"></script>
+    <script src="<%=basePath%>resources/assets/js/respond.min.js"></script>
+    <script src="<%=basePath%>resources/bootstrap/js/bootstrapValidator.min.js"></script>
 
     <![endif]-->
 </head>
@@ -119,10 +120,10 @@
 
 <!--[if !IE]> -->
 
-<script src="<%=basePath%>/resources/assets/js/jquery-2.0.3.min.js"></script>
+<script src="<%=basePath%>resources/assets/js/jquery-2.0.3.min.js"></script>
 
 <script type="text/javascript">
-    if("ontouchend" in document) document.write("<script src='<%=basePath%>/resources/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+    if("ontouchend" in document) document.write("<script src='<%=basePath%>resources/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 </script>
 
 <!-- inline scripts related to this page -->

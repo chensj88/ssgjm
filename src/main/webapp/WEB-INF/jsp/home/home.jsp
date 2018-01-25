@@ -9,21 +9,26 @@
     <meta name="description" content="实施工具后台管理系统" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- basic styles -->
-    <link href="<%=basePath%>/resources/assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="<%=basePath%>/resources/assets/css/font-awesome.min.css" />
-
-    <link rel="stylesheet" href="<%=basePath%>/resources/assets/css/font-awesome-ie7.min.css" />
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
-    <link rel="stylesheet" href="<%=basePath%>/resources/assets/css/ace.min.css" />
-    <link rel="stylesheet" href="<%=basePath%>/resources/assets/css/ace-rtl.min.css" />
-    <link rel="stylesheet" href="<%=basePath%>/resources/assets/css/ace-skins.min.css" />
-    <link rel="stylesheet" href="<%=basePath%>/resources/assets/css/ace-ie.min.css" />
-    <script src="<%=basePath%>/resources/assets/js/ace-extra.min.js"></script>
-    <script src="<%=basePath%>/resources/assets/js/html5shiv.js"></script>
-    <script src="<%=basePath%>/resources/assets/js/respond.min.js"></script>
-    <script src="<%=basePath%>/ssjs/home.js"></script>
-
+    <link href="<%=basePath%>resources/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/font-awesome.min.css" />
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/font-awesome-ie7.min.css" />
     <![endif]-->
+    <!-- fonts -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace-skins.min.css" />
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace-ie.min.css" />
+    <![endif]-->
+    <script src="<%=basePath%>resources/assets/js/ace-extra.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="<%=basePath%>resources/assets/js/html5shiv.js"></script>
+    <script src="<%=basePath%>resources/assets/js/respond.min.js"></script>
+    <![endif]-->
+
 </head>
 
 <body>
@@ -195,7 +200,7 @@
 
                         <li>
                             <a href="#">
-                                <img src="<%=basePath%>/resources/assets/avatars/avatar.png" class="msg-photo" alt="Alex's Avatar" />
+                                <img src="<%=basePath%>resources/assets/avatars/avatar.png" class="msg-photo" alt="Alex's Avatar" />
                                 <span class="msg-body">
 											<span class="msg-title">
 												<span class="blue">Alex:</span>
@@ -212,7 +217,7 @@
 
                         <li>
                             <a href="#">
-                                <img src="<%=basePath%>/resources/assets/avatars/avatar3.png" class="msg-photo" alt="Susan's Avatar" />
+                                <img src="<%=basePath%>resources/assets/avatars/avatar3.png" class="msg-photo" alt="Susan's Avatar" />
                                 <span class="msg-body">
 											<span class="msg-title">
 												<span class="blue">Susan:</span>
@@ -229,7 +234,7 @@
 
                         <li>
                             <a href="#">
-                                <img src="<%=basePath%>/resources/assets/avatars/avatar4.png" class="msg-photo" alt="Bob's Avatar" />
+                                <img src="<%=basePath%>resources/assets/avatars/avatar4.png" class="msg-photo" alt="Bob's Avatar" />
                                 <span class="msg-body">
 											<span class="msg-title">
 												<span class="blue">Bob:</span>
@@ -255,7 +260,7 @@
 
                 <li class="light-blue">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <img class="nav-user-photo" src="<%=basePath%>/resources/assets/avatars/user.jpg" alt="Jason's Photo" />
+                        <img class="nav-user-photo" src="<%=basePath%>resources/assets/avatars/user.jpg" alt="Jason's Photo" />
                         <span class="user-info">
 									<small>欢迎光临,</small>
 									陈蒯
@@ -339,43 +344,36 @@
                 </div>
             </div><!-- #sidebar-shortcuts -->
 
-            <ul class="nav nav-list">
+            <ul class="nav nav-list" id="navlist">
                 <li class="active">
-                    <a href="index.html">
+                    <a href="#">
                         <i class="icon-dashboard"></i>
                         <span class="menu-text"> 控制台 </span>
                     </a>
                 </li>
-
-
                 <li>
-                    <a href="typography.html" class="dropdown-toggle">
+                    <a href="#" class="dropdown-toggle">
                         <i class="icon-text-width"></i>
                         <span class="menu-text"> 项目信息 </span>
                         <b class="arrow icon-angle-down"></b>
-
                     </a>
                     <ul class="submenu">
-                        <li onclick=menu_list('<%=basePath%>/admin/productInfo/product.do')><a href="#"><i class="icon-double-angle-right"></i>产品信息</a></li>
-                        <li onclick=menu_list('<%=basePath%>/admin/productLineInfo/productLine.do')><a href="#"><i class="icon-double-angle-right"></i>产品条线信息</a></li>
-                        <li onclick=menu_list('<%=basePath%>/admin/basicData/basicData.do')><a href="#"><i class="icon-double-angle-right"></i>基础数据类型信息</a></li>
-                        <li onclick=menu_list('<%=basePath%>/admin/flow/flowInfo.do')><a href="#"><i class="icon-double-angle-right"></i>业务流程信息</a></li>
-                        <li onclick=menu_list('<%=basePath%>/admin/third/inter.do')><a href="#"><i class="icon-double-angle-right"></i>第三方接口类型信息</a></li>
-                        <li onclick=menu_list('<%=basePath%>/admin/hardware/shInfo.do')><a href="#"><i class="icon-double-angle-right"></i>软硬件设备类型信息</a></li>
-                        <li onclick=menu_list('<%=basePath%>/admin/report/reportInfo.do')><a href="#"><i class="icon-double-angle-right"></i>报表单据信息</a></li>
-                        <li onclick=menu_list('<%=basePath%>/admin/fq/flowQuestion.do')><a href="#"><i class="icon-double-angle-right"></i>流程调研问卷清单</a></li>
-
+                        <li><a href="<%=basePath%>admin/productInfo/product.do"><i class="icon-double-angle-right"></i>产品信息</a></li>
+                        <li><a href="<%=basePath%>admin/productLineInfo/productLine.do"><i class="icon-double-angle-right"></i>产品条线信息</a></li>
+                        <li><a href="<%=basePath%>admin/basicData/dagaInfo.do"><i class="icon-double-angle-right"></i>基础数据类型信息</a></li>
+                        <li><a href="<%=basePath%>admin/flow/flowInfo.do"><i class="icon-double-angle-right"></i>业务流程信息</a></li>
+                        <li><a href="<%=basePath%>admin/thirx/interfaceInfo.do"><i class="icon-double-angle-right"></i>第三方接口类型信息</a></li>
+                        <li><a href="<%=basePath%>admin/hardware/shInfo.do"><i class="icon-double-angle-right"></i>软硬件设备类型信息</a></li>
+                        <li><a href="<%=basePath%>admin/report/reportInfo.do"><i class="icon-double-angle-right"></i>报表单据信息</a></li>
+                        <li><a href="<%=basePath%>admin/fq/fqInfo.do"><i class="icon-double-angle-right"></i>流程调研问卷清单</a></li>
                     </ul>
                 </li>
-
                 <li>
                     <a href="#" class="dropdown-toggle">
                         <i class="icon-desktop"></i>
                         <span class="menu-text"> 项目映射关系信息 </span>
-
                         <b class="arrow icon-angle-down"></b>
                     </a>
-
                     <ul class="submenu">
                         <li><a href="#"><i class="icon-double-angle-right"></i>产品与基础数据信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>产品与业务流程信息</a></li>
@@ -384,102 +382,56 @@
                         <li><a href="#"><i class="icon-double-angle-right"></i>产品与报表单据信息</a></li>
                     </ul>
                 </li>
-
-
                 <li>
                     <a href="#" class="dropdown-toggle">
                         <i class="icon-list"></i>
                         <span class="menu-text"> 用户管理 </span>
                         <b class="arrow icon-angle-down"></b>
                     </a>
-
                     <ul class="submenu">
-                        <li onclick="menu_list('<%=basePath%>/admin/user/list.do');"><a href="#"><i class="icon-double-angle-right"></i>用户信息</a></li>
-                        <li onclick="menu_list('<%=basePath%>role/list.do')"><a href="#"><i class="icon-double-angle-right"></i>角色信息</a></li>
+                        <li><a href="<%=basePath%>admin/user/userinfo.do"><i class="icon-double-angle-right"></i>用户信息</a></li>
+                        <li><a href="views/admin/user/roleinfo.jsp"><i class="icon-double-angle-right"></i>角色信息</a></li>
                         <li><a href="views/admin/user/functioninfo.jsp"><i class="icon-double-angle-right"></i>功能信息</a></li>
                         <li><a href="views/admin/user/userauthinfo.jsp"><i class="icon-double-angle-right"></i>角色权限配置</a></li>
-
                     </ul>
                 </li>
-
-
-
                 <li>
                     <a href="#" class="dropdown-toggle">
                         <i class="icon-edit"></i>
                         <span class="menu-text"> 基础资料 </span>
-
                         <b class="arrow icon-angle-down"></b>
                     </a>
 
                     <ul class="submenu">
-                        <li>
-                            <a href="form-elements.html">
-                                <i class="icon-double-angle-right"></i>
-                                字典管理
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="form-wizard.html">
-                                <i class="icon-double-angle-right"></i>
-                                参数管理
-                            </a>
-                        </li>
+                        <li><a href="#"><i class="icon-double-angle-right"></i>字典管理</a></li>
+                        <li><a href="#"><i class="icon-double-angle-right"></i>参数管理</a></li>
                     </ul>
                 </li>
 
                 <li>
-                    <a href="#" class="dropdown-toggle">
-                        <i class="icon-list-alt"></i>
-                        <span class="menu-text"> 系统设置 </span>
-                    </a>
-
+                    <a href="#" class="dropdown-toggle"><i class="icon-list-alt"></i>Z<span class="menu-text"> 系统设置 </span></a>
                     <ul class="submenu">
-                        <li>
-                            <a href="form-elements.html">
-                                <i class="icon-double-angle-right"></i>
-                                菜单设置
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="form-wizard.html">
-                                <i class="icon-double-angle-right"></i>
-                                功能点设置
-                            </a>
-                        </li>
+                        <li><a href="#"> <i class="icon-double-angle-right"></i>菜单设置</a></li>
+                        <li><a href="form-wizard.html"><i class="icon-double-angle-right"></i>功能点设置</a></li>
                     </ul>
-
-
                 </li>
-
-
             </ul><!-- /.nav-list -->
-
             <div class="sidebar-collapse" id="sidebar-collapse">
                 <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
             </div>
-
             <script type="text/javascript">
                 try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
             </script>
         </div>
-
         <div class="main-content">
             <div class="breadcrumbs" id="breadcrumbs">
                 <script type="text/javascript">
                     try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
                 </script>
-
                 <ul class="breadcrumb">
-                    <li>
-                        <i class="icon-home home-icon"></i>
-                        <a href="#">首页</a>
-                    </li>
+                    <li><i class="icon-home home-icon"></i><a href="#">首页</a></li>
                     <li class="active">控制台</li>
                 </ul><!-- .breadcrumb -->
-
                 <div class="nav-search" id="nav-search">
                     <form class="form-search">
 								<span class="input-icon">
@@ -489,13 +441,19 @@
                     </form>
                 </div><!-- #nav-search -->
             </div>
-
-            <div id="page-content" class="page-content">
-
-                加载内容.....
-
-
-            <!-- /.row -->
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>控制台<small><i class="icon-double-angle-right"></i>查看</small></h1>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- PAGE CONTENT BEGINS -->
+                        <div class="row" id="jspContent" style="height: 500px">
+                            <iframe id="coniframe" height="100%" width="100%" frameborder="0" scrolling="yes"></iframe>
+                        </div>
+                        <!-- PAGE CONTENT ENDS -->
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
             </div><!-- /.page-content -->
         </div><!-- /.main-content -->
 
@@ -552,44 +510,45 @@
         <i class="icon-double-angle-up icon-only bigger-110"></i>
     </a>
 </div><!-- /.main-container -->
-
-<!-- basic scripts -->
-<script src="<%=basePath%>/resources/assets/js/jquery-2.0.3.min.js"></script>
+<!--[if !IE]> -->
+<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <!-- <![endif]-->
-
-<script type="text/javascript">
-    if("ontouchend" in document) document.write("<script src='<%=basePath%>/assets/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
-</script>
-<script src="<%=basePath%>/resources/assets/js/bootstrap.min.js"></script>
-<script src="<%=basePath%>/resources/assets/js/typeahead-bs2.min.js"></script>
-
-<!-- page specific plugin scripts -->
-
-<!--[if lte IE 8]>
-<script src="<%=basePath%>/resources/assets/js/excanvas.min.js"></script>
+<!--[if IE]>
+<script src="https://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script>
 <![endif]-->
-
-<script src="<%=basePath%>/resources/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
-<script src="<%=basePath%>/resources/assets/js/jquery.ui.touch-punch.min.js"></script>
-<script src="<%=basePath%>/resources/assets/js/jquery.slimscroll.min.js"></script>
-<script src="<%=basePath%>/resources/assets/js/jquery.easy-pie-chart.min.js"></script>
-<script src="<%=basePath%>/resources/assets/js/jquery.sparkline.min.js"></script>
-<script src="<%=basePath%>/resources/assets/js/flot/jquery.flot.min.js"></script>
-<script src="<%=basePath%>/resources/assets/js/flot/jquery.flot.pie.min.js"></script>
-<script src="<%=basePath%>/resources/assets/js/flot/jquery.flot.resize.min.js"></script>
-
+<!--[if !IE]> -->
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js'>"+"<"+"script>");
+</script>
+<!-- <![endif]-->
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='https://cdn.bootcss.com/jquery/1.12.3/jquery.min.js'>"+"<"+"script>");
+</script>
+<![endif]-->
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='<%=basePath%>assets/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
+</script>
+<script src="<%=basePath%>resources/assets/js/bootstrap.min.js"></script>
+<script src="<%=basePath%>resources/assets/js/typeahead-bs2.min.js"></script>
+<!--[if lte IE 8]>
+<script src="<%=basePath%>resources/assets/js/excanvas.min.js"></script>
+<![endif]-->
+<script src="<%=basePath%>resources/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="<%=basePath%>resources/assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="<%=basePath%>resources/assets/js/jquery.slimscroll.min.js"></script>
+<script src="<%=basePath%>resources/assets/js/jquery.easy-pie-chart.min.js"></script>
+<script src="<%=basePath%>resources/assets/js/jquery.sparkline.min.js"></script>
+<script src="<%=basePath%>resources/assets/js/flot/jquery.flot.min.js"></script>
+<script src="<%=basePath%>resources/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="<%=basePath%>resources/assets/js/flot/jquery.flot.resize.min.js"></script>
 <!-- ace scripts -->
-
-<script src="<%=basePath%>/resources/assets/js/ace-elements.min.js"></script>
-<script src="<%=basePath%>/resources/assets/js/ace.min.js"></script>
-
+<script src="<%=basePath%>resources/assets/js/ace-elements.min.js"></script>
+<script src="<%=basePath%>resources/assets/js/ace.min.js"></script>
 <!-- inline scripts related to this page -->
-
-
 <script type="text/javascript">
     //首页加载方法 = 定义全局左边树JSON字符串
-
-    var _menus;
+    /*var _menus;
     var flag = 0;
     var _context_session_value = "JSESSIONID=${pageContext.request['session']['id']};Path=${pageContext.request['contextPath']}";
     $(function() {
@@ -598,226 +557,10 @@
         } else if('${needDialog}' === 'false'){
             init("${sessionScope.bookInfo.book_code}");
         }
-    });
-
-
-
-
-
-
-    jQuery(function($) {
-        $('.easy-pie-chart.percentage').each(function(){
-            var $box = $(this).closest('.infobox');
-            var barColor = $(this).data('color') || (!$box.hasClass('infobox-dark') ? $box.css('color') : 'rgba(255,255,255,0.95)');
-            var trackColor = barColor == 'rgba(255,255,255,0.95)' ? 'rgba(255,255,255,0.25)' : '#E2E2E2';
-            var size = parseInt($(this).data('size')) || 50;
-            $(this).easyPieChart({
-                barColor: barColor,
-                trackColor: trackColor,
-                scaleColor: false,
-                lineCap: 'butt',
-                lineWidth: parseInt(size/10),
-                animate: /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase()) ? false : 1000,
-                size: size
-            });
-        })
-
-        $('.sparkline').each(function(){
-            var $box = $(this).closest('.infobox');
-            var barColor = !$box.hasClass('infobox-dark') ? $box.css('color') : '#FFF';
-            $(this).sparkline('html', {tagValuesAttribute:'data-values', type: 'bar', barColor: barColor , chartRangeMin:$(this).data('min') || 0} );
-        });
-
-
-
-
-        var placeholder = $('#piechart-placeholder').css({'width':'90%' , 'min-height':'150px'});
-        var data = [
-            { label: "social networks",  data: 38.7, color: "#68BC31"},
-            { label: "search engines",  data: 24.5, color: "#2091CF"},
-            { label: "ad campaigns",  data: 8.2, color: "#AF4E96"},
-            { label: "direct traffic",  data: 18.6, color: "#DA5430"},
-            { label: "other",  data: 10, color: "#FEE074"}
-        ]
-        function drawPieChart(placeholder, data, position) {
-            $.plot(placeholder, data, {
-                series: {
-                    pie: {
-                        show: true,
-                        tilt:0.8,
-                        highlight: {
-                            opacity: 0.25
-                        },
-                        stroke: {
-                            color: '#fff',
-                            width: 2
-                        },
-                        startAngle: 2
-                    }
-                },
-                legend: {
-                    show: true,
-                    position: position || "ne",
-                    labelBoxBorderColor: null,
-                    margin:[-30,15]
-                }
-                ,
-                grid: {
-                    hoverable: true,
-                    clickable: true
-                }
-            })
-        }
-        drawPieChart(placeholder, data);
-
-        /**
-         we saved the drawing function and the data to redraw with different position later when switching to RTL mode dynamically
-         so that's not needed actually.
-         */
-        placeholder.data('chart', data);
-        placeholder.data('draw', drawPieChart);
-
-
-
-        var $tooltip = $("<div class='tooltip top in'><div class='tooltip-inner'></div></div>").hide().appendTo('body');
-        var previousPoint = null;
-
-        placeholder.on('plothover', function (event, pos, item) {
-            if(item) {
-                if (previousPoint != item.seriesIndex) {
-                    previousPoint = item.seriesIndex;
-                    var tip = item.series['label'] + " : " + item.series['percent']+'%';
-                    $tooltip.show().children(0).text(tip);
-                }
-                $tooltip.css({top:pos.pageY + 10, left:pos.pageX + 10});
-            } else {
-                $tooltip.hide();
-                previousPoint = null;
-            }
-
-        });
-
-
-
-
-
-
-        var d1 = [];
-        for (var i = 0; i < Math.PI * 2; i += 0.5) {
-            d1.push([i, Math.sin(i)]);
-        }
-
-        var d2 = [];
-        for (var i = 0; i < Math.PI * 2; i += 0.5) {
-            d2.push([i, Math.cos(i)]);
-        }
-
-        var d3 = [];
-        for (var i = 0; i < Math.PI * 2; i += 0.2) {
-            d3.push([i, Math.tan(i)]);
-        }
-
-
-        var sales_charts = $('#sales-charts').css({'width':'100%' , 'height':'220px'});
-        $.plot("#sales-charts", [
-            { label: "Domains", data: d1 },
-            { label: "Hosting", data: d2 },
-            { label: "Services", data: d3 }
-        ], {
-            hoverable: true,
-            shadowSize: 0,
-            series: {
-                lines: { show: true },
-                points: { show: true }
-            },
-            xaxis: {
-                tickLength: 0
-            },
-            yaxis: {
-                ticks: 10,
-                min: -2,
-                max: 2,
-                tickDecimals: 3
-            },
-            grid: {
-                backgroundColor: { colors: [ "#fff", "#fff" ] },
-                borderWidth: 1,
-                borderColor:'#555'
-            }
-        });
-
-
-        $('#recent-box [data-rel="tooltip"]').tooltip({placement: tooltip_placement});
-        function tooltip_placement(context, source) {
-            var $source = $(source);
-            var $parent = $source.closest('.tab-content')
-            var off1 = $parent.offset();
-            var w1 = $parent.width();
-
-            var off2 = $source.offset();
-            var w2 = $source.width();
-
-            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
-            return 'left';
-        }
-
-
-        $('.dialogs,.comments').slimScroll({
-            height: '300px'
-        });
-
-
-        //Android's default browser somehow is confused when tapping on label which will lead to dragging the task
-        //so disable dragging when clicking on label
-        var agent = navigator.userAgent.toLowerCase();
-        if("ontouchstart" in document && /applewebkit/.test(agent) && /android/.test(agent))
-            $('#tasks').on('touchstart', function(e){
-                var li = $(e.target).closest('#tasks li');
-                if(li.length == 0)return;
-                var label = li.find('label.inline').get(0);
-                if(label == e.target || $.contains(label, e.target)) e.stopImmediatePropagation() ;
-            });
-
-        $('#tasks').sortable({
-                opacity:0.8,
-                revert:true,
-                forceHelperSize:true,
-                placeholder: 'draggable-placeholder',
-                forcePlaceholderSize:true,
-                tolerance:'pointer',
-                stop: function( event, ui ) {//just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
-                    $(ui.item).css('z-index', 'auto');
-                }
-            }
-        );
-        $('#tasks').disableSelection();
-        $('#tasks input:checkbox').removeAttr('checked').on('click', function(){
-            if(this.checked) $(this).closest('li').addClass('selected');
-            else $(this).closest('li').removeClass('selected');
-        });
-
-
-    });
-
-
-    function menu_list(url) {
-
-        $.ajax({
-            type: "POST",
-            url:url,
-            dataType: 'html',
-            sync: true,
-            error: function(request) {
-                alert("服务端错误，或网络不稳定，本次操作被终止。");
-            },
-            success: function(data) {
-                $("#page-content").load(url);
-                //$("#page-content").html(data);
-            }
-        });
-    }
+    });*/
 </script>
-
+<script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/js/index/index.js"></script>
 </body>
 </html>
 
