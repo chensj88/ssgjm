@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import cn.com.winning.ssgj.domain.PmisProductInfo;
+import cn.com.winning.ssgj.domain.PmisProductLineInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.slf4j.Logger;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
- 
+
 /**
  * 产品信息处理Controller
  *
@@ -29,15 +30,15 @@ import cn.com.winning.ssgj.base.helper.SSGJHelper;
  * @date 2018-01-04
  */
 @Controller
-@RequestMapping("/admin/productInfo")
-public class ProductInfoController extends BaseController {
+@RequestMapping("/admin/productLineInfo")
+public class ProductLineInfoController extends BaseController {
 
-	private static final Logger logger = LoggerFactory.getLogger(ProductInfoController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ProductLineInfoController.class);
 	@Autowired
 	private SSGJHelper ssgjHelper;
-	@RequestMapping(value = "/product.do")
+	@RequestMapping(value = "/productLine.do")
 	public String userinfo(HttpServletRequest request, Model model){
-		return "auth/module/productInfo";
+		return "auth/module/productLineInfo";
 	}
 	/**
      * 用户信息列表
@@ -46,12 +47,12 @@ public class ProductInfoController extends BaseController {
      */
 	@RequestMapping("/list.do")
 	@ResponseBody
-	@ILog(operationName="用户信息列表",operationType="list")
+	@ILog(operationName="产品条线信息列表",operationType="list")
 	public Map<String, Object> list(Row row) {
-		PmisProductInfo productInfo = new PmisProductInfo();
-		productInfo.setRow(row);
-		List<PmisProductInfo> productInfos = getFacade().getPmisProductInfoService().getPmisProductInfoPaginatedList(productInfo);
-		int total =  getFacade().getPmisProductInfoService().getPmisProductInfoCount(productInfo);
+		PmisProductLineInfo productInfo = new PmisProductLineInfo();
+		productInfo.setRow(row); 
+		List<PmisProductLineInfo> productInfos = getFacade().getPmisProductLineInfoService().getPmisProductLineInfoPaginatedList(productInfo);
+		int total =  getFacade().getPmisProductLineInfoService().getPmisProductLineInfoCount(productInfo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("rows", productInfos);
 		map.put("total", total);

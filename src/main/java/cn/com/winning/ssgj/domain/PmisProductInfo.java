@@ -17,7 +17,7 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
 
     private static final long serialVersionUID = -1L;
 
-    private Long id;
+    private Long id; 
 
     private Long fid;
 

@@ -2,11 +2,11 @@
 <%@ include file="/commons/header.jsp" %>
 <!DOCTYPE html >
 <html>
-<head> 
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>产品信息</title>
+    <title>产品条线信息</title>
     <meta name="author" content="卫宁实施工具">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css">
@@ -43,15 +43,15 @@
 </style>
 <body>
 <!--表格区域  -->
-<table id="productInfo" class="table-align"></table>
+<table id="productLineInfo" class="table-align"></table>
 <!--toolbar区域  -->
-<div class="btn-group" id="btntoolbar">
+<!-- <div class="btn-group" id="btntoolbar">
     <button id="addProductInfo" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
-    <!-- <button id="modifyUser" class="btn btn-default" type="button"><span class="glyphicon glyphicon-edit"></span>修改
+    <button id="modifyUser" class="btn btn-default" type="button"><span class="glyphicon glyphicon-edit"></span>修改
     </button> 
     <button id="deleteProductInfo" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span>删除
-    </button>-->
-</div>
+    </button>
+</div>--> 
 <!--模态框  -->
 <div class="modal fade" id="productInfoModal" tabindex="-1" role="dialog" aria-labelledby="productInfoModal">
     <div class="modal-dialog" role="document">
@@ -115,5 +115,5 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/language/zh_CN.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/toastr.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/js/auth/module/productInfo.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/js/auth/module/productLineInfo.js"></script>
 </html>

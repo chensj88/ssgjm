@@ -5,7 +5,7 @@
  */
 $(function () {
     new Page();
-}); 
+});
 
 function Page() {
     _self = this;
@@ -25,8 +25,8 @@ Page.prototype.init = function () {
  * 初始化Table
  */
 Page.prototype.initDataGrid = function () {
-    $('#productInfo').bootstrapTable({
-        url: Common.getRootPath() + '/admin/productInfo/list.do',// 要请求数据的文件路径
+    $('#productLineInfo').bootstrapTable({
+        url: Common.getRootPath() + '/admin/productLineInfo/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         // contentType: "application/x-www-form-urlencoded",//必须要有！！！！ POST必须有
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -56,7 +56,7 @@ Page.prototype.initDataGrid = function () {
         paginationNextText: '下一页',
         paginationLoop: false, //分页条无限循环的功能
         singleSelect: true,
-        selectItemName: '单选框',
+//        selectItemName: '单选框',
         /*showColumns:true,           //内容列下拉框  */
         // 得到查询的参数
         queryParams: function (params) {
@@ -70,37 +70,70 @@ Page.prototype.initDataGrid = function () {
             return temp;
         },
 
-        columns: [{
-            checkbox: true,
-            align: 'center',
-            valign: 'middle',
-            title: '单选框',
-            halign: 'middle',
-            width: '13px',
-        }, {
+        columns: [
+//                  {
+//            checkbox: true,
+//            align: 'center',
+//            valign: 'middle',
+//            title: '单选框',
+//            halign: 'middle',
+//            width: '13px',
+//        }, 
+        {
             field: "id",
             title: "ID",
-            width: '30px',
+            width: '10px',
             align: 'center'
         }, {
             field: "name",
-            title: "产品名称",
+            title: "产品条线名称",
             width: '55px',
             align: 'center'
         }, {
-            field: "code",
-            title: "产品编号",
-            width: '45px',
+            field: "yxtnm",
+            title: "原系统内码",
+            width: '20px',
             align: 'center'
         }, {
-            field: "gnms",
-            title: "功能描述",
-            width: '50px',
+            field: "cpxl",
+            title: "产品小类",
+            width: '20px',
             align: 'center'
-        }, {
-            field: "cptxName",
-            title: "产品条线",
-            width: '45px',
+        }, 
+        {
+            field: "cpdl",
+            title: "产品大类",
+            width: '20px',
+            align: 'center'
+        },
+        {
+            field: "cpdm",
+            title: "产品部门",
+            width: '20px',
+            align: 'center'
+        },
+        {
+            field: "hsdy",
+            title: "核算单元",
+            width: '20px',
+            align: 'center'
+        },
+        {
+            field: "lx",
+            title: "类型",
+            width: '20px',
+            align: 'center'
+        },
+        {
+            field: "mklx",
+            title: "模块类型",
+            width: '20px',
+            align: 'center'
+        },
+        {
+            field: "cpz",
+            title: "产品组",
+            width: '20px',
             align: 'center'
         },{
             field: "zt",
@@ -114,17 +147,19 @@ Page.prototype.initDataGrid = function () {
                 }
             },
             align: 'center'
-        },{
-            title: '操作',
-            field: 'id',
-            align: 'center',
-            width: '40px',
-            formatter: function (value, row, index) {
-                var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.name +"','"+row.code +"','"+row.gnms + "','"+row.cptxName+"')  mce_href='#' >编辑</a> ";
-                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
-                return e + d;
-            }
-        }],
+        }
+//        ,{
+//            title: '操作',
+//            field: 'id',
+//            align: 'center',
+//            width: '40px',
+//            formatter: function (value, row, index) {
+//                var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.name +"','"+row.code +"','"+row.gnms + "','"+row.cptxName+"')  mce_href='#' >编辑</a> ";
+//                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
+//                return e + d;
+//            }
+//        }
+        ],
     });
 }
 function edit(id,name,code,gnms,cptx) {
@@ -135,7 +170,7 @@ function edit(id,name,code,gnms,cptx) {
     $('#id').val(id);
     $('#productInfoModal').modal('show');
 }
-/**
+/** 
  * 按钮绑定事件
  */
 Page.prototype.bindEvent = function () {
