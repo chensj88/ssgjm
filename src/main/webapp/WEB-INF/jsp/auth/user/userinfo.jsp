@@ -40,27 +40,27 @@
                     <div class="row">
                         <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="userForm">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="userid">登录名</label>
+                                <label class="col-sm-3 control-label" for="userid">登录名</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="userid" name="userid"
                                            placeholder="请输入登录名">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="yhmc">用户名称</label>
+                                <label class="col-sm-3 control-label" for="yhmc">用户名称</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="yhmc" name="yhmc" placeholder="请输入用户名称">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="email">邮箱</label>
+                                <label class="col-sm-3 control-label" for="email">邮箱</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="email" name="email"
                                            placeholder="例如:123@123.com">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="mobile">手机号码</label>
+                                <label class="col-sm-3 control-label" for="mobile">手机号码</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="mobile" name="mobile"
                                            placeholder="例如:13012345678">
@@ -68,7 +68,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="status">允许登陆</label>
+                                <label class="col-sm-3 control-label" for="status">允许登陆</label>
                                 <div class="col-sm-6">
                                     <select class="form-control" name="status" id="status">
                                         <option value="1">是</option>
@@ -78,7 +78,7 @@
 
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="userType">用户类型</label>
+                                <label class="col-sm-3 control-label" for="userType">用户类型</label>
                                 <div class="col-sm-6">
                                     <select class="form-control" name="userType" id="userType">
                                         <option value="0">医院</option>

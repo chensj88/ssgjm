@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Insert title here</title>
+    <title>业务流程信息</title>
     <meta name="author" content="卫宁实施工具">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css">
@@ -32,7 +32,7 @@
     </button>
 </div>
 <!--模态框  -->
-<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="FlowFormModal">
+<div class="modal fade" id="flowModal" tabindex="-1" role="dialog" aria-labelledby="FlowFormModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content" style="width:450px;">
             <div class="modal-header">
