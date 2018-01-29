@@ -60,6 +60,23 @@
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
 
+    <select id="querySysFlowInfoList" parameterType="sysFlowInfo" resultMap="sysFlowInfoResult">
+        select * from (
+        select t.*,ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_FLOW_INFO t
+        where 1 = 1
+        <if test="flowCode != null and flowCode != ''">and t.FLOW_CODE LIKE '%${flowCode}%'</if>
+        <if test="flowType != null and flowType != ''">and t.FLOW_TYPE = #{flowType}</if>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+    <select id="querySysFlowInfoByFlowTypeAndFlowCode" parameterType="sysFlowInfo" resultMap="sysFlowInfoResult">
+        select t.*
+        from SYS_FLOW_INFO t
+        where 1 = 1
+        <if test="flowCode != null and flowCode != ''">and t.FLOW_CODE LIKE '%${flowCode}%'</if>
+        <if test="flowType != null and flowType != ''">and t.FLOW_TYPE = #{flowType}</if>
+    </select>
     <insert id="insertSysFlowInfo" parameterType="sysFlowInfo">
         <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
         </selectKey>

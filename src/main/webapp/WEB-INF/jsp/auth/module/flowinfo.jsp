@@ -6,14 +6,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Insert title here</title>
+    <title>流程信息</title>
     <meta name="author" content="卫宁实施工具">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css">
     <base href="<%=basePath%>">
-    <link rel="shortcut icon" href="resources/img/logo.ico">
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
 </head>
 <body>
 <!--表格区域  -->
@@ -27,66 +27,66 @@
 <!--模态框  -->
 <div class="modal fade" id="flowModal" tabindex="-1" role="dialog" aria-labelledby="flowFormModal">
     <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width:450px;">
+        <div class="modal-content" style="width:500px;">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">用户信息</h4>
+                <h4 class="modal-title" id="myModalLabel">流程信息</h4>
             </div>
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
                         <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="flowForm">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="flowid">登录名</label>
+                                <label class="col-sm-3 control-label" for="flowType">流程类型</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="flowid" name="flowid"
-                                           placeholder="请输入登录名">
+                                  <select class="form-control" name="flowType" id="flowType">
+                                      <option value="1">流程小类</option>
+                                      <option value="0">流程大类</option>
+                                  </select>
+                                </div>
+                            </div>
+                            <div id='flowParent'>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="flowParentCode">上级流程编号</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="flowParentCode" name="flowParentCode" data-provide="typeahead" placeholder="请输入上级流程编号">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="flowParentName">上级流程名称</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="flowParentName" name="flowParentName" readonly="true"
+                                               placeholder="">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="yhmc">用户名称</label>
+                                <label class="col-sm-3 control-label" for="flowCode">流程编号</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="yhmc" name="yhmc" placeholder="请输入用户名称">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="email">邮箱</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="email" name="email"
-                                           placeholder="例如:123@123.com">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="mobile">手机号码</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="mobile" name="mobile"
-                                           placeholder="例如:13012345678">
+                                    <input type="text" class="form-control" id="flowCode" name="flowCode"
+                                           placeholder="请输入流程编号">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="status">允许登陆</label>
+                                <label class="col-sm-3 control-label" for="flowName">流程名称</label>
                                 <div class="col-sm-6">
-                                    <select class="form-control" name="status" id="status">
-                                        <option value="1">是</option>
-                                        <option value="2">否</option>
-                                    </select>
+                                    <input type="text" class="form-control" id="flowName" name="flowName"
+                                           placeholder="请输入流程名称">
                                 </div>
+                            </div>
 
-                            </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="flowType">用户类型</label>
+                                <label class="col-sm-3 control-label" for="flowDesc">流程描述</label>
                                 <div class="col-sm-6">
-                                    <select class="form-control" name="flowType" id="flowType">
-                                        <option value="0">医院</option>
-                                        <option value="1">公司</option>
-                                    </select>
+                                    <input type="text" class="form-control" id="flowDesc" name="flowDesc"
+                                           placeholder="请输入流程描述">
                                 </div>
                             </div>
-                            <input type="hidden" name="orgid" id="orgid">
-                            <input type="hidden" name="password" id="password">
+                            <input type="hidden" name="id" id="id">
+                            <input type="hidden" name="flowPid" id="flowPid">
                             <input type="reset" style="display:none;"/>
                             <div class="col-sm-8 text-center">
                                 <button class="btn btn-primary" id="saveFlow" type="submit">保存</button>
@@ -107,6 +107,7 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrapValidator.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/language/zh_CN.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/toastr.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap3-typeahead.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/auth/module/flowinfo.js"></script>
 </html>

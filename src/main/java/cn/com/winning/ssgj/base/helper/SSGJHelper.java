@@ -60,6 +60,13 @@ public class SSGJHelper {
     @Qualifier("productIdService")
     private StepSequenceFactory productIdService;
 
+    @Autowired
+    @Qualifier("flowIdService")
+    private StepSequenceFactory flowIdService;
+
+    @Autowired
+    @Qualifier("flowCodeService")
+    private StepSequenceFactory flowCodeService;
     /**
      * 获取用户ID信息
      *
@@ -142,9 +149,30 @@ public class SSGJHelper {
     public long createLogId(){
         return (long) logIdService.create();
     }
-    
+
+    /**
+     * 产品ID
+     * @return
+     */
     public long createPuductId(){
     	return (long) productIdService.create();
+    }
+
+    /**
+     * 业务流程编号
+     * 流程大类
+     * @return
+     */
+    public String createFlowCode(){
+        return flowCodeService.create().toString();
+    }
+
+    /**
+     * 业务流程ID
+     * @return
+     */
+    public long createFlowId(){
+        return (long) flowIdService.create();
     }
     /**
      * 密码加密

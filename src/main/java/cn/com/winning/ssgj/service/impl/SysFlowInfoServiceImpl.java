@@ -1,9 +1,11 @@
 package cn.com.winning.ssgj.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import cn.com.winning.ssgj.domain.support.Row;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.SysFlowInfoDao;
@@ -50,5 +52,52 @@ public class SysFlowInfoServiceImpl implements SysFlowInfoService {
     public List<SysFlowInfo> getSysFlowInfoPaginatedList(SysFlowInfo t) {
         return this.sysFlowInfoDao.selectEntityPaginatedList(t);
     }
+
+    @Override
+    public List<SysFlowInfo> querySysFlowInfoList(SysFlowInfo t) {
+        return this.sysFlowInfoDao.querySysFlowInfoList(t);
+    }
+
+    @Override
+    public String createFlowCode(String flowCode,String flowType) {
+        SysFlowInfo flowInfo = new SysFlowInfo();
+        flowInfo.setFlowType(flowType);
+        flowInfo.setFlowCode(flowCode);
+        List<SysFlowInfo> flowList = sysFlowInfoDao.querySysFlowInfoByFlowTypeAndFlowCode(flowInfo);
+        //没有符合要求则为0001
+        if(flowList == null){
+            return "0001";
+        }
+        List<Integer> tempList = new ArrayList<Integer>();
+        for(SysFlowInfo flow : flowList){
+            String flowInfoCode = flow.getFlowCode().trim();
+            String number = flowInfoCode.substring(flowInfoCode.lastIndexOf("-")+1);
+            Integer num = Integer.parseInt(number);
+            tempList.add(num);
+        }
+        int i = 1;
+        boolean flag = true;
+
+        while(flag){
+            if(tempList.contains(i)){
+                i++;
+            }else{
+                flag = false;
+            }
+        }
+
+        String flowCodeNumber = "";
+        if( i/10 == 0 ){
+            flowCodeNumber = "000"+i;
+        }else if(i/100 == 0){
+            flowCodeNumber = "00"+i;
+        }else if(i/1000 == 0){
+            flowCodeNumber = "0"+i;
+        }else{
+            flowCodeNumber = ""+i;
+        }
+        return flowCodeNumber;
+    }
+
 
 }

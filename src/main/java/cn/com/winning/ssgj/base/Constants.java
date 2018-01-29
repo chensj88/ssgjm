@@ -99,4 +99,15 @@ public class Constants implements Serializable {
          */
         public static final String ROLE_TYPE_HOSPITAL = "2";
     }
+
+    public class Flow {
+        /**
+         * 流程大类
+         */
+        public static final  String FLOW_TYPE_BIG = "0";
+        /**
+         * 流程小类
+         */
+        public static final  String FLOW_TYPE_SMALL = "1";
+    }
 }

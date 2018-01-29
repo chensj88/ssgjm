@@ -26,4 +26,13 @@ public interface SysFlowInfoService {
 
     List<SysFlowInfo> getSysFlowInfoPaginatedList(SysFlowInfo t);
 
+    List<SysFlowInfo> querySysFlowInfoList(SysFlowInfo t);
+
+    /**
+     * 查询子流程的流程编码
+     * @param flowCode 上级流程的编码
+     * @param flowType 流程类型
+     * @return flowCode
+     */
+    String createFlowCode(String flowCode,String flowType);
 }

@@ -115,12 +115,34 @@
         <property name="dateCutOff" value="false"/>
     </bean>
     
-     <!--用户ID 主键生成器
+     <!--产品ID 主键生成器
      起步数据为 100 0000
     -->
     <bean id="productIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="PRODUCT_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+    <!--
+    业务流程序号
+    WN-YWLC-
+    -->
+    <bean id="flowCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="FLOW_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="WN-YWLC-{####}" />
+        <property name="dateCutOff" value="true"/>
+    </bean>
+    <!--
+    业务流程ID
+    WN-YWLC-
+    -->
+    <bean id="flowIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="FLOW_ID"/>
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>

@@ -13,7 +13,6 @@ function Page() {
 }
 
 Page.prototype.init = function () {
-    this.editObj = null;
     this.initDataGrid();
     this.bindEvent();
     this.validateForm();
@@ -40,9 +39,9 @@ Page.prototype.initDataGrid = function () {
         showRefresh: true,                  // 是否显示刷新按钮
         minimumCountColumns: 2,             // 最少允许的列数
         clickToSelect: true,                // 是否启用点击选中行
-        idField: 'flowId',
-        sortName: 'flowId',
-        uniqueId: "flowId",                 // 每一行的唯一标识，一般为主键列
+        idField: 'id',
+        sortName: 'id',
+        uniqueId: "id",                 // 每一行的唯一标识，一般为主键列
         //showToggle: true,                   // 是否显示详细视图和列表视图的切换按钮
         cardView: false,                    // 是否显示详细视图
         detailView: false,                  // 是否显示父子表
@@ -89,7 +88,7 @@ Page.prototype.initDataGrid = function () {
             width: '40px',
             align: 'center'
         }, {
-            field: "name",
+            field: "flowType",
             title: "流程类型",
             width: '40px',
             align: 'center',
@@ -116,8 +115,8 @@ Page.prototype.initDataGrid = function () {
             align: 'center',
             width: '80px',
             formatter: function (value, row, index) {
-                var e = '<a href="####" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.flowId + '">编辑</a> ';
-                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.flowId + '">删除</a> ';
+                var e = '<a href="####" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.id + '">编辑</a> ';
+                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
                 return e + d;
             }
         }],
@@ -126,18 +125,30 @@ Page.prototype.initDataGrid = function () {
 /**
  * 按钮绑定事件
  */
+
 Page.prototype.bindEvent = function () {
+    $.fn.typeahead.Constructor.prototype.blur = function () {
+        var that = this;
+        setTimeout(function () { that.hide() }, 250);
+    };
+    var objMap = {};//定义一个空的js对象
+    $('#flowParent').show();
     /**
-     * 新增用户
+     * 新增流程
      * 需要清理表格数据
      */
     $('#addFlow').on('click', function () {
         $("input[type=reset]").trigger("click");
-        $('#flowId').val('');
+        $('#id').val('');
+        $('#flowPid').val('');
+        //清空验证信息
+        $('#flowForm').data("bootstrapValidator").destroy();
+        $('#flowForm').data('bootstrapValidator',null);
+        _self.validateForm();
         $('#flowModal').modal('show');
     });
     /**
-     * 修改用户
+     * 修改流程
      * 只能修改一条数据
      */
     $('#modifyFlow').on('click', function () {
@@ -171,7 +182,7 @@ Page.prototype.bindEvent = function () {
     });
     /**
      * 列表中按钮
-     *   编辑用户信息
+     *   编辑流程信息
      */
     $('#flowTable').on('click', 'a[name="edit"]', function (e) {
         e.preventDefault();
@@ -196,13 +207,13 @@ Page.prototype.bindEvent = function () {
     });
     /**
      * 列表中按钮
-     *   删除用户信息
+     *   删除流程信息
      */
     $('#flowTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var flowId = $(this).attr('aid');
         Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
-            if (!e) {
+            if (e) {
                 return;
             }
             $.ajax({
@@ -225,7 +236,7 @@ Page.prototype.bindEvent = function () {
         });
     });
     /**
-     * 删除用户
+     * 删除流程
      * 只能删除一条数据
      */
     $('#deleteFlow').on('click', function () {
@@ -263,8 +274,8 @@ Page.prototype.bindEvent = function () {
         });
     });
     /**
-     * 保存用户按钮
-     * 通过隐藏域判断用户是否存在，而使用不同的方法进行新增或者修改
+     * 保存流程按钮
+     * 通过隐藏域判断流程是否存在，而使用不同的方法进行新增或者修改
      */
     $('#saveFlow').on('click', function (e) {
         //阻止默认行为
@@ -274,8 +285,9 @@ Page.prototype.bindEvent = function () {
         if (bootstrapValidator) {
             bootstrapValidator.validate();
         }
+
         var url = '';
-        if ($('#orgid').val().length == 0) {
+        if ($('#id').val().length == 0) {
             url = Common.getRootPath() + '/admin/flow/add.do';
         } else {
             url = Common.getRootPath() + '/admin/flow/update.do';
@@ -293,10 +305,89 @@ Page.prototype.bindEvent = function () {
                         $('#flowModal').modal('hide');
                         $("#flowTable").bootstrapTable('refresh');
                     }
-
                 }
             });
         }
+    });
+    //流程类型切换
+    $('#flowType').on('change',function () {
+       var selEle = $(this).val();
+       console.log(selEle);
+       if(selEle == '1'){
+           $('#flowParent').show();
+       }else{
+           $('#flowParent').hide();
+           $.ajax({
+               url: Common.getRootPath() + '/admin/flow/createFlowCode.do',
+               data:{
+                   'flowType': selEle
+               },
+               success :function (result) {
+                   var _result = eval(result );
+                   if(_result.status == Common.SUCCESS){
+                       $('#flowCode').attr('readonly','true');
+                       $('#flowCode').val(_result.data);
+                   }
+               }
+           });
+       }
+    });
+
+    //自动补全
+    $('#flowParentCode').typeahead({
+        source : function (query,process) {
+            var matchCount =this.options.items;//允许返回结果集最大数量
+            $.ajax({
+                url : Common.getRootPath() + '/admin/flow/queryFlowCode.do',
+                type: "post",
+                dataType: 'json',
+                async: false,
+                data: {'flowCode':query.toUpperCase(),'matchCount':matchCount},
+                success: function (result) {
+                    var _result = eval(result);
+                    if (_result.status == Common.SUCCESS) {
+                        var data = _result.data;
+                        if (data == "" || data.length == 0) {
+                            console.log("没有查询到相关结果");
+                        };
+                        var results = [];
+                        for (var i = 0; i < data.length; i++) {
+                            objMap[data[i].flowCode] = data[i].flowName + ',' + data[i].id ;
+                            results.push(data[i].flowCode);
+                        }
+                        process(results);
+                    }
+                }
+            });
+        },
+        highlighter: function (item) {
+            return item +'['+objMap[item].split(',')[0] + ']';
+        },
+        afterSelect: function (item) {       //选择项之后的事件，item是当前选中的选项
+            var selectItem = objMap[item];
+            var selectItemName = selectItem.split(',')[0];
+            var selectItemId = selectItem.split(',')[1];
+            $('#flowParentName').val(selectItemName);
+            $('#flowPid').val(selectItemId);
+            $.ajax({
+                url: Common.getRootPath() + '/admin/flow/createFlowCode.do',
+                data:{
+                    'flowType': $('#flowType').val(),
+                    'flowCode': $('#flowParentCode').val()
+                },
+                type: "post",
+                dataType: 'json',
+                async: false,
+                success :function (result) {
+                    var _result = eval(result );
+                    if(_result.status == Common.SUCCESS){
+                        $('#flowCode').attr('readonly','true');
+                        $('#flowCode').val(_result.data);
+                    }
+                }
+         });
+        },
+        items : 8,
     });
 };
 /**
@@ -314,61 +405,30 @@ Page.prototype.validateForm = function () {
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-            flowid: {
-                message: '登录名验证失败',
+            flowCode: {
+                message: '流程编号验证失败',
                 validators: {
                     notEmpty: {
-                        message: '登录名不能为空'
-                    },
-                    stringLength: {
-                        min: 2,
-                        max: 18,
-                        message: '登录名长度必须在2到18位之间'
-                    },
-                    regexp: {
-                        regexp: /^[a-zA-Z0-9_]+$/,
-                        message: '登录名只能包含大写、小写、数字和下划线'
+                        message: '流程编号不能为空'
                     }
                 }
             },
-            yhmc: {
+            flowName: {
+                message: '流程名称验证失败',
                 validators: {
                     notEmpty: {
-                        message: '用户名称不能为空'
-                    },
-                    stringLength: {
-                        min: 2,
-                        max: 10,
-                        message: '用户名称长度必须在2到10位之间'
+                        message: '流程名称不能为空'
                     }
                 }
             },
-            mobile : {
+            flowDesc : {
+                message: '流程描述验证失败',
                 validators: {
                     notEmpty: {
-                        message: '手机号码不能为空'
-                    },
-                    stringLength: {
-                        min: 11,
-                        max: 11,
-                        message: '手机号码长度必须为11位'
-                    },
-                    regexp: {
-                        regexp: /^1[3|4|5|8][0-9]\d{4,8}$/,
-                        message: '手机号码只能包含数字'
+                        message: '流程描述不能为空'
                     }
                 }
             },
-            email: {
-                validators: {
-                    notEmpty: {
-                        message: '邮箱地址不能为空'
-                    },
-                    emailAddress: {
-                        message: '邮箱地址格式有误'
-                    }
-                }
-            }
         }
     });
 };

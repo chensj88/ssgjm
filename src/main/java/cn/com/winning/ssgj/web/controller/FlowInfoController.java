@@ -5,6 +5,7 @@ import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.domain.SysFlowInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +19,7 @@ import java.util.Map;
 
 /**
  * @author chenshijie
- * @title ${file_name}
+ * @title 流程信息
  * @email chensj@winning.com.cm
  * @package cn.com.winning.ssgj.web.controller
  * @date 2018-01-25 17:59
@@ -45,9 +46,50 @@ public class FlowInfoController extends BaseController {
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
-        result.put("data",flowInfos);
-        System.out.println(flowInfos);
+        result.put("rows",flowInfos);
+        return result;
+    }
+
+    @RequestMapping(value = "/queryFlowCode.do")
+    @ResponseBody
+    public Map<String,Object> queryFlowCode(String flowCode,int matchCount){
+        Row row = new Row(0,matchCount);
+        SysFlowInfo flowInfo = new SysFlowInfo();
+        flowInfo.setRow(row);
+        flowInfo.setFlowCode(flowCode);
+        flowInfo.setFlowType(Constants.Flow.FLOW_TYPE_BIG);
+        List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().querySysFlowInfoList(flowInfo);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("total", matchCount);
+        result.put("status", Constants.SUCCESS);
+        result.put("data", flowInfos);
         return result;
 
+    }
+    @RequestMapping(value = "/add.do")
+    @ResponseBody
+    public Map<String,Object> addFlowInfo(SysFlowInfo flow){
+        long flowId = ssgjHelper.createFlowId();
+        flow.setId(flowId);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
+
+    @RequestMapping(value = "/createFlowCode.do")
+    @ResponseBody
+    public Map<String,Object> createFlowCode(String flowType,String flowCode){
+        String reFlowCode = "";
+        if(Constants.Flow.FLOW_TYPE_BIG.equals(flowType)){
+            reFlowCode = ssgjHelper.createFlowCode();
+        }
+        if(Constants.Flow.FLOW_TYPE_SMALL.equals(flowType) &&!StringUtils.isBlank(flowCode)){
+            flowCode += "-";
+            reFlowCode = flowCode + super.getFacade().getSysFlowInfoService().createFlowCode(flowCode,flowType);
+        }
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("data", reFlowCode);
+        result.put("status", Constants.SUCCESS);
+        return  result;
     }
 }
