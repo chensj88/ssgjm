@@ -17,6 +17,7 @@
     Common.CODETYPE_ID_FUNC_TYPE = "funcType";
     /**成功标志*/
     Common.SUCCESS = "success";
+
     /**
      * 获取项目根路径
      */
