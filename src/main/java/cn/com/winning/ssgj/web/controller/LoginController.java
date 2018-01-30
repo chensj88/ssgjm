@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.web.controller;
 
+import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.domain.SysUserInfo;
@@ -43,16 +44,13 @@ public class LoginController extends BaseController{
             info.setPassword(MD5.stringMD5(password));
             info = super.getFacade().getSysUserInfoService().getSysUserInfo(info);
             if(info!=null && !"".equals(info)){
-                request.getSession().setAttribute("user",info);
+                request.getSession().setAttribute(Constants.USER_INFO,info);
                 map.put("status",true); //登陆成功
-                System.out.println(0);
             }else {
                 map.put("status",false);
-                System.out.println(1);
             }
         }else {
             map.put("status", false);
-            System.out.println(2);
         }
         return map;
     }

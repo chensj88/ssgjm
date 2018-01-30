@@ -362,7 +362,7 @@
                     <ul class="submenu">
                         <li><a href="<%=basePath%>admin/productInfo/product.do"><i class="icon-double-angle-right"></i>产品信息</a></li>
                         <li><a href="<%=basePath%>admin/productLineInfo/productLine.do"><i class="icon-double-angle-right"></i>产品条线信息</a></li>
-                        <li><a href="<%=basePath%>admin/basicData/dagaInfo.do"><i class="icon-double-angle-right"></i>基础数据类型信息</a></li>
+                        <li><a href="<%=basePath%>admin/basicData/dataInfo.do"><i class="icon-double-angle-right"></i>基础数据类型信息</a></li>
                         <li><a href="<%=basePath%>admin/flow/flowInfo.do"><i class="icon-double-angle-right"></i>业务流程信息</a></li>
                         <li><a href="<%=basePath%>admin/thirx/interfaceInfo.do"><i class="icon-double-angle-right"></i>第三方接口类型信息</a></li>
                         <li><a href="<%=basePath%>admin/hardware/shInfo.do"><i class="icon-double-angle-right"></i>软硬件设备类型信息</a></li>
