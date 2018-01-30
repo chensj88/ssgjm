@@ -75,6 +75,22 @@ public class SSGJHelper {
     @Autowired
     @Qualifier("dataCodeService")
     private StepSequenceFactory dataCodeService;
+
+    @Autowired
+    @Qualifier("thirdInterfaceIdService")
+    private StepSequenceFactory thirdInterfaceIdService;
+
+    @Autowired
+    @Qualifier("thirdInterfaceCodeService")
+    private StepSequenceFactory thirdInterfaceCodeService;
+
+    @Autowired
+    @Qualifier("shIdService")
+    private StepSequenceFactory shIdService;
+
+    @Autowired
+    @Qualifier("shCodeService")
+    private StepSequenceFactory shCodeService;
     /**
      * 获取用户ID信息
      *
@@ -199,6 +215,37 @@ public class SSGJHelper {
         return (long) dataIdService.create();
     }
 
+    /**
+     * 第三方接口编码
+     * @return
+     */
+    public String createThirdInterfaceDataCode(){
+        return thirdInterfaceCodeService.create().toString();
+    }
+
+    /**
+     * 第三方接口ID
+     * @return
+     */
+    public long createThirdInterfaceId(){
+        return (long) thirdInterfaceIdService.create();
+    }
+
+    /**
+     * 软硬件信息编码
+     * @return
+     */
+    public String createSoftwareHardwareCode(){
+        return shCodeService.create().toString();
+    }
+
+    /**
+     * 软硬件信息ID
+     * @return
+     */
+    public long createSoftwareHardwareId(){
+        return (long) shIdService.create();
+    }
 
     /**
      * 密码加密

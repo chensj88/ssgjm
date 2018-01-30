@@ -151,12 +151,40 @@
         <property name="type" value="DATA_CODE"/>
         <property name="step" value="1"/>
         <property name="format" value="WN-TABLE-{######}" />
-        <property name="dateCutOff" value="true"/>
     </bean>
     <!--基础数据ID-->
     <bean id="dataIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="DATA_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--第三方接口编码-->
+    <bean id="thirdInterfaceCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="THIRD_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="WN-THIRD-{######}" />
+    </bean>
+    <!--第三方接口ID-->
+    <bean id="thirdInterfaceIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="THIRD_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+    <!--软硬件信息编码-->
+    <bean id="shCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="SH_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="WN-SH-{######}" />
+    </bean>
+    <!--软硬件信息ID-->
+    <bean id="shIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="SH_ID"/>
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
