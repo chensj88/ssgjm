@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.domain.support.Row;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +25,11 @@ public class SysFlowInfoServiceImpl implements SysFlowInfoService {
     @Resource
     private SysFlowInfoDao sysFlowInfoDao;
 
-
+    @ILog(operationName = "createSysFlowInfo",operationType = "createSysFlowInfo")
     public Integer createSysFlowInfo(SysFlowInfo t) {
         return this.sysFlowInfoDao.insertEntity(t);
     }
-
+    @ILog(operationName = "getSysFlowInfo",operationType = "getSysFlowInfo")
     public SysFlowInfo getSysFlowInfo(SysFlowInfo t) {
         return this.sysFlowInfoDao.selectEntity(t);
     }
@@ -36,29 +37,32 @@ public class SysFlowInfoServiceImpl implements SysFlowInfoService {
     public Integer getSysFlowInfoCount(SysFlowInfo t) {
         return (Integer) this.sysFlowInfoDao.selectEntityCount(t);
     }
-
+    @ILog(operationName = "getSysFlowInfoList",operationType = "getSysFlowInfoList")
     public List<SysFlowInfo> getSysFlowInfoList(SysFlowInfo t) {
         return this.sysFlowInfoDao.selectEntityList(t);
     }
-
+    @ILog(operationName = "modifySysFlowInfo",operationType = "modifySysFlowInfo")
     public int modifySysFlowInfo(SysFlowInfo t) {
         return this.sysFlowInfoDao.updateEntity(t);
     }
-
+    @ILog(operationName = "removeSysFlowInfo",operationType = "removeSysFlowInfo")
     public int removeSysFlowInfo(SysFlowInfo t) {
         return this.sysFlowInfoDao.deleteEntity(t);
     }
-
+    @ILog(operationName = "getSysFlowInfoPaginatedList",operationType = "getSysFlowInfoPaginatedList")
     public List<SysFlowInfo> getSysFlowInfoPaginatedList(SysFlowInfo t) {
         return this.sysFlowInfoDao.selectEntityPaginatedList(t);
     }
 
+    @ILog(operationType = "querySysFlowInfoList",operationName = "querySysFlowInfoList")
     @Override
     public List<SysFlowInfo> querySysFlowInfoList(SysFlowInfo t) {
         return this.sysFlowInfoDao.querySysFlowInfoList(t);
     }
 
+
     @Override
+    @ILog(operationType = "createFlowCode",operationName = "createFlowCode")
     public String createFlowCode(String flowCode,String flowType) {
         SysFlowInfo flowInfo = new SysFlowInfo();
         flowInfo.setFlowType(flowType);

@@ -109,5 +109,12 @@ public class Constants implements Serializable {
          * 流程小类
          */
         public static final  String FLOW_TYPE_SMALL = "1";
+
+        /**
+         * 一级流程ID
+         */
+        public static final int FLOW_FALSE_VALUE = -1;
+
+
     }
 }

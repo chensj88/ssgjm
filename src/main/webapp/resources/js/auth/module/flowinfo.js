@@ -78,16 +78,6 @@ Page.prototype.initDataGrid = function () {
             width: '40px',
             align: 'center'
         }, {
-            field: "flowCode",
-            title: "流程编号",
-            width: '40px',
-            align: 'center'
-        }, {
-            field: "flowName",
-            title: "流程名称",
-            width: '40px',
-            align: 'center'
-        }, {
             field: "flowType",
             title: "流程类型",
             width: '40px',
@@ -99,6 +89,21 @@ Page.prototype.initDataGrid = function () {
                     return '流程小类';
                 }
             }
+        }, {
+            field: "flowCode",
+            title: "流程编号",
+            width: '40px',
+            align: 'center'
+        }, {
+            field: "flowName",
+            title: "流程名称",
+            width: '40px',
+            align: 'center'
+        }, {
+            field: "flowDesc",
+            title: "流程描述",
+            width: '40px',
+            align: 'center'
         }, {
             field: "flowParentCode",
             title: "上级流程编号",
@@ -152,19 +157,23 @@ Page.prototype.bindEvent = function () {
      * 只能修改一条数据
      */
     $('#modifyFlow').on('click', function () {
+        //清空验证信息
+        $('#flowForm').data("bootstrapValidator").destroy();
+        $('#flowForm').data('bootstrapValidator',null);
+        _self.validateForm();
         var arrselections = $("#flowTable").bootstrapTable('getSelections');
         if (arrselections.length > 1) {
-            toastr.warning('只能选择一行进行编辑');
+            Ewin.alert('只能选择一行进行编辑');
             return;
         }
         if (arrselections.length <= 0) {
-            toastr.warning('请选择有效数据');
+            Ewin.alert('请选择有效数据');
             return;
         }
         var flowId = arrselections[0].id;
         $.ajax({
             url: Common.getRootPath() + '/admin/flow/getById.do',
-            data: {'flowId': flowId},
+            data: {'id': flowId},
             type: "post",
             dataType: 'json',
             async: false,
@@ -172,8 +181,12 @@ Page.prototype.bindEvent = function () {
                 var _result = eval(result);
                 if (_result.status == Common.SUCCESS) {
                     $('#flowForm').initForm(_result.data);
-                    $('#orgid').val(_result.data.orgid);
-                    $('#password').val(_result.data.password);
+                    $('#flowCode').attr('readonly','true');
+                    if(_result.data.flowType == "0"){
+                        $('#flowParent').hide();
+                    }else{
+                        $('#flowParent').show();
+                    }
                     $('#flowModal').modal('show');
                 }
 
@@ -186,10 +199,14 @@ Page.prototype.bindEvent = function () {
      */
     $('#flowTable').on('click', 'a[name="edit"]', function (e) {
         e.preventDefault();
+        //清空验证信息
+        $('#flowForm').data("bootstrapValidator").destroy();
+        $('#flowForm').data('bootstrapValidator',null);
+        _self.validateForm();
         var flowId = $(this).attr('aid');
         $.ajax({
             url: Common.getRootPath() + '/admin/flow/getById.do',
-            data: {'flowId': flowId},
+            data: {'id': flowId},
             type: "post",
             dataType: 'json',
             async: false,
@@ -197,8 +214,12 @@ Page.prototype.bindEvent = function () {
                 var _result = eval(result);
                 if (_result.status == Common.SUCCESS) {
                     $('#flowForm').initForm(_result.data);
-                    $('#orgid').val(_result.data.orgid);
-                    $('#password').val(_result.data.password);
+                    $('#flowCode').attr('readonly','true');
+                    if(_result.data.flowType == "0"){
+                        $('#flowParent').hide();
+                    }else{
+                        $('#flowParent').show();
+                    }
                     $('#flowModal').modal('show');
                 }
 
@@ -213,22 +234,23 @@ Page.prototype.bindEvent = function () {
         e.preventDefault();
         var flowId = $(this).attr('aid');
         Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
-            if (e) {
+            if (!e) {
                 return;
             }
             $.ajax({
                 type: "post",
                 url: Common.getRootPath() + '/admin/flow/deleteById.do',
-                data: {"flowId": flowId},
+                data: {'id': flowId},
                 dataType: 'json',
                 success: function (data, status) {
-                    if (status == Common.SUCCESS) {
-                        toastr.success('提交数据成功');
+                    var result = eval(data);
+                    if (result.status == Common.SUCCESS) {
+                        Ewin.alert('提交数据成功');
                         $("#flowTable").bootstrapTable('refresh');
                     }
                 },
-                error: function () {
-                    toastr.error('Error');
+                error: function (msg) {
+                    Ewin.alert(msg);
                 },
                 complete: function () {
                 }
@@ -242,14 +264,14 @@ Page.prototype.bindEvent = function () {
     $('#deleteFlow').on('click', function () {
         var arrselections = $("#flowTable").bootstrapTable('getSelections');
         if (arrselections.length > 1) {
-            toastr.warning('只能选择一行进行编辑');
+            Ewin.alert('只能选择一行进行编辑');
             return;
         }
         if (arrselections.length <= 0) {
-            toastr.warning('请选择有效数据');
+            Ewin.alert('请选择有效数据');
             return;
         }
-        var flowId = arrselections[0].flowId;
+        var flowId = arrselections[0].id;
         Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
             if (!e) {
                 return;
@@ -257,16 +279,16 @@ Page.prototype.bindEvent = function () {
             $.ajax({
                 type: "post",
                 url: Common.getRootPath() + '/admin/flow/deleteById.do',
-                data: {"flowId": flowId},
+                data: {'id': flowId},
                 dataType: 'json',
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
-                        toastr.success('提交数据成功');
+                        Ewin.alert('提交数据成功');
                         $("#flowTable").bootstrapTable('refresh');
                     }
                 },
-                error: function () {
-                    toastr.error('Error');
+                error: function (data) {
+                    Ewin.alert(data);
                 },
                 complete: function () {
                 }
@@ -285,7 +307,6 @@ Page.prototype.bindEvent = function () {
         if (bootstrapValidator) {
             bootstrapValidator.validate();
         }
-
         var url = '';
         if ($('#id').val().length == 0) {
             url = Common.getRootPath() + '/admin/flow/add.do';
@@ -322,8 +343,12 @@ Page.prototype.bindEvent = function () {
                data:{
                    'flowType': selEle
                },
+               type: "post",
+               dataType: 'json',
+               async: false,
                success :function (result) {
-                   var _result = eval(result );
+                   console.log(result);
+                   var _result = eval(result);
                    if(_result.status == Common.SUCCESS){
                        $('#flowCode').attr('readonly','true');
                        $('#flowCode').val(_result.data);
@@ -405,14 +430,6 @@ Page.prototype.validateForm = function () {
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-            flowCode: {
-                message: '流程编号验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '流程编号不能为空'
-                    }
-                }
-            },
             flowName: {
                 message: '流程名称验证失败',
                 validators: {

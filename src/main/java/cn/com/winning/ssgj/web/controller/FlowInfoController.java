@@ -9,10 +9,12 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,8 +71,13 @@ public class FlowInfoController extends BaseController {
     @RequestMapping(value = "/add.do")
     @ResponseBody
     public Map<String,Object> addFlowInfo(SysFlowInfo flow){
+        System.out.println(flow);
         long flowId = ssgjHelper.createFlowId();
         flow.setId(flowId);
+        flow.setLastUpdateTime(new Date());
+        System.out.println(flow);
+        //TODO 添加修改用户
+        super.getFacade().getSysFlowInfoService().createSysFlowInfo(flow);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         return result;
@@ -92,4 +99,39 @@ public class FlowInfoController extends BaseController {
         result.put("status", Constants.SUCCESS);
         return  result;
     }
+
+    @RequestMapping(value = "/getById.do")
+    @ResponseBody
+    public Map<String,Object> getFlowById(SysFlowInfo flow){
+     flow = super.getFacade().getSysFlowInfoService().getSysFlowInfo(flow);
+     System.out.println(flow);
+     Map<String,Object> result = new HashMap<String,Object>();
+     result.put("status", Constants.SUCCESS);
+     result.put("data", flow);
+     return result;
+    }
+
+    @RequestMapping(value = "/update.do")
+    @ResponseBody
+    public Map<String,Object> updateFlowById(SysFlowInfo flow){
+        flow.setLastUpdateTime(new Date());
+        System.out.println(flow);
+        //TODO 添加修改用户
+        super.getFacade().getSysFlowInfoService().modifySysFlowInfo(flow);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+
+    }
+
+    @RequestMapping(value = "/deleteById.do")
+    @ResponseBody
+    public Map<String,Object> deleteFlowById(SysFlowInfo flow){
+        super.getFacade().getSysFlowInfoService().removeSysFlowInfo(flow);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+
+    }
+
 }
