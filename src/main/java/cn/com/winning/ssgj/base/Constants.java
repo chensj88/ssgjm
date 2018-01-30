@@ -36,6 +36,14 @@ public class Constants implements Serializable {
      * 用户信息
      */
     public static final String USER_INFO = "userInfo";
+    /**
+     * 状态码  0 不使用/失效
+     */
+    public static final Integer STATUS_UNUSE = 0;
+    /**
+     * 状态码  1 使用/生效
+     */
+    public static final Integer STATUS_USE = 1;
 
     /**
      * 系统配置
@@ -114,6 +122,27 @@ public class Constants implements Serializable {
          * 一级流程ID
          */
         public static final int FLOW_FALSE_VALUE = -1;
+
+
+    }
+
+    public class  DataInfo {
+        /**
+         * 国标数据
+         */
+        public static final  String DATA_TYPE_GUOBIAO = "0"  ;
+        /**
+         * 行标数据
+         */
+        public static final  String DATA_TYPE_HANGBIAO = "1"  ;
+        /**
+         * 共享数据
+         */
+        public static final  String DATA_TYPE_GONGXIANG = "2"  ;
+        /**
+         * 易用数据
+         */
+        public static final  String DATA_TYPE_YIYONG = "3"  ;
 
 
     }

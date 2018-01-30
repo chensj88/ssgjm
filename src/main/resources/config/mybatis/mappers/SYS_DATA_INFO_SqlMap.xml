@@ -14,6 +14,7 @@
         <result column="IS_EASY" property="isEasy" jdbcType="INTEGER"/>
         <result column="TABLE_ATTENTION" property="tableAttention" jdbcType="VARCHAR"/>
         <result column="TABLE_COUNT" property="tableCount" jdbcType="INTEGER"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
         <result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT"/>
         <result column="LAST_UPDATE_NAME" property="lastUpdateName" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -33,6 +34,7 @@
         <if test="(isEasy != null and isEasy != '') or isEasy == 0">and t.IS_EASY = #{isEasy}</if>
         <if test="tableAttention != null and tableAttention != ''">and t.TABLE_ATTENTION = #{tableAttention}</if>
         <if test="(tableCount != null and tableCount != '') or tableCount == 0">and t.TABLE_COUNT = #{tableCount}</if>
+        <if test="(status != null and status != '') or status == 0">and t.STATUS = #{status}</if>
         <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">and t.LAST_UPDATOR = #{lastUpdator}
         </if>
         <if test="lastUpdateName != null and lastUpdateName != ''">and t.LAST_UPDATE_NAME = #{lastUpdateName}</if>
@@ -58,7 +60,7 @@
 
     <select id="selectSysDataInfoPaginatedList" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        select *, ROW_NUMBER() OVER ( order by id desc ) as _rn
         from SYS_DATA_INFO t where 1 = 1
         <include refid="sf-sysDataInfo"/>
         <!-- order by ID asc -->
@@ -81,6 +83,7 @@
             <if test="(isEasy != null and isEasy != '') or isEasy == 0">IS_EASY,</if>
             <if test="tableAttention != null and tableAttention != ''">TABLE_ATTENTION,</if>
             <if test="(tableCount != null and tableCount != '') or tableCount == 0">TABLE_COUNT,</if>
+            <if test="(status != null and status != '') or status == 0">STATUS,</if>
             <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR,</if>
             <if test="lastUpdateName != null and lastUpdateName != ''">LAST_UPDATE_NAME,</if>
         </trim>
@@ -98,6 +101,7 @@
             <if test="tableAttention != null and tableAttention != ''">#{tableAttention, jdbcType=VARCHAR},</if>
             <if test="(tableCount != null and tableCount != '') or tableCount == 0">#{tableCount, jdbcType=INTEGER},
             </if>
+            <if test="(status != null and status != '') or status == 0">#{status, jdbcType=INTEGER},</if>
             <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">
                 #{lastUpdator, jdbcType=BIGINT},
             </if>
@@ -131,6 +135,7 @@
                 <if test="(tableCount != null and tableCount != '') or tableCount == 0">TABLE_COUNT =
                     #{tableCount, jdbcType=INTEGER},
                 </if>
+                <if test="(status != null and status != '') or status == 0">STATUS = #{status, jdbcType=INTEGER},</if>
                 <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR =
                     #{lastUpdator, jdbcType=BIGINT},
                 </if>
@@ -139,21 +144,24 @@
                 </if>
             </trim>
         </set>
-        where
-        <if test="id != null and id != ''">ID = #{id}</if>
-        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
-            ID in
-            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-        </if>
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
     </update>
 
     <delete id="deleteSysDataInfo" parameterType="SysDataInfo">
-        delete from SYS_DATA_INFO where
-        <if test="id != null and id != ''">ID = #{id}</if>
-        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
-            ID in
-            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-        </if>
+        delete from SYS_DATA_INFO
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
     </delete>
 
 </mapper>

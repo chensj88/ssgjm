@@ -75,6 +75,7 @@ public class FlowInfoController extends BaseController {
         long flowId = ssgjHelper.createFlowId();
         flow.setId(flowId);
         flow.setLastUpdateTime(new Date());
+        flow.setStatus(Constants.STATUS_USE);
         System.out.println(flow);
         //TODO 添加修改用户
         super.getFacade().getSysFlowInfoService().createSysFlowInfo(flow);
@@ -127,6 +128,7 @@ public class FlowInfoController extends BaseController {
     @RequestMapping(value = "/deleteById.do")
     @ResponseBody
     public Map<String,Object> deleteFlowById(SysFlowInfo flow){
+        flow.setStatus(Constants.STATUS_UNUSE);
         super.getFacade().getSysFlowInfoService().removeSysFlowInfo(flow);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);

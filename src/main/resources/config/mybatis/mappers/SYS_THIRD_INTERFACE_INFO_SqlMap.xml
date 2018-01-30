@@ -54,7 +54,7 @@
     <select id="selectSysThirdInterfaceInfoPaginatedList" resultMap="sysThirdInterfaceInfoResult"
             parameterType="sysThirdInterfaceInfo">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        select *, ROW_NUMBER() OVER ( order by id desc ) as _rn
         from SYS_THIRD_INTERFACE_INFO t where 1 = 1
         <include refid="sf-sysThirdInterfaceInfo"/>
         <!-- order by ID asc -->
@@ -116,21 +116,24 @@
                 </if>
             </trim>
         </set>
-        where
-        <if test="id != null and id != ''">ID = #{id}</if>
-        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
-            ID in
-            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-        </if>
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
     </update>
 
     <delete id="deleteSysThirdInterfaceInfo" parameterType="SysThirdInterfaceInfo">
-        delete from SYS_THIRD_INTERFACE_INFO where
-        <if test="id != null and id != ''">ID = #{id}</if>
-        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
-            ID in
-            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-        </if>
+        delete from SYS_THIRD_INTERFACE_INFO
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
     </delete>
 
 </mapper>

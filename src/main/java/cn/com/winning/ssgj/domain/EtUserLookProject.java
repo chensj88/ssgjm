@@ -6,9 +6,9 @@ import java.util.Date;
 import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
- * Coder AutoGenerator generate.
+ * SSGJ
  *
- * @author Coder AutoGenerator
+ * @author SSGJ
  * @date 2018-01-19 16:52:12
  */
  

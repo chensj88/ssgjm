@@ -10,6 +10,7 @@
         <result column="QUES_TYPE" property="quesType" jdbcType="INTEGER"/>
         <result column="RESULT_NUM" property="resultNum" jdbcType="INTEGER"/>
         <result column="QUES_DESC" property="quesDesc" jdbcType="LONGVARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
         <result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT"/>
         <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -25,6 +26,7 @@
         <if test="(quesType != null and quesType != '') or quesType == 0">and t.QUES_TYPE = #{quesType}</if>
         <if test="(resultNum != null and resultNum != '') or resultNum == 0">and t.RESULT_NUM = #{resultNum}</if>
         <if test="quesDesc != null and quesDesc != ''">and t.QUES_DESC = #{quesDesc}</if>
+        <if test="(status != null and status != '') or status == 0">and t.STATUS = #{status}</if>
         <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">and t.LAST_UPDATOR = #{lastUpdator}
         </if>
         <if test="lastUpdateTime != null and lastUpdateTime != ''">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
@@ -50,7 +52,7 @@
 
     <select id="selectSysFlowQuestionPaginatedList" resultMap="sysFlowQuestionResult" parameterType="sysFlowQuestion">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        select *, ROW_NUMBER() OVER ( order by id desc ) as _rn
         from SYS_FLOW_QUESTION t where 1 = 1
         <include refid="sf-sysFlowQuestion"/>
         <!-- order by ID asc -->
@@ -69,6 +71,7 @@
             <if test="(quesType != null and quesType != '') or quesType == 0">QUES_TYPE,</if>
             <if test="(resultNum != null and resultNum != '') or resultNum == 0">RESULT_NUM,</if>
             <if test="quesDesc != null and quesDesc != ''">QUES_DESC,</if>
+            <if test="(status != null and status != '') or status == 0">STATUS,</if>
             <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR,</if>
             <if test="lastUpdateTime != null and lastUpdateTime != ''">LAST_UPDATE_TIME,</if>
         </trim>
@@ -81,6 +84,7 @@
             <if test="(quesType != null and quesType != '') or quesType == 0">#{quesType, jdbcType=INTEGER},</if>
             <if test="(resultNum != null and resultNum != '') or resultNum == 0">#{resultNum, jdbcType=INTEGER},</if>
             <if test="quesDesc != null and quesDesc != ''">#{quesDesc, jdbcType=LONGVARCHAR},</if>
+            <if test="(status != null and status != '') or status == 0">#{status, jdbcType=INTEGER},</if>
             <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">
                 #{lastUpdator, jdbcType=BIGINT},
             </if>
@@ -103,6 +107,7 @@
                     #{resultNum, jdbcType=INTEGER},
                 </if>
                 <if test="quesDesc != null and quesDesc != ''">QUES_DESC = #{quesDesc, jdbcType=LONGVARCHAR},</if>
+                <if test="(status != null and status != '') or status == 0">STATUS = #{status, jdbcType=INTEGER},</if>
                 <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR =
                     #{lastUpdator, jdbcType=BIGINT},
                 </if>
@@ -111,21 +116,24 @@
                 </if>
             </trim>
         </set>
-        where
-        <if test="id != null and id != ''">ID = #{id}</if>
-        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
-            ID in
-            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-        </if>
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
     </update>
 
     <delete id="deleteSysFlowQuestion" parameterType="SysFlowQuestion">
-        delete from SYS_FLOW_QUESTION where
-        <if test="id != null and id != ''">ID = #{id}</if>
-        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
-            ID in
-            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-        </if>
+        delete from SYS_FLOW_QUESTION
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
     </delete>
 
 </mapper>

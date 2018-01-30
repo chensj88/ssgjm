@@ -6,8 +6,8 @@
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
     //检查用户是否登录
-    SysUserInfo user = (SysUserInfo) request.getSession().getAttribute(Constants.USER_INFO);
+   /* SysUserInfo user = (SysUserInfo) request.getSession().getAttribute(Constants.USER_INFO);
     if(user == null ){
         request.getRequestDispatcher("/login/login.do").forward(request,response);
-    }
+    }*/
 %>

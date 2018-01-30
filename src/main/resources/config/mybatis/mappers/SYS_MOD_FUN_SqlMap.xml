@@ -43,8 +43,7 @@
     </select>
 
     <insert id="insertSysModFun" parameterType="sysModFun">
-        <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
-        </selectKey>
+
         insert into SYS_MOD_FUN
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(modId != null and modId != '') or modId == 0">MOD_ID,</if>
@@ -65,21 +64,24 @@
                 <if test="funCode != null and funCode != ''">FUN_CODE = #{funCode, jdbcType=VARCHAR},</if>
             </trim>
         </set>
-        where
-        <if test="id != null and id != ''">ID = #{id}</if>
-        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
-            ID in
-            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-        </if>
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+                ID in
+                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+</if>
+        </where>
     </update>
 
     <delete id="deleteSysModFun" parameterType="SysModFun">
-        delete from SYS_MOD_FUN where
-        <if test="id != null and id != ''">ID = #{id}</if>
-        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
-            ID in
-            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-        </if>
+        delete from SYS_MOD_FUN
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
     </delete>
 
 </mapper>

@@ -11,9 +11,9 @@ import cn.com.winning.ssgj.domain.EtUserLookProject;
 import cn.com.winning.ssgj.service.EtUserLookProjectService;
 
 /**
- * Coder AutoGenerator generate.
+ * SSGJ
  *
- * @author Coder AutoGenerator
+ * @author SSGJ
  * @date 2018-01-19 16:52:12
  */
 @Service

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.winning.ssgj.dao.PmisProductInfoDao">
- 
+
     <resultMap id="pmisProductInfoResultForList" type="pmisProductInfo">
         <result column="ID" property="id" jdbcType="BIGINT"/>
         <result column="FID" property="fid" jdbcType="BIGINT"/>
@@ -77,15 +77,14 @@
     <select id="selectPmisProductInfoPaginatedList" resultMap="pmisProductInfoResult" parameterType="pmisProductInfo">
         select * from (
         select t.*,l.NAME cptxName, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
-        from PMIS_PRODUCT_INFO t left join PMIS_PRODUCT_LINE_INFO l  on CAST(t.CPTX AS DECIMAL) = l.ID where 1 = 1
+        from PMIS_PRODUCT_INFO t left join PMIS_PRODUCT_LINE_INFO l on CAST(t.CPTX AS DECIMAL) = l.ID where 1 = 1
         <include refid="sf-pmisProductInfo"/>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
 
     <insert id="insertPmisProductInfo" parameterType="pmisProductInfo">
-       <!-- <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
-        </selectKey>-->
+        <!---->
         insert into PMIS_PRODUCT_INFO
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(id != null and id != '') or id == 0">ID,</if>
@@ -167,21 +166,24 @@
                 <if test="(zt != null and zt != '') or zt == 0">ZT = #{zt, jdbcType=INTEGER},</if>
             </trim>
         </set>
-        where
-        <if test="id != null and id != ''">ID = #{id}</if>
-        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
-            ID in
-            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-        </if>
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+                ID in
+                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
     </update>
 
     <delete id="deletePmisProductInfo" parameterType="PmisProductInfo">
-        delete from PMIS_PRODUCT_INFO where
-        <if test="id != null and id != ''">ID = #{id}</if>
-        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
-            ID in
-            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-        </if>
+        delete from PMIS_PRODUCT_INFO
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+                ID in
+                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
     </delete>
 
 </mapper>
