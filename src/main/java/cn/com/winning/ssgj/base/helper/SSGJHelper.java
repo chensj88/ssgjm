@@ -67,6 +67,14 @@ public class SSGJHelper {
     @Autowired
     @Qualifier("flowCodeService")
     private StepSequenceFactory flowCodeService;
+
+    @Autowired
+    @Qualifier("dataIdService")
+    private StepSequenceFactory dataIdService;
+
+    @Autowired
+    @Qualifier("dataCodeService")
+    private StepSequenceFactory dataCodeService;
     /**
      * 获取用户ID信息
      *
@@ -174,6 +182,24 @@ public class SSGJHelper {
     public long createFlowId(){
         return (long) flowIdService.create();
     }
+
+    /**
+     * 基础数据编码
+     * @return
+     */
+    public String createDataCode(){
+        return dataCodeService.create().toString();
+    }
+
+    /**
+     * 基础数据ID
+     * @return
+     */
+    public long createDataId(){
+        return (long) dataIdService.create();
+    }
+
+
     /**
      * 密码加密
      * @param password 明文密码

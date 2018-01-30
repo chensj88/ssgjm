@@ -138,11 +138,25 @@
     </bean>
     <!--
     业务流程ID
-    WN-YWLC-
     -->
     <bean id="flowIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="FLOW_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--基础数据编码-->
+    <bean id="dataCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="DATA_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="WN-TABLE-{######}" />
+        <property name="dateCutOff" value="true"/>
+    </bean>
+    <!--基础数据ID-->
+    <bean id="dataIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="DATA_ID"/>
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
