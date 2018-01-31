@@ -92,15 +92,15 @@ public class SSGJHelper {
     @Qualifier("shCodeService")
     private StepSequenceFactory shCodeService;
     @Autowired
-    @Qualifier("productLineInfo")
-    private StepSequenceFactory productLineInfo;
+    @Qualifier("productLineInfoService")
+    private StepSequenceFactory productLineInfoService;
     /**
      * 获取产品条线ID
      *
      * @return userId
      */
     public long productLineInfo() {
-        return (long) productLineInfo.create();
+        return (long) productLineInfoService.create();
     }
     /**
      * 获取用户ID信息

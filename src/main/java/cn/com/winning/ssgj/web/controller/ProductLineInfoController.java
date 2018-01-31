@@ -61,7 +61,7 @@ public class ProductLineInfoController extends BaseController {
 	}
 	/**
      * 通过产品ID查询产品条线信息
-     * @param user
+     * @param t
      * @return
      */
 	@RequestMapping("/getById.do")
@@ -77,7 +77,7 @@ public class ProductLineInfoController extends BaseController {
 	}
 	/**
      * 通过产品ID删除产品条线信息
-     * @param user
+     * @param
      * @return
      */
 	@RequestMapping("/deleteById.do")
@@ -93,7 +93,7 @@ public class ProductLineInfoController extends BaseController {
 	}
 	/**
      * 添加产品条线信息
-     * @param productLineInfo
+     * @param t
      * @return
      */
 	@RequestMapping("/addProductLineInfo.do")

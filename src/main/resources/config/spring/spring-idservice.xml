@@ -124,6 +124,15 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
+    <!--产品条线ID 主键生成器
+    起步数据为 100 0000
+   -->
+    <bean id="productLineInfoService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="PL_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
 
     <!--
     业务流程序号
