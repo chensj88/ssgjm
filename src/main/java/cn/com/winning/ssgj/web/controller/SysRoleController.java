@@ -19,13 +19,18 @@ import java.util.List;
  * @create 2018-01-24 上午 9:27
  **/
 @Controller
-@RequestMapping("role")
+@RequestMapping("/admin/role")
 public class SysRoleController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(SysRoleController.class);
 
     @Autowired
     private SSGJHelper ssgjHelper;
+
+    @RequestMapping(value = "/roleInfo.do")
+    public String getRoleInfoPage(HttpServletRequest request, Model model) {
+        return "auth/user/roleinfo";
+    }
 
     @RequestMapping("/list.do")
     @ILog(operationName="角色列表",operationType="list")

@@ -66,10 +66,10 @@ Page.prototype.initDataGrid = function () {
         // 得到查询的参数
         queryParams: function (params) {
             var temp = {
-                rows: params.limit,                         // 页面大小
-                page: (params.offset / params.limit) + 1,   // 页码
+                count: params.limit,    // 每页显示条数
+                first: params.offset,   // 显示条数
                 sort: params.sort,      // 排序列名
-                sortOrder: params.order // 排位命令（desc，asc）
+                order: params.order     // 排位命令（desc，asc）
             };
             return temp;
         },
