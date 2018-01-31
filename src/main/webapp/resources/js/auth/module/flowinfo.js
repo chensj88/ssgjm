@@ -33,7 +33,7 @@ Page.prototype.initDataGrid = function () {
         pageSize: 10,                     // 每页的记录行数（*）
         pageList: [10, 25, 50, 100],        // 可供选择的每页的行数（*）
         showPaginationSwitch: false,			//显示 数据条数选择框
-        search: false,                      // 是否显示表格搜索
+        search: true,                       // 是否显示表格搜索
         strictSearch: true,
         showColumns: true,                  // 是否显示所有的列（选择显示的列）
         showRefresh: true,                  // 是否显示刷新按钮

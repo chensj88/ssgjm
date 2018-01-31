@@ -43,15 +43,15 @@ Page.prototype.initDataGrid = function () {
         pageSize: 10,                     // 每页的记录行数（*）
         pageList: [10, 25, 50, 100],        // 可供选择的每页的行数（*）
         showPaginationSwitch: false,			//显示 数据条数选择框
-        search: false,                      // 是否显示表格搜索
+        search: true,                      // 是否显示表格搜索
         strictSearch: true,
         showColumns: true,                  // 是否显示所有的列（选择显示的列）
         showRefresh: true,                  // 是否显示刷新按钮
         minimumCountColumns: 2,             // 最少允许的列数
         clickToSelect: true,                // 是否启用点击选中行
-        idField: 'roleId',
-        sortName: 'roleId',
-        uniqueId: "roleId",                 // 每一行的唯一标识，一般为主键列
+        idField: 'id',
+        sortName: 'id',
+        uniqueId: "id",                 // 每一行的唯一标识，一般为主键列
         //showToggle: true,                   // 是否显示详细视图和列表视图的切换按钮
         cardView: false,                    // 是否显示详细视图
         detailView: false,                  // 是否显示父子表
@@ -66,10 +66,10 @@ Page.prototype.initDataGrid = function () {
         // 得到查询的参数
         queryParams: function (params) {
             var temp = {
-                rows: params.limit,                         // 页面大小
-                page: (params.offset / params.limit) + 1,   // 页码
+                count: params.limit,    // 每页显示条数
+                first: params.offset,   // 显示条数
                 sort: params.sort,      // 排序列名
-                sortOrder: params.order // 排位命令（desc，asc）
+                order: params.order     // 排位命令（desc，asc）
             };
             return temp;
         },
@@ -81,7 +81,7 @@ Page.prototype.initDataGrid = function () {
             halign: 'middle',
             width: '10px',
         }, {
-            field: "roleId",
+            field: "id",
             title: "ID",
             width: '40px',
             align: 'center'
@@ -96,34 +96,34 @@ Page.prototype.initDataGrid = function () {
             width: '40px',
             align: 'center'
         }, {
-            field: "roleType",
-            title: "角色类型",
-            width: '40px',
-            align: 'center',
-            formatter: function (value) {
-                if (value == '0') {
-                    return '管理员角色';
-                } else if (value == '1') {
-                    return '公司角色';
-                } else {
-                    return '医院角色';
-                }
-            }
-        }, {
             field: "roleDesc",
             title: "角色描述",
             width: '40px',
             align: 'center'
         }, {
-            field: 'lastUpdateTime',
-            title: '最后维护时间',
+            field: "isLock",
+            title: "是否锁定",
             width: '40px',
+            align: 'center',
             formatter: function (value) {
-                var date = new Date();
-                date.setTime(value);
-                return Common.getDateTime(date);
-            },
-            align: 'center'
+                if (value == '0') {
+                    return '否';
+                } else {
+                    return '是';
+                }
+            }
+        }, {
+            field: "isDel",
+            title: "是否删除",
+            width: '40px',
+            align: 'center',
+            formatter: function (value) {
+                if (value == '0') {
+                    return '否';
+                } else {
+                    return '是';
+                }
+            }
         }, {
             title: '操作',
             field: 'id',

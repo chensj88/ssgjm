@@ -43,15 +43,15 @@ Page.prototype.initDataGrid = function () {
         pageSize: 10,                     // 每页的记录行数（*）
         pageList: [10, 25, 50, 100],        // 可供选择的每页的行数（*）
         showPaginationSwitch: false,			//显示 数据条数选择框
-        search: false,                      // 是否显示表格搜索
+        search: true,                      // 是否显示表格搜索
         strictSearch: true,
         showColumns: true,                  // 是否显示所有的列（选择显示的列）
         showRefresh: true,                  // 是否显示刷新按钮
         minimumCountColumns: 2,             // 最少允许的列数
         clickToSelect: true,                // 是否启用点击选中行
-        idField: 'funcId',
-        sortName: 'funcId',
-        uniqueId: "funcId",                 // 每一行的唯一标识，一般为主键列
+        idField: 'id',
+        sortName: 'id',
+        uniqueId: "id",                 // 每一行的唯一标识，一般为主键列
         //showToggle: true,                   // 是否显示详细视图和列表视图的切换按钮
         cardView: false,                    // 是否显示详细视图
         detailView: false,                  // 是否显示父子表
@@ -66,10 +66,10 @@ Page.prototype.initDataGrid = function () {
         // 得到查询的参数
         queryParams: function (params) {
             var temp = {
-                rows: params.limit,                         // 页面大小
-                page: (params.offset / params.limit) + 1,   // 页码
+                count: params.limit,    // 每页显示条数
+                first: params.offset,   // 显示条数
                 sort: params.sort,      // 排序列名
-                sortOrder: params.order // 排位命令（desc，asc）
+                order: params.order     // 排位命令（desc，asc）
             };
             return temp;
         },
@@ -81,7 +81,7 @@ Page.prototype.initDataGrid = function () {
             halign: 'middle',
             width: '10px',
         }, {
-            field: "funcId",
+            field: "id",
             title: "ID",
             width: '40px',
             align: 'center'

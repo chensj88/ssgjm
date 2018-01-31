@@ -392,9 +392,9 @@
                     </a>
                     <ul class="submenu">
                         <li><a href="<%=basePath%>admin/user/userinfo.do"><i class="icon-double-angle-right"></i>用户信息</a></li>
-                        <li><a href="views/admin/user/roleinfo.jsp"><i class="icon-double-angle-right"></i>角色信息</a></li>
-                        <li><a href="views/admin/user/functioninfo.jsp"><i class="icon-double-angle-right"></i>功能信息</a></li>
-                        <li><a href="views/admin/user/userauthinfo.jsp"><i class="icon-double-angle-right"></i>角色权限配置</a></li>
+                        <li><a href="<%=basePath%>admin/role/roleInfo.do"><i class="icon-double-angle-right"></i>角色信息</a></li>
+                        <li><a href="<%=basePath%>admin/func/funcInfo.do"><i class="icon-double-angle-right"></i>功能信息</a></li>
+                        <li><a href="<%=basePath%>admin/auth/authInfo.do"><i class="icon-double-angle-right"></i>角色权限配置</a></li>
                     </ul>
                 </li>
                 <li>
@@ -434,14 +434,14 @@
                     <li><i class="icon-home home-icon"></i><a href="#">首页</a></li>
                     <li class="active">控制台</li>
                 </ul><!-- .breadcrumb -->
-                <div class="nav-search" id="nav-search">
+                <%--<div class="nav-search" id="nav-search">
                     <form class="form-search">
 								<span class="input-icon">
 									<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
 									<i class="icon-search nav-search-icon"></i>
 								</span>
                     </form>
-                </div><!-- #nav-search -->
+                </div>--%><!-- #nav-search -->
             </div>
             <div class="page-content">
                 <div class="page-header">
