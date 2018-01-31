@@ -1,11 +1,11 @@
 /**
- * 基础数据类型信息js
+ * 第三方接口类型信息js
  * @author chensj
  * @version 1.0.0
  */
 $(function () {
     new Page();
-});
+}); 
 
 function Page() {
     _self = this;
@@ -20,13 +20,13 @@ Page.prototype.init = function () {
     this.initDataGrid();
     this.bindEvent();
 //    this.validateForm();
-};
+}
 /**
  * 初始化Table
  */
 Page.prototype.initDataGrid = function () {
-    $('#productLineInfo').bootstrapTable({
-        url: Common.getRootPath() + '/admin/productLineInfo/list.do',// 要请求数据的文件路径
+    $('#interFaceInfoTable').bootstrapTable({
+        url: Common.getRootPath() + '/admin/thirx/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         // contentType: "application/x-www-form-urlencoded",//必须要有！！！！ POST必须有
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -56,7 +56,7 @@ Page.prototype.initDataGrid = function () {
         paginationNextText: '下一页',
         paginationLoop: false, //分页条无限循环的功能
         singleSelect: true,
-//        selectItemName: '单选框',
+        selectItemName: '单选框',
         /*showColumns:true,           //内容列下拉框  */
         // 得到查询的参数
         queryParams: function (params) {
@@ -70,107 +70,79 @@ Page.prototype.initDataGrid = function () {
             return temp;
         },
 
-        columns: [
-//                  {
-//            checkbox: true,
-//            align: 'center',
-//            valign: 'middle',
-//            title: '单选框',
-//            halign: 'middle',
-//            width: '13px',
-//        }, 
-        {
+        columns: [{
+            checkbox: true,
+            align: 'center',
+            valign: 'middle',
+            title: '单选框',
+            halign: 'middle',
+            width: '13px',
+        }, {
             field: "id",
             title: "ID",
-            width: '10px',
+            width: '30px',
             align: 'center'
         }, {
-            field: "name",
-            title: "产品条线名称",
-            width: '55px',
+            field: "interName",
+            title: "接口名称",
+            width: '35px',
             align: 'center'
         }, {
-            field: "yxtnm",
-            title: "原系统内码",
-            width: '20px',
+            field: "interCode",
+            title: "接口代码",
+            width: '35px',
             align: 'center'
         }, {
-            field: "cpxl",
-            title: "产品小类",
-            width: '20px',
+            field: "refProductName",
+            title: "适用产品名称",
+            width: '30px',
             align: 'center'
-        }, 
-        {
-            field: "cpdl",
-            title: "产品大类",
-            width: '20px',
-            align: 'center'
-        },
-        {
-            field: "cpdm",
-            title: "产品部门",
-            width: '20px',
+        }, {
+            field: "lastUpdator",
+            title: "接口描述",
+            width: '45px',
             align: 'center'
         },
         {
-            field: "hsdy",
-            title: "核算单元",
-            width: '20px',
-            align: 'center'
-        },
-        {
-            field: "lx",
-            title: "类型",
-            width: '20px',
-            align: 'center'
-        },
-        {
-            field: "mklx",
-            title: "模块类型",
-            width: '20px',
-            align: 'center'
-        },
-        {
-            field: "cpz",
-            title: "产品组",
-            width: '20px',
+            field: "lastUpdateTime",
+            title: "维护时间",
+            width: '40px',
             align: 'center'
         },{
-            field: "zt",
+            field: "status",
             title: "状态",
             width: '20px',
             formatter: function (value) {
                 if (value == '1') {
                     return '生效';
-                } else if (value = '2') {
+                } else if (value = '0') {
                     return '失效';
                 }
             },
             align: 'center'
-        }
-//        ,{
-//            title: '操作',
-//            field: 'id',
-//            align: 'center',
-//            width: '40px',
-//            formatter: function (value, row, index) {
-//                var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.name +"','"+row.code +"','"+row.gnms + "','"+row.cptxName+"')  mce_href='#' >编辑</a> ";
-//                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
-//                return e + d;
-//            }
-//        }
-        ],
+        },{
+            title: '操作',
+            field: 'id',
+            align: 'center',
+            width: '40px',
+            formatter: function (value, row, index) {
+                var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.interName +"','"+row.interCode +"','"+row.refProductName + "','"+row.lastUpdator+"') >编辑</a> ";
+                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
+                return e + d ;
+            }
+        }],
     });
-};
-function edit(id,name,code,gnms,cptx) {
-    $('#cpmc').val(name);
-    $('#code').val(code);
-    $('#gnms').val(gnms);
-    $('#cptx').val(cptx);
-    $('#id').val(id);
-    $('#productInfoModal').modal('show');
 }
-/** 
+
+function edit(id,interName,interCode,refProductName,lastUpdator) {
+    $('#interName').val(interName);
+    $('#interCode').val(interCode);
+    $('#refProductName').val(refProductName);
+    $('#lastUpdator').val(lastUpdator);
+    $('#id').val(id);
+    $('#interFaceInfoModal').modal('show');
+}
+/**
  * 按钮绑定事件
  */
 Page.prototype.bindEvent = function () {
@@ -178,74 +150,37 @@ Page.prototype.bindEvent = function () {
      * 新增用户
      * 需要清理表格数据
      */
-    $('#addProductInfo').on('click', function () {
+    $('#addInterFaceInfo').on('click', function () {
         $("input[type=reset]").trigger("click");
         $("#id").val("");
-        $('#cpmc').val("");
-        $('#code').val("");
-        $('#gnms').val("");
-        $('#cptx').val("");
-        $('#productInfoModal').modal('show');
+        $('#interName').val("");
+        $('#interCode').val("");
+        $('#refProductName').val("");
+        $('#lastUpdator').val("");
+        $('#interFaceInfoModal').modal('show');
     });
-    /**
-     * 修改用户
-     * 只能修改一条数据
-     */
-    $('#modifyUser').on('click', function () {
-        var arrselections = $("#userTable").bootstrapTable('getSelections');
-        if (arrselections.length > 1) {
-            //toastr.warning('只能选择一行进行编辑');
-            Ewin.alert('只能选择一行进行编辑');
-            return;
-        }
-        if (arrselections.length <= 0) {
-            //toastr.warning('请选择有效数据');
-            Ewin.alert('请选择有效数据');
-            return;
-        }
-        var userId = arrselections[0].id;
-        $.ajax({
-            url: Common.getRootPath() + '/admin/user/getById.do',
-            data: {'userId': userId},
-            type: "post",
-            dataType: 'json',
-            async: false,
-            success: function (result) {
-                var _result = eval(result);
-                if (_result.status == Common.SUCCESS) {
-                    $('#userForm').initForm(_result.data);
-                    $('#orgid').val(_result.data.orgid);
-                    $('#password').val(_result.data.password);
-                    $('#cpfl').val(_result.data.password);
-                    $('#syfw').val(_result.data.password);
-                    $('#productInfoModal').modal('show');
-                }
-
-            }
-        });
-    });
+//  
 
     /**
      * 列表中按钮
      *   删除用户信息
      */
-    $('#productInfo').on('click', 'a[name="delete"]', function (e) {
+    $('#interFaceInfoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var productInfoId = $(this).attr('aid');
-        alert(productInfoId);
         Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
             if (!e) {
                 return;
             }
             $.ajax({
                 type: "post",
-                url: Common.getRootPath() + '/admin/productInfo/deleteById.do',
+                url: Common.getRootPath() + '/admin/thirx/deleteById.do',
                 data: {"id": productInfoId},
                 dataType: 'json',
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
                         toastr.success('提交数据成功');
-                        $("#productInfo").bootstrapTable('refresh');
+                        $("#interFaceInfoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function () {
@@ -256,84 +191,45 @@ Page.prototype.bindEvent = function () {
             });
         });
     });
-    /**
-     * 删除用户
-     * 只能删除一条数据
-     */
-    $('#deleteProductInfo').on('click', function () {
-        var arrselections = $("#userTable").bootstrapTable('getSelections');
-        if (arrselections.length > 1) {
-           // toastr.warning('只能选择一行进行编辑');
-            Ewin.alert('只能选择一行进行编辑');
-            return;
-        }
-        if (arrselections.length <= 0) {
-            //toastr.warning('请选择有效数据');
-            Ewin.alert('只能选择一行进行编辑');
-            return;
-        }
-        var userId = arrselections[0].userId;
-        Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
-            if (!e) {
-                return;
-            }
-            $.ajax({
-                type: "post",
-                url: Common.getRootPath() + '/admin/user/deleteById.do',
-                data: {"userId": userId},
-                dataType: 'json',
-                success: function (data, status) {
-                    if (status == Common.SUCCESS) {
-                        toastr.success('提交数据成功');
-                        $("#userTable").bootstrapTable('refresh');
-                    }
-                },
-                error: function () {
-                    toastr.error('Error');
-                },
-                complete: function () {
-                }
-            });
-        });
-    });
+
     /**
      * 保存用户按钮
      * 通过隐藏域判断用户是否存在，而使用不同的方法进行新增或者修改
      */
-    $('#saveProduct').on('click', function (e) {
+    $('#save').on('click', function (e) {
         //阻止默认行为
         e.preventDefault();
-//        var bootstrapValidator = $("#productInfoModal").data('bootstrapValidator');
+//        var bootstrapValidator = $("#sysDataInfo").data('bootstrapValidator');
 //        //修复记忆的组件不验证
 //        if (bootstrapValidator) {
 //            bootstrapValidator.validate();
 //        }
         var url = '';
         if ($('#id').val().length == 0) {
-            url = Common.getRootPath() + '/admin/productInfo/addProductInfo.do';
+            url = Common.getRootPath() + '/admin/thirx/addInterFaceInfo.do';
         } else {
-            url = Common.getRootPath() + '/admin/productInfo/update.do';
+            url = Common.getRootPath() + '/admin/thirx/update.do';
         }
 //        if (bootstrapValidator.isValid()) {
-        	console.log($("#productInfoForm").serialize());
+        	console.log($("#interFaceInfoForm").serialize());
             $.ajax({
                 url: url,
-                data: $("#productInfoForm").serialize(),
+                data: $("#interFaceInfoForm").serialize(),
                 type: "post",
                 dataType: 'json',
                 async: false,
                 success: function (result) {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
-                        $('#productInfoModal').modal('hide');
-                        $("#productInfo").bootstrapTable('refresh');
+                        $('#interFaceInfoModal').modal('hide');
+                        $("#interFaceInfoTable").bootstrapTable('refresh');
                     }
 
                 }
             });
 //        }
     });
-};
+}
 ///**
 // * 表单验证
 // */
@@ -341,7 +237,7 @@ Page.prototype.bindEvent = function () {
 //    //表单验证
 //    //this._changeEvent = (ieVersion === 9 || !('oninput' in el)) ? 'keyup' : 'input'; 源码修改
 //    //this._changeEvent = (ieVersion === 9 || !('onblur' in el)) ? 'keyup' : 'blur'; 
-//    $('#productInfoForm').bootstrapValidator({
+//    $('#interFaceInfoForm').bootstrapValidator({
 //        message: '输入的值不符合规格',
 //        feedbackIcons: {
 //            valid: 'glyphicon glyphicon-ok',
@@ -407,3 +303,80 @@ Page.prototype.bindEvent = function () {
 //        }
 //    });
 //}
+///**
+//* 删除用户
+//* 只能删除一条数据
+//*/
+//$('#deleteProductInfo').on('click', function () {
+// var arrselections = $("#userTable").bootstrapTable('getSelections');
+// if (arrselections.length > 1) {
+//    // toastr.warning('只能选择一行进行编辑');
+//     Ewin.alert('只能选择一行进行编辑');
+//     return;
+// }
+// if (arrselections.length <= 0) {
+//     //toastr.warning('请选择有效数据');
+//     Ewin.alert('只能选择一行进行编辑');
+//     return;
+// }
+// var userId = arrselections[0].userId;
+// Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
+//     if (!e) {
+//         return;
+//     }
+//     $.ajax({
+//         type: "post",
+//         url: Common.getRootPath() + '/admin/thirx/deleteById.do',
+//         data: {"userId": userId},
+//         dataType: 'json',
+//         success: function (data, status) {
+//             if (status == Common.SUCCESS) {
+//                 toastr.success('提交数据成功');
+//                 $("#userTable").bootstrapTable('refresh');
+//             }
+//         },
+//         error: function () {
+//             toastr.error('Error');
+//         },
+//         complete: function () {
+//         }
+//     });
+// });
+//});
+/**
+//* 修改用户
+//* 只能修改一条数据
+//*/
+//$('#modifyUser').on('click', function () {
+//  var arrselections = $("#userTable").bootstrapTable('getSelections');
+//  if (arrselections.length > 1) {
+//      //toastr.warning('只能选择一行进行编辑');
+//      Ewin.alert('只能选择一行进行编辑');
+//      return;
+//  }
+//  if (arrselections.length <= 0) {
+//      //toastr.warning('请选择有效数据');
+//      Ewin.alert('请选择有效数据');
+//      return;
+//  }
+//  var userId = arrselections[0].id;
+//  $.ajax({
+//      url: Common.getRootPath() + '/admin/thirx/getById.do',
+//      data: {'userId': userId},
+//      type: "post",
+//      dataType: 'json',
+//      async: false,
+//      success: function (result) {
+//          var _result = eval(result);
+//          if (_result.status == Common.SUCCESS) {
+//              $('#userForm').initForm(_result.data);
+//              $('#orgid').val(_result.data.orgid);
+//              $('#password').val(_result.data.password);
+//              $('#cpfl').val(_result.data.password);
+//              $('#syfw').val(_result.data.password);
+//              $('#sysDataInfo').modal('show');
+//          }
+//
+//      }
+//  });
+//});

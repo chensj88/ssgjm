@@ -1,5 +1,5 @@
 /**
- * 用户信息js
+ * 产品基础数据信息js
  * @author chensj
  * @version 1.0.0
  */
