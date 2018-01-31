@@ -88,7 +88,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label" >接口描述:</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="lastUpdator" name="lastUpdator"
+                                    <input type="text" class="form-control" id="interDesc" name="interDesc"
                                            placeholder="请输入接口描述">
                                 </div>
                             </div>

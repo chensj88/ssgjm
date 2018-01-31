@@ -98,7 +98,7 @@ Page.prototype.initDataGrid = function () {
             width: '30px',
             align: 'center'
         }, {
-            field: "lastUpdator",
+            field: "interDesc",
             title: "接口描述",
             width: '45px',
             align: 'center'
@@ -126,7 +126,7 @@ Page.prototype.initDataGrid = function () {
             align: 'center',
             width: '40px',
             formatter: function (value, row, index) {
-                var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.interName +"','"+row.interCode +"','"+row.refProductName + "','"+row.lastUpdator+"') >编辑</a> ";
+                var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.interName +"','"+row.interCode +"','"+row.refProductName + "','"+row.interDesc+"') >编辑</a> ";
                 var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
                 return e + d ;
             }
@@ -134,11 +134,11 @@ Page.prototype.initDataGrid = function () {
     });
 }
 
-function edit(id,interName,interCode,refProductName,lastUpdator) {
+function edit(id,interName,interCode,refProductName,interDesc) {
     $('#interName').val(interName);
     $('#interCode').val(interCode);
     $('#refProductName').val(refProductName);
-    $('#lastUpdator').val(lastUpdator);
+    $('#interDesc').val(interDesc);
     $('#id').val(id);
     $('#interFaceInfoModal').modal('show');
 }
@@ -156,7 +156,7 @@ Page.prototype.bindEvent = function () {
         $('#interName').val("");
         $('#interCode').val("");
         $('#refProductName').val("");
-        $('#lastUpdator').val("");
+        $('#interDesc').val("");
         $('#interFaceInfoModal').modal('show');
     });
 //  

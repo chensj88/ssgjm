@@ -101,7 +101,7 @@ public class ProductLineInfoController extends BaseController {
 	@Transactional
 	@ILog(operationName="添加产品条线信息",operationType="addProductLineInfo")
 	public Map<String, Object> addProductLineInfo(PmisProductLineInfo t)  {
-		Long id = ssgjHelper.createPuductId();
+		Long id = ssgjHelper.productLineInfo();
 		t.setId(id);
 		t.setZt(1);
 		System.err.println(t);
