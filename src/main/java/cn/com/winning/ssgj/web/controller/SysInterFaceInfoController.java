@@ -102,7 +102,7 @@ public class SysInterFaceInfoController extends BaseController {
 	@Transactional
 	@ILog(operationName="添加第三方接口类型信息",operationType="addInterFaceInfo")
 	public Map<String, Object> addInterFaceInfo(SysThirdInterfaceInfo t)  {
-		Long id = ssgjHelper.createDataId();
+		Long id = ssgjHelper.createThirdInterfaceId();
 		System.err.println(id);
 		t.setId(id);
 		t.setStatus(1);

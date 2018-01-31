@@ -58,7 +58,7 @@ public class SysSoftHardwareInfo extends BaseDomain implements Serializable {
 	private String shBrandConfig;
 	
 	/**
-	 * @val 应用环境
+	 * @val 应用环境  0：测试，1正式，2：测试&正式
 	 */
 	private String shEnvType;
 	

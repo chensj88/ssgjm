@@ -68,8 +68,7 @@
     </select>
 
     <insert id="insertSysSoftHardwareInfo" parameterType="sysSoftHardwareInfo">
-        <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
-        </selectKey>
+
         insert into SYS_SOFT_HARDWARE_INFO
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(id != null and id != '') or id == 0">ID,</if>
