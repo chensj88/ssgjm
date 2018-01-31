@@ -68,8 +68,7 @@
     </select>
 
     <insert id="insertSysDataInfo" parameterType="sysDataInfo">
-        <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
-        </selectKey>
+
         insert into SYS_DATA_INFO
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(id != null and id != '') or id == 0">ID,</if>

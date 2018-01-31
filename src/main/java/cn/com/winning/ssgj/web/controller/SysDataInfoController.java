@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import cn.com.winning.ssgj.domain.PmisProductInfo;
+import cn.com.winning.ssgj.domain.SysDataInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.slf4j.Logger;
@@ -23,52 +24,52 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
  
 /**
- * 产品信息处理Controller
+ * 基础数据类型处理Controller
  *
  * @author thinkpad
  * @date 2018-01-04
  */
 @Controller
-@RequestMapping("/admin/productInfo")
-public class ProductInfoController extends BaseController {
+@RequestMapping("/admin/basicData")
+public class SysDataInfoController extends BaseController {
 
-	private static final Logger logger = LoggerFactory.getLogger(ProductInfoController.class);
+	private static final Logger logger = LoggerFactory.getLogger(SysDataInfoController.class);
 	@Autowired
 	private SSGJHelper ssgjHelper;
-	@RequestMapping(value = "/product.do")
+	@RequestMapping(value = "/dataInfo.do")
 	public String userinfo(HttpServletRequest request, Model model){
-		return "auth/module/productInfo";
+		return "auth/module/sysDataInfo";
 	}
 	/**
-     * 产品信息列表
+     * 基础数据类型列表
      * @param row
      * @return
      */
 	@RequestMapping("/list.do")
 	@ResponseBody
-	@ILog(operationName="产品信息列表",operationType="list")
+	@ILog(operationName="基础数据类型列表",operationType="list")
 	public Map<String, Object> list(Row row) {
-		PmisProductInfo productInfo = new PmisProductInfo();
-		productInfo.setRow(row);
-		List<PmisProductInfo> productInfos = getFacade().getPmisProductInfoService().getPmisProductInfoPaginatedList(productInfo);
-		int total =  getFacade().getPmisProductInfoService().getPmisProductInfoCount(productInfo);
+		SysDataInfo sysDataInfo = new SysDataInfo();
+		sysDataInfo.setRow(row);
+		List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().getSysDataInfoPaginatedList(sysDataInfo);
+		int total =  getFacade().getSysDataInfoService().getSysDataInfoCount(sysDataInfo);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("rows", productInfos);
+		map.put("rows", sysDataInfos);
 		map.put("total", total);
 		map.put("status", Constants.SUCCESS);
 		return map;
 	}
 	/**
-     * 通过产品ID查询产品信息
+     * 通过产品ID查询基础数据类型
      * @param user
      * @return
      */
 	@RequestMapping("/getById.do")
 	@ResponseBody
-	@ILog(operationName="通过产品ID查询产品信息",operationType="getProductInfoById")
-	public  Map<String, Object> getProductInfoById(PmisProductInfo t){
-		System.err.println("通过产品ID查询产品信息");
-		t  =  getFacade().getPmisProductInfoService().getPmisProductInfo(t);
+	@ILog(operationName="通过产品ID查询基础数据类型",operationType="getProductInfoById")
+	public  Map<String, Object> getDataInfoById(SysDataInfo t){
+		System.err.println("通过产品ID查询基础数据类型");
+		t  =  getFacade().getSysDataInfoService().getSysDataInfo(t);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("data", t);
 		map.put("status", Constants.SUCCESS);
@@ -82,44 +83,44 @@ public class ProductInfoController extends BaseController {
 	@RequestMapping("/deleteById.do")
 	@ResponseBody
 	@Transactional
-	@ILog(operationName="通过产品ID删除产品信息",operationType="deleteById")
-	public  Map<String, Object> deleteById(PmisProductInfo t) {
-		t.setZt(2);
-        getFacade().getPmisProductInfoService().modifyPmisProductInfo(t);
+	@ILog(operationName="通过产品ID删除基础数据类型",operationType="deleteById")
+	public  Map<String, Object> deleteById(SysDataInfo t) {
+		t.setStatus(0);
+        getFacade().getSysDataInfoService().modifySysDataInfo(t);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", Constants.SUCCESS);
 		return map;
 	}
 	/**
-     * 添加产品信息
-     * @param productInfo
+     * 添加基础数据类型
+     * @param 
      * @return
      */
-	@RequestMapping("/addProductInfo.do")
+	@RequestMapping("/addSysDataInfo.do")
 	@ResponseBody
 	@Transactional
-	@ILog(operationName="添加产品信息",operationType="addProductInfo")
-	public Map<String, Object> addProductInfo(PmisProductInfo t)  {
-		Long id = ssgjHelper.createPuductId();
+	@ILog(operationName="添加基础数据类型",operationType="addSysDataInfo")
+	public Map<String, Object> addDataInfo(SysDataInfo t)  {
+		Long id = ssgjHelper.createDataId();
+		System.err.println(id);
 		t.setId(id);
-		t.setZt(1);
-		System.err.println(t);
-		getFacade().getPmisProductInfoService().createPmisProductInfo(t);
+		t.setStatus(1);
+		getFacade().getSysDataInfoService().createSysDataInfo(t);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", Constants.SUCCESS);
 		return map;
 	}
 	/**
-     * 修改产品信息
+     * 修改基础数据类型
      * @param user
      * @return
      */
 	@RequestMapping("/update.do")
 	@ResponseBody
 	@Transactional
-	@ILog(operationName="修改产品信息",operationType="update")
-	public Map<String, Object> updateUser(PmisProductInfo t) {
-        getFacade().getPmisProductInfoService().modifyPmisProductInfo(t);
+	@ILog(operationName="修改基础数据类型",operationType="update")
+	public Map<String, Object> update(SysDataInfo t) {
+        getFacade().getSysDataInfoService().modifySysDataInfo(t);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", Constants.SUCCESS);
 		return map;

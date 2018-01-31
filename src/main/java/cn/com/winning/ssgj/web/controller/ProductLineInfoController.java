@@ -24,7 +24,7 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 
 /**
- * 产品信息处理Controller
+ * 产品条线信息处理Controller
  *
  * @author thinkpad
  * @date 2018-01-04
@@ -41,7 +41,7 @@ public class ProductLineInfoController extends BaseController {
 		return "auth/module/productLineInfo";
 	}
 	/**
-     * 用户信息列表
+     * 产品条线信息列表
      * @param row
      * @return
      */
@@ -49,78 +49,78 @@ public class ProductLineInfoController extends BaseController {
 	@ResponseBody
 	@ILog(operationName="产品条线信息列表",operationType="list")
 	public Map<String, Object> list(Row row) {
-		PmisProductLineInfo productInfo = new PmisProductLineInfo();
-		productInfo.setRow(row); 
-		List<PmisProductLineInfo> productInfos = getFacade().getPmisProductLineInfoService().getPmisProductLineInfoPaginatedList(productInfo);
-		int total =  getFacade().getPmisProductLineInfoService().getPmisProductLineInfoCount(productInfo);
+		PmisProductLineInfo productLineInfo = new PmisProductLineInfo();
+		productLineInfo.setRow(row); 
+		List<PmisProductLineInfo> productLineInfos = getFacade().getPmisProductLineInfoService().getPmisProductLineInfoPaginatedList(productLineInfo);
+		int total =  getFacade().getPmisProductLineInfoService().getPmisProductLineInfoCount(productLineInfo);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("rows", productInfos);
+		map.put("rows", productLineInfos);
 		map.put("total", total);
 		map.put("status", Constants.SUCCESS);
 		return map;
 	}
 	/**
-     * 通过产品ID查询产品信息
+     * 通过产品ID查询产品条线信息
      * @param user
      * @return
      */
 	@RequestMapping("/getById.do")
 	@ResponseBody
-	@ILog(operationName="通过产品ID查询产品信息",operationType="getProductInfoById")
-	public  Map<String, Object> getProductInfoById(PmisProductInfo t){
-		System.err.println("通过产品ID查询产品信息");
-		t  =  getFacade().getPmisProductInfoService().getPmisProductInfo(t);
+	@ILog(operationName="通过产品ID查询产品条线信息",operationType="getProductLineInfoById")
+	public  Map<String, Object> getProductLineInfoById(PmisProductLineInfo t){
+		System.err.println("通过产品ID查询产品条线信息");
+		t  =  getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(t);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("data", t);
 		map.put("status", Constants.SUCCESS);
 		return map;
 	}
 	/**
-     * 通过产品ID删除产品信息
+     * 通过产品ID删除产品条线信息
      * @param user
      * @return
      */
 	@RequestMapping("/deleteById.do")
 	@ResponseBody
 	@Transactional
-	@ILog(operationName="通过产品ID删除产品信息",operationType="deleteById")
-	public  Map<String, Object> deleteById(PmisProductInfo t) {
+	@ILog(operationName="通过产品ID删除产品条线信息",operationType="deleteById")
+	public  Map<String, Object> deleteById(PmisProductLineInfo t) {
 		t.setZt(2);
-        getFacade().getPmisProductInfoService().modifyPmisProductInfo(t);
+        getFacade().getPmisProductLineInfoService().modifyPmisProductLineInfo(t);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", Constants.SUCCESS);
 		return map;
 	}
 	/**
-     * 添加产品信息
-     * @param productInfo
+     * 添加产品条线信息
+     * @param productLineInfo
      * @return
      */
-	@RequestMapping("/addProductInfo.do")
+	@RequestMapping("/addProductLineInfo.do")
 	@ResponseBody
 	@Transactional
-	@ILog(operationName="添加产品信息",operationType="addProductInfo")
-	public Map<String, Object> addProductInfo(PmisProductInfo t)  {
+	@ILog(operationName="添加产品条线信息",operationType="addProductLineInfo")
+	public Map<String, Object> addProductLineInfo(PmisProductLineInfo t)  {
 		Long id = ssgjHelper.createPuductId();
 		t.setId(id);
 		t.setZt(1);
 		System.err.println(t);
-		getFacade().getPmisProductInfoService().createPmisProductInfo(t);
+		getFacade().getPmisProductLineInfoService().createPmisProductLineInfo(t);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", Constants.SUCCESS);
 		return map;
 	}
 	/**
-     * 修改产品信息
-     * @param user
+     * 修改产品条线信息
+     * @param 
      * @return
      */
 	@RequestMapping("/update.do")
 	@ResponseBody
 	@Transactional
-	@ILog(operationName="修改产品信息",operationType="update")
-	public Map<String, Object> updateUser(PmisProductInfo t) {
-        getFacade().getPmisProductInfoService().modifyPmisProductInfo(t);
+	@ILog(operationName="修改产品条线信息",operationType="update")
+	public Map<String, Object> update(PmisProductLineInfo t) {
+        getFacade().getPmisProductLineInfoService().modifyPmisProductLineInfo(t);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", Constants.SUCCESS);
 		return map;
