@@ -16,6 +16,36 @@
     <link rel="shortcut icon" href="resources/img/logo.ico">
 </head>
 <body>
+<div class="panel panel-default">
+    <div class="panel-heading">查询条件</div>
+    <div class="panel-body">
+            <div class="row">
+                <div class="form-group col-md-3">
+                <label class="col-md-4 control-label text-right">姓名：</label>
+                <div class="col-md-6">
+                    <input id="cName" type="text" class="form-control">
+                </div>
+            </div>
+                <div class="form-group col-md-3">
+                    <label class="col-md-6 control-label text-right">员工号：</label>
+                    <div class="col-md-6">
+                        <input id="userCard" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="col-md-6 control-label text-right">手机号码：</label>
+                    <div class="col-md-6">
+                        <input id="telephone" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group col-md-3">
+                    <div class="col-sm-12">
+                        <input class="btn btn-primary" type="button" value="查询" onclick="SearchData()">
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
 <!--表格区域  -->
 <table id="userTable"></table>
 <!--toolbar区域  -->

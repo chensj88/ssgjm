@@ -53,4 +53,16 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
         return this.sysUserInfoDao.selectEntityPaginatedList(t);
     }
 
+    @ILog(operationName="按照条件查询List总数",operationType="querylistCount")
+    @Override
+    public Integer getSysUserInfoQueryCount(SysUserInfo t) {
+        return this.sysUserInfoDao.selectSysUserInfoQueryCount(t);
+    }
+
+    @ILog(operationName="按照条件查询List",operationType="querylist")
+    @Override
+    public List<SysUserInfo> getSysUserInfoQueryPaginatedList(SysUserInfo t) {
+        return this.sysUserInfoDao.selectSysUserInfoQueryPaginatedList(t);
+    }
+
 }

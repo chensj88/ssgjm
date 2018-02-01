@@ -37,6 +37,12 @@
         <if test="userType != null and userType != ''">and t.USER_TYPE = #{userType}</if>
     </sql>
 
+    <sql id="query-sysUserInfo">
+        <if test="userid != null and userid != ''">AND t.USERID LIKE '%${userid}%'</if>
+        <if test="yhmc != null and yhmc != ''">AND t.YHMC LIKE '%${yhmc}%'</if>
+        <if test="mobile != null and mobile != ''">AND t.MOBILE LIKE '%${mobile}'</if>
+    </sql>
+
     <select id="selectSysUserInfo" resultMap="sysUserInfoResult" parameterType="sysUserInfo">
         select * from SYS_USER_INFO t where 1 = 1
         <include refid="sf-sysUserInfo"/>
@@ -139,4 +145,16 @@
         </where>
     </delete>
 
+    <select id="selectSysUserInfoQueryCount" resultType="int" parameterType="sysUserInfo">
+        select count(*) from SYS_USER_INFO t where 1 = 1
+        <include refid="query-sysUserInfo"/>
+    </select>
+    <select id="selectSysUserInfoQueryPaginatedList" resultMap="sysUserInfoResult" parameterType="sysUserInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_USER_INFO t where 1 = 1
+        <include refid="query-sysUserInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
 </mapper>

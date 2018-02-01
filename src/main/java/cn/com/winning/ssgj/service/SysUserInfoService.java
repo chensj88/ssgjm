@@ -26,4 +26,7 @@ public interface SysUserInfoService {
 
     List<SysUserInfo> getSysUserInfoPaginatedList(SysUserInfo t);
 
+    Integer getSysUserInfoQueryCount(SysUserInfo t);
+
+    List<SysUserInfo> getSysUserInfoQueryPaginatedList(SysUserInfo t);
 }

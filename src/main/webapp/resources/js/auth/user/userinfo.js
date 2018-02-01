@@ -3,28 +3,27 @@
  * @author chensj
  * @version 1.0.0
  */
-$(function () {
-    new Page();
-});
 
-function Page() {
-    _self = this;
-    this.init();
+function SearchData(){
+    $('#userTable').bootstrapTable('refresh', { pageNumber: 1 });
 }
 
-Page.prototype.init = function () {
-    this.editObj = null;
-    this.status = {};
-    this.sex = {};
-    this.userType = {};
-    this.initDataGrid();
-    this.bindEvent();
-    this.validateForm();
-};
-/**
- * 初始化Table
- */
-Page.prototype.initDataGrid = function () {
+function queryParams(params) {
+    console.log($.trim($('#cName').val()));
+    console.log($.trim($('#userCard').val()));
+    console.log($.trim($('#telephone').val()));
+    return {
+        count: params.limit,    // 每页显示条数
+        first: params.offset,   // 显示条数
+        sort: params.sort,      // 排序列名
+        order: params.order,     // 排位命令（desc，asc）
+        yhmc: $.trim($('#cName').val()),
+        userid: $.trim($('#userCard').val()),
+        mobile: $.trim($('#telephone').val())
+    };
+}
+
+$(function () {
     $('#userTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/user/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
@@ -38,15 +37,15 @@ Page.prototype.initDataGrid = function () {
         pageSize: 10,                     // 每页的记录行数（*）
         pageList: [10, 25, 50, 100],        // 可供选择的每页的行数（*）
         showPaginationSwitch: false,			//显示 数据条数选择框
-        search: true,                       // 是否显示表格搜索
+        search: false,                       // 是否显示表格搜索
         strictSearch: true,
         showColumns: true,                  // 是否显示所有的列（选择显示的列）
         showRefresh: true,                  // 是否显示刷新按钮
         minimumCountColumns: 2,             // 最少允许的列数
         clickToSelect: true,                // 是否启用点击选中行
-        idField: 'userId',
-        sortName: 'userId',
-        uniqueId: "userId",                 // 每一行的唯一标识，一般为主键列
+        idField: 'id',
+        sortName: 'id',
+        uniqueId: "id",                 // 每一行的唯一标识，一般为主键列
         //showToggle: true,                   // 是否显示详细视图和列表视图的切换按钮
         cardView: false,                    // 是否显示详细视图
         detailView: false,                  // 是否显示父子表
@@ -59,17 +58,7 @@ Page.prototype.initDataGrid = function () {
         selectItemName: '单选框',
         /*showColumns:true,           //内容列下拉框  */
         // 得到查询的参数
-        queryParams: function (params) {
-            // 这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-            var temp = {
-                count: params.limit,    // 每页显示条数
-                first: params.offset,   // 显示条数
-                sort: params.sort,      // 排序列名
-                order: params.order     // 排位命令（desc，asc）
-            };
-            return temp;
-        },
-
+        queryParams:queryParams,
         columns: [{
             checkbox: true,
             align: 'center',
@@ -143,11 +132,8 @@ Page.prototype.initDataGrid = function () {
             }
         }],
     });
-};
-/**
- * 按钮绑定事件
- */
-Page.prototype.bindEvent = function () {
+
+
     /**
      * 新增用户
      * 需要清理表格数据
@@ -320,14 +306,11 @@ Page.prototype.bindEvent = function () {
             });
         }
     });
-};
-/**
- * 表单验证
- */
-Page.prototype.validateForm = function () {
+
+
     //表单验证
     //this._changeEvent = (ieVersion === 9 || !('oninput' in el)) ? 'keyup' : 'input'; 源码修改
-    //this._changeEvent = (ieVersion === 9 || !('onblur' in el)) ? 'keyup' : 'blur'; 
+    //this._changeEvent = (ieVersion === 9 || !('onblur' in el)) ? 'keyup' : 'blur';
     $('#userForm').bootstrapValidator({
         message: '输入的值不符合规格',
         feedbackIcons: {
@@ -393,4 +376,4 @@ Page.prototype.validateForm = function () {
             }
         }
     });
-};
+});

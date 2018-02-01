@@ -50,12 +50,12 @@ public class UserController extends BaseController {
      */
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public Map<String, Object> list(Row row) {
-		System.out.println(row);
-		SysUserInfo userInfo = new SysUserInfo();
+	public Map<String, Object> list(Row row,SysUserInfo userInfo) {
+        System.out.println(row);
+        System.out.println(userInfo);
 		userInfo.setRow(row);
-		List<SysUserInfo> userInfos = getFacade().getSysUserInfoService().getSysUserInfoPaginatedList(userInfo);
-		int total =  getFacade().getSysUserInfoService().getSysUserInfoCount(userInfo);
+		List<SysUserInfo> userInfos = getFacade().getSysUserInfoService().getSysUserInfoQueryPaginatedList(userInfo);
+		int total =  getFacade().getSysUserInfoService().getSysUserInfoQueryCount(userInfo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("rows", userInfos);
 		map.put("total", total);
