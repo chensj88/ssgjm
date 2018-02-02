@@ -4,26 +4,34 @@
  * @version 1.0.0
  */
 
-function SearchData(){
-    $('#userTable').bootstrapTable('refresh', { pageNumber: 1 });
-}
 
-function queryParams(params) {
-    console.log($.trim($('#cName').val()));
-    console.log($.trim($('#userCard').val()));
-    console.log($.trim($('#telephone').val()));
-    return {
-        count: params.limit,    // 每页显示条数
-        first: params.offset,   // 显示条数
-        sort: params.sort,      // 排序列名
-        order: params.order,     // 排位命令（desc，asc）
-        yhmc: $.trim($('#cName').val()),
-        userid: $.trim($('#userCard').val()),
-        mobile: $.trim($('#telephone').val())
-    };
-}
 
 $(function () {
+    /**
+     * 查询
+     * @constructor
+     */
+    function SearchData(){
+        $('#userTable').bootstrapTable('refresh', { pageNumber: 1 });
+    }
+
+    /**
+     *  查询参数信息
+     * @param params
+     * @returns {{count: *|number, first, sort, order, yhmc: *|string, userid: *|string, mobile: *|string}}
+     */
+    function queryParams(params) {
+        return {
+            count: params.limit,    // 每页显示条数
+            first: params.offset,   // 显示条数
+            sort: params.sort,      // 排序列名
+            order: params.order,     // 排位命令（desc，asc）
+            yhmc: $.trim($('#cName').val()),
+            userid: $.trim($('#userCard').val()),
+            mobile: $.trim($('#telephone').val())
+        };
+    }
+
     $('#userTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/user/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
@@ -39,8 +47,8 @@ $(function () {
         showPaginationSwitch: false,			//显示 数据条数选择框
         search: false,                       // 是否显示表格搜索
         strictSearch: true,
-        showColumns: true,                  // 是否显示所有的列（选择显示的列）
-        showRefresh: true,                  // 是否显示刷新按钮
+        showColumns: false,                  // 是否显示所有的列（选择显示的列）
+        showRefresh: false,                  // 是否显示刷新按钮
         minimumCountColumns: 2,             // 最少允许的列数
         clickToSelect: true,                // 是否启用点击选中行
         idField: 'id',
@@ -133,6 +141,7 @@ $(function () {
         }],
     });
 
+    $('#queryUser').on('click',SearchData);
 
     /**
      * 新增用户
@@ -151,11 +160,11 @@ $(function () {
     $('#modifyUser').on('click', function () {
         var arrselections = $("#userTable").bootstrapTable('getSelections');
         if (arrselections.length > 1) {
-            toastr.warning('只能选择一行进行编辑');
+            Ewin.alert('只能选择一行进行编辑');
             return;
         }
         if (arrselections.length <= 0) {
-            toastr.warning('请选择有效数据');
+            Ewin.alert('请选择有效数据');
             return;
         }
         var userId = arrselections[0].id;
@@ -239,11 +248,11 @@ $(function () {
     $('#deleteUser').on('click', function () {
         var arrselections = $("#userTable").bootstrapTable('getSelections');
         if (arrselections.length > 1) {
-            toastr.warning('只能选择一行进行编辑');
+            Ewin.alert('只能选择一行进行编辑');
             return;
         }
         if (arrselections.length <= 0) {
-            toastr.warning('请选择有效数据');
+            Ewin.alert('请选择有效数据');
             return;
         }
         var userId = arrselections[0].userId;
@@ -258,12 +267,12 @@ $(function () {
                 dataType: 'json',
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
-                        toastr.success('提交数据成功');
+                        Ewin.alert('提交数据成功');
                         $("#userTable").bootstrapTable('refresh');
                     }
                 },
                 error: function () {
-                    toastr.error('Error');
+                    Ewin.alert('Error');
                 },
                 complete: function () {
                 }
@@ -376,4 +385,5 @@ $(function () {
             }
         }
     });
+
 });

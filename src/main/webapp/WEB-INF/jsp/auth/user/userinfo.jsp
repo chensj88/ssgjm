@@ -8,6 +8,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Insert title here</title>
     <meta name="author" content="卫宁实施工具">
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/font-awesome.min.css" />
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/font-awesome-ie7.min.css" />
+    <![endif]-->
+    <!-- fonts -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace-skins.min.css" />
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace-ie.min.css" />
+    <![endif]-->
+    <script src="<%=basePath%>resources/assets/js/ace-extra.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="<%=basePath%>resources/assets/js/html5shiv.js"></script>
+    <script src="<%=basePath%>resources/assets/js/respond.min.js"></script>
+    <![endif]-->
+
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css">
@@ -16,46 +34,41 @@
     <link rel="shortcut icon" href="resources/img/logo.ico">
 </head>
 <body>
-<div class="panel panel-default">
-    <div class="panel-heading">查询条件</div>
-    <div class="panel-body">
-            <div class="row">
-                <div class="form-group col-md-3">
-                <label class="col-md-4 control-label text-right">姓名：</label>
-                <div class="col-md-6">
-                    <input id="cName" type="text" class="form-control">
-                </div>
+<div class="row" id="queryScope">
+    <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-4 control-label text-right" for="cName">姓名：</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control input-sm" id="cName"/>
             </div>
-                <div class="form-group col-md-3">
-                    <label class="col-md-6 control-label text-right">员工号：</label>
-                    <div class="col-md-6">
-                        <input id="userCard" type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group col-md-3">
-                    <label class="col-md-6 control-label text-right">手机号码：</label>
-                    <div class="col-md-6">
-                        <input id="telephone" type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group col-md-3">
-                    <div class="col-sm-12">
-                        <input class="btn btn-primary" type="button" value="查询" onclick="SearchData()">
-                    </div>
-                </div>
+        </div>
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-4 control-label text-right" for="userCard">员工号：</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control input-sm" id="userCard"/>
             </div>
-    </div>
+        </div>
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-4 control-label text-right" for="telephone">手机号：</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control input-sm" id="telephone"/>
+            </div>
+        </div>
+        <button type="button" class="btn btn-success btn-sm" id="queryUser">
+            <span class="glyphicon glyphicon-search"></span>
+            查询
+        </button>
+    </form>
 </div>
 <!--表格区域  -->
 <table id="userTable"></table>
 <!--toolbar区域  -->
-<div class="btn-group" id="btntoolbar">
+<div class="btn-group" id="btntoolbar" >
     <button id="addUser" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
-    <button id="modifyUser" class="btn btn-default" type="button"><span class="glyphicon glyphicon-edit"></span>修改
-    </button>
-    <button id="deleteUser" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span>删除
-    </button>
+    <button id="modifyUser" class="btn btn-warning" type="button"><span class="glyphicon glyphicon-edit"></span>修改</button>
+    <button id="deleteUser" class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"></span>删除 </button>
 </div>
+
 <!--模态框  -->
 <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userFormModal">
     <div class="modal-dialog" role="document">
