@@ -197,4 +197,18 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
+    <!--报表类信息表编码-->
+    <bean id="sysReportInfoCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="REPORT_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="WN-SH-{######}" />
+    </bean>
+    <!--报表类信息ID-->
+    <bean id="sysReportInfoIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="REPORT_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
 </beans>

@@ -92,15 +92,26 @@ public class SSGJHelper {
     @Qualifier("shCodeService")
     private StepSequenceFactory shCodeService;
     @Autowired
-    @Qualifier("productLineInfoService")
-    private StepSequenceFactory productLineInfoService;
+    @Qualifier("sysReportInfoCodeService")
+    private StepSequenceFactory sysReportInfoCodeService;
+    @Autowired
+    @Qualifier("sysReportInfoIdService")
+    private StepSequenceFactory sysReportInfoIdService;
     /**
-     * 获取产品条线ID
+     * 获取报表类信息表Id
      *
      * @return userId
      */
-    public long productLineInfo() {
-        return (long) productLineInfoService.create();
+    public long createReportInfoId() {
+        return (long) sysReportInfoIdService.create();
+    }
+    /**
+     * 获取报表类信息表Code
+     *
+     * @return userId
+     */
+    public String createReportInfoCode() {
+        return  sysReportInfoCodeService.create().toString();
     }
     /**
      * 获取用户ID信息
