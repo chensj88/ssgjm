@@ -4,27 +4,33 @@
  * @version 1.0.0
  */
 $(function () {
-    new Page();
-}); 
+    /**
+     * 查询
+     * @constructor
+     */
+    function SearchData(){
+        $('#interFaceInfoTable').bootstrapTable('refresh', { pageNumber: 1 });
+    }
 
-function Page() {
-    _self = this;
-    this.init();
-}
-
-Page.prototype.init = function () {
-    this.editObj = null;
-    this.status = {};
-    this.sex = {};
-    this.userType = {};
-    this.initDataGrid();
-    this.bindEvent();
-//    this.validateForm();
-}
-/**
- * 初始化Table
- */
-Page.prototype.initDataGrid = function () {
+    /**
+     * 查询参数信息
+     * @param params
+     * @returns {{count: *|number, first, sort, order, refProductName: *|string, interCode: string, interName: *|string}}
+     */
+    function queryParams(params) {
+        return {
+            count: params.limit,    // 每页显示条数
+            first: params.offset,   // 显示条数
+            sort: params.sort,      // 排序列名
+            order: params.order,     // 排位命令（desc，asc）
+            refProductName: $.trim($('#refQProductName').val()),
+            interCode: $.trim($('#interQCode').val()).toUpperCase(),
+            interName: $.trim($('#interQName').val())
+        };
+    }
+    /**
+     * 初始化Table
+     */
     $('#interFaceInfoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/thirx/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
@@ -59,27 +65,10 @@ Page.prototype.initDataGrid = function () {
         selectItemName: '单选框',
         /*showColumns:true,           //内容列下拉框  */
         // 得到查询的参数
-        queryParams: function (params) {
-            // 这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-            var temp = {
-                count: params.limit,    // 每页显示条数
-                first: params.offset,   // 显示条数
-                sort: params.sort,      // 排序列名
-                order: params.order     // 排位命令（desc，asc）
-            };
-            return temp;
-        },
-
+        queryParams: queryParams,
         columns: [{
-            checkbox: true,
-            align: 'center',
-            valign: 'middle',
-            title: '单选框',
-            halign: 'middle',
-            width: '13px',
-        }, {
             field: "id",
-            title: "ID",
+            title: "序号",
             width: '30px',
             align: 'center'
         }, {
@@ -103,49 +92,38 @@ Page.prototype.initDataGrid = function () {
             width: '45px',
             align: 'center'
         },
-        {
-            field: "lastUpdateTime",
-            title: "维护时间",
-            width: '40px',
-            align: 'center'
-        },{
-            field: "status",
-            title: "状态",
-            width: '20px',
-            formatter: function (value) {
-                if (value == '1') {
-                    return '生效';
-                } else if (value = '0') {
-                    return '失效';
+            {
+                field: "lastUpdateTime",
+                title: "维护时间",
+                width: '40px',
+                align: 'center'
+            },{
+                field: "status",
+                title: "状态",
+                width: '20px',
+                formatter: function (value) {
+                    if (value == '1') {
+                        return '生效';
+                    } else if (value = '0') {
+                        return '失效';
+                    }
+                },
+                align: 'center'
+            },{
+                title: '操作',
+                field: 'id',
+                align: 'center',
+                width: '40px',
+                formatter: function (value, row, index) {
+                    var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.interName +"','"+row.interCode +"','"+row.refProductName + "','"+row.interDesc+"') >编辑</a> ";
+                    var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
+                    return e + d ;
                 }
-            },
-            align: 'center'
-        },{
-            title: '操作',
-            field: 'id',
-            align: 'center',
-            width: '40px',
-            formatter: function (value, row, index) {
-                var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.interName +"','"+row.interCode +"','"+row.refProductName + "','"+row.interDesc+"') >编辑</a> ";
-                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
-                return e + d ;
-            }
-        }],
+            }],
     });
-}
 
-function edit(id,interName,interCode,refProductName,interDesc) {
-    $('#interName').val(interName);
-    $('#interCode').val(interCode);
-    $('#refProductName').val(refProductName);
-    $('#interDesc').val(interDesc);
-    $('#id').val(id);
-    $('#interFaceInfoModal').modal('show');
-}
-/**
- * 按钮绑定事件
- */
-Page.prototype.bindEvent = function () {
+
+    $('#queryInter').on('click',SearchData);
     /**
      * 新增用户
      * 需要清理表格数据
@@ -159,7 +137,7 @@ Page.prototype.bindEvent = function () {
         $('#interDesc').val("");
         $('#interFaceInfoModal').modal('show');
     });
-//  
+//
 
     /**
      * 列表中按钮
@@ -179,12 +157,12 @@ Page.prototype.bindEvent = function () {
                 dataType: 'json',
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
-                        toastr.success('提交数据成功');
+                        Ewin.alert('提交数据成功');
                         $("#interFaceInfoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function () {
-                    toastr.error('Error');
+                    Ewin.alert('Error');
                 },
                 complete: function () {
                 }
@@ -199,36 +177,38 @@ Page.prototype.bindEvent = function () {
     $('#save').on('click', function (e) {
         //阻止默认行为
         e.preventDefault();
-//        var bootstrapValidator = $("#sysDataInfo").data('bootstrapValidator');
-//        //修复记忆的组件不验证
-//        if (bootstrapValidator) {
-//            bootstrapValidator.validate();
-//        }
         var url = '';
         if ($('#id').val().length == 0) {
             url = Common.getRootPath() + '/admin/thirx/addInterFaceInfo.do';
         } else {
             url = Common.getRootPath() + '/admin/thirx/update.do';
         }
-//        if (bootstrapValidator.isValid()) {
-        	console.log($("#interFaceInfoForm").serialize());
-            $.ajax({
-                url: url,
-                data: $("#interFaceInfoForm").serialize(),
-                type: "post",
-                dataType: 'json',
-                async: false,
-                success: function (result) {
-                    var _result = eval(result);
-                    if (_result.status == Common.SUCCESS) {
-                        $('#interFaceInfoModal').modal('hide');
-                        $("#interFaceInfoTable").bootstrapTable('refresh');
-                    }
-
+        console.log($("#interFaceInfoForm").serialize());
+        $.ajax({
+            url: url,
+            data: $("#interFaceInfoForm").serialize(),
+            type: "post",
+            dataType: 'json',
+            async: false,
+            success: function (result) {
+                var _result = eval(result);
+                if (_result.status == Common.SUCCESS) {
+                    $('#interFaceInfoModal').modal('hide');
+                    $("#interFaceInfoTable").bootstrapTable('refresh');
                 }
-            });
-//        }
+
+            }
+        });
     });
+}); 
+
+function edit(id,interName,interCode,refProductName,interDesc) {
+    $('#interName').val(interName);
+    $('#interCode').val(interCode);
+    $('#refProductName').val(refProductName);
+    $('#interDesc').val(interDesc);
+    $('#id').val(id);
+    $('#interFaceInfoModal').modal('show');
 }
 ///**
 // * 表单验证

@@ -50,11 +50,10 @@ public class SysInterFaceInfoController extends BaseController {
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@ILog(operationName="第三方接口类型信息",operationType="list")
-	public Map<String, Object> list(Row row) {
-		SysThirdInterfaceInfo sysThirdInterfaceInfo = new SysThirdInterfaceInfo();
+	public Map<String, Object> list(Row row,SysThirdInterfaceInfo sysThirdInterfaceInfo) {
 		sysThirdInterfaceInfo.setRow(row);
-		List<SysThirdInterfaceInfo> sysThirdInterfaceInfos = getFacade().getSysThirdInterfaceInfoService().getSysThirdInterfaceInfoPaginatedList(sysThirdInterfaceInfo);
-		int total =  getFacade().getSysThirdInterfaceInfoService().getSysThirdInterfaceInfoCount(sysThirdInterfaceInfo);
+		List<SysThirdInterfaceInfo> sysThirdInterfaceInfos = getFacade().getSysThirdInterfaceInfoService().getSysThirdInterfaceInfoPaginatedListForSelectiveKey(sysThirdInterfaceInfo);
+		int total =  getFacade().getSysThirdInterfaceInfoService().getSysThirdInterfaceInfoCountForSelectiveKey(sysThirdInterfaceInfo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("rows", sysThirdInterfaceInfos);
 		map.put("total", total);

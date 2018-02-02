@@ -42,6 +42,32 @@
 	
 </style>
 <body>
+<div class="row" id="queryInteScope">
+    <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-5 control-label text-right" for="interQName">接口名称:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control input-sm" id="interQName"/>
+            </div>
+        </div>
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-4 control-label text-right" for="interQCode">接口代码:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control input-sm" id="interQCode"/>
+            </div>
+        </div>
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-6 control-label text-right" for="refQProductName">适用产品名称:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control input-sm" id="refQProductName"/>
+            </div>
+        </div>
+        <button type="button" class="btn btn-success btn-sm" id="queryInter" style="margin-left:20px">
+            <span class="glyphicon glyphicon-search"></span>
+            查询
+        </button>
+    </form>
+</div>
 <!--表格区域  -->
 <table id="interFaceInfoTable" class="table-align"></table>
 <!--toolbar区域  -->
