@@ -4,27 +4,35 @@
  * @version 1.0.0
  */
 $(function () {
-    new Page();
-}); 
+    /**
+     * 查询
+     * @constructor
+     */
+    function SearchData(){
+        $('#sysDataInfo').bootstrapTable('refresh', { pageNumber: 1 });
+    }
 
-function Page() {
-    _self = this;
-    this.init();
-}
+    /**
+     * 查询参数信息
+     * @param params
+     * @returns {{count: *|number, first, sort, order, dbName: string, tableName: *|string, tableCnName: *|string}}
+     */
+    function queryParams(params) {
+        return {
+            count: params.limit,    // 每页显示条数
+            first: params.offset,   // 显示条数
+            sort: params.sort,      // 排序列名
+            order: params.order,     // 排位命令（desc，asc）
+            dbName: $.trim($('#dbQName').val()).toUpperCase(),
+            tableName: $.trim($('#tableQName').val()),
+            tableCnName: $.trim($('#tableQCnName').val())
 
-Page.prototype.init = function () {
-    this.editObj = null;
-    this.status = {};
-    this.sex = {};
-    this.userType = {};
-    this.initDataGrid();
-    this.bindEvent();
-//    this.validateForm();
-}
-/**
- * 初始化Table
- */
-Page.prototype.initDataGrid = function () {
+        };
+    }
+
+    /**
+     * 初始化Table
+     */
     $('#sysDataInfo').bootstrapTable({
         url: Common.getRootPath() + '/admin/basicData/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
@@ -47,7 +55,6 @@ Page.prototype.initDataGrid = function () {
         idField: 'id',
         sortName: 'id',
         uniqueId: "id",                 // 每一行的唯一标识，一般为主键列
-        //showToggle: true,                   // 是否显示详细视图和列表视图的切换按钮
         cardView: false,                    // 是否显示详细视图
         detailView: false,                  // 是否显示父子表
         toolbar: '#btntoolbar',
@@ -59,27 +66,10 @@ Page.prototype.initDataGrid = function () {
         selectItemName: '单选框',
         /*showColumns:true,           //内容列下拉框  */
         // 得到查询的参数
-        queryParams: function (params) {
-            // 这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-            var temp = {
-                count: params.limit,    // 每页显示条数
-                first: params.offset,   // 显示条数
-                sort: params.sort,      // 排序列名
-                order: params.order     // 排位命令（desc，asc）
-            };
-            return temp;
-        },
-
+        queryParams: queryParams,
         columns: [{
-            checkbox: true,
-            align: 'center',
-            valign: 'middle',
-            title: '单选框',
-            halign: 'middle',
-            width: '13px',
-        }, {
             field: "id",
-            title: "ID",
+            title: "序号",
             width: '30px',
             align: 'center'
         }, {
@@ -103,79 +93,65 @@ Page.prototype.initDataGrid = function () {
             width: '45px',
             align: 'center'
         },
-        {
-            field: "dataType",
-            title: "数据类型",
-            width: '20px',
-            formatter: function (value) {
-                if (value == '1') {
-                    return '行标数据';
-                } else if (value = '0') {
-                    return '国标数据';
+            {
+                field: "dataType",
+                title: "数据类型",
+                width: '20px',
+                formatter: function (value) {
+                    if (value == '1') {
+                        return '行标数据';
+                    } else if (value = '0') {
+                        return '国标数据';
+                    }
+                    else if (value = '2') {
+                        return '共享数据';
+                    }
+                    else if (value = '3') {
+                        return '易用数据';
+                    }
+                },
+                align: 'center'
+            },{
+                field: "isEasy",
+                title: "易用数据",
+                width: '20px',
+                formatter: function (value) {
+                    if (value == '1') {
+                        return '是';
+                    } else if (value = '0') {
+                        return '否';
+                    }
+                },
+                align: 'center'
+            },{
+                field: "status",
+                title: "状态",
+                width: '20px',
+                formatter: function (value) {
+                    if (value == '1') {
+                        return '生效';
+                    } else if (value = '0') {
+                        return '失效';
+                    }
+                },
+                align: 'center'
+            },{
+                title: '操作',
+                field: 'id',
+                align: 'center',
+                width: '40px',
+                formatter: function (value, row, index) {
+                    var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.dbName +"','"+row.tableName +"','"+row.tableCnName + "','"+row.tableAttention+"','"+row.standardCode+"') >编辑</a> ";
+                    var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
+                    return e + d ;
                 }
-                else if (value = '2') {
-                    return '共享数据';
-                }
-                else if (value = '3') {
-                    return '易用数据';
-                }
-            },
-            align: 'center'
-        },{
-            field: "isEasy",
-            title: "易用数据",
-            width: '20px',
-            formatter: function (value) {
-                if (value == '1') {
-                    return '是';
-                } else if (value = '0') {
-                    return '否';
-                }
-            },
-            align: 'center'
-        },{
-            field: "status",
-            title: "状态",
-            width: '20px',
-            formatter: function (value) {
-                if (value == '1') {
-                    return '生效';
-                } else if (value = '0') {
-                    return '失效';
-                }
-            },
-            align: 'center'
-        },{
-            title: '操作',
-            field: 'id',
-            align: 'center',
-            width: '40px',
-            formatter: function (value, row, index) {
-                var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.dbName +"','"+row.tableName +"','"+row.tableCnName + "','"+row.tableAttention+"','"+row.standardCode+"') >编辑</a> ";
-                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
-                return e + d ;
-            }
-        }],
+            }],
     });
-}
-function s(id,dbName,dbName,tableCnName,tableAttention) {
-	alert(tableAttention);
-}
-function edit(id,dbName,tableName,tableCnName,tableAttention,standardCode) {
-    $('#dbName').val(dbName);
-    $('#tableName').val(tableName);
-    $('#tableCnName').val(tableCnName);
-    $('#tableAttention').val(tableAttention);
-    $('#standardCode').val(standardCode);
-    $('#id').val(id);
-    $('#sysDataInfoModal').modal('show');
-}
-/**
- * 按钮绑定事件
- */
-Page.prototype.bindEvent = function () {
+
+
+    $('#queryData').on('click',SearchData);
     /**
-     * 新增用户
+     * 新增数据表格
      * 需要清理表格数据
      */
     $('#addSysDataInfo').on('click', function () {
@@ -188,11 +164,10 @@ Page.prototype.bindEvent = function () {
         $('#standardCode').val("");
         $('#sysDataInfoModal').modal('show');
     });
-//  
 
     /**
      * 列表中按钮
-     *   删除用户信息
+     *   删除数据信息
      */
     $('#sysDataInfo').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
@@ -209,12 +184,12 @@ Page.prototype.bindEvent = function () {
                 dataType: 'json',
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
-                        toastr.success('提交数据成功');
+                        Ewin.alert('提交数据成功');
                         $("#productInfo").bootstrapTable('refresh');
                     }
                 },
                 error: function () {
-                    toastr.error('Error');
+                    Ewin.alert('Error');
                 },
                 complete: function () {
                 }
@@ -223,42 +198,48 @@ Page.prototype.bindEvent = function () {
     });
 
     /**
-     * 保存用户按钮
-     * 通过隐藏域判断用户是否存在，而使用不同的方法进行新增或者修改
+     * 保存数据按钮
+     * 通过隐藏域判断数据是否存在，而使用不同的方法进行新增或者修改
      */
     $('#save').on('click', function (e) {
         //阻止默认行为
         e.preventDefault();
-//        var bootstrapValidator = $("#sysDataInfo").data('bootstrapValidator');
-//        //修复记忆的组件不验证
-//        if (bootstrapValidator) {
-//            bootstrapValidator.validate();
-//        }
         var url = '';
         if ($('#id').val().length == 0) {
             url = Common.getRootPath() + '/admin/basicData/addSysDataInfo.do';
         } else {
             url = Common.getRootPath() + '/admin/basicData/update.do';
         }
-//        if (bootstrapValidator.isValid()) {
-        	console.log($("#sysDataInfoForm").serialize());
-            $.ajax({
-                url: url,
-                data: $("#sysDataInfoForm").serialize(),
-                type: "post",
-                dataType: 'json',
-                async: false,
-                success: function (result) {
-                    var _result = eval(result);
-                    if (_result.status == Common.SUCCESS) {
-                        $('#sysDataInfoModal').modal('hide');
-                        $("#sysDataInfo").bootstrapTable('refresh');
-                    }
-
+        console.log($("#sysDataInfoForm").serialize());
+        $.ajax({
+            url: url,
+            data: $("#sysDataInfoForm").serialize(),
+            type: "post",
+            dataType: 'json',
+            async: false,
+            success: function (result) {
+                var _result = eval(result);
+                if (_result.status == Common.SUCCESS) {
+                    $('#sysDataInfoModal').modal('hide');
+                    $("#sysDataInfo").bootstrapTable('refresh');
                 }
-            });
-//        }
+
+            }
+        });
     });
+}); 
+
+function s(id,dbName,dbName,tableCnName,tableAttention) {
+	alert(tableAttention);
+}
+function edit(id,dbName,tableName,tableCnName,tableAttention,standardCode) {
+    $('#dbName').val(dbName);
+    $('#tableName').val(tableName);
+    $('#tableCnName').val(tableCnName);
+    $('#tableAttention').val(tableAttention);
+    $('#standardCode').val(standardCode);
+    $('#id').val(id);
+    $('#sysDataInfoModal').modal('show');
 }
 ///**
 // * 表单验证
@@ -295,12 +276,12 @@ Page.prototype.bindEvent = function () {
 //            yhmc: {
 //                validators: {
 //                    notEmpty: {
-//                        message: '用户名称不能为空'
+//                        message: '数据名称不能为空'
 //                    },
 //                    stringLength: {
 //                        min: 2,
 //                        max: 10,
-//                        message: '用户名称长度必须在2到10位之间'
+//                        message: '数据名称长度必须在2到10位之间'
 //                    }
 //                }
 //            },
@@ -334,7 +315,7 @@ Page.prototype.bindEvent = function () {
 //    });
 //}
 ///**
-//* 删除用户
+//* 删除数据
 //* 只能删除一条数据
 //*/
 //$('#deleteProductInfo').on('click', function () {
@@ -374,7 +355,7 @@ Page.prototype.bindEvent = function () {
 // });
 //});
 /**
-//* 修改用户
+//* 修改数据
 //* 只能修改一条数据
 //*/
 //$('#modifyUser').on('click', function () {

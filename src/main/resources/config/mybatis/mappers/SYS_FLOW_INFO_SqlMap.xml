@@ -32,6 +32,11 @@
         <if test="lastUpdateTime != null ">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
     </sql>
 
+    <sql id="query-sysFlowInfo">
+        <if test="flowCode != null and flowCode != ''">and t.FLOW_CODE LIKE '%${flowCode}%' </if>
+        <if test="flowName != null and flowName != ''">and t.FLOW_NAME LIKE '%${flowName}%' </if>
+    </sql>
+
     <select id="selectSysFlowInfo" resultMap="sysFlowInfoResult" parameterType="sysFlowInfo">
         select t.*,t1.FLOW_CODE AS FLOW_PARENT_CODE,
         t1.FLOW_NAME AS FLOW_PARENT_NAME
@@ -152,4 +157,20 @@
         </where>
     </delete>
 
+    <select id="querySysFlowInfoCountForSelective" resultType="int" parameterType="sysFlowInfo">
+        select count(*) from SYS_FLOW_INFO t where 1 = 1
+        <include refid="query-sysFlowInfo"/>
+    </select>
+
+    <select id="querySysFlowInfoPaginatedListForSelective" resultMap="sysFlowInfoResult" parameterType="sysFlowInfo">
+        select * from (
+        select t.*,t1.FLOW_CODE AS FLOW_PARENT_CODE,
+        t1.FLOW_NAME AS FLOW_PARENT_NAME,ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_FLOW_INFO t
+        left join SYS_FLOW_INFO t1 on t.FLOW_PID = t1.ID
+        where 1 = 1
+        <include refid="query-sysFlowInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
 </mapper>

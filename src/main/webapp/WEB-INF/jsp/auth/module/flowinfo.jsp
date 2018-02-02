@@ -16,6 +16,29 @@
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
 </head>
 <body>
+<div class="row" id="queryScope">
+    <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-6 control-label text-right" for="flowQName">流程名称：</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control input-sm" id="flowQName"/>
+            </div>
+        </div>
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-6 control-label text-right" for="flowQCode">流程编码：</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control input-sm" id="flowQCode"/>
+            </div>
+        </div>
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
+            <button type="button" class="btn btn-success btn-sm" id="queryFlow">
+                <span class="glyphicon glyphicon-search"></span>
+                查询
+            </button>
+        </div>
+
+    </form>
+</div>
 <!--表格区域  -->
 <table id="flowTable"></table>
 <!--toolbar区域  -->

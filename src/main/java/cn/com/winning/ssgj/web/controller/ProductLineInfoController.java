@@ -48,11 +48,11 @@ public class ProductLineInfoController extends BaseController {
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@ILog(operationName="产品条线信息列表",operationType="list")
-	public Map<String, Object> list(Row row) {
-		PmisProductLineInfo productLineInfo = new PmisProductLineInfo();
-		productLineInfo.setRow(row); 
-		List<PmisProductLineInfo> productLineInfos = getFacade().getPmisProductLineInfoService().getPmisProductLineInfoPaginatedList(productLineInfo);
-		int total =  getFacade().getPmisProductLineInfoService().getPmisProductLineInfoCount(productLineInfo);
+	public Map<String, Object> list(Row row,PmisProductLineInfo productLineInfo) {
+		productLineInfo.setRow(row);
+		System.out.println(productLineInfo);
+		List<PmisProductLineInfo> productLineInfos = getFacade().getPmisProductLineInfoService().getPmisProductLineInfoPaginatedListByName(productLineInfo);
+		int total =  getFacade().getPmisProductLineInfoService().getPmisProductLineInfoCountByName(productLineInfo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("rows", productLineInfos);
 		map.put("total", total);

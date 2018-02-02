@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.dao;
 import cn.com.winning.ssgj.domain.SysDataInfo;
 import cn.com.winning.ssgj.dao.EntityDao;
 
+import java.util.List;
+
 /**
  *
  *
@@ -11,4 +13,6 @@ import cn.com.winning.ssgj.dao.EntityDao;
  */
 public interface SysDataInfoDao extends EntityDao<SysDataInfo> {
 
+    public Integer selectSysDataInfoCountByselective(SysDataInfo t);
+    public List<SysDataInfo> selectSysDataInfoPaginatedListByselective(SysDataInfo t);
 }

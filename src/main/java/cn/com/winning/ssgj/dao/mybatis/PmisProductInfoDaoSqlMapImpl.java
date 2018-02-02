@@ -6,6 +6,8 @@ import cn.com.winning.ssgj.dao.PmisProductInfoDao;
 import cn.com.winning.ssgj.domain.PmisProductInfo;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.List;
+
 /**
  *
  *
@@ -15,4 +17,15 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 @Service
 public class PmisProductInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<PmisProductInfo> implements PmisProductInfoDao {
 
+    @Override
+    public Integer selectPmisProductInfoCountByCodeAndName(PmisProductInfo t) {
+        String statement = "selectPmisProductInfoCountByCodeAndName";
+        return super.getSqlSession().selectOne(statement,t);
+    }
+
+    @Override
+    public List<PmisProductInfo> selectPmisProductInfoPaginatedListByCodeAndName(PmisProductInfo t) {
+        String statement = "selectPmisProductInfoPaginatedListByCodeAndName";
+        return super.getSqlSession().selectList(statement,t);
+    }
 }

@@ -32,7 +32,7 @@
     text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
  	font-size:12px;
  	}
- 		.table-align tr td:nth-child(5) {
+ 	.table-align tr td:nth-child(5) {
   	word-break:keep-all;/* 不换行 */
     white-space:nowrap;/* 不换行 */
     overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
@@ -42,15 +42,34 @@
 	
 </style>
 <body>
+<div class="row" id="queryScope">
+    <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-6 control-label text-right" for="productName">产品名称：</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control input-sm" id="productName"/>
+            </div>
+        </div>
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-6 control-label text-right" for="productCode">产品编码：</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control input-sm" id="productCode"/>
+            </div>
+        </div>
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
+            <button type="button" class="btn btn-success btn-sm" id="query">
+                <span class="glyphicon glyphicon-search"></span>
+                查询
+            </button>
+        </div>
+
+    </form>
+</div>
 <!--表格区域  -->
 <table id="productInfo" class="table-align"></table>
 <!--toolbar区域  -->
 <div class="btn-group" id="btntoolbar">
     <button id="addProductInfo" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
-    <!-- <button id="modifyUser" class="btn btn-default" type="button"><span class="glyphicon glyphicon-edit"></span>修改
-    </button> 
-    <button id="deleteProductInfo" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span>删除
-    </button>-->
 </div>
 <!--模态框  -->
 <div class="modal fade" id="productInfoModal" tabindex="-1" role="dialog" aria-labelledby="productInfoModal">
@@ -81,8 +100,9 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" >产品条线</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="cptx" name="cptx"
+                                    <input type="text" class="form-control" id="cptxName" name="cptxName" data-provide="typeahead"
                                            placeholder="请输入产品条线">
+                                    <input type="hidden" id="cptx" name="cptx">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -114,6 +134,7 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrapValidator.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/language/zh_CN.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/toastr.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap3-typeahead.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/auth/module/productInfo.js"></script>
 </html>

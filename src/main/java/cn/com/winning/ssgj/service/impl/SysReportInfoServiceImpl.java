@@ -51,4 +51,14 @@ public class SysReportInfoServiceImpl implements SysReportInfoService {
         return this.sysReportInfoDao.selectEntityPaginatedList(t);
     }
 
+    @Override
+    public Integer getSysReportInfoCountForSelectiveKey(SysReportInfo t) {
+        return this.sysReportInfoDao.selectSysReportInfoCountByselective(t);
+    }
+
+    @Override
+    public List<SysReportInfo> getSysReportInfoPaginatedListForSelectiveKey(SysReportInfo t) {
+        return this.sysReportInfoDao.selectSysReportInfoPaginatedListByselective(t);
+    }
+
 }

@@ -26,4 +26,7 @@ public interface SysThirdInterfaceInfoService {
 
     List<SysThirdInterfaceInfo> getSysThirdInterfaceInfoPaginatedList(SysThirdInterfaceInfo t);
 
+    Integer getSysThirdInterfaceInfoCountForSelectiveKey(SysThirdInterfaceInfo t);
+
+    List<SysThirdInterfaceInfo> getSysThirdInterfaceInfoPaginatedListForSelectiveKey(SysThirdInterfaceInfo t);
 }

@@ -55,6 +55,10 @@
         <if test="(xcpkhxs != null and xcpkhxs != '') or xcpkhxs == 0">and t.XCPKHXS = #{xcpkhxs}</if>
         <if test="(zt != null and zt != '') or zt == 0">and t.ZT = #{zt}</if>
     </sql>
+    <sql id="query-pmisProductInfo">
+        <if test="code != null and code != ''">and t.CODE LIKE  '%${code}%'</if>
+        <if test="name != null and name != ''">and t.NAME LIKE  '%${name}%'</if>
+    </sql>
 
     <select id="selectPmisProductInfo" resultMap="pmisProductInfoResult" parameterType="pmisProductInfo">
         select * from PMIS_PRODUCT_INFO t where 1 = 1
@@ -186,4 +190,21 @@
         </where>
     </delete>
 
+    <select id="selectPmisProductInfoCountByCodeAndName" resultType="int" parameterType="pmisProductInfo">
+        select count(*) from PMIS_PRODUCT_INFO t
+        <where>
+            <include refid="query-pmisProductInfo"/>
+        </where>
+    </select>
+
+    <select id="selectPmisProductInfoPaginatedListByCodeAndName" resultMap="pmisProductInfoResult" parameterType="pmisProductInfo">
+        select * from (
+        select t.*,l.NAME cptxName, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from PMIS_PRODUCT_INFO t left join PMIS_PRODUCT_LINE_INFO l on CAST(t.CPTX AS DECIMAL) = l.ID
+        <where>
+            <include refid="query-pmisProductInfo"/>
+        </where>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
 </mapper>

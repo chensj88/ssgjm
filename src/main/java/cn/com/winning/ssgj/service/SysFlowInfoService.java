@@ -35,4 +35,8 @@ public interface SysFlowInfoService {
      * @return flowCode
      */
     String createFlowCode(String flowCode,String flowType);
+
+    Integer getSysFlowInfoCountForSelective(SysFlowInfo t);
+
+    List<SysFlowInfo> getSysFlowInfoPaginatedListForSelective(SysFlowInfo t);
 }

@@ -16,4 +16,8 @@ public interface SysFlowInfoDao extends EntityDao<SysFlowInfo> {
     List<SysFlowInfo> querySysFlowInfoList(SysFlowInfo t);
 
     List<SysFlowInfo> querySysFlowInfoByFlowTypeAndFlowCode(SysFlowInfo t);
+
+    public Integer getSysFlowInfoCountForSelective(SysFlowInfo t);
+
+    public List<SysFlowInfo> getSysFlowInfoPaginatedListForSelective(SysFlowInfo t);
 }

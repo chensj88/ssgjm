@@ -26,4 +26,8 @@ public interface SysDataInfoService {
 
     List<SysDataInfo> getSysDataInfoPaginatedList(SysDataInfo t);
 
+    Integer getSysDataInfoCountForSelectiveKey(SysDataInfo t);
+
+    List<SysDataInfo> getSysDataInfoPaginatedListForSelectiveKey(SysDataInfo t);
+
 }

@@ -40,11 +40,10 @@ public class FlowInfoController extends BaseController {
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String,Object> getFlowList(Row row){
-        SysFlowInfo flowInfo = new SysFlowInfo();
+    public Map<String,Object> getFlowList(Row row,SysFlowInfo flowInfo){
         flowInfo.setRow(row);
-        List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().getSysFlowInfoPaginatedList(flowInfo);
-        int total = super.getFacade().getSysFlowInfoService().getSysFlowInfoCount(flowInfo);
+        List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().getSysFlowInfoPaginatedListForSelective(flowInfo);
+        int total = super.getFacade().getSysFlowInfoService().getSysFlowInfoCountForSelective(flowInfo);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
@@ -71,9 +70,8 @@ public class FlowInfoController extends BaseController {
     @RequestMapping(value = "/add.do")
     @ResponseBody
     public Map<String,Object> addFlowInfo(SysFlowInfo flow){
-        System.out.println(flow);
-        long flowId = ssgjHelper.createFlowId();
-        flow.setId(flowId);
+        flow.setId(ssgjHelper.createFlowId());
+        flow.setFlowCode(ssgjHelper.createFlowCode());
         flow.setLastUpdateTime(new Date());
         flow.setStatus(Constants.STATUS_USE);
         System.out.println(flow);
@@ -88,9 +86,6 @@ public class FlowInfoController extends BaseController {
     @ResponseBody
     public Map<String,Object> createFlowCode(String flowType,String flowCode){
         String reFlowCode = "";
-        if(Constants.Flow.FLOW_TYPE_BIG.equals(flowType)){
-            reFlowCode = ssgjHelper.createFlowCode();
-        }
         if(Constants.Flow.FLOW_TYPE_SMALL.equals(flowType) &&!StringUtils.isBlank(flowCode)){
             flowCode += "-";
             reFlowCode = flowCode + super.getFacade().getSysFlowInfoService().createFlowCode(flowCode,flowType);

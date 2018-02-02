@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import cn.com.winning.ssgj.domain.PmisProductInfo;
+import cn.com.winning.ssgj.domain.PmisProductLineInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.slf4j.Logger;
@@ -47,11 +48,10 @@ public class ProductInfoController extends BaseController {
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@ILog(operationName="产品信息列表",operationType="list")
-	public Map<String, Object> list(Row row) {
-		PmisProductInfo productInfo = new PmisProductInfo();
+	public Map<String, Object> list(Row row,PmisProductInfo productInfo) {
 		productInfo.setRow(row);
-		List<PmisProductInfo> productInfos = getFacade().getPmisProductInfoService().getPmisProductInfoPaginatedList(productInfo);
-		int total =  getFacade().getPmisProductInfoService().getPmisProductInfoCount(productInfo);
+		List<PmisProductInfo> productInfos = getFacade().getPmisProductInfoService().getPmisProductInfoPaginatedListByCodeAndName(productInfo);
+		int total =  getFacade().getPmisProductInfoService().getPmisProductInfoCountByCodeAndName(productInfo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("rows", productInfos);
 		map.put("total", total);
@@ -60,7 +60,7 @@ public class ProductInfoController extends BaseController {
 	}
 	/**
      * 通过产品ID查询产品信息
-     * @param user
+     * @param t
      * @return
      */
 	@RequestMapping("/getById.do")
@@ -76,7 +76,7 @@ public class ProductInfoController extends BaseController {
 	}
 	/**
      * 通过产品ID删除产品信息
-     * @param user
+     * @param t
      * @return
      */
 	@RequestMapping("/deleteById.do")
@@ -92,7 +92,7 @@ public class ProductInfoController extends BaseController {
 	}
 	/**
      * 添加产品信息
-     * @param productInfo
+     * @param t
      * @return
      */
 	@RequestMapping("/addProductInfo.do")
@@ -111,7 +111,7 @@ public class ProductInfoController extends BaseController {
 	}
 	/**
      * 修改产品信息
-     * @param user
+     * @param t
      * @return
      */
 	@RequestMapping("/update.do")
@@ -124,4 +124,26 @@ public class ProductInfoController extends BaseController {
 		map.put("status", Constants.SUCCESS);
 		return map;
 	}
+
+	/**
+	 * 修改产品信息
+	 * @param cptxName  产品条线名称
+	 * @param  matchCount 显示数量
+	 * @return
+	 */
+	@RequestMapping("/queryProductLineName.do")
+	@ResponseBody
+	public Map<String, Object> queryProductLineName(String cptxName,Integer matchCount) {
+		Row row = new Row(0,matchCount);
+		PmisProductLineInfo info = new PmisProductLineInfo();
+		info.setName(cptxName);
+		info.setRow(row);
+		List<PmisProductLineInfo> flowInfos = super.getFacade().getPmisProductLineInfoService().getPmisProductLineInfoPaginatedListByName(info);
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("total", matchCount);
+		result.put("status", Constants.SUCCESS);
+		result.put("data", flowInfos);
+		return result;
+	}
+
 }

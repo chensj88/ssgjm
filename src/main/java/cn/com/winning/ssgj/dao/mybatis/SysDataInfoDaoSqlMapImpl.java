@@ -6,6 +6,8 @@ import cn.com.winning.ssgj.dao.SysDataInfoDao;
 import cn.com.winning.ssgj.domain.SysDataInfo;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.List;
+
 /**
  *
  *
@@ -15,4 +17,15 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 @Service
 public class SysDataInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysDataInfo> implements SysDataInfoDao {
 
+    @Override
+    public Integer selectSysDataInfoCountByselective(SysDataInfo t) {
+        String statement = "query" + t.getClass().getSimpleName() + "CountForSelective";
+        return super.getSqlSession().selectOne(statement,t);
+    }
+
+    @Override
+    public List<SysDataInfo> selectSysDataInfoPaginatedListByselective(SysDataInfo t) {
+        String statement = "query" + t.getClass().getSimpleName() + "PaginatedListForSelective";
+        return super.getSqlSession().selectList(statement,t);
+    }
 }

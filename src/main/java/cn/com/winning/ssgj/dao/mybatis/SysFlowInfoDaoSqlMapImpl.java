@@ -28,4 +28,16 @@ public class SysFlowInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysFlowInfo> i
         String statement = "query" + t.getClass().getSimpleName() + "ByFlowTypeAndFlowCode";
         return super.getSqlSession().selectList(statement,t);
     }
+
+    @Override
+    public Integer getSysFlowInfoCountForSelective(SysFlowInfo t) {
+        String statement = "query" + t.getClass().getSimpleName() + "CountForSelective";
+        return super.getSqlSession().selectOne(statement,t);
+    }
+
+    @Override
+    public List<SysFlowInfo> getSysFlowInfoPaginatedListForSelective(SysFlowInfo t) {
+        String statement = "query" + t.getClass().getSimpleName() + "PaginatedListForSelective";
+        return super.getSqlSession().selectList(statement,t);
+    }
 }

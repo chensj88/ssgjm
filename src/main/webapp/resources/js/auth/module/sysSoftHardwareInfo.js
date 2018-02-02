@@ -1,30 +1,41 @@
 /**
  * 软硬件设备类型表
- * @author chensj
+ * @author huwanli
  * @version 1.0.0
  */
 $(function () {
-    new Page();
-}); 
+    //下拉框默认选中去除
+    $("#shQType").val('');
+    $("#shType").val('');
+    /**
+     * 查询
+     * @constructor
+     */
+    function SearchData(){
+        $('#sysSoftHardwareInfoTable').bootstrapTable('refresh', { pageNumber: 1 });
+    }
 
-function Page() {
-    _self = this;
-    this.init();
-}
+    /**
+     * 查询参数信息
+     * @param params
+     * @returns {{count: *|number, first, sort, order, shName: *|string, shCode: string, shType: *|jQuery}}
+     */
+    function queryParams(params) {
+        console.log($('#shQType option:selected').val());
+        return {
+            count: params.limit,    // 每页显示条数
+            first: params.offset,   // 显示条数
+            sort: params.sort,      // 排序列名
+            order: params.order,     // 排位命令（desc，asc）
+            shName: $.trim($('#shQName').val()),
+            shCode: $.trim($('#shQCode').val()).toUpperCase(),
+            shType: $('#shQType option:selected').val()
+        };
+    }
 
-Page.prototype.init = function () {
-    this.editObj = null;
-    this.status = {};
-    this.sex = {};
-    this.userType = {};
-    this.initDataGrid();
-    this.bindEvent();
-//    this.validateForm();
-}
-/**
- * 初始化Table
- */
-Page.prototype.initDataGrid = function () {
+    /**
+     * 初始化Table
+     */
     $('#sysSoftHardwareInfoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/hardware/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
@@ -59,27 +70,10 @@ Page.prototype.initDataGrid = function () {
         selectItemName: '单选框',
         /*showColumns:true,           //内容列下拉框  */
         // 得到查询的参数
-        queryParams: function (params) {
-            // 这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-            var temp = {
-                count: params.limit,    // 每页显示条数
-                first: params.offset,   // 显示条数
-                sort: params.sort,      // 排序列名
-                order: params.order     // 排位命令（desc，asc）
-            };
-            return temp;
-        },
-
-        columns: [{
-            checkbox: true,
-            align: 'center',
-            valign: 'middle',
-            title: '单选框',
-            halign: 'middle',
-            width: '13px',
-        }, {
+        queryParams:queryParams,
+        columns: [ {
             field: "id",
-            title: "ID",
+            title: "序号",
             width: '30px',
             align: 'center'
         }, {
@@ -110,69 +104,57 @@ Page.prototype.initDataGrid = function () {
             width: '45px',
             align: 'center'
         },
-        {
-            field: "shBrand",
-            title: "推荐品牌",
-            width: '40px',
-            align: 'center'
-        },{
-            field: "shBrandType",
-            title: "推荐型号",
-            width: '40px',
-            align: 'center'
-        },{
-            field: "shEnvType",
-            title: "应用环境",
-            width: '40px',
-            formatter: function (value) {
-                if (value == '1') {
-                    return '正式';
-                } else if (value = '0') {
-                    return '测试';
-                } else if (value = '2') {
-                    return '测试&正式';
+            {
+                field: "shBrand",
+                title: "推荐品牌",
+                width: '40px',
+                align: 'center'
+            },{
+                field: "shBrandType",
+                title: "推荐型号",
+                width: '40px',
+                align: 'center'
+            },{
+                field: "shEnvType",
+                title: "应用环境",
+                width: '40px',
+                formatter: function (value) {
+                    if (value == '1') {
+                        return '正式';
+                    } else if (value = '0') {
+                        return '测试';
+                    } else if (value = '2') {
+                        return '测试&正式';
+                    }
+                },
+                align: 'center'
+            },{
+                field: "status",
+                title: "状态",
+                width: '20px',
+                formatter: function (value) {
+                    if (value == '1') {
+                        return '生效';
+                    } else if (value = '0') {
+                        return '失效';
+                    }
+                },
+                align: 'center'
+            },{
+                title: '操作',
+                field: 'id',
+                align: 'center',
+                width: '40px',
+                formatter: function (value, row, index) {
+                    var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.shCode +"','"+row.shName +"','"+row.shDesc + "','"+row.shBrand+"','"+row.shBrandType+"') >编辑</a> ";
+                    var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
+                    return e + d ;
                 }
-            },
-            align: 'center'
-        },{
-            field: "status",
-            title: "状态",
-            width: '20px',
-            formatter: function (value) {
-                if (value == '1') {
-                    return '生效';
-                } else if (value = '0') {
-                    return '失效';
-                }
-            },
-            align: 'center'
-        },{
-            title: '操作',
-            field: 'id',
-            align: 'center',
-            width: '40px',
-            formatter: function (value, row, index) {
-                var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.shCode +"','"+row.shName +"','"+row.shDesc + "','"+row.shBrand+"','"+row.shBrandType+"') >编辑</a> ";
-                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
-                return e + d ;
-            }
-        }],
+            }],
     });
-}
 
-function edit(id,shCode,shName,shDesc,shBrand,shBrandType) {
-    $('#shCode').val(shCode);
-    $('#shName').val(shName);
-    $('#shDesc').val(shDesc);
-    $('#shBrand').val(shBrand);
-    $('#shBrandType').val(shBrandType);
-    $('#id').val(id);
-    $('#sysSoftHardwareInfoModal').modal('show');
-}
-/**
- * 按钮绑定事件
- */
-Page.prototype.bindEvent = function () {
+    //查询
+    $('#querySh').on('click',SearchData);
     /**
      * 需要清理表格数据
      */
@@ -186,8 +168,6 @@ Page.prototype.bindEvent = function () {
         $('#shBrandType').val("");
         $('#sysSoftHardwareInfoModal').modal('show');
     });
-//  
-
 
     $('#sysSoftHardwareInfoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
@@ -220,184 +200,27 @@ Page.prototype.bindEvent = function () {
     $('#save').on('click', function (e) {
         //阻止默认行为
         e.preventDefault();
-//        var bootstrapValidator = $("#sysDataInfo").data('bootstrapValidator');
-//        //修复记忆的组件不验证
-//        if (bootstrapValidator) {
-//            bootstrapValidator.validate();
-//        }
         var url = '';
         if ($('#id').val().length == 0) {
             url = Common.getRootPath() + '/admin/hardware/addSysSoftHardwareInfo.do';
         } else {
             url = Common.getRootPath() + '/admin/hardware/update.do';
         }
-//        if (bootstrapValidator.isValid()) {
-        	console.log($("#sysSoftHardwareInfoForm").serialize());
-            $.ajax({
-                url: url,
-                data: $("#sysSoftHardwareInfoForm").serialize(),
-                type: "post",
-                dataType: 'json',
-                async: false,
-                success: function (result) {
-                    var _result = eval(result);
-                    if (_result.status == Common.SUCCESS) {
-                        $('#sysSoftHardwareInfoModal').modal('hide');
-                        $("#sysSoftHardwareInfoTable").bootstrapTable('refresh');
-                    }
-
+        console.log($("#sysSoftHardwareInfoForm").serialize());
+        $.ajax({
+            url: url,
+            data: $("#sysSoftHardwareInfoForm").serialize(),
+            type: "post",
+            dataType: 'json',
+            async: false,
+            success: function (result) {
+                var _result = eval(result);
+                if (_result.status == Common.SUCCESS) {
+                    $('#sysSoftHardwareInfoModal').modal('hide');
+                    $("#sysSoftHardwareInfoTable").bootstrapTable('refresh');
                 }
-            });
-//        }
+
+            }
+        });
     });
-}
-///**
-// * 表单验证
-// */
-//Page.prototype.validateForm = function () {
-//    //表单验证
-//    //this._changeEvent = (ieVersion === 9 || !('oninput' in el)) ? 'keyup' : 'input'; 源码修改
-//    //this._changeEvent = (ieVersion === 9 || !('onblur' in el)) ? 'keyup' : 'blur'; 
-//    $('#sysSoftHardwareInfoForm').bootstrapValidator({
-//        message: '输入的值不符合规格',
-//        feedbackIcons: {
-//            valid: 'glyphicon glyphicon-ok',
-//            invalid: 'glyphicon glyphicon-remove',
-//            validating: 'glyphicon glyphicon-refresh'
-//        },
-//        fields: {
-//            userid: {
-//                message: '登录名验证失败',
-//                validators: {
-//                    notEmpty: {
-//                        message: '登录名不能为空'
-//                    },
-//                    stringLength: {
-//                        min: 2,
-//                        max: 18,
-//                        message: '登录名长度必须在2到18位之间'
-//                    },
-//                    regexp: {
-//                        regexp: /^[a-zA-Z0-9_]+$/,
-//                        message: '登录名只能包含大写、小写、数字和下划线'
-//                    }
-//                }
-//            },
-//            yhmc: {
-//                validators: {
-//                    notEmpty: {
-//                        message: '用户名称不能为空'
-//                    },
-//                    stringLength: {
-//                        min: 2,
-//                        max: 10,
-//                        message: '用户名称长度必须在2到10位之间'
-//                    }
-//                }
-//            },
-//            mobile : {
-//                validators: {
-//                    notEmpty: {
-//                        message: '手机号码不能为空'
-//                    },
-//                    stringLength: {
-//                        min: 11,
-//                        max: 11,
-//                        message: '手机号码长度必须为11位'
-//                    },
-//                    regexp: {
-//                        regexp: /^1[3|4|5|8][0-9]\d{4,8}$/,
-//                        message: '手机号码只能包含数字'
-//                    }
-//                }
-//            },
-//            email: {
-//                validators: {
-//                    notEmpty: {
-//                        message: '邮箱地址不能为空'
-//                    },
-//                    emailAddress: {
-//                        message: '邮箱地址格式有误'
-//                    }
-//                }
-//            }
-//        }
-//    });
-//}
-///**
-//* 删除用户
-//* 只能删除一条数据
-//*/
-//$('#deleteProductInfo').on('click', function () {
-// var arrselections = $("#userTable").bootstrapTable('getSelections');
-// if (arrselections.length > 1) {
-//    // toastr.warning('只能选择一行进行编辑');
-//     Ewin.alert('只能选择一行进行编辑');
-//     return;
-// }
-// if (arrselections.length <= 0) {
-//     //toastr.warning('请选择有效数据');
-//     Ewin.alert('只能选择一行进行编辑');
-//     return;
-// }
-// var userId = arrselections[0].userId;
-// Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
-//     if (!e) {
-//         return;
-//     }
-//     $.ajax({
-//         type: "post",
-//         url: Common.getRootPath() + '/admin/hardware/deleteById.do',
-//         data: {"userId": userId},
-//         dataType: 'json',
-//         success: function (data, status) {
-//             if (status == Common.SUCCESS) {
-//                 toastr.success('提交数据成功');
-//                 $("#userTable").bootstrapTable('refresh');
-//             }
-//         },
-//         error: function () {
-//             toastr.error('Error');
-//         },
-//         complete: function () {
-//         }
-//     });
-// });
-//});
-/**
-//* 修改用户
-//* 只能修改一条数据
-//*/
-//$('#modifyUser').on('click', function () {
-//  var arrselections = $("#userTable").bootstrapTable('getSelections');
-//  if (arrselections.length > 1) {
-//      //toastr.warning('只能选择一行进行编辑');
-//      Ewin.alert('只能选择一行进行编辑');
-//      return;
-//  }
-//  if (arrselections.length <= 0) {
-//      //toastr.warning('请选择有效数据');
-//      Ewin.alert('请选择有效数据');
-//      return;
-//  }
-//  var userId = arrselections[0].id;
-//  $.ajax({
-//      url: Common.getRootPath() + '/admin/hardware/getById.do',
-//      data: {'userId': userId},
-//      type: "post",
-//      dataType: 'json',
-//      async: false,
-//      success: function (result) {
-//          var _result = eval(result);
-//          if (_result.status == Common.SUCCESS) {
-//              $('#userForm').initForm(_result.data);
-//              $('#orgid').val(_result.data.orgid);
-//              $('#password').val(_result.data.password);
-//              $('#cpfl').val(_result.data.password);
-//              $('#syfw').val(_result.data.password);
-//              $('#sysDataInfo').modal('show');
-//          }
-//
-//      }
-//  });
-//});
+})

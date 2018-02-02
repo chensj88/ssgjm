@@ -6,6 +6,8 @@ import cn.com.winning.ssgj.dao.SysThirdInterfaceInfoDao;
 import cn.com.winning.ssgj.domain.SysThirdInterfaceInfo;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.List;
+
 /**
  *
  *
@@ -15,4 +17,15 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 @Service
 public class SysThirdInterfaceInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysThirdInterfaceInfo> implements SysThirdInterfaceInfoDao {
 
+    @Override
+    public Integer selectSysThirdInterfaceInfoCountByselective(SysThirdInterfaceInfo t) {
+        String statement = "query" + t.getClass().getSimpleName() + "CountForSelective";
+        return super.getSqlSession().selectOne(statement,t);
+    }
+
+    @Override
+    public List<SysThirdInterfaceInfo> selectSysThirdInterfaceInfoPaginatedListByselective(SysThirdInterfaceInfo t) {
+        String statement = "query" + t.getClass().getSimpleName() + "PaginatedListForSelective";
+        return super.getSqlSession().selectList(statement,t);
+    }
 }

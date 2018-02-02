@@ -48,11 +48,10 @@ public class SysDataInfoController extends BaseController {
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@ILog(operationName="基础数据类型列表",operationType="list")
-	public Map<String, Object> list(Row row) {
-		SysDataInfo sysDataInfo = new SysDataInfo();
+	public Map<String, Object> list(Row row,SysDataInfo sysDataInfo) {
 		sysDataInfo.setRow(row);
-		List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().getSysDataInfoPaginatedList(sysDataInfo);
-		int total =  getFacade().getSysDataInfoService().getSysDataInfoCount(sysDataInfo);
+		List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().getSysDataInfoPaginatedListForSelectiveKey(sysDataInfo);
+		int total =  getFacade().getSysDataInfoService().getSysDataInfoCountForSelectiveKey(sysDataInfo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("rows", sysDataInfos);
 		map.put("total", total);
@@ -61,7 +60,7 @@ public class SysDataInfoController extends BaseController {
 	}
 	/**
      * 通过产品ID查询基础数据类型
-     * @param user
+     * @param t
      * @return
      */
 	@RequestMapping("/getById.do")
@@ -77,7 +76,7 @@ public class SysDataInfoController extends BaseController {
 	}
 	/**
      * 通过产品ID删除产品信息
-     * @param user
+     * @param t
      * @return
      */
 	@RequestMapping("/deleteById.do")
@@ -112,7 +111,7 @@ public class SysDataInfoController extends BaseController {
 	}
 	/**
      * 修改基础数据类型
-     * @param user
+     * @param t
      * @return
      */
 	@RequestMapping("/update.do")

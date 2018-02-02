@@ -51,4 +51,14 @@ public class SysSoftHardwareInfoServiceImpl implements SysSoftHardwareInfoServic
         return this.sysSoftHardwareInfoDao.selectEntityPaginatedList(t);
     }
 
+    @Override
+    public Integer getSysSoftHardwareInfoCountForSelectiveKey(SysSoftHardwareInfo t) {
+        return this.sysSoftHardwareInfoDao.selectSysSoftHardwareInfoCountByselective(t);
+    }
+
+    @Override
+    public List<SysSoftHardwareInfo> getSysSoftHardwareInfoPaginatedListForSelectiveKey(SysSoftHardwareInfo t) {
+        return this.sysSoftHardwareInfoDao.selectSysSoftHardwareInfoPaginatedListByselective(t);
+    }
+
 }

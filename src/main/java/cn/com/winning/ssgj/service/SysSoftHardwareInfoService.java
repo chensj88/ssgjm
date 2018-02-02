@@ -26,4 +26,8 @@ public interface SysSoftHardwareInfoService {
 
     List<SysSoftHardwareInfo> getSysSoftHardwareInfoPaginatedList(SysSoftHardwareInfo t);
 
+
+    Integer getSysSoftHardwareInfoCountForSelectiveKey(SysSoftHardwareInfo t);
+
+    List<SysSoftHardwareInfo> getSysSoftHardwareInfoPaginatedListForSelectiveKey(SysSoftHardwareInfo t);
 }

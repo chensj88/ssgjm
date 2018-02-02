@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.dao;
 import cn.com.winning.ssgj.domain.SysThirdInterfaceInfo;
 import cn.com.winning.ssgj.dao.EntityDao;
 
+import java.util.List;
+
 /**
  *
  *
@@ -11,4 +13,7 @@ import cn.com.winning.ssgj.dao.EntityDao;
  */
 public interface SysThirdInterfaceInfoDao extends EntityDao<SysThirdInterfaceInfo> {
 
+    public Integer selectSysThirdInterfaceInfoCountByselective(SysThirdInterfaceInfo t);
+
+    public List<SysThirdInterfaceInfo> selectSysThirdInterfaceInfoPaginatedListByselective(SysThirdInterfaceInfo t);
 }

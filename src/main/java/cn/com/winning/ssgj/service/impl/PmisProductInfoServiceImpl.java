@@ -51,4 +51,14 @@ public class PmisProductInfoServiceImpl implements PmisProductInfoService {
         return this.pmisProductInfoDao.selectEntityPaginatedList(t);
     }
 
+    @Override
+    public Integer getPmisProductInfoCountByCodeAndName(PmisProductInfo t) {
+        return this.pmisProductInfoDao.selectPmisProductInfoCountByCodeAndName(t);
+    }
+
+    @Override
+    public List<PmisProductInfo> getPmisProductInfoPaginatedListByCodeAndName(PmisProductInfo t) {
+        return this.pmisProductInfoDao.selectPmisProductInfoPaginatedListByCodeAndName(t);
+    }
+
 }

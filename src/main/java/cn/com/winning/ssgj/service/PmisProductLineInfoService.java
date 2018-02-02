@@ -26,4 +26,7 @@ public interface PmisProductLineInfoService {
 
     List<PmisProductLineInfo> getPmisProductLineInfoPaginatedList(PmisProductLineInfo t);
 
+    Integer getPmisProductLineInfoCountByName(PmisProductLineInfo t);
+
+    List<PmisProductLineInfo> getPmisProductLineInfoPaginatedListByName(PmisProductLineInfo t);
 }

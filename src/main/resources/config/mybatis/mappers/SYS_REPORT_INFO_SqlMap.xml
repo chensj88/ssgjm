@@ -33,6 +33,12 @@
 	   <if test="lastUpdateTime != null and lastUpdateTime != ''"> and t.LAST_UPDATE_TIME = #{lastUpdateTime} </if>
 	</sql>
 
+	<sql id="query-sysReportInfo">
+		<if test="reportCode != null and reportCode != ''"> and t.REPORT_CODE LIKE '%${reportCode}%' #{} </if>
+		<if test="reportName != null and reportName != ''"> and t.REPORT_NAME LIKE '%${reportName}%' </if>
+		<if test="(reportType != null and reportType != '') "> and t.REPORT_TYPE = #{reportType} </if>
+	</sql>
+
 	<select id="selectSysReportInfo" resultMap="sysReportInfoResult" parameterType="sysReportInfo">
 		select * from SYS_REPORT_INFO t where 1 = 1
 		<include refid="sf-sysReportInfo" />
@@ -53,7 +59,7 @@
 
 	<select id="selectSysReportInfoPaginatedList" resultMap="sysReportInfoResult" parameterType="sysReportInfo">
 		select * from (
-			select *, ROW_NUMBER() OVER ( order by id desc ) as _rn 
+			select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
 				from SYS_REPORT_INFO t where 1 = 1
 			<include refid="sf-sysReportInfo" />
 			<!-- order by ID asc -->
@@ -126,4 +132,21 @@
 		</if>
 	</delete>
 
+	<select id="querySysReportInfoCountForSelective" resultType="int" parameterType="sysReportInfo">
+		select count(*) from SYS_REPORT_INFO t
+		<where>
+			<include refid="query-sysReportInfo" />
+		</where>
+	</select>
+
+	<select id="querySysReportInfoPaginatedListForSelective" resultMap="sysReportInfoResult" parameterType="sysReportInfo">
+		select * from (
+		select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+		from SYS_REPORT_INFO t
+		<where>
+			<include refid="query-sysReportInfo" />
+		</where>
+		<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
 </mapper>

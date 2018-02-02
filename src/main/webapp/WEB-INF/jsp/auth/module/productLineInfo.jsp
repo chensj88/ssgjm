@@ -42,16 +42,25 @@
 	
 </style>
 <body>
+<div class="row" id="queryScope">
+    <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-6 control-label text-right" for="productLineName">产品条线名称：</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control input-sm" id="productLineName"/>
+            </div>
+        </div>
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
+            <button type="button" class="btn btn-success btn-sm" id="queryProductLineInfo">
+                <span class="glyphicon glyphicon-search"></span>
+                查询
+            </button>
+        </div>
+    </form>
+</div>
 <!--表格区域  -->
 <table id="productLineInfo" class="table-align"></table>
 <!--toolbar区域  -->
-<!-- <div class="btn-group" id="btntoolbar">
-    <button id="addProductInfo" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
-    <button id="modifyUser" class="btn btn-default" type="button"><span class="glyphicon glyphicon-edit"></span>修改
-    </button> 
-    <button id="deleteProductInfo" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span>删除
-    </button>
-</div>--> 
 <!--模态框  -->
 <div class="modal fade" id="productInfoModal" tabindex="-1" role="dialog" aria-labelledby="productInfoModal">
     <div class="modal-dialog" role="document">

@@ -4,23 +4,33 @@
  * 2018-01-25
  */
 $(function () {
-    new Page();
-});
+    /**
+     * 查询
+     * @constructor
+     */
+    function SearchData(){
+        $('#flowTable').bootstrapTable('refresh', { pageNumber: 1 });
+    }
 
-function Page() {
-    _self = this;
-    this.init();
-}
+    /**
+     * 查询参数信息
+     * @param params
+     * @returns {{count: *|number, first, sort, order, dbName: string, tableName: *|string, tableCnName: *|string}}
+     */
+    function queryParams(params) {
+        return {
+            count: params.limit,    // 每页显示条数
+            first: params.offset,   // 显示条数
+            sort: params.sort,      // 排序列名
+            order: params.order,     // 排位命令（desc，asc）
+            flowName: $.trim($('#flowQName').val()),
+            flowCode: $.trim($('#flowQCode').val()).toUpperCase()
+        };
+    }
 
-Page.prototype.init = function () {
-    this.initDataGrid();
-    this.bindEvent();
-    this.validateForm();
-};
-/**
- * 初始化Table
- */
-Page.prototype.initDataGrid = function () {
+    /**
+     * 初始化Table
+     */
     $('#flowTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/flow/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
@@ -33,7 +43,7 @@ Page.prototype.initDataGrid = function () {
         pageSize: 10,                     // 每页的记录行数（*）
         pageList: [10, 25, 50, 100],        // 可供选择的每页的行数（*）
         showPaginationSwitch: false,			//显示 数据条数选择框
-        search: true,                       // 是否显示表格搜索
+        search: false,                       // 是否显示表格搜索
         strictSearch: true,
         showColumns: true,                  // 是否显示所有的列（选择显示的列）
         showRefresh: true,                  // 是否显示刷新按钮
@@ -52,29 +62,11 @@ Page.prototype.initDataGrid = function () {
         paginationLoop: false, //分页条无限循环的功能
         singleSelect: true,
         selectItemName: '单选框',
-        /*showColumns:true,           //内容列下拉框  */
         // 得到查询的参数
-        queryParams: function (params) {
-            // 这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-            var temp = {
-                count: params.limit,    // 每页显示条数
-                first: params.offset,   // 显示条数
-                sort: params.sort,      // 排序列名
-                order: params.order     // 排位命令（desc，asc）
-            };
-            return temp;
-        },
-
-        columns: [{
-            checkbox: true,
-            align: 'center',
-            valign: 'middle',
-            title: '单选框',
-            halign: 'middle',
-            width: '10px',
-        }, {
+        queryParams: queryParams,
+        columns: [ {
             field: "id",
-            title: "ID",
+            title: "序号",
             width: '40px',
             align: 'center'
         }, {
@@ -126,12 +118,7 @@ Page.prototype.initDataGrid = function () {
             }
         }],
     });
-};
-/**
- * 按钮绑定事件
- */
 
-Page.prototype.bindEvent = function () {
     $.fn.typeahead.Constructor.prototype.blur = function () {
         var that = this;
         setTimeout(function () { that.hide() }, 250);
@@ -149,7 +136,7 @@ Page.prototype.bindEvent = function () {
         //清空验证信息
         $('#flowForm').data("bootstrapValidator").destroy();
         $('#flowForm').data('bootstrapValidator',null);
-        _self.validateForm();
+        validateForm();
         $('#flowModal').modal('show');
     });
     /**
@@ -332,30 +319,15 @@ Page.prototype.bindEvent = function () {
     });
     //流程类型切换
     $('#flowType').on('change',function () {
-       var selEle = $(this).val();
-       console.log(selEle);
-       if(selEle == '1'){
-           $('#flowParent').show();
-       }else{
-           $('#flowParent').hide();
-           $.ajax({
-               url: Common.getRootPath() + '/admin/flow/createFlowCode.do',
-               data:{
-                   'flowType': selEle
-               },
-               type: "post",
-               dataType: 'json',
-               async: false,
-               success :function (result) {
-                   console.log(result);
-                   var _result = eval(result);
-                   if(_result.status == Common.SUCCESS){
-                       $('#flowCode').attr('readonly','true');
-                       $('#flowCode').val(_result.data);
-                   }
-               }
-           });
-       }
+        var selEle = $(this).val();
+        console.log(selEle);
+        if(selEle == '1'){
+            $('#flowParent').show();
+            $('#flowCode').show();
+        }else{
+            $('#flowParent').hide();
+            $('#flowCode').hide();
+        }
     });
 
     //自动补全
@@ -410,42 +382,41 @@ Page.prototype.bindEvent = function () {
                         $('#flowCode').val(_result.data);
                     }
                 }
-         });
+            });
         },
         items : 8,
     });
-};
-/**
- * 表单验证
- */
-Page.prototype.validateForm = function () {
-    //表单验证
-    //this._changeEvent = (ieVersion === 9 || !('oninput' in el)) ? 'keyup' : 'input'; 源码修改
-    //this._changeEvent = (ieVersion === 9 || !('onblur' in el)) ? 'keyup' : 'blur';
-    $('#flowForm').bootstrapValidator({
-        message: '输入的值不符合规格',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            flowName: {
-                message: '流程名称验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '流程名称不能为空'
-                    }
-                }
+    /**
+     * 查询按钮
+     */
+    $('#queryFlow').on('click',SearchData);
+
+    function validateForm() {
+        $('#flowForm').bootstrapValidator({
+            message: '输入的值不符合规格',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
             },
-            flowDesc : {
-                message: '流程描述验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '流程描述不能为空'
+            fields: {
+                flowName: {
+                    message: '流程名称验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '流程名称不能为空'
+                        }
                     }
-                }
-            },
-        }
-    });
-};
+                },
+                flowDesc : {
+                    message: '流程描述验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '流程描述不能为空'
+                        }
+                    }
+                },
+            }
+        });
+    }
+});

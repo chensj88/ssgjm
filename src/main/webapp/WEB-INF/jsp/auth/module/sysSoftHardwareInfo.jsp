@@ -42,6 +42,35 @@
 	
 </style>
 <body>
+<div class="row" id="queryDataScope">
+    <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-5 control-label text-right" for="shQName">软硬件名称：</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control input-sm" id="shQName"/>
+            </div>
+        </div>
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-5 control-label text-right" for="shQCode">软硬件编号：</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control input-sm" id="shQCode"/>
+            </div>
+        </div>
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-6 control-label text-right" for="shQType">设备分类：</label>
+            <div class="col-sm-4">
+                <select name="shType" id="shQType">
+                    <option value="0">软件</option>
+                    <option value="1">硬件</option>
+                </select>
+            </div>
+        </div>
+        <button type="button" class="btn btn-success btn-sm" id="querySh" style="margin-left:20px">
+            <span class="glyphicon glyphicon-search"></span>
+            查询
+        </button>
+    </form>
+</div>
 <!--表格区域  -->
 <table id="sysSoftHardwareInfoTable" class="table-align"></table>
 <!--toolbar区域  -->
@@ -69,7 +98,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label" >设备分类</label>
                                 <div class="col-sm-6">
-	                                <select name="shType" id="shType">
+	                                <select name="shType" id="shType" >
 										<option value="0">软件</option>
 										<option value="1">硬件</option>
 									</select>        

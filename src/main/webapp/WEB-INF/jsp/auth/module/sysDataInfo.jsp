@@ -42,6 +42,32 @@
 	
 </style>
 <body>
+<div class="row" id="queryDataScope">
+    <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-5 control-label text-right" for="dbQName">数据库名称：</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control input-sm" id="dbQName"/>
+            </div>
+        </div>
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-4 control-label text-right" for="tableQName">表名：</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control input-sm" id="tableQName"/>
+            </div>
+        </div>
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-6 control-label text-right" for="tableQCnName">表中文名：</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control input-sm" id="tableQCnName"/>
+            </div>
+        </div>
+        <button type="button" class="btn btn-success btn-sm" id="queryData" style="margin-left:20px">
+            <span class="glyphicon glyphicon-search"></span>
+            查询
+        </button>
+    </form>
+</div>
 <!--表格区域  -->
 <table id="sysDataInfo" class="table-align"></table>
 <!--toolbar区域  -->

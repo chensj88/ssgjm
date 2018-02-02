@@ -52,7 +52,7 @@
 
     <select id="selectSysFlowQuestionPaginatedList" resultMap="sysFlowQuestionResult" parameterType="sysFlowQuestion">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by id desc ) as _rn
+        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
         from SYS_FLOW_QUESTION t where 1 = 1
         <include refid="sf-sysFlowQuestion"/>
         <!-- order by ID asc -->

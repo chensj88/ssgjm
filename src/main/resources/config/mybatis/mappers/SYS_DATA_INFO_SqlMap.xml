@@ -40,6 +40,12 @@
         <if test="lastUpdateName != null and lastUpdateName != ''">and t.LAST_UPDATE_NAME = #{lastUpdateName}</if>
     </sql>
 
+    <sql id="query-sysDataInfo">
+        <if test="dbName != null and dbName != ''">and t.DB_NAME LIKE '%${dbName}%' </if>
+        <if test="tableName != null and tableName != ''">and t.TABLE_NAME LIKE '%${tableName}%'  </if>
+        <if test="tableCnName != null and tableCnName != ''">and t.TABLE_CN_NAME LIKE '%${tableCnName}%' </if>
+    </sql>
+
     <select id="selectSysDataInfo" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
         select * from SYS_DATA_INFO t where 1 = 1
         <include refid="sf-sysDataInfo"/>
@@ -60,7 +66,7 @@
 
     <select id="selectSysDataInfoPaginatedList" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by id desc ) as _rn
+        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
         from SYS_DATA_INFO t where 1 = 1
         <include refid="sf-sysDataInfo"/>
         <!-- order by ID asc -->
@@ -163,4 +169,21 @@
         </where>
     </delete>
 
+    <select id="querySysDataInfoCountForSelective" resultType="int" parameterType="sysDataInfo">
+        select count(*) from SYS_DATA_INFO t
+        <where>
+            <include refid="query-sysDataInfo"/>
+        </where>
+    </select>
+
+    <select id="querySysDataInfoPaginatedListForSelective" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_DATA_INFO t
+        <where>
+            <include refid="query-sysDataInfo"/>
+        </where>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
 </mapper>

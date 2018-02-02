@@ -51,4 +51,14 @@ public class SysThirdInterfaceInfoServiceImpl implements SysThirdInterfaceInfoSe
         return this.sysThirdInterfaceInfoDao.selectEntityPaginatedList(t);
     }
 
+    @Override
+    public Integer getSysThirdInterfaceInfoCountForSelectiveKey(SysThirdInterfaceInfo t) {
+        return this.sysThirdInterfaceInfoDao.selectSysThirdInterfaceInfoCountByselective(t);
+    }
+
+    @Override
+    public List<SysThirdInterfaceInfo> getSysThirdInterfaceInfoPaginatedListForSelectiveKey(SysThirdInterfaceInfo t) {
+        return this.sysThirdInterfaceInfoDao.selectSysThirdInterfaceInfoPaginatedListByselective(t);
+    }
+
 }

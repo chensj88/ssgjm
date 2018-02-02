@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.dao;
 import cn.com.winning.ssgj.domain.SysSoftHardwareInfo;
 import cn.com.winning.ssgj.dao.EntityDao;
 
+import java.util.List;
+
 /**
  *
  *
@@ -11,4 +13,6 @@ import cn.com.winning.ssgj.dao.EntityDao;
  */
 public interface SysSoftHardwareInfoDao extends EntityDao<SysSoftHardwareInfo> {
 
+    public Integer selectSysSoftHardwareInfoCountByselective(SysSoftHardwareInfo t);
+    public List<SysSoftHardwareInfo> selectSysSoftHardwareInfoPaginatedListByselective(SysSoftHardwareInfo t);
 }

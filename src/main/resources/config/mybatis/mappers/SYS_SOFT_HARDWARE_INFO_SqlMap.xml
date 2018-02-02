@@ -38,6 +38,12 @@
         <if test="lastUpdateTime != null and lastUpdateTime != ''">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
     </sql>
 
+    <sql id="query-sysSoftHardwareInfo">
+        <if test="shCode != null and shCode != ''">and t.SH_CODE LIKE '%${shCode}%' </if>
+        <if test="shName != null and shName != '' ">and t.SH_NAME LIKE '%${shName}%' </if>
+        <if test="shType != null ">and t.SH_TYPE = #{shType}</if>
+    </sql>
+
     <select id="selectSysSoftHardwareInfo" resultMap="sysSoftHardwareInfoResult" parameterType="sysSoftHardwareInfo">
         select * from SYS_SOFT_HARDWARE_INFO t where 1 = 1
         <include refid="sf-sysSoftHardwareInfo"/>
@@ -60,7 +66,7 @@
     <select id="selectSysSoftHardwareInfoPaginatedList" resultMap="sysSoftHardwareInfoResult"
             parameterType="sysSoftHardwareInfo">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by id desc ) as _rn
+        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
         from SYS_SOFT_HARDWARE_INFO t where 1 = 1
         <include refid="sf-sysSoftHardwareInfo"/>
         <!-- order by ID asc -->
@@ -152,5 +158,26 @@
             </if>
         </where>
     </delete>
+
+
+    <select id="querySysSoftHardwareInfoCountForSelective" resultType="int" parameterType="sysSoftHardwareInfo">
+        select count(*) from SYS_SOFT_HARDWARE_INFO t
+        <where>
+            <include refid="query-sysSoftHardwareInfo"/>
+        </where>
+
+    </select>
+
+    <select id="querySysSoftHardwareInfoPaginatedListForSelective" resultMap="sysSoftHardwareInfoResult"
+            parameterType="sysSoftHardwareInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_SOFT_HARDWARE_INFO t
+        <where>
+            <include refid="query-sysSoftHardwareInfo"/>
+        </where>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
 
 </mapper>

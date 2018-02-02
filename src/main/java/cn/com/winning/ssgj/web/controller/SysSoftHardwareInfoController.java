@@ -47,11 +47,11 @@ public class SysSoftHardwareInfoController extends BaseController {
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@ILog(operationName="软硬件设备类型信息表",operationType="list")
-	public Map<String, Object> list(Row row) {
-		SysSoftHardwareInfo info = new SysSoftHardwareInfo();
+	public Map<String, Object> list(Row row,SysSoftHardwareInfo info) {
 		info.setRow(row);
-		List<SysSoftHardwareInfo> infos = getFacade().getSysSoftHardwareInfoService().getSysSoftHardwareInfoPaginatedList(info);
-		int total =  getFacade().getSysSoftHardwareInfoService().getSysSoftHardwareInfoCount(info);
+		System.out.println(info);
+		List<SysSoftHardwareInfo> infos = getFacade().getSysSoftHardwareInfoService().getSysSoftHardwareInfoPaginatedListForSelectiveKey(info);
+		int total =  getFacade().getSysSoftHardwareInfoService().getSysSoftHardwareInfoCountForSelectiveKey(info);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("rows", infos);
 		map.put("total", total);
@@ -60,7 +60,7 @@ public class SysSoftHardwareInfoController extends BaseController {
 	}
 	/**
      * 通过产品ID查询软硬件设备类型信息表
-     * @param user
+     * @param t
      * @return
      */
 	@RequestMapping("/getById.do")
@@ -109,7 +109,7 @@ public class SysSoftHardwareInfoController extends BaseController {
 	}
 	/**
      * 修改软硬件设备类型信息表
-     * @param user
+     * @param t
      * @return
      */
 	@RequestMapping("/update.do")

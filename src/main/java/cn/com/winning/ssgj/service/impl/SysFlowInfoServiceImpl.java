@@ -103,5 +103,17 @@ public class SysFlowInfoServiceImpl implements SysFlowInfoService {
         return flowCodeNumber;
     }
 
+    @Override
+    @ILog(operationType = "getSysFlowInfoCountForSelective",operationName = "getSysFlowInfoCountForSelective")
+    public Integer getSysFlowInfoCountForSelective(SysFlowInfo t) {
+        return this.sysFlowInfoDao.getSysFlowInfoCountForSelective(t);
+    }
+
+    @Override
+    @ILog(operationType = "getSysFlowInfoPaginatedListForSelective",operationName = "getSysFlowInfoPaginatedListForSelective")
+    public List<SysFlowInfo> getSysFlowInfoPaginatedListForSelective(SysFlowInfo t) {
+        return this.sysFlowInfoDao.getSysFlowInfoPaginatedListForSelective(t);
+    }
+
 
 }
