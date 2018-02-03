@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysModuleDao">
+
+    <resultMap id="sysModuleResultForList" type="sysModule">
+        <result column="MOD_ID" property="modId" jdbcType="BIGINT"/>
+        <result column="PAR_ID" property="parId" jdbcType="BIGINT"/>
+        <result column="MOD_NAME" property="modName" jdbcType="VARCHAR"/>
+        <result column="MOD_DESC" property="modDesc" jdbcType="LONGVARCHAR"/>
+        <result column="MOD_LEVEL" property="modLevel" jdbcType="INTEGER"/>
+        <result column="MOD_URL" property="modUrl" jdbcType="VARCHAR"/>
+        <result column="ICON_PATH" property="iconPath" jdbcType="VARCHAR"/>
+        <result column="IS_LEAF" property="isLeaf" jdbcType="INTEGER"/>
+        <result column="IS_MANAGER" property="isManager" jdbcType="INTEGER"/>
+        <result column="ORDER_VALUE" property="orderValue" jdbcType="INTEGER"/>
+        <result column="IS_DEL" property="isDel" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="sysModuleResult" type="sysModule" extends="sysModuleResultForList">
+    </resultMap>
+
+    <sql id="sf-sysModule">
+        <if test="(modId != null and modId != '') or modId == 0">and t.MOD_ID = #{modId}</if>
+        <if test="(parId != null and parId != '') or parId == 0">and t.PAR_ID = #{parId}</if>
+        <if test="modName != null and modName != ''">and t.MOD_NAME = #{modName}</if>
+        <if test="modDesc != null and modDesc != ''">and t.MOD_DESC = #{modDesc}</if>
+        <if test="(modLevel != null and modLevel != '') or modLevel == 0">and t.MOD_LEVEL = #{modLevel}</if>
+        <if test="modUrl != null and modUrl != ''">and t.MOD_URL = #{modUrl}</if>
+        <if test="iconPath != null and iconPath != ''">and t.ICON_PATH = #{iconPath}</if>
+        <if test="(isLeaf != null and isLeaf != '') or isLeaf == 0">and t.IS_LEAF = #{isLeaf}</if>
+        <if test="(isManager != null and isManager != '') or isManager == 0">and t.IS_MANAGER = #{isManager}</if>
+        <if test="(orderValue != null and orderValue != '') or orderValue == 0">and t.ORDER_VALUE = #{orderValue}</if>
+        <if test="(isDel != null and isDel != '') or isDel == 0">and t.IS_DEL = #{isDel}</if>
+    </sql>
+
+    <select id="selectSysModule" resultMap="sysModuleResult" parameterType="sysModule">
+        select * from SYS_MODULE t where 1 = 1
+        <include refid="sf-sysModule"/>
+    </select>
+
+    <select id="selectSysModuleList" resultMap="sysModuleResultForList" parameterType="sysModule">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from SYS_MODULE t where 1 = 1
+        <include refid="sf-sysModule"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectSysModuleCount" resultType="int" parameterType="sysModule">
+        select count(*) from SYS_MODULE t where 1 = 1
+        <include refid="sf-sysModule"/>
+    </select>
+
+    <select id="selectSysModulePaginatedList" resultMap="sysModuleResult" parameterType="sysModule">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from SYS_MODULE t where 1 = 1
+        <include refid="sf-sysModule"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertSysModule" parameterType="sysModule">
+
+        insert into SYS_MODULE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(modId != null and modId != '') or modId == 0">MOD_ID,</if>
+            <if test="(parId != null and parId != '') or parId == 0">PAR_ID,</if>
+            <if test="modName != null and modName != ''">MOD_NAME,</if>
+            <if test="modDesc != null and modDesc != ''">MOD_DESC,</if>
+            <if test="(modLevel != null and modLevel != '') or modLevel == 0">MOD_LEVEL,</if>
+            <if test="modUrl != null and modUrl != ''">MOD_URL,</if>
+            <if test="iconPath != null and iconPath != ''">ICON_PATH,</if>
+            <if test="(isLeaf != null and isLeaf != '') or isLeaf == 0">IS_LEAF,</if>
+            <if test="(isManager != null and isManager != '') or isManager == 0">IS_MANAGER,</if>
+            <if test="(orderValue != null and orderValue != '') or orderValue == 0">ORDER_VALUE,</if>
+            <if test="(isDel != null and isDel != '') or isDel == 0">IS_DEL,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(modId != null and modId != '') or modId == 0">#{modId, jdbcType=BIGINT},</if>
+            <if test="(parId != null and parId != '') or parId == 0">#{parId, jdbcType=BIGINT},</if>
+            <if test="modName != null and modName != ''">#{modName, jdbcType=VARCHAR},</if>
+            <if test="modDesc != null and modDesc != ''">#{modDesc, jdbcType=LONGVARCHAR},</if>
+            <if test="(modLevel != null and modLevel != '') or modLevel == 0">#{modLevel, jdbcType=INTEGER},</if>
+            <if test="modUrl != null and modUrl != ''">#{modUrl, jdbcType=VARCHAR},</if>
+            <if test="iconPath != null and iconPath != ''">#{iconPath, jdbcType=VARCHAR},</if>
+            <if test="(isLeaf != null and isLeaf != '') or isLeaf == 0">#{isLeaf, jdbcType=INTEGER},</if>
+            <if test="(isManager != null and isManager != '') or isManager == 0">#{isManager, jdbcType=INTEGER},</if>
+            <if test="(orderValue != null and orderValue != '') or orderValue == 0">#{orderValue, jdbcType=INTEGER},
+            </if>
+            <if test="(isDel != null and isDel != '') or isDel == 0">#{isDel, jdbcType=INTEGER},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysModule" parameterType="SysModule">
+        update SYS_MODULE
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(modId != null and modId != '') or modId == 0">MOD_ID = #{modId, jdbcType=BIGINT},</if>
+                <if test="(parId != null and parId != '') or parId == 0">PAR_ID = #{parId, jdbcType=BIGINT},</if>
+                <if test="modName != null and modName != ''">MOD_NAME = #{modName, jdbcType=VARCHAR},</if>
+                <if test="modDesc != null and modDesc != ''">MOD_DESC = #{modDesc, jdbcType=LONGVARCHAR},</if>
+                <if test="(modLevel != null and modLevel != '') or modLevel == 0">MOD_LEVEL =
+                    #{modLevel, jdbcType=INTEGER},
+                </if>
+                <if test="modUrl != null and modUrl != ''">MOD_URL = #{modUrl, jdbcType=VARCHAR},</if>
+                <if test="iconPath != null and iconPath != ''">ICON_PATH = #{iconPath, jdbcType=VARCHAR},</if>
+                <if test="(isLeaf != null and isLeaf != '') or isLeaf == 0">IS_LEAF = #{isLeaf, jdbcType=INTEGER},</if>
+                <if test="(isManager != null and isManager != '') or isManager == 0">IS_MANAGER =
+                    #{isManager, jdbcType=INTEGER},
+                </if>
+                <if test="(orderValue != null and orderValue != '') or orderValue == 0">ORDER_VALUE =
+                    #{orderValue, jdbcType=INTEGER},
+                </if>
+                <if test="(isDel != null and isDel != '') or isDel == 0">IS_DEL = #{isDel, jdbcType=INTEGER},</if>
+            </trim>
+        </set>
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </update>
+
+    <delete id="deleteSysModule" parameterType="SysModule">
+        delete from SYS_MODULE
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </delete>
+
+</mapper>

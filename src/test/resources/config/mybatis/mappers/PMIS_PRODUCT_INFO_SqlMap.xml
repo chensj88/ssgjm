@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.PmisProductInfoDao">
+
+    <resultMap id="pmisProductInfoResultForList" type="pmisProductInfo">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="FID" property="fid" jdbcType="BIGINT"/>
+        <result column="GRADE" property="grade" jdbcType="BIGINT"/>
+        <result column="TYPE" property="type" jdbcType="VARCHAR"/>
+        <result column="FDNCODE" property="fdncode" jdbcType="VARCHAR"/>
+        <result column="CODE" property="code" jdbcType="VARCHAR"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="PY" property="py" jdbcType="VARCHAR"/>
+        <result column="BBH" property="bbh" jdbcType="VARCHAR"/>
+        <result column="GNMS" property="gnms" jdbcType="VARCHAR"/>
+        <result column="cptxName" property="cptxName" jdbcType="VARCHAR"/>
+        <result column="XSSX" property="xssx" jdbcType="VARCHAR"/>
+        <result column="CPXSPX" property="cpxspx" jdbcType="VARCHAR"/>
+        <result column="CPDJ" property="cpdj" jdbcType="VARCHAR"/>
+        <result column="CPTX" property="cptx" jdbcType="VARCHAR"/>
+        <result column="CPZXSX" property="cpzxsx" jdbcType="VARCHAR"/>
+        <result column="CPLB" property="cplb" jdbcType="VARCHAR"/>
+        <result column="CPLX" property="cplx" jdbcType="INTEGER"/>
+        <result column="CPXZ" property="cpxz" jdbcType="INTEGER"/>
+        <result column="SSGS" property="ssgs" jdbcType="VARCHAR"/>
+        <result column="CPBZ" property="cpbz" jdbcType="INTEGER"/>
+        <result column="XCPKHXS" property="xcpkhxs" jdbcType="INTEGER"/>
+        <result column="ZT" property="zt" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="pmisProductInfoResult" type="pmisProductInfo" extends="pmisProductInfoResultForList">
+    </resultMap>
+
+    <sql id="sf-pmisProductInfo">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(fid != null and fid != '') or fid == 0">and t.FID = #{fid}</if>
+        <if test="(grade != null and grade != '') or grade == 0">and t.GRADE = #{grade}</if>
+        <if test="type != null and type != ''">and t.TYPE = #{type}</if>
+        <if test="fdncode != null and fdncode != ''">and t.FDNCODE = #{fdncode}</if>
+        <if test="code != null and code != ''">and t.CODE = #{code}</if>
+        <if test="name != null and name != ''">and t.NAME = #{name}</if>
+        <if test="py != null and py != ''">and t.PY = #{py}</if>
+        <if test="bbh != null and bbh != ''">and t.BBH = #{bbh}</if>
+        <if test="gnms != null and gnms != ''">and t.GNMS = #{gnms}</if>
+        <if test="xssx != null and xssx != ''">and t.XSSX = #{xssx}</if>
+        <if test="cpxspx != null and cpxspx != ''">and t.CPXSPX = #{cpxspx}</if>
+        <if test="cpdj != null and cpdj != ''">and t.CPDJ = #{cpdj}</if>
+        <if test="cptx != null and cptx != ''">and t.CPTX = #{cptx}</if>
+        <if test="cpzxsx != null and cpzxsx != ''">and t.CPZXSX = #{cpzxsx}</if>
+        <if test="cplb != null and cplb != ''">and t.CPLB = #{cplb}</if>
+        <if test="(cplx != null and cplx != '') or cplx == 0">and t.CPLX = #{cplx}</if>
+        <if test="(cpxz != null and cpxz != '') or cpxz == 0">and t.CPXZ = #{cpxz}</if>
+        <if test="ssgs != null and ssgs != ''">and t.SSGS = #{ssgs}</if>
+        <if test="(cpbz != null and cpbz != '') or cpbz == 0">and t.CPBZ = #{cpbz}</if>
+        <if test="(xcpkhxs != null and xcpkhxs != '') or xcpkhxs == 0">and t.XCPKHXS = #{xcpkhxs}</if>
+        <if test="(zt != null and zt != '') or zt == 0">and t.ZT = #{zt}</if>
+    </sql>
+    <sql id="query-pmisProductInfo">
+        <if test="code != null and code != ''">and t.CODE LIKE  '%${code}%'</if>
+        <if test="name != null and name != ''">and t.NAME LIKE  '%${name}%'</if>
+    </sql>
+
+    <select id="selectPmisProductInfo" resultMap="pmisProductInfoResult" parameterType="pmisProductInfo">
+        select * from PMIS_PRODUCT_INFO t where 1 = 1
+        <include refid="sf-pmisProductInfo"/>
+    </select>
+
+    <select id="selectPmisProductInfoList" resultMap="pmisProductInfoResultForList" parameterType="pmisProductInfo">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from PMIS_PRODUCT_INFO t where 1 = 1
+        <include refid="sf-pmisProductInfo"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectPmisProductInfoCount" resultType="int" parameterType="pmisProductInfo">
+        select count(*) from PMIS_PRODUCT_INFO t where 1 = 1
+        <include refid="sf-pmisProductInfo"/>
+    </select>
+
+    <select id="selectPmisProductInfoPaginatedList" resultMap="pmisProductInfoResult" parameterType="pmisProductInfo">
+        select * from (
+        select t.*,l.NAME cptxName, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from PMIS_PRODUCT_INFO t left join PMIS_PRODUCT_LINE_INFO l on CAST(t.CPTX AS DECIMAL) = l.ID where 1 = 1
+        <include refid="sf-pmisProductInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertPmisProductInfo" parameterType="pmisProductInfo">
+        <!---->
+        insert into PMIS_PRODUCT_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="(fid != null and fid != '') or fid == 0">FID,</if>
+            <if test="(grade != null and grade != '') or grade == 0">GRADE,</if>
+            <if test="type != null and type != ''">TYPE,</if>
+            <if test="fdncode != null and fdncode != ''">FDNCODE,</if>
+            <if test="code != null and code != ''">CODE,</if>
+            <if test="name != null and name != ''">NAME,</if>
+            <if test="py != null and py != ''">PY,</if>
+            <if test="bbh != null and bbh != ''">BBH,</if>
+            <if test="gnms != null and gnms != ''">GNMS,</if>
+            <if test="xssx != null and xssx != ''">XSSX,</if>
+            <if test="cpxspx != null and cpxspx != ''">CPXSPX,</if>
+            <if test="cpdj != null and cpdj != ''">CPDJ,</if>
+            <if test="cptx != null and cptx != ''">CPTX,</if>
+            <if test="cpzxsx != null and cpzxsx != ''">CPZXSX,</if>
+            <if test="cplb != null and cplb != ''">CPLB,</if>
+            <if test="(cplx != null and cplx != '') or cplx == 0">CPLX,</if>
+            <if test="(cpxz != null and cpxz != '') or cpxz == 0">CPXZ,</if>
+            <if test="ssgs != null and ssgs != ''">SSGS,</if>
+            <if test="(cpbz != null and cpbz != '') or cpbz == 0">CPBZ,</if>
+            <if test="(xcpkhxs != null and xcpkhxs != '') or xcpkhxs == 0">XCPKHXS,</if>
+            <if test="(zt != null and zt != '') or zt == 0">ZT,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="(fid != null and fid != '') or fid == 0">#{fid, jdbcType=BIGINT},</if>
+            <if test="(grade != null and grade != '') or grade == 0">#{grade, jdbcType=BIGINT},</if>
+            <if test="type != null and type != ''">#{type, jdbcType=VARCHAR},</if>
+            <if test="fdncode != null and fdncode != ''">#{fdncode, jdbcType=VARCHAR},</if>
+            <if test="code != null and code != ''">#{code, jdbcType=VARCHAR},</if>
+            <if test="name != null and name != ''">#{name, jdbcType=VARCHAR},</if>
+            <if test="py != null and py != ''">#{py, jdbcType=VARCHAR},</if>
+            <if test="bbh != null and bbh != ''">#{bbh, jdbcType=VARCHAR},</if>
+            <if test="gnms != null and gnms != ''">#{gnms, jdbcType=VARCHAR},</if>
+            <if test="xssx != null and xssx != ''">#{xssx, jdbcType=VARCHAR},</if>
+            <if test="cpxspx != null and cpxspx != ''">#{cpxspx, jdbcType=VARCHAR},</if>
+            <if test="cpdj != null and cpdj != ''">#{cpdj, jdbcType=VARCHAR},</if>
+            <if test="cptx != null and cptx != ''">#{cptx, jdbcType=VARCHAR},</if>
+            <if test="cpzxsx != null and cpzxsx != ''">#{cpzxsx, jdbcType=VARCHAR},</if>
+            <if test="cplb != null and cplb != ''">#{cplb, jdbcType=VARCHAR},</if>
+            <if test="(cplx != null and cplx != '') or cplx == 0">#{cplx, jdbcType=INTEGER},</if>
+            <if test="(cpxz != null and cpxz != '') or cpxz == 0">#{cpxz, jdbcType=INTEGER},</if>
+            <if test="ssgs != null and ssgs != ''">#{ssgs, jdbcType=VARCHAR},</if>
+            <if test="(cpbz != null and cpbz != '') or cpbz == 0">#{cpbz, jdbcType=INTEGER},</if>
+            <if test="(xcpkhxs != null and xcpkhxs != '') or xcpkhxs == 0">#{xcpkhxs, jdbcType=INTEGER},</if>
+            <if test="(zt != null and zt != '') or zt == 0">#{zt, jdbcType=INTEGER},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePmisProductInfo" parameterType="PmisProductInfo">
+        update PMIS_PRODUCT_INFO
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(fid != null and fid != '') or fid == 0">FID = #{fid, jdbcType=BIGINT},</if>
+                <if test="(grade != null and grade != '') or grade == 0">GRADE = #{grade, jdbcType=BIGINT},</if>
+                <if test="type != null and type != ''">TYPE = #{type, jdbcType=VARCHAR},</if>
+                <if test="fdncode != null and fdncode != ''">FDNCODE = #{fdncode, jdbcType=VARCHAR},</if>
+                <if test="code != null and code != ''">CODE = #{code, jdbcType=VARCHAR},</if>
+                <if test="name != null and name != ''">NAME = #{name, jdbcType=VARCHAR},</if>
+                <if test="py != null and py != ''">PY = #{py, jdbcType=VARCHAR},</if>
+                <if test="bbh != null and bbh != ''">BBH = #{bbh, jdbcType=VARCHAR},</if>
+                <if test="gnms != null and gnms != ''">GNMS = #{gnms, jdbcType=VARCHAR},</if>
+                <if test="xssx != null and xssx != ''">XSSX = #{xssx, jdbcType=VARCHAR},</if>
+                <if test="cpxspx != null and cpxspx != ''">CPXSPX = #{cpxspx, jdbcType=VARCHAR},</if>
+                <if test="cpdj != null and cpdj != ''">CPDJ = #{cpdj, jdbcType=VARCHAR},</if>
+                <if test="cptx != null and cptx != ''">CPTX = #{cptx, jdbcType=VARCHAR},</if>
+                <if test="cpzxsx != null and cpzxsx != ''">CPZXSX = #{cpzxsx, jdbcType=VARCHAR},</if>
+                <if test="cplb != null and cplb != ''">CPLB = #{cplb, jdbcType=VARCHAR},</if>
+                <if test="(cplx != null and cplx != '') or cplx == 0">CPLX = #{cplx, jdbcType=INTEGER},</if>
+                <if test="(cpxz != null and cpxz != '') or cpxz == 0">CPXZ = #{cpxz, jdbcType=INTEGER},</if>
+                <if test="ssgs != null and ssgs != ''">SSGS = #{ssgs, jdbcType=VARCHAR},</if>
+                <if test="(cpbz != null and cpbz != '') or cpbz == 0">CPBZ = #{cpbz, jdbcType=INTEGER},</if>
+                <if test="(xcpkhxs != null and xcpkhxs != '') or xcpkhxs == 0">XCPKHXS = #{xcpkhxs, jdbcType=INTEGER},
+                </if>
+                <if test="(zt != null and zt != '') or zt == 0">ZT = #{zt, jdbcType=INTEGER},</if>
+            </trim>
+        </set>
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+                ID in
+                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
+    </update>
+
+    <delete id="deletePmisProductInfo" parameterType="PmisProductInfo">
+        delete from PMIS_PRODUCT_INFO
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+                ID in
+                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
+    </delete>
+
+    <select id="selectPmisProductInfoCountByCodeAndName" resultType="int" parameterType="pmisProductInfo">
+        select count(*) from PMIS_PRODUCT_INFO t
+        <where>
+            <include refid="query-pmisProductInfo"/>
+        </where>
+    </select>
+
+    <select id="selectPmisProductInfoPaginatedListByCodeAndName" resultMap="pmisProductInfoResult" parameterType="pmisProductInfo">
+        select * from (
+        select t.*,l.NAME cptxName, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from PMIS_PRODUCT_INFO t left join PMIS_PRODUCT_LINE_INFO l on CAST(t.CPTX AS DECIMAL) = l.ID
+        <where>
+            <include refid="query-pmisProductInfo"/>
+        </where>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+</mapper>
