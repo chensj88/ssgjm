@@ -3,38 +3,40 @@
 <mapper namespace="cn.com.winning.ssgj.dao.SysUserInfoDao">
 
     <resultMap id="sysUserInfoResultForList" type="sysUserInfo">
-        <result column="ID" property="id" jdbcType="BIGINT"/>
-        <result column="STATUS" property="status" jdbcType="INTEGER"/>
-        <result column="USERID" property="userid" jdbcType="VARCHAR"/>
-        <result column="YHMC" property="yhmc" jdbcType="VARCHAR"/>
-        <result column="NAME" property="name" jdbcType="VARCHAR"/>
-        <result column="Email" property="email" jdbcType="VARCHAR"/>
-        <result column="MOBILE" property="mobile" jdbcType="VARCHAR"/>
-        <result column="TELEPHONE" property="telephone" jdbcType="VARCHAR"/>
-        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
-        <result column="ORGID" property="orgid" jdbcType="BIGINT"/>
-        <result column="SSGS" property="ssgs" jdbcType="BIGINT"/>
-        <result column="LINK_ID" property="linkId" jdbcType="BIGINT"/>
-        <result column="USER_TYPE" property="userType" jdbcType="VARCHAR"/>
+        <result column="ID" property="id" jdbcType="BIGINT" />
+        <result column="STATUS" property="status" jdbcType="INTEGER" />
+        <result column="USERID" property="userid" jdbcType="VARCHAR" />
+        <result column="YHMC" property="yhmc" jdbcType="VARCHAR" />
+        <result column="NAME" property="name" jdbcType="VARCHAR" />
+        <result column="Email" property="email" jdbcType="VARCHAR" />
+        <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+        <result column="TELEPHONE" property="telephone" jdbcType="VARCHAR" />
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+        <result column="ORGID" property="orgid" jdbcType="VARCHAR" />
+        <result column="SSGS" property="ssgs" jdbcType="VARCHAR" />
+        <result column="LINK_ID" property="linkId" jdbcType="BIGINT" />
+        <result column="USER_TYPE" property="userType" jdbcType="VARCHAR" />
+        <result column="YHSJGH" property="yhsjgh" jdbcType="BIGINT" />
     </resultMap>
 
     <resultMap id="sysUserInfoResult" type="sysUserInfo" extends="sysUserInfoResultForList">
     </resultMap>
 
     <sql id="sf-sysUserInfo">
-        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
-        <if test="(status != null and status != '') or status == 0">and t.STATUS = #{status}</if>
-        <if test="userid != null and userid != ''">and t.USERID = #{userid}</if>
-        <if test="yhmc != null and yhmc != ''">and t.YHMC = #{yhmc}</if>
-        <if test="name != null and name != ''">and t.NAME = #{name}</if>
-        <if test="email != null and email != ''">and t.Email = #{email}</if>
-        <if test="mobile != null and mobile != ''">and t.MOBILE = #{mobile}</if>
-        <if test="telephone != null and telephone != ''">and t.TELEPHONE = #{telephone}</if>
-        <if test="password != null and password != ''">and t.PASSWORD = #{password}</if>
-        <if test="(orgid != null and orgid != '') or orgid == 0">and t.ORGID = #{orgid}</if>
-        <if test="(ssgs != null and ssgs != '') or ssgs == 0">and t.SSGS = #{ssgs}</if>
-        <if test="(linkId != null and linkId != '') or linkId == 0">and t.LINK_ID = #{linkId}</if>
-        <if test="userType != null and userType != ''">and t.USER_TYPE = #{userType}</if>
+        <if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
+        <if test="(status != null and status != '') or status == 0"> and t.STATUS = #{status} </if>
+        <if test="userid != null and userid != ''"> and t.USERID = #{userid} </if>
+        <if test="yhmc != null and yhmc != ''"> and t.YHMC = #{yhmc} </if>
+        <if test="name != null and name != ''"> and t.NAME = #{name} </if>
+        <if test="email != null and email != ''"> and t.Email = #{email} </if>
+        <if test="mobile != null and mobile != ''"> and t.MOBILE = #{mobile} </if>
+        <if test="telephone != null and telephone != ''"> and t.TELEPHONE = #{telephone} </if>
+        <if test="password != null and password != ''"> and t.PASSWORD = #{password} </if>
+        <if test="orgid != null and orgid != ''"> and t.ORGID = #{orgid} </if>
+        <if test="ssgs != null and ssgs != ''"> and t.SSGS = #{ssgs} </if>
+        <if test="(linkId != null and linkId != '') or linkId == 0"> and t.LINK_ID = #{linkId} </if>
+        <if test="userType != null and userType != ''"> and t.USER_TYPE = #{userType} </if>
+        <if test="(yhsjgh != null and yhsjgh != '') or yhsjgh == 0"> and t.YHSJGH = #{yhsjgh} </if>
     </sql>
 
     <sql id="query-sysUserInfo">
@@ -74,35 +76,37 @@
 
         insert into SYS_USER_INFO
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="(id != null and id != '') or id == 0">ID,</if>
-            <if test="(status != null and status != '') or status == 0">STATUS,</if>
-            <if test="userid != null and userid != ''">USERID,</if>
-            <if test="yhmc != null and yhmc != ''">YHMC,</if>
-            <if test="name != null and name != ''">NAME,</if>
-            <if test="email != null and email != ''">Email,</if>
-            <if test="mobile != null and mobile != ''">MOBILE,</if>
-            <if test="telephone != null and telephone != ''">TELEPHONE,</if>
-            <if test="password != null and password != ''">PASSWORD,</if>
-            <if test="(orgid != null and orgid != '') or orgid == 0">ORGID,</if>
-            <if test="(ssgs != null and ssgs != '') or ssgs == 0">SSGS,</if>
-            <if test="(linkId != null and linkId != '') or linkId == 0">LINK_ID,</if>
-            <if test="userType != null and userType != ''">USER_TYPE,</if>
+            <if test="(id != null and id != '') or id == 0"> ID, </if>
+            <if test="(status != null and status != '') or status == 0"> STATUS, </if>
+            <if test="userid != null and userid != ''"> USERID, </if>
+            <if test="yhmc != null and yhmc != ''"> YHMC, </if>
+            <if test="name != null and name != ''"> NAME, </if>
+            <if test="email != null and email != ''"> Email, </if>
+            <if test="mobile != null and mobile != ''"> MOBILE, </if>
+            <if test="telephone != null and telephone != ''"> TELEPHONE, </if>
+            <if test="password != null and password != ''"> PASSWORD, </if>
+            <if test="orgid != null and orgid != ''"> ORGID, </if>
+            <if test="ssgs != null and ssgs != ''"> SSGS, </if>
+            <if test="(linkId != null and linkId != '') or linkId == 0"> LINK_ID, </if>
+            <if test="userType != null and userType != ''"> USER_TYPE, </if>
+            <if test="(yhsjgh != null and yhsjgh != '') or yhsjgh == 0"> YHSJGH, </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
-            <if test="(status != null and status != '') or status == 0">#{status, jdbcType=INTEGER},</if>
-            <if test="userid != null and userid != ''">#{userid, jdbcType=VARCHAR},</if>
-            <if test="yhmc != null and yhmc != ''">#{yhmc, jdbcType=VARCHAR},</if>
-            <if test="name != null and name != ''">#{name, jdbcType=VARCHAR},</if>
-            <if test="email != null and email != ''">#{email, jdbcType=VARCHAR},</if>
-            <if test="mobile != null and mobile != ''">#{mobile, jdbcType=VARCHAR},</if>
-            <if test="telephone != null and telephone != ''">#{telephone, jdbcType=VARCHAR},</if>
-            <if test="password != null and password != ''">#{password, jdbcType=VARCHAR},</if>
-            <if test="(orgid != null and orgid != '') or orgid == 0">#{orgid, jdbcType=BIGINT},</if>
-            <if test="(ssgs != null and ssgs != '') or ssgs == 0">#{ssgs, jdbcType=BIGINT},</if>
-            <if test="(linkId != null and linkId != '') or linkId == 0">#{linkId, jdbcType=BIGINT},</if>
-            <if test="userType != null and userType != ''">#{userType, jdbcType=VARCHAR},</if>
+            <if test="(id != null and id != '') or id == 0"> #{id, jdbcType=BIGINT}, </if>
+            <if test="(status != null and status != '') or status == 0"> #{status, jdbcType=INTEGER}, </if>
+            <if test="userid != null and userid != ''"> #{userid, jdbcType=VARCHAR}, </if>
+            <if test="yhmc != null and yhmc != ''"> #{yhmc, jdbcType=VARCHAR}, </if>
+            <if test="name != null and name != ''"> #{name, jdbcType=VARCHAR}, </if>
+            <if test="email != null and email != ''"> #{email, jdbcType=VARCHAR}, </if>
+            <if test="mobile != null and mobile != ''"> #{mobile, jdbcType=VARCHAR}, </if>
+            <if test="telephone != null and telephone != ''"> #{telephone, jdbcType=VARCHAR}, </if>
+            <if test="password != null and password != ''"> #{password, jdbcType=VARCHAR}, </if>
+            <if test="orgid != null and orgid != ''"> #{orgid, jdbcType=VARCHAR}, </if>
+            <if test="ssgs != null and ssgs != ''"> #{ssgs, jdbcType=VARCHAR}, </if>
+            <if test="(linkId != null and linkId != '') or linkId == 0"> #{linkId, jdbcType=BIGINT}, </if>
+            <if test="userType != null and userType != ''"> #{userType, jdbcType=VARCHAR}, </if>
+            <if test="(yhsjgh != null and yhsjgh != '') or yhsjgh == 0"> #{yhsjgh, jdbcType=BIGINT}, </if>
         </trim>
     </insert>
 
@@ -110,27 +114,28 @@
         update SYS_USER_INFO
         <set>
             <trim suffixOverrides=",">
-                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
-                <if test="(status != null and status != '') or status == 0">STATUS = #{status, jdbcType=INTEGER},</if>
-                <if test="userid != null and userid != ''">USERID = #{userid, jdbcType=VARCHAR},</if>
-                <if test="yhmc != null and yhmc != ''">YHMC = #{yhmc, jdbcType=VARCHAR},</if>
-                <if test="name != null and name != ''">NAME = #{name, jdbcType=VARCHAR},</if>
-                <if test="email != null and email != ''">Email = #{email, jdbcType=VARCHAR},</if>
-                <if test="mobile != null and mobile != ''">MOBILE = #{mobile, jdbcType=VARCHAR},</if>
-                <if test="telephone != null and telephone != ''">TELEPHONE = #{telephone, jdbcType=VARCHAR},</if>
-                <if test="password != null and password != ''">PASSWORD = #{password, jdbcType=VARCHAR},</if>
-                <if test="(orgid != null and orgid != '') or orgid == 0">ORGID = #{orgid, jdbcType=BIGINT},</if>
-                <if test="(ssgs != null and ssgs != '') or ssgs == 0">SSGS = #{ssgs, jdbcType=BIGINT},</if>
-                <if test="(linkId != null and linkId != '') or linkId == 0">LINK_ID = #{linkId, jdbcType=BIGINT},</if>
-                <if test="userType != null and userType != ''">USER_TYPE = #{userType, jdbcType=VARCHAR},</if>
+                <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>
+                <if test="(status != null and status != '') or status == 0"> STATUS = #{status, jdbcType=INTEGER}, </if>
+                <if test="userid != null and userid != ''"> USERID = #{userid, jdbcType=VARCHAR}, </if>
+                <if test="yhmc != null and yhmc != ''"> YHMC = #{yhmc, jdbcType=VARCHAR}, </if>
+                <if test="name != null and name != ''"> NAME = #{name, jdbcType=VARCHAR}, </if>
+                <if test="email != null and email != ''"> Email = #{email, jdbcType=VARCHAR}, </if>
+                <if test="mobile != null and mobile != ''"> MOBILE = #{mobile, jdbcType=VARCHAR}, </if>
+                <if test="telephone != null and telephone != ''"> TELEPHONE = #{telephone, jdbcType=VARCHAR}, </if>
+                <if test="password != null and password != ''"> PASSWORD = #{password, jdbcType=VARCHAR}, </if>
+                <if test="orgid != null and orgid != ''"> ORGID = #{orgid, jdbcType=VARCHAR}, </if>
+                <if test="ssgs != null and ssgs != ''"> SSGS = #{ssgs, jdbcType=VARCHAR}, </if>
+                <if test="(linkId != null and linkId != '') or linkId == 0"> LINK_ID = #{linkId, jdbcType=BIGINT}, </if>
+                <if test="userType != null and userType != ''"> USER_TYPE = #{userType, jdbcType=VARCHAR}, </if>
+                <if test="(yhsjgh != null and yhsjgh != '') or yhsjgh == 0"> YHSJGH = #{yhsjgh, jdbcType=BIGINT}, </if>
             </trim>
         </set>
         <where>
             <if test="id != null and id != ''">ID = #{id}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
-          ID in
+                ID in
                  <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
-</if>
+              </if>
         </where>
     </update>
 
@@ -141,7 +146,7 @@
             <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
                 ID in
                  <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
-</if>
+            </if>
         </where>
     </delete>
 

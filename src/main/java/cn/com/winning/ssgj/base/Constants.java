@@ -146,4 +146,89 @@ public class Constants implements Serializable {
 
 
     }
+
+    public  class  PmisWSConstants{
+        /**
+         * PMIS WS URL
+         */
+        public static final  String WS_URL = "http://weberp.winning.com.cn:9080/service/LBEBusiness?wsdl";
+        /**
+         * PMIS WS 用户
+         */
+        public static final  String WS_USER = "sszhb";
+        /**
+         * PMIS WS 密码
+         */
+        public static final  String WS_PASSWORD = "abc123";
+        /**
+         * PMIS WS 密码加密方式 plain 不加密
+         */
+        public static final  String WS_ALGORITHM = "plain";
+        /**
+         * PMIS WS 服务节点名称
+         */
+        public static final String WS_SERVICE_OBJECT_NAME = "WS_DS_CXJCXX";
+        /**
+         * PMIS WS 服务类型  1 用户
+         */
+        public static final  String  WS_SERVICE_TYPE_USER =  "1";
+        /**
+         * PMIS WS 服务类型 客户信息
+         */
+        public static final  String WS_SERVICE_QUERY_CUSTOM = "2";
+        /**
+         * PMIS WS 服务类型 项目信息
+         */
+        public static final  String WS_SERVICE_QUERY_PROJECT = "3";
+        /**
+         * PMIS WS 服务类型 项目人员信息
+         */
+        public static final  String WS_SERVICE_QUERY_PUSER = "4";
+        /**
+         * PMIS WS 服务类型 合同信息
+         */
+        public static final  String WS_SERVICE_QUERY_CONTRACT = "5";
+        /**
+         * PMIS WS 服务类型  产品信息
+         */
+        public static final  String WS_SERVICE_QUERY_PRODUCT = "6";
+        /**
+         * PMIS WS 服务类型 合同产品清单
+         */
+        public static final  String WS_SERVICE_QUERY_CONTRACT_PRODUCT = "7";
+        /**
+         * PMIS WS 服务类型 组织机构
+         */
+        public static final  String WS_SERVICE_QUERY_ORG   = "8";
+
+        /**
+         * PMIS WS 服务类型 用户登录验证
+         */
+        public static final String WS_SERVICE_OBJECT_NAME_USER_LOGIN = "PUB_DS_YHXY";
+        /**
+         * PMIS WS 返回结果码, <=0失败
+         */
+        public static final int RESULT_CODE_FAIL = 0 ;
+
+        /**
+         * PMIS WS 返回结果码,>0 成功
+         */
+        public static final int RESULT_CODE_SUCCESS = 0 ;
+
+        /**
+         * PMIS WS 查询类别名称
+         */
+        public static final String QUERY_TYPE_NAME = "Ptype" ;
+
+        /**
+         * PMIS WS 第一次查询的数量
+         */
+        public static final int QUERY_FIRST_BATCH_SIZE = 1 ;
+
+        /**
+         * PMIS WS 每次查询的数量
+         */
+        public static final int QUERY_BATCH_SIZE = 100 ;
+
+    }
 }
