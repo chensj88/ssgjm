@@ -62,7 +62,7 @@ public class SysInterFaceInfoController extends BaseController {
 	}
 	/**
      * 通过产品ID查询第三方接口类型信息
-     * @param user
+     * @param  t
      * @return
      */
 	@RequestMapping("/getById.do")
@@ -112,7 +112,7 @@ public class SysInterFaceInfoController extends BaseController {
 	}
 	/**
      * 修改第三方接口类型信息
-     * @param user
+     * @param t
      * @return
      */
 	@RequestMapping("/update.do")

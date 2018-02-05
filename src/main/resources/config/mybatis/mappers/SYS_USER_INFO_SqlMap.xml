@@ -16,7 +16,7 @@
         <result column="SSGS" property="ssgs" jdbcType="VARCHAR" />
         <result column="LINK_ID" property="linkId" jdbcType="BIGINT" />
         <result column="USER_TYPE" property="userType" jdbcType="VARCHAR" />
-        <result column="YHSJGH" property="yhsjgh" jdbcType="BIGINT" />
+        <result column="YHSJGH" property="yhsjgh" jdbcType="VARCHAR" />
     </resultMap>
 
     <resultMap id="sysUserInfoResult" type="sysUserInfo" extends="sysUserInfoResultForList">
@@ -36,7 +36,7 @@
         <if test="ssgs != null and ssgs != ''"> and t.SSGS = #{ssgs} </if>
         <if test="(linkId != null and linkId != '') or linkId == 0"> and t.LINK_ID = #{linkId} </if>
         <if test="userType != null and userType != ''"> and t.USER_TYPE = #{userType} </if>
-        <if test="(yhsjgh != null and yhsjgh != '') or yhsjgh == 0"> and t.YHSJGH = #{yhsjgh} </if>
+        <if test="(yhsjgh != null and yhsjgh != '') "> and t.YHSJGH = #{yhsjgh} </if>
     </sql>
 
     <sql id="query-sysUserInfo">
@@ -89,7 +89,7 @@
             <if test="ssgs != null and ssgs != ''"> SSGS, </if>
             <if test="(linkId != null and linkId != '') or linkId == 0"> LINK_ID, </if>
             <if test="userType != null and userType != ''"> USER_TYPE, </if>
-            <if test="(yhsjgh != null and yhsjgh != '') or yhsjgh == 0"> YHSJGH, </if>
+            <if test="(yhsjgh != null and yhsjgh != '')"> YHSJGH, </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -106,7 +106,7 @@
             <if test="ssgs != null and ssgs != ''"> #{ssgs, jdbcType=VARCHAR}, </if>
             <if test="(linkId != null and linkId != '') or linkId == 0"> #{linkId, jdbcType=BIGINT}, </if>
             <if test="userType != null and userType != ''"> #{userType, jdbcType=VARCHAR}, </if>
-            <if test="(yhsjgh != null and yhsjgh != '') or yhsjgh == 0"> #{yhsjgh, jdbcType=BIGINT}, </if>
+            <if test="(yhsjgh != null and yhsjgh != '') "> #{yhsjgh, jdbcType=VARCHAR}, </if>
         </trim>
     </insert>
 
@@ -127,7 +127,7 @@
                 <if test="ssgs != null and ssgs != ''"> SSGS = #{ssgs, jdbcType=VARCHAR}, </if>
                 <if test="(linkId != null and linkId != '') or linkId == 0"> LINK_ID = #{linkId, jdbcType=BIGINT}, </if>
                 <if test="userType != null and userType != ''"> USER_TYPE = #{userType, jdbcType=VARCHAR}, </if>
-                <if test="(yhsjgh != null and yhsjgh != '') or yhsjgh == 0"> YHSJGH = #{yhsjgh, jdbcType=BIGINT}, </if>
+                <if test="(yhsjgh != null and yhsjgh != '') "> YHSJGH = #{yhsjgh, jdbcType=VARCHAR}, </if>
             </trim>
         </set>
         <where>
