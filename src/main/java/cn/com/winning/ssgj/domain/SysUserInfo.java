@@ -5,9 +5,9 @@ import org.apache.ibatis.type.Alias;
 import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
- * Coder AutoGenerator generate.
+ * SSGJ
  *
- * @author Coder AutoGenerator
+ * @author SSGJ
  * @date 2018-02-05 15:18:13
  */
  
