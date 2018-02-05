@@ -4,3 +4,5 @@ target/*
 /target/
 *.iml
 *.class
+*.iml
+*.zip
