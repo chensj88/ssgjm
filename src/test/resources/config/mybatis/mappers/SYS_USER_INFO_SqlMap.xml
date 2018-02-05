@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysUserInfoDao">
+
+    <resultMap id="sysUserInfoResultForList" type="sysUserInfo">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="USERID" property="userid" jdbcType="VARCHAR"/>
+        <result column="YHMC" property="yhmc" jdbcType="VARCHAR"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="Email" property="email" jdbcType="VARCHAR"/>
+        <result column="MOBILE" property="mobile" jdbcType="VARCHAR"/>
+        <result column="TELEPHONE" property="telephone" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+        <result column="ORGID" property="orgid" jdbcType="BIGINT"/>
+        <result column="SSGS" property="ssgs" jdbcType="BIGINT"/>
+        <result column="LINK_ID" property="linkId" jdbcType="BIGINT"/>
+        <result column="USER_TYPE" property="userType" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="sysUserInfoResult" type="sysUserInfo" extends="sysUserInfoResultForList">
+    </resultMap>
+
+    <sql id="sf-sysUserInfo">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(status != null and status != '') or status == 0">and t.STATUS = #{status}</if>
+        <if test="userid != null and userid != ''">and t.USERID = #{userid}</if>
+        <if test="yhmc != null and yhmc != ''">and t.YHMC = #{yhmc}</if>
+        <if test="name != null and name != ''">and t.NAME = #{name}</if>
+        <if test="email != null and email != ''">and t.Email = #{email}</if>
+        <if test="mobile != null and mobile != ''">and t.MOBILE = #{mobile}</if>
+        <if test="telephone != null and telephone != ''">and t.TELEPHONE = #{telephone}</if>
+        <if test="password != null and password != ''">and t.PASSWORD = #{password}</if>
+        <if test="(orgid != null and orgid != '') or orgid == 0">and t.ORGID = #{orgid}</if>
+        <if test="(ssgs != null and ssgs != '') or ssgs == 0">and t.SSGS = #{ssgs}</if>
+        <if test="(linkId != null and linkId != '') or linkId == 0">and t.LINK_ID = #{linkId}</if>
+        <if test="userType != null and userType != ''">and t.USER_TYPE = #{userType}</if>
+    </sql>
+
+    <sql id="query-sysUserInfo">
+        <if test="userid != null and userid != ''">AND t.USERID LIKE '%${userid}%'</if>
+        <if test="yhmc != null and yhmc != ''">AND t.YHMC LIKE '%${yhmc}%'</if>
+        <if test="mobile != null and mobile != ''">AND t.MOBILE LIKE '%${mobile}'</if>
+    </sql>
+
+    <select id="selectSysUserInfo" resultMap="sysUserInfoResult" parameterType="sysUserInfo">
+        select * from SYS_USER_INFO t where 1 = 1
+        <include refid="sf-sysUserInfo"/>
+    </select>
+
+    <select id="selectSysUserInfoList" resultMap="sysUserInfoResultForList" parameterType="sysUserInfo">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from SYS_USER_INFO t where 1 = 1
+        <include refid="sf-sysUserInfo"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectSysUserInfoCount" resultType="int" parameterType="sysUserInfo">
+        select count(*) from SYS_USER_INFO t where 1 = 1
+        <include refid="sf-sysUserInfo"/>
+    </select>
+
+    <select id="selectSysUserInfoPaginatedList" resultMap="sysUserInfoResult" parameterType="sysUserInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_USER_INFO t where 1 = 1
+        <include refid="sf-sysUserInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertSysUserInfo" parameterType="sysUserInfo">
+
+        insert into SYS_USER_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="(status != null and status != '') or status == 0">STATUS,</if>
+            <if test="userid != null and userid != ''">USERID,</if>
+            <if test="yhmc != null and yhmc != ''">YHMC,</if>
+            <if test="name != null and name != ''">NAME,</if>
+            <if test="email != null and email != ''">Email,</if>
+            <if test="mobile != null and mobile != ''">MOBILE,</if>
+            <if test="telephone != null and telephone != ''">TELEPHONE,</if>
+            <if test="password != null and password != ''">PASSWORD,</if>
+            <if test="(orgid != null and orgid != '') or orgid == 0">ORGID,</if>
+            <if test="(ssgs != null and ssgs != '') or ssgs == 0">SSGS,</if>
+            <if test="(linkId != null and linkId != '') or linkId == 0">LINK_ID,</if>
+            <if test="userType != null and userType != ''">USER_TYPE,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="(status != null and status != '') or status == 0">#{status, jdbcType=INTEGER},</if>
+            <if test="userid != null and userid != ''">#{userid, jdbcType=VARCHAR},</if>
+            <if test="yhmc != null and yhmc != ''">#{yhmc, jdbcType=VARCHAR},</if>
+            <if test="name != null and name != ''">#{name, jdbcType=VARCHAR},</if>
+            <if test="email != null and email != ''">#{email, jdbcType=VARCHAR},</if>
+            <if test="mobile != null and mobile != ''">#{mobile, jdbcType=VARCHAR},</if>
+            <if test="telephone != null and telephone != ''">#{telephone, jdbcType=VARCHAR},</if>
+            <if test="password != null and password != ''">#{password, jdbcType=VARCHAR},</if>
+            <if test="(orgid != null and orgid != '') or orgid == 0">#{orgid, jdbcType=BIGINT},</if>
+            <if test="(ssgs != null and ssgs != '') or ssgs == 0">#{ssgs, jdbcType=BIGINT},</if>
+            <if test="(linkId != null and linkId != '') or linkId == 0">#{linkId, jdbcType=BIGINT},</if>
+            <if test="userType != null and userType != ''">#{userType, jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysUserInfo" parameterType="SysUserInfo">
+        update SYS_USER_INFO
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(status != null and status != '') or status == 0">STATUS = #{status, jdbcType=INTEGER},</if>
+                <if test="userid != null and userid != ''">USERID = #{userid, jdbcType=VARCHAR},</if>
+                <if test="yhmc != null and yhmc != ''">YHMC = #{yhmc, jdbcType=VARCHAR},</if>
+                <if test="name != null and name != ''">NAME = #{name, jdbcType=VARCHAR},</if>
+                <if test="email != null and email != ''">Email = #{email, jdbcType=VARCHAR},</if>
+                <if test="mobile != null and mobile != ''">MOBILE = #{mobile, jdbcType=VARCHAR},</if>
+                <if test="telephone != null and telephone != ''">TELEPHONE = #{telephone, jdbcType=VARCHAR},</if>
+                <if test="password != null and password != ''">PASSWORD = #{password, jdbcType=VARCHAR},</if>
+                <if test="(orgid != null and orgid != '') or orgid == 0">ORGID = #{orgid, jdbcType=BIGINT},</if>
+                <if test="(ssgs != null and ssgs != '') or ssgs == 0">SSGS = #{ssgs, jdbcType=BIGINT},</if>
+                <if test="(linkId != null and linkId != '') or linkId == 0">LINK_ID = #{linkId, jdbcType=BIGINT},</if>
+                <if test="userType != null and userType != ''">USER_TYPE = #{userType, jdbcType=VARCHAR},</if>
+            </trim>
+        </set>
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+          ID in
+                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+</if>
+        </where>
+    </update>
+
+    <delete id="deleteSysUserInfo" parameterType="SysUserInfo">
+        delete from SYS_USER_INFO
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+                ID in
+                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+</if>
+        </where>
+    </delete>
+
+    <select id="selectSysUserInfoQueryCount" resultType="int" parameterType="sysUserInfo">
+        select count(*) from SYS_USER_INFO t where 1 = 1
+        <include refid="query-sysUserInfo"/>
+    </select>
+    <select id="selectSysUserInfoQueryPaginatedList" resultMap="sysUserInfoResult" parameterType="sysUserInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_USER_INFO t where 1 = 1
+        <include refid="query-sysUserInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+</mapper>

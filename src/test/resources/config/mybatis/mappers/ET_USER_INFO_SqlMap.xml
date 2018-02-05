@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.EtUserInfoDao">
+
+    <resultMap id="etUserInfoResultForList" type="etUserInfo">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="PM_ID" property="pmId" jdbcType="BIGINT"/>
+        <result column="C_ID" property="cId" jdbcType="BIGINT"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="USER_TYPE" property="userType" jdbcType="INTEGER"/>
+        <result column="USER_CARD" property="userCard" jdbcType="VARCHAR"/>
+        <result column="C_NAME" property="cName" jdbcType="VARCHAR"/>
+        <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR"/>
+        <result column="POSITION_NAME" property="positionName" jdbcType="VARCHAR"/>
+        <result column="TELEPHONE" property="telephone" jdbcType="VARCHAR"/>
+        <result column="EMAIL" property="email" jdbcType="VARCHAR"/>
+        <result column="REMARK" property="remark" jdbcType="LONGVARCHAR"/>
+        <result column="IS_DEL" property="isDel" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="etUserInfoResult" type="etUserInfo" extends="etUserInfoResultForList">
+    </resultMap>
+
+    <sql id="sf-etUserInfo">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
+        <if test="(cId != null and cId != '') or cId == 0">and t.C_ID = #{cId}</if>
+        <if test="(userId != null and userId != '') or userId == 0">and t.USER_ID = #{userId}</if>
+        <if test="(userType != null and userType != '') or userType == 0">and t.USER_TYPE = #{userType}</if>
+        <if test="userCard != null and userCard != ''">and t.USER_CARD = #{userCard}</if>
+        <if test="cName != null and cName != ''">and t.C_NAME = #{cName}</if>
+        <if test="orgName != null and orgName != ''">and t.ORG_NAME = #{orgName}</if>
+        <if test="positionName != null and positionName != ''">and t.POSITION_NAME = #{positionName}</if>
+        <if test="telephone != null and telephone != ''">and t.TELEPHONE = #{telephone}</if>
+        <if test="email != null and email != ''">and t.EMAIL = #{email}</if>
+        <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
+        <if test="(isDel != null and isDel != '') or isDel == 0">and t.IS_DEL = #{isDel}</if>
+    </sql>
+
+    <select id="selectEtUserInfo" resultMap="etUserInfoResult" parameterType="etUserInfo">
+        select * from ET_USER_INFO t where 1 = 1
+        <include refid="sf-etUserInfo"/>
+    </select>
+
+    <select id="selectEtUserInfoList" resultMap="etUserInfoResultForList" parameterType="etUserInfo">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from ET_USER_INFO t where 1 = 1
+        <include refid="sf-etUserInfo"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectEtUserInfoCount" resultType="int" parameterType="etUserInfo">
+        select count(*) from ET_USER_INFO t where 1 = 1
+        <include refid="sf-etUserInfo"/>
+    </select>
+
+    <select id="selectEtUserInfoPaginatedList" resultMap="etUserInfoResult" parameterType="etUserInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from ET_USER_INFO t where 1 = 1
+        <include refid="sf-etUserInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertEtUserInfo" parameterType="etUserInfo">
+
+        insert into ET_USER_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID,</if>
+            <if test="(cId != null and cId != '') or cId == 0">C_ID,</if>
+            <if test="(userId != null and userId != '') or userId == 0">USER_ID,</if>
+            <if test="(userType != null and userType != '') or userType == 0">USER_TYPE,</if>
+            <if test="userCard != null and userCard != ''">USER_CARD,</if>
+            <if test="cName != null and cName != ''">C_NAME,</if>
+            <if test="orgName != null and orgName != ''">ORG_NAME,</if>
+            <if test="positionName != null and positionName != ''">POSITION_NAME,</if>
+            <if test="telephone != null and telephone != ''">TELEPHONE,</if>
+            <if test="email != null and email != ''">EMAIL,</if>
+            <if test="remark != null and remark != ''">REMARK,</if>
+            <if test="(isDel != null and isDel != '') or isDel == 0">IS_DEL,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="(pmId != null and pmId != '') or pmId == 0">#{pmId, jdbcType=BIGINT},</if>
+            <if test="(cId != null and cId != '') or cId == 0">#{cId, jdbcType=BIGINT},</if>
+            <if test="(userId != null and userId != '') or userId == 0">#{userId, jdbcType=BIGINT},</if>
+            <if test="(userType != null and userType != '') or userType == 0">#{userType, jdbcType=INTEGER},</if>
+            <if test="userCard != null and userCard != ''">#{userCard, jdbcType=VARCHAR},</if>
+            <if test="cName != null and cName != ''">#{cName, jdbcType=VARCHAR},</if>
+            <if test="orgName != null and orgName != ''">#{orgName, jdbcType=VARCHAR},</if>
+            <if test="positionName != null and positionName != ''">#{positionName, jdbcType=VARCHAR},</if>
+            <if test="telephone != null and telephone != ''">#{telephone, jdbcType=VARCHAR},</if>
+            <if test="email != null and email != ''">#{email, jdbcType=VARCHAR},</if>
+            <if test="remark != null and remark != ''">#{remark, jdbcType=LONGVARCHAR},</if>
+            <if test="(isDel != null and isDel != '') or isDel == 0">#{isDel, jdbcType=INTEGER},</if>
+        </trim>
+    </insert>
+
+    <update id="updateEtUserInfo" parameterType="EtUserInfo">
+        update ET_USER_INFO
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID = #{pmId, jdbcType=BIGINT},</if>
+                <if test="(cId != null and cId != '') or cId == 0">C_ID = #{cId, jdbcType=BIGINT},</if>
+                <if test="(userId != null and userId != '') or userId == 0">USER_ID = #{userId, jdbcType=BIGINT},</if>
+                <if test="(userType != null and userType != '') or userType == 0">USER_TYPE =
+                    #{userType, jdbcType=INTEGER},
+                </if>
+                <if test="userCard != null and userCard != ''">USER_CARD = #{userCard, jdbcType=VARCHAR},</if>
+                <if test="cName != null and cName != ''">C_NAME = #{cName, jdbcType=VARCHAR},</if>
+                <if test="orgName != null and orgName != ''">ORG_NAME = #{orgName, jdbcType=VARCHAR},</if>
+                <if test="positionName != null and positionName != ''">POSITION_NAME =
+                    #{positionName, jdbcType=VARCHAR},
+                </if>
+                <if test="telephone != null and telephone != ''">TELEPHONE = #{telephone, jdbcType=VARCHAR},</if>
+                <if test="email != null and email != ''">EMAIL = #{email, jdbcType=VARCHAR},</if>
+                <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
+                <if test="(isDel != null and isDel != '') or isDel == 0">IS_DEL = #{isDel, jdbcType=INTEGER},</if>
+            </trim>
+        </set>
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+                ID in
+                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+</if>
+        </where>
+    </update>
+
+    <delete id="deleteEtUserInfo" parameterType="EtUserInfo">
+        delete from ET_USER_INFO
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+                ID in
+                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+</if>
+        </where>
+    </delete>
+
+</mapper>
