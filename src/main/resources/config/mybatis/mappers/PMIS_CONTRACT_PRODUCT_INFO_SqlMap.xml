@@ -17,10 +17,10 @@
         <result column="HTMK" property="htmk" jdbcType="BIGINT"/>
         <result column="HTYHF" property="htyhf" jdbcType="BIGINT"/>
         <result column="CPXX" property="cpxx" jdbcType="BIGINT"/>
-        <result column="CPZXT" property="cpzxt" jdbcType="BIGINT"/>
-        <result column="SJCP" property="sjcp" jdbcType="BIGINT"/>
-        <result column="CPJZJ" property="cpjzj" jdbcType="BIGINT"/>
-        <result column="BJXS" property="bjxs" jdbcType="INTEGER"/>
+        <result column="CPZXT" property="cpzxt" jdbcType="VARCHAR"/>
+        <result column="SJCP" property="sjcp" jdbcType="VARCHAR"/>
+        <result column="CPJZJ" property="cpjzj" jdbcType="VARCHAR"/>
+        <result column="BJXS" property="bjxs" jdbcType="VARCHAR"/>
         <result column="ZT" property="zt" jdbcType="INTEGER"/>
     </resultMap>
 
@@ -43,10 +43,10 @@
         <if test="(htmk != null and htmk != '') or htmk == 0">and t.HTMK = #{htmk}</if>
         <if test="(htyhf != null and htyhf != '') or htyhf == 0">and t.HTYHF = #{htyhf}</if>
         <if test="(cpxx != null and cpxx != '') or cpxx == 0">and t.CPXX = #{cpxx}</if>
-        <if test="(cpzxt != null and cpzxt != '') or cpzxt == 0">and t.CPZXT = #{cpzxt}</if>
-        <if test="(sjcp != null and sjcp != '') or sjcp == 0">and t.SJCP = #{sjcp}</if>
-        <if test="(cpjzj != null and cpjzj != '') or cpjzj == 0">and t.CPJZJ = #{cpjzj}</if>
-        <if test="(bjxs != null and bjxs != '') or bjxs == 0">and t.BJXS = #{bjxs}</if>
+        <if test="(cpzxt != null and cpzxt != '') ">and t.CPZXT = #{cpzxt}</if>
+        <if test="(sjcp != null and sjcp != '') ">and t.SJCP = #{sjcp}</if>
+        <if test="(cpjzj != null and cpjzj != '') ">and t.CPJZJ = #{cpjzj}</if>
+        <if test="(bjxs != null and bjxs != '') ">and t.BJXS = #{bjxs}</if>
         <if test="(zt != null and zt != '') or zt == 0">and t.ZT = #{zt}</if>
     </sql>
 
@@ -98,10 +98,10 @@
             <if test="(htmk != null and htmk != '') or htmk == 0">HTMK,</if>
             <if test="(htyhf != null and htyhf != '') or htyhf == 0">HTYHF,</if>
             <if test="(cpxx != null and cpxx != '') or cpxx == 0">CPXX,</if>
-            <if test="(cpzxt != null and cpzxt != '') or cpzxt == 0">CPZXT,</if>
-            <if test="(sjcp != null and sjcp != '') or sjcp == 0">SJCP,</if>
-            <if test="(cpjzj != null and cpjzj != '') or cpjzj == 0">CPJZJ,</if>
-            <if test="(bjxs != null and bjxs != '') or bjxs == 0">BJXS,</if>
+            <if test="(cpzxt != null and cpzxt != '') ">CPZXT,</if>
+            <if test="(sjcp != null and sjcp != '')">SJCP,</if>
+            <if test="(cpjzj != null and cpjzj != '') ">CPJZJ,</if>
+            <if test="(bjxs != null and bjxs != '') ">BJXS,</if>
             <if test="(zt != null and zt != '') or zt == 0">ZT,</if>
         </trim>
         values
@@ -120,10 +120,10 @@
             <if test="(htmk != null and htmk != '') or htmk == 0">#{htmk, jdbcType=BIGINT},</if>
             <if test="(htyhf != null and htyhf != '') or htyhf == 0">#{htyhf, jdbcType=BIGINT},</if>
             <if test="(cpxx != null and cpxx != '') or cpxx == 0">#{cpxx, jdbcType=BIGINT},</if>
-            <if test="(cpzxt != null and cpzxt != '') or cpzxt == 0">#{cpzxt, jdbcType=BIGINT},</if>
-            <if test="(sjcp != null and sjcp != '') or sjcp == 0">#{sjcp, jdbcType=BIGINT},</if>
-            <if test="(cpjzj != null and cpjzj != '') or cpjzj == 0">#{cpjzj, jdbcType=BIGINT},</if>
-            <if test="(bjxs != null and bjxs != '') or bjxs == 0">#{bjxs, jdbcType=INTEGER},</if>
+            <if test="(cpzxt != null and cpzxt != '') ">#{cpzxt, jdbcType=VARCHAR},</if>
+            <if test="(sjcp != null and sjcp != '') or sjcp == 0">#{sjcp, jdbcType=VARCHAR},</if>
+            <if test="(cpjzj != null and cpjzj != '') ">#{cpjzj, jdbcType=VARCHAR},</if>
+            <if test="(bjxs != null and bjxs != '') ">#{bjxs, jdbcType=VARCHAR},</if>
             <if test="(zt != null and zt != '') or zt == 0">#{zt, jdbcType=INTEGER},</if>
         </trim>
     </insert>
@@ -146,10 +146,10 @@
                 <if test="(htmk != null and htmk != '') or htmk == 0">HTMK = #{htmk, jdbcType=BIGINT},</if>
                 <if test="(htyhf != null and htyhf != '') or htyhf == 0">HTYHF = #{htyhf, jdbcType=BIGINT},</if>
                 <if test="(cpxx != null and cpxx != '') or cpxx == 0">CPXX = #{cpxx, jdbcType=BIGINT},</if>
-                <if test="(cpzxt != null and cpzxt != '') or cpzxt == 0">CPZXT = #{cpzxt, jdbcType=BIGINT},</if>
-                <if test="(sjcp != null and sjcp != '') or sjcp == 0">SJCP = #{sjcp, jdbcType=BIGINT},</if>
-                <if test="(cpjzj != null and cpjzj != '') or cpjzj == 0">CPJZJ = #{cpjzj, jdbcType=BIGINT},</if>
-                <if test="(bjxs != null and bjxs != '') or bjxs == 0">BJXS = #{bjxs, jdbcType=INTEGER},</if>
+                <if test="(cpzxt != null and cpzxt != '') ">CPZXT = #{cpzxt, jdbcType=VARCHAR},</if>
+                <if test="(sjcp != null and sjcp != '') ">SJCP = #{sjcp, jdbcType=VARCHAR},</if>
+                <if test="(cpjzj != null and cpjzj != '') ">CPJZJ = #{cpjzj, jdbcType=VARCHAR},</if>
+                <if test="(bjxs != null and bjxs != '') ">BJXS = #{bjxs, jdbcType=VARCHAR},</if>
                 <if test="(zt != null and zt != '') or zt == 0">ZT = #{zt, jdbcType=INTEGER},</if>
             </trim>
         </set>

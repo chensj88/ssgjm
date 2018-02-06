@@ -3,30 +3,29 @@
 <mapper namespace="cn.com.winning.ssgj.dao.PmisContractInfoDao">
 
     <resultMap id="pmisContractInfoResultForList" type="pmisContractInfo">
-        <result column="ID" property="id" jdbcType="BIGINT"/>
-        <result column="ZHTXX" property="zhtxx" jdbcType="BIGINT"/>
-        <result column="HTYHF" property="htyhf" jdbcType="BIGINT"/>
-        <result column="CODE" property="code" jdbcType="VARCHAR"/>
-        <result column="DAMC" property="damc" jdbcType="VARCHAR"/>
-        <result column="NAME" property="name" jdbcType="LONGVARCHAR"/>
-        <result column="XDAZRQ" property="xdazrq" jdbcType="VARCHAR"/>
-        <result column="SQRQ" property="sqrq" jdbcType="VARCHAR"/>
-        <result column="SXRQ" property="sxrq" jdbcType="VARCHAR"/>
-        <result column="QDNY" property="qdny" jdbcType="VARCHAR"/>
-        <result column="NF" property="nf" jdbcType="VARCHAR"/>
-        <result column="HTLX" property="htlx" jdbcType="VARCHAR"/>
-        <result column="KPLX" property="kplx" jdbcType="INTEGER"/>
-        <result column="XMLX" property="xmlx" jdbcType="INTEGER"/>
-        <result column="SFGQ" property="sfgq" jdbcType="INTEGER"/>
-        <result column="HTJE" property="htje" jdbcType="BIGINT"/>
-        <result column="KHXX" property="khxx" jdbcType="BIGINT"/>
-        <result column="HTQYF" property="htqyf" jdbcType="VARCHAR"/>
-        <result column="QYGS" property="qygs" jdbcType="BIGINT"/>
-        <result column="HTQDRY" property="htqdry" jdbcType="BIGINT"/>
-        <result column="HTGZRY" property="htgzry" jdbcType="BIGINT"/>
-        <result column="XSSSJG" property="xsssjg" jdbcType="BIGINT"/>
-        <result column="ZBJG" property="zbjg" jdbcType="BIGINT"/>
-        <result column="XSSSGS" property="xsssgs" jdbcType="BIGINT"/>
+        <result column="ID" jdbcType="BIGINT" property="id" />
+        <result column="ZHTXX" jdbcType="BIGINT" property="zhtxx" />
+        <result column="HTYHF" jdbcType="BIGINT" property="htyhf" />
+        <result column="CODE" jdbcType="VARCHAR" property="code" />
+        <result column="DAMC" jdbcType="VARCHAR" property="damc" />
+        <result column="NAME" jdbcType="VARCHAR" property="name" />
+        <result column="SQRQ" jdbcType="VARCHAR" property="sqrq" />
+        <result column="SXRQ" jdbcType="VARCHAR" property="sxrq" />
+        <result column="QDNY" jdbcType="VARCHAR" property="qdny" />
+        <result column="NF" jdbcType="VARCHAR" property="nf" />
+        <result column="HTLX" jdbcType="BIGINT" property="htlx" />
+        <result column="KPLX" jdbcType="INTEGER" property="kplx" />
+        <result column="XMLX" jdbcType="INTEGER" property="xmlx" />
+        <result column="SFGQ" jdbcType="INTEGER" property="sfgq" />
+        <result column="HTJE" jdbcType="VARCHAR" property="htje" />
+        <result column="KHXX" jdbcType="BIGINT" property="khxx" />
+        <result column="HTQYF" jdbcType="VARCHAR" property="htqyf" />
+        <result column="QYGS" jdbcType="BIGINT" property="qygs" />
+        <result column="HTQDRY" jdbcType="BIGINT" property="htqdry" />
+        <result column="HTGZRY" jdbcType="BIGINT" property="htgzry" />
+        <result column="XSSSJG" jdbcType="BIGINT" property="xsssjg" />
+        <result column="ZBJG" jdbcType="BIGINT" property="zbjg" />
+        <result column="XSSSGS" jdbcType="BIGINT" property="xsssgs" />
     </resultMap>
 
     <resultMap id="pmisContractInfoResult" type="pmisContractInfo" extends="pmisContractInfoResultForList">
@@ -39,7 +38,6 @@
         <if test="code != null and code != ''">and t.CODE = #{code}</if>
         <if test="damc != null and damc != ''">and t.DAMC = #{damc}</if>
         <if test="name != null and name != ''">and t.NAME = #{name}</if>
-        <if test="xdazrq != null and xdazrq != ''">and t.XDAZRQ = #{xdazrq}</if>
         <if test="sqrq != null and sqrq != ''">and t.SQRQ = #{sqrq}</if>
         <if test="sxrq != null and sxrq != ''">and t.SXRQ = #{sxrq}</if>
         <if test="qdny != null and qdny != ''">and t.QDNY = #{qdny}</if>
@@ -97,7 +95,6 @@
             <if test="code != null and code != ''">CODE,</if>
             <if test="damc != null and damc != ''">DAMC,</if>
             <if test="name != null and name != ''">NAME,</if>
-            <if test="xdazrq != null and xdazrq != ''">XDAZRQ,</if>
             <if test="sqrq != null and sqrq != ''">SQRQ,</if>
             <if test="sxrq != null and sxrq != ''">SXRQ,</if>
             <if test="qdny != null and qdny != ''">QDNY,</if>
@@ -106,7 +103,7 @@
             <if test="(kplx != null and kplx != '') or kplx == 0">KPLX,</if>
             <if test="(xmlx != null and xmlx != '') or xmlx == 0">XMLX,</if>
             <if test="(sfgq != null and sfgq != '') or sfgq == 0">SFGQ,</if>
-            <if test="(htje != null and htje != '') or htje == 0">HTJE,</if>
+            <if test="(htje != null and htje != '') ">HTJE,</if>
             <if test="(khxx != null and khxx != '') or khxx == 0">KHXX,</if>
             <if test="htqyf != null and htqyf != ''">HTQYF,</if>
             <if test="(qygs != null and qygs != '') or qygs == 0">QYGS,</if>
@@ -123,17 +120,16 @@
             <if test="(htyhf != null and htyhf != '') or htyhf == 0">#{htyhf, jdbcType=BIGINT},</if>
             <if test="code != null and code != ''">#{code, jdbcType=VARCHAR},</if>
             <if test="damc != null and damc != ''">#{damc, jdbcType=VARCHAR},</if>
-            <if test="name != null and name != ''">#{name, jdbcType=LONGVARCHAR},</if>
-            <if test="xdazrq != null and xdazrq != ''">#{xdazrq, jdbcType=VARCHAR},</if>
+            <if test="name != null and name != ''">#{name, jdbcType=VARCHAR},</if>
             <if test="sqrq != null and sqrq != ''">#{sqrq, jdbcType=VARCHAR},</if>
             <if test="sxrq != null and sxrq != ''">#{sxrq, jdbcType=VARCHAR},</if>
             <if test="qdny != null and qdny != ''">#{qdny, jdbcType=VARCHAR},</if>
             <if test="nf != null and nf != ''">#{nf, jdbcType=VARCHAR},</if>
-            <if test="htlx != null and htlx != ''">#{htlx, jdbcType=VARCHAR},</if>
+            <if test="htlx != null and htlx != ''">#{htlx, jdbcType=BIGINT},</if>
             <if test="(kplx != null and kplx != '') or kplx == 0">#{kplx, jdbcType=INTEGER},</if>
             <if test="(xmlx != null and xmlx != '') or xmlx == 0">#{xmlx, jdbcType=INTEGER},</if>
             <if test="(sfgq != null and sfgq != '') or sfgq == 0">#{sfgq, jdbcType=INTEGER},</if>
-            <if test="(htje != null and htje != '') or htje == 0">#{htje, jdbcType=BIGINT},</if>
+            <if test="(htje != null and htje != '') ">#{htje, jdbcType=VARCHAR},</if>
             <if test="(khxx != null and khxx != '') or khxx == 0">#{khxx, jdbcType=BIGINT},</if>
             <if test="htqyf != null and htqyf != ''">#{htqyf, jdbcType=VARCHAR},</if>
             <if test="(qygs != null and qygs != '') or qygs == 0">#{qygs, jdbcType=BIGINT},</if>
@@ -154,17 +150,17 @@
                 <if test="(htyhf != null and htyhf != '') or htyhf == 0">HTYHF = #{htyhf, jdbcType=BIGINT},</if>
                 <if test="code != null and code != ''">CODE = #{code, jdbcType=VARCHAR},</if>
                 <if test="damc != null and damc != ''">DAMC = #{damc, jdbcType=VARCHAR},</if>
-                <if test="name != null and name != ''">NAME = #{name, jdbcType=LONGVARCHAR},</if>
+                <if test="name != null and name != ''">NAME = #{name, jdbcType=VARCHAR},</if>
                 <if test="xdazrq != null and xdazrq != ''">XDAZRQ = #{xdazrq, jdbcType=VARCHAR},</if>
                 <if test="sqrq != null and sqrq != ''">SQRQ = #{sqrq, jdbcType=VARCHAR},</if>
                 <if test="sxrq != null and sxrq != ''">SXRQ = #{sxrq, jdbcType=VARCHAR},</if>
                 <if test="qdny != null and qdny != ''">QDNY = #{qdny, jdbcType=VARCHAR},</if>
                 <if test="nf != null and nf != ''">NF = #{nf, jdbcType=VARCHAR},</if>
-                <if test="htlx != null and htlx != ''">HTLX = #{htlx, jdbcType=VARCHAR},</if>
+                <if test="htlx != null and htlx != ''">HTLX = #{htlx, jdbcType=BIGINT},</if>
                 <if test="(kplx != null and kplx != '') or kplx == 0">KPLX = #{kplx, jdbcType=INTEGER},</if>
                 <if test="(xmlx != null and xmlx != '') or xmlx == 0">XMLX = #{xmlx, jdbcType=INTEGER},</if>
                 <if test="(sfgq != null and sfgq != '') or sfgq == 0">SFGQ = #{sfgq, jdbcType=INTEGER},</if>
-                <if test="(htje != null and htje != '') or htje == 0">HTJE = #{htje, jdbcType=BIGINT},</if>
+                <if test="(htje != null and htje != '') ">HTJE = #{htje, jdbcType=VARCHAR},</if>
                 <if test="(khxx != null and khxx != '') or khxx == 0">KHXX = #{khxx, jdbcType=BIGINT},</if>
                 <if test="htqyf != null and htqyf != ''">HTQYF = #{htqyf, jdbcType=VARCHAR},</if>
                 <if test="(qygs != null and qygs != '') or qygs == 0">QYGS = #{qygs, jdbcType=BIGINT},</if>

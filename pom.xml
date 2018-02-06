@@ -114,7 +114,6 @@
       <groupId>com.microsoft.sqlserver</groupId>
       <artifactId>sqljdbc4</artifactId>
       <version>4.0</version>
-      <scope>test</scope>
     </dependency>
     <!-- mybatis分页插件依赖 -->
     <dependency>

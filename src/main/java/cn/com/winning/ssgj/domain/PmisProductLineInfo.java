@@ -35,8 +35,6 @@ public class PmisProductLineInfo extends BaseDomain implements Serializable {
 
     private String cpz;
 
-    private String cpdm;
-
     private String cpxl;
 
     private String cpdl;
@@ -115,14 +113,6 @@ public class PmisProductLineInfo extends BaseDomain implements Serializable {
 
     public void setCpz(String cpz) {
         this.cpz = cpz;
-    }
-
-    public String getCpdm() {
-        return cpdm;
-    }
-
-    public void setCpdm(String cpdm) {
-        this.cpdm = cpdm;
     }
 
     public String getCpxl() {

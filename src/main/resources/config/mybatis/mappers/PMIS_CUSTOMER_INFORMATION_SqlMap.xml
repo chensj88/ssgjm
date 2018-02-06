@@ -17,7 +17,7 @@
         <result column="CWS" property="cws" jdbcType="BIGINT"/>
         <result column="YYSL" property="yysl" jdbcType="BIGINT"/>
         <result column="FWJGS" property="fwjgs" jdbcType="BIGINT"/>
-        <result column="ZYYW" property="zyyw" jdbcType="LONGVARCHAR"/>
+        <result column="ZYYW" property="zyyw" jdbcType="VARCHAR"/>
         <result column="GSGM" property="gsgm" jdbcType="VARCHAR"/>
         <result column="SSGS" property="ssgs" jdbcType="VARCHAR"/>
         <result column="SSJG" property="ssjg" jdbcType="VARCHAR"/>
@@ -36,7 +36,7 @@
         <result column="LXR" property="lxr" jdbcType="VARCHAR"/>
         <result column="LXFS" property="lxfs" jdbcType="VARCHAR"/>
         <result column="GLGS" property="glgs" jdbcType="VARCHAR"/>
-        <result column="REMARK" property="remark" jdbcType="LONGVARCHAR"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
         <result column="GXR" property="gxr" jdbcType="VARCHAR"/>
         <result column="GXSJ" property="gxsj" jdbcType="VARCHAR"/>
         <result column="DJR" property="djr" jdbcType="VARCHAR"/>
@@ -180,7 +180,7 @@
             <if test="(cws != null and cws != '') or cws == 0">#{cws, jdbcType=BIGINT},</if>
             <if test="(yysl != null and yysl != '') or yysl == 0">#{yysl, jdbcType=BIGINT},</if>
             <if test="(fwjgs != null and fwjgs != '') or fwjgs == 0">#{fwjgs, jdbcType=BIGINT},</if>
-            <if test="zyyw != null and zyyw != ''">#{zyyw, jdbcType=LONGVARCHAR},</if>
+            <if test="zyyw != null and zyyw != ''">#{zyyw, jdbcType=VARCHAR},</if>
             <if test="gsgm != null and gsgm != ''">#{gsgm, jdbcType=VARCHAR},</if>
             <if test="ssgs != null and ssgs != ''">#{ssgs, jdbcType=VARCHAR},</if>
             <if test="ssjg != null and ssjg != ''">#{ssjg, jdbcType=VARCHAR},</if>
@@ -199,7 +199,7 @@
             <if test="lxr != null and lxr != ''">#{lxr, jdbcType=VARCHAR},</if>
             <if test="lxfs != null and lxfs != ''">#{lxfs, jdbcType=VARCHAR},</if>
             <if test="glgs != null and glgs != ''">#{glgs, jdbcType=VARCHAR},</if>
-            <if test="remark != null and remark != ''">#{remark, jdbcType=LONGVARCHAR},</if>
+            <if test="remark != null and remark != ''">#{remark, jdbcType=VARCHAR},</if>
             <if test="gxr != null and gxr != ''">#{gxr, jdbcType=VARCHAR},</if>
             <if test="gxsj != null and gxsj != ''">#{gxsj, jdbcType=VARCHAR},</if>
             <if test="djr != null and djr != ''">#{djr, jdbcType=VARCHAR},</if>
@@ -226,7 +226,7 @@
                 <if test="(cws != null and cws != '') or cws == 0">CWS = #{cws, jdbcType=BIGINT},</if>
                 <if test="(yysl != null and yysl != '') or yysl == 0">YYSL = #{yysl, jdbcType=BIGINT},</if>
                 <if test="(fwjgs != null and fwjgs != '') or fwjgs == 0">FWJGS = #{fwjgs, jdbcType=BIGINT},</if>
-                <if test="zyyw != null and zyyw != ''">ZYYW = #{zyyw, jdbcType=LONGVARCHAR},</if>
+                <if test="zyyw != null and zyyw != ''">ZYYW = #{zyyw, jdbcType=VARCHAR},</if>
                 <if test="gsgm != null and gsgm != ''">GSGM = #{gsgm, jdbcType=VARCHAR},</if>
                 <if test="ssgs != null and ssgs != ''">SSGS = #{ssgs, jdbcType=VARCHAR},</if>
                 <if test="ssjg != null and ssjg != ''">SSJG = #{ssjg, jdbcType=VARCHAR},</if>
@@ -245,7 +245,7 @@
                 <if test="lxr != null and lxr != ''">LXR = #{lxr, jdbcType=VARCHAR},</if>
                 <if test="lxfs != null and lxfs != ''">LXFS = #{lxfs, jdbcType=VARCHAR},</if>
                 <if test="glgs != null and glgs != ''">GLGS = #{glgs, jdbcType=VARCHAR},</if>
-                <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
+                <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=VARCHAR},</if>
                 <if test="gxr != null and gxr != ''">GXR = #{gxr, jdbcType=VARCHAR},</if>
                 <if test="gxsj != null and gxsj != ''">GXSJ = #{gxsj, jdbcType=VARCHAR},</if>
                 <if test="djr != null and djr != ''">DJR = #{djr, jdbcType=VARCHAR},</if>

@@ -7,7 +7,7 @@ import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
  *
- *
+ * 接口表--产品信息表
  * @author SSGJ
  * @date 2018-01-18 10:11:46
  */
@@ -17,7 +17,7 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
 
     private static final long serialVersionUID = -1L;
 
-    private Long id; 
+    private Long id;
 
     private Long fid;
 
@@ -42,9 +42,9 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
     private String cpxspx;
 
     private String cpdj;
-    
+
     private String cptxName;
-    
+
     private String cptx;
 
     private String cpzxsx;
@@ -59,7 +59,7 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
 
     private Integer cpbz;
 
-    private Integer xcpkhxs;
+    private String xcpkhxs;
 
     private Integer zt;
 
@@ -106,7 +106,7 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
     }
 
     public void setType(String type) {
-        this.type = type;
+        this.type = type == null ? null : type.trim();
     }
 
     public String getFdncode() {
@@ -114,7 +114,7 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
     }
 
     public void setFdncode(String fdncode) {
-        this.fdncode = fdncode;
+        this.fdncode = fdncode == null ? null : fdncode.trim();
     }
 
     public String getCode() {
@@ -122,7 +122,7 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
     }
 
     public void setCode(String code) {
-        this.code = code;
+        this.code = code == null ? null : code.trim();
     }
 
     public String getName() {
@@ -130,7 +130,7 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name == null ? null : name.trim();
     }
 
     public String getPy() {
@@ -138,7 +138,7 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
     }
 
     public void setPy(String py) {
-        this.py = py;
+        this.py = py == null ? null : py.trim();
     }
 
     public String getBbh() {
@@ -146,7 +146,7 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
     }
 
     public void setBbh(String bbh) {
-        this.bbh = bbh;
+        this.bbh = bbh == null ? null : bbh.trim();
     }
 
     public String getGnms() {
@@ -154,7 +154,7 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
     }
 
     public void setGnms(String gnms) {
-        this.gnms = gnms;
+        this.gnms = gnms == null ? null : gnms.trim();
     }
 
     public String getXssx() {
@@ -162,7 +162,7 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
     }
 
     public void setXssx(String xssx) {
-        this.xssx = xssx;
+        this.xssx = xssx == null ? null : xssx.trim();
     }
 
     public String getCpxspx() {
@@ -170,7 +170,7 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
     }
 
     public void setCpxspx(String cpxspx) {
-        this.cpxspx = cpxspx;
+        this.cpxspx = cpxspx == null ? null : cpxspx.trim();
     }
 
     public String getCpdj() {
@@ -178,7 +178,7 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
     }
 
     public void setCpdj(String cpdj) {
-        this.cpdj = cpdj;
+        this.cpdj = cpdj == null ? null : cpdj.trim();
     }
 
     public String getCptx() {
@@ -186,7 +186,7 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
     }
 
     public void setCptx(String cptx) {
-        this.cptx = cptx;
+        this.cptx = cptx == null ? null : cptx.trim();
     }
 
     public String getCpzxsx() {
@@ -194,7 +194,7 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
     }
 
     public void setCpzxsx(String cpzxsx) {
-        this.cpzxsx = cpzxsx;
+        this.cpzxsx = cpzxsx == null ? null : cpzxsx.trim();
     }
 
     public String getCplb() {
@@ -202,7 +202,7 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
     }
 
     public void setCplb(String cplb) {
-        this.cplb = cplb;
+        this.cplb = cplb == null ? null : cplb.trim();
     }
 
     public Integer getCplx() {
@@ -226,7 +226,7 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
     }
 
     public void setSsgs(String ssgs) {
-        this.ssgs = ssgs;
+        this.ssgs = ssgs == null ? null : ssgs.trim();
     }
 
     public Integer getCpbz() {
@@ -237,12 +237,12 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
         this.cpbz = cpbz;
     }
 
-    public Integer getXcpkhxs() {
+    public String getXcpkhxs() {
         return xcpkhxs;
     }
 
-    public void setXcpkhxs(Integer xcpkhxs) {
-        this.xcpkhxs = xcpkhxs;
+    public void setXcpkhxs(String xcpkhxs) {
+        this.xcpkhxs = xcpkhxs == null ? null : xcpkhxs.trim();
     }
 
     public Integer getZt() {

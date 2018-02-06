@@ -1,126 +1,243 @@
 package cn.com.winning.ssgj.ws.service;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.exception.SSGJException;
+import cn.com.winning.ssgj.base.util.ConnectionUtil;
 import cn.com.winning.ssgj.base.util.PmisWSUtil;
-import cn.com.winning.ssgj.domain.PmisContractInfo;
-import cn.com.winning.ssgj.domain.PmisCustomerInformation;
-import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.ws.client.*;
-import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author chenshijie
- * @title
+ * @title PMIS接口表导入数据表
  * @email chensj@winning.com.cm
  * @package cn.com.winning.ssgj.ws.service
  * @date 2018-02-05 13:09
  */
 public class PmisWebServiceClient {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PmisWebServiceClient.class);
+
+    public static void main(String[] args){
+       PmisWebServiceClient.insertData();
+    }
     /**
-     * 从PMIS系统导入数据
-     * @param dataType 数据类型 参考Constants.PmisWSConstants.WS_SERVICE_TYPE_*
+     * PMIS接口表信息
+     *
      */
-    public void importDataFromPmisByDataType(String dataType){
-        //基础信息
+    private static  final Map<String,String> pmisInfoData ;
+    static {
+        pmisInfoData = new HashMap<String,String>();
+        pmisInfoData.put("1","SYS_USER_INFO"); //用户信息 成功
+        pmisInfoData.put("2","PMIS_CUSTOMER_INFORMATION"); //客户信息库 成功
+        pmisInfoData.put("3","PMIS_PROJECT_BASIC_INFO"); //  项目基本信息 OK
+        pmisInfoData.put("4","PMIS_PROJCT_USER"); // OK  项目成员信息 OK
+        pmisInfoData.put("5","PMIS_CONTRACT_INFO"); // 合同信息 OK
+        pmisInfoData.put("6","PMIS_PRODUCT_INFO");// 产品信息库 OK
+        pmisInfoData.put("7","PMIS_CONTRACT_PRODUCT_INFO"); // 合同产品清单 OK
+        pmisInfoData.put("8","SYS_ORGANIZATION"); //组织机构
+        pmisInfoData.put("9","PMIS_PRODUCT_LINE_INFO"); //产品条线信息
+    }
+
+    /**
+     * 加载PMIS系统接口数据
+     */
+    public static void insertData(){
+        for (String dataType : pmisInfoData.keySet()) {
+            String tableNam = pmisInfoData.get(dataType);
+            generateDymaicSql(tableNam,dataType);
+        }
+    }
+
+    /**
+     * 导入特定PMIS接口表数据
+     * @param dataType
+     */
+    public static void insertPMISInterfaceData(String dataType){
+            String tableName = pmisInfoData.get(dataType);
+            generateDymaicSql(tableName,dataType);
+    }
+
+    /**
+     * SQL数据生成
+     * @param tableName
+     * @param dataType
+     */
+    private static void generateDymaicSql(String tableName, String dataType){
+        LOGGER.info("删除表"+tableName+"数据开始" );
+        String sql = "";
+        if(dataType.equals(Constants.PmisWSConstants.WS_SERVICE_QUERY_USER)){
+            sql ="DELETE FROM "+tableName + " WHERE USER_TYPE='1';";
+        }else{
+            sql = "DELETE FROM "+tableName + " ;";
+        }
+        LOGGER.info("删除表SQL："+sql );
+        executeSqlInfo(sql);
+        LOGGER.info("删除表"+tableName+"数据结束" );
         LBEBusinessService lbeBusinessService = PmisWSUtil.createLBEBusinessService();
         LoginResult loginResult = PmisWSUtil.createLoginResult();
         List<LbParameter> params = PmisWSUtil.createLbParameter(dataType);
         QueryOption queryOption  = PmisWSUtil.createFirstCountValueOption();
-        //查询数量信息
         QueryResult result = lbeBusinessService.query(loginResult.getSessionId(),Constants.PmisWSConstants.WS_SERVICE_OBJECT_NAME,
                 params,"",queryOption);
-        int total = result.getCount();
-        int pageSize = Constants.PmisWSConstants.QUERY_BATCH_SIZE;
-        int lastPageSize = total % pageSize;
-        int page = 0;
-        boolean pageEnd = false;
-
-        if(lastPageSize > 0){
-            page = total/pageSize + 1;
-            pageEnd = true;
-        }else{
-            page = total/pageSize;
-            pageEnd = false;
+        if (result.getResult() <= 0){
+            throw  new SSGJException(result.getMessage());
+        }else {
+            long statTime = System.currentTimeMillis();
+            int total = result.getCount();
+            LOGGER.info("导入表" + tableName + "数据开始:");
+            LOGGER.info(tableName + "表数据量："+total +"  列数："+result.getMetaData().getColumnCount());
+            int pageSize = Constants.PmisWSConstants.QUERY_BATCH_SIZE;
+            int lastPageSize = total % pageSize;
+            int page = 0;
+            boolean pageEnd = false;
+            if (lastPageSize > 0) {
+                page = total / pageSize + 1;
+                pageEnd = true;
+            } else {
+                page = total / pageSize;
+                pageEnd = false;
+            }
+            for (int i = 1; i <= page; i++) {
+                if ((i == page) && pageEnd) {
+                    queryOption = PmisWSUtil.createQueryValueOption(i, lastPageSize);
+                    result = lbeBusinessService.query(loginResult.getSessionId(), Constants.PmisWSConstants.WS_SERVICE_OBJECT_NAME,
+                            params, "", queryOption);
+                    resolveWSResult(result, tableName);
+                } else {
+                    queryOption = PmisWSUtil.createQueryValueOption(i);
+                    result = lbeBusinessService.query(loginResult.getSessionId(), Constants.PmisWSConstants.WS_SERVICE_OBJECT_NAME,
+                            params, "", queryOption);
+                    resolveWSResult(result, tableName);
+                }
+            }
+            long endTime = System.currentTimeMillis();
+            LOGGER.info("导入表" + tableName + "数据结束，耗时："+(endTime -statTime));
         }
+        PmisWSUtil.createLogoutResult(loginResult);
+    }
 
-        for ( int i = 1;i<= page;i++){
-            if( (i == page) && pageEnd ){
-                queryOption = PmisWSUtil.createQueryValueOption(i,lastPageSize);
-                result = lbeBusinessService.query(loginResult.getSessionId(),Constants.PmisWSConstants.WS_SERVICE_OBJECT_NAME,
-                        params,"",queryOption);
-                resolveWSResult(result,dataType);
-            }else{
-                queryOption = PmisWSUtil.createQueryValueOption(i);
-                result = lbeBusinessService.query(loginResult.getSessionId(),Constants.PmisWSConstants.WS_SERVICE_OBJECT_NAME,
-                        params,"",queryOption);
-                resolveWSResult(result,dataType);
+    private static void resolveWSResult(QueryResult result, String tableName) {
+        if (tableName.toUpperCase().equals("SYS_USER_INFO")){
+            resolveUserInfoData(result);
+        }else{
+            generateSQLInfo(result,tableName);
+        }
+    }
+
+    /**
+     * 生成其他接口表信息
+     * @param result
+     * @param tableName
+     */
+    private static void generateSQLInfo(QueryResult result,String tableName){
+        StringBuilder sb = new StringBuilder();
+        sb.append("insert into "+tableName.toUpperCase()+" values \n");
+        List<LbRecord> recordList = result.getRecords();
+        List<ColInfo> colInfos = result.getMetaData().getColInfo();
+        for (int i = 0; i < recordList.size(); i++) {
+            LbRecord record = recordList.get(i);
+            List<Object>  values = record.getValues();
+            for (int j = 0; j < values.size(); j++) {
+//                 开始数据为数字
+                if ( j== 0 && colInfos.get(j).getType() == 1){
+                    sb.append("(" + resolveValue(values.get(j))+",");
+//              开始数据为字符或者时间
+                }else if ( j== 0 && (colInfos.get(j).getType() == 0 || colInfos.get(j).getType() == 3)){
+                    sb.append("(\'" + values.get(j)+"\',");
+//              全部结束数据为数字
+                }else  if ((j== values.size() -1) && (colInfos.get(j).getType() == 1) &&
+                        (i == recordList.size()-1)){
+                    sb.append( resolveValue(values.get(j))+" );  \n");
+//              全部结束数据为字符或者时间
+                }else  if ((j== values.size() -1) && (colInfos.get(j).getType() == 0 || colInfos.get(j).getType() == 3) &&
+                        (i == recordList.size()-1)){
+                    sb.append("\'" +values.get(j)+"\' );  \n");
+//              单行结束为数字
+                }else  if ((j== values.size() -1) && (colInfos.get(j).getType() == 1)){
+                    sb.append( resolveValue(values.get(j))+"  ),  \n");
+//              单行结束为字符或者时间
+                }else  if ((j== values.size() -1) && (colInfos.get(j).getType() == 0 || colInfos.get(j).getType() == 3)){
+                    sb.append( "\'" + values.get(j)+" \' ),");
+//              字段处理 数字
+                }else if(colInfos.get(j).getType() == 1){
+                    sb.append(resolveValue(values.get(j))+",");
+                }else if(colInfos.get(j).getType() == 0 || colInfos.get(j).getType() == 3){
+//              字段处理 字符或者时间
+                    sb.append("\'" + values.get(j)+"\',");
+                }
             }
         }
-
+        executeSqlInfo(sb.toString());
     }
-
     /**
-     * 解析WS返回数据数据
-     * @param result  查询获取数据
-     * @param dataType 查询数据类型
-     */
-    private void resolveWSResult(QueryResult result,String dataType) {
-        if(Constants.PmisWSConstants.WS_SERVICE_TYPE_USER.equals(dataType)){
-            resolveUserInfoData(result);
-        }else  if (Constants.PmisWSConstants.WS_SERVICE_QUERY_CUSTOM.equals(dataType)){
-            resolveCustomData(result);
-        }
-
-    }
-
-    /**
-     * 解析客户信息
+     * 生成用户信息SQL
      * @param result
      */
-    private void resolveCustomData(QueryResult result) {
-        int resultNum = result.getRecords().size();
+    private static void resolveUserInfoData(QueryResult result){
+        StringBuilder sb = new StringBuilder();
+        sb.append("insert into SYS_USER_INFO values \n");
         List<LbRecord> recordList = result.getRecords();
+        List<ColInfo> colInfos = result.getMetaData().getColInfo();
         for (int i = 0; i < recordList.size(); i++) {
             LbRecord record = recordList.get(i);
             List<Object>  values = record.getValues();
-            PmisCustomerInformation customerInformation = new PmisCustomerInformation();
-            customerInformation.setId(Long.valueOf(values.get(0).toString()));
-            customerInformation.setCode(values.get(1).toString());
-            customerInformation.setName(values.get(2).toString());
-            customerInformation.setYylx(values.get(3).toString());
-            customerInformation.setQyxx(values.get(4).toString());
-            customerInformation.setCity(values.get(5).toString());
-            System.out.println(customerInformation);
+            for (int j = 0; j < values.size(); j++) {
+                if ( j== 0 && colInfos.get(j).getType() == 1){
+                    sb.append("(" + values.get(j)+",");
+                }else  if ((j== values.size() -1) && (colInfos.get(j).getType() == 1) &&
+                        (i == recordList.size()-1)){
+                    sb.append( values.get(j)+",\'1\',-1 );  \n");
+                }else  if ((j== values.size() -1) && (colInfos.get(j).getType() == 1)){
+                    sb.append( values.get(j)+",\'1\',-1 ),  \n");
+                }else if ( j== 0 && colInfos.get(j).getType() == 0){
+                    sb.append("(\'" + values.get(j)+"\',");
+                }else  if ((j== values.size() -1) && (colInfos.get(j).getType() == 0)){
+                    sb.append( "\'" + values.get(j)+" \' ),");
+                }else if(colInfos.get(j).getType() == 1){
+                    sb.append(values.get(j)+",");
+                }else if(colInfos.get(j).getType() == 0){
+                    sb.append("\'" + values.get(j)+"\',");
+                }
+            }
         }
+        executeSqlInfo(sb.toString());
+    }
+    /**
+     * 转换接口中存在数字为空的数据
+     * @param o
+     * @return
+     */
+    private static Object resolveValue(Object o) {
+        return o.toString().equals("") ? 0 : o;
     }
 
     /**
-     * 解析用户信息
-     * @param result
+     * 执行生成SQL脚本
+     * @param sql
      */
-    private void resolveUserInfoData(QueryResult result){
-        int resultNum = result.getRecords().size();
-        List<LbRecord> recordList = result.getRecords();
-        for (int i = 0; i < recordList.size(); i++) {
-            LbRecord record = recordList.get(i);
-            List<Object>  values = record.getValues();
-            SysUserInfo userInfo = new SysUserInfo();
-            userInfo.setId(Long.valueOf(values.get(0).toString()));
-            userInfo.setStatus(1);
-            userInfo.setYhmc(values.get(1).toString());
-            userInfo.setUserid(values.get(2).toString());
-            userInfo.setPassword(values.get(3).toString());
-            userInfo.setName(values.get(1).toString() + values.get(2).toString());
-            userInfo.setUserType(Constants.User.USER_STATUS_NORMAL);
-            userInfo.setSsgs(values.get(4).toString());
-            userInfo.setYhsjgh(values.get(5).toString());
-            System.out.println(userInfo);
+    private static void executeSqlInfo(String sql){
+        Connection connection = null ;
+        PreparedStatement ps = null ;
+        ResultSet rs = null ;
+        try {
+            connection = ConnectionUtil.getConnection();
+            connection.setAutoCommit(true);
+            ps = connection.prepareStatement(sql);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            ConnectionUtil.closeAll(connection,ps,rs);
         }
-
     }
-
 }

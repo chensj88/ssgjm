@@ -31,10 +31,10 @@ public class ConnectionUtil {
 	 */
 	public static synchronized Connection getConnection() {
 		// 读出配置信息
-		String driverClassName = properties.get("jdbc.driverClassName");
-		String url = properties.get("jdbc.url");
-		String username = properties.get("jdbc.username");
-		String password = properties.get("jdbc.password");
+	    String driverClassName = properties.get("driverClassName");
+		String url = properties.get("url");
+		String username = properties.get("username");
+		String password = properties.get("password");
 		
 		Connection conn = null;
 		try {

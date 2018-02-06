@@ -12,11 +12,10 @@
         <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
         <result column="TELEPHONE" property="telephone" jdbcType="VARCHAR" />
         <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
-        <result column="ORGID" property="orgid" jdbcType="VARCHAR" />
-        <result column="SSGS" property="ssgs" jdbcType="VARCHAR" />
-        <result column="LINK_ID" property="linkId" jdbcType="BIGINT" />
+        <result column="ORGID" property="orgid" jdbcType="BIGINT" />
+        <result column="SSGS" property="ssgs" jdbcType="BIGINT" />
         <result column="USER_TYPE" property="userType" jdbcType="VARCHAR" />
-        <result column="YHSJGH" property="yhsjgh" jdbcType="VARCHAR" />
+        <result column="LINK_ID" property="linkId" jdbcType="BIGINT" />
     </resultMap>
 
     <resultMap id="sysUserInfoResult" type="sysUserInfo" extends="sysUserInfoResultForList">
@@ -42,7 +41,7 @@
     <sql id="query-sysUserInfo">
         <if test="userid != null and userid != ''">AND t.USERID LIKE '%${userid}%'</if>
         <if test="yhmc != null and yhmc != ''">AND t.YHMC LIKE '%${yhmc}%'</if>
-        <if test="mobile != null and mobile != ''">AND t.MOBILE LIKE '%${mobile}'</if>
+        <if test="mobile != null and mobile != ''">AND t.MOBILE LIKE '%${mobile}%'</if>
     </sql>
 
     <select id="selectSysUserInfo" resultMap="sysUserInfoResult" parameterType="sysUserInfo">
@@ -87,9 +86,8 @@
             <if test="password != null and password != ''"> PASSWORD, </if>
             <if test="orgid != null and orgid != ''"> ORGID, </if>
             <if test="ssgs != null and ssgs != ''"> SSGS, </if>
-            <if test="(linkId != null and linkId != '') or linkId == 0"> LINK_ID, </if>
+            <if test="(linkId != null and linkId != '') "> LINK_ID, </if>
             <if test="userType != null and userType != ''"> USER_TYPE, </if>
-            <if test="(yhsjgh != null and yhsjgh != '')"> YHSJGH, </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -102,11 +100,10 @@
             <if test="mobile != null and mobile != ''"> #{mobile, jdbcType=VARCHAR}, </if>
             <if test="telephone != null and telephone != ''"> #{telephone, jdbcType=VARCHAR}, </if>
             <if test="password != null and password != ''"> #{password, jdbcType=VARCHAR}, </if>
-            <if test="orgid != null and orgid != ''"> #{orgid, jdbcType=VARCHAR}, </if>
-            <if test="ssgs != null and ssgs != ''"> #{ssgs, jdbcType=VARCHAR}, </if>
-            <if test="(linkId != null and linkId != '') or linkId == 0"> #{linkId, jdbcType=BIGINT}, </if>
+            <if test="orgid != null and orgid != ''"> #{orgid, jdbcType=BIGINT}, </if>
+            <if test="ssgs != null and ssgs != ''"> #{ssgs, jdbcType=BIGINT}, </if>
+            <if test="(linkId != null and linkId != '') "> #{linkId, jdbcType=BIGINT}, </if>
             <if test="userType != null and userType != ''"> #{userType, jdbcType=VARCHAR}, </if>
-            <if test="(yhsjgh != null and yhsjgh != '') "> #{yhsjgh, jdbcType=VARCHAR}, </if>
         </trim>
     </insert>
 
@@ -123,11 +120,10 @@
                 <if test="mobile != null and mobile != ''"> MOBILE = #{mobile, jdbcType=VARCHAR}, </if>
                 <if test="telephone != null and telephone != ''"> TELEPHONE = #{telephone, jdbcType=VARCHAR}, </if>
                 <if test="password != null and password != ''"> PASSWORD = #{password, jdbcType=VARCHAR}, </if>
-                <if test="orgid != null and orgid != ''"> ORGID = #{orgid, jdbcType=VARCHAR}, </if>
-                <if test="ssgs != null and ssgs != ''"> SSGS = #{ssgs, jdbcType=VARCHAR}, </if>
-                <if test="(linkId != null and linkId != '') or linkId == 0"> LINK_ID = #{linkId, jdbcType=BIGINT}, </if>
+                <if test="orgid != null and orgid != ''"> ORGID = #{orgid, jdbcType=BIGINT}, </if>
+                <if test="ssgs != null and ssgs != ''"> SSGS = #{ssgs, jdbcType=BIGINT}, </if>
+                <if test="(linkId != null and linkId != '')"> LINK_ID = #{linkId, jdbcType=BIGINT}, </if>
                 <if test="userType != null and userType != ''"> USER_TYPE = #{userType, jdbcType=VARCHAR}, </if>
-                <if test="(yhsjgh != null and yhsjgh != '') "> YHSJGH = #{yhsjgh, jdbcType=VARCHAR}, </if>
             </trim>
         </set>
         <where>

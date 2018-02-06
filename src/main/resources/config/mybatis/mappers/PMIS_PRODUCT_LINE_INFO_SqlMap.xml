@@ -12,7 +12,6 @@
         <result column="SX" property="sx" jdbcType="VARCHAR"/>
         <result column="HSDY" property="hsdy" jdbcType="VARCHAR"/>
         <result column="CPZ" property="cpz" jdbcType="VARCHAR"/>
-        <result column="CPDM" property="cpdm" jdbcType="VARCHAR"/>
         <result column="CPXL" property="cpxl" jdbcType="VARCHAR"/>
         <result column="CPDL" property="cpdl" jdbcType="VARCHAR"/>
     </resultMap>
@@ -30,7 +29,6 @@
         <if test="sx != null and sx != ''">and t.SX = #{sx}</if>
         <if test="hsdy != null and hsdy != ''">and t.HSDY = #{hsdy}</if>
         <if test="cpz != null and cpz != ''">and t.CPZ = #{cpz}</if>
-        <if test="cpdm != null and cpdm != ''">and t.CPDM = #{cpdm}</if>
         <if test="cpxl != null and cpxl != ''">and t.CPXL = #{cpxl}</if>
         <if test="cpdl != null and cpdl != ''">and t.CPDL = #{cpdl}</if>
     </sql>
@@ -77,7 +75,6 @@
             <if test="sx != null and sx != ''">SX,</if>
             <if test="hsdy != null and hsdy != ''">HSDY,</if>
             <if test="cpz != null and cpz != ''">CPZ,</if>
-            <if test="cpdm != null and cpdm != ''">CPDM,</if>
             <if test="cpxl != null and cpxl != ''">CPXL,</if>
             <if test="cpdl != null and cpdl != ''">CPDL,</if>
         </trim>
@@ -92,7 +89,6 @@
             <if test="sx != null and sx != ''">#{sx, jdbcType=VARCHAR},</if>
             <if test="hsdy != null and hsdy != ''">#{hsdy, jdbcType=VARCHAR},</if>
             <if test="cpz != null and cpz != ''">#{cpz, jdbcType=VARCHAR},</if>
-            <if test="cpdm != null and cpdm != ''">#{cpdm, jdbcType=VARCHAR},</if>
             <if test="cpxl != null and cpxl != ''">#{cpxl, jdbcType=VARCHAR},</if>
             <if test="cpdl != null and cpdl != ''">#{cpdl, jdbcType=VARCHAR},</if>
         </trim>
@@ -111,7 +107,6 @@
                 <if test="sx != null and sx != ''">SX = #{sx, jdbcType=VARCHAR},</if>
                 <if test="hsdy != null and hsdy != ''">HSDY = #{hsdy, jdbcType=VARCHAR},</if>
                 <if test="cpz != null and cpz != ''">CPZ = #{cpz, jdbcType=VARCHAR},</if>
-                <if test="cpdm != null and cpdm != ''">CPDM = #{cpdm, jdbcType=VARCHAR},</if>
                 <if test="cpxl != null and cpxl != ''">CPXL = #{cpxl, jdbcType=VARCHAR},</if>
                 <if test="cpdl != null and cpdl != ''">CPDL = #{cpdl, jdbcType=VARCHAR},</if>
             </trim>

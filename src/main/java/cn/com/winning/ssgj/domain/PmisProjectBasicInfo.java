@@ -19,21 +19,21 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
 
     private Long id;
 
-    private String fwlx;
+    private Integer fwlx;
 
     private String xmlx;
 
-    private String xmdj;
+    private Integer xmdj;
 
     private String name;
 
-    private Integer khjdqc;
+    private String khjdqc;
 
-    private Integer khjdtj;
+    private String khjdtj;
 
-    private Integer khjdlj;
+    private String khjdlj;
 
-    private String qs;
+    private Integer qs;
 
     private String xmms;
 
@@ -55,9 +55,9 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
 
     private Long khjg;
 
-    private String htxx;
+    private Long htxx;
 
-    private String htlx;
+    private Long htlx;
 
     private String bzsm;
 
@@ -67,13 +67,13 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
 
     private Long khxx;
 
-    private Long khsr;
+    private String khsr;
 
-    private Long ywckhsr;
+    private String ywckhsr;
 
-    private Long khxs;
+    private String khxs;
 
-    private Long khxssr;
+    private String khxssr;
 
     private String wcrq;
 
@@ -91,13 +91,9 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
 
     private String xdrq;
 
-    private String yjzt;
+    private Integer yjzt;
 
     private String yjrq;
-
-    public PmisProjectBasicInfo() {
-
-    }
 
     public Long getId() {
         return id;
@@ -107,11 +103,11 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
         this.id = id;
     }
 
-    public String getFwlx() {
+    public Integer getFwlx() {
         return fwlx;
     }
 
-    public void setFwlx(String fwlx) {
+    public void setFwlx(Integer fwlx) {
         this.fwlx = fwlx;
     }
 
@@ -120,14 +116,14 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
     }
 
     public void setXmlx(String xmlx) {
-        this.xmlx = xmlx;
+        this.xmlx = xmlx == null ? null : xmlx.trim();
     }
 
-    public String getXmdj() {
+    public Integer getXmdj() {
         return xmdj;
     }
 
-    public void setXmdj(String xmdj) {
+    public void setXmdj(Integer xmdj) {
         this.xmdj = xmdj;
     }
 
@@ -136,38 +132,38 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name == null ? null : name.trim();
     }
 
-    public Integer getKhjdqc() {
+    public String getKhjdqc() {
         return khjdqc;
     }
 
-    public void setKhjdqc(Integer khjdqc) {
-        this.khjdqc = khjdqc;
+    public void setKhjdqc(String khjdqc) {
+        this.khjdqc = khjdqc == null ? null : khjdqc.trim();
     }
 
-    public Integer getKhjdtj() {
+    public String getKhjdtj() {
         return khjdtj;
     }
 
-    public void setKhjdtj(Integer khjdtj) {
-        this.khjdtj = khjdtj;
+    public void setKhjdtj(String khjdtj) {
+        this.khjdtj = khjdtj == null ? null : khjdtj.trim();
     }
 
-    public Integer getKhjdlj() {
+    public String getKhjdlj() {
         return khjdlj;
     }
 
-    public void setKhjdlj(Integer khjdlj) {
-        this.khjdlj = khjdlj;
+    public void setKhjdlj(String khjdlj) {
+        this.khjdlj = khjdlj == null ? null : khjdlj.trim();
     }
 
-    public String getQs() {
+    public Integer getQs() {
         return qs;
     }
 
-    public void setQs(String qs) {
+    public void setQs(Integer qs) {
         this.qs = qs;
     }
 
@@ -176,7 +172,7 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
     }
 
     public void setXmms(String xmms) {
-        this.xmms = xmms;
+        this.xmms = xmms == null ? null : xmms.trim();
     }
 
     public String getJhnr() {
@@ -184,7 +180,7 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
     }
 
     public void setJhnr(String jhnr) {
-        this.jhnr = jhnr;
+        this.jhnr = jhnr == null ? null : jhnr.trim();
     }
 
     public Long getXmjl() {
@@ -251,19 +247,19 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
         this.khjg = khjg;
     }
 
-    public String getHtxx() {
+    public Long getHtxx() {
         return htxx;
     }
 
-    public void setHtxx(String htxx) {
+    public void setHtxx(Long htxx) {
         this.htxx = htxx;
     }
 
-    public String getHtlx() {
+    public Long getHtlx() {
         return htlx;
     }
 
-    public void setHtlx(String htlx) {
+    public void setHtlx(Long htlx) {
         this.htlx = htlx;
     }
 
@@ -272,7 +268,7 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
     }
 
     public void setBzsm(String bzsm) {
-        this.bzsm = bzsm;
+        this.bzsm = bzsm == null ? null : bzsm.trim();
     }
 
     public String getGzrq() {
@@ -280,7 +276,7 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
     }
 
     public void setGzrq(String gzrq) {
-        this.gzrq = gzrq;
+        this.gzrq = gzrq == null ? null : gzrq.trim();
     }
 
     public String getGzsm() {
@@ -288,7 +284,7 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
     }
 
     public void setGzsm(String gzsm) {
-        this.gzsm = gzsm;
+        this.gzsm = gzsm == null ? null : gzsm.trim();
     }
 
     public Long getKhxx() {
@@ -299,36 +295,36 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
         this.khxx = khxx;
     }
 
-    public Long getKhsr() {
+    public String getKhsr() {
         return khsr;
     }
 
-    public void setKhsr(Long khsr) {
-        this.khsr = khsr;
+    public void setKhsr(String khsr) {
+        this.khsr = khsr == null ? null : khsr.trim();
     }
 
-    public Long getYwckhsr() {
+    public String getYwckhsr() {
         return ywckhsr;
     }
 
-    public void setYwckhsr(Long ywckhsr) {
-        this.ywckhsr = ywckhsr;
+    public void setYwckhsr(String ywckhsr) {
+        this.ywckhsr = ywckhsr == null ? null : ywckhsr.trim();
     }
 
-    public Long getKhxs() {
+    public String getKhxs() {
         return khxs;
     }
 
-    public void setKhxs(Long khxs) {
-        this.khxs = khxs;
+    public void setKhxs(String khxs) {
+        this.khxs = khxs == null ? null : khxs.trim();
     }
 
-    public Long getKhxssr() {
+    public String getKhxssr() {
         return khxssr;
     }
 
-    public void setKhxssr(Long khxssr) {
-        this.khxssr = khxssr;
+    public void setKhxssr(String khxssr) {
+        this.khxssr = khxssr == null ? null : khxssr.trim();
     }
 
     public String getWcrq() {
@@ -336,7 +332,7 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
     }
 
     public void setWcrq(String wcrq) {
-        this.wcrq = wcrq;
+        this.wcrq = wcrq == null ? null : wcrq.trim();
     }
 
     public String getGxsj() {
@@ -344,7 +340,7 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
     }
 
     public void setGxsj(String gxsj) {
-        this.gxsj = gxsj;
+        this.gxsj = gxsj == null ? null : gxsj.trim();
     }
 
     public Long getGxr() {
@@ -384,7 +380,7 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
     }
 
     public void setQrbzsm(String qrbzsm) {
-        this.qrbzsm = qrbzsm;
+        this.qrbzsm = qrbzsm == null ? null : qrbzsm.trim();
     }
 
     public String getXdrq() {
@@ -392,14 +388,14 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
     }
 
     public void setXdrq(String xdrq) {
-        this.xdrq = xdrq;
+        this.xdrq = xdrq == null ? null : xdrq.trim();
     }
 
-    public String getYjzt() {
+    public Integer getYjzt() {
         return yjzt;
     }
 
-    public void setYjzt(String yjzt) {
+    public void setYjzt(Integer yjzt) {
         this.yjzt = yjzt;
     }
 
@@ -408,7 +404,7 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
     }
 
     public void setYjrq(String yjrq) {
-        this.yjrq = yjrq;
+        this.yjrq = yjrq == null ? null : yjrq.trim();
     }
 
 }

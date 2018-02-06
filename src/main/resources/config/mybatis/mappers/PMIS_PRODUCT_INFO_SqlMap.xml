@@ -24,7 +24,7 @@
         <result column="CPXZ" property="cpxz" jdbcType="INTEGER"/>
         <result column="SSGS" property="ssgs" jdbcType="VARCHAR"/>
         <result column="CPBZ" property="cpbz" jdbcType="INTEGER"/>
-        <result column="XCPKHXS" property="xcpkhxs" jdbcType="INTEGER"/>
+        <result column="XCPKHXS" property="xcpkhxs" jdbcType="VARCHAR"/>
         <result column="ZT" property="zt" jdbcType="INTEGER"/>
     </resultMap>
 
@@ -52,7 +52,7 @@
         <if test="(cpxz != null and cpxz != '') or cpxz == 0">and t.CPXZ = #{cpxz}</if>
         <if test="ssgs != null and ssgs != ''">and t.SSGS = #{ssgs}</if>
         <if test="(cpbz != null and cpbz != '') or cpbz == 0">and t.CPBZ = #{cpbz}</if>
-        <if test="(xcpkhxs != null and xcpkhxs != '') or xcpkhxs == 0">and t.XCPKHXS = #{xcpkhxs}</if>
+        <if test="(xcpkhxs != null and xcpkhxs != '') ">and t.XCPKHXS = #{xcpkhxs}</if>
         <if test="(zt != null and zt != '') or zt == 0">and t.ZT = #{zt}</if>
     </sql>
     <sql id="query-pmisProductInfo">
@@ -111,7 +111,7 @@
             <if test="(cpxz != null and cpxz != '') or cpxz == 0">CPXZ,</if>
             <if test="ssgs != null and ssgs != ''">SSGS,</if>
             <if test="(cpbz != null and cpbz != '') or cpbz == 0">CPBZ,</if>
-            <if test="(xcpkhxs != null and xcpkhxs != '') or xcpkhxs == 0">XCPKHXS,</if>
+            <if test="(xcpkhxs != null and xcpkhxs != '')">XCPKHXS,</if>
             <if test="(zt != null and zt != '') or zt == 0">ZT,</if>
         </trim>
         values
@@ -136,7 +136,7 @@
             <if test="(cpxz != null and cpxz != '') or cpxz == 0">#{cpxz, jdbcType=INTEGER},</if>
             <if test="ssgs != null and ssgs != ''">#{ssgs, jdbcType=VARCHAR},</if>
             <if test="(cpbz != null and cpbz != '') or cpbz == 0">#{cpbz, jdbcType=INTEGER},</if>
-            <if test="(xcpkhxs != null and xcpkhxs != '') or xcpkhxs == 0">#{xcpkhxs, jdbcType=INTEGER},</if>
+            <if test="(xcpkhxs != null and xcpkhxs != '') ">#{xcpkhxs, jdbcType=VARCHAR},</if>
             <if test="(zt != null and zt != '') or zt == 0">#{zt, jdbcType=INTEGER},</if>
         </trim>
     </insert>
@@ -165,7 +165,7 @@
                 <if test="(cpxz != null and cpxz != '') or cpxz == 0">CPXZ = #{cpxz, jdbcType=INTEGER},</if>
                 <if test="ssgs != null and ssgs != ''">SSGS = #{ssgs, jdbcType=VARCHAR},</if>
                 <if test="(cpbz != null and cpbz != '') or cpbz == 0">CPBZ = #{cpbz, jdbcType=INTEGER},</if>
-                <if test="(xcpkhxs != null and xcpkhxs != '') or xcpkhxs == 0">XCPKHXS = #{xcpkhxs, jdbcType=INTEGER},
+                <if test="(xcpkhxs != null and xcpkhxs != '') ">XCPKHXS = #{xcpkhxs, jdbcType=VARCHAR},
                 </if>
                 <if test="(zt != null and zt != '') or zt == 0">ZT = #{zt, jdbcType=INTEGER},</if>
             </trim>

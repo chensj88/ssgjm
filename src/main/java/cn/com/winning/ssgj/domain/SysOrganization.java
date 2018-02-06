@@ -10,7 +10,7 @@ import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
  *
- *
+ * 接口表--机构信息表
  * @author SSGJ
  * @date 2018-01-18 10:11:46
  */

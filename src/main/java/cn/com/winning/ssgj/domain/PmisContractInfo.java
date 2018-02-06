@@ -7,7 +7,7 @@ import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
  *
- *
+ * 接口表--合同信息表
  * @author SSGJ
  * @date 2018-01-18 10:11:45
  */
@@ -29,8 +29,6 @@ public class PmisContractInfo extends BaseDomain implements Serializable {
 
     private String name;
 
-    private String xdazrq;
-
     private String sqrq;
 
     private String sxrq;
@@ -39,7 +37,7 @@ public class PmisContractInfo extends BaseDomain implements Serializable {
 
     private String nf;
 
-    private String htlx;
+    private Long htlx;
 
     private Integer kplx;
 
@@ -47,7 +45,7 @@ public class PmisContractInfo extends BaseDomain implements Serializable {
 
     private Integer sfgq;
 
-    private Long htje;
+    private String htje;
 
     private Long khxx;
 
@@ -98,7 +96,7 @@ public class PmisContractInfo extends BaseDomain implements Serializable {
     }
 
     public void setCode(String code) {
-        this.code = code;
+        this.code = code == null ? null : code.trim();
     }
 
     public String getDamc() {
@@ -106,7 +104,7 @@ public class PmisContractInfo extends BaseDomain implements Serializable {
     }
 
     public void setDamc(String damc) {
-        this.damc = damc;
+        this.damc = damc == null ? null : damc.trim();
     }
 
     public String getName() {
@@ -114,15 +112,7 @@ public class PmisContractInfo extends BaseDomain implements Serializable {
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getXdazrq() {
-        return xdazrq;
-    }
-
-    public void setXdazrq(String xdazrq) {
-        this.xdazrq = xdazrq;
+        this.name = name == null ? null : name.trim();
     }
 
     public String getSqrq() {
@@ -130,7 +120,7 @@ public class PmisContractInfo extends BaseDomain implements Serializable {
     }
 
     public void setSqrq(String sqrq) {
-        this.sqrq = sqrq;
+        this.sqrq = sqrq == null ? null : sqrq.trim();
     }
 
     public String getSxrq() {
@@ -138,7 +128,7 @@ public class PmisContractInfo extends BaseDomain implements Serializable {
     }
 
     public void setSxrq(String sxrq) {
-        this.sxrq = sxrq;
+        this.sxrq = sxrq == null ? null : sxrq.trim();
     }
 
     public String getQdny() {
@@ -146,7 +136,7 @@ public class PmisContractInfo extends BaseDomain implements Serializable {
     }
 
     public void setQdny(String qdny) {
-        this.qdny = qdny;
+        this.qdny = qdny == null ? null : qdny.trim();
     }
 
     public String getNf() {
@@ -154,14 +144,14 @@ public class PmisContractInfo extends BaseDomain implements Serializable {
     }
 
     public void setNf(String nf) {
-        this.nf = nf;
+        this.nf = nf == null ? null : nf.trim();
     }
 
-    public String getHtlx() {
+    public Long getHtlx() {
         return htlx;
     }
 
-    public void setHtlx(String htlx) {
+    public void setHtlx(Long htlx) {
         this.htlx = htlx;
     }
 
@@ -189,12 +179,12 @@ public class PmisContractInfo extends BaseDomain implements Serializable {
         this.sfgq = sfgq;
     }
 
-    public Long getHtje() {
+    public String getHtje() {
         return htje;
     }
 
-    public void setHtje(Long htje) {
-        this.htje = htje;
+    public void setHtje(String htje) {
+        this.htje = htje == null ? null : htje.trim();
     }
 
     public Long getKhxx() {
@@ -210,7 +200,7 @@ public class PmisContractInfo extends BaseDomain implements Serializable {
     }
 
     public void setHtqyf(String htqyf) {
-        this.htqyf = htqyf;
+        this.htqyf = htqyf == null ? null : htqyf.trim();
     }
 
     public Long getQygs() {

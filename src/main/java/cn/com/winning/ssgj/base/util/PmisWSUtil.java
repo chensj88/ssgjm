@@ -3,7 +3,8 @@ package cn.com.winning.ssgj.base.util;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.ws.client.*;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public class PmisWSUtil {
 
-    private static LoginResult result = null;
+    private static final Logger LOGGER = LoggerFactory.getLogger(PmisWSUtil.class);
 
     private static LBEBusinessService lbeBusinessService = null;
 
@@ -26,14 +27,26 @@ public class PmisWSUtil {
      * @return
      */
     public static LoginResult createLoginResult() {
-        if (result == null) {
-            result = createLBEBusinessService().login(Constants.PmisWSConstants.WS_USER,
+
+        LoginResult result = createLBEBusinessService().login(Constants.PmisWSConstants.WS_USER,
                             Constants.PmisWSConstants.WS_PASSWORD,
                             "",
                             Constants.PmisWSConstants.WS_ALGORITHM,
                            "");
-        }
+        LOGGER.info("WebService用户"+Constants.PmisWSConstants.WS_USER+"登录系统："+result.getMessage());
+
         return result;
+    }
+
+    /**
+     * 退出登录解决超时问题
+     */
+    public static void createLogoutResult(LoginResult result) {
+
+       LogoutResult logoutResult = createLBEBusinessService().logout(result.getSessionId());
+       LOGGER.info("WebService用户"+Constants.PmisWSConstants.WS_USER+"退出登录："+logoutResult.getMessage());
+
+
     }
 
     /**

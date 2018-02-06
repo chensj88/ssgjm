@@ -7,7 +7,7 @@ import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
  *
- *
+ * 接口表--客户信息表
  * @author SSGJ
  * @date 2018-01-18 10:11:46
  */
@@ -45,8 +45,6 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
 
     private Long fwjgs;
 
-    private String zyyw;
-
     private String gsgm;
 
     private String ssgs;
@@ -83,8 +81,6 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
 
     private String glgs;
 
-    private String remark;
-
     private String gxr;
 
     private String gxsj;
@@ -94,6 +90,10 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     private String djsj;
 
     private Integer zt;
+
+    private String zyyw;
+
+    private String remark;
 
     public PmisCustomerInformation() {
 
@@ -112,7 +112,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setCode(String code) {
-        this.code = code;
+        this.code = code == null ? null : code.trim();
     }
 
     public String getName() {
@@ -120,7 +120,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name == null ? null : name.trim();
     }
 
     public String getPy() {
@@ -128,7 +128,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setPy(String py) {
-        this.py = py;
+        this.py = py == null ? null : py.trim();
     }
 
     public Integer getKhlb() {
@@ -144,7 +144,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setKhlx(String khlx) {
-        this.khlx = khlx;
+        this.khlx = khlx == null ? null : khlx.trim();
     }
 
     public String getQyxx() {
@@ -152,7 +152,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setQyxx(String qyxx) {
-        this.qyxx = qyxx;
+        this.qyxx = qyxx == null ? null : qyxx.trim();
     }
 
     public String getCity() {
@@ -160,7 +160,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setCity(String city) {
-        this.city = city;
+        this.city = city == null ? null : city.trim();
     }
 
     public String getSfcj() {
@@ -168,7 +168,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setSfcj(String sfcj) {
-        this.sfcj = sfcj;
+        this.sfcj = sfcj == null ? null : sfcj.trim();
     }
 
     public String getYylx() {
@@ -176,7 +176,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setYylx(String yylx) {
-        this.yylx = yylx;
+        this.yylx = yylx == null ? null : yylx.trim();
     }
 
     public Long getMzl() {
@@ -211,20 +211,12 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
         this.fwjgs = fwjgs;
     }
 
-    public String getZyyw() {
-        return zyyw;
-    }
-
-    public void setZyyw(String zyyw) {
-        this.zyyw = zyyw;
-    }
-
     public String getGsgm() {
         return gsgm;
     }
 
     public void setGsgm(String gsgm) {
-        this.gsgm = gsgm;
+        this.gsgm = gsgm == null ? null : gsgm.trim();
     }
 
     public String getSsgs() {
@@ -232,7 +224,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setSsgs(String ssgs) {
-        this.ssgs = ssgs;
+        this.ssgs = ssgs == null ? null : ssgs.trim();
     }
 
     public String getSsjg() {
@@ -240,7 +232,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setSsjg(String ssjg) {
-        this.ssjg = ssjg;
+        this.ssjg = ssjg == null ? null : ssjg.trim();
     }
 
     public String getYydj() {
@@ -248,7 +240,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setYydj(String yydj) {
-        this.yydj = yydj;
+        this.yydj = yydj == null ? null : yydj.trim();
     }
 
     public String getYygm() {
@@ -256,7 +248,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setYygm(String yygm) {
-        this.yygm = yygm;
+        this.yygm = yygm == null ? null : yygm.trim();
     }
 
     public String getYybjdj() {
@@ -264,7 +256,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setYybjdj(String yybjdj) {
-        this.yybjdj = yybjdj;
+        this.yybjdj = yybjdj == null ? null : yybjdj.trim();
     }
 
     public String getKhdz() {
@@ -272,7 +264,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setKhdz(String khdz) {
-        this.khdz = khdz;
+        this.khdz = khdz == null ? null : khdz.trim();
     }
 
     public String getYzbm() {
@@ -280,7 +272,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setYzbm(String yzbm) {
-        this.yzbm = yzbm;
+        this.yzbm = yzbm == null ? null : yzbm.trim();
     }
 
     public String getXxkz() {
@@ -288,7 +280,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setXxkz(String xxkz) {
-        this.xxkz = xxkz;
+        this.xxkz = xxkz == null ? null : xxkz.trim();
     }
 
     public String getZgyz() {
@@ -296,7 +288,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setZgyz(String zgyz) {
-        this.zgyz = zgyz;
+        this.zgyz = zgyz == null ? null : zgyz.trim();
     }
 
     public String getSfszkhjl() {
@@ -304,7 +296,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setSfszkhjl(String sfszkhjl) {
-        this.sfszkhjl = sfszkhjl;
+        this.sfszkhjl = sfszkhjl == null ? null : sfszkhjl.trim();
     }
 
     public String getKhjl() {
@@ -312,7 +304,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setKhjl(String khjl) {
-        this.khjl = khjl;
+        this.khjl = khjl == null ? null : khjl.trim();
     }
 
     public String getSycptx() {
@@ -320,7 +312,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setSycptx(String sycptx) {
-        this.sycptx = sycptx;
+        this.sycptx = sycptx == null ? null : sycptx.trim();
     }
 
     public String getFwtry() {
@@ -328,7 +320,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setFwtry(String fwtry) {
-        this.fwtry = fwtry;
+        this.fwtry = fwtry == null ? null : fwtry.trim();
     }
 
     public String getZdkhbz() {
@@ -336,7 +328,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setZdkhbz(String zdkhbz) {
-        this.zdkhbz = zdkhbz;
+        this.zdkhbz = zdkhbz == null ? null : zdkhbz.trim();
     }
 
     public String getLxr() {
@@ -344,7 +336,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setLxr(String lxr) {
-        this.lxr = lxr;
+        this.lxr = lxr == null ? null : lxr.trim();
     }
 
     public String getLxfs() {
@@ -352,7 +344,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setLxfs(String lxfs) {
-        this.lxfs = lxfs;
+        this.lxfs = lxfs == null ? null : lxfs.trim();
     }
 
     public String getGlgs() {
@@ -360,15 +352,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setGlgs(String glgs) {
-        this.glgs = glgs;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
+        this.glgs = glgs == null ? null : glgs.trim();
     }
 
     public String getGxr() {
@@ -376,7 +360,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setGxr(String gxr) {
-        this.gxr = gxr;
+        this.gxr = gxr == null ? null : gxr.trim();
     }
 
     public String getGxsj() {
@@ -384,7 +368,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setGxsj(String gxsj) {
-        this.gxsj = gxsj;
+        this.gxsj = gxsj == null ? null : gxsj.trim();
     }
 
     public String getDjr() {
@@ -392,7 +376,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setDjr(String djr) {
-        this.djr = djr;
+        this.djr = djr == null ? null : djr.trim();
     }
 
     public String getDjsj() {
@@ -400,7 +384,7 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
     }
 
     public void setDjsj(String djsj) {
-        this.djsj = djsj;
+        this.djsj = djsj == null ? null : djsj.trim();
     }
 
     public Integer getZt() {
@@ -411,4 +395,19 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
         this.zt = zt;
     }
 
+    public String getZyyw() {
+        return zyyw;
+    }
+
+    public void setZyyw(String zyyw) {
+        this.zyyw = zyyw == null ? null : zyyw.trim();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
  }

@@ -171,7 +171,7 @@ public class Constants implements Serializable {
         /**
          * PMIS WS 服务类型  1 用户
          */
-        public static final  String  WS_SERVICE_TYPE_USER =  "1";
+        public static final  String  WS_SERVICE_QUERY_USER =  "1";
         /**
          * PMIS WS 服务类型 客户信息
          */
@@ -213,7 +213,7 @@ public class Constants implements Serializable {
         /**
          * PMIS WS 返回结果码,>0 成功
          */
-        public static final int RESULT_CODE_SUCCESS = 0 ;
+        public static final int RESULT_CODE_SUCCESS = 1 ;
 
         /**
          * PMIS WS 查询类别名称

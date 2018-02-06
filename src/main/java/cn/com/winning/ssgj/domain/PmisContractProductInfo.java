@@ -7,7 +7,7 @@ import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
  *
- *
+ *接口表--合同产品信息表
  * @author SSGJ
  * @date 2018-01-18 10:11:46
  */
@@ -45,13 +45,13 @@ public class PmisContractProductInfo extends BaseDomain implements Serializable 
 
     private Long cpxx;
 
-    private Long cpzxt;
+    private String cpzxt;
 
-    private Long sjcp;
+    private String sjcp;
 
-    private Long cpjzj;
+    private String cpjzj;
 
-    private Integer bjxs;
+    private String bjxs;
 
     private Integer zt;
 
@@ -96,7 +96,7 @@ public class PmisContractProductInfo extends BaseDomain implements Serializable 
     }
 
     public void setCpdlmc(String cpdlmc) {
-        this.cpdlmc = cpdlmc;
+        this.cpdlmc = cpdlmc == null ? null : cpdlmc.trim();
     }
 
     public String getZxtmc() {
@@ -104,15 +104,7 @@ public class PmisContractProductInfo extends BaseDomain implements Serializable 
     }
 
     public void setZxtmc(String zxtmc) {
-        this.zxtmc = zxtmc;
-    }
-
-    public String getCpmc() {
-        return cpmc;
-    }
-
-    public void setCpmc(String cpmc) {
-        this.cpmc = cpmc;
+        this.zxtmc = zxtmc == null ? null : zxtmc.trim();
     }
 
     public Long getZhtxx() {
@@ -171,36 +163,36 @@ public class PmisContractProductInfo extends BaseDomain implements Serializable 
         this.cpxx = cpxx;
     }
 
-    public Long getCpzxt() {
+    public String getCpzxt() {
         return cpzxt;
     }
 
-    public void setCpzxt(Long cpzxt) {
-        this.cpzxt = cpzxt;
+    public void setCpzxt(String cpzxt) {
+        this.cpzxt = cpzxt == null ? null : cpzxt.trim();
     }
 
-    public Long getSjcp() {
+    public String getSjcp() {
         return sjcp;
     }
 
-    public void setSjcp(Long sjcp) {
-        this.sjcp = sjcp;
+    public void setSjcp(String sjcp) {
+        this.sjcp = sjcp == null ? null : sjcp.trim();
     }
 
-    public Long getCpjzj() {
+    public String getCpjzj() {
         return cpjzj;
     }
 
-    public void setCpjzj(Long cpjzj) {
-        this.cpjzj = cpjzj;
+    public void setCpjzj(String cpjzj) {
+        this.cpjzj = cpjzj == null ? null : cpjzj.trim();
     }
 
-    public Integer getBjxs() {
+    public String getBjxs() {
         return bjxs;
     }
 
-    public void setBjxs(Integer bjxs) {
-        this.bjxs = bjxs;
+    public void setBjxs(String bjxs) {
+        this.bjxs = bjxs == null ? null : bjxs.trim();
     }
 
     public Integer getZt() {
@@ -211,4 +203,11 @@ public class PmisContractProductInfo extends BaseDomain implements Serializable 
         this.zt = zt;
     }
 
+    public String getCpmc() {
+        return cpmc;
+    }
+
+    public void setCpmc(String cpmc) {
+        this.cpmc = cpmc == null ? null : cpmc.trim();
+    }
 }

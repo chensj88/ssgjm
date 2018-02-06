@@ -6,7 +6,7 @@ import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
  * SSGJ
- *
+ * 接口表--用户信息表
  * @author SSGJ
  * @date 2018-02-05 15:18:13
  */
@@ -64,25 +64,22 @@ public class SysUserInfo extends BaseDomain implements Serializable {
 	/**
 	 * @val 隶属组织
 	 */
-	private String orgid;
-	
-	private String ssgs;
-	
+	private long orgid;
 	/**
-	 * @val 用户关联ID
+	 * @val 隶属公司
 	 */
-	private Long linkId;
-	
+	private long ssgs;
+
 	/**
 	 * @val 类型：0 医院成员 1公司成员
 	 */
 	private String userType;
-	
 	/**
-	 * @val 用户上级工号
+	 * @val  用户关联ID
 	 */
-	private String yhsjgh;
-	
+	private Long linkId;
+
+
 	public SysUserInfo() {
 
 	}
@@ -216,22 +213,26 @@ public class SysUserInfo extends BaseDomain implements Serializable {
 	/**
 	 * @val 隶属组织
 	 */
-	public String getOrgid() {
+	public Long getOrgid() {
 		return orgid;
 	}
 	
 	/**
 	 * @val 隶属组织
 	 */
-	public void setOrgid(String orgid) {
+	public void setOrgid(Long orgid) {
 		this.orgid = orgid;
 	}
-	
-	public String getSsgs() {
+	/**
+	 * @val 隶属公司
+	 */
+	public Long getSsgs() {
 		return ssgs;
 	}
-	
-	public void setSsgs(String ssgs) {
+	/**
+	 * @val 隶属公司
+	 */
+	public void setSsgs(Long ssgs) {
 		this.ssgs = ssgs;
 	}
 	
@@ -262,19 +263,5 @@ public class SysUserInfo extends BaseDomain implements Serializable {
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
-	
-	/**
-	 * @val 用户上级工号
-	 */
-	public String getYhsjgh() {
-		return yhsjgh;
-	}
-	
-	/**
-	 * @val 用户上级工号
-	 */
-	public void setYhsjgh(String yhsjgh) {
-		this.yhsjgh = yhsjgh;
-	}
-	
+
 }
