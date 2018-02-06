@@ -121,7 +121,7 @@
 <!--[if !IE]> -->
 
 <script src="<%=basePath%>resources/assets/js/jquery-2.0.3.min.js"></script>
-
+<%--<script src="<%=basePath%>resources/assets/js/MD5.js"></script>--%>
 <script type="text/javascript">
     if("ontouchend" in document) document.write("<script src='<%=basePath%>resources/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 </script>

@@ -37,7 +37,7 @@ public class LoginController extends BaseController{
     public Map<String,Boolean> check(HttpServletRequest request,String username, String password){
         Map<String,Boolean> map = new HashMap<String,Boolean>();
         SysUserInfo info = new SysUserInfo();
-        info.setYhmc(username);
+        info.setUserid(username);
         //用户名检查
         List<SysUserInfo> infoList = super.getFacade().getSysUserInfoService().getSysUserInfoList(info);
         if(infoList != null && infoList.size()>0 ){

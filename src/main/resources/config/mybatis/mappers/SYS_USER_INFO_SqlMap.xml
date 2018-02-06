@@ -35,7 +35,6 @@
         <if test="ssgs != null and ssgs != ''"> and t.SSGS = #{ssgs} </if>
         <if test="(linkId != null and linkId != '') or linkId == 0"> and t.LINK_ID = #{linkId} </if>
         <if test="userType != null and userType != ''"> and t.USER_TYPE = #{userType} </if>
-        <if test="(yhsjgh != null and yhsjgh != '') "> and t.YHSJGH = #{yhsjgh} </if>
     </sql>
 
     <sql id="query-sysUserInfo">
