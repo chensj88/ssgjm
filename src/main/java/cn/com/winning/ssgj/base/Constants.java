@@ -228,7 +228,31 @@ public class Constants implements Serializable {
         /**
          * PMIS WS 每次查询的数量
          */
-        public static final int QUERY_BATCH_SIZE = 100 ;
+        public static final int QUERY_BATCH_SIZE = 1000 ;
+        /**
+         * 项目/客户经理
+         */
+        public static final String USER_ROLE_TYPE_PM = "0";
+        /**
+         * 项目/客户经理
+         */
+        public static final String USER_ROLE_TYPE_PM_NAME = "项目/客户经理";
+        /**
+         * 实施服务人员
+         */
+        public static final String USER_ROLE_TYPE_SS = "1";
+        /**
+         * 实施服务人员
+         */
+        public static final String USER_ROLE_TYPE_SS_NAME = "实施服务人员";
+        /**
+         * 支持人员
+         */
+        public static final String USER_ROLE_TYPE_ZC = "2";
+        /**
+         * 支持人员
+         */
+        public static final String USER_ROLE_TYPE_ZC_NAME = "支持人员";
 
     }
 }
