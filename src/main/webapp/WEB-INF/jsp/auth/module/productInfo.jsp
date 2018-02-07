@@ -85,16 +85,16 @@
                 <div class="container">
                     <div class="row">
                         <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="productInfoForm">
+                            <div class="form-group" id="codeDiv" style="display:none;">
+                                <label class="col-sm-2 control-label" >产品代码</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" readonly="readonly" id="code" name="code" placeholder="请输入产品代码">
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" >产品名称</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="cpmc" name="name" placeholder="请输入产品名称">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" >产品代码</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="code" name="code" placeholder="请输入产品代码">
                                 </div>
                             </div>
                             <div class="form-group">

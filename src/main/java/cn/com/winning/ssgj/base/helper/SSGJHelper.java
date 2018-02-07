@@ -59,7 +59,9 @@ public class SSGJHelper {
     @Autowired
     @Qualifier("productIdService")
     private StepSequenceFactory productIdService;
-
+    @Autowired
+    @Qualifier("productCodeService")
+    private StepSequenceFactory productCodeService;
     @Autowired
     @Qualifier("flowIdService")
     private StepSequenceFactory flowIdService;
@@ -202,6 +204,13 @@ public class SSGJHelper {
      */
     public long createPuductId(){
     	return (long) productIdService.create();
+    }
+    /**
+     * 产品CODE
+     * @return
+     */
+    public String createPuductCode(){
+    	return  productCodeService.create().toString();
     }
 
     /**

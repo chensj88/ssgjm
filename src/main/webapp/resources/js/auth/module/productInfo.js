@@ -131,7 +131,6 @@ $(function () {
         $("input[type=reset]").trigger("click");
         $("#id").val("");
         $('#cpmc').val("");
-        $('#code').val("");
         $('#gnms').val("");
         $('#cptx').val("");
         $('#productInfoModal').modal('show');
@@ -176,6 +175,11 @@ $(function () {
     $('#saveProduct').on('click', function (e) {
         //阻止默认行为
         e.preventDefault();
+        var bootstrapValidator = $("#productInfoForm").data('bootstrapValidator');
+        //修复记忆的组件不验证
+        if (bootstrapValidator) {
+            bootstrapValidator.validate();
+        }
         var url = '';
         if ($('#id').val().length == 0) {
             url = Common.getRootPath() + '/admin/productInfo/addProductInfo.do';
@@ -251,10 +255,11 @@ $(function () {
  * @param name 产品名称
  * @param code 产品编码
  * @param gnms 功能描述
- * @param cptx 产品条线ID
- * @param cptxName 产品条线名称
+ * @param cptx 产品ID
+ * @param cptxName 产品名称
  */
 function edit(id,name,code,gnms,cptx,cptxName) {
+	$("#codeDiv").show();
     $('#cpmc').val(name);
     $('#code').val(code);
     $('#gnms').val(gnms);
@@ -263,3 +268,53 @@ function edit(id,name,code,gnms,cptx,cptxName) {
     $('#id').val(id);
     $('#productInfoModal').modal('show');
 }
+
+// 表单验证
+$('#productInfoForm').bootstrapValidator({
+    message: '输入的值不符合规格',
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+    	cpmc: {
+            message: '产品名称验证失败',
+            validators: {
+                notEmpty: {
+                    message: '产品名称不能为空'
+                },
+                stringLength: {
+                    min: 2,
+                    max: 18,
+                    message: '产品名称长度必须在2到18位之间'
+                }
+
+            }
+        },
+        cptxName: {
+            validators: {
+                notEmpty: {
+                    message: '产品条线不能为空'
+                },
+                stringLength: {
+                    min: 2,
+                    max: 12,
+                    message: '产品条线长度必须在2到12位之间'
+                }
+            }
+        },
+        gnms : {
+            validators: {
+                notEmpty: {
+                    message: '功能描述不能为空'
+                },
+                stringLength: {
+                    min: 2,
+                    max: 50,
+                    message: '功能描述必须在2到50位之间'
+                }
+            }
+        }
+    }
+});

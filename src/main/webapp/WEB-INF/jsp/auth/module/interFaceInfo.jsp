@@ -92,16 +92,16 @@
                 <div class="container">
                     <div class="row">
                         <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="interFaceInfoForm">
+                            <div class="form-group" style="display:none;" id="code">
+                                <label class="col-sm-4 control-label" >接口代码:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" readonly="readonly" id="interCode" name="interCode" placeholder="请输入接口代码">
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label" >接口名称:</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="interName" name="interName" placeholder="请输入接口名称">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label" >接口代码:</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="interCode" name="interCode" placeholder="请输入接口代码">
                                 </div>
                             </div>
                             <div class="form-group">

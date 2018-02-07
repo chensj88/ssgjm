@@ -101,6 +101,8 @@ public class ProductInfoController extends BaseController {
 	@ILog(operationName="添加产品信息",operationType="addProductInfo")
 	public Map<String, Object> addProductInfo(PmisProductInfo t)  {
 		Long id = ssgjHelper.createPuductId();
+		String code = ssgjHelper.createPuductCode();
+		t.setCode(code);
 		t.setId(id);
 		t.setZt(1);
 		System.err.println(t);
