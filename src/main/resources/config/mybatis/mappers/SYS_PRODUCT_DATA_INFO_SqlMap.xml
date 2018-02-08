@@ -23,15 +23,16 @@
     <sql id="sf-sysProductDataInfo">
         <if test="(pdId != null and pdId != '') or pdId == 0">and t.PD_ID = #{pdId}</if>
         <if test="(bdId != null and bdId != '') or bdId == 0">and t.BD_ID = #{bdId}</if>
-        <if test="effectiveDate != null and effectiveDate != ''"> and t.EFFECTIVE_DATE = #{effectiveDate} </if>
-        <if test="expireDate != null and expireDate != ''"> and t.EXPIRE_DATE = #{expireDate} </if>
-        <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">and t.LAST_UPDATOR = #{lastUpdator}</if>
-        <if test="lastUpdateTime != null and lastUpdateTime != ''">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
+        <if test="effectiveDate != null "> and t.EFFECTIVE_DATE = #{effectiveDate} </if>
+        <if test="expireDate != null "> and t.EXPIRE_DATE = #{expireDate} </if>
+        <if test="(lastUpdator != null and lastUpdator != '')">and t.LAST_UPDATOR = #{lastUpdator}</if>
+        <if test="lastUpdateTime != null ">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
     </sql>
 
     <select id="selectSysProductDataInfo" resultMap="sysProductDataInfoResult" parameterType="sysProductDataInfo">
         select * from SYS_PRODUCT_DATA_INFO t where 1 = 1
         <include refid="sf-sysProductDataInfo"/>
+        AND  (CURRENT_TIMESTAMP  BETWEEN t.EFFECTIVE_DATE AND t.EXPIRE_DATE )
     </select>
 
     <select id="selectSysProductDataInfoList" resultMap="sysProductDataInfoResultForList"
@@ -39,12 +40,14 @@
         select
         <if test="row.count != null and row.count != ''">top ${row.count}</if>
         * from SYS_PRODUCT_DATA_INFO t where 1 = 1
+        AND  (CURRENT_TIMESTAMP  BETWEEN t.EFFECTIVE_DATE AND t.EXPIRE_DATE )
         <include refid="sf-sysProductDataInfo"/>
         <!-- order by ID asc -->
     </select>
 
     <select id="selectSysProductDataInfoCount" resultType="int" parameterType="sysProductDataInfo">
         select count(*) from SYS_PRODUCT_DATA_INFO t where 1 = 1
+        AND  (CURRENT_TIMESTAMP  BETWEEN t.EFFECTIVE_DATE AND t.EXPIRE_DATE )
         <include refid="sf-sysProductDataInfo"/>
     </select>
 
@@ -53,6 +56,7 @@
         select * from (
         select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
         from SYS_PRODUCT_DATA_INFO t where 1 = 1
+        AND  (CURRENT_TIMESTAMP  BETWEEN t.EFFECTIVE_DATE AND t.EXPIRE_DATE )
         <include refid="sf-sysProductDataInfo"/>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
@@ -64,19 +68,19 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(pdId != null and pdId != '') or pdId == 0">PD_ID,</if>
             <if test="(bdId != null and bdId != '') or bdId == 0">BD_ID,</if>
-            <if test="effectiveDate != null and effectiveDate != ''"> EFFECTIVE_DATE, </if>
-            <if test="expireDate != null and expireDate != ''"> EXPIRE_DATE, </if>
-            <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR,</if>
-            <if test="lastUpdateTime != null and lastUpdateTime != ''">LAST_UPDATE_TIME,</if>
+            <if test="effectiveDate != null "> EFFECTIVE_DATE, </if>
+            <if test="expireDate != null "> EXPIRE_DATE, </if>
+            <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR,</if>
+            <if test="lastUpdateTime != null ">LAST_UPDATE_TIME,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(pdId != null and pdId != '') or pdId == 0">#{pdId, jdbcType=BIGINT},</if>
             <if test="(bdId != null and bdId != '') or bdId == 0">#{bdId, jdbcType=BIGINT},</if>
-           <if test="effectiveDate != null and effectiveDate != ''"> #{effectiveDate, jdbcType=TIMESTAMP}, </if>
-		     <if test="expireDate != null and expireDate != ''"> #{expireDate, jdbcType=TIMESTAMP}, </if>
-            <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">#{lastUpdator, jdbcType=BIGINT},</if>
-            <if test="lastUpdateTime != null and lastUpdateTime != ''">#{lastUpdateTime, jdbcType=TIMESTAMP},</if>
+            <if test="effectiveDate != null "> #{effectiveDate, jdbcType=TIMESTAMP}, </if>
+		    <if test="expireDate != null "> #{expireDate, jdbcType=TIMESTAMP}, </if>
+            <if test="(lastUpdator != null and lastUpdator != '')">#{lastUpdator, jdbcType=BIGINT},</if>
+            <if test="lastUpdateTime != null ">#{lastUpdateTime, jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
 
@@ -84,19 +88,18 @@
         update SYS_PRODUCT_DATA_INFO
         <set>
             <trim suffixOverrides=",">
-                <if test="(pdId != null and pdId != '') or pdId == 0">PD_ID = #{pdId, jdbcType=BIGINT},</if>
-                <if test="(bdId != null and bdId != '') or bdId == 0">BD_ID = #{bdId, jdbcType=BIGINT},</if>
-                <if test="effectiveDate != null and effectiveDate != ''"> EFFECTIVE_DATE = #{effectiveDate, jdbcType=TIMESTAMP}, </if>
-			          <if test="expireDate != null and expireDate != ''"> EXPIRE_DATE = #{expireDate, jdbcType=TIMESTAMP}, </if>
-                <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR =#{lastUpdator, jdbcType=BIGINT},</if>
-                <if test="lastUpdateTime != null and lastUpdateTime != ''">LAST_UPDATE_TIME =#{lastUpdateTime, jdbcType=TIMESTAMP},</if>
+                <if test="effectiveDate != null "> EFFECTIVE_DATE = #{effectiveDate, jdbcType=TIMESTAMP}, </if>
+			    <if test="expireDate != null "> EXPIRE_DATE = #{expireDate, jdbcType=TIMESTAMP}, </if>
+                <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR =#{lastUpdator, jdbcType=BIGINT},</if>
+                <if test="lastUpdateTime != null ">LAST_UPDATE_TIME =#{lastUpdateTime, jdbcType=TIMESTAMP},</if>
             </trim>
         </set>
         <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
-            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
-                ID in
-                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            <if test="(pdId != null and pdId != '') or pdId == 0">
+                AND PD_ID = #{pdId, jdbcType=BIGINT}
+            </if>
+            <if test="(bdId != null and bdId != '') or bdId == 0">
+                AND BD_ID = #{bdId, jdbcType=BIGINT}
             </if>
         </where>
     </update>
@@ -132,6 +135,29 @@
           <if test="bdIds !=null and bdIds">
               AND A.BD_ID IN ( ${bdIds} )
           </if>
+          AND (CURRENT_TIMESTAMP  BETWEEN A.EFFECTIVE_DATE AND A.EXPIRE_DATE )
       </where>
     </select>
+
+
+    <update id="removeSysProductDataInfoByIds" parameterType="java.util.Map">
+        update SYS_PRODUCT_DATA_INFO
+        SET  EXPIRE_DATE = CURRENT_TIMESTAMP
+        <where>
+           <if test=" ids != null and ids != ''">
+               ${ids}
+           </if>
+        </where>
+    </update>
+    <select id="selectSysProductDataInfoForIds" resultMap="sysProductDataInfoResultForList" parameterType="java.util.Map">
+        SELECT
+        A.*
+        FROM SYS_PRODUCT_DATA_INFO A
+        <where>
+            <if test=" ids != null and ids != ''">
+                ${ids}
+            </if>
+        </where>
+    </select>
+
 </mapper>

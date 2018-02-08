@@ -23,9 +23,9 @@
         <if test="answerCode != null and answerCode != ''">and t.ANSWER_CODE = #{answerCode}</if>
         <if test="answerContent != null and answerContent != ''">and t.ANSWER_CONTENT = #{answerContent}</if>
         <if test="quesDesc != null and quesDesc != ''">and t.QUES_DESC = #{quesDesc}</if>
-        <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">and t.LAST_UPDATOR = #{lastUpdator}
+        <if test="(lastUpdator != null and lastUpdator != '')">and t.LAST_UPDATOR = #{lastUpdator}
         </if>
-        <if test="lastUpdateTime != null and lastUpdateTime != ''">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
+        <if test="lastUpdateTime != null ">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
     </sql>
 
     <select id="selectSysFlowAnswer" resultMap="sysFlowAnswerResult" parameterType="sysFlowAnswer">
@@ -65,8 +65,8 @@
             <if test="answerCode != null and answerCode != ''">ANSWER_CODE,</if>
             <if test="answerContent != null and answerContent != ''">ANSWER_CONTENT,</if>
             <if test="quesDesc != null and quesDesc != ''">QUES_DESC,</if>
-            <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR,</if>
-            <if test="lastUpdateTime != null and lastUpdateTime != ''">LAST_UPDATE_TIME,</if>
+            <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR,</if>
+            <if test="lastUpdateTime != null ">LAST_UPDATE_TIME,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -76,10 +76,10 @@
             <if test="answerCode != null and answerCode != ''">#{answerCode, jdbcType=VARCHAR},</if>
             <if test="answerContent != null and answerContent != ''">#{answerContent, jdbcType=VARCHAR},</if>
             <if test="quesDesc != null and quesDesc != ''">#{quesDesc, jdbcType=LONGVARCHAR},</if>
-            <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">
+            <if test="(lastUpdator != null and lastUpdator != '')">
                 #{lastUpdator, jdbcType=BIGINT},
             </if>
-            <if test="lastUpdateTime != null and lastUpdateTime != ''">#{lastUpdateTime, jdbcType=TIMESTAMP},</if>
+            <if test="lastUpdateTime != null ">#{lastUpdateTime, jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
 
@@ -97,10 +97,10 @@
                     #{answerContent, jdbcType=VARCHAR},
                 </if>
                 <if test="quesDesc != null and quesDesc != ''">QUES_DESC = #{quesDesc, jdbcType=LONGVARCHAR},</if>
-                <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR =
+                <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR =
                     #{lastUpdator, jdbcType=BIGINT},
                 </if>
-                <if test="lastUpdateTime != null and lastUpdateTime != ''">LAST_UPDATE_TIME =
+                <if test="lastUpdateTime != null ">LAST_UPDATE_TIME =
                     #{lastUpdateTime, jdbcType=TIMESTAMP},
                 </if>
             </trim>

@@ -15,9 +15,9 @@
     <sql id="sf-sysProductFlowInfo">
         <if test="(pdId != null and pdId != '') or pdId == 0">and t.PD_ID = #{pdId}</if>
         <if test="(flowId != null and flowId != '') or flowId == 0">and t.FLOW_ID = #{flowId}</if>
-        <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">and t.LAST_UPDATOR = #{lastUpdator}
+        <if test="(lastUpdator != null and lastUpdator != '')">and t.LAST_UPDATOR = #{lastUpdator}
         </if>
-        <if test="lastUpdateTime != null and lastUpdateTime != ''">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
+        <if test="lastUpdateTime != null ">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
     </sql>
 
     <select id="selectSysProductFlowInfo" resultMap="sysProductFlowInfoResult" parameterType="sysProductFlowInfo">
@@ -55,17 +55,17 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(pdId != null and pdId != '') or pdId == 0">PD_ID,</if>
             <if test="(flowId != null and flowId != '') or flowId == 0">FLOW_ID,</if>
-            <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR,</if>
-            <if test="lastUpdateTime != null and lastUpdateTime != ''">LAST_UPDATE_TIME,</if>
+            <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR,</if>
+            <if test="lastUpdateTime != null ">LAST_UPDATE_TIME,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(pdId != null and pdId != '') or pdId == 0">#{pdId, jdbcType=BIGINT},</if>
             <if test="(flowId != null and flowId != '') or flowId == 0">#{flowId, jdbcType=BIGINT},</if>
-            <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">
+            <if test="(lastUpdator != null and lastUpdator != '')">
                 #{lastUpdator, jdbcType=BIGINT},
             </if>
-            <if test="lastUpdateTime != null and lastUpdateTime != ''">#{lastUpdateTime, jdbcType=TIMESTAMP},</if>
+            <if test="lastUpdateTime != null ">#{lastUpdateTime, jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
 
@@ -75,10 +75,10 @@
             <trim suffixOverrides=",">
                 <if test="(pdId != null and pdId != '') or pdId == 0">PD_ID = #{pdId, jdbcType=BIGINT},</if>
                 <if test="(flowId != null and flowId != '') or flowId == 0">FLOW_ID = #{flowId, jdbcType=BIGINT},</if>
-                <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR =
+                <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR =
                     #{lastUpdator, jdbcType=BIGINT},
                 </if>
-                <if test="lastUpdateTime != null and lastUpdateTime != ''">LAST_UPDATE_TIME =
+                <if test="lastUpdateTime != null ">LAST_UPDATE_TIME =
                     #{lastUpdateTime, jdbcType=TIMESTAMP},
                 </if>
             </trim>

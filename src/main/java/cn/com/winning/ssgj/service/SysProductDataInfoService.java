@@ -1,9 +1,11 @@
 package cn.com.winning.ssgj.service;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
 import cn.com.winning.ssgj.domain.SysProductDataInfo;
+import cn.com.winning.ssgj.domain.SysUserInfo;
 
 /**
  *
@@ -33,4 +35,12 @@ public interface SysProductDataInfoService {
     List<SysProductDataInfo> getSysProductDataInfoByIds(Integer pdId,String bdIds);
 
     Integer removeSysProductDataInfo(String idList);
+
+    /**
+     * 添加或维护新的映射关系
+     * @param idListString 前台传入ID字符串, 实例 156,1;156,2
+     * @param user
+     * @throws ParseException
+     */
+    void addSysProductDataInfoMapping(String idListString, SysUserInfo user) throws ParseException;
 }

@@ -4,6 +4,7 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.domain.SysDataInfo;
 import cn.com.winning.ssgj.domain.SysDictInfo;
 import cn.com.winning.ssgj.domain.SysProductDataInfo;
+import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.service.SysDataInfoService;
 import cn.com.winning.ssgj.service.SysProductDataInfoService;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,9 +69,7 @@ public class ProductBDataController extends BaseController {
     @RequestMapping(value = "/pBdata/removeMapping.do")
     @ResponseBody
     public Map<String,Object> removePBMapping(String idList){
-
-        System.out.println(idList);
-
+        super.getFacade().getSysProductDataInfoService().removeSysProductDataInfo(idList);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data","");
@@ -77,4 +77,15 @@ public class ProductBDataController extends BaseController {
 
     }
 
+    @RequestMapping(value = "/pBdata/addProduct.do")
+    @ResponseBody
+    public Map<String,Object> addPBMapping(String idList) throws ParseException {
+        //TODO 添加操作人
+        System.out.println(idList);
+        super.getFacade().getSysProductDataInfoService().addSysProductDataInfoMapping(idList,null);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+
+    }
 }

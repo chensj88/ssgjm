@@ -1,12 +1,13 @@
 package cn.com.winning.ssgj.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.util.*;
 
 import javax.annotation.Resource;
 
+import cn.com.winning.ssgj.base.util.DateUtil;
+import cn.com.winning.ssgj.base.util.StringUtil;
+import cn.com.winning.ssgj.domain.SysUserInfo;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.SysProductDataInfoDao;
@@ -74,10 +75,43 @@ public class SysProductDataInfoServiceImpl implements SysProductDataInfoService 
 
     @Override
     public Integer removeSysProductDataInfo(String idList) {
-
-
-        return null;
+        String ids = StringUtil.generateSqlString(idList,"PD_ID","BD_ID");
+        Map<String,Object> param = new HashMap<String, Object>();
+        param.put("ids",ids);
+        return this.sysProductDataInfoDao.removeSysProductDataInfoByIds(param);
     }
 
+    @Override
+    public void addSysProductDataInfoMapping(String idList, SysUserInfo user) throws ParseException {
+        Map<String,Object> param = new HashMap<String, Object>();
+        param.put("ids",StringUtil.generateSqlString(idList,"PD_ID","BD_ID"));
+        System.out.println(StringUtil.generateSqlString(idList,"PD_ID","BD_ID"));
+        List<SysProductDataInfo> updateList = this.sysProductDataInfoDao.selectSysProductDataInfoForIds(param);
+        List<String> idsList = new ArrayList<String>();
+        for (SysProductDataInfo info : updateList) {
+            info.setEffectiveDate(new Date());
+            info.setExpireDate(DateUtil.parse("9999-12-31"));
+            //TODO 添加维护人员
+            //info.setLastUpdator(user.getId());
+            info.setLastUpdateTime(new Date());
+            this.sysProductDataInfoDao.updateEntity(info);
+            idsList.add(info.getPdId()+","+info.getBdId());
+        }
+
+        List<String> addPBInfo = StringUtil.compareStringWithList(idList,idsList);
+
+        for (String s : addPBInfo) {
+            SysProductDataInfo info = new SysProductDataInfo();
+            info.setPdId(Long.valueOf(s.split(",")[0]));
+            info.setBdId(Long.valueOf(s.split(",")[1]));
+            info.setEffectiveDate(new Date());
+            info.setExpireDate(DateUtil.parse("9999-12-31"));
+            //TODO 添加维护人员
+            //info.setLastUpdator(user.getId());
+            info.setLastUpdateTime(new Date());
+            this.sysProductDataInfoDao.insertEntity(info);
+        }
+
+    }
 
 }

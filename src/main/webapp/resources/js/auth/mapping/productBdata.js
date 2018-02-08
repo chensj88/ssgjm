@@ -304,6 +304,25 @@ $(function () {
         initInfotable(data);
         $('#pdModal').modal('show');
     }
+    function refreshConfigTable(productId){
+        var url = Common.getRootPath() + "/admin/pBdata/queryById.do";
+        $.ajax({
+            type: "post",
+            url: url,
+            data: {"pdId": productId},
+            dataType: 'json',
+            success: function (data, status) {
+                if (data.status == Common.SUCCESS) {
+                    /*Ewin.alert('提交数据成功');*/
+                    initConfigtable(data);
+                }
+            },
+            error: function (e) {
+                console.log(e);
+                Ewin.alert('Error:' + e.statusText);
+            }
+        });
+    }
     /**
      * 初始化产品Table
      */
@@ -338,7 +357,7 @@ $(function () {
         selectItemName: '单选框',
         queryParams: queryParams, // 得到查询的参数
         columns: [{
-            checkbox: true,
+            radio: true,
             align: 'center',
             valign: 'middle',
             title: '单选框',
@@ -479,7 +498,6 @@ $(function () {
 
     });
 
-
     /**
      * 左移点击事件 删除
      */
@@ -535,6 +553,46 @@ $(function () {
      */
     $('#moveRight').on('click', function (event) {
         event.preventDefault();
+        var productSelections = pdTable.bootstrapTable('getSelections');
+        if(!productSelections || productSelections.length <= 0){
+            Ewin.alert('请选择至少一条产品信息');
+            return ;
+        }
+        console.log(productSelections);
+        var queryTableSelections = queryTable.bootstrapTable('getSelections');
+        if(!queryTableSelections || queryTableSelections.length <= 0){
+            Ewin.alert('请先选择至少一条需要添加的基础数据信息');
+            return ;
+        }
+
+        var pdId = productSelections[0].id;
+        console.log(pdId);
+        var bdids = '';
+        var cLength = queryTableSelections.length;
+        $.each(queryTableSelections,function (index,value,array) {
+            if(index == cLength - 1){
+                bdids += pdId +','+value.id;
+            }else{
+                bdids += pdId +','+value.id +';';
+            }
+        });
+        console.log(bdids);
+        var url = Common.getRootPath() + "/admin/pBdata/addProduct.do";
+        $.ajax({
+            type: "post",
+            url: url,
+            data: {"idList":bdids},
+            dataType: 'json',
+            cache : false,
+            success: function (data, status) {
+                if (data.status == Common.SUCCESS) {
+                    refreshConfigTable(pdId);
+                }
+            },
+            error: function (e) {
+                Ewin.alert('Error:' + e.statusText);
+            }
+        });
     });
 
     $('#remove').on('click',function () {
@@ -548,7 +606,7 @@ $(function () {
                 ids += value.pdId +','+value.bdId +';';
             }
         });
-        console.log(ids);
+        var pdId = tdata[0].pdId;
         var url = Common.getRootPath() + '/admin/pBdata/removeMapping.do';
         $.ajax({
             type: "post",
@@ -558,7 +616,8 @@ $(function () {
             dataType: 'json',
             success: function (data, status) {
                 if (data.status == Common.SUCCESS) {
-
+                    $('#pdModal').modal('hide');
+                    refreshConfigTable(pdId);
                 }
             },
             error: function (e) {
