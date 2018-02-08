@@ -133,7 +133,13 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
-
+    <!--产品编码-->
+    <bean id="productCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="PRODUCT_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="WN-TABLE-{######}" />
+    </bean>
     <!--
     业务流程序号
     WN-YWLC-

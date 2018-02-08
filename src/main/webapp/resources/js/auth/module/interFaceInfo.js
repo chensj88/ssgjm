@@ -125,7 +125,7 @@ $(function () {
 
     $('#queryInter').on('click',SearchData);
     /**
-     * 新增用户
+     * 新增适用产品
      * 需要清理表格数据
      */
     $('#addInterFaceInfo').on('click', function () {
@@ -141,7 +141,7 @@ $(function () {
 
     /**
      * 列表中按钮
-     *   删除用户信息
+     *   删除适用产品信息
      */
     $('#interFaceInfoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
@@ -171,12 +171,17 @@ $(function () {
     });
 
     /**
-     * 保存用户按钮
-     * 通过隐藏域判断用户是否存在，而使用不同的方法进行新增或者修改
+     * 保存适用产品按钮
+     * 通过隐藏域判断适用产品是否存在，而使用不同的方法进行新增或者修改
      */
     $('#save').on('click', function (e) {
         //阻止默认行为
         e.preventDefault();
+        var bootstrapValidator = $("#interFaceInfoForm").data('bootstrapValidator');
+        //修复记忆的组件不验证
+        if (bootstrapValidator) {
+            bootstrapValidator.validate();
+        }
         var url = '';
         if ($('#id').val().length == 0) {
             url = Common.getRootPath() + '/admin/thirx/addInterFaceInfo.do';
@@ -203,6 +208,7 @@ $(function () {
 }); 
 
 function edit(id,interName,interCode,refProductName,interDesc) {
+	$("#code").show();
     $('#interName').val(interName);
     $('#interCode').val(interCode);
     $('#refProductName').val(refProductName);
@@ -210,81 +216,57 @@ function edit(id,interName,interCode,refProductName,interDesc) {
     $('#id').val(id);
     $('#interFaceInfoModal').modal('show');
 }
+
+//表单验证
+$('#interFaceInfoForm').bootstrapValidator({
+        message: '输入的值不符合规格',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+        	interName: {
+                message: '接口名称验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '接口名称不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 18,
+                        message: '接口名称长度必须在2到18位之间'
+                    }
+                }
+            },
+            refProductName: {
+                validators: {
+                    notEmpty: {
+                        message: '适用产品名称不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 12,
+                        message: '适用产品名称长度必须在2到12位之间'
+                    }
+                }
+            },
+            interDesc : {
+                validators: {
+                    notEmpty: {
+                        message: '接口描述不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 50,
+                        message: '接口描述必须在2到50位之间'
+                    }
+                }
+            }
+        }
+    });
 ///**
-// * 表单验证
-// */
-//Page.prototype.validateForm = function () {
-//    //表单验证
-//    //this._changeEvent = (ieVersion === 9 || !('oninput' in el)) ? 'keyup' : 'input'; 源码修改
-//    //this._changeEvent = (ieVersion === 9 || !('onblur' in el)) ? 'keyup' : 'blur'; 
-//    $('#interFaceInfoForm').bootstrapValidator({
-//        message: '输入的值不符合规格',
-//        feedbackIcons: {
-//            valid: 'glyphicon glyphicon-ok',
-//            invalid: 'glyphicon glyphicon-remove',
-//            validating: 'glyphicon glyphicon-refresh'
-//        },
-//        fields: {
-//            userid: {
-//                message: '登录名验证失败',
-//                validators: {
-//                    notEmpty: {
-//                        message: '登录名不能为空'
-//                    },
-//                    stringLength: {
-//                        min: 2,
-//                        max: 18,
-//                        message: '登录名长度必须在2到18位之间'
-//                    },
-//                    regexp: {
-//                        regexp: /^[a-zA-Z0-9_]+$/,
-//                        message: '登录名只能包含大写、小写、数字和下划线'
-//                    }
-//                }
-//            },
-//            yhmc: {
-//                validators: {
-//                    notEmpty: {
-//                        message: '用户名称不能为空'
-//                    },
-//                    stringLength: {
-//                        min: 2,
-//                        max: 10,
-//                        message: '用户名称长度必须在2到10位之间'
-//                    }
-//                }
-//            },
-//            mobile : {
-//                validators: {
-//                    notEmpty: {
-//                        message: '手机号码不能为空'
-//                    },
-//                    stringLength: {
-//                        min: 11,
-//                        max: 11,
-//                        message: '手机号码长度必须为11位'
-//                    },
-//                    regexp: {
-//                        regexp: /^1[3|4|5|8][0-9]\d{4,8}$/,
-//                        message: '手机号码只能包含数字'
-//                    }
-//                }
-//            },
-//            email: {
-//                validators: {
-//                    notEmpty: {
-//                        message: '邮箱地址不能为空'
-//                    },
-//                    emailAddress: {
-//                        message: '邮箱地址格式有误'
-//                    }
-//                }
-//            }
-//        }
-//    });
-//}
-///**
-//* 删除用户
+//* 删除适用产品
 //* 只能删除一条数据
 //*/
 //$('#deleteProductInfo').on('click', function () {
@@ -324,7 +306,7 @@ function edit(id,interName,interCode,refProductName,interDesc) {
 // });
 //});
 /**
-//* 修改用户
+//* 修改适用产品
 //* 只能修改一条数据
 //*/
 //$('#modifyUser').on('click', function () {

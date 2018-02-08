@@ -11,8 +11,8 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!--基于注解方式 -->
-    <context:annotation-config/>
     <!--指定扫描的基础包 -->
+    <context:annotation-config/>
     <context:component-scan base-package="cn.com.winning.ssgj"/>
     <!--表示开启注解模式的AOP
      注：对于单利模式建议使用cglib代理，虽然JDK动态代理比cglib代理速度快，但性能不如cglib
