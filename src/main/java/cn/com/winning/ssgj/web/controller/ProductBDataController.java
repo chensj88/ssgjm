@@ -28,9 +28,6 @@ import java.util.Map;
 @RequestMapping(value = "/admin")
 public class ProductBDataController extends BaseController {
 
-    private SysProductDataInfoService sysProductDataInfoService = super.getFacade().getSysProductDataInfoService();
-    private SysDataInfoService sysDataInfoService = super.getFacade().getSysDataInfoService();
-
     @RequestMapping(value = "/mapping/pBdataInfo.do")
     public String queryMappingPage(HttpServletRequest request, Model model){
         return "auth/mapping/productBDMapping";
@@ -39,16 +36,15 @@ public class ProductBDataController extends BaseController {
     @RequestMapping(value = "/pBdata/queryById.do")
     @ResponseBody
     public Map<String,Object> queryBdataInfoById(SysProductDataInfo dataInfo){
-        List<SysProductDataInfo> dataInfoList = sysProductDataInfoService.getSysProductDataInfoList(dataInfo);
-
+        List<SysProductDataInfo> dataInfoList = super.getFacade().getSysProductDataInfoService().getSysProductDataInfoList(dataInfo);
         Map<String,Object> param = new HashMap<String,Object>();
         Map<String,Object> result = new HashMap<String,Object>();
         if (dataInfoList != null && dataInfoList.size() > 0 ){
-            List<String> idString = sysProductDataInfoService.getDataInfoId(dataInfoList);
+            List<String> idString = super.getFacade().getSysProductDataInfoService().getDataInfoId(dataInfoList);
             param.put("pks",idString);
             SysDataInfo data = new SysDataInfo();
             data.setMap(param);
-            List<SysDataInfo> sysDataInfoList = sysDataInfoService.getSysDataInfoListById(data);
+            List<SysDataInfo> sysDataInfoList = super.getFacade().getSysDataInfoService().getSysDataInfoListById(data);
             result.put("status", Constants.SUCCESS);
             result.put("data", sysDataInfoList);
             return result;
@@ -60,12 +56,23 @@ public class ProductBDataController extends BaseController {
 
     @RequestMapping(value = "/pBdata/queryProductDataInfoById.do")
     @ResponseBody
-    public Map<String,Object> queryProductDataInfoById(Integer pdId,List<Integer> bdIds){
+    public Map<String,Object> queryProductDataInfoById(Integer pdId,String bdIds){
+        List<SysProductDataInfo> dataInfos = super.getFacade().getSysProductDataInfoService().getSysProductDataInfoByIds(pdId,bdIds);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", dataInfos);
+        return result;
+    }
 
+    @RequestMapping(value = "/pBdata/removeMapping.do")
+    @ResponseBody
+    public Map<String,Object> removePBMapping(String idList){
+
+        System.out.println(idList);
 
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
-        /*result.put("data", );*/
+        result.put("data","");
         return result;
 
     }

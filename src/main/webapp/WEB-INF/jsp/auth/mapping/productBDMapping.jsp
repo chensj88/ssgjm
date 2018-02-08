@@ -34,6 +34,14 @@
         .table-align td,.table-align th{
             font-size: 12px;
         }
+        #infoTable tr td:nth-child(1) {
+            word-break:keep-all;/* 不换行 */
+            white-space:nowrap;/* 不换行 */
+            overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+            text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+            font-size:12px;
+        }
+
         .center{
             MARGIN-RIGHT: auto;
             MARGIN-LEFT: auto;
@@ -112,22 +120,20 @@
 <%--弹出框--%>
 <div class="modal fade" id="pdModal" tabindex="-1" role="dialog" aria-labelledby="pdModal">
     <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width:450px;">
+        <div class="modal-content" style="width:600px;overflow:auto;">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="pdModalLabel">用户信息</h4>
+                <h4 class="modal-title" id="pdModalLabel">列表</h4>
             </div>
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row">
-                        <table class="table-align" id="infoTable"></table>
-                        <div class="col-sm-8 text-center">
-                            <button class="btn btn-primary" id="submit" type="submit">提交</button>
-                            <button class="btn btn-danger" data-dismiss="modal">取消</button>
-                        </div>
-                    </div>
+            <div class="modal-body" style="height: 200px;overflow:auto;">
+                <table class="table-hover table-align"  id="infoTable"></table>
+            </div>
+            <div class="modal-footer">
+                <div class="col-sm-12 text-center">
+                    <button class="btn btn-primary" id="remove" type="button">提交</button>
+                    <button class="btn btn-danger" data-dismiss="modal">取消</button>
                 </div>
             </div>
         </div>

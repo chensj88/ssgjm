@@ -200,45 +200,41 @@ $(function () {
                 detailView: false,                  // 是否显示父子表
                 paginationLoop: false, //分页条无限循环的功能
                 singleSelect: false,
+                useCurrentPage : true,
                 columns: [ {
-                    field: "code",
+                    field: "pdCode",
                     title: "产品编码",
-                    width: '55px',
+                    width: '20px',
                     align: 'center'
                 }, {
-                    field: "name",
+                    field: "pdName",
                     title: "产品名称",
-                    width: '45px',
+                    width: '15px',
                     align: 'center'
                 }, {
-                    field: "tableCnName",
-                    title: "库表中文名",
-                    width: '50px',
+                    field: "bdName",
+                    title: "数据库表名",
+                    width: '15px',
                     align: 'center'
                 },{
                     field: "dbName",
                     title: "数据库名称",
-                    width: '55px',
+                    width: '15px',
                     align: 'center'
                 }, {
-                    field: "tableName",
-                    title: "数据库表名",
-                    width: '45px',
-                    align: 'center'
-                }, {
-                    field: "tableCnName",
+                    field: "bdCnName",
                     title: "库表中文名",
-                    width: '50px',
+                    width: '15px',
                     align: 'center'
                 }, {
-                    field: "lastUpdator",
+                    field: "lastUpdate",
                     title: "操作人",
-                    width: '50px',
+                    width: '15px',
                     align: 'center'
                 }, {
                     field: "lastUpdateTime",
                     title: "操作时间",
-                    width: '50px',
+                    width: '15px',
                     align: 'center'
                 }
                 ],
@@ -263,19 +259,19 @@ $(function () {
                 paginationLoop: false, //分页条无限循环的功能
                 singleSelect: false,
                 columns: [ {
-                    field: "code",
+                    field: "pdCode",
                     title: "产品编码",
                     width: '55px',
                     align: 'center'
                 }, {
-                    field: "name",
+                    field: "pdName",
                     title: "产品名称",
                     width: '45px',
                     align: 'center'
                 }, {
-                    field: "tableCnName",
-                    title: "库表中文名",
-                    width: '50px',
+                    field: "bdName",
+                    title: "数据库表名",
+                    width: '45px',
                     align: 'center'
                 },{
                     field: "dbName",
@@ -283,17 +279,12 @@ $(function () {
                     width: '55px',
                     align: 'center'
                 }, {
-                    field: "tableName",
-                    title: "数据库表名",
-                    width: '45px',
-                    align: 'center'
-                }, {
-                    field: "tableCnName",
+                    field: "bdCnName",
                     title: "库表中文名",
                     width: '50px',
                     align: 'center'
                 }, {
-                    field: "lastUpdator",
+                    field: "lastUpdate",
                     title: "操作人",
                     width: '50px',
                     align: 'center'
@@ -310,7 +301,7 @@ $(function () {
 
     function showModalWindow(title,data){
         $('#pdModalLabel').text(title);
-        initConfigtable(data);
+        initInfotable(data);
         $('#pdModal').modal('show');
     }
     /**
@@ -495,7 +486,7 @@ $(function () {
     $('#moveLeft').on('click', function (event) {
         event.preventDefault();
         var productSelections = pdTable.bootstrapTable('getSelections');
-       if(!productSelections || productSelections.length <= 0){
+        if(!productSelections || productSelections.length <= 0){
             Ewin.alert('请选择至少一条产品信息');
             return ;
         }
@@ -522,13 +513,13 @@ $(function () {
             url: url,
             data: {"pdId": pdId,'bdIds':bdids},
             dataType: 'json',
+            cache : false,
             success: function (data, status) {
                 if (data.status == Common.SUCCESS) {
                     showModalWindow('需要删除的基础数据信息',data);
                 }
             },
             error: function (e) {
-                console.log(e);
                 Ewin.alert('Error:' + e.statusText);
             }
         });
@@ -537,6 +528,8 @@ $(function () {
 
     });
 
+
+
     /**
      * 右移点击事件 添加
      */
@@ -544,6 +537,35 @@ $(function () {
         event.preventDefault();
     });
 
+    $('#remove').on('click',function () {
+        var tdata = infoTable.bootstrapTable('getData');
+        var ids = '';
+        var tLength = tdata.length;
+        $.each(tdata,function (index,value,array) {
+            if(index == tLength - 1){
+                ids += value.pdId +','+value.bdId;
+            }else{
+                ids += value.pdId +','+value.bdId +';';
+            }
+        });
+        console.log(ids);
+        var url = Common.getRootPath() + '/admin/pBdata/removeMapping.do';
+        $.ajax({
+            type: "post",
+            url: url,
+            data: {'idList':ids},
+            cache : false,
+            dataType: 'json',
+            success: function (data, status) {
+                if (data.status == Common.SUCCESS) {
+
+                }
+            },
+            error: function (e) {
+                Ewin.alert('Error:' + e.statusText);
+            }
+        });
+    });
 
 });
 

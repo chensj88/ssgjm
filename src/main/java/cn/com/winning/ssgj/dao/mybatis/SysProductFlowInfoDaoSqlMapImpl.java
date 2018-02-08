@@ -7,10 +7,10 @@ import cn.com.winning.ssgj.domain.SysProductFlowInfo;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
 /**
+ * Coder AutoGenerator generate.
  *
- *
- * @author SSGJ
- * @date 2018-01-18 10:11:47
+ * @author Coder AutoGenerator
+ * @date 2018-02-08 15:30:03
  */
 @Service
 public class SysProductFlowInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysProductFlowInfo> implements SysProductFlowInfoDao {

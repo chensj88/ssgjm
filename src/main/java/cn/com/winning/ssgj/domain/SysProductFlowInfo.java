@@ -1,67 +1,138 @@
 package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
-
 import org.apache.ibatis.type.Alias;
-
 import java.util.Date;
-
 import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
+ * Coder AutoGenerator generate.
  *
- *
- * @author SSGJ
- * @date 2018-01-18 10:11:47
+ * @author Coder AutoGenerator
+ * @date 2018-02-08 15:30:03
  */
-
+ 
 @Alias("sysProductFlowInfo")
 public class SysProductFlowInfo extends BaseDomain implements Serializable {
 
-    private static final long serialVersionUID = -1L;
+	private static final long serialVersionUID = -1L;
 
-    private Long pdId;
+	/**
+	 * @val 产品/系统ID
+	 */
+	private Long pdId;
+	
+	/**
+	 * @val 流程ID
+	 */
+	private Long flowId;
+	
+	/**
+	 * @val 生效日期
+	 */
+	private Date effectiveDate;
+	
+	/**
+	 * @val 失效日期
+	 */
+	private Date expireDate;
+	
+	/**
+	 * @val 维护人员
+	 */
+	private Long lastUpdator;
+	
+	/**
+	 * @val 维护时间
+	 */
+	private Date lastUpdateTime;
+	
+	public SysProductFlowInfo() {
 
-    private Long flowId;
+	}
 
-    private Long lastUpdator;
-
-    private Date lastUpdateTime;
-
-    public SysProductFlowInfo() {
-
-    }
-
-    public Long getPdId() {
-        return pdId;
-    }
-
-    public void setPdId(Long pdId) {
-        this.pdId = pdId;
-    }
-
-    public Long getFlowId() {
-        return flowId;
-    }
-
-    public void setFlowId(Long flowId) {
-        this.flowId = flowId;
-    }
-
-    public Long getLastUpdator() {
-        return lastUpdator;
-    }
-
-    public void setLastUpdator(Long lastUpdator) {
-        this.lastUpdator = lastUpdator;
-    }
-
-    public Date getLastUpdateTime() {
-        return lastUpdateTime;
-    }
-
-    public void setLastUpdateTime(Date lastUpdateTime) {
-        this.lastUpdateTime = lastUpdateTime;
-    }
-
+	/**
+	 * @val 产品/系统ID
+	 */
+	public Long getPdId() {
+		return pdId;
+	}
+	
+	/**
+	 * @val 产品/系统ID
+	 */
+	public void setPdId(Long pdId) {
+		this.pdId = pdId;
+	}
+	
+	/**
+	 * @val 流程ID
+	 */
+	public Long getFlowId() {
+		return flowId;
+	}
+	
+	/**
+	 * @val 流程ID
+	 */
+	public void setFlowId(Long flowId) {
+		this.flowId = flowId;
+	}
+	
+	/**
+	 * @val 生效日期
+	 */
+	public Date getEffectiveDate() {
+		return effectiveDate;
+	}
+	
+	/**
+	 * @val 生效日期
+	 */
+	public void setEffectiveDate(Date effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
+	
+	/**
+	 * @val 失效日期
+	 */
+	public Date getExpireDate() {
+		return expireDate;
+	}
+	
+	/**
+	 * @val 失效日期
+	 */
+	public void setExpireDate(Date expireDate) {
+		this.expireDate = expireDate;
+	}
+	
+	/**
+	 * @val 维护人员
+	 */
+	public Long getLastUpdator() {
+		return lastUpdator;
+	}
+	
+	/**
+	 * @val 维护人员
+	 */
+	public void setLastUpdator(Long lastUpdator) {
+		this.lastUpdator = lastUpdator;
+	}
+	
+	/**
+	 * @val 维护时间
+	 */
+	public Date getLastUpdateTime() {
+		return lastUpdateTime;
+	}
+	
+	/**
+	 * @val 维护时间
+	 */
+	public void setLastUpdateTime(Date lastUpdateTime) {
+		this.lastUpdateTime = lastUpdateTime;
+	}
+	
 }

@@ -4,10 +4,10 @@ import cn.com.winning.ssgj.domain.SysProductInterfaceInfo;
 import cn.com.winning.ssgj.dao.EntityDao;
 
 /**
+ * Coder AutoGenerator generate.
  *
- *
- * @author SSGJ
- * @date 2018-01-18 10:11:47
+ * @author Coder AutoGenerator
+ * @date 2018-02-08 15:30:03
  */
 public interface SysProductInterfaceInfoDao extends EntityDao<SysProductInterfaceInfo> {
 

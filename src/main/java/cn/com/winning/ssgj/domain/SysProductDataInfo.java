@@ -20,12 +20,34 @@ public class SysProductDataInfo extends BaseDomain implements Serializable {
 
     private static final long serialVersionUID = -1L;
 
+    /**
+     * @val 产品ID/系统ID
+     */
     private Long pdId;
 
+    /**
+     * @val 基础数据ID
+     */
     private Long bdId;
 
+    /**
+     * @val 生效日期
+     */
+    private Date effectiveDate;
+
+    /**
+     * @val 失效日期
+     */
+    private Date expireDate;
+
+    /**
+     * @val 维护人员
+     */
     private Long lastUpdator;
 
+    /**
+     * @val 维护时间
+     */
     private Date lastUpdateTime;
 
     private String pdName;
@@ -39,34 +61,86 @@ public class SysProductDataInfo extends BaseDomain implements Serializable {
 
     }
 
+    /**
+     * @val 产品ID/系统ID
+     */
     public Long getPdId() {
         return pdId;
     }
 
+    /**
+     * @val 产品ID/系统ID
+     */
     public void setPdId(Long pdId) {
         this.pdId = pdId;
     }
 
+    /**
+     * @val 基础数据ID
+     */
     public Long getBdId() {
         return bdId;
     }
 
+    /**
+     * @val 基础数据ID
+     */
     public void setBdId(Long bdId) {
         this.bdId = bdId;
     }
 
+    /**
+     * @val 生效日期
+     */
+    public Date getEffectiveDate() {
+        return effectiveDate;
+    }
+
+    /**
+     * @val 生效日期
+     */
+    public void setEffectiveDate(Date effectiveDate) {
+        this.effectiveDate = effectiveDate;
+    }
+
+    /**
+     * @val 失效日期
+     */
+    public Date getExpireDate() {
+        return expireDate;
+    }
+
+    /**
+     * @val 失效日期
+     */
+    public void setExpireDate(Date expireDate) {
+        this.expireDate = expireDate;
+    }
+
+    /**
+     * @val 维护人员
+     */
     public Long getLastUpdator() {
         return lastUpdator;
     }
 
+    /**
+     * @val 维护人员
+     */
     public void setLastUpdator(Long lastUpdator) {
         this.lastUpdator = lastUpdator;
     }
 
+    /**
+     * @val 维护时间
+     */
     public Date getLastUpdateTime() {
         return lastUpdateTime;
     }
 
+    /**
+     * @val 维护时间
+     */
     public void setLastUpdateTime(Date lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
