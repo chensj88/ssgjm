@@ -44,16 +44,16 @@
 <body>
 <div class="row" id="queryDataScope">
     <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3" >
+            <label class="col-sm-5 control-label text-right" for="shQCode">软硬件编号：</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control input-sm" id="shQCode"/>
+            </div>
+        </div>
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
             <label class="col-sm-5 control-label text-right" for="shQName">软硬件名称：</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control input-sm" id="shQName"/>
-            </div>
-        </div>
-        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
-            <label class="col-sm-5 control-label text-right" for="shQCode">软硬件编号：</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control input-sm" id="shQCode"/>
             </div>
         </div>
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -95,6 +95,13 @@
                 <div class="container">
                     <div class="row">
                         <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="sysSoftHardwareInfoForm">
+                            <div class="form-group" id="code" style="display:none;">
+                                <label class="col-sm-4 control-label" >软硬件代码:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="shCode" 
+                                    name="shCode" readonly="readonly">
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label" >设备分类</label>
                                 <div class="col-sm-6">
@@ -112,13 +119,6 @@
 										<option value="1">正式</option>
 										<option value="2">测试&正式</option>
 									</select>        
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label" >软硬件代码:</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="shCode" 
-                                    name="shCode" placeholder="请输入软硬件代码">
                                 </div>
                             </div>
                             <div class="form-group">

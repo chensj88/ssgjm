@@ -183,6 +183,7 @@ Page.prototype.initDataGrid = function () {
 }
 
 function edit(id,reportCode,reportName,repoetDesc) {
+	$("#code").show();
     $('#reportCode').val(reportCode);
     $('#reportName').val(reportName);
     $('#repoetDesc').val(repoetDesc);
@@ -198,6 +199,7 @@ Page.prototype.bindEvent = function () {
      */
     $('#addSysReportInfo').on('click', function () {
         $("input[type=reset]").trigger("click");
+        $("#code").hide();
         $("#id").val("");
         $('#reportCode').val("");
         $('#reportName').val("");
@@ -238,11 +240,11 @@ Page.prototype.bindEvent = function () {
     $('#save').on('click', function (e) {
         //阻止默认行为
         e.preventDefault();
-//        var bootstrapValidator = $("#sysDataInfo").data('bootstrapValidator');
-//        //修复记忆的组件不验证
-//        if (bootstrapValidator) {
-//            bootstrapValidator.validate();
-//        }
+        var bootstrapValidator = $("#sysReportInfoForm").data('bootstrapValidator');
+        //修复记忆的组件不验证
+        if (bootstrapValidator) {
+            bootstrapValidator.validate();
+        }
         var url = '';
         if ($('#id').val().length == 0) {
             url = Common.getRootPath() + '/admin/report/addSysReportInfo.do';
@@ -269,79 +271,44 @@ Page.prototype.bindEvent = function () {
 //        }
     });
 }
-///**
-// * 表单验证
-// */
-//Page.prototype.validateForm = function () {
-//    //表单验证
-//    //this._changeEvent = (ieVersion === 9 || !('oninput' in el)) ? 'keyup' : 'input'; 源码修改
-//    //this._changeEvent = (ieVersion === 9 || !('onblur' in el)) ? 'keyup' : 'blur'; 
-//    $('#sysReportInfoForm').bootstrapValidator({
-//        message: '输入的值不符合规格',
-//        feedbackIcons: {
-//            valid: 'glyphicon glyphicon-ok',
-//            invalid: 'glyphicon glyphicon-remove',
-//            validating: 'glyphicon glyphicon-refresh'
-//        },
-//        fields: {
-//            userid: {
-//                message: '登录名验证失败',
-//                validators: {
-//                    notEmpty: {
-//                        message: '登录名不能为空'
-//                    },
-//                    stringLength: {
-//                        min: 2,
-//                        max: 18,
-//                        message: '登录名长度必须在2到18位之间'
-//                    },
-//                    regexp: {
-//                        regexp: /^[a-zA-Z0-9_]+$/,
-//                        message: '登录名只能包含大写、小写、数字和下划线'
-//                    }
-//                }
-//            },
-//            yhmc: {
-//                validators: {
-//                    notEmpty: {
-//                        message: '用户名称不能为空'
-//                    },
-//                    stringLength: {
-//                        min: 2,
-//                        max: 10,
-//                        message: '用户名称长度必须在2到10位之间'
-//                    }
-//                }
-//            },
-//            mobile : {
-//                validators: {
-//                    notEmpty: {
-//                        message: '手机号码不能为空'
-//                    },
-//                    stringLength: {
-//                        min: 11,
-//                        max: 11,
-//                        message: '手机号码长度必须为11位'
-//                    },
-//                    regexp: {
-//                        regexp: /^1[3|4|5|8][0-9]\d{4,8}$/,
-//                        message: '手机号码只能包含数字'
-//                    }
-//                }
-//            },
-//            email: {
-//                validators: {
-//                    notEmpty: {
-//                        message: '邮箱地址不能为空'
-//                    },
-//                    emailAddress: {
-//                        message: '邮箱地址格式有误'
-//                    }
-//                }
-//            }
-//        }
-//    });
-//}
+
+ //表单验证
+    $('#sysReportInfoForm').bootstrapValidator({
+        message: '输入的值不符合规格',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+        	reportName: {
+                message: '名称验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '名称不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 18,
+                        message: '名称长度必须在2到18位之间'
+                    }
+                }
+            },
+            repoetDesc: {
+                validators: {
+                    notEmpty: {
+                        message: '设备描述不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 50,
+                        message: '设备描述必须在2到50位之间'
+                    }
+                }
+            }
+        }
+    });
+
 ///**
 //* 删除用户
 //* 只能删除一条数据
