@@ -7,6 +7,12 @@
         <result column="BD_ID" property="bdId" jdbcType="BIGINT"/>
         <result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT"/>
         <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP"/>
+        <result column="PD_NAME" property="pdName" jdbcType="VARCHAR"/>
+        <result column="PD_CODE" property="pdCode" jdbcType="VARCHAR"/>
+        <result column="DB_NAME" property="dbName" jdbcType="VARCHAR"/>
+        <result column="BD_CnNAME" property="bdCnName" jdbcType="VARCHAR"/>
+        <result column="BD_NAME" property="bdName" jdbcType="VARCHAR"/>
+        <result column="LAST_UPDATE" property="lastUpdate" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="sysProductDataInfoResult" type="sysProductDataInfo" extends="sysProductDataInfoResultForList">
@@ -103,13 +109,27 @@
         </where>
     </delete>
 
-    <select id="selectSysProductDataInfoListById" resultMap="sysProductDataInfoResultForList" parameterType="sysProductDataInfo">
-        select * from SYS_PRODUCT_DATA_INFO t
-       <where>
-           <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
-               ID in
-               <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-           </if>
-       </where>
+    <select id="selectSysProductDataInfoByIds" resultMap="sysProductDataInfoResultForList" parameterType="java.util.Map">
+      SELECT
+      A.*,
+      B.CODE AS PD_CODE,
+      B.NAME AS PD_NAME,
+      C.DB_NAME AS DB_NAME,
+      C.TABLE_NAME AS BD_NAME,
+      C.TABLE_CN_NAME AS BD_CNNAME,
+      D.YHMC AS LAST_UPDATE
+      FROM SYS_PRODUCT_DATA_INFO A
+      LEFT JOIN PMIS_PRODUCT_INFO B ON A.PD_ID = B.ID
+      LEFT JOIN SYS_DATA_INFO C ON A.BD_ID = C.ID
+      LEFT JOIN SYS_USER_INFO D ON A.LAST_UPDATOR = D.ID
+      <where>
+          <if test="pdId != null and pdId != 0">
+              AND A.PD_ID = ${pdId}
+          </if>
+          <if test="bdIds !=null and bdIds.size > 0">
+              AND A.BD_ID IN
+              <foreach item="item" collection="bdIds" open="(" separator="," close=")">#{item}</foreach>
+          </if>
+      </where>
     </select>
 </mapper>

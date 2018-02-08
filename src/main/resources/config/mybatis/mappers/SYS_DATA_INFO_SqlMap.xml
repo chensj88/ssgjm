@@ -169,14 +169,14 @@
         </where>
     </delete>
 
-    <select id="querySysDataInfoCountForSelectiveKey" resultType="int" parameterType="sysDataInfo">
+    <select id="selectSysDataInfoCountForSelectiveKey" resultType="java.lang.Integer" parameterType="sysDataInfo">
         select count(*) from SYS_DATA_INFO t
         <where>
             <include refid="query-sysDataInfo"/>
         </where>
     </select>
 
-    <select id="querySysDataInfoPaginatedListForSelectiveKey" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
+    <select id="selectSysDataInfoPaginatedListForSelectiveKey" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
         select * from (
         select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
         from SYS_DATA_INFO t
@@ -187,7 +187,7 @@
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
 
-    <select id="querySysDataInfoListForSelectiveKey" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
+    <select id="selectSysDataInfoListForSelectiveKey" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
         select *
         from SYS_DATA_INFO t
         <where>
@@ -195,7 +195,7 @@
         </where>
     </select>
 
-    <select id="querySysDataInfoListByIds" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
+    <select id="selectSysDataInfoListByIds" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
         select *
         from SYS_DATA_INFO t
         <where>

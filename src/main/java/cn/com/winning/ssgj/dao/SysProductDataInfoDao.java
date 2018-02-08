@@ -1,7 +1,9 @@
 package cn.com.winning.ssgj.dao;
 
 import cn.com.winning.ssgj.domain.SysProductDataInfo;
-import cn.com.winning.ssgj.dao.EntityDao;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -11,4 +13,5 @@ import cn.com.winning.ssgj.dao.EntityDao;
  */
 public interface SysProductDataInfoDao extends EntityDao<SysProductDataInfo> {
 
+    List<SysProductDataInfo> selectSysProductDataInfoByIds(Map<String,Object> param);
 }

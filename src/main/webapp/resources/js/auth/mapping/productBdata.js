@@ -2,6 +2,7 @@
  *
  */
 $(function () {
+    /**==========================方法区========================================*/
     /**
      * 产品查询按钮查询方法
      * @constructor
@@ -66,13 +67,19 @@ $(function () {
         };
     }
 
+    /**=================================变量定义==============================================*/
+    var pdTable =  $('#productTable');
+    var queryTable =  $('#queryBData');
+    var configTable =  $('#configBData');
+    var infoTable = $('#infoTable');
+    /**=================================事件绑定==============================================*/
     /**
      * 初始化已配置数据Table
      * @param data 后台json
      */
     function initConfigtable(data) {
         if (data) {
-            $("#configBData").bootstrapTable("destroy").bootstrapTable({
+            configTable.bootstrapTable("destroy").bootstrapTable({
                 data: data.data,
                 cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
                 pagination: false,                   // 是否显示分页（*）
@@ -120,7 +127,7 @@ $(function () {
                 }],
             });
         } else {
-            $('#configBData').bootstrapTable({
+            configTable.bootstrapTable({
                 cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
                 pagination: true,                   // 是否显示分页（*）
                 sortable: true,                     // 是否启用排序
@@ -172,10 +179,144 @@ $(function () {
         }
     }
 
+    function initInfotable(data) {
+        if (data) {
+            infoTable.bootstrapTable("destroy").bootstrapTable({
+                data: data.data,
+                cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: false,                   // 是否显示分页（*）
+                sortable: true,                     // 是否启用排序
+                sortOrder: "asc",                   // 排序方式
+                sidePagination: "server",           // 分页方式：client客户端分页，server服务端分页（*）
+                strictSearch: true,
+                showColumns: false,                  // 是否显示所有的列（选择显示的列）
+                showRefresh: false,                  // 是否显示刷新按钮
+                minimumCountColumns: 2,             // 最少允许的列数
+                clickToSelect: true,                // 是否启用点击选中行
+                idField: 'id',
+                sortName: 'id',
+                uniqueId: "id",                 // 每一行的唯一标识，一般为主键列
+                cardView: false,                    // 是否显示详细视图
+                detailView: false,                  // 是否显示父子表
+                paginationLoop: false, //分页条无限循环的功能
+                singleSelect: false,
+                columns: [ {
+                    field: "code",
+                    title: "产品编码",
+                    width: '55px',
+                    align: 'center'
+                }, {
+                    field: "name",
+                    title: "产品名称",
+                    width: '45px',
+                    align: 'center'
+                }, {
+                    field: "tableCnName",
+                    title: "库表中文名",
+                    width: '50px',
+                    align: 'center'
+                },{
+                    field: "dbName",
+                    title: "数据库名称",
+                    width: '55px',
+                    align: 'center'
+                }, {
+                    field: "tableName",
+                    title: "数据库表名",
+                    width: '45px',
+                    align: 'center'
+                }, {
+                    field: "tableCnName",
+                    title: "库表中文名",
+                    width: '50px',
+                    align: 'center'
+                }, {
+                    field: "lastUpdator",
+                    title: "操作人",
+                    width: '50px',
+                    align: 'center'
+                }, {
+                    field: "lastUpdateTime",
+                    title: "操作时间",
+                    width: '50px',
+                    align: 'center'
+                }
+                ],
+            });
+        } else {
+            infoTable.bootstrapTable("destroy").bootstrapTable({
+                cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: false,                   // 是否显示分页（*）
+                sortable: true,                     // 是否启用排序
+                sortOrder: "asc",                   // 排序方式
+                sidePagination: "server",           // 分页方式：client客户端分页，server服务端分页（*）
+                strictSearch: true,
+                showColumns: false,                  // 是否显示所有的列（选择显示的列）
+                showRefresh: false,                  // 是否显示刷新按钮
+                minimumCountColumns: 2,             // 最少允许的列数
+                clickToSelect: true,                // 是否启用点击选中行
+                idField: 'id',
+                sortName: 'id',
+                uniqueId: "id",                 // 每一行的唯一标识，一般为主键列
+                cardView: false,                    // 是否显示详细视图
+                detailView: false,                  // 是否显示父子表
+                paginationLoop: false, //分页条无限循环的功能
+                singleSelect: false,
+                columns: [ {
+                    field: "code",
+                    title: "产品编码",
+                    width: '55px',
+                    align: 'center'
+                }, {
+                    field: "name",
+                    title: "产品名称",
+                    width: '45px',
+                    align: 'center'
+                }, {
+                    field: "tableCnName",
+                    title: "库表中文名",
+                    width: '50px',
+                    align: 'center'
+                },{
+                    field: "dbName",
+                    title: "数据库名称",
+                    width: '55px',
+                    align: 'center'
+                }, {
+                    field: "tableName",
+                    title: "数据库表名",
+                    width: '45px',
+                    align: 'center'
+                }, {
+                    field: "tableCnName",
+                    title: "库表中文名",
+                    width: '50px',
+                    align: 'center'
+                }, {
+                    field: "lastUpdator",
+                    title: "操作人",
+                    width: '50px',
+                    align: 'center'
+                }, {
+                    field: "lastUpdateTime",
+                    title: "操作时间",
+                    width: '50px',
+                    align: 'center'
+                }
+                ],
+            });
+        }
+    }
+
+    function showModalWindow(title,data){
+        $('#pdModalLabel').text(title);
+        initConfigtable(data);
+        $('#pdModal').modal('show');
+    }
     /**
      * 初始化产品Table
      */
-    $('#productTable').bootstrapTable({
+    pdTable.bootstrapTable({
         url: Common.getRootPath() + '/admin/productInfo/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -202,7 +343,7 @@ $(function () {
         paginationPreText: '上一页',
         paginationNextText: '下一页',
         paginationLoop: false, //分页条无限循环的功能
-        singleSelect: true,
+        singleSelect: true,    //每次只允许选择一条
         selectItemName: '单选框',
         queryParams: queryParams, // 得到查询的参数
         columns: [{
@@ -254,7 +395,7 @@ $(function () {
     /**
      * 初始化可配置数据Table
      */
-    $('#queryBData').bootstrapTable({
+    queryTable.bootstrapTable({
         url: Common.getRootPath() + '/admin/basicData/listNoPage.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -305,6 +446,7 @@ $(function () {
             align: 'center'
         }],
     });
+
     /**
      * 初始化已配置数据table
      */
@@ -324,7 +466,7 @@ $(function () {
     /**
      *  产品信息表单击事件
      */
-    $('#productTable').on('click-row.bs.table', function (event, row, element, field) {
+    pdTable.on('click-row.bs.table', function (event, row, element, field) {
         var productId = row.id;
         var url = Common.getRootPath() + "/admin/pBdata/queryById.do";
         $.ajax({
@@ -341,17 +483,58 @@ $(function () {
             error: function (e) {
                 console.log(e);
                 Ewin.alert('Error:' + e.statusText);
-            },
-            complete: function () {
             }
         });
 
     });
+
+
     /**
      * 左移点击事件 删除
      */
     $('#moveLeft').on('click', function (event) {
         event.preventDefault();
+        var productSelections = pdTable.bootstrapTable('getSelections');
+       if(!productSelections || productSelections.length <= 0){
+            Ewin.alert('请选择至少一条产品信息');
+            return ;
+        }
+        var cBdataSelections = configTable.bootstrapTable('getSelections');
+        if(!cBdataSelections || cBdataSelections.length <= 0){
+            Ewin.alert('请先选择至少一条需要删除的基础数据信息');
+            return ;
+        }
+
+        var pdId = productSelections.id;
+        var bdids = '';
+        var cLength = cBdataSelections.length;
+        $.each(cBdataSelections,function (index,value,array) {
+            if(index == cLength - 1){
+                bdids += value.id;
+            }else{
+                bdids += value.id +',';
+            }
+        });
+        console.log(bdids);
+        var url = Common.getRootPath() + "/admin/pBdata/queryProductDataInfoById.do";
+        $.ajax({
+            type: "post",
+            url: url,
+            data: {"pdId": pdId,'bdIds':bdids},
+            dataType: 'json',
+            success: function (data, status) {
+                if (data.status == Common.SUCCESS) {
+                    showModalWindow('需要删除的基础数据信息',data);
+                }
+            },
+            error: function (e) {
+                console.log(e);
+                Ewin.alert('Error:' + e.statusText);
+            }
+        });
+
+
+
     });
 
     /**
@@ -360,6 +543,8 @@ $(function () {
     $('#moveRight').on('click', function (event) {
         event.preventDefault();
     });
+
+
 });
 
 

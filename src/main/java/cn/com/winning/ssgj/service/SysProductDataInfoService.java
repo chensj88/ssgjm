@@ -29,4 +29,6 @@ public interface SysProductDataInfoService {
 
     List<String> getDataInfoId(List<SysProductDataInfo> sysProductDataInfoList);
 
+
+    List<SysProductDataInfo> getSysProductDataInfoByIds(Integer pdId,List<Integer> bdIds);
 }

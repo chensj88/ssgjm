@@ -64,4 +64,15 @@ public class SysProductDataInfoServiceImpl implements SysProductDataInfoService 
         return idList;
     }
 
+    @Override
+    public List<SysProductDataInfo> getSysProductDataInfoByIds(Integer pdId, List<Integer> bdIds) {
+
+        Map<String,Object> param = new HashMap<String, Object>();
+        param.put("pdId",pdId);
+        param.put("bdIds",bdIds);
+
+        return this.sysProductDataInfoDao.selectSysProductDataInfoByIds(param);
+    }
+
+
 }

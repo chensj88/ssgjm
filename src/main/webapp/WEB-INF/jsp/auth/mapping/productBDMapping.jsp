@@ -100,6 +100,7 @@
         </table>
     </div>
 </div>
+
 <div id="toolbarA">
     <div class="columns pull-right search-button"><button class="btn btn-default"  style="height:34px" type="button" name="refresh" title="查询" id="bdataAbtn"><i class="glyphicon glyphicon-search icon-search"></i></button></div>
     <div class="columns pull-right search-input"><input class="form-control" type="text" placeholder="请输入表名" id="bdataA"></div>
@@ -107,6 +108,30 @@
 <div id="toolbarB">
     <div class="columns pull-right search-button"><button class="btn btn-default"  style="height:34px" type="button" name="refresh" title="查询" id="bdataBbtn"><i class="glyphicon glyphicon-search icon-search"></i></button></div>
     <div class="columns pull-right search-input"><input class="form-control" type="text" placeholder="请输入表名"  id="bdataB"></div>
+</div>
+<%--弹出框--%>
+<div class="modal fade" id="pdModal" tabindex="-1" role="dialog" aria-labelledby="pdModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width:450px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="pdModalLabel">用户信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <table class="table-align" id="infoTable"></table>
+                        <div class="col-sm-8 text-center">
+                            <button class="btn btn-primary" id="submit" type="submit">提交</button>
+                            <button class="btn btn-danger" data-dismiss="modal">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.js"></script>

@@ -28,6 +28,13 @@ public class SysProductDataInfo extends BaseDomain implements Serializable {
 
     private Date lastUpdateTime;
 
+    private String pdName;
+    private String pdCode;
+    private String dbName;
+    private String bdName;
+    private String bdCnName;
+    private String lastUpdate;
+
     public SysProductDataInfo() {
 
     }
@@ -64,4 +71,51 @@ public class SysProductDataInfo extends BaseDomain implements Serializable {
         this.lastUpdateTime = lastUpdateTime;
     }
 
+    public String getPdName() {
+        return pdName;
+    }
+
+    public void setPdName(String pdName) {
+        this.pdName = pdName;
+    }
+
+    public String getPdCode() {
+        return pdCode;
+    }
+
+    public void setPdCode(String pdCode) {
+        this.pdCode = pdCode;
+    }
+
+    public String getDbName() {
+        return dbName;
+    }
+
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
+    }
+
+    public String getBdName() {
+        return bdName;
+    }
+
+    public void setBdName(String bdName) {
+        this.bdName = bdName;
+    }
+
+    public String getBdCnName() {
+        return bdCnName;
+    }
+
+    public void setBdCnName(String bdCnName) {
+        this.bdCnName = bdCnName;
+    }
+
+    public String getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(String lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
 }

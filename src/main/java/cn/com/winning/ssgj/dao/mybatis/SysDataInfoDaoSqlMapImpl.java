@@ -18,26 +18,26 @@ import java.util.List;
 public class SysDataInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysDataInfo> implements SysDataInfoDao {
 
     @Override
-    public Integer selectSysDataInfoCountByselective(SysDataInfo t) {
-        String statement = "query" + t.getClass().getSimpleName() + "CountForSelectiveKey";
+    public Integer selectSysDataInfoCountForSelectiveKey(SysDataInfo t) {
+        String statement = "selectSysDataInfoCountForSelectiveKey";
         return super.getSqlSession().selectOne(statement,t);
     }
 
     @Override
-    public List<SysDataInfo> selectSysDataInfoPaginatedListByselective(SysDataInfo t) {
-        String statement = "query" + t.getClass().getSimpleName() + "PaginatedListForSelectiveKey";
+    public List<SysDataInfo> selectSysDataInfoPaginatedListForSelectiveKey(SysDataInfo t) {
+        String statement = "selectSysDataInfoPaginatedListForSelectiveKey";
         return super.getSqlSession().selectList(statement,t);
     }
 
     @Override
     public List<SysDataInfo> selectSysDataInfoListForSelectiveKey(SysDataInfo t) {
-        String statement = "query" + t.getClass().getSimpleName() + "ListForSelectiveKey";
+        String statement = "select" + t.getClass().getSimpleName() + "ListForSelectiveKey";
         return super.getSqlSession().selectList(statement,t);
     }
 
     @Override
     public List<SysDataInfo> selectSysDataInfoListByIds(SysDataInfo t) {
-        String statement = "query"+ t.getClass().getSimpleName() +"ListByIds";
+        String statement = "select"+ t.getClass().getSimpleName() +"ListByIds";
         return super.getSqlSession().selectList(statement,t);
     }
 }
