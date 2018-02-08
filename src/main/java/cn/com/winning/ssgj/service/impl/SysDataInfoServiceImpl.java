@@ -61,4 +61,14 @@ public class SysDataInfoServiceImpl implements SysDataInfoService {
         return this.sysDataInfoDao.selectSysDataInfoPaginatedListByselective(t);
     }
 
+    @Override
+    public List<SysDataInfo> getSysDataInfoListForSelectiveKey(SysDataInfo t) {
+        return this.sysDataInfoDao.selectSysDataInfoListForSelectiveKey(t);
+    }
+
+    @Override
+    public List<SysDataInfo> getSysDataInfoListById(SysDataInfo t) {
+        return this.sysDataInfoDao.selectSysDataInfoListByIds(t);
+    }
+
 }

@@ -155,7 +155,7 @@
         </set>
         <where>
             <if test="id != null and id != ''">ID = #{id}</if>
-            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
             </if>
@@ -166,7 +166,7 @@
         delete from ET_REPORT
         <where>
             <if test="id != null and id != ''">ID = #{id}</if>
-            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
             </if>

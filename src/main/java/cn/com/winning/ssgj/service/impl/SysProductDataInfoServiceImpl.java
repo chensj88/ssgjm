@@ -1,6 +1,9 @@
 package cn.com.winning.ssgj.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -49,6 +52,16 @@ public class SysProductDataInfoServiceImpl implements SysProductDataInfoService 
 
     public List<SysProductDataInfo> getSysProductDataInfoPaginatedList(SysProductDataInfo t) {
         return this.sysProductDataInfoDao.selectEntityPaginatedList(t);
+    }
+
+    @Override
+    public List<String> getDataInfoId(List<SysProductDataInfo> sysProductDataInfoList) {
+        List<String> idList = new ArrayList<String>();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < sysProductDataInfoList.size(); i++) {
+            idList.add(sysProductDataInfoList.get(i).getBdId()+"");
+        }
+        return idList;
     }
 
 }

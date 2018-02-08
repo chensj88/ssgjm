@@ -30,4 +30,8 @@ public interface SysDataInfoService {
 
     List<SysDataInfo> getSysDataInfoPaginatedListForSelectiveKey(SysDataInfo t);
 
+    List<SysDataInfo> getSysDataInfoListForSelectiveKey(SysDataInfo t);
+
+    List<SysDataInfo> getSysDataInfoListById(SysDataInfo t);
+
 }

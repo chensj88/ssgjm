@@ -43,7 +43,7 @@ public class MD5 {
 			// 转换并返回结果，也是字节数组，包含16个元素
 			byte[] resultByteArray = messageDigest.digest();
 			// 字符数组转换成字符串返回
-			return byteArrayToHex(resultByteArray);
+			return byteArrayToHex(resultByteArray).toLowerCase();
 		} catch (NoSuchAlgorithmException e) {
 			return null;
 		}

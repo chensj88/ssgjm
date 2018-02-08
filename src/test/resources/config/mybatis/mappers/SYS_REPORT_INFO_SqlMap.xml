@@ -117,7 +117,7 @@
 		</set>
 		where
 		<if test="id != null and id != ''"> id = #{id} </if>
-		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+		<if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
 			ID in
 			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
 		</if>
@@ -126,7 +126,7 @@
 	<delete id="deleteSysReportInfo" parameterType="SysReportInfo">
 		delete from SYS_REPORT_INFO where
 		<if test="id != null and id != ''"> id = #{id} </if>
-		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+		<if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
 			ID in
 			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
 		</if>

@@ -377,7 +377,7 @@
                         <b class="arrow icon-angle-down"></b>
                     </a>
                     <ul class="submenu">
-                        <li><a href="#"><i class="icon-double-angle-right"></i>产品与基础数据信息</a></li>
+                        <li><a href="<%=basePath%>admin/mapping/pBdataInfo.do"><i class="icon-double-angle-right"></i>产品与基础数据信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>产品与业务流程信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>产品与第三方接口信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>产品与软硬件设备信息</a></li>

@@ -58,6 +58,24 @@ public class SysDataInfoController extends BaseController {
 		map.put("status", Constants.SUCCESS);
 		return map;
 	}
+
+	/**
+	 * 基础数据类型列表不分页
+	 * @param sysDataInfo
+	 * @return
+	 */
+	@RequestMapping("/listNoPage.do")
+	@ResponseBody
+	@ILog(operationName="基础数据类型列表",operationType="list")
+	public Map<String, Object> listNoPage(SysDataInfo sysDataInfo) {
+		List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().getSysDataInfoListForSelectiveKey(sysDataInfo);
+		int total =  getFacade().getSysDataInfoService().getSysDataInfoCount(sysDataInfo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("rows", sysDataInfos);
+		map.put("total", total);
+		map.put("status", Constants.SUCCESS);
+		return map;
+	}
 	/**
      * 通过产品ID查询基础数据类型
      * @param t

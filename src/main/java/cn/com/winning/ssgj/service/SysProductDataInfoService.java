@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.service;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.com.winning.ssgj.domain.SysProductDataInfo;
 
@@ -25,5 +26,7 @@ public interface SysProductDataInfoService {
     Integer getSysProductDataInfoCount(SysProductDataInfo t);
 
     List<SysProductDataInfo> getSysProductDataInfoPaginatedList(SysProductDataInfo t);
+
+    List<String> getDataInfoId(List<SysProductDataInfo> sysProductDataInfoList);
 
 }

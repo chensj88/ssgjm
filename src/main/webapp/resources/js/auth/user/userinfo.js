@@ -68,15 +68,8 @@ $(function () {
         // 得到查询的参数
         queryParams:queryParams,
         columns: [{
-            checkbox: true,
-            align: 'center',
-            valign: 'middle',
-            title: '单选框',
-            halign: 'middle',
-            width: '10px',
-        }, {
             field: "id",
-            title: "ID",
+            title: "序号",
             width: '40px',
             align: 'center'
         }, {
@@ -92,12 +85,12 @@ $(function () {
         }, {
             field: "name",
             title: "用户姓名",
-            width: '40px',
+            width: '50px',
             align: 'center'
         }, {
             field: "email",
             title: "邮箱",
-            width: '40px',
+            width: '70px',
             align: 'center'
         }, {
             field: 'mobile',
@@ -123,8 +116,10 @@ $(function () {
             formatter: function (value) {
                 if (value == '1') {
                     return '公司';
-                } else {
+                } else if (value == '0') {
                     return '医院';
+                } {
+                    return '管理员';
                 }
             },
             align: 'center'
@@ -132,7 +127,7 @@ $(function () {
             title: '操作',
             field: 'id',
             align: 'center',
-            width: '80px',
+            width: '40px',
             formatter: function (value, row, index) {
                 var e = '<a href="####" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.userId + '">编辑</a> ';
                 var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.userId + '">删除</a> ';

@@ -8,33 +8,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Insert title here</title>
     <meta name="author" content="卫宁实施工具">
-    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/font-awesome.min.css" />
-    <!--[if IE 7]>
-    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/font-awesome-ie7.min.css" />
-    <![endif]-->
-    <!-- fonts -->
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
-    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace.min.css" />
-    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace-rtl.min.css" />
-    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace-skins.min.css" />
-    <!--[if lte IE 8]>
-    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace-ie.min.css" />
-    <![endif]-->
-    <script src="<%=basePath%>resources/assets/js/ace-extra.min.js"></script>
-    <!--[if lt IE 9]>
-    <script src="<%=basePath%>resources/assets/js/html5shiv.js"></script>
-    <script src="<%=basePath%>resources/assets/js/respond.min.js"></script>
-    <![endif]-->
-
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css">
     <base href="<%=basePath%>">
     <link rel="shortcut icon" href="resources/img/logo.ico">
+    <style type="text/css">
+        .table-align{
+            table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-<div class="row" id="queryScope">
+<div class="row text-center" id="queryScope">
     <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12" >
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
             <label class="col-sm-4 control-label text-right" for="cName">姓名：</label>
@@ -61,7 +49,7 @@
     </form>
 </div>
 <!--表格区域  -->
-<table id="userTable"></table>
+<table id="userTable" class="table-align table-hover"></table>
 <!--toolbar区域  -->
 <div class="btn-group" id="btntoolbar" >
     <button id="addUser" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>

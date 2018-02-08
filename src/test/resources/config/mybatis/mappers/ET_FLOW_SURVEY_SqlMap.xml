@@ -154,7 +154,7 @@
         </set>
         <where>
             <if test="id != null and id != ''">ID = #{id}</if>
-            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">ID in
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">ID in
                 <foreach
                         item="item" collection="map.pks" open="(" separator="," close=")">#{item}
                 </foreach>
@@ -166,7 +166,7 @@
         delete from ET_FLOW_SURVEY
         <where>
             <if test="id != null and id != ''">ID = #{id}</if>
-            <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">ID in
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">ID in
                 <foreach
                         item="item" collection="map.pks" open="(" separator="," close=")">#{item}
                 </foreach>

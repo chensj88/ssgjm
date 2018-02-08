@@ -55,8 +55,6 @@ $(function () {
         //showToggle: true,                   // 是否显示详细视图和列表视图的切换按钮
         cardView: false,                    // 是否显示详细视图
         detailView: false,                  // 是否显示父子表
-        toolbar: '#btntoolbar',
-        toolbarAlign: 'right',
         paginationPreText: '上一页',
         paginationNextText: '下一页',
         paginationLoop: false, //分页条无限循环的功能

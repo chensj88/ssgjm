@@ -11,7 +11,7 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
     <!-- 主键生成器记录表 -->
     <bean id="sequenceTable" class="cn.com.winning.ssgj.base.id.SequenceTable" init-method="init">
-        <property name="tableName" value="ssgj_seqno"/><!--表名  -->
+        <property name="tableName" value="SSGJ_SEQNO"/><!--表名  -->
         <property name="idColume" value="seqno"/><!-- id列  -->
         <property name="typeColume" value="tabletype"/><!--主键类型  -->
         <property name="dataSource" ref="dataSource"/><!-- 数据源 -->
