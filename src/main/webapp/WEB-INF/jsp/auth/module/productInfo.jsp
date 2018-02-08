@@ -88,7 +88,7 @@
                             <div class="form-group" id="codeDiv" style="display:none;">
                                 <label class="col-sm-2 control-label" >产品代码</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" readonly="readonly" id="code" name="code" placeholder="请输入产品代码">
+                                    <input type="text" class="form-control" readonly="readonly" id="code" name="code" >
                                 </div>
                             </div>
                             <div class="form-group">

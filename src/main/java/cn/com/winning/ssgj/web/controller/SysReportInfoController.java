@@ -98,8 +98,9 @@ public class SysReportInfoController extends BaseController {
 	@Transactional
 	@ILog(operationName="添加报表类信息表",operationType="addSysReportInfo")
 	public Map<String, Object> addSysReportInfo(SysReportInfo t)  {
-		System.err.println(111111);
 		Long id = ssgjHelper.createReportInfoId();
+		String code = ssgjHelper.createReportInfoCode();
+		t.setReportCode(code);
 		t.setId(id);
 		t.setReportCode(ssgjHelper.createReportInfoCode());
 		t.setStatus(1);

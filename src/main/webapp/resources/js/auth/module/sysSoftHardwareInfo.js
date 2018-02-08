@@ -21,7 +21,6 @@ $(function () {
      * @returns {{count: *|number, first, sort, order, shName: *|string, shCode: string, shType: *|jQuery}}
      */
     function queryParams(params) {
-        console.log($('#shQType option:selected').val());
         return {
             count: params.limit,    // 每页显示条数
             first: params.offset,   // 显示条数
@@ -146,13 +145,12 @@ $(function () {
                 align: 'center',
                 width: '40px',
                 formatter: function (value, row, index) {
-                    var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.shCode +"','"+row.shName +"','"+row.shDesc + "','"+row.shBrand+"','"+row.shBrandType+"') >编辑</a> ";
+                    var e = "<a mce_href='#' class='btn btn-info btn-xs' onclick=editSH('"+ row.id +"','"+row.shCode +"','"+row.shName +"','"+row.shDesc + "','"+row.shBrand+"','"+row.shBrandType+"') >编辑</a> ";
                     var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
                     return e + d ;
                 }
             }],
     });
-
     //查询
     $('#querySh').on('click',SearchData);
     /**
@@ -169,6 +167,17 @@ $(function () {
         $('#sysSoftHardwareInfoModal').modal('show');
     });
 
+function editSH(id,shCode,shName,shDesc,shBrand,shBrandType) {
+	console.log(id)
+	$("#code").show();
+    $("#id").val(id);
+    $('#shCode').val(shCode);
+    $('#shName').val(shName);
+    $('#shDesc').val(shDesc);
+    $('#shBrand').val(shBrand);
+    $('#shBrandType').val(shBrandType);
+    $('#sysSoftHardwareInfoModal').modal('show');
+}
     $('#sysSoftHardwareInfoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var productInfoId = $(this).attr('aid');
@@ -200,6 +209,11 @@ $(function () {
     $('#save').on('click', function (e) {
         //阻止默认行为
         e.preventDefault();
+        var bootstrapValidator = $("#sysSoftHardwareInfoForm").data('bootstrapValidator');
+        //修复记忆的组件不验证
+        if (bootstrapValidator) {
+            bootstrapValidator.validate();
+        }
         var url = '';
         if ($('#id').val().length == 0) {
             url = Common.getRootPath() + '/admin/hardware/addSysSoftHardwareInfo.do';
@@ -224,3 +238,64 @@ $(function () {
         });
     });
 })
+// 表单验证
+$('#sysSoftHardwareInfoForm').bootstrapValidator({
+    message: '输入的值不符合规格',
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+    	shName: {
+            message: '设备名称验证失败',
+            validators: {
+                notEmpty: {
+                    message: '设备名称不能为空'
+                },
+                stringLength: {
+                    min: 2,
+                    max: 18,
+                    message: '设备名称长度必须在2到18位之间'
+                }
+
+            }
+        },
+        shDesc: {
+            validators: {
+                notEmpty: {
+                    message: '设备描述不能为空'
+                },
+                stringLength: {
+                    min: 2,
+                    max: 50,
+                    message: '设备描述长度必须在2到50位之间'
+                }
+            }
+        },
+        shBrand : {
+            validators: {
+                notEmpty: {
+                    message: '推荐品牌不能为空'
+                },
+                stringLength: {
+                    min: 2,
+                    max: 50,
+                    message: '推荐品牌必须在2到50位之间'
+                }
+            }
+        },
+        shBrandType : {
+            validators: {
+                notEmpty: {
+                    message: '推荐型号不能为空'
+                },
+                stringLength: {
+                    min: 2,
+                    max: 50,
+                    message: '推荐型号必须在2到50位之间'
+                }
+            }
+        }
+    }
+});

@@ -100,6 +100,8 @@ public class SysSoftHardwareInfoController extends BaseController {
 	@ILog(operationName="添加软硬件设备类型信息表",operationType="addSysSoftHardwareInfo")
 	public Map<String, Object> addSysSoftHardwareInfo(SysSoftHardwareInfo t)  {
 		Long id = ssgjHelper.createSoftwareHardwareId();
+		String code = ssgjHelper.createSoftwareHardwareCode();
+		t.setShCode(code);
 		t.setId(id);
 		t.setStatus(1);
 		getFacade().getSysSoftHardwareInfoService().createSysSoftHardwareInfo(t);

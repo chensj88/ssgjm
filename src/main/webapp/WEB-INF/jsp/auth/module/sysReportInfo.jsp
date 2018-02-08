@@ -67,11 +67,11 @@
                     <div class="row">
                         <form class="form-horizontal col-lg-6 col-md-7 col-sm-7 col-xs-7" role="form" id="sysReportInfoForm">
                            
-                            <div class="form-group">
+                            <div class="form-group" id="code" style="display:none;">
                                 <label class="col-sm-4 control-label" >代码:</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="reportCode" 
-                                    name="reportCode" placeholder="请输入代码">
+                                    name="reportCode" readonly="readonly" >
                                 </div>
                             </div>
                             <div class="form-group">

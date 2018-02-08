@@ -129,6 +129,7 @@ $(function () {
      */
     $('#addProductInfo').on('click', function () {
         $("input[type=reset]").trigger("click");
+        $("#codeDiv").hide();
         $("#id").val("");
         $('#cpmc').val("");
         $('#gnms').val("");
