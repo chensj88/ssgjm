@@ -37,6 +37,11 @@
         <if test="flowName != null and flowName != ''">and t.FLOW_NAME LIKE '%${flowName}%' </if>
     </sql>
 
+    <sql id="queryOrsysFlowInfo">
+        <if test="flowCode != null and flowCode != ''">and ( t.FLOW_CODE LIKE '%${flowCode}%' </if>
+        <if test="flowName != null and flowName != ''">OR t.FLOW_NAME LIKE '%${flowName}%' )</if>
+    </sql>
+
     <select id="selectSysFlowInfo" resultMap="sysFlowInfoResult" parameterType="sysFlowInfo">
         select t.*,t1.FLOW_CODE AS FLOW_PARENT_CODE,
         t1.FLOW_NAME AS FLOW_PARENT_NAME
@@ -172,5 +177,30 @@
         <include refid="query-sysFlowInfo"/>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+
+    <select id="selectSysFlowInfoCountForSelectiveKey" parameterType="sysFlowInfo" resultType="int">
+        SELECT  COUNT(1) FROM  SYS_FLOW_INFO t
+        WHERE t.FLOW_TYPE='1'
+        <include refid="queryOrsysFlowInfo"/>
+    </select>
+
+    <select id="selectSysFlowInfoListForSelectiveKey" parameterType="sysFlowInfo" resultMap="sysFlowInfoResult">
+        SELECT t.* FROM  SYS_FLOW_INFO t
+        WHERE t.FLOW_TYPE='1'
+        <include refid="queryOrsysFlowInfo"/>
+    </select>
+
+    <select id="selectSysFlowInfoListById" resultMap="sysFlowInfoResult" parameterType="sysDataInfo">
+        select *
+        from SYS_FLOW_INFO t
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0 )">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
     </select>
 </mapper>

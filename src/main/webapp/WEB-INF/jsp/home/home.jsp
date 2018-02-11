@@ -378,7 +378,7 @@
                     </a>
                     <ul class="submenu">
                         <li><a href="<%=basePath%>admin/mapping/pBdataInfo.do"><i class="icon-double-angle-right"></i>产品与基础数据信息</a></li>
-                        <li><a href="#"><i class="icon-double-angle-right"></i>产品与业务流程信息</a></li>
+                        <li><a href="<%=basePath%>admin/mapping/pflowinfo.do"><i class="icon-double-angle-right"></i>产品与业务流程信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>产品与第三方接口信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>产品与软硬件设备信息</a></li>
                         <li><a href="#"><i class="icon-double-angle-right"></i>产品与报表单据信息</a></li>
@@ -505,19 +505,19 @@
     </a>
 </div><!-- /.main-container -->
 <!--[if !IE]> -->
-<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="<%=basePath%>resources/bootstrap/js/jquery-2.2.4.min.js"></script>
 <!-- <![endif]-->
 <!--[if IE]>
-<script src="https://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script>
+<script src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
 <![endif]-->
 <!--[if !IE]> -->
 <script type="text/javascript">
-    window.jQuery || document.write("<script src='https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js'>"+"<"+"script>");
+    window.jQuery || document.write("<script src='<%=basePath%>resources/bootstrap/js/jquery-2.2.4.min.js'>"+"<"+"script>");
 </script>
 <!-- <![endif]-->
 <!--[if IE]>
 <script type="text/javascript">
-    window.jQuery || document.write("<script src='https://cdn.bootcss.com/jquery/1.12.3/jquery.min.js'>"+"<"+"script>");
+    window.jQuery || document.write("<script src='<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js'>"+"<"+"script>");
 </script>
 <![endif]-->
 <script type="text/javascript">

@@ -16,7 +16,7 @@ $(function () {
      * @constructor
      */
     function SearchQueryData() {
-        $('#queryBData').bootstrapTable('refresh');
+        $('#queryFlow').bootstrapTable('refresh');
     }
 
     /**
@@ -24,7 +24,7 @@ $(function () {
      * @constructor
      */
     function SearchConfigData() {
-        $('#configBData').bootstrapTable('refresh');
+        $('#configFlow').bootstrapTable('refresh');
     }
 
     /**
@@ -48,10 +48,10 @@ $(function () {
      * @param params
      * @returns {{count: *|number, first, sort, order, tableName: *|string, tableCnName: *|string}}
      */
-    function queryBDataParams(params) {
+    function queryFlowInfoParams(params) {
         return {
-            tableName: $.trim($('#bdataA').val()),
-            tableCnName: $.trim($('#bdataA').val())
+            flowName: $.trim($('#flowInfoA').val()),
+            flowCode: $.trim($('#flowInfoA').val())
         };
     }
 
@@ -60,17 +60,17 @@ $(function () {
      * @param params
      * @returns {{count: *|number, first, sort, order, tableName: *|string, tableCnName: *|string}}
      */
-    function configBDataParams(params) {
+    function configFlowInfoParams(params) {
         return {
-            tableName: $.trim($('#bdataB').val()),
-            tableCnName: $.trim($('#bdataB').val())
+            flowName: $.trim($('#flowInfoB').val()),
+            flowCode: $.trim($('#flowInfoB').val())
         };
     }
 
     /**=================================变量定义==============================================*/
     var pdTable =  $('#productTable');
-    var queryTable =  $('#queryBData');
-    var configTable =  $('#configBData');
+    var queryTable =  $('#queryFlow');
+    var configTable =  $('#configFlow');
     var infoTable = $('#infoTable');
     /**=================================事件绑定==============================================*/
     /**
@@ -101,7 +101,7 @@ $(function () {
                 paginationLoop: false, //分页条无限循环的功能
                 singleSelect: false,
                 selectItemName: '多选框',
-                queryParams: configBDataParams, // 得到查询的参数
+                queryParams: configFlowInfoParams, // 得到查询的参数
                 columns: [{
                     checkbox: true,
                     align: 'center',
@@ -110,18 +110,18 @@ $(function () {
                     halign: 'middle',
                     width: '13px',
                 }, {
-                    field: "dbName",
-                    title: "库名",
+                    field: "flowCode",
+                    title: "流程编码",
                     width: '55px',
                     align: 'center'
                 }, {
-                    field: "tableName",
-                    title: "数据库表名",
+                    field: "flowName",
+                    title: "流程名称",
                     width: '45px',
                     align: 'center'
                 }, {
-                    field: "tableCnName",
-                    title: "库表中文名",
+                    field: "flowDesc",
+                    title: "流程描述",
                     width: '50px',
                     align: 'center'
                 }],
@@ -151,7 +151,7 @@ $(function () {
                 paginationLoop: false, //分页条无限循环的功能
                 singleSelect: false,
                 selectItemName: '多选框',
-                queryParams: configBDataParams, // 得到查询的参数
+                queryParams: configFlowInfoParams, // 得到查询的参数
                 columns: [{
                     checkbox: true,
                     align: 'center',
@@ -159,19 +159,19 @@ $(function () {
                     title: '多选',
                     halign: 'middle',
                     width: '13px',
-                }, {
-                    field: "dbName",
-                    title: "库名",
+                },{
+                    field: "flowCode",
+                    title: "流程编码",
                     width: '55px',
                     align: 'center'
                 }, {
-                    field: "tableName",
-                    title: "数据库表名",
+                    field: "flowName",
+                    title: "流程名称",
                     width: '45px',
                     align: 'center'
                 }, {
-                    field: "tableCnName",
-                    title: "库表中文名",
+                    field: "flowDesc",
+                    title: "流程描述",
                     width: '50px',
                     align: 'center'
                 }],
@@ -211,22 +211,22 @@ $(function () {
                     title: "产品名称",
                     width: '15px',
                     align: 'center'
+                },{
+                    field: "flowCode",
+                    title: "流程编码",
+                    width: '15px',
+                    align: 'center'
                 }, {
-                    field: "bdName",
-                    title: "数据库表名",
+                    field: "flowName",
+                    title: "流程名称",
+                    width: '15px',
+                    align: 'center'
+                }, {
+                    field: "flowDesc",
+                    title: "流程描述",
                     width: '15px',
                     align: 'center'
                 },{
-                    field: "dbName",
-                    title: "数据库名称",
-                    width: '15px',
-                    align: 'center'
-                }, {
-                    field: "bdCnName",
-                    title: "库表中文名",
-                    width: '15px',
-                    align: 'center'
-                }, {
                     field: "lastUpdate",
                     title: "操作人",
                     width: '15px',
@@ -261,37 +261,37 @@ $(function () {
                 columns: [ {
                     field: "pdCode",
                     title: "产品编码",
-                    width: '55px',
+                    width: '20px',
                     align: 'center'
                 }, {
                     field: "pdName",
                     title: "产品名称",
-                    width: '45px',
-                    align: 'center'
-                }, {
-                    field: "bdName",
-                    title: "数据库表名",
-                    width: '45px',
+                    width: '15px',
                     align: 'center'
                 },{
-                    field: "dbName",
-                    title: "数据库名称",
-                    width: '55px',
+                    field: "flowCode",
+                    title: "流程编码",
+                    width: '15px',
                     align: 'center'
                 }, {
-                    field: "bdCnName",
-                    title: "库表中文名",
-                    width: '50px',
+                    field: "flowName",
+                    title: "流程名称",
+                    width: '15px',
                     align: 'center'
                 }, {
+                    field: "flowDesc",
+                    title: "流程描述",
+                    width: '15px',
+                    align: 'center'
+                },{
                     field: "lastUpdate",
                     title: "操作人",
-                    width: '50px',
+                    width: '15px',
                     align: 'center'
                 }, {
                     field: "lastUpdateTime",
                     title: "操作时间",
-                    width: '50px',
+                    width: '15px',
                     align: 'center'
                 }
                 ],
@@ -299,13 +299,19 @@ $(function () {
         }
     }
 
+    /**
+     * 模态框
+     * @param title
+     * @param data
+     */
     function showModalWindow(title,data){
         $('#pdModalLabel').text(title);
         initInfotable(data);
         $('#pdModal').modal('show');
     }
+
     function refreshConfigTable(productId){
-        var url = Common.getRootPath() + "/admin/pBdata/queryById.do";
+        var url = Common.getRootPath() + "/admin/pFlow/queryById.do";
         $.ajax({
             type: "post",
             url: url,
@@ -406,7 +412,7 @@ $(function () {
      * 初始化可配置数据Table
      */
     queryTable.bootstrapTable({
-        url: Common.getRootPath() + '/admin/basicData/listNoPage.do',// 要请求数据的文件路径
+        url: Common.getRootPath() + '/admin/flow/listNoPage.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         pagination: false,                   // 是否显示分页（*）
@@ -431,7 +437,7 @@ $(function () {
         paginationLoop: false, //分页条无限循环的功能
         singleSelect: false,
         selectItemName: '多选框',
-        queryParams: queryBDataParams, // 得到查询的参数
+        queryParams: queryFlowInfoParams, // 得到查询的参数
         columns: [{
             checkbox: true,
             align: 'center',
@@ -440,19 +446,19 @@ $(function () {
             halign: 'middle',
             width: '13px',
         }, {
-            field: "dbName",
-            title: "库名",
-            width: '25px',
-            align: 'center'
-        }, {
-            field: "tableName",
-            title: "数据库表名",
+            field: "flowCode",
+            title: "流程编码",
             width: '55px',
             align: 'center'
         }, {
-            field: "tableCnName",
-            title: "库表中文名",
-            width: '55px',
+            field: "flowName",
+            title: "流程名称",
+            width: '45px',
+            align: 'center'
+        }, {
+            field: "flowDesc",
+            title: "流程描述",
+            width: '50px',
             align: 'center'
         }],
     });
@@ -468,17 +474,17 @@ $(function () {
     /**
      * 查询按钮事件  可配置查询按钮
      */
-    $('#bdataAbtn').on('click', SearchQueryData);
+    $('#flowInfoAbtn').on('click', SearchQueryData);
     /**
      * 查询按钮事件  已配置查询按钮
      */
-    $('#bdataBbtn').on('click', SearchConfigData);
+    $('#flowInfoBbtn').on('click', SearchConfigData);
     /**
      *  产品信息表单击事件
      */
     pdTable.on('click-row.bs.table', function (event, row, element, field) {
         var productId = row.id;
-        var url = Common.getRootPath() + "/admin/pBdata/queryById.do";
+        var url = Common.getRootPath() + "/admin/pFlow/queryById.do";
         $.ajax({
             type: "post",
             url: url,
@@ -508,33 +514,35 @@ $(function () {
             Ewin.alert('请选择至少一条产品信息');
             return ;
         }
-        var cBdataSelections = configTable.bootstrapTable('getSelections');
-        if(!cBdataSelections || cBdataSelections.length <= 0){
-            Ewin.alert('请先选择至少一条需要删除的基础数据信息');
+        var flowSelections = configTable.bootstrapTable('getSelections');
+        if(!flowSelections || flowSelections.length <= 0){
+            Ewin.alert('请先选择至少一条需要删除的流程信息');
             return ;
         }
 
-        var pdId = productSelections.id;
-        var bdids = '';
-        var cLength = cBdataSelections.length;
-        $.each(cBdataSelections,function (index,value,array) {
+        console.log(productSelections);
+        var pdId = productSelections[0].id;
+        console.log("pdId:"+pdId);
+        var flowids = '';
+        var cLength = flowSelections.length;
+        $.each(flowSelections,function (index,value,array) {
             if(index == cLength - 1){
-                bdids += value.id;
+                flowids += value.id;
             }else{
-                bdids += value.id +',';
+                flowids += value.id +',';
             }
         });
-        console.log(bdids);
-        var url = Common.getRootPath() + "/admin/pBdata/queryProductDataInfoById.do";
+        console.log("flowids:"+flowids);
+        var url = Common.getRootPath() + "/admin/pFlow/queryProductFlowInfoById.do";
         $.ajax({
             type: "post",
             url: url,
-            data: {"pdId": pdId,'bdIds':bdids},
+            data: {"pdId": pdId,'flowIds':flowids},
             dataType: 'json',
             cache : false,
             success: function (data, status) {
                 if (data.status == Common.SUCCESS) {
-                    showModalWindow('需要删除的基础数据信息',data);
+                    showModalWindow('需要删除的流程信息',data);
                 }
             },
             error: function (e) {
@@ -545,8 +553,6 @@ $(function () {
 
 
     });
-
-
 
     /**
      * 右移点击事件 添加
@@ -561,7 +567,7 @@ $(function () {
         console.log(productSelections);
         var queryTableSelections = queryTable.bootstrapTable('getSelections');
         if(!queryTableSelections || queryTableSelections.length <= 0){
-            Ewin.alert('请先选择至少一条需要添加的基础数据信息');
+            Ewin.alert('请先选择至少一条需要添加的流程信息');
             return ;
         }
 
@@ -577,7 +583,7 @@ $(function () {
             }
         });
         console.log(bdids);
-        var url = Common.getRootPath() + "/admin/pBdata/addProduct.do";
+        var url = Common.getRootPath() + "/admin/pFlow/addProductFlowInfo.do";
         $.ajax({
             type: "post",
             url: url,
@@ -601,13 +607,13 @@ $(function () {
         var tLength = tdata.length;
         $.each(tdata,function (index,value,array) {
             if(index == tLength - 1){
-                ids += value.pdId +','+value.bdId;
+                ids += value.pdId +','+value.flowId;
             }else{
-                ids += value.pdId +','+value.bdId +';';
+                ids += value.pdId +','+value.flowId +';';
             }
         });
         var pdId = tdata[0].pdId;
-        var url = Common.getRootPath() + '/admin/pBdata/removeMapping.do';
+        var url = Common.getRootPath() + '/admin/pFlow/removeMapping.do';
         $.ajax({
             type: "post",
             url: url,

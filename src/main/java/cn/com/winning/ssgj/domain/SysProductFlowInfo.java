@@ -38,9 +38,34 @@ public class SysProductFlowInfo extends BaseDomain implements Serializable {
 	private Date expireDate;
 	
 	/**
-	 * @val 维护人员
+	 * @val 维护人员ID
 	 */
 	private Long lastUpdator;
+
+	/**
+	 * @val 维护人员
+	 */
+	private String lastUpdate;
+	/**
+	 * @val 产品编码
+	 */
+	private String pdCode;
+	/**
+	 * @val 产品名称
+	 */
+	private String pdName;
+	/**
+	 * @val 流程编号
+	 */
+	private String flowCode;
+	/**
+	 * @val 流程名称
+	 */
+	private String flowName;
+	/**
+	 * @val 流程描述
+	 */
+	private String flowDesc;
 	
 	/**
 	 * @val 维护时间
@@ -134,5 +159,52 @@ public class SysProductFlowInfo extends BaseDomain implements Serializable {
 	public void setLastUpdateTime(Date lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
 	}
-	
+
+	public String getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(String lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
+
+	public String getPdCode() {
+		return pdCode;
+	}
+
+	public void setPdCode(String pdCode) {
+		this.pdCode = pdCode;
+	}
+
+	public String getPdName() {
+		return pdName;
+	}
+
+	public void setPdName(String pdName) {
+		this.pdName = pdName;
+	}
+
+	public String getFlowCode() {
+		return flowCode;
+	}
+
+	public void setFlowCode(String flowCode) {
+		this.flowCode = flowCode;
+	}
+
+	public String getFlowName() {
+		return flowName;
+	}
+
+	public void setFlowName(String flowName) {
+		this.flowName = flowName;
+	}
+
+	public String getFlowDesc() {
+		return flowDesc;
+	}
+
+	public void setFlowDesc(String flowDesc) {
+		this.flowDesc = flowDesc;
+	}
 }

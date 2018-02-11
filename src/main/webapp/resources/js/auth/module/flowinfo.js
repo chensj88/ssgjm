@@ -124,7 +124,7 @@ $(function () {
         setTimeout(function () { that.hide() }, 250);
     };
     var objMap = {};//定义一个空的js对象
-    $('#flowParent').show();
+
     /**
      * 新增流程
      * 需要清理表格数据
@@ -134,51 +134,13 @@ $(function () {
         $('#id').val('');
         $('#flowPid').val('');
         //清空验证信息
-        $('#flowForm').data("bootstrapValidator").destroy();
-        $('#flowForm').data('bootstrapValidator',null);
+        $('#flowForm').bootstrapValidator("destroy");
+        $('#flowForm').bootstrapValidator(null);
         validateForm();
+        $('#flowParent').show();
+        $('#flowCodeDiv').show();
+        $('#flowCodeDiv').attr('readonly',true);
         $('#flowModal').modal('show');
-    });
-    /**
-     * 修改流程
-     * 只能修改一条数据
-     */
-    $('#modifyFlow').on('click', function () {
-        //清空验证信息
-        $('#flowForm').data("bootstrapValidator").destroy();
-        $('#flowForm').data('bootstrapValidator',null);
-        _self.validateForm();
-        var arrselections = $("#flowTable").bootstrapTable('getSelections');
-        if (arrselections.length > 1) {
-            Ewin.alert('只能选择一行进行编辑');
-            return;
-        }
-        if (arrselections.length <= 0) {
-            Ewin.alert('请选择有效数据');
-            return;
-        }
-        var flowId = arrselections[0].id;
-        $.ajax({
-            url: Common.getRootPath() + '/admin/flow/getById.do',
-            data: {'id': flowId},
-            type: "post",
-            dataType: 'json',
-            async: false,
-            success: function (result) {
-                var _result = eval(result);
-                if (_result.status == Common.SUCCESS) {
-                    $('#flowForm').initForm(_result.data);
-                    $('#flowCode').attr('readonly','true');
-                    if(_result.data.flowType == "0"){
-                        $('#flowParent').hide();
-                    }else{
-                        $('#flowParent').show();
-                    }
-                    $('#flowModal').modal('show');
-                }
-
-            }
-        });
     });
     /**
      * 列表中按钮
@@ -187,9 +149,8 @@ $(function () {
     $('#flowTable').on('click', 'a[name="edit"]', function (e) {
         e.preventDefault();
         //清空验证信息
-        $('#flowForm').data("bootstrapValidator").destroy();
-        $('#flowForm').data('bootstrapValidator',null);
-        _self.validateForm();
+        $('#flowForm').bootstrapValidator("destroy");
+        $('#flowForm').bootstrapValidator(null);
         var flowId = $(this).attr('aid');
         $.ajax({
             url: Common.getRootPath() + '/admin/flow/getById.do',
@@ -244,44 +205,7 @@ $(function () {
             });
         });
     });
-    /**
-     * 删除流程
-     * 只能删除一条数据
-     */
-    $('#deleteFlow').on('click', function () {
-        var arrselections = $("#flowTable").bootstrapTable('getSelections');
-        if (arrselections.length > 1) {
-            Ewin.alert('只能选择一行进行编辑');
-            return;
-        }
-        if (arrselections.length <= 0) {
-            Ewin.alert('请选择有效数据');
-            return;
-        }
-        var flowId = arrselections[0].id;
-        Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
-            if (!e) {
-                return;
-            }
-            $.ajax({
-                type: "post",
-                url: Common.getRootPath() + '/admin/flow/deleteById.do',
-                data: {'id': flowId},
-                dataType: 'json',
-                success: function (data, status) {
-                    if (status == Common.SUCCESS) {
-                        Ewin.alert('提交数据成功');
-                        $("#flowTable").bootstrapTable('refresh');
-                    }
-                },
-                error: function (data) {
-                    Ewin.alert(data);
-                },
-                complete: function () {
-                }
-            });
-        });
-    });
+
     /**
      * 保存流程按钮
      * 通过隐藏域判断流程是否存在，而使用不同的方法进行新增或者修改
@@ -323,10 +247,10 @@ $(function () {
         console.log(selEle);
         if(selEle == '1'){
             $('#flowParent').show();
-            $('#flowCode').show();
+            $('#flowCodeDiv').show();
         }else{
             $('#flowParent').hide();
-            $('#flowCode').hide();
+            $('#flowCodeDiv').hide();
         }
     });
 
@@ -386,11 +310,6 @@ $(function () {
         },
         items : 8,
     });
-    /**
-     * 查询按钮
-     */
-    $('#queryFlow').on('click',SearchData);
-
     function validateForm() {
         $('#flowForm').bootstrapValidator({
             message: '输入的值不符合规格',
@@ -419,4 +338,9 @@ $(function () {
             }
         });
     }
+
+    /**
+     * 查询按钮
+     */
+    $('#queryFlow').on('click',SearchData);
 });

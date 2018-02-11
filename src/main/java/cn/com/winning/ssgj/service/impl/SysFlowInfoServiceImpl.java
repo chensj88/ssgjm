@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import cn.com.winning.ssgj.base.annoation.ILog;
+import cn.com.winning.ssgj.domain.SysProductFlowInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import org.springframework.stereotype.Service;
 
@@ -106,13 +107,40 @@ public class SysFlowInfoServiceImpl implements SysFlowInfoService {
     @Override
     @ILog(operationType = "getSysFlowInfoCountForSelective",operationName = "getSysFlowInfoCountForSelective")
     public Integer getSysFlowInfoCountForSelective(SysFlowInfo t) {
-        return this.sysFlowInfoDao.getSysFlowInfoCountForSelective(t);
+        return this.sysFlowInfoDao.querySysFlowInfoCountForSelective(t);
     }
 
     @Override
     @ILog(operationType = "getSysFlowInfoPaginatedListForSelective",operationName = "getSysFlowInfoPaginatedListForSelective")
     public List<SysFlowInfo> getSysFlowInfoPaginatedListForSelective(SysFlowInfo t) {
-        return this.sysFlowInfoDao.getSysFlowInfoPaginatedListForSelective(t);
+        return this.sysFlowInfoDao.querySysFlowInfoPaginatedListForSelective(t);
+    }
+
+    @Override
+    public List<SysFlowInfo> getSysFlowInfoListForSelectiveKey(SysFlowInfo flowInfo) {
+
+        return this.sysFlowInfoDao.selectSysFlowInfoListForSelectiveKey(flowInfo);
+    }
+
+    @Override
+    public Integer getSysFlowInfoCountForSelectiveKey(SysFlowInfo flowInfo) {
+
+        return this.sysFlowInfoDao.selectSysFlowInfoCountForSelectiveKey(flowInfo);
+    }
+
+    @Override
+    public List<String> getFlowInfoId(List<SysProductFlowInfo> flowInfoList) {
+        List<String> idList = new ArrayList<String>();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < flowInfoList.size(); i++) {
+            idList.add(flowInfoList.get(i).getFlowId()+"");
+        }
+        return idList;
+    }
+
+    @Override
+    public List<SysFlowInfo> getSysFlowInfoListById(SysFlowInfo flowInfo) {
+        return this.sysFlowInfoDao.selectSysFlowInfoListById(flowInfo);
     }
 
 

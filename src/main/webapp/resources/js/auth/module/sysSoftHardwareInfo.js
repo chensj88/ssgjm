@@ -3,7 +3,20 @@
  * @author huwanli
  * @version 1.0.0
  */
+function editSH(id,shCode,shName,shDesc,shBrand,shBrandType) {
+    console.log(id)
+    $("#code").show();
+    $("#id").val(id);
+    $('#shCode').val(shCode);
+    $('#shName').val(shName);
+    $('#shDesc').val(shDesc);
+    $('#shBrand').val(shBrand);
+    $('#shBrandType').val(shBrandType);
+    $('#sysSoftHardwareInfoModal').modal('show');
+}
+
 $(function () {
+
     //下拉框默认选中去除
     $("#shQType").val('');
     $("#shType").val('');
@@ -167,17 +180,6 @@ $(function () {
         $('#sysSoftHardwareInfoModal').modal('show');
     });
 
-function editSH(id,shCode,shName,shDesc,shBrand,shBrandType) {
-	console.log(id)
-	$("#code").show();
-    $("#id").val(id);
-    $('#shCode').val(shCode);
-    $('#shName').val(shName);
-    $('#shDesc').val(shDesc);
-    $('#shBrand').val(shBrand);
-    $('#shBrandType').val(shBrandType);
-    $('#sysSoftHardwareInfoModal').modal('show');
-}
     $('#sysSoftHardwareInfoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var productInfoId = $(this).attr('aid');

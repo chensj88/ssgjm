@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: thinkpad
-  Date: 2018/2/7
-  Time: 10:57
+  Date: 2018/2/11
+  Time: 08:35
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>产品基础数据映射</title>
+    <title>产品流程信息映射</title>
     <meta name="author" content="卫宁实施工具">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css">
@@ -85,11 +85,11 @@
 </div>
 
 <div class="row" style="height: 300px;">
-    <div class="col-sm-4">
-        <table id="queryBData" class="table-align">
+    <div class="col-sm-5">
+        <table id="queryFlow" class="table-align">
         </table>
     </div>
-    <div class="col-sm-4 text-center center">
+    <div class="col-sm-2 text-center center">
         <div class="row" style="height: 150px;"></div>
         <p>
             <a class="btn btn-info btn-lg" id="moveLeft">
@@ -105,20 +105,20 @@
             </a>
         </p>
     </div>
-    <div class="col-sm-4">
-         <table id="configBData" class="table-align">
+    <div class="col-sm-5">
+         <table id="configFlow" class="table-align">
 
         </table>
     </div>
 </div>
 
 <div id="toolbarA">
-    <div class="columns pull-right search-button"><button class="btn btn-default"  style="height:34px" type="button" name="refresh" title="查询" id="bdataAbtn"><i class="glyphicon glyphicon-search icon-search"></i></button></div>
-    <div class="columns pull-right search-input"><input class="form-control" type="text" placeholder="请输入表名" id="bdataA"></div>
+    <div class="columns pull-right search-button"><button class="btn btn-default"  style="height:34px" type="button" name="refresh" title="查询" id="flowInfoAbtn"><i class="glyphicon glyphicon-search icon-search"></i></button></div>
+    <div class="columns pull-right search-input"><input class="form-control" type="text" placeholder="请输入流程名称或编号" id="flowInfoA"></div>
 </div>
 <div id="toolbarB">
-    <div class="columns pull-right search-button"><button class="btn btn-default"  style="height:34px" type="button" name="refresh" title="查询" id="bdataBbtn"><i class="glyphicon glyphicon-search icon-search"></i></button></div>
-    <div class="columns pull-right search-input"><input class="form-control" type="text" placeholder="请输入表名"  id="bdataB"></div>
+    <div class="columns pull-right search-button"><button class="btn btn-default"  style="height:34px" type="button" name="refresh" title="查询" id="flowInfoBbtn"><i class="glyphicon glyphicon-search icon-search"></i></button></div>
+    <div class="columns pull-right search-input"><input class="form-control" type="text" placeholder="请输入流程名称或编号"  id="flowInfoB"></div>
 </div>
 <%--弹出框--%>
 <div class="modal fade" id="pdModal" tabindex="-1" role="dialog" aria-labelledby="pdModal">
@@ -148,5 +148,5 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap-table.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap-table-zh-CN.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/js/auth/mapping/productBdata.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/js/auth/mapping/productFlow.js"></script>
 </html>

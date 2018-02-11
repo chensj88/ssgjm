@@ -44,8 +44,8 @@
 <!--toolbar区域  -->
 <div class="btn-group" id="btntoolbar">
     <button id="addFlow" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
-    <button id="modifyFlow" class="btn btn-default" type="button"><span class="glyphicon glyphicon-edit"></span>修改</button>
-    <button id="deleteFlow" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span>删除</button>
+   <%-- <button id="modifyFlow" class="btn btn-default" type="button"><span class="glyphicon glyphicon-edit"></span>修改</button>
+    <button id="deleteFlow" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span>删除</button>--%>
 </div>
 <!--模态框  -->
 <div class="modal fade" id="flowModal" tabindex="-1" role="dialog" aria-labelledby="flowFormModal">
@@ -85,14 +85,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="flowCode">流程编号</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="flowCode" name="flowCode"
-                                           placeholder="请输入流程编号">
+                            <div id="flowCodeDiv">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="flowCode">流程编号</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="flowCode" name="flowCode"
+                                               placeholder="请输入流程编号" readonly>
+                                    </div>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="flowName">流程名称</label>
                                 <div class="col-sm-6">
@@ -123,7 +124,7 @@
     </div>
 </div>
 </body>
-<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap-table.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap-table-zh-CN.min.js"></script>

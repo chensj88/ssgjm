@@ -1,8 +1,10 @@
 package cn.com.winning.ssgj.service;
 
+import java.text.ParseException;
 import java.util.List;
 
 import cn.com.winning.ssgj.domain.SysProductFlowInfo;
+import cn.com.winning.ssgj.domain.SysUserInfo;
 
 /**
  *
@@ -26,4 +28,9 @@ public interface SysProductFlowInfoService {
 
     List<SysProductFlowInfo> getSysProductFlowInfoPaginatedList(SysProductFlowInfo t);
 
+    List<SysProductFlowInfo> getSysProductFlowInfoByPdIdAndFlowId(Integer pdId, String bdIds);
+
+    void addSysProductFlowInfoMapping(String idList, SysUserInfo user) throws ParseException;
+
+    Integer removeSysProductFlowInfoMappingByIds(String idList);
 }

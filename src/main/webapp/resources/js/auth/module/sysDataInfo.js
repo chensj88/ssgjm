@@ -75,22 +75,22 @@ $(function () {
         }, {
             field: "dbName",
             title: "数据库名称",
-            width: '55px',
+            width: '30px',
             align: 'center'
         }, {
             field: "tableName",
             title: "数据库表名",
-            width: '45px',
+            width: '30px',
             align: 'center'
         }, {
             field: "tableCnName",
             title: "库表中文名",
-            width: '50px',
+            width: '30px',
             align: 'center'
         }, {
             field: "standardCode",
             title: "标准文号",
-            width: '45px',
+            width: '30px',
             align: 'center'
         },
             {

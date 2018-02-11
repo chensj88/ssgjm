@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.service;
 import java.util.List;
 
 import cn.com.winning.ssgj.domain.SysFlowInfo;
+import cn.com.winning.ssgj.domain.SysProductFlowInfo;
 
 /**
  *
@@ -39,4 +40,12 @@ public interface SysFlowInfoService {
     Integer getSysFlowInfoCountForSelective(SysFlowInfo t);
 
     List<SysFlowInfo> getSysFlowInfoPaginatedListForSelective(SysFlowInfo t);
+
+    List<SysFlowInfo> getSysFlowInfoListForSelectiveKey(SysFlowInfo flowInfo);
+
+    Integer getSysFlowInfoCountForSelectiveKey(SysFlowInfo flowInfo);
+
+    List<String> getFlowInfoId(List<SysProductFlowInfo> flowInfoList);
+
+    List<SysFlowInfo> getSysFlowInfoListById(SysFlowInfo flowInfo);
 }

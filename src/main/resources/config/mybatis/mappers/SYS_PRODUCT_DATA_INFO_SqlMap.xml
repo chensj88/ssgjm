@@ -132,7 +132,7 @@
           <if test="pdId != null and pdId != 0">
               AND A.PD_ID = ${pdId}
           </if>
-          <if test="bdIds !=null and bdIds">
+          <if test="bdIds !=null and bdIds !='' ">
               AND A.BD_ID IN ( ${bdIds} )
           </if>
           AND (CURRENT_TIMESTAMP  BETWEEN A.EFFECTIVE_DATE AND A.EXPIRE_DATE )

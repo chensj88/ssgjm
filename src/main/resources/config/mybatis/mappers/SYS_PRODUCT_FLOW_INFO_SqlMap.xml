@@ -5,9 +5,15 @@
 	<resultMap id="sysProductFlowInfoResultForList" type="sysProductFlowInfo">
 		<result column="PD_ID" property="pdId" jdbcType="BIGINT" />
 		<result column="FLOW_ID" property="flowId" jdbcType="BIGINT" />
+		<result column="PD_CODE" property="pdCode" jdbcType="VARCHAR" />
+		<result column="PD_NAME" property="pdName" jdbcType="VARCHAR" />
+		<result column="FLOW_CODE" property="flowCode" jdbcType="VARCHAR" />
+		<result column="FLOW_NAME" property="flowName" jdbcType="VARCHAR" />
+		<result column="FLOW_DESC" property="flowDesc" jdbcType="VARCHAR" />
 		<result column="EFFECTIVE_DATE" property="effectiveDate" jdbcType="TIMESTAMP" />
 		<result column="EXPIRE_DATE" property="expireDate" jdbcType="TIMESTAMP" />
 		<result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT" />
+		<result column="LAST_UPDATE" property="lastUpdate" jdbcType="VARCHAR" />
 		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
 	</resultMap>
 
@@ -105,5 +111,50 @@
 			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
 		</if>
 	</delete>
+
+	<select id="selectSysProductFlowInfoByPdIdAndFlowId" resultMap="sysProductFlowInfoResultForList" parameterType="java.util.Map">
+		SELECT
+		A.*,
+		B.CODE AS PD_CODE,
+		B.NAME AS PD_NAME,
+		C.FLOW_CODE AS FLOW_CODE,
+		C.FLOW_NAME AS FLOW_NAME,
+		C.FLOW_DESC AS FLOW_DESC,
+		D.YHMC AS LAST_UPDATE
+		FROM SYS_PRODUCT_FLOW_INFO A
+		LEFT JOIN PMIS_PRODUCT_INFO B ON A.PD_ID = B.ID
+		LEFT JOIN SYS_FLOW_INFO  C ON A.FLOW_ID = C.ID
+		LEFT JOIN SYS_USER_INFO D ON A.LAST_UPDATOR = D.ID
+		<where>
+			<if test="pdId != null and pdId != 0">
+				AND A.PD_ID = ${pdId}
+			</if>
+			<if test="flowIds !=null and flowIds != ''">
+				AND A.FLOW_ID IN ( ${flowIds} )
+			</if>
+			AND (CURRENT_TIMESTAMP  BETWEEN A.EFFECTIVE_DATE AND A.EXPIRE_DATE )
+		</where>
+	</select>
+
+	<select id="selectProductFlowInfoForIds" resultMap="sysProductFlowInfoResultForList" parameterType="java.util.Map">
+		SELECT
+		A.*
+		FROM SYS_PRODUCT_FLOW_INFO A
+		<where>
+			<if test=" ids != null and ids != ''">
+				${ids}
+			</if>
+		</where>
+	</select>
+
+	<update id="removeSysProductFlowInfoMappingByIds" parameterType="java.util.Map">
+		update SYS_PRODUCT_FLOW_INFO
+		SET  EXPIRE_DATE = CURRENT_TIMESTAMP
+		<where>
+			<if test=" ids != null and ids != ''">
+				${ids}
+			</if>
+		</where>
+	</update>
 
 </mapper>
