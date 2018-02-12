@@ -26,4 +26,7 @@ public interface SysParamsService {
 
     List<SysParams> getSysParamsPaginatedList(SysParams t);
 
+    List<SysParams> getSysParamsPageListBySelectiveKey(SysParams params);
+
+    int getSysParamsPageCountBySelectiveKey(SysParams params);
 }

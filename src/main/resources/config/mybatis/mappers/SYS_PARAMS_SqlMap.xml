@@ -16,13 +16,18 @@
     </resultMap>
 
     <sql id="sf-sysParams">
-        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(id != null and id != '') ">and t.ID = #{id}</if>
         <if test="paramName != null and paramName != ''">and t.PARAM_NAME = #{paramName}</if>
         <if test="paramValue != null and paramValue != ''">and t.PARAM_VALUE = #{paramValue}</if>
         <if test="paramDesc != null and paramDesc != ''">and t.PARAM_DESC = #{paramDesc}</if>
-        <if test="(isStop != null and isStop != '') or isStop == 0">and t.IS_STOP = #{isStop}</if>
-        <if test="(paramType != null and paramType != '') or paramType == 0">and t.PARAM_TYPE = #{paramType}</if>
-        <if test="(orderValue != null and orderValue != '') or orderValue == 0">and t.ORDER_VALUE = #{orderValue}</if>
+        <if test="(isStop != null ) ">and t.IS_STOP = #{isStop}</if>
+        <if test="(paramType != null ) ">and t.PARAM_TYPE = #{paramType}</if>
+        <if test="(orderValue != null ) ">and t.ORDER_VALUE = #{orderValue}</if>
+    </sql>
+
+    <sql id="query-sysParams">
+        <if test="paramName != null and paramName != ''">or t.PARAM_NAME LIKE '%${paramName}%'</if>
+        <if test="paramValue != null and paramValue != ''">or t.PARAM_VALUE LIKE '%${paramValue}%'</if>
     </sql>
 
     <select id="selectSysParams" resultMap="sysParamsResult" parameterType="sysParams">
@@ -56,23 +61,23 @@
 
         insert into SYS_PARAMS
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="(id != null and id != '') ">ID,</if>
             <if test="paramName != null and paramName != ''">PARAM_NAME,</if>
             <if test="paramValue != null and paramValue != ''">PARAM_VALUE,</if>
             <if test="paramDesc != null and paramDesc != ''">PARAM_DESC,</if>
-            <if test="(isStop != null and isStop != '') or isStop == 0">IS_STOP,</if>
-            <if test="(paramType != null and paramType != '') or paramType == 0">PARAM_TYPE,</if>
-            <if test="(orderValue != null and orderValue != '') or orderValue == 0">ORDER_VALUE,</if>
+            <if test="(isStop != null ) ">IS_STOP,</if>
+            <if test="(paramType != null )">PARAM_TYPE,</if>
+            <if test="(orderValue != null ) ">ORDER_VALUE,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="(id != null and id != '') ">#{id, jdbcType=BIGINT},</if>
             <if test="paramName != null and paramName != ''">#{paramName, jdbcType=VARCHAR},</if>
             <if test="paramValue != null and paramValue != ''">#{paramValue, jdbcType=VARCHAR},</if>
             <if test="paramDesc != null and paramDesc != ''">#{paramDesc, jdbcType=VARCHAR},</if>
-            <if test="(isStop != null and isStop != '') or isStop == 0">#{isStop, jdbcType=INTEGER},</if>
-            <if test="(paramType != null and paramType != '') or paramType == 0">#{paramType, jdbcType=INTEGER},</if>
-            <if test="(orderValue != null and orderValue != '') or orderValue == 0">#{orderValue, jdbcType=INTEGER},
+            <if test="(isStop != null ) ">#{isStop, jdbcType=INTEGER},</if>
+            <if test="(paramType != null )">#{paramType, jdbcType=INTEGER},</if>
+            <if test="(orderValue != null ) ">#{orderValue, jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -81,21 +86,17 @@
         update SYS_PARAMS
         <set>
             <trim suffixOverrides=",">
-                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(id != null ) ">ID = #{id, jdbcType=BIGINT},</if>
                 <if test="paramName != null and paramName != ''">PARAM_NAME = #{paramName, jdbcType=VARCHAR},</if>
                 <if test="paramValue != null and paramValue != ''">PARAM_VALUE = #{paramValue, jdbcType=VARCHAR},</if>
                 <if test="paramDesc != null and paramDesc != ''">PARAM_DESC = #{paramDesc, jdbcType=VARCHAR},</if>
-                <if test="(isStop != null and isStop != '') or isStop == 0">IS_STOP = #{isStop, jdbcType=INTEGER},</if>
-                <if test="(paramType != null and paramType != '') or paramType == 0">PARAM_TYPE =
-                    #{paramType, jdbcType=INTEGER},
-                </if>
-                <if test="(orderValue != null and orderValue != '') or orderValue == 0">ORDER_VALUE =
-                    #{orderValue, jdbcType=INTEGER},
-                </if>
+                <if test="(isStop != null ) ">IS_STOP = #{isStop, jdbcType=INTEGER},</if>
+                <if test="(paramType != null )">PARAM_TYPE = #{paramType, jdbcType=INTEGER},</if>
+                <if test="(orderValue != null ) ">ORDER_VALUE =#{orderValue, jdbcType=INTEGER},</if>
             </trim>
         </set>
         <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="id != null ">ID = #{id}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
@@ -106,7 +107,7 @@
     <delete id="deleteSysParams" parameterType="SysParams">
         delete from SYS_PARAMS
         <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="id != null ">ID = #{id}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
@@ -114,4 +115,17 @@
         </where>
     </delete>
 
+    <select id="selectSysParamsPageCountBySelectiveKey" resultType="int" parameterType="sysParams">
+        select count(1) from SYS_PARAMS t where 1 = 1
+        <include refid="query-sysParams"/>
+    </select>
+
+    <select id="selectSysParamsPageListBySelectiveKey" resultMap="sysParamsResult" parameterType="sysParams">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from SYS_PARAMS t where 1 = 1
+        <include refid="query-sysParams"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
 </mapper>

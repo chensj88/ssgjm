@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.dao;
 import cn.com.winning.ssgj.domain.SysParams;
 import cn.com.winning.ssgj.dao.EntityDao;
 
+import java.util.List;
+
 /**
  *
  *
@@ -11,4 +13,7 @@ import cn.com.winning.ssgj.dao.EntityDao;
  */
 public interface SysParamsDao extends EntityDao<SysParams> {
 
+    List<SysParams> selectSysParamsPageListBySelectiveKey(SysParams params);
+
+    int selectSysParamsPageCountBySelectiveKey(SysParams params);
 }

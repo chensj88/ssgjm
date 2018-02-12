@@ -406,7 +406,7 @@
 
                     <ul class="submenu">
                         <li><a href="<%=basePath%>admin/dict/pageInfo.do"><i class="icon-double-angle-right"></i>字典管理</a></li>
-                        <li><a href="#"><i class="icon-double-angle-right"></i>参数管理</a></li>
+                        <li><a href="<%=basePath%>admin/param/pageInfo.do"><i class="icon-double-angle-right"></i>参数管理</a></li>
                     </ul>
                 </li>
 

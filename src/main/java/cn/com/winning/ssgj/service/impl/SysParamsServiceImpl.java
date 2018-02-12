@@ -51,4 +51,14 @@ public class SysParamsServiceImpl implements SysParamsService {
         return this.sysParamsDao.selectEntityPaginatedList(t);
     }
 
+    @Override
+    public List<SysParams> getSysParamsPageListBySelectiveKey(SysParams params) {
+        return this.sysParamsDao.selectSysParamsPageListBySelectiveKey(params);
+    }
+
+    @Override
+    public int getSysParamsPageCountBySelectiveKey(SysParams params) {
+        return this.sysParamsDao.selectSysParamsPageCountBySelectiveKey(params);
+    }
+
 }

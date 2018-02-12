@@ -1,10 +1,11 @@
-function editDict(dictCode,dictValue,dictLabel,dictDesc,dictSort){
-    $('#dictCode').val(dictCode);
-    $('#dictValue').val(dictValue);
-    $('#dictLabel').val(dictLabel);
-    $('#dictDesc').val(dictDesc);
-    $('#dictSort').val(dictSort);
-    $('#dictModal').modal('show');
+function editParam(paramName,paramValue,paramDesc,isStop,paramType,id){
+    $('#paramName').val(paramName);
+    $('#paramValue').val(paramValue);
+    $('#paramDesc').val(paramDesc);
+    $('#isStop').val(isStop);
+    $('#paramType').val(paramType);
+    $('#id').val(id);
+    $('#paramModal').modal('show');
 }
 
 $(function () {
@@ -13,7 +14,7 @@ $(function () {
      * @constructor
      */
     function SearchData() {
-        $('#dictTable').bootstrapTable('refresh', {pageNumber: 1});
+        $('#paramTable').bootstrapTable('refresh', {pageNumber: 1});
     }
 
     /**
@@ -27,8 +28,8 @@ $(function () {
             first: params.offset,   // 显示条数
             sort: params.sort,      // 排序列名
             order: params.order,     // 排位命令（desc，asc）
-            dictLabel: $.trim($('#dictQLabel').val()),
-            dictCode: $.trim($('#dictQCode').val())
+            paramValue: $.trim($('#paramQValue').val()),
+            paramName: $.trim($('#paramQName').val())
         };
     }
 
@@ -36,7 +37,7 @@ $(function () {
      * 校验规则
      */
     function validateForm() {
-        $('#dictForm').bootstrapValidator({
+        $('#paramForm').bootstrapValidator({
             message: '输入的值不符合规格',
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
@@ -44,56 +45,34 @@ $(function () {
                 validating: 'glyphicon glyphicon-refresh'
             },
             fields: {
-                dictCode: {
-                    message: '字典编码验证失败',
+                paramName: {
+                    message: '参数名验证失败',
                     validators: {
                         notEmpty: {
-                            message: '字典编码不能为空'
+                            message: '参数名不能为空'
                         },
                         regexp: {
                             regexp: /^[a-zA-Z0-9_]+$/,
-                            message: '字典编码只能包含大写、小写、数字和下划线'
+                            message: '参数名只能包含大写、小写、数字和下划线'
                         }
                     }
                 },
                 dictValue: {
-                    message: '字典值验证失败',
+                    message: '参数值验证失败',
                     validators: {
                         notEmpty: {
-                            message: '字典值不能为空'
+                            message: '参数值不能为空'
                         }, regexp: {
-                            regexp: /^[0-9]+$/,
-                            message: '字典值只能是数字'
-                        },
-                        threshold: 1, //有1字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
-                        remote: {
-                            url: Common.getRootPath() + '/admin/dict/existDictValue.do',//验证地址
-                            message: '字典值已存在',//提示消息
-                            delay: 2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
-                            type: 'POST',//请求方式
-                            data: function (validator) { //自定义提交数据，默认值提交当前input value
-                                return {
-                                    dictCode: $('#dictCode').val(),
-                                    dictValue: $('#dictValue').val()
-                                };
-                            }
-                        }
-
-                    }
-                },
-                dictLabel: {
-                    message: '显示文本验证失败',
-                    validators: {
-                        notEmpty: {
-                            message: '显示文本不能为空'
+                            regexp: /^[a-zA-Z0-9_]+$/,
+                            message: '参数值只能包含大写、小写、数字和下划线'
                         }
                     }
                 },
-                dictDesc: {
-                    message: '字典描述验证失败',
+                paramDesc: {
+                    message: '参数描述验证失败',
                     validators: {
                         notEmpty: {
-                            message: '字典描述不能为空'
+                            message: '参数描述不能为空'
                         }
                     }
                 }
@@ -105,7 +84,7 @@ $(function () {
      * 重置校验规则
      */
     function resetValidate() {
-        $("#dictForm").bootstrapValidator('destroy');
+        $("#paramForm").bootstrapValidator('destroy');
         /* 不能使用，会造成表单不验证
         $('#dictForm').bootstrapValidator(null);*/
         validateForm();
@@ -114,8 +93,8 @@ $(function () {
     /**
      * 初始化Table
      */
-    $('#dictTable').bootstrapTable({
-        url: Common.getRootPath() + '/admin/dict/list.do',// 要请求数据的文件路径
+    $('#paramTable').bootstrapTable({
+        url: Common.getRootPath() + '/admin/param/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         pagination: true,                   // 是否显示分页（*）
@@ -129,7 +108,7 @@ $(function () {
         search: false,                       // 是否显示表格搜索
         strictSearch: true,
         showColumns: true,                  // 是否显示所有的列（选择显示的列）
-        showRefresh: true,                  // 是否显示刷新按钮
+        showRefresh: false,                  // 是否显示刷新按钮
         minimumCountColumns: 2,             // 最少允许的列数
         clickToSelect: true,                // 是否启用点击选中行
         idField: 'id',
@@ -148,38 +127,54 @@ $(function () {
         // 得到查询的参数
         queryParams: queryParams,
         columns: [{
-            field: "dictCode",
-            title: "字典编码",
+            field: "paramName",
+            title: "参数名",
             width: '40px',
             align: 'center'
         }, {
-            field: "dictValue",
-            title: "字典值",
+            field: "paramValue",
+            title: "参数值",
             width: '40px',
             align: 'center'
         }, {
-            field: "dictLabel",
-            title: "显示文本",
+            field: "paramDesc",
+            title: "参数描述",
             width: '40px',
             align: 'center'
         }, {
-            field: "dictSort",
-            title: "排序值",
+            field: "isStop",
+            title: "是否停用",
             width: '40px',
-            align: 'center'
+            align: 'center',
+            formatter :function(value){
+                if(value == "0"){
+                    return '否';
+                }else{
+                    return '是';
+                }
+            }
         }, {
-            field: "dictDesc",
-            title: "字典描述",
+            field: "paramType",
+            title: "参数类型",
             width: '40px',
-            align: 'center'
+            align: 'center',
+            formatter :function(value){
+                if(value == "0"){
+                    return '测试';
+                }else if(value == "1"){
+                    return '正式';
+                }else {
+                    return '正式&测试';
+                }
+            }
         }, {
             title: '操作',
             field: 'id',
             align: 'center',
             width: '80px',
             formatter: function (value, row, index) {
-                var e = '<a class="btn btn-info btn-xs" onclick="editDict(\''+ row.dictCode + '\',\'' + row.dictValue + '\',\'' + row.dictLabel + '\',\'' + row.dictDesc + '\',\'' + row.dictSort + '\')" >编辑</a>';
-                var d = '<a href="#" class="btn btn-danger btn-xs" name="delete" mce_href="#"  aid="' + row.dictCode +','+ row.dictValue +'">删除</a> ';
+                var e = '<a class="btn btn-info btn-xs" onclick="editParam(\''+ row.paramName + '\',\'' + row.paramValue + '\',\'' + row.paramDesc + '\',\'' + row.isStop + '\',\'' + row.paramType + '\',\''+row.id+'\')" >编辑</a>';
+                var d = '<a href="#" class="btn btn-danger btn-xs" name="delete" mce_href="#"  aid="' + row.id +'">删除</a> ';
                 return e + d;
             }
         }],
@@ -192,26 +187,27 @@ $(function () {
      * 新增流程
      * 需要清理表格数据
      */
-    $('#addDict').on('click', function () {
+    $('#addParam').on('click', function () {
         $("input[type=reset]").trigger("click");
         resetValidate();
-        $('#dictModal').modal('show');
+        $('#paramModal').modal('show');
     });
 
-    $('#saveDict').on('click', function (e) {
+
+    $('#saveParam').on('click', function (e) {
         e.preventDefault();
-        $("#dictForm").bootstrapValidator('validate');
-        var bootstrapValidator = $("#dictForm").data('bootstrapValidator');
+        $("#paramForm").bootstrapValidator('validate');
+        var bootstrapValidator = $("#paramForm").data('bootstrapValidator');
         var url = '';
-        if ($('#dictSort').val().length == 0) {
-            url = Common.getRootPath() + '/admin/dict/add.do';
+        if ($('#id').val().length == 0) {
+            url = Common.getRootPath() + '/admin/param/add.do';
         } else {
-            url = Common.getRootPath() + '/admin/dict/update.do';
+            url = Common.getRootPath() + '/admin/param/update.do';
         }
         if (bootstrapValidator.isValid()) {
             $.ajax({
                 url: url,
-                data: $("#dictForm").serialize(),
+                data: $("#paramForm").serialize(),
                 type: "post",
                 dataType: 'json',
                 async: false,
@@ -219,19 +215,17 @@ $(function () {
                 success: function (result) {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
-                        $('#dictModal').modal('hide');
-                        $("#dictTable").bootstrapTable('refresh');
+                        $('#paramModal').modal('hide');
+                        $("#paramTable").bootstrapTable('refresh');
                     }
                 }
             });
         }
     });
 
-    $('#dictTable').on('click', 'a[name="delete"]', function (e) {
+    $('#paramTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
-        var dict = $(this).attr('aid');
-        var dictCode = dict.split(',')[0];
-        var dictValue = dict.split(',')[1];
+        var paramId = $(this).attr('aid');
 
         Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
             if (!e) {
@@ -239,14 +233,14 @@ $(function () {
             }
             $.ajax({
                 type: "post",
-                url: Common.getRootPath() + '/admin/dict/delete.do',
-                data: {'dictCode': dictCode,'dictValue':dictValue},
+                url: Common.getRootPath() + '/admin/param/delete.do',
+                data: {'id': paramId},
                 dataType: 'json',
                 success: function (data, status) {
                     var result = eval(data);
                     if (result.status == Common.SUCCESS) {
                         Ewin.alert('提交数据成功');
-                        $("#dictTable").bootstrapTable('refresh');
+                        $("#paramTable").bootstrapTable('refresh');
                     }
                 },
                 error: function (msg) {
@@ -258,5 +252,5 @@ $(function () {
         });
     });
 
-    $('#queryDict').on('click',SearchData);
+    $('#queryParam').on('click',SearchData);
 });

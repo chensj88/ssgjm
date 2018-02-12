@@ -99,6 +99,11 @@ public class SSGJHelper {
     @Autowired
     @Qualifier("sysReportInfoIdService")
     private StepSequenceFactory sysReportInfoIdService;
+
+    @Autowired
+    @Qualifier("sysParamsIdService")
+    private StepSequenceFactory sysParamsIdService;
+
     /**
      * 获取报表类信息表Id
      *
@@ -278,6 +283,11 @@ public class SSGJHelper {
         return (long) shIdService.create();
     }
 
+    /**
+     * 参数表主键
+     * @return
+     */
+    public long createSysParamsId(){ return (long) sysParamsIdService.create();}
     /**
      * 密码加密
      * @param password 明文密码
