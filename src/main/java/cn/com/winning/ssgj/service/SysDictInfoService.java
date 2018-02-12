@@ -26,4 +26,13 @@ public interface SysDictInfoService {
 
     List<SysDictInfo> getSysDictInfoPaginatedList(SysDictInfo t);
 
+    List<SysDictInfo> getSysDictInfoPageForAnd(SysDictInfo t);
+
+    Integer getSysDictInfoCountForAnd(SysDictInfo t);
+
+    List<SysDictInfo> getSysDictInfoPageForOr(SysDictInfo t);
+
+    Integer getSysDictInfoCountForOr(SysDictInfo t);
+
+    boolean existDictValue(SysDictInfo dictInfo);
 }

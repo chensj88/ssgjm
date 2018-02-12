@@ -24,6 +24,10 @@ public class SysDictInfo extends BaseDomain implements Serializable {
     private String dictLabel;
 
     private String dictSort;
+    /**
+     * 字典说明
+     */
+    private String dictDesc;
 
     public SysDictInfo() {
 
@@ -61,4 +65,11 @@ public class SysDictInfo extends BaseDomain implements Serializable {
         this.dictSort = dictSort;
     }
 
+    public String getDictDesc() {
+        return dictDesc;
+    }
+
+    public void setDictDesc(String dictDesc) {
+        this.dictDesc = dictDesc;
+    }
 }

@@ -7,6 +7,7 @@
         <result column="DICT_VALUE" property="dictValue" jdbcType="VARCHAR"/>
         <result column="DICT_LABEL" property="dictLabel" jdbcType="VARCHAR"/>
         <result column="DICT_SORT" property="dictSort" jdbcType="VARCHAR"/>
+        <result column="DICT_DESC" property="dictDesc" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="sysDictInfoResult" type="sysDictInfo" extends="sysDictInfoResultForList">
@@ -17,6 +18,16 @@
         <if test="dictValue != null and dictValue != ''">and t.DICT_VALUE = #{dictValue}</if>
         <if test="dictLabel != null and dictLabel != ''">and t.DICT_LABEL = #{dictLabel}</if>
         <if test="dictSort != null and dictSort != ''">and t.DICT_SORT = #{dictSort}</if>
+        <if test="dictDesc != null and dictDesc != ''">and t.DICT_DESC = #{dictDesc}</if>
+    </sql>
+    <sql id="qyeryForAnd-sysDictInfo">
+        <if test="dictCode != null and dictCode != ''">and t.DICT_CODE LIKE '%${dictCode}%'</if>
+        <if test="dictLabel != null and dictLabel != ''">and t.DICT_LABEL LIKE '%${dictLabel}%' </if>
+    </sql>
+
+    <sql id="qyeryForOr-sysDictInfo">
+        <if test="dictCode != null and dictCode != ''">or t.DICT_CODE LIKE '%${dictCode}%'</if>
+        <if test="dictLabel != null and dictLabel != ''">or t.DICT_LABEL LIKE '%${dictLabel}%' </if>
     </sql>
 
     <select id="selectSysDictInfo" resultMap="sysDictInfoResult" parameterType="sysDictInfo">
@@ -54,6 +65,7 @@
             <if test="dictValue != null and dictValue != ''">DICT_VALUE,</if>
             <if test="dictLabel != null and dictLabel != ''">DICT_LABEL,</if>
             <if test="dictSort != null and dictSort != ''">DICT_SORT,</if>
+            <if test="dictDesc != null and dictDesc != ''">DICT_DESC,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -61,6 +73,7 @@
             <if test="dictValue != null and dictValue != ''">#{dictValue, jdbcType=VARCHAR},</if>
             <if test="dictLabel != null and dictLabel != ''">#{dictLabel, jdbcType=VARCHAR},</if>
             <if test="dictSort != null and dictSort != ''">#{dictSort, jdbcType=VARCHAR},</if>
+            <if test="dictDesc != null and dictDesc != ''">#{dictDesc, jdbcType=VARCHAR},</if>
         </trim>
     </insert>
 
@@ -72,26 +85,50 @@
                 <if test="dictValue != null and dictValue != ''">DICT_VALUE = #{dictValue, jdbcType=VARCHAR},</if>
                 <if test="dictLabel != null and dictLabel != ''">DICT_LABEL = #{dictLabel, jdbcType=VARCHAR},</if>
                 <if test="dictSort != null and dictSort != ''">DICT_SORT = #{dictSort, jdbcType=VARCHAR},</if>
+                <if test="dictDesc != null and dictDesc != ''">DICT_DESC = #{dictDesc, jdbcType=VARCHAR},</if>
             </trim>
         </set>
         <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
-            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
-                ID in
-                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
-            </if>
+            <if test="dictCode != null and dictCode != ''">and DICT_CODE = #{dictCode}</if>
+            <if test="dictValue != null and dictValue != ''">and DICT_VALUE = #{dictValue}</if>
         </where>
     </update>
 
     <delete id="deleteSysDictInfo" parameterType="SysDictInfo">
         delete from SYS_DICT_INFO
         <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
-            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
-                ID in
-                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
-            </if>
+            <if test="dictCode != null and dictCode != ''">and  DICT_CODE = #{dictCode}</if>
+            <if test="dictValue != null and dictValue != ''">and  DICT_VALUE = #{dictValue}</if>
         </where>
     </delete>
 
+    <select id="selectEntityListBySelectiveKeyForAnd" resultMap="sysDictInfoResult" parameterType="sysDictInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by t.DICT_CODE desc ) as _rn
+        from SYS_DICT_INFO t where 1 = 1
+        <include refid="qyeryForAnd-sysDictInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <select id="selectEntityCountBySelectiveKeyForAnd" resultType="int" parameterType="sysDictInfo">
+        select count(1)
+        from SYS_DICT_INFO t where 1 = 1
+        <include refid="qyeryForAnd-sysDictInfo"/>
+    </select>
+
+    <select id="selectEntityListBySelectiveKeyForOr" resultMap="sysDictInfoResult" parameterType="sysDictInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by t.DICT_CODE desc ) as _rn
+        from SYS_DICT_INFO t where 1 = 1
+        <include refid="qyeryForOr-sysDictInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <select id="selectEntityCountBySelectiveKeyForOr" resultType="int" parameterType="sysDictInfo">
+        select count(1)
+        from SYS_DICT_INFO t where 1 = 1
+        <include refid="qyeryForOr-sysDictInfo"/>
+    </select>
 </mapper>

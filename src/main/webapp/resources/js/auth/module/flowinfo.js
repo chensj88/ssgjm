@@ -135,7 +135,7 @@ $(function () {
         $('#flowPid').val('');
         //清空验证信息
         $('#flowForm').bootstrapValidator("destroy");
-        $('#flowForm').bootstrapValidator(null);
+       /* $('#flowForm').bootstrapValidator(null);*/
         validateForm();
         $('#flowParent').show();
         $('#flowCodeDiv').show();
@@ -150,7 +150,8 @@ $(function () {
         e.preventDefault();
         //清空验证信息
         $('#flowForm').bootstrapValidator("destroy");
-        $('#flowForm').bootstrapValidator(null);
+        /*$('#flowForm').bootstrapValidator(null);*/
+        validateForm();
         var flowId = $(this).attr('aid');
         $.ajax({
             url: Common.getRootPath() + '/admin/flow/getById.do',
@@ -231,6 +232,7 @@ $(function () {
                 type: "post",
                 dataType: 'json',
                 async: false,
+                cache : false,
                 success: function (result) {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
