@@ -51,4 +51,14 @@ public class SysFlowQuestionServiceImpl implements SysFlowQuestionService {
         return this.sysFlowQuestionDao.selectEntityPaginatedList(t);
     }
 
+    @Override
+    public Integer getSysFlowQuestionPageCount(SysFlowQuestion t) {
+        return this.sysFlowQuestionDao.selectFlowQuestionPageCount(t);
+    }
+
+    @Override
+    public List<SysFlowQuestion> getSysFlowQuestionPageList(SysFlowQuestion t) {
+        return this.sysFlowQuestionDao.selectFlowQuestionPageList(t);
+    }
+
 }

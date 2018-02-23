@@ -34,7 +34,7 @@
         <if test="(isScope != null and isScope != '') or isScope == 0">and t.IS_SCOPE = #{isScope}</if>
         <if test="noScopeCode != null and noScopeCode != ''">and t.NO_SCOPE_CODE = #{noScopeCode}</if>
         <if test="contentType != null and contentType != ''">and t.CONTENT_TYPE = #{contentType}</if>
-        <if test="(status != null and status != '') or status == 0">and t.STATUS = #{status}</if>
+        <if test="(status != null )">and t.STATUS = #{status}</if>
         <if test="message != null and message != ''">and t.MESSAGE = #{message}</if>
         <if test="(sourceType != null and sourceType != '') or sourceType == 0">and t.SOURCE_TYPE = #{sourceType}</if>
         <if test="(creator != null and creator != '') or creator == 0">and t.CREATOR = #{creator}</if>
@@ -85,7 +85,7 @@
             <if test="(isScope != null and isScope != '') or isScope == 0">IS_SCOPE,</if>
             <if test="noScopeCode != null and noScopeCode != ''">NO_SCOPE_CODE,</if>
             <if test="contentType != null and contentType != ''">CONTENT_TYPE,</if>
-            <if test="(status != null and status != '') or status == 0">STATUS,</if>
+            <if test="(status != null )">STATUS,</if>
             <if test="message != null and message != ''">MESSAGE,</if>
             <if test="(sourceType != null and sourceType != '') or sourceType == 0">SOURCE_TYPE,</if>
             <if test="(creator != null and creator != '') or creator == 0">CREATOR,</if>
@@ -104,7 +104,7 @@
             <if test="(isScope != null and isScope != '') or isScope == 0">#{isScope, jdbcType=INTEGER},</if>
             <if test="noScopeCode != null and noScopeCode != ''">#{noScopeCode, jdbcType=VARCHAR},</if>
             <if test="contentType != null and contentType != ''">#{contentType, jdbcType=VARCHAR},</if>
-            <if test="(status != null and status != '') or status == 0">#{status, jdbcType=INTEGER},</if>
+            <if test="(status != null )">#{status, jdbcType=INTEGER},</if>
             <if test="message != null and message != ''">#{message, jdbcType=LONGVARCHAR},</if>
             <if test="(sourceType != null and sourceType != '') or sourceType == 0">#{sourceType, jdbcType=INTEGER},
             </if>
@@ -134,7 +134,7 @@
                 </if>
                 <if test="contentType != null and contentType != ''">CONTENT_TYPE = #{contentType, jdbcType=VARCHAR},
                 </if>
-                <if test="(status != null and status != '') or status == 0">STATUS = #{status, jdbcType=INTEGER},</if>
+                <if test="(status != null )">STATUS = #{status, jdbcType=INTEGER},</if>
                 <if test="message != null and message != ''">MESSAGE = #{message, jdbcType=LONGVARCHAR},</if>
                 <if test="(sourceType != null and sourceType != '') or sourceType == 0">SOURCE_TYPE =
                     #{sourceType, jdbcType=INTEGER},

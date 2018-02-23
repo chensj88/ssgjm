@@ -25,7 +25,7 @@
         <if test="refProductName != null and refProductName != ''">and t.REF_PRODUCT_NAME = #{refProductName}</if>
         <if test="interDesc != null and interDesc != ''">and t.INTER_DESC = #{interDesc}</if>
         <if test="(interProps != null and interProps != '') or interProps == 0">and t.INTER_PROPS = #{interProps}</if>
-        <if test="(status != null and status != '') or status == 0">and t.STATUS = #{status}</if>
+        <if test="(status != null )">and t.STATUS = #{status}</if>
         <if test="(lastUpdator != null and lastUpdator != '')">and t.LAST_UPDATOR = #{lastUpdator}
         </if>
         <if test="lastUpdateTime != null ">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
@@ -77,7 +77,7 @@
             <if test="refProductName != null and refProductName != ''">REF_PRODUCT_NAME,</if>
             <if test="interDesc != null and interDesc != ''">INTER_DESC,</if>
             <if test="(interProps != null and interProps != '') or interProps == 0">INTER_PROPS,</if>
-            <if test="(status != null and status != '') or status == 0">STATUS,</if>
+            <if test="(status != null )">STATUS,</if>
             <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR,</if>
             <if test="lastUpdateTime != null ">LAST_UPDATE_TIME,</if>
         </trim>
@@ -90,7 +90,7 @@
             <if test="interDesc != null and interDesc != ''">#{interDesc, jdbcType=LONGVARCHAR},</if>
             <if test="(interProps != null and interProps != '') or interProps == 0">#{interProps, jdbcType=INTEGER},
             </if>
-            <if test="(status != null and status != '') or status == 0">#{status, jdbcType=INTEGER},</if>
+            <if test="(status != null )">#{status, jdbcType=INTEGER},</if>
             <if test="(lastUpdator != null and lastUpdator != '')">
                 #{lastUpdator, jdbcType=BIGINT},
             </if>
@@ -112,7 +112,7 @@
                 <if test="(interProps != null and interProps != '') or interProps == 0">INTER_PROPS =
                     #{interProps, jdbcType=INTEGER},
                 </if>
-                <if test="(status != null and status != '') or status == 0">STATUS = #{status, jdbcType=INTEGER},</if>
+                <if test="(status != null )">STATUS = #{status, jdbcType=INTEGER},</if>
                 <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR =
                     #{lastUpdator, jdbcType=BIGINT},
                 </if>

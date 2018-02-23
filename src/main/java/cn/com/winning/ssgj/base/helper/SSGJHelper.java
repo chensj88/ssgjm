@@ -104,6 +104,20 @@ public class SSGJHelper {
     @Qualifier("sysParamsIdService")
     private StepSequenceFactory sysParamsIdService;
 
+    @Autowired
+    @Qualifier("sysFlowQuestionCodeService")
+    private StepSequenceFactory sysFlowQuestionCodeService;
+    @Autowired
+    @Qualifier("sysFlowQuestionIdService")
+    private StepSequenceFactory sysFlowQuestionIdService;
+
+    @Autowired
+    @Qualifier("sysFlowAnswerCodeService")
+    private StepSequenceFactory sysFlowAnswerCodeService;
+    @Autowired
+    @Qualifier("sysFlowAnswerIdService")
+    private StepSequenceFactory sysFlowAnswerIdService;
+
     /**
      * 获取报表类信息表Id
      *
@@ -288,6 +302,38 @@ public class SSGJHelper {
      * @return
      */
     public long createSysParamsId(){ return (long) sysParamsIdService.create();}
+
+    /**
+     * 流程问题编码
+     * @return
+     */
+    public String createSysFlowQuestionCode(){
+        return sysFlowQuestionCodeService.create().toString();
+    }
+
+    /**
+     * 流程问题ID
+     * @return
+     */
+    public Long createSysFlowQuestionId(){
+        return (Long) sysFlowQuestionIdService.create();
+    }
+
+    /**
+     * 流程问题答案编码
+     * @return
+     */
+    public String createSysFlowAnswerCode(){
+        return sysFlowAnswerCodeService.create().toString();
+    }
+
+    /**
+     * 流程问题答案ID
+     * @return
+     */
+    public Long createSysFlowAnswerId(){
+        return (Long) sysFlowAnswerIdService.create();
+    }
     /**
      * 密码加密
      * @param password 明文密码

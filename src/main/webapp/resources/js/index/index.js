@@ -196,7 +196,7 @@ jQuery(function($) {
         var title = $(this).text();
         var parenTitle = $(this).parents('.submenu').prev('a').find('span').text();
         var breadcrumbMenu = $('#breadcrumbMenu');
-        console.log(src+'-'+parenTitle+'-'+title);
+        /*console.log(src+'-'+parenTitle+'-'+title);*/
         if(parenTitle){
             var content = '<li><i class="icon-home home-icon"></i>'+parenTitle.trim()+'</li> <li class="active">'+title+'</li>'
             breadcrumbMenu.empty();

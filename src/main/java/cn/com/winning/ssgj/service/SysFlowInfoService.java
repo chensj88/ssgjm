@@ -28,6 +28,7 @@ public interface SysFlowInfoService {
     List<SysFlowInfo> getSysFlowInfoPaginatedList(SysFlowInfo t);
 
     List<SysFlowInfo> querySysFlowInfoList(SysFlowInfo t);
+    List<SysFlowInfo> querySysFlowInfoListForName(SysFlowInfo t);
 
     /**
      * 查询子流程的流程编码

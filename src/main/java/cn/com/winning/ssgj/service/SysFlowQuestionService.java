@@ -26,4 +26,8 @@ public interface SysFlowQuestionService {
 
     List<SysFlowQuestion> getSysFlowQuestionPaginatedList(SysFlowQuestion t);
 
+    Integer getSysFlowQuestionPageCount(SysFlowQuestion t);
+
+    List<SysFlowQuestion> getSysFlowQuestionPageList(SysFlowQuestion t);
+
 }

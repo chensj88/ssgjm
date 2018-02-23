@@ -24,13 +24,20 @@ public class SysFlowAnswer extends BaseDomain implements Serializable {
 
     private Long quesId;
 
-    private Integer answerPid;
+    private Long answerPid;
 
     private String answerCode;
 
     private String answerContent;
+    /**
+     * 答案类型 0普通 1其他
+     */
+    private Integer answerType;
 
-    private String quesDesc;
+    /**
+     * @val 状态 0 失效 1生效
+     */
+    private Integer status;
 
     private Long lastUpdator;
 
@@ -56,11 +63,11 @@ public class SysFlowAnswer extends BaseDomain implements Serializable {
         this.quesId = quesId;
     }
 
-    public Integer getAnswerPid() {
+    public Long getAnswerPid() {
         return answerPid;
     }
 
-    public void setAnswerPid(Integer answerPid) {
+    public void setAnswerPid(Long answerPid) {
         this.answerPid = answerPid;
     }
 
@@ -80,14 +87,6 @@ public class SysFlowAnswer extends BaseDomain implements Serializable {
         this.answerContent = answerContent;
     }
 
-    public String getQuesDesc() {
-        return quesDesc;
-    }
-
-    public void setQuesDesc(String quesDesc) {
-        this.quesDesc = quesDesc;
-    }
-
     public Long getLastUpdator() {
         return lastUpdator;
     }
@@ -104,4 +103,19 @@ public class SysFlowAnswer extends BaseDomain implements Serializable {
         this.lastUpdateTime = lastUpdateTime;
     }
 
+    public Integer getAnswerType() {
+        return answerType;
+    }
+
+    public void setAnswerType(Integer answerType) {
+        this.answerType = answerType;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 }

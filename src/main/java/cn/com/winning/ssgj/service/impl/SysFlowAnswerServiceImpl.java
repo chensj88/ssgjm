@@ -1,9 +1,13 @@
 package cn.com.winning.ssgj.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.SysFlowAnswerDao;
@@ -21,6 +25,8 @@ public class SysFlowAnswerServiceImpl implements SysFlowAnswerService {
 
     @Resource
     private SysFlowAnswerDao sysFlowAnswerDao;
+    @Autowired
+    private SSGJHelper ssgjHelper;
 
 
     public Integer createSysFlowAnswer(SysFlowAnswer t) {
@@ -49,6 +55,28 @@ public class SysFlowAnswerServiceImpl implements SysFlowAnswerService {
 
     public List<SysFlowAnswer> getSysFlowAnswerPaginatedList(SysFlowAnswer t) {
         return this.sysFlowAnswerDao.selectEntityPaginatedList(t);
+    }
+
+    @Override
+    public void createSysFlowAnswer(String info,Long quesId) {
+        SysFlowAnswer delAnswer = new SysFlowAnswer();
+        delAnswer.setQuesId(quesId);
+        delAnswer.setStatus(Constants.STATUS_UNUSE);
+        this.sysFlowAnswerDao.updateEntity(delAnswer);
+        String[] answers = info.split(";");
+        for (String ans : answers) {
+            String[] items = ans.split(",");
+            SysFlowAnswer answer = new SysFlowAnswer();
+            answer.setId(ssgjHelper.createSysFlowAnswerId());
+            answer.setAnswerCode(ssgjHelper.createSysFlowAnswerCode());
+            answer.setQuesId(Long.parseLong(items[0]));
+            answer.setAnswerType(Integer.parseInt(items[1]));
+            answer.setAnswerContent(items[2]);
+            answer.setStatus(Constants.STATUS_USE);
+            answer.setLastUpdateTime(new Date());
+            //TODO 修改人
+            this.sysFlowAnswerDao.insertEntity(answer);
+        }
     }
 
 }

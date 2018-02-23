@@ -23,7 +23,7 @@
 
     <sql id="sf-sysUserInfo">
         <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
-        <if test="(status != null and status != '') or status == 0">and t.STATUS = #{status}</if>
+        <if test="(status != null )">and t.STATUS = #{status}</if>
         <if test="userid != null and userid != ''">and t.USERID = #{userid}</if>
         <if test="yhmc != null and yhmc != ''">and t.YHMC = #{yhmc}</if>
         <if test="name != null and name != ''">and t.NAME = #{name}</if>
@@ -75,7 +75,7 @@
         insert into SYS_USER_INFO
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(id != null and id != '') or id == 0">ID,</if>
-            <if test="(status != null and status != '') or status == 0">STATUS,</if>
+            <if test="(status != null )">STATUS,</if>
             <if test="userid != null and userid != ''">USERID,</if>
             <if test="yhmc != null and yhmc != ''">YHMC,</if>
             <if test="name != null and name != ''">NAME,</if>
@@ -91,7 +91,7 @@
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
-            <if test="(status != null and status != '') or status == 0">#{status, jdbcType=INTEGER},</if>
+            <if test="(status != null )">#{status, jdbcType=INTEGER},</if>
             <if test="userid != null and userid != ''">#{userid, jdbcType=VARCHAR},</if>
             <if test="yhmc != null and yhmc != ''">#{yhmc, jdbcType=VARCHAR},</if>
             <if test="name != null and name != ''">#{name, jdbcType=VARCHAR},</if>
@@ -111,7 +111,7 @@
         <set>
             <trim suffixOverrides=",">
                 <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
-                <if test="(status != null and status != '') or status == 0">STATUS = #{status, jdbcType=INTEGER},</if>
+                <if test="(status != null )">STATUS = #{status, jdbcType=INTEGER},</if>
                 <if test="userid != null and userid != ''">USERID = #{userid, jdbcType=VARCHAR},</if>
                 <if test="yhmc != null and yhmc != ''">YHMC = #{yhmc, jdbcType=VARCHAR},</if>
                 <if test="name != null and name != ''">NAME = #{name, jdbcType=VARCHAR},</if>

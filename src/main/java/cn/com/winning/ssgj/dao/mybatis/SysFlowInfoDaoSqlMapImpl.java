@@ -58,4 +58,10 @@ public class SysFlowInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysFlowInfo> i
         String statement = "selectSysFlowInfoListById";
         return super.getSqlSession().selectList(statement,flowInfo);
     }
+
+    @Override
+    public List<SysFlowInfo> selectSysFlowInfoListForName(SysFlowInfo flowInfo) {
+        String statement = "selectSysFlowInfoListForName";
+        return super.getSqlSession().selectList(statement,flowInfo);
+    }
 }

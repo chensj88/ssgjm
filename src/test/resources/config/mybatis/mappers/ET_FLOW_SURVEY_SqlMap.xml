@@ -35,7 +35,7 @@
         <if test="noScopeCode != null and noScopeCode != ''">and t.NO_SCOPE_CODE = #{noScopeCode}</if>
         <if test="message != null and message != ''">and t.MESSAGE = #{message}</if>
         <if test="(plId != null and plId != '') or plId == 0">and t.PL_ID = #{plId}</if>
-        <if test="(status != null and status != '') or status == 0">and t.STATUS = #{status}</if>
+        <if test="(status != null )">and t.STATUS = #{status}</if>
         <if test="(sourceType != null and sourceType != '') or sourceType == 0">and t.SOURCE_TYPE = #{sourceType}</if>
         <if test="uploadPath != null and uploadPath != ''">and t.UPLOAD_PATH = #{uploadPath}</if>
         <if test="downloadPath != null and downloadPath != ''">and t.DOWNLOAD_PATH = #{downloadPath}</if>
@@ -85,7 +85,7 @@
             <if test="noScopeCode != null and noScopeCode != ''">NO_SCOPE_CODE,</if>
             <if test="message != null and message != ''">MESSAGE,</if>
             <if test="(plId != null and plId != '') or plId == 0">PL_ID,</if>
-            <if test="(status != null and status != '') or status == 0">STATUS,</if>
+            <if test="(status != null )">STATUS,</if>
             <if test="(sourceType != null and sourceType != '') or sourceType == 0">SOURCE_TYPE,</if>
             <if test="uploadPath != null and uploadPath != ''">UPLOAD_PATH,</if>
             <if test="downloadPath != null and downloadPath != ''">DOWNLOAD_PATH,</if>
@@ -105,7 +105,7 @@
             <if test="noScopeCode != null and noScopeCode != ''">#{noScopeCode, jdbcType=VARCHAR},</if>
             <if test="message != null and message != ''">#{message, jdbcType=LONGVARCHAR},</if>
             <if test="(plId != null and plId != '') or plId == 0">#{plId, jdbcType=BIGINT},</if>
-            <if test="(status != null and status != '') or status == 0">#{status, jdbcType=INTEGER},</if>
+            <if test="(status != null )">#{status, jdbcType=INTEGER},</if>
             <if test="(sourceType != null and sourceType != '') or sourceType == 0">#{sourceType, jdbcType=INTEGER},
             </if>
             <if test="uploadPath != null and uploadPath != ''">#{uploadPath, jdbcType=VARCHAR},</if>
@@ -133,7 +133,7 @@
                 </if>
                 <if test="message != null and message != ''">MESSAGE = #{message, jdbcType=LONGVARCHAR},</if>
                 <if test="(plId != null and plId != '') or plId == 0">PL_ID = #{plId, jdbcType=BIGINT},</if>
-                <if test="(status != null and status != '') or status == 0">STATUS = #{status, jdbcType=INTEGER},</if>
+                <if test="(status != null )">STATUS = #{status, jdbcType=INTEGER},</if>
                 <if test="(sourceType != null and sourceType != '') or sourceType == 0">SOURCE_TYPE =
                     #{sourceType, jdbcType=INTEGER},
                 </if>

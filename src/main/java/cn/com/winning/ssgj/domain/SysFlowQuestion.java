@@ -26,6 +26,17 @@ public class SysFlowQuestion extends BaseDomain implements Serializable {
 	 * @val 流程序号
 	 */
 	private Long flowId;
+
+	/**
+	 * @val 流程名称
+	 */
+	 private String flowName ;
+
+	 /**
+	  * @val 流程编号
+	  */
+	  private String flowCode ;
+
 	
 	/**
 	 * @val 问题编号
@@ -210,5 +221,21 @@ public class SysFlowQuestion extends BaseDomain implements Serializable {
 	public void setLastUpdateTime(Date lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
 	}
-	
+
+
+	public String getFlowName() {
+		return flowName;
+	}
+
+	public void setFlowName(String flowName) {
+		this.flowName = flowName;
+	}
+
+	public String getFlowCode() {
+		return flowCode;
+	}
+
+	public void setFlowCode(String flowCode) {
+		this.flowCode = flowCode;
+	}
 }
