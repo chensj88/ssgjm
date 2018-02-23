@@ -186,7 +186,7 @@ jQuery(function($) {
         else $(this).closest('li').removeClass('selected');
     });*/
 
-    $('#coniframe').attr('src',Common.getRootPath()+'/admin/user/userinfo.do');
+    $('#coniframe').attr('src',Common.getRootPath()+'/home/index.do');
     var content = '<li><i class="icon-home home-icon"></i><a href="#">首页</a></li> <li class="active">控制台</li>';
     $('#breadcrumbMenu').empty();
     $(content).appendTo($('#breadcrumbMenu'));
