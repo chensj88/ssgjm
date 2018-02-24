@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx.xsd
+	">	
+		<!-- 退出时清除缓存 -->
+		<bean id="logoutFilter" class="com.scwn.asoftr.interceptor.shiro.SystemLogoutFilter">  
+	      <property name="redirectUrl" value="/toIndexPage"/>  
+	    </bean>  
+	    <!-- 安全管理器 -->
+		<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+			<property name="realm" ref="ShiroRealm" />
+		</bean>
+		
+		<!-- 項目自定义的Realm -->
+	    <bean id="shiroRealm" class="cn.com.winning.ssgj.shiro.WinningRealm" ></bean>
+		
+		<!-- Shiro Filter -->
+		<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+			<property name="securityManager" ref="securityManager" />
+			<!-- 出现错误之后的跳转页面 -->
+			<property name="loginUrl" value="/toLoginPage" />
+			<!-- 验证成功跳转页面 -->
+			<property name="successUrl" value="/" />
+			 <!-- 认证失败之后跳转的页面 -->
+			<property name="unauthorizedUrl" value="/toLoginPage" />
+			<!-- 配置shiro里边需要使用到的过滤器 -->
+			<property name="filters">  
+	           <map>  
+	               <entry key="logout" value-ref="logoutFilter"/>  
+	           </map>  
+	       	</property>  
+	        <!-- 配置需要拦截处理的请求 -->
+			<property name="filterChainDefinitions">
+				<value>
+				/login			            = anon
+				/admin/**			        = anon
+				/css/** 			        = anon
+				/font/** 			        = anon
+				/fonts/** 			        = anon
+				/images/** 			        = anon
+				/js/** 			            = anon
+				/logout=logout
+				/**							= authc
+				</value>
+			</property>
+		</bean>
+</beans>
