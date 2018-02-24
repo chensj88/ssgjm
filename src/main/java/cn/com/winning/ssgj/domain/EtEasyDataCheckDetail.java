@@ -1,84 +1,137 @@
 package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
-
 import org.apache.ibatis.type.Alias;
 import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
+ * Coder AutoGenerator generate.
  *
- *
- * @author SSGJ
- * @date 2018-01-18 10:11:45
+ * @author Coder AutoGenerator
+ * @date 2018-02-24 10:57:33
  */
-
+ 
 @Alias("etEasyDataCheckDetail")
 public class EtEasyDataCheckDetail extends BaseDomain implements Serializable {
 
-    private static final long serialVersionUID = -1L;
+	private static final long serialVersionUID = -1L;
 
-    private Long id;
+	/**
+	 * @val ID
+	 */
+	private Long id;
+	
+	/**
+	 * @val 关联主表ID
+	 */
+	private Long sourceId;
+	
+	/**
+	 * @val 科室或医生代码
+	 */
+	private String deptDoctorCode;
+	
+	/**
+	 * @val 科室或医生名称
+	 */
+	private String deptDoctorName;
+	
+	/**
+	 * @val 数量
+	 */
+	private Integer num;
+	
+	/**
+	 * @val 备注
+	 */
+	private String remark;
+	
+	public EtEasyDataCheckDetail() {
 
-    private Long sourceId;
+	}
 
-    private String deptDoctorCode;
-
-    private String deptDoctorName;
-
-    private Integer num;
-
-    private String remark;
-
-    public EtEasyDataCheckDetail() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getSourceId() {
-        return sourceId;
-    }
-
-    public void setSourceId(Long sourceId) {
-        this.sourceId = sourceId;
-    }
-
-    public String getDeptDoctorCode() {
-        return deptDoctorCode;
-    }
-
-    public void setDeptDoctorCode(String deptDoctorCode) {
-        this.deptDoctorCode = deptDoctorCode;
-    }
-
-    public String getDeptDoctorName() {
-        return deptDoctorName;
-    }
-
-    public void setDeptDoctorName(String deptDoctorName) {
-        this.deptDoctorName = deptDoctorName;
-    }
-
-    public Integer getNum() {
-        return num;
-    }
-
-    public void setNum(Integer num) {
-        this.num = num;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
+	/**
+	 * @val ID
+	 */
+	public Long getId() {
+		return id;
+	}
+	
+	/**
+	 * @val ID
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	/**
+	 * @val 关联主表ID
+	 */
+	public Long getSourceId() {
+		return sourceId;
+	}
+	
+	/**
+	 * @val 关联主表ID
+	 */
+	public void setSourceId(Long sourceId) {
+		this.sourceId = sourceId;
+	}
+	
+	/**
+	 * @val 科室或医生代码
+	 */
+	public String getDeptDoctorCode() {
+		return deptDoctorCode;
+	}
+	
+	/**
+	 * @val 科室或医生代码
+	 */
+	public void setDeptDoctorCode(String deptDoctorCode) {
+		this.deptDoctorCode = deptDoctorCode;
+	}
+	
+	/**
+	 * @val 科室或医生名称
+	 */
+	public String getDeptDoctorName() {
+		return deptDoctorName;
+	}
+	
+	/**
+	 * @val 科室或医生名称
+	 */
+	public void setDeptDoctorName(String deptDoctorName) {
+		this.deptDoctorName = deptDoctorName;
+	}
+	
+	/**
+	 * @val 数量
+	 */
+	public Integer getNum() {
+		return num;
+	}
+	
+	/**
+	 * @val 数量
+	 */
+	public void setNum(Integer num) {
+		this.num = num;
+	}
+	
+	/**
+	 * @val 备注
+	 */
+	public String getRemark() {
+		return remark;
+	}
+	
+	/**
+	 * @val 备注
+	 */
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	
 }

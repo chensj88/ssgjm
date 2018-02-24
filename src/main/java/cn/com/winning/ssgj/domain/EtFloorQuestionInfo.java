@@ -1,157 +1,262 @@
 package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
-
 import org.apache.ibatis.type.Alias;
-
 import java.util.Date;
-
 import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
+ * Coder AutoGenerator generate.
  *
- *
- * @author SSGJ
- * @date 2018-01-18 10:11:45
+ * @author Coder AutoGenerator
+ * @date 2018-02-24 10:57:33
  */
-
+ 
 @Alias("etFloorQuestionInfo")
 public class EtFloorQuestionInfo extends BaseDomain implements Serializable {
 
-    private static final long serialVersionUID = -1L;
+	private static final long serialVersionUID = -1L;
 
-    private Long id;
+	private Long id;
+	
+	/**
+	 * @val 项目ID
+	 */
+	private Long pmId;
+	
+	/**
+	 * @val 合同ID
+	 */
+	private Long cId;
+	
+	/**
+	 * @val 业务单据编码
+	 */
+	private String serialNo;
+	
+	/**
+	 * @val 楼层名称
+	 */
+	private String floorName;
+	
+	/**
+	 * @val 问题类型
+	 */
+	private String questionType;
+	
+	/**
+	 * @val 问题描述
+	 */
+	private String questionDesc;
+	
+	/**
+	 * @val 问题照片路径
+	 */
+	private String imgPath;
+	
+	/**
+	 * @val 处理状态 0 否，1是
+	 */
+	private Integer isOperation;
+	
+	/**
+	 * @val 创建人
+	 */
+	private Long creator;
+	
+	/**
+	 * @val 创建时间
+	 */
+	private Date createTime;
+	
+	/**
+	 * @val 操作人
+	 */
+	private Long operator;
+	
+	/**
+	 * @val 操作时间
+	 */
+	private Date operatorTime;
+	
+	public EtFloorQuestionInfo() {
 
-    private Long pmId;
+	}
 
-    private Long cId;
-
-    private String serialNo;
-
-    private String floorName;
-
-    private String questionType;
-
-    private String questionDesc;
-
-    private String imgPath;
-
-    private Integer isOperation;
-
-    private Long creator;
-
-    private Date createTime;
-
-    private Long operator;
-
-    private Date operatorTime;
-
-    public EtFloorQuestionInfo() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getPmId() {
-        return pmId;
-    }
-
-    public void setPmId(Long pmId) {
-        this.pmId = pmId;
-    }
-
-    public Long getCId() {
-        return cId;
-    }
-
-    public void setCId(Long cId) {
-        this.cId = cId;
-    }
-
-    public String getSerialNo() {
-        return serialNo;
-    }
-
-    public void setSerialNo(String serialNo) {
-        this.serialNo = serialNo;
-    }
-
-    public String getFloorName() {
-        return floorName;
-    }
-
-    public void setFloorName(String floorName) {
-        this.floorName = floorName;
-    }
-
-    public String getQuestionType() {
-        return questionType;
-    }
-
-    public void setQuestionType(String questionType) {
-        this.questionType = questionType;
-    }
-
-    public String getQuestionDesc() {
-        return questionDesc;
-    }
-
-    public void setQuestionDesc(String questionDesc) {
-        this.questionDesc = questionDesc;
-    }
-
-    public String getImgPath() {
-        return imgPath;
-    }
-
-    public void setImgPath(String imgPath) {
-        this.imgPath = imgPath;
-    }
-
-    public Integer getIsOperation() {
-        return isOperation;
-    }
-
-    public void setIsOperation(Integer isOperation) {
-        this.isOperation = isOperation;
-    }
-
-    public Long getCreator() {
-        return creator;
-    }
-
-    public void setCreator(Long creator) {
-        this.creator = creator;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Long getOperator() {
-        return operator;
-    }
-
-    public void setOperator(Long operator) {
-        this.operator = operator;
-    }
-
-    public Date getOperatorTime() {
-        return operatorTime;
-    }
-
-    public void setOperatorTime(Date operatorTime) {
-        this.operatorTime = operatorTime;
-    }
-
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	/**
+	 * @val 项目ID
+	 */
+	public Long getPmId() {
+		return pmId;
+	}
+	
+	/**
+	 * @val 项目ID
+	 */
+	public void setPmId(Long pmId) {
+		this.pmId = pmId;
+	}
+	
+	/**
+	 * @val 合同ID
+	 */
+	public Long getCId() {
+		return cId;
+	}
+	
+	/**
+	 * @val 合同ID
+	 */
+	public void setCId(Long cId) {
+		this.cId = cId;
+	}
+	
+	/**
+	 * @val 业务单据编码
+	 */
+	public String getSerialNo() {
+		return serialNo;
+	}
+	
+	/**
+	 * @val 业务单据编码
+	 */
+	public void setSerialNo(String serialNo) {
+		this.serialNo = serialNo;
+	}
+	
+	/**
+	 * @val 楼层名称
+	 */
+	public String getFloorName() {
+		return floorName;
+	}
+	
+	/**
+	 * @val 楼层名称
+	 */
+	public void setFloorName(String floorName) {
+		this.floorName = floorName;
+	}
+	
+	/**
+	 * @val 问题类型
+	 */
+	public String getQuestionType() {
+		return questionType;
+	}
+	
+	/**
+	 * @val 问题类型
+	 */
+	public void setQuestionType(String questionType) {
+		this.questionType = questionType;
+	}
+	
+	/**
+	 * @val 问题描述
+	 */
+	public String getQuestionDesc() {
+		return questionDesc;
+	}
+	
+	/**
+	 * @val 问题描述
+	 */
+	public void setQuestionDesc(String questionDesc) {
+		this.questionDesc = questionDesc;
+	}
+	
+	/**
+	 * @val 问题照片路径
+	 */
+	public String getImgPath() {
+		return imgPath;
+	}
+	
+	/**
+	 * @val 问题照片路径
+	 */
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
+	}
+	
+	/**
+	 * @val 处理状态 0 否，1是
+	 */
+	public Integer getIsOperation() {
+		return isOperation;
+	}
+	
+	/**
+	 * @val 处理状态 0 否，1是
+	 */
+	public void setIsOperation(Integer isOperation) {
+		this.isOperation = isOperation;
+	}
+	
+	/**
+	 * @val 创建人
+	 */
+	public Long getCreator() {
+		return creator;
+	}
+	
+	/**
+	 * @val 创建人
+	 */
+	public void setCreator(Long creator) {
+		this.creator = creator;
+	}
+	
+	/**
+	 * @val 创建时间
+	 */
+	public Date getCreateTime() {
+		return createTime;
+	}
+	
+	/**
+	 * @val 创建时间
+	 */
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	
+	/**
+	 * @val 操作人
+	 */
+	public Long getOperator() {
+		return operator;
+	}
+	
+	/**
+	 * @val 操作人
+	 */
+	public void setOperator(Long operator) {
+		this.operator = operator;
+	}
+	
+	/**
+	 * @val 操作时间
+	 */
+	public Date getOperatorTime() {
+		return operatorTime;
+	}
+	
+	/**
+	 * @val 操作时间
+	 */
+	public void setOperatorTime(Date operatorTime) {
+		this.operatorTime = operatorTime;
+	}
+	
 }

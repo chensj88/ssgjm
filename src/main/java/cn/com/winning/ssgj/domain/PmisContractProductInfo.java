@@ -1,213 +1,375 @@
 package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
-
 import org.apache.ibatis.type.Alias;
 import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
+ * Coder AutoGenerator generate.
  *
- *接口表--合同产品信息表
- * @author SSGJ
- * @date 2018-01-18 10:11:46
+ * @author Coder AutoGenerator
+ * @date 2018-02-24 10:57:36
  */
-
+ 
 @Alias("pmisContractProductInfo")
 public class PmisContractProductInfo extends BaseDomain implements Serializable {
 
-    private static final long serialVersionUID = -1L;
+	private static final long serialVersionUID = -1L;
 
-    private Long id;
+	/**
+	 * @val ID
+	 */
+	private Long id;
+	
+	/**
+	 * @val 用户方
+	 */
+	private Long khxx;
+	
+	/**
+	 * @val 产品类别
+	 */
+	private Integer htcplb;
+	
+	/**
+	 * @val 成交价清单类型
+	 */
+	private Long fbjelx;
+	
+	/**
+	 * @val 大类
+	 */
+	private String cpdlmc;
+	
+	/**
+	 * @val 子系统
+	 */
+	private String zxtmc;
+	
+	private String cpmc;
+	
+	/**
+	 * @val 合同
+	 */
+	private Long zhtxx;
+	
+	/**
+	 * @val 任务单
+	 */
+	private Long htxx;
+	
+	/**
+	 * @val 项目
+	 */
+	private Long xmlcb;
+	
+	/**
+	 * @val 项目分期计划
+	 */
+	private Long xmfqjh;
+	
+	/**
+	 * @val 合同模块
+	 */
+	private Long htmk;
+	
+	/**
+	 * @val 合同用户方
+	 */
+	private Long htyhf;
+	
+	/**
+	 * @val 标准产品
+	 */
+	private Long cpxx;
+	
+	/**
+	 * @val 产品子系统
+	 */
+	private String cpzxt;
+	
+	/**
+	 * @val 产品大类
+	 */
+	private String sjcp;
+	
+	/**
+	 * @val 标准产品基准价
+	 */
+	private String cpjzj;
+	
+	/**
+	 * @val 标准产品报价系数
+	 */
+	private String bjxs;
+	
+	/**
+	 * @val 状态 1|生效;2|作废
+	 */
+	private Integer zt;
+	
+	public PmisContractProductInfo() {
 
-    private Long khxx;
+	}
 
-    private Integer htcplb;
-
-    private Long fbjelx;
-
-    private String cpdlmc;
-
-    private String zxtmc;
-
-    private String cpmc;
-
-    private Long zhtxx;
-
-    private Long htxx;
-
-    private Long xmlcb;
-
-    private Long xmfqjh;
-
-    private Long htmk;
-
-    private Long htyhf;
-
-    private Long cpxx;
-
-    private String cpzxt;
-
-    private String sjcp;
-
-    private String cpjzj;
-
-    private String bjxs;
-
-    private Integer zt;
-
-    public PmisContractProductInfo() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getKhxx() {
-        return khxx;
-    }
-
-    public void setKhxx(Long khxx) {
-        this.khxx = khxx;
-    }
-
-    public Integer getHtcplb() {
-        return htcplb;
-    }
-
-    public void setHtcplb(Integer htcplb) {
-        this.htcplb = htcplb;
-    }
-
-    public Long getFbjelx() {
-        return fbjelx;
-    }
-
-    public void setFbjelx(Long fbjelx) {
-        this.fbjelx = fbjelx;
-    }
-
-    public String getCpdlmc() {
-        return cpdlmc;
-    }
-
-    public void setCpdlmc(String cpdlmc) {
-        this.cpdlmc = cpdlmc == null ? null : cpdlmc.trim();
-    }
-
-    public String getZxtmc() {
-        return zxtmc;
-    }
-
-    public void setZxtmc(String zxtmc) {
-        this.zxtmc = zxtmc == null ? null : zxtmc.trim();
-    }
-
-    public Long getZhtxx() {
-        return zhtxx;
-    }
-
-    public void setZhtxx(Long zhtxx) {
-        this.zhtxx = zhtxx;
-    }
-
-    public Long getHtxx() {
-        return htxx;
-    }
-
-    public void setHtxx(Long htxx) {
-        this.htxx = htxx;
-    }
-
-    public Long getXmlcb() {
-        return xmlcb;
-    }
-
-    public void setXmlcb(Long xmlcb) {
-        this.xmlcb = xmlcb;
-    }
-
-    public Long getXmfqjh() {
-        return xmfqjh;
-    }
-
-    public void setXmfqjh(Long xmfqjh) {
-        this.xmfqjh = xmfqjh;
-    }
-
-    public Long getHtmk() {
-        return htmk;
-    }
-
-    public void setHtmk(Long htmk) {
-        this.htmk = htmk;
-    }
-
-    public Long getHtyhf() {
-        return htyhf;
-    }
-
-    public void setHtyhf(Long htyhf) {
-        this.htyhf = htyhf;
-    }
-
-    public Long getCpxx() {
-        return cpxx;
-    }
-
-    public void setCpxx(Long cpxx) {
-        this.cpxx = cpxx;
-    }
-
-    public String getCpzxt() {
-        return cpzxt;
-    }
-
-    public void setCpzxt(String cpzxt) {
-        this.cpzxt = cpzxt == null ? null : cpzxt.trim();
-    }
-
-    public String getSjcp() {
-        return sjcp;
-    }
-
-    public void setSjcp(String sjcp) {
-        this.sjcp = sjcp == null ? null : sjcp.trim();
-    }
-
-    public String getCpjzj() {
-        return cpjzj;
-    }
-
-    public void setCpjzj(String cpjzj) {
-        this.cpjzj = cpjzj == null ? null : cpjzj.trim();
-    }
-
-    public String getBjxs() {
-        return bjxs;
-    }
-
-    public void setBjxs(String bjxs) {
-        this.bjxs = bjxs == null ? null : bjxs.trim();
-    }
-
-    public Integer getZt() {
-        return zt;
-    }
-
-    public void setZt(Integer zt) {
-        this.zt = zt;
-    }
-
-    public String getCpmc() {
-        return cpmc;
-    }
-
-    public void setCpmc(String cpmc) {
-        this.cpmc = cpmc == null ? null : cpmc.trim();
-    }
+	/**
+	 * @val ID
+	 */
+	public Long getId() {
+		return id;
+	}
+	
+	/**
+	 * @val ID
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	/**
+	 * @val 用户方
+	 */
+	public Long getKhxx() {
+		return khxx;
+	}
+	
+	/**
+	 * @val 用户方
+	 */
+	public void setKhxx(Long khxx) {
+		this.khxx = khxx;
+	}
+	
+	/**
+	 * @val 产品类别
+	 */
+	public Integer getHtcplb() {
+		return htcplb;
+	}
+	
+	/**
+	 * @val 产品类别
+	 */
+	public void setHtcplb(Integer htcplb) {
+		this.htcplb = htcplb;
+	}
+	
+	/**
+	 * @val 成交价清单类型
+	 */
+	public Long getFbjelx() {
+		return fbjelx;
+	}
+	
+	/**
+	 * @val 成交价清单类型
+	 */
+	public void setFbjelx(Long fbjelx) {
+		this.fbjelx = fbjelx;
+	}
+	
+	/**
+	 * @val 大类
+	 */
+	public String getCpdlmc() {
+		return cpdlmc;
+	}
+	
+	/**
+	 * @val 大类
+	 */
+	public void setCpdlmc(String cpdlmc) {
+		this.cpdlmc = cpdlmc;
+	}
+	
+	/**
+	 * @val 子系统
+	 */
+	public String getZxtmc() {
+		return zxtmc;
+	}
+	
+	/**
+	 * @val 子系统
+	 */
+	public void setZxtmc(String zxtmc) {
+		this.zxtmc = zxtmc;
+	}
+	
+	public String getCpmc() {
+		return cpmc;
+	}
+	
+	public void setCpmc(String cpmc) {
+		this.cpmc = cpmc;
+	}
+	
+	/**
+	 * @val 合同
+	 */
+	public Long getZhtxx() {
+		return zhtxx;
+	}
+	
+	/**
+	 * @val 合同
+	 */
+	public void setZhtxx(Long zhtxx) {
+		this.zhtxx = zhtxx;
+	}
+	
+	/**
+	 * @val 任务单
+	 */
+	public Long getHtxx() {
+		return htxx;
+	}
+	
+	/**
+	 * @val 任务单
+	 */
+	public void setHtxx(Long htxx) {
+		this.htxx = htxx;
+	}
+	
+	/**
+	 * @val 项目
+	 */
+	public Long getXmlcb() {
+		return xmlcb;
+	}
+	
+	/**
+	 * @val 项目
+	 */
+	public void setXmlcb(Long xmlcb) {
+		this.xmlcb = xmlcb;
+	}
+	
+	/**
+	 * @val 项目分期计划
+	 */
+	public Long getXmfqjh() {
+		return xmfqjh;
+	}
+	
+	/**
+	 * @val 项目分期计划
+	 */
+	public void setXmfqjh(Long xmfqjh) {
+		this.xmfqjh = xmfqjh;
+	}
+	
+	/**
+	 * @val 合同模块
+	 */
+	public Long getHtmk() {
+		return htmk;
+	}
+	
+	/**
+	 * @val 合同模块
+	 */
+	public void setHtmk(Long htmk) {
+		this.htmk = htmk;
+	}
+	
+	/**
+	 * @val 合同用户方
+	 */
+	public Long getHtyhf() {
+		return htyhf;
+	}
+	
+	/**
+	 * @val 合同用户方
+	 */
+	public void setHtyhf(Long htyhf) {
+		this.htyhf = htyhf;
+	}
+	
+	/**
+	 * @val 标准产品
+	 */
+	public Long getCpxx() {
+		return cpxx;
+	}
+	
+	/**
+	 * @val 标准产品
+	 */
+	public void setCpxx(Long cpxx) {
+		this.cpxx = cpxx;
+	}
+	
+	/**
+	 * @val 产品子系统
+	 */
+	public String getCpzxt() {
+		return cpzxt;
+	}
+	
+	/**
+	 * @val 产品子系统
+	 */
+	public void setCpzxt(String cpzxt) {
+		this.cpzxt = cpzxt;
+	}
+	
+	/**
+	 * @val 产品大类
+	 */
+	public String getSjcp() {
+		return sjcp;
+	}
+	
+	/**
+	 * @val 产品大类
+	 */
+	public void setSjcp(String sjcp) {
+		this.sjcp = sjcp;
+	}
+	
+	/**
+	 * @val 标准产品基准价
+	 */
+	public String getCpjzj() {
+		return cpjzj;
+	}
+	
+	/**
+	 * @val 标准产品基准价
+	 */
+	public void setCpjzj(String cpjzj) {
+		this.cpjzj = cpjzj;
+	}
+	
+	/**
+	 * @val 标准产品报价系数
+	 */
+	public String getBjxs() {
+		return bjxs;
+	}
+	
+	/**
+	 * @val 标准产品报价系数
+	 */
+	public void setBjxs(String bjxs) {
+		this.bjxs = bjxs;
+	}
+	
+	/**
+	 * @val 状态 1|生效;2|作废
+	 */
+	public Integer getZt() {
+		return zt;
+	}
+	
+	/**
+	 * @val 状态 1|生效;2|作废
+	 */
+	public void setZt(Integer zt) {
+		this.zt = zt;
+	}
+	
 }

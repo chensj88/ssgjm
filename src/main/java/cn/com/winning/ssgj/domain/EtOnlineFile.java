@@ -1,137 +1,233 @@
 package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
-
 import org.apache.ibatis.type.Alias;
-
 import java.util.Date;
-
 import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
+ * Coder AutoGenerator generate.
  *
- *
- * @author SSGJ
- * @date 2018-01-18 10:11:45
+ * @author Coder AutoGenerator
+ * @date 2018-02-24 10:57:34
  */
-
+ 
 @Alias("etOnlineFile")
 public class EtOnlineFile extends BaseDomain implements Serializable {
 
-    private static final long serialVersionUID = -1L;
+	private static final long serialVersionUID = -1L;
 
-    private Long id;
+	/**
+	 * @val ID
+	 */
+	private Long id;
+	
+	/**
+	 * @val 合同ID
+	 */
+	private Long cId;
+	
+	/**
+	 * @val 项目ID
+	 */
+	private Long pmId;
+	
+	/**
+	 * @val 单据号
+	 */
+	private String serialNo;
+	
+	/**
+	 * @val 文件路径
+	 */
+	private String fileSuggestPath;
+	
+	/**
+	 * @val 文件路径
+	 */
+	private String fileChangePath;
+	
+	/**
+	 * @val 签字照片
+	 */
+	private String imgPath;
+	
+	/**
+	 * @val 创建人
+	 */
+	private Long creator;
+	
+	/**
+	 * @val 创建时间
+	 */
+	private Date createTime;
+	
+	/**
+	 * @val 操作人
+	 */
+	private Long operator;
+	
+	/**
+	 * @val 操作时间
+	 */
+	private Date operatorTime;
+	
+	public EtOnlineFile() {
 
-    private Long cId;
+	}
 
-    private Long pmId;
-
-    private String serialNo;
-
-    private String fileSuggestPath;
-
-    private String fileChangePath;
-
-    private String imgPath;
-
-    private Long creator;
-
-    private Date createTime;
-
-    private Long operator;
-
-    private Date operatorTime;
-
-    public EtOnlineFile() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getCId() {
-        return cId;
-    }
-
-    public void setCId(Long cId) {
-        this.cId = cId;
-    }
-
-    public Long getPmId() {
-        return pmId;
-    }
-
-    public void setPmId(Long pmId) {
-        this.pmId = pmId;
-    }
-
-    public String getSerialNo() {
-        return serialNo;
-    }
-
-    public void setSerialNo(String serialNo) {
-        this.serialNo = serialNo;
-    }
-
-    public String getFileSuggestPath() {
-        return fileSuggestPath;
-    }
-
-    public void setFileSuggestPath(String fileSuggestPath) {
-        this.fileSuggestPath = fileSuggestPath;
-    }
-
-    public String getFileChangePath() {
-        return fileChangePath;
-    }
-
-    public void setFileChangePath(String fileChangePath) {
-        this.fileChangePath = fileChangePath;
-    }
-
-    public String getImgPath() {
-        return imgPath;
-    }
-
-    public void setImgPath(String imgPath) {
-        this.imgPath = imgPath;
-    }
-
-    public Long getCreator() {
-        return creator;
-    }
-
-    public void setCreator(Long creator) {
-        this.creator = creator;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Long getOperator() {
-        return operator;
-    }
-
-    public void setOperator(Long operator) {
-        this.operator = operator;
-    }
-
-    public Date getOperatorTime() {
-        return operatorTime;
-    }
-
-    public void setOperatorTime(Date operatorTime) {
-        this.operatorTime = operatorTime;
-    }
-
+	/**
+	 * @val ID
+	 */
+	public Long getId() {
+		return id;
+	}
+	
+	/**
+	 * @val ID
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	/**
+	 * @val 合同ID
+	 */
+	public Long getCId() {
+		return cId;
+	}
+	
+	/**
+	 * @val 合同ID
+	 */
+	public void setCId(Long cId) {
+		this.cId = cId;
+	}
+	
+	/**
+	 * @val 项目ID
+	 */
+	public Long getPmId() {
+		return pmId;
+	}
+	
+	/**
+	 * @val 项目ID
+	 */
+	public void setPmId(Long pmId) {
+		this.pmId = pmId;
+	}
+	
+	/**
+	 * @val 单据号
+	 */
+	public String getSerialNo() {
+		return serialNo;
+	}
+	
+	/**
+	 * @val 单据号
+	 */
+	public void setSerialNo(String serialNo) {
+		this.serialNo = serialNo;
+	}
+	
+	/**
+	 * @val 文件路径
+	 */
+	public String getFileSuggestPath() {
+		return fileSuggestPath;
+	}
+	
+	/**
+	 * @val 文件路径
+	 */
+	public void setFileSuggestPath(String fileSuggestPath) {
+		this.fileSuggestPath = fileSuggestPath;
+	}
+	
+	/**
+	 * @val 文件路径
+	 */
+	public String getFileChangePath() {
+		return fileChangePath;
+	}
+	
+	/**
+	 * @val 文件路径
+	 */
+	public void setFileChangePath(String fileChangePath) {
+		this.fileChangePath = fileChangePath;
+	}
+	
+	/**
+	 * @val 签字照片
+	 */
+	public String getImgPath() {
+		return imgPath;
+	}
+	
+	/**
+	 * @val 签字照片
+	 */
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
+	}
+	
+	/**
+	 * @val 创建人
+	 */
+	public Long getCreator() {
+		return creator;
+	}
+	
+	/**
+	 * @val 创建人
+	 */
+	public void setCreator(Long creator) {
+		this.creator = creator;
+	}
+	
+	/**
+	 * @val 创建时间
+	 */
+	public Date getCreateTime() {
+		return createTime;
+	}
+	
+	/**
+	 * @val 创建时间
+	 */
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	
+	/**
+	 * @val 操作人
+	 */
+	public Long getOperator() {
+		return operator;
+	}
+	
+	/**
+	 * @val 操作人
+	 */
+	public void setOperator(Long operator) {
+		this.operator = operator;
+	}
+	
+	/**
+	 * @val 操作时间
+	 */
+	public Date getOperatorTime() {
+		return operatorTime;
+	}
+	
+	/**
+	 * @val 操作时间
+	 */
+	public void setOperatorTime(Date operatorTime) {
+		this.operatorTime = operatorTime;
+	}
+	
 }

@@ -1,154 +1,270 @@
 package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
-
 import org.apache.ibatis.type.Alias;
 import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
+ * Coder AutoGenerator generate.
  *
- *
- * @author SSGJ
- * @date 2018-01-18 10:11:45
+ * @author Coder AutoGenerator
+ * @date 2018-02-24 10:57:36
  */
-
+ 
 @Alias("etUserInfo")
 public class EtUserInfo extends BaseDomain implements Serializable {
 
-    private static final long serialVersionUID = -1L;
+	private static final long serialVersionUID = -1L;
 
-    private Long id;
+	/**
+	 * @val ID
+	 */
+	private Long id;
+	
+	/**
+	 * @val 项目ID
+	 */
+	private Long pmId;
+	
+	/**
+	 * @val 合同ID
+	 */
+	private Long cId;
+	
+	/**
+	 * @val 用户ID
+	 */
+	private Long userId;
+	
+	/**
+	 * @val 用户类型 0客户 1公司 
+	 */
+	private Integer userType;
+	
+	/**
+	 * @val 工号
+	 */
+	private String userCard;
+	
+	/**
+	 * @val 姓名
+	 */
+	private String cName;
+	
+	/**
+	 * @val 部门
+	 */
+	private String orgName;
+	
+	/**
+	 * @val 职务 用户配置的角色名称
+	 */
+	private String positionName;
+	
+	/**
+	 * @val 电话
+	 */
+	private String telephone;
+	
+	/**
+	 * @val 邮箱
+	 */
+	private String email;
+	
+	/**
+	 * @val 备注
+	 */
+	private String remark;
+	
+	/**
+	 * @val 是否删除 0 否；1是
+	 */
+	private Integer isDel;
+	
+	public EtUserInfo() {
 
-    private Long pmId;
+	}
 
-    private Long cId;
-
-    private Long userId;
-
-    private Integer userType;
-
-    private String userCard;
-
-    private String cName;
-
-    private String orgName;
-
-    private String positionName;
-
-    private String telephone;
-
-    private String email;
-
-    private String remark;
-
-    private Integer isDel;
-
-    public EtUserInfo() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getPmId() {
-        return pmId;
-    }
-
-    public void setPmId(Long pmId) {
-        this.pmId = pmId;
-    }
-
-    public Long getCId() {
-        return cId;
-    }
-
-    public void setCId(Long cId) {
-        this.cId = cId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Integer getUserType() {
-        return userType;
-    }
-
-    public void setUserType(Integer userType) {
-        this.userType = userType;
-    }
-
-    public String getUserCard() {
-        return userCard;
-    }
-
-    public void setUserCard(String userCard) {
-        this.userCard = userCard;
-    }
-
-    public String getCName() {
-        return cName;
-    }
-
-    public void setCName(String cName) {
-        this.cName = cName;
-    }
-
-    public String getOrgName() {
-        return orgName;
-    }
-
-    public void setOrgName(String orgName) {
-        this.orgName = orgName;
-    }
-
-    public String getPositionName() {
-        return positionName;
-    }
-
-    public void setPositionName(String positionName) {
-        this.positionName = positionName;
-    }
-
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public Integer getIsDel() {
-        return isDel;
-    }
-
-    public void setIsDel(Integer isDel) {
-        this.isDel = isDel;
-    }
-
+	/**
+	 * @val ID
+	 */
+	public Long getId() {
+		return id;
+	}
+	
+	/**
+	 * @val ID
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	/**
+	 * @val 项目ID
+	 */
+	public Long getPmId() {
+		return pmId;
+	}
+	
+	/**
+	 * @val 项目ID
+	 */
+	public void setPmId(Long pmId) {
+		this.pmId = pmId;
+	}
+	
+	/**
+	 * @val 合同ID
+	 */
+	public Long getCId() {
+		return cId;
+	}
+	
+	/**
+	 * @val 合同ID
+	 */
+	public void setCId(Long cId) {
+		this.cId = cId;
+	}
+	
+	/**
+	 * @val 用户ID
+	 */
+	public Long getUserId() {
+		return userId;
+	}
+	
+	/**
+	 * @val 用户ID
+	 */
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	
+	/**
+	 * @val 用户类型 0客户 1公司 
+	 */
+	public Integer getUserType() {
+		return userType;
+	}
+	
+	/**
+	 * @val 用户类型 0客户 1公司 
+	 */
+	public void setUserType(Integer userType) {
+		this.userType = userType;
+	}
+	
+	/**
+	 * @val 工号
+	 */
+	public String getUserCard() {
+		return userCard;
+	}
+	
+	/**
+	 * @val 工号
+	 */
+	public void setUserCard(String userCard) {
+		this.userCard = userCard;
+	}
+	
+	/**
+	 * @val 姓名
+	 */
+	public String getCName() {
+		return cName;
+	}
+	
+	/**
+	 * @val 姓名
+	 */
+	public void setCName(String cName) {
+		this.cName = cName;
+	}
+	
+	/**
+	 * @val 部门
+	 */
+	public String getOrgName() {
+		return orgName;
+	}
+	
+	/**
+	 * @val 部门
+	 */
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+	
+	/**
+	 * @val 职务 用户配置的角色名称
+	 */
+	public String getPositionName() {
+		return positionName;
+	}
+	
+	/**
+	 * @val 职务 用户配置的角色名称
+	 */
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
+	}
+	
+	/**
+	 * @val 电话
+	 */
+	public String getTelephone() {
+		return telephone;
+	}
+	
+	/**
+	 * @val 电话
+	 */
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+	
+	/**
+	 * @val 邮箱
+	 */
+	public String getEmail() {
+		return email;
+	}
+	
+	/**
+	 * @val 邮箱
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	/**
+	 * @val 备注
+	 */
+	public String getRemark() {
+		return remark;
+	}
+	
+	/**
+	 * @val 备注
+	 */
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	
+	/**
+	 * @val 是否删除 0 否；1是
+	 */
+	public Integer getIsDel() {
+		return isDel;
+	}
+	
+	/**
+	 * @val 是否删除 0 否；1是
+	 */
+	public void setIsDel(Integer isDel) {
+		this.isDel = isDel;
+	}
+	
 }

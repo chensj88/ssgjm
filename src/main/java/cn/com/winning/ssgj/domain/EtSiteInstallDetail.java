@@ -1,137 +1,233 @@
 package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
-
 import org.apache.ibatis.type.Alias;
-
 import java.util.Date;
-
 import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
+ * Coder AutoGenerator generate.
  *
- *
- * @author SSGJ
- * @date 2018-01-18 10:11:45
+ * @author Coder AutoGenerator
+ * @date 2018-02-24 10:57:34
  */
-
+ 
 @Alias("etSiteInstallDetail")
 public class EtSiteInstallDetail extends BaseDomain implements Serializable {
 
-    private static final long serialVersionUID = -1L;
+	private static final long serialVersionUID = -1L;
 
-    private Long id;
+	/**
+	 * @val ID
+	 */
+	private Long id;
+	
+	/**
+	 * @val 关联主表ID
+	 */
+	private Long sourceId;
+	
+	/**
+	 * @val 站点名称
+	 */
+	private String siteName;
+	
+	/**
+	 * @val IP地址
+	 */
+	private String ip;
+	
+	/**
+	 * @val 楼宇
+	 */
+	private String building;
+	
+	/**
+	 * @val 楼宇
+	 */
+	private Integer floorNum;
+	
+	/**
+	 * @val PC机型号
+	 */
+	private String pcModel;
+	
+	/**
+	 * @val 安装情况 :0：未安装 1：安装中 2：已安装
+	 */
+	private Integer install;
+	
+	/**
+	 * @val 图片路径
+	 */
+	private String imgPath;
+	
+	/**
+	 * @val 操作人
+	 */
+	private Long operator;
+	
+	/**
+	 * @val 操作时间
+	 */
+	private Date operatorTime;
+	
+	public EtSiteInstallDetail() {
 
-    private Long sourceId;
+	}
 
-    private String siteName;
-
-    private String ip;
-
-    private String building;
-
-    private Integer floorNum;
-
-    private String pcModel;
-
-    private Integer install;
-
-    private String imgPath;
-
-    private Long operator;
-
-    private Date operatorTime;
-
-    public EtSiteInstallDetail() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getSourceId() {
-        return sourceId;
-    }
-
-    public void setSourceId(Long sourceId) {
-        this.sourceId = sourceId;
-    }
-
-    public String getSiteName() {
-        return siteName;
-    }
-
-    public void setSiteName(String siteName) {
-        this.siteName = siteName;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public String getBuilding() {
-        return building;
-    }
-
-    public void setBuilding(String building) {
-        this.building = building;
-    }
-
-    public Integer getFloorNum() {
-        return floorNum;
-    }
-
-    public void setFloorNum(Integer floorNum) {
-        this.floorNum = floorNum;
-    }
-
-    public String getPcModel() {
-        return pcModel;
-    }
-
-    public void setPcModel(String pcModel) {
-        this.pcModel = pcModel;
-    }
-
-    public Integer getInstall() {
-        return install;
-    }
-
-    public void setInstall(Integer install) {
-        this.install = install;
-    }
-
-    public String getImgPath() {
-        return imgPath;
-    }
-
-    public void setImgPath(String imgPath) {
-        this.imgPath = imgPath;
-    }
-
-    public Long getOperator() {
-        return operator;
-    }
-
-    public void setOperator(Long operator) {
-        this.operator = operator;
-    }
-
-    public Date getOperatorTime() {
-        return operatorTime;
-    }
-
-    public void setOperatorTime(Date operatorTime) {
-        this.operatorTime = operatorTime;
-    }
-
+	/**
+	 * @val ID
+	 */
+	public Long getId() {
+		return id;
+	}
+	
+	/**
+	 * @val ID
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	/**
+	 * @val 关联主表ID
+	 */
+	public Long getSourceId() {
+		return sourceId;
+	}
+	
+	/**
+	 * @val 关联主表ID
+	 */
+	public void setSourceId(Long sourceId) {
+		this.sourceId = sourceId;
+	}
+	
+	/**
+	 * @val 站点名称
+	 */
+	public String getSiteName() {
+		return siteName;
+	}
+	
+	/**
+	 * @val 站点名称
+	 */
+	public void setSiteName(String siteName) {
+		this.siteName = siteName;
+	}
+	
+	/**
+	 * @val IP地址
+	 */
+	public String getIp() {
+		return ip;
+	}
+	
+	/**
+	 * @val IP地址
+	 */
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+	
+	/**
+	 * @val 楼宇
+	 */
+	public String getBuilding() {
+		return building;
+	}
+	
+	/**
+	 * @val 楼宇
+	 */
+	public void setBuilding(String building) {
+		this.building = building;
+	}
+	
+	/**
+	 * @val 楼宇
+	 */
+	public Integer getFloorNum() {
+		return floorNum;
+	}
+	
+	/**
+	 * @val 楼宇
+	 */
+	public void setFloorNum(Integer floorNum) {
+		this.floorNum = floorNum;
+	}
+	
+	/**
+	 * @val PC机型号
+	 */
+	public String getPcModel() {
+		return pcModel;
+	}
+	
+	/**
+	 * @val PC机型号
+	 */
+	public void setPcModel(String pcModel) {
+		this.pcModel = pcModel;
+	}
+	
+	/**
+	 * @val 安装情况 :0：未安装 1：安装中 2：已安装
+	 */
+	public Integer getInstall() {
+		return install;
+	}
+	
+	/**
+	 * @val 安装情况 :0：未安装 1：安装中 2：已安装
+	 */
+	public void setInstall(Integer install) {
+		this.install = install;
+	}
+	
+	/**
+	 * @val 图片路径
+	 */
+	public String getImgPath() {
+		return imgPath;
+	}
+	
+	/**
+	 * @val 图片路径
+	 */
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
+	}
+	
+	/**
+	 * @val 操作人
+	 */
+	public Long getOperator() {
+		return operator;
+	}
+	
+	/**
+	 * @val 操作人
+	 */
+	public void setOperator(Long operator) {
+		this.operator = operator;
+	}
+	
+	/**
+	 * @val 操作时间
+	 */
+	public Date getOperatorTime() {
+		return operatorTime;
+	}
+	
+	/**
+	 * @val 操作时间
+	 */
+	public void setOperatorTime(Date operatorTime) {
+		this.operatorTime = operatorTime;
+	}
+	
 }
