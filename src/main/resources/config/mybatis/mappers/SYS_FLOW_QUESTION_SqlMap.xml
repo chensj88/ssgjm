@@ -13,6 +13,8 @@
         <result column="STATUS" property="status" jdbcType="INTEGER"/>
         <result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT"/>
         <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP"/>
+        <result column="FLOW_NAME" property="flowName" jdbcType="VARCHAR"/>
+        <result column="FLOW_CODE" property="flowCode" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="sysFlowQuestionResult" type="sysFlowQuestion" extends="sysFlowQuestionResultForList">
@@ -26,10 +28,16 @@
         <if test="(quesType != null and quesType != '') or quesType == 0">and t.QUES_TYPE = #{quesType}</if>
         <if test="(resultNum != null and resultNum != '') or resultNum == 0">and t.RESULT_NUM = #{resultNum}</if>
         <if test="quesDesc != null and quesDesc != ''">and t.QUES_DESC = #{quesDesc}</if>
-        <if test="(status != null and status != '') or status == 0">and t.STATUS = #{status}</if>
+        <if test="(status != null )">and t.STATUS = #{status}</if>
         <if test="(lastUpdator != null and lastUpdator != '')">and t.LAST_UPDATOR = #{lastUpdator}
         </if>
         <if test="lastUpdateTime != null ">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
+    </sql>
+
+    <sql id="query-sysFlowQuestion">
+        <if test="(flowId != null and flowId != '') or flowId == 0">AND t.FLOW_ID = #{flowId}</if>
+        <if test="quesCode != null and quesCode != ''">AND t.QUES_CODE LIKE '%${quesCode}%'</if>
+        <if test="quesName != null and quesName != ''">AND t.QUES_NAME LIKE '%${quesName}%'</if>
     </sql>
 
     <select id="selectSysFlowQuestion" resultMap="sysFlowQuestionResult" parameterType="sysFlowQuestion">
@@ -60,8 +68,6 @@
     </select>
 
     <insert id="insertSysFlowQuestion" parameterType="sysFlowQuestion">
-        <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
-        </selectKey>
         insert into SYS_FLOW_QUESTION
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(id != null and id != '') or id == 0">ID,</if>
@@ -71,7 +77,7 @@
             <if test="(quesType != null and quesType != '') or quesType == 0">QUES_TYPE,</if>
             <if test="(resultNum != null and resultNum != '') or resultNum == 0">RESULT_NUM,</if>
             <if test="quesDesc != null and quesDesc != ''">QUES_DESC,</if>
-            <if test="(status != null and status != '') or status == 0">STATUS,</if>
+            <if test="(status != null )">STATUS,</if>
             <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR,</if>
             <if test="lastUpdateTime != null ">LAST_UPDATE_TIME,</if>
         </trim>
@@ -84,7 +90,7 @@
             <if test="(quesType != null and quesType != '') or quesType == 0">#{quesType, jdbcType=INTEGER},</if>
             <if test="(resultNum != null and resultNum != '') or resultNum == 0">#{resultNum, jdbcType=INTEGER},</if>
             <if test="quesDesc != null and quesDesc != ''">#{quesDesc, jdbcType=LONGVARCHAR},</if>
-            <if test="(status != null and status != '') or status == 0">#{status, jdbcType=INTEGER},</if>
+            <if test="(status != null )">#{status, jdbcType=INTEGER},</if>
             <if test="(lastUpdator != null and lastUpdator != '')">
                 #{lastUpdator, jdbcType=BIGINT},
             </if>
@@ -107,7 +113,7 @@
                     #{resultNum, jdbcType=INTEGER},
                 </if>
                 <if test="quesDesc != null and quesDesc != ''">QUES_DESC = #{quesDesc, jdbcType=LONGVARCHAR},</if>
-                <if test="(status != null and status != '') or status == 0">STATUS = #{status, jdbcType=INTEGER},</if>
+                <if test="(status != null )">STATUS = #{status, jdbcType=INTEGER},</if>
                 <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR =
                     #{lastUpdator, jdbcType=BIGINT},
                 </if>
@@ -135,5 +141,23 @@
             </if>
         </where>
     </delete>
+
+    <select id="selectFlowQuestionPageCount" resultType="int" parameterType="sysFlowQuestion">
+        select count(*) from SYS_FLOW_QUESTION t where 1 = 1
+        <include refid="query-sysFlowQuestion"/>
+    </select>
+
+    <select id="selectFlowQuestionPageList" resultMap="sysFlowQuestionResult" parameterType="sysFlowQuestion">
+        select * from (
+        select t.*, T1.FLOW_CODE FLOW_CODE,
+        T1.FLOW_NAME FLOW_NAME,
+        ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_FLOW_QUESTION t
+        LEFT JOIN SYS_FLOW_INFO T1 on t.FLOW_ID = T1.ID
+        where 1 = 1
+        <include refid="query-sysFlowQuestion"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
 
 </mapper>

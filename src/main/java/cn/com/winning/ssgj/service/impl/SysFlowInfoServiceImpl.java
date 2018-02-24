@@ -61,6 +61,11 @@ public class SysFlowInfoServiceImpl implements SysFlowInfoService {
         return this.sysFlowInfoDao.querySysFlowInfoList(t);
     }
 
+    @Override
+    public List<SysFlowInfo> querySysFlowInfoListForName(SysFlowInfo t) {
+        return this.sysFlowInfoDao.selectSysFlowInfoListForName(t);
+    }
+
 
     @Override
     @ILog(operationType = "createFlowCode",operationName = "createFlowCode")

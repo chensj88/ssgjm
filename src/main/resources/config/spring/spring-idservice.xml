@@ -225,4 +225,33 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
+
+    <!--流程问题编码-->
+    <bean id="sysFlowQuestionCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="QUESTION_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="WN-QS-{######}" />
+    </bean>
+    <!--流程问题ID-->
+    <bean id="sysFlowQuestionIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="QUESTION_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--流程问题答案编码-->
+    <bean id="sysFlowAnswerCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="ANSWER_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="WN-AS-{########}" />
+    </bean>
+    <!--流程问题答案ID-->
+    <bean id="sysFlowAnswerIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="ANSWER_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
 </beans>

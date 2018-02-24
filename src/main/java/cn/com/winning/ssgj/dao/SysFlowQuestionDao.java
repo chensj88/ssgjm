@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.dao;
 import cn.com.winning.ssgj.domain.SysFlowQuestion;
 import cn.com.winning.ssgj.dao.EntityDao;
 
+import java.util.List;
+
 /**
  *
  *
@@ -11,4 +13,6 @@ import cn.com.winning.ssgj.dao.EntityDao;
  */
 public interface SysFlowQuestionDao extends EntityDao<SysFlowQuestion> {
 
+    Integer selectFlowQuestionPageCount(SysFlowQuestion question);
+    List<SysFlowQuestion> selectFlowQuestionPageList(SysFlowQuestion question);
 }

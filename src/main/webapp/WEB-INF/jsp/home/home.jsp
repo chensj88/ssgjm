@@ -540,26 +540,8 @@
 <script src="<%=basePath%>resources/assets/js/ace-elements.min.js"></script>
 <script src="<%=basePath%>resources/assets/js/ace.min.js"></script>
 <!-- inline scripts related to this page -->
-<script type="text/javascript">
-    //首页加载方法 = 定义全局左边树JSON字符串
-    /*var _menus;
-    var flag = 0;
-    var _context_session_value = "JSESSIONID=${pageContext.request['session']['id']};Path=${pageContext.request['contextPath']}";
-    $(function() {
-        if('${needDialog}' === 'true'){
-            selectBook();
-        } else if('${needDialog}' === 'false'){
-            init("${sessionScope.bookInfo.book_code}");
-        }
-    });*/
-</script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/index/index.js"></script>
-<%--<script type="text/javascript">--%>
-    <%--$(function () {--%>
-        <%--console.log(<%=request.getSession().getAttribute("user") %>);--%>
-    <%--});
-</script>--%>
 </body>
 </html>
 

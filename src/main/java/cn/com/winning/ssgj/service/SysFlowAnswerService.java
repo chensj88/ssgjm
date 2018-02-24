@@ -26,4 +26,5 @@ public interface SysFlowAnswerService {
 
     List<SysFlowAnswer> getSysFlowAnswerPaginatedList(SysFlowAnswer t);
 
+    void createSysFlowAnswer(String info,Long quesId);
 }

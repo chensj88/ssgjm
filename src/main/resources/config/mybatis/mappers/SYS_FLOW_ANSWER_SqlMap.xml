@@ -5,10 +5,11 @@
     <resultMap id="sysFlowAnswerResultForList" type="sysFlowAnswer">
         <result column="ID" property="id" jdbcType="BIGINT"/>
         <result column="QUES_ID" property="quesId" jdbcType="BIGINT"/>
-        <result column="ANSWER_PID" property="answerPid" jdbcType="INTEGER"/>
+        <result column="ANSWER_PID" property="answerPid" jdbcType="BIGINT"/>
         <result column="ANSWER_CODE" property="answerCode" jdbcType="VARCHAR"/>
         <result column="ANSWER_CONTENT" property="answerContent" jdbcType="VARCHAR"/>
-        <result column="QUES_DESC" property="quesDesc" jdbcType="LONGVARCHAR"/>
+        <result column="ANSWER_TYPE" property="answerType" jdbcType="INTEGER"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
         <result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT"/>
         <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -22,9 +23,9 @@
         <if test="(answerPid != null and answerPid != '') or answerPid == 0">and t.ANSWER_PID = #{answerPid}</if>
         <if test="answerCode != null and answerCode != ''">and t.ANSWER_CODE = #{answerCode}</if>
         <if test="answerContent != null and answerContent != ''">and t.ANSWER_CONTENT = #{answerContent}</if>
-        <if test="quesDesc != null and quesDesc != ''">and t.QUES_DESC = #{quesDesc}</if>
-        <if test="(lastUpdator != null and lastUpdator != '')">and t.LAST_UPDATOR = #{lastUpdator}
-        </if>
+        <if test="(answerType != null and answerType != '') ">and t.ANSWER_TYPE = #{answerType}</if>
+        <if test="(status != null ) ">and t.STATUS = #{status}</if>
+        <if test="(lastUpdator != null and lastUpdator != '')">and t.LAST_UPDATOR = #{lastUpdator}</if>
         <if test="lastUpdateTime != null ">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
     </sql>
 
@@ -64,7 +65,8 @@
             <if test="(answerPid != null and answerPid != '') or answerPid == 0">ANSWER_PID,</if>
             <if test="answerCode != null and answerCode != ''">ANSWER_CODE,</if>
             <if test="answerContent != null and answerContent != ''">ANSWER_CONTENT,</if>
-            <if test="quesDesc != null and quesDesc != ''">QUES_DESC,</if>
+            <if test="(answerType != null and answerType != '')">ANSWER_TYPE,</if>
+            <if test="(status != null ) ">STATUS,</if>
             <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR,</if>
             <if test="lastUpdateTime != null ">LAST_UPDATE_TIME,</if>
         </trim>
@@ -72,10 +74,11 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
             <if test="(quesId != null and quesId != '') or quesId == 0">#{quesId, jdbcType=BIGINT},</if>
-            <if test="(answerPid != null and answerPid != '') or answerPid == 0">#{answerPid, jdbcType=INTEGER},</if>
+            <if test="(answerPid != null and answerPid != '') or answerPid == 0">#{answerPid, jdbcType=BIGINT},</if>
             <if test="answerCode != null and answerCode != ''">#{answerCode, jdbcType=VARCHAR},</if>
             <if test="answerContent != null and answerContent != ''">#{answerContent, jdbcType=VARCHAR},</if>
-            <if test="quesDesc != null and quesDesc != ''">#{quesDesc, jdbcType=LONGVARCHAR},</if>
+            <if test="(answerType != null and answerType != '') ">#{answerType, jdbcType=INTEGER},</if>
+            <if test="(status != null ) ">#{status, jdbcType=INTEGER},</if>
             <if test="(lastUpdator != null and lastUpdator != '')">
                 #{lastUpdator, jdbcType=BIGINT},
             </if>
@@ -89,16 +92,16 @@
             <trim suffixOverrides=",">
                 <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
                 <if test="(quesId != null and quesId != '') or quesId == 0">QUES_ID = #{quesId, jdbcType=BIGINT},</if>
-                <if test="(answerPid != null and answerPid != '') or answerPid == 0">ANSWER_PID =
-                    #{answerPid, jdbcType=INTEGER},
+                <if test="(answerPid != null and answerPid != '') or answerPid == 0">ANSWER_PID = #{answerPid, jdbcType=BIGINT},
                 </if>
                 <if test="answerCode != null and answerCode != ''">ANSWER_CODE = #{answerCode, jdbcType=VARCHAR},</if>
                 <if test="answerContent != null and answerContent != ''">ANSWER_CONTENT =
                     #{answerContent, jdbcType=VARCHAR},
                 </if>
-                <if test="quesDesc != null and quesDesc != ''">QUES_DESC = #{quesDesc, jdbcType=LONGVARCHAR},</if>
-                <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR =
-                    #{lastUpdator, jdbcType=BIGINT},
+                <if test="(answerType != null and answerType != '')">ANSWER_TYPE = #{answerType, jdbcType=INTEGER},
+                </if>
+                <if test="(status != null ) ">STATUS = #{status, jdbcType=INTEGER},</if>
+                <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR =#{lastUpdator, jdbcType=BIGINT},
                 </if>
                 <if test="lastUpdateTime != null ">LAST_UPDATE_TIME =
                     #{lastUpdateTime, jdbcType=TIMESTAMP},
@@ -106,23 +109,15 @@
             </trim>
         </set>
         <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
-            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
-                ID in
-                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
-            </if>
+            <if test="(status != null ) "> and STATUS = #{status, jdbcType=INTEGER}</if>
+            <if test="(quesId != null and quesId != '') "> and QUES_ID = #{quesId, jdbcType=BIGINT}</if>
         </where>
     </update>
 
     <delete id="deleteSysFlowAnswer" parameterType="SysFlowAnswer">
-        delete from SYS_FLOW_ANSWER
-        <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
-            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
-                ID in
-                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
-            </if>
-        </where>
+        delete from SYS_FLOW_ANSWER t
+        where 1 = 1
+        <include refid="sf-sysFlowAnswer"/>
     </delete>
 
 </mapper>
