@@ -1,10 +1,13 @@
 package cn.com.winning.ssgj.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
+import cn.com.winning.ssgj.domain.expand.FlotDataInfo;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.SysUserInfoDao;
@@ -63,6 +66,21 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
     @Override
     public List<SysUserInfo> getSysUserInfoQueryPaginatedList(SysUserInfo t) {
         return this.sysUserInfoDao.selectSysUserInfoQueryPaginatedList(t);
+    }
+
+    @Override
+    public List<FlotDataInfo> countUserInfoByType() {
+        List<FlotDataInfo> userinfos = this.sysUserInfoDao.countUserInfoByType();
+        for (FlotDataInfo userinfo : userinfos) {
+            if (Constants.User.USER_TYPE_ADMIN_LABEL.equals(userinfo.getLabel())){
+                userinfo.setColor("#DA5430");
+            }else if(Constants.User.USER_TYPE_COMPANY_LABEL.equals(userinfo.getLabel())){
+                userinfo.setColor("#68BC31");
+            }else if(Constants.User.USER_TYPE_HOSPITAL_LABEL.equals(userinfo.getLabel())){
+                userinfo.setColor("#2091CF");
+            }
+        }
+        return userinfos;
     }
 
 }

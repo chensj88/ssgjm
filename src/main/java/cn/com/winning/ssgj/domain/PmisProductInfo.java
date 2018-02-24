@@ -80,7 +80,11 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
 	 * @val 产品等级
 	 */
 	private String cpdj;
-	
+
+	/**
+	 * @val 产品条线名称
+	 */
+	private String cptxName;
 	/**
 	 * @val 产品条线
 	 */
@@ -436,6 +440,18 @@ public class PmisProductInfo extends BaseDomain implements Serializable {
 	 */
 	public void setZt(Integer zt) {
 		this.zt = zt;
+	}
+	/**
+	 * @val 产品条线名称
+	 */
+	public String getCptxName() {
+		return cptxName;
+	}
+	/**
+	 * @val 产品条线名称
+	 */
+	public void setCptxName(String cptxName) {
+		this.cptxName = cptxName;
 	}
 	
 }

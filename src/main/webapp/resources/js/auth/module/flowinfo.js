@@ -159,6 +159,7 @@ $(function () {
             type: "post",
             dataType: 'json',
             async: false,
+            cache: false,
             success: function (result) {
                 var _result = eval(result);
                 if (_result.status == Common.SUCCESS) {

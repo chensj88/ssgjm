@@ -146,6 +146,8 @@ $(function () {
         $("input[type=reset]").trigger("click");
         $('#userId').val('');
         $('#password').val('');
+        $('#userForm').bootstrapValidator("destroy");
+        validateForm();
         $('#userModal').modal('show');
     });
     /**
@@ -198,8 +200,11 @@ $(function () {
                 var _result = eval(result);
                 if (_result.status == Common.SUCCESS) {
                     $('#userForm').initForm(_result.data);
+                    $('#id').val(_result.data.id);
                     $('#orgid').val(_result.data.orgid);
                     $('#password').val(_result.data.password);
+                    $('#userForm').bootstrapValidator("destroy");
+                    validateForm();
                     $('#userModal').modal('show');
                 }
 
@@ -224,12 +229,12 @@ $(function () {
                 dataType: 'json',
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
-                        toastr.success('提交数据成功');
+                        Ewin.alert('提交数据成功');
                         $("#userTable").bootstrapTable('refresh');
                     }
                 },
                 error: function () {
-                    toastr.error('Error');
+                    Ewin.alert('Error');
                 },
                 complete: function () {
                 }
@@ -287,11 +292,13 @@ $(function () {
             bootstrapValidator.validate();
         }
         var url = '';
+        debugger
         if ($('#orgid').val().length == 0) {
             url = Common.getRootPath() + '/admin/user/add.do';
         } else {
             url = Common.getRootPath() + '/admin/user/update.do';
         }
+        console.log($("#userForm").serialize());
         if (bootstrapValidator.isValid()) {
             $.ajax({
                 url: url,
@@ -299,86 +306,93 @@ $(function () {
                 type: "post",
                 dataType: 'json',
                 async: false,
+                cache: false,
                 success: function (result) {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
                         $('#userModal').modal('hide');
                         $("#userTable").bootstrapTable('refresh');
                     }
-
+                },
+                error :function (msg) {
+                    alert(msg.statusText);
+                    console.log(msg);
                 }
             });
         }
     });
 
+    function validateForm() {
+        $('#userForm').bootstrapValidator({
+            message: '输入的值不符合规格',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                userid: {
+                    message: '登录名验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '登录名不能为空'
+                        },
+                        stringLength: {
+                            min: 2,
+                            max: 18,
+                            message: '登录名长度必须在2到18位之间'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_]+$/,
+                            message: '登录名只能包含大写、小写、数字和下划线'
+                        }
+                    }
+                },
+                yhmc: {
+                    validators: {
+                        notEmpty: {
+                            message: '用户名称不能为空'
+                        },
+                        stringLength: {
+                            min: 2,
+                            max: 10,
+                            message: '用户名称长度必须在2到10位之间'
+                        }
+                    }
+                },
+                mobile : {
+                    validators: {
+                        notEmpty: {
+                            message: '手机号码不能为空'
+                        },
+                        stringLength: {
+                            min: 11,
+                            max: 11,
+                            message: '手机号码长度必须为11位'
+                        },
+                        regexp: {
+                            regexp: /^1[3|4|5|8][0-9]\d{4,8}$/,
+                            message: '手机号码只能包含数字'
+                        }
+                    }
+                },
+                email: {
+                    validators: {
+                        notEmpty: {
+                            message: '邮箱地址不能为空'
+                        },
+                        emailAddress: {
+                            message: '邮箱地址格式有误'
+                        }
+                    }
+                }
+            }
+        });
+    }
 
     //表单验证
     //this._changeEvent = (ieVersion === 9 || !('oninput' in el)) ? 'keyup' : 'input'; 源码修改
     //this._changeEvent = (ieVersion === 9 || !('onblur' in el)) ? 'keyup' : 'blur';
-    $('#userForm').bootstrapValidator({
-        message: '输入的值不符合规格',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            userid: {
-                message: '登录名验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '登录名不能为空'
-                    },
-                    stringLength: {
-                        min: 2,
-                        max: 18,
-                        message: '登录名长度必须在2到18位之间'
-                    },
-                    regexp: {
-                        regexp: /^[a-zA-Z0-9_]+$/,
-                        message: '登录名只能包含大写、小写、数字和下划线'
-                    }
-                }
-            },
-            yhmc: {
-                validators: {
-                    notEmpty: {
-                        message: '用户名称不能为空'
-                    },
-                    stringLength: {
-                        min: 2,
-                        max: 10,
-                        message: '用户名称长度必须在2到10位之间'
-                    }
-                }
-            },
-            mobile : {
-                validators: {
-                    notEmpty: {
-                        message: '手机号码不能为空'
-                    },
-                    stringLength: {
-                        min: 11,
-                        max: 11,
-                        message: '手机号码长度必须为11位'
-                    },
-                    regexp: {
-                        regexp: /^1[3|4|5|8][0-9]\d{4,8}$/,
-                        message: '手机号码只能包含数字'
-                    }
-                }
-            },
-            email: {
-                validators: {
-                    notEmpty: {
-                        message: '邮箱地址不能为空'
-                    },
-                    emailAddress: {
-                        message: '邮箱地址格式有误'
-                    }
-                }
-            }
-        }
-    });
+
 
 });

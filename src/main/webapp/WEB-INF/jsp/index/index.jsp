@@ -28,6 +28,11 @@
     <script src="<%=basePath%>resources/assets/js/html5shiv.js"></script>
     <script src="<%=basePath%>resources/assets/js/respond.min.js"></script>
     <![endif]-->
+    <style type="text/css">
+        .main-content_fixed {
+            margin-left: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -39,14 +44,14 @@
     </script>
 
     <div class="main-container-inner">
-        <div class="main-content">
-             <div class="page-content">
+        <div class="main-content main-content_fixed" >
+            <div class="page-content">
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="row">
-                            <div class="space-6"></div>
-
-                            <div class="col-sm-7 infobox-container">
+                          <%--  <div class="space-6"></div>
+--%>
+                            <%--<div class="col-sm-7 infobox-container">
                                 <div class="infobox infobox-green  ">
                                     <div class="infobox-icon">
                                         <i class="icon-comments"></i>
@@ -167,19 +172,19 @@
                                         <div class="infobox-content">1,205</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>--%>
 
                             <div class="vspace-sm"></div>
 
-                            <div class="col-sm-5">
+                            <div class="col-sm-6">
                                 <div class="widget-box">
                                     <div class="widget-header widget-header-flat widget-header-small">
                                         <h5>
                                             <i class="icon-signal"></i>
-                                            访问来源
+                                            用户来源信息
                                         </h5>
 
-                                        <div class="widget-toolbar no-border">
+                                        <%--<div class="widget-toolbar no-border">
                                             <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown">
                                                 本周
                                                 <i class="icon-angle-down icon-on-right bigger-110"></i>
@@ -214,7 +219,7 @@
                                                     </a>
                                                 </li>
                                             </ul>
-                                        </div>
+                                        </div>--%>
                                     </div>
 
                                     <div class="widget-body">
@@ -223,30 +228,8 @@
 
                                             <div class="hr hr8 hr-double"></div>
 
-                                            <div class="clearfix">
-                                                <div class="grid3">
-															<span class="grey">
-																<i class="icon-facebook-sign icon-2x blue"></i>
-																&nbsp; likes
-															</span>
-                                                    <h4 class="bigger pull-right">1,255</h4>
-                                                </div>
+                                            <div class="clearfix" id="userContent">
 
-                                                <div class="grid3">
-															<span class="grey">
-																<i class="icon-twitter-sign icon-2x purple"></i>
-																&nbsp; tweets
-															</span>
-                                                    <h4 class="bigger pull-right">941</h4>
-                                                </div>
-
-                                                <div class="grid3">
-															<span class="grey">
-																<i class="icon-pinterest-sign icon-2x red"></i>
-																&nbsp; pins
-															</span>
-                                                    <h4 class="bigger pull-right">1,050</h4>
-                                                </div>
                                             </div>
                                         </div><!-- /widget-main -->
                                     </div><!-- /widget-body -->
@@ -401,10 +384,9 @@
                                 </div><!-- /widget-box -->
                             </div>
                         </div>
+                       <%-- <div class="hr hr32 hr-dotted"></div>--%>
 
-                        <div class="hr hr32 hr-dotted"></div>
-
-                        <div class="row">
+                       <%-- <div class="row">
                             <div class="col-sm-6">
                                 <div class="widget-box transparent" id="recent-box">
                                     <div class="widget-header">
@@ -1149,18 +1131,18 @@
                                     </div><!-- /widget-body -->
                                 </div><!-- /widget-box -->
                             </div><!-- /span -->
-                        </div><!-- /row -->
+                        </div>--%><!-- /row -->
 
                         <!-- PAGE CONTENT ENDS -->
                     </div><!-- /.col -->
                 </div><!-- /.row -->
-            </div><!-- /.page-content -->
+           </div><!-- /.page-content -->
         </div><!-- /.main-content -->
     </div><!-- /.main-container-inner -->
 
-    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+   <%-- <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
         <i class="icon-double-angle-up icon-only bigger-110"></i>
-    </a>
+    </a>--%>
 </div><!-- /.main-container -->
 <!--[if !IE]> -->
 <script src="<%=basePath%>resources/bootstrap/js/jquery-2.2.4.min.js"></script>
@@ -1199,39 +1181,10 @@
 
 <script src="<%=basePath%>resources/assets/js/ace-elements.min.js"></script>
 <script src="<%=basePath%>resources/assets/js/ace.min.js"></script>
+<script src="<%=basePath%>resources/js/common.js"></script>
 
 <script>
     $(function () {
-        $('.easy-pie-chart.percentage').each(function(){
-            var $box = $(this).closest('.infobox');
-            var barColor = $(this).data('color') || (!$box.hasClass('infobox-dark') ? $box.css('color') : 'rgba(255,255,255,0.95)');
-            var trackColor = barColor == 'rgba(255,255,255,0.95)' ? 'rgba(255,255,255,0.25)' : '#E2E2E2';
-            var size = parseInt($(this).data('size')) || 50;
-            $(this).easyPieChart({
-                barColor: barColor,
-                trackColor: trackColor,
-                scaleColor: false,
-                lineCap: 'butt',
-                lineWidth: parseInt(size/10),
-                animate: /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase()) ? false : 1000,
-                size: size
-            });
-        })
-
-        $('.sparkline').each(function(){
-            var $box = $(this).closest('.infobox');
-            var barColor = !$box.hasClass('infobox-dark') ? $box.css('color') : '#FFF';
-            $(this).sparkline('html', {tagValuesAttribute:'data-values', type: 'bar', barColor: barColor , chartRangeMin:$(this).data('min') || 0} );
-        });
-
-        var placeholder = $('#piechart-placeholder').css({'width':'90%' , 'min-height':'150px'});
-        var data = [
-            { label: "social networks",  data: 38.7, color: "#68BC31"},
-            { label: "search engines",  data: 24.5, color: "#2091CF"},
-            { label: "ad campaigns",  data: 8.2, color: "#AF4E96"},
-            { label: "direct traffic",  data: 18.6, color: "#DA5430"},
-            { label: "other",  data: 10, color: "#FEE074"}
-        ]
         function drawPieChart(placeholder, data, position) {
             $.plot(placeholder, data, {
                 series: {
@@ -1261,14 +1214,41 @@
                 }
             })
         }
-        drawPieChart(placeholder, data);
+        var data = [];
+        var placeholder = $('#piechart-placeholder').css({'width':'90%' , 'min-height':'150px'});
+        $.ajax({
+            url : Common.getRootPath() + '/admin/user/count.do',
+            type:'post',
+            cache : false,
+            dataType: 'json',
+            async: false,
+            success :function (result) {
+                var _result = eval(result);
+                if(_result.status == Common.SUCCESS){
+                    data = _result.data;
+                    drawPieChart(placeholder,_result.data);
+                    placeholder.data('chart', _result.data);
+                    placeholder.data('draw', drawPieChart);
+                }
+            }
+        });
 
-        /**
-        we saved the drawing function and the data to redraw with different position later when switching to RTL mode dynamically
-        so that's not needed actually.
-        */
-        placeholder.data('chart', data);
-        placeholder.data('draw', drawPieChart);
+        $.each(data,function (index,value,array) {
+         var content =
+             "<div class=\"grid3\">\n" +
+             "                <span class=\"grey\">\n" +
+             "                <i class=\"icon-facebook-sign icon-2x blue\"></i>\n" +
+             "                &nbsp; "+value.label+"\n" +
+             "            </span>\n" +
+             "            <h4 class=\"bigger pull-right\">"+value.data+"</h4>\n" +
+             "            </div>";
+            $('#userContent').append(content);
+            /*if(index == cLength - 1){
+                bdids += value.id;
+            }else{
+                bdids += value.id +',';
+            }*/
+        });
 
 
 

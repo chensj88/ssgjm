@@ -347,7 +347,7 @@
             </div><!-- #sidebar-shortcuts -->
 
             <ul class="nav nav-list" id="navlist">
-                <li class="active">
+                <li class="active" id="index">
                     <a href="#">
                         <i class="icon-dashboard"></i>
                         <span class="menu-text"> 控制台 </span>
