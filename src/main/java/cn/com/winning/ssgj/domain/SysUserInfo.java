@@ -64,11 +64,11 @@ public class SysUserInfo extends BaseDomain implements Serializable {
 	/**
 	 * @val 隶属组织
 	 */
-	private long orgid;
+	private Long orgid;
 	/**
 	 * @val 隶属公司
 	 */
-	private long ssgs;
+	private Long ssgs;
 
 	/**
 	 * @val 类型：0 医院成员 1公司成员

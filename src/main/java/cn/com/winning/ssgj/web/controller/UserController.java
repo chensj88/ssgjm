@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.domain.SysUserInfo;
+import cn.com.winning.ssgj.domain.expand.FlotDataInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.slf4j.Logger;
@@ -32,7 +33,7 @@ import cn.com.winning.ssgj.base.helper.SSGJHelper;
  * @date 2018-01-04
  */
 @Controller
-@RequestMapping("/admin/user")
+@RequestMapping(value = "/admin/user")
 public class UserController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -48,7 +49,7 @@ public class UserController extends BaseController {
      * @param row
      * @return
      */
-	@RequestMapping("/list.do")
+	@RequestMapping(value = "/list.do")
 	@ResponseBody
 	public Map<String, Object> list(Row row,SysUserInfo userInfo) {
         System.out.println(row);
@@ -67,7 +68,7 @@ public class UserController extends BaseController {
      * @param user
      * @return
      */
-	@RequestMapping("/getById.do")
+	@RequestMapping(value = "/getById.do")
 	@ResponseBody
 	public  Map<String, Object> getUserByUserId(SysUserInfo user){
 		user =  super.getFacade().getSysUserInfoService().getSysUserInfo(user);
@@ -81,7 +82,7 @@ public class UserController extends BaseController {
      * @param user
      * @return
      */
-	@RequestMapping("/deleteById.do")
+	@RequestMapping(value = "/deleteById.do")
 	@ResponseBody
 	@Transactional
 	public  Map<String, Object> deleteUserById(SysUserInfo user) {
@@ -93,19 +94,20 @@ public class UserController extends BaseController {
 	}
 	/**
      * 添加用户
-     * @param user
      * @return
      */
-	@RequestMapping("/add.do")
+	@RequestMapping(value = "/add.do")
 	@ResponseBody
 	@Transactional
 	public Map<String, Object> addUser(SysUserInfo user)  {
+		/*System.out.println(email);*/
 		user.setId(ssgjHelper.createUserId());
 		//医院用户需要新建时候需要重置密码
 		if(Constants.User.USER_TYPE_HOSPITAL.equals(user.getUserType())){
 			user.setPassword(MD5.stringMD5(user.getUserid()));
 		}
-        getFacade().getSysUserInfoService().createSysUserInfo(user);
+		user.setName(user.getYhmc()+"("+user.getUserid()+")");
+        super.getFacade().getSysUserInfoService().createSysUserInfo(user);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", Constants.SUCCESS);
 		return map;
@@ -115,7 +117,7 @@ public class UserController extends BaseController {
      * @param user
      * @return
      */
-	@RequestMapping("/update.do")
+	@RequestMapping(value = "/update.do")
 	@ResponseBody
 	@Transactional
 	@ILog(operationName="修改用户信息",operationType="updateUser")
@@ -124,5 +126,16 @@ public class UserController extends BaseController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", Constants.SUCCESS);
 		return map;
+	}
+	@RequestMapping(value = "/count.do")
+	@ResponseBody
+	public Map<String,Object> countUserInfo(){
+
+		List<FlotDataInfo> flotDataInfos = super.getFacade().getSysUserInfoService().countUserInfoByType();
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("status", Constants.SUCCESS);
+		result.put("data",flotDataInfos);
+		return result;
+
 	}
 }

@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.dao.mybatis;
 
+import cn.com.winning.ssgj.domain.expand.FlotDataInfo;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.SysUserInfoDao;
@@ -7,6 +8,7 @@ import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -27,5 +29,11 @@ public class SysUserInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysUserInfo> i
     public List<SysUserInfo> selectSysUserInfoQueryPaginatedList(SysUserInfo t) {
         String statement = "selectSysUserInfoQueryPaginatedList";
         return super.getSqlSession().selectList(statement, t);
+    }
+
+    @Override
+    public List<FlotDataInfo> countUserInfoByType() {
+        String statement = "countUserInfoByType";
+        return super.getSqlSession().selectList(statement);
     }
 }

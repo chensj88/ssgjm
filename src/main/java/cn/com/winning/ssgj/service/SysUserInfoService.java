@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.service;
 import java.util.List;
 
 import cn.com.winning.ssgj.domain.SysUserInfo;
+import cn.com.winning.ssgj.domain.expand.FlotDataInfo;
 
 /**
  *
@@ -29,4 +30,6 @@ public interface SysUserInfoService {
     Integer getSysUserInfoQueryCount(SysUserInfo t);
 
     List<SysUserInfo> getSysUserInfoQueryPaginatedList(SysUserInfo t);
+
+    List<FlotDataInfo> countUserInfoByType();
 }
