@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.service;
 import java.util.List;
 
 import cn.com.winning.ssgj.domain.SysRoleInfo;
+import cn.com.winning.ssgj.domain.expand.NodeTree;
 
 /**
  *
@@ -22,8 +23,15 @@ public interface SysRoleInfoService {
 
     List<SysRoleInfo> getSysRoleInfoList(SysRoleInfo t);
 
+    List<NodeTree> getRoleInfoTree(String roleName);
+
     Integer getSysRoleInfoCount(SysRoleInfo t);
 
     List<SysRoleInfo> getSysRoleInfoPaginatedList(SysRoleInfo t);
+
+
+    Integer getSysRoleInfoCountForName(SysRoleInfo t);
+
+    List<SysRoleInfo> getSysRoleInfoPaginatedListForName(SysRoleInfo t);
 
 }

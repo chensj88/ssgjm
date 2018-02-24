@@ -1,39 +1,23 @@
 package cn.com.winning.ssgj.web.controller;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
-import cn.com.winning.ssgj.domain.support.Row;
-import org.apache.commons.beanutils.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-
-import cn.com.winning.ssgj.base.annoation.ILog;
-import cn.com.winning.ssgj.base.util.RequestUtil;
-import cn.com.winning.ssgj.base.Constants;
-import cn.com.winning.ssgj.base.helper.SSGJHelper;
-
 @Controller
-@RequestMapping("/admin/func")
-public class FunctionController {
+@RequestMapping("/admin/module")
+public class SysModuleController {
 
 	@Autowired
 	private SSGJHelper ssgjHelper;
 
-	@RequestMapping(value = "/funcInfo.do")
+	@RequestMapping(value = "/moduleInfo.do")
 	public String getFuncInfoPage(HttpServletRequest request, Model model) {
-		return "auth/user/functioninfo";
+		return "auth/user/modleinfo";
 	}
 //	@RequestMapping("/list.do")
 //	@ResponseBody

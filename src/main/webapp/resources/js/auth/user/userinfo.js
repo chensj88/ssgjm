@@ -32,6 +32,35 @@ $(function () {
         };
     }
 
+    function initTreeView() {
+        $.ajax({
+            type: "post",
+            url: Common.getRootPath() + "/admin/role/tree.do",
+            dataType: "json",
+            data:{'roleName':$('#roleName').val()},
+            cache : false,
+            async: false,
+            success: function (result) {
+                $('#tree').treeview({
+                    data: result.data,         // 数据源
+                    showCheckbox: true,   //是否显示复选框
+                    highlightSelected: true,    //是否高亮选中
+                    icon:'',                                  //列表树节点上的图标，通常是节点左边的图标。
+                    uncheckedIcon:"",                         //设置图标为未选择状态的checkbox图标。
+                    nodeIcon:'glyphicon glyphicon-unchecked', //设置所有列表树节点上的默认图标。
+                    selectedIcon:"glyphicon glyphicon-check", //设置所有被选择的节点上的默认图标。
+                    color:"#000000",
+                    backColor:"#FFFFFF",
+                    emptyIcon: '',    //设置列表树中没有子节点的节点的图标。
+                    multiSelect: true     //多选
+                });
+            },
+            error: function () {
+                alert("树形结构加载失败！")
+            }
+        });
+
+    }
     $('#userTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/user/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
@@ -70,12 +99,12 @@ $(function () {
         columns: [{
             field: "id",
             title: "序号",
-            width: '40px',
+            width: '30px',
             align: 'center'
         }, {
             field: "userid",
             title: "登录名",
-            width: '40px',
+            width: '30px',
             align: 'center'
         }, {
             field: "yhmc",
@@ -95,12 +124,12 @@ $(function () {
         }, {
             field: 'mobile',
             title: '手机号码',
-            width: '40px',
+            width: '30px',
             align: 'center'
         }, {
             field: 'status',
             title: '允许登陆',
-            width: '40px',
+            width: '30px',
             formatter: function (value) {
                 if (value == '1') {
                     return '是';
@@ -112,7 +141,7 @@ $(function () {
         }, {
             field: 'userType',
             title: '用户类型',
-            width: '40px',
+            width: '30px',
             formatter: function (value) {
                 if (value == '1') {
                     return '公司';
@@ -127,16 +156,19 @@ $(function () {
             title: '操作',
             field: 'id',
             align: 'center',
-            width: '40px',
+            width: '60px',
             formatter: function (value, row, index) {
-                var e = '<a href="####" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.userId + '">编辑</a> ';
-                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.userId + '">删除</a> ';
-                return e + d;
+                var e = '<a href="####" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.id + '">编辑</a> ';
+                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
+                var f = '<a href="####" class="btn btn-success btn-xs" name="tree" mce_href="#" aid="' + row.id + '">配置角色</a> ';
+                return e + d +f;
             }
         }],
     });
 
     $('#queryUser').on('click',SearchData);
+
+    $('#queryRole').on('click',initTreeView);
 
     /**
      * 新增用户
@@ -144,44 +176,12 @@ $(function () {
      */
     $('#addUser').on('click', function () {
         $("input[type=reset]").trigger("click");
-        $('#userId').val('');
+        $('#id').val('');
+        $('#orgid').val('');
         $('#password').val('');
         $('#userForm').bootstrapValidator("destroy");
         validateForm();
         $('#userModal').modal('show');
-    });
-    /**
-     * 修改用户
-     * 只能修改一条数据
-     */
-    $('#modifyUser').on('click', function () {
-        var arrselections = $("#userTable").bootstrapTable('getSelections');
-        if (arrselections.length > 1) {
-            Ewin.alert('只能选择一行进行编辑');
-            return;
-        }
-        if (arrselections.length <= 0) {
-            Ewin.alert('请选择有效数据');
-            return;
-        }
-        var userId = arrselections[0].id;
-        $.ajax({
-            url: Common.getRootPath() + '/admin/user/getById.do',
-            data: {'userId': userId},
-            type: "post",
-            dataType: 'json',
-            async: false,
-            success: function (result) {
-                var _result = eval(result);
-                if (_result.status == Common.SUCCESS) {
-                    $('#userForm').initForm(_result.data);
-                    $('#orgid').val(_result.data.orgid);
-                    $('#password').val(_result.data.password);
-                    $('#userModal').modal('show');
-                }
-
-            }
-        });
     });
     /**
      * 列表中按钮
@@ -192,7 +192,7 @@ $(function () {
         var userId = $(this).attr('aid');
         $.ajax({
             url: Common.getRootPath() + '/admin/user/getById.do',
-            data: {'userId': userId},
+            data: {'id': userId},
             type: "post",
             dataType: 'json',
             async: false,
@@ -207,7 +207,6 @@ $(function () {
                     validateForm();
                     $('#userModal').modal('show');
                 }
-
             }
         });
     });
@@ -240,6 +239,32 @@ $(function () {
                 }
             });
         });
+    });
+
+    $('#userTable').on('click', 'a[name="tree"]', function (e) {
+        e.preventDefault();
+        var userId = $(this).attr('aid');
+        initTreeView();
+        $.ajax({
+            type: "post",
+            url: Common.getRootPath() + "/admin/userrole/query.do",
+            dataType: "json",
+            data:{'userId':userId},
+            cache : false,
+            async: false,
+            success: function (result) {
+                if(result.status == Common.SUCCESS){
+                    $('#userIdQ').val(userId);
+                    var data = result.data;
+                    $.each(data,function (index,value,array) {
+                        $('#tree').treeview('selectNode',
+                            [ value, { silent: true }]);
+                    });
+                }
+            }
+        });
+        $('#treeModal').modal('show');
+
     });
     /**
      * 删除用户
@@ -292,7 +317,6 @@ $(function () {
             bootstrapValidator.validate();
         }
         var url = '';
-        debugger
         if ($('#orgid').val().length == 0) {
             url = Common.getRootPath() + '/admin/user/add.do';
         } else {
@@ -322,6 +346,40 @@ $(function () {
         }
     });
 
+    $('#saveUserRole').on('click',function(e){
+        //阻止默认行为
+        e.preventDefault();
+        var selectNode = $('#tree').treeview('getSelected');
+        var nodeLength = selectNode.length;
+        console.log(selectNode);
+        var userId = $('#userIdQ').val();
+        var userRole = '';
+        $.each(selectNode,function (index,value,array) {
+            if(index == nodeLength -1 ){
+                userRole += userId +','+value.nodeId;
+            }else{
+                userRole += userId +','+value.nodeId +';';
+            }
+        });
+        $.ajax({
+            url: Common.getRootPath() + '/admin/userrole/add.do',
+            data: {'idStr':userRole},
+            type: "post",
+            dataType: 'json',
+            async: false,
+            cache: false,
+            success: function (result) {
+                var _result = eval(result);
+                if (_result.status == Common.SUCCESS) {
+                    $('#treeModal').modal('hide');
+                }
+            },
+            error :function (msg) {
+                alert(msg.statusText);
+                console.log(msg);
+            }
+        });
+    });
     function validateForm() {
         $('#userForm').bootstrapValidator({
             message: '输入的值不符合规格',
@@ -390,9 +448,6 @@ $(function () {
         });
     }
 
-    //表单验证
-    //this._changeEvent = (ieVersion === 9 || !('oninput' in el)) ? 'keyup' : 'input'; 源码修改
-    //this._changeEvent = (ieVersion === 9 || !('onblur' in el)) ? 'keyup' : 'blur';
 
 
 });

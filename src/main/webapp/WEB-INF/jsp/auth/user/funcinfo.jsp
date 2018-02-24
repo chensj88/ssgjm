@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css">
     <base href="<%=basePath%>">
-    <link rel="shortcut icon" href="resources/img/logo.ico">
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
 </head>
 <body>
 <!--表格区域  -->
@@ -21,10 +21,6 @@
 <!--toolbar区域  -->
 <div class="btn-group" id="funcbtntoolbar">
     <button id="addfunc" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
-    <button id="modifyfunc" class="btn btn-default" type="button"><span class="glyphicon glyphicon-edit"></span>修改
-    </button>
-    <button id="deletefunc" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span>删除
-    </button>
 </div>
 <!--模态框  -->
 <div class="modal fade" id="funcModal" tabindex="-1" role="dialog" aria-labelledby="funcFormModal">
@@ -89,5 +85,5 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/language/zh_CN.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/toastr.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/js/auth/user/funcinfo.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/js/auth/user/moduleinfo.js"></script>
 </html>

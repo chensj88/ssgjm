@@ -121,6 +121,7 @@
 <!--[if !IE]> -->
 
 <script src="<%=basePath%>resources/assets/js/jquery-2.0.3.min.js"></script>
+<script src="<%=basePath%>resources/js/common.js"></script>
 <%--<script src="<%=basePath%>resources/assets/js/MD5.js"></script>--%>
 <script type="text/javascript">
     if("ontouchend" in document) document.write("<script src='<%=basePath%>resources/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
@@ -148,17 +149,19 @@
        }
        $.ajax({
            type: "POST",
-           url:"<%=basePath%>login/check.do",
+           url:Common.getRootPath()+"/login/check.do",
            data:{"username":username,"password":password},
            dataType:"json",
+           cache : false,
            error: function(request) {
                alert("服务端错误，或网络不稳定，本次操作被终止。");
+               console.log(request);
            },
            success: function(data) {
                if(data.status) {
                    $("#loginSub").submit();
                } else {
-                   alert("输入不正确，请重新输入");
+                   alert(data.message);
                }
            }
        });

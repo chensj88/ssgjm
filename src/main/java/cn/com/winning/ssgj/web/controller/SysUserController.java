@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.domain.SysUserInfo;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import cn.com.winning.ssgj.base.annoation.ILog;
-import cn.com.winning.ssgj.base.util.RequestUtil;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 
@@ -34,9 +32,9 @@ import cn.com.winning.ssgj.base.helper.SSGJHelper;
  */
 @Controller
 @RequestMapping(value = "/admin/user")
-public class UserController extends BaseController {
+public class SysUserController extends BaseController {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	private static final Logger logger = LoggerFactory.getLogger(SysUserController.class);
 	@Autowired
 	private SSGJHelper ssgjHelper;
 

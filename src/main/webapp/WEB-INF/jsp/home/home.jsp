@@ -1,4 +1,5 @@
 <%@ page import="cn.com.winning.ssgj.domain.SysUserInfo" %>
+<%@ page import="org.apache.shiro.SecurityUtils" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/commons/header.jsp" %>
 <!DOCTYPE html>
@@ -265,7 +266,8 @@
                         <span class="user-info">
 									<small>欢迎光临,</small>
 									<%--<%=((SysUserInfo)request.getAttribute("user")).getYhmc()%>--%>
-                                    admin
+                                   <%-- admin--%>
+                                   <%=((SysUserInfo)SecurityUtils.getSubject().getPrincipal()).getName()%>
 								</span>
 
                         <i class="icon-caret-down"></i>
@@ -289,7 +291,7 @@
                         <li class="divider"></li>
 
                         <li>
-                            <a href="#">
+                            <a href="/logout">
                                 <i class="icon-off"></i>
                                 退出
                             </a>
@@ -393,8 +395,11 @@
                     <ul class="submenu">
                         <li><a href="<%=basePath%>admin/user/userinfo.do"><i class="icon-double-angle-right"></i>用户信息</a></li>
                         <li><a href="<%=basePath%>admin/role/roleInfo.do"><i class="icon-double-angle-right"></i>角色信息</a></li>
-                        <li><a href="<%=basePath%>admin/func/funcInfo.do"><i class="icon-double-angle-right"></i>功能信息</a></li>
-                        <li><a href="<%=basePath%>admin/auth/authInfo.do"><i class="icon-double-angle-right"></i>角色权限配置</a></li>
+                        <li><a href="<%=basePath%>admin/module/moduleInfo.do"><i class="icon-double-angle-right"></i>菜单信息</a></li>
+                        <li><a href="<%=basePath%>admin/func/funcInfo.do"><i class="icon-double-angle-right"></i>功能点信息</a></li>
+                        <li><a href="<%=basePath%>admin/auth/authInfo.do"><i class="icon-double-angle-right"></i>用户角色</a></li>
+                        <li><a href="<%=basePath%>admin/auth/authInfo.do"><i class="icon-double-angle-right"></i>角色菜单</a></li>
+                        <li><a href="<%=basePath%>admin/auth/authInfo.do"><i class="icon-double-angle-right"></i>菜单功能点</a></li>
                     </ul>
                 </li>
                 <li>
@@ -411,7 +416,11 @@
                 </li>
 
                 <li>
-                    <a href="#" class="dropdown-toggle"><i class="icon-list-alt"></i><span class="menu-text"> 系统设置 </span></a>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-list-alt"></i>
+                        <span class="menu-text"> 系统设置 </span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
                     <ul class="submenu">
                         <li><a href="#"> <i class="icon-double-angle-right"></i>菜单设置</a></li>
                         <li><a href="form-wizard.html"><i class="icon-double-angle-right"></i>功能点设置</a></li>

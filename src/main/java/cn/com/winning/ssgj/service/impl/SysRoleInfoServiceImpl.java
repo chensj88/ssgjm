@@ -1,9 +1,11 @@
 package cn.com.winning.ssgj.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import cn.com.winning.ssgj.domain.expand.NodeTree;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.SysRoleInfoDao;
@@ -24,6 +26,8 @@ public class SysRoleInfoServiceImpl implements SysRoleInfoService {
 
 
     public Integer createSysRoleInfo(SysRoleInfo t) {
+        int maxOrderValue = sysRoleInfoDao.selectRoleInfoMaxOrderValue();
+        t.setOrderValue(maxOrderValue+1);
         return this.sysRoleInfoDao.insertEntity(t);
     }
 
@@ -39,6 +43,21 @@ public class SysRoleInfoServiceImpl implements SysRoleInfoService {
         return this.sysRoleInfoDao.selectEntityList(t);
     }
 
+    @Override
+    public List<NodeTree> getRoleInfoTree(String roleName) {
+        SysRoleInfo roleInfo = new SysRoleInfo();
+        roleInfo.setRoleName(roleName);
+        List<SysRoleInfo> roleInfos = this.sysRoleInfoDao.selectSysRoleInfoListForName(roleInfo);
+        List<NodeTree> roleTree = new ArrayList<NodeTree>();
+        for (SysRoleInfo info : roleInfos) {
+            NodeTree tree = new NodeTree();
+            tree.setNodeId(info.getId());
+            tree.setText(info.getRoleName());
+            roleTree.add(tree);
+        }
+        return roleTree;
+    }
+
     public int modifySysRoleInfo(SysRoleInfo t) {
         return this.sysRoleInfoDao.updateEntity(t);
     }
@@ -49,6 +68,16 @@ public class SysRoleInfoServiceImpl implements SysRoleInfoService {
 
     public List<SysRoleInfo> getSysRoleInfoPaginatedList(SysRoleInfo t) {
         return this.sysRoleInfoDao.selectEntityPaginatedList(t);
+    }
+
+    @Override
+    public Integer getSysRoleInfoCountForName(SysRoleInfo t) {
+        return this.sysRoleInfoDao.selectSysRoleInfoCountForName(t);
+    }
+
+    @Override
+    public List<SysRoleInfo> getSysRoleInfoPaginatedListForName(SysRoleInfo t) {
+        return this.sysRoleInfoDao.selectSysRoleInfoPaginatedListForName(t);
     }
 
 }

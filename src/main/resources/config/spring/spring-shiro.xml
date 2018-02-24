@@ -14,12 +14,12 @@
 						http://www.springframework.org/schema/tx/spring-tx.xsd
 	">	
 		<!-- 退出时清除缓存 -->
-		<bean id="logoutFilter" class="com.scwn.asoftr.interceptor.shiro.SystemLogoutFilter">  
+		<!--<bean id="logoutFilter" class="com.scwn.asoftr.interceptor.shiro.SystemLogoutFilter">
 	      <property name="redirectUrl" value="/toIndexPage"/>  
-	    </bean>  
+	    </bean>  -->
 	    <!-- 安全管理器 -->
 		<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-			<property name="realm" ref="ShiroRealm" />
+			<property name="realm" ref="shiroRealm" />
 		</bean>
 		
 		<!-- 項目自定义的Realm -->
@@ -29,21 +29,22 @@
 		<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 			<property name="securityManager" ref="securityManager" />
 			<!-- 出现错误之后的跳转页面 -->
-			<property name="loginUrl" value="/toLoginPage" />
+			<property name="loginUrl" value="/login/login.do" />
 			<!-- 验证成功跳转页面 -->
-			<property name="successUrl" value="/" />
+			<property name="successUrl" value="/home/home.do" />
 			 <!-- 认证失败之后跳转的页面 -->
-			<property name="unauthorizedUrl" value="/toLoginPage" />
+			<property name="unauthorizedUrl" value="/login/login.do" />
 			<!-- 配置shiro里边需要使用到的过滤器 -->
-			<property name="filters">  
+			<!--<property name="filters">
 	           <map>  
 	               <entry key="logout" value-ref="logoutFilter"/>  
 	           </map>  
-	       	</property>  
+	       	</property>  -->
 	        <!-- 配置需要拦截处理的请求 -->
 			<property name="filterChainDefinitions">
 				<value>
-				/login			            = anon
+				/login/**   	            = anon
+				/resources/**               = anon
 				/admin/**			        = anon
 				/css/** 			        = anon
 				/font/** 			        = anon
