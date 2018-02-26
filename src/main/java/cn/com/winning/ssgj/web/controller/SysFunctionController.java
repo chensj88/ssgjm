@@ -2,16 +2,29 @@ package cn.com.winning.ssgj.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.annoation.ILog;
+import cn.com.winning.ssgj.domain.SysFun;
+import cn.com.winning.ssgj.domain.expand.NodeTree;
+import cn.com.winning.ssgj.domain.support.Row;
+import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin/func")
-public class SysFunctionController {
+public class SysFunctionController extends BaseController{
 
 	@Autowired
 	private SSGJHelper ssgjHelper;
@@ -20,100 +33,72 @@ public class SysFunctionController {
 	public String getFuncInfoPage(HttpServletRequest request, Model model) {
 		return "auth/user/funcinfo";
 	}
-//	@RequestMapping("/list.do")
-//	@ResponseBody
-//	@ILog(operationName = "功能查询列表", operationType = "list")
-//	public Map<String, Object> listFunction(Row row) {
-//		Map<String, Object> params = RequestUtil.getRequestParams(request);
-//		String sortColumn = params.get("sort").toString();
-//		String orderType = params.get("sortOrder").toString();
-//		int pageNo = Integer.valueOf(params.get("page").toString());
-//		int rows = Integer.valueOf(params.get("rows").toString());
-//		PageHelper.startPage(pageNo, rows);
-//		PageInfo<SysFunction> pageInfo = new PageInfo<SysFunction>();
-//		sysFunctionServiceImpl.findAllFunctionByPage(pageInfo);
-//		Map<String, Object> result = new HashMap<String, Object>();
-//		result.put("total", pageInfo.getTotal());
-//		result.put("rows", pageInfo.getList());
-//		result.put("status", Constants.SUCCESS);
-//		return result;
-//	}
-//
-//
-//	@RequestMapping("/add.do")
-//	@ResponseBody
-//	@Transactional
-//	@ILog(operationName = "添加新的功能", operationType = "add")
-//	public Map<String, Object> addFunction(HttpServletRequest request) throws IllegalAccessException, InvocationTargetException {
-//		Map<String, Object> params = RequestUtil.getRequestParams(request);
-//		SysFunction function = new SysFunction();
-//		BeanUtils.copyProperties(function, params);
-//		function.setFuncId(Integer.valueOf(ssgjHelper.getFuncId()+""));
-//		function.setLastUpdateTime(new Date());
-//		//TODO 添加操作人
-//		sysFunctionServiceImpl.addFunction(function);
-//		Map<String, Object> result = new HashMap<String, Object>();
-//		result.put("status", Constants.SUCCESS);
-//		return result;
-//	}
-//
-//	@RequestMapping("/update.do")
-//	@ResponseBody
-//	@Transactional
-//	@ILog(operationName = "修改功能信息", operationType = "update")
-//	public Map<String, Object> updateFunction(HttpServletRequest request) throws IllegalAccessException, InvocationTargetException {
-//		Map<String, Object> params = RequestUtil.getRequestParams(request);
-//		SysFunction function = new SysFunction();
-//		BeanUtils.copyProperties(function, params);
-//		function.setLastUpdateTime(new Date());
-//		//TODO 添加操作人
-//		sysFunctionServiceImpl.updateFunction(function);
-//		Map<String, Object> result = new HashMap<String, Object>();
-//		result.put("status", Constants.SUCCESS);
-//		return result;
-//	}
-//
-//	@RequestMapping("/deleteById.do")
-//	@ResponseBody
-//	@Transactional
-//	@ILog(operationName = "删除功能信息", operationType = "delete")
-//	public Map<String, Object> deleteFunctionById(HttpServletRequest request) throws IllegalAccessException, InvocationTargetException {
-//		Map<String, Object> params = RequestUtil.getRequestParams(request);
-//		SysFunction function = new SysFunction();
-//		BeanUtils.copyProperties(function, params);
-//		//TODO 添加操作人
-//		sysFunctionServiceImpl.deleteFunctionById(function);
-//		Map<String, Object> result = new HashMap<String, Object>();
-//		result.put("status", Constants.SUCCESS);
-//		return result;
-//	}
-//
-//	@RequestMapping("/getById.do")
-//	@ResponseBody
-//	@ILog(operationName = "使用ID查询功能信息", operationType = "query")
-//	public Map<String, Object> queryFunctiontById(HttpServletRequest request) throws IllegalAccessException, InvocationTargetException {
-//		Map<String, Object> params = RequestUtil.getRequestParams(request);
-//		SysFunction function = new SysFunction();
-//		function.setFuncId(Integer.valueOf(params.get("funcId").toString()));
-//		function = sysFunctionServiceImpl.getFunctionById(function);
-//		Map<String, Object> result = new HashMap<String, Object>();
-//		result.put("data", function);
-//		result.put("status", Constants.SUCCESS);
-//		return result;
-//	}
-//
-//	@RequestMapping("/validatefuncNameExist.do")
-//	@ResponseBody
-//	@ILog(operationName = "校验功能名称是否存在", operationType = "validate")
-//	public Map<String, Object> validatefuncNameExist(HttpServletRequest request){
-//		Map<String, Object> params = RequestUtil.getRequestParams(request);
-//		SysFunction function = new SysFunction();
-//		function.setFuncName(params.get("funcName").toString());
-//		boolean isValid = sysFunctionServiceImpl.validateFunctionNameExist(function);
-//		Map<String, Object> result = new HashMap<String, Object>();
-//		result.put("valid", isValid);
-//		result.put("status", Constants.SUCCESS);
-//		return result;
-//	}
+	@RequestMapping("/list.do")
+	@ResponseBody
+	public Map<String, Object> listFunction(SysFun fun, Row row) {
+		fun.setRow(row);
+		fun.setIsDel(Constants.STATUS_UNUSE);
+		List<SysFun> funList = super.getFacade().getSysFunService().getSysFunPaginatedListFuzzy(fun);
+		int total = super.getFacade().getSysFunService().getSysFunCountFuzzy(fun);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("total", total);
+		result.put("rows", funList);
+		result.put("status", Constants.SUCCESS);
+		return result;
+	}
+
+
+	@RequestMapping("/add.do")
+	@ResponseBody
+	@Transactional
+	public Map<String, Object> addFunction(SysFun fun) {
+		fun.setId(ssgjHelper.createFuncId());
+		fun.setIsDel(Constants.STATUS_UNUSE);
+		super.getFacade().getSysFunService().createSysFun(fun);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("status", Constants.SUCCESS);
+		return result;
+	}
+
+	@RequestMapping("/update.do")
+	@ResponseBody
+	@Transactional
+	public Map<String, Object> updateFunction(SysFun fun){
+		super.getFacade().getSysFunService().modifySysFun(fun);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("status", Constants.SUCCESS);
+		return result;
+	}
+
+	@RequestMapping("/deleteById.do")
+	@ResponseBody
+	@Transactional
+	public Map<String, Object> deleteFunctionById(SysFun fun) throws IllegalAccessException, InvocationTargetException {
+		fun.setIsDel(Constants.STATUS_USE);
+		super.getFacade().getSysFunService().modifySysFun(fun);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("status", Constants.SUCCESS);
+		return result;
+	}
+
+	@RequestMapping("/getById.do")
+	@ResponseBody
+	public Map<String, Object> queryFunctiontById(SysFun fun) throws IllegalAccessException, InvocationTargetException {
+		fun = super.getFacade().getSysFunService().getSysFun(fun);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("data", fun);
+		result.put("status", Constants.SUCCESS);
+		return result;
+	}
+
+	@RequestMapping("/tree.do")
+	@ResponseBody
+	public Map<String, Object> queryFunctiontTree(SysFun fun) throws IllegalAccessException, InvocationTargetException {
+		List<NodeTree> treeList = super.getFacade().getSysFunService().createSysFunTree(fun);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("data", treeList);
+		result.put("status", Constants.SUCCESS);
+		return result;
+	}
 
 }

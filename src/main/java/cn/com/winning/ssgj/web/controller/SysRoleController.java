@@ -44,6 +44,7 @@ public class SysRoleController extends BaseController {
     @ILog(operationName="角色列表",operationType="list")
     public Map<String,Object> sysRoleList(SysRoleInfo role,Row row) {
         role.setRow(row);
+        role.setIsDel(Constants.STATUS_UNUSE);
         List<SysRoleInfo> roleInfos = super.getFacade().getSysRoleInfoService().getSysRoleInfoPaginatedListForName(role);
         int total = super.getFacade().getSysRoleInfoService().getSysRoleInfoCountForName(role);
         Map<String,Object> result = new HashMap<String,Object>();
@@ -82,6 +83,7 @@ public class SysRoleController extends BaseController {
     @ILog(operationName="添加角色",operationType="addRole")
     public Map<String, Object> addRole(SysRoleInfo roleInfo) {
         roleInfo.setId(ssgjHelper.createRoleId());
+        roleInfo.setIsDel(Constants.STATUS_UNUSE);
         super.getFacade().getSysRoleInfoService().createSysRoleInfo(roleInfo);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);

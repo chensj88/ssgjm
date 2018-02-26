@@ -255,10 +255,24 @@
         <property name="dateCutOff" value="false"/>
     </bean>
 
-    <!--流程问题答案ID-->
+    <!--用户角色ID-->
     <bean id="sysRoleUserIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="UR_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--系统模块ID-->
+    <bean id="sysModIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="MOD_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--角色模块ID-->
+    <bean id="sysRoleModIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="ROLEMOD_ID"/>
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>

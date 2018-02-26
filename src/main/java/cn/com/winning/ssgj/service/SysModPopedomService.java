@@ -26,4 +26,7 @@ public interface SysModPopedomService {
 
     List<SysModPopedom> getSysModPopedomPaginatedList(SysModPopedom t);
 
+    List<Long> getModuleIdList(SysModPopedom modPopedom);
+
+    void createSysModPopedomForIdList(String idList);
 }

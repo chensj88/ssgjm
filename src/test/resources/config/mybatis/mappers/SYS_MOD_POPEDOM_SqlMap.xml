@@ -101,4 +101,13 @@
         </where>
     </delete>
 
+    <delete id="deleteSysModPopedomForIds" parameterType="java.util.Map">
+        delete from SYS_MOD_POPEDOM
+        <where>
+            <if test=" ids != null and ids != ''">
+                ${ids}
+            </if>
+        </where>
+    </delete>
+
 </mapper>

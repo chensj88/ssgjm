@@ -16,6 +16,22 @@
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
 </head>
 <body>
+<div class="row" id="queryScope">
+    <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center" >
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <label class="col-sm-6 control-label text-right" for="funQName">功能名称：</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control input-sm" id="funQName"/>
+            </div>
+        </div>
+        <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
+            <button type="button" class="btn btn-success btn-sm" id="query">
+                <span class="glyphicon glyphicon-search"></span>
+                查询
+            </button>
+        </div>
+    </form>
+</div>
 <!--表格区域  -->
 <table id="funcTable"></table>
 <!--toolbar区域  -->
@@ -37,33 +53,29 @@
                     <div class="row">
                         <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="funcForm">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label" for="funcName">功能名称</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="funcName" name="funcName"
+                                <label class="col-sm-3 control-label" for="funName">功能名称</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="funName" name="funName"
                                            placeholder="请输入功能名称">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label" for="funcType">功能类型</label>
-                                <div class="col-sm-8">
-                                    <select class="form-control" name="funcType" id="funcType"></select>
+                                <label class="col-sm-3 control-label" for="funCode">功能码</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="funCode" name="funCode"
+                                           placeholder="请输入功能码">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label" for="funcAction">功能路径</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="funcAction" name="funcAction"
+                                <label class="col-sm-3 control-label" for="iconPath">图标路径</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="iconPath" name="iconPath"
                                            placeholder="请输入功能路径">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label" for="funcDesc">功能描述</label>
-                                <div class="col-sm-8">
-                                    <input class="form-control" type="text" id="funcDesc" name="funcDesc"
-                                           placeholder="功能信息描述">
-                                </div>
-                            </div>
-                            <input type="hidden" id="funcId" name="funcId">
+
+                            <input type="hidden" id="id" name="id">
+                            <input type="hidden" id="orderValue" name="orderValue">
                             <input type="reset" style="display:none;"/>
                             <div class="text-center">
                                 <button class="btn btn-primary" id="savefunc" type="submit">保存</button>
@@ -85,5 +97,5 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/language/zh_CN.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/toastr.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/js/auth/user/moduleinfo.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/js/auth/user/funcinfo.js"></script>
 </html>

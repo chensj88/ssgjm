@@ -6,6 +6,7 @@
         <result column="MOD_ID" property="modId" jdbcType="BIGINT"/>
         <result column="PAR_ID" property="parId" jdbcType="BIGINT"/>
         <result column="MOD_NAME" property="modName" jdbcType="VARCHAR"/>
+        <result column="MOD_PNAME" property="modPName" jdbcType="VARCHAR"/>
         <result column="MOD_DESC" property="modDesc" jdbcType="LONGVARCHAR"/>
         <result column="MOD_LEVEL" property="modLevel" jdbcType="INTEGER"/>
         <result column="MOD_URL" property="modUrl" jdbcType="VARCHAR"/>
@@ -33,8 +34,18 @@
         <if test="(isDel != null and isDel != '') or isDel == 0">and t.IS_DEL = #{isDel}</if>
     </sql>
 
+    <sql id="queryFuzzy">
+        <if test="modName != null and modName != ''">and t.MOD_NAME LIKE '%${modName}%'</if>
+        <if test="(modLevel != null and modLevel != '') or modLevel == 0">and t.MOD_LEVEL = #{modLevel}</if>
+        <if test="(isDel != null ) ">and t.IS_DEL = #{isDel}</if>
+    </sql>
+
+
     <select id="selectSysModule" resultMap="sysModuleResult" parameterType="sysModule">
-        select * from SYS_MODULE t where 1 = 1
+        select t.*,t1.MOD_NAME AS MOD_PNAME
+        from SYS_MODULE t
+        left join SYS_MODULE t1 on t.PAR_ID = t1.MOD_ID
+        where 1 = 1
         <include refid="sf-sysModule"/>
     </select>
 
@@ -53,7 +64,7 @@
 
     <select id="selectSysModulePaginatedList" resultMap="sysModuleResult" parameterType="sysModule">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        select *, ROW_NUMBER() OVER ( order by t.MOD_ID desc ) as _rn
         from SYS_MODULE t where 1 = 1
         <include refid="sf-sysModule"/>
         <!-- order by ID asc -->
@@ -117,18 +128,14 @@
             </trim>
         </set>
         <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
-            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
-                ID in
-                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-            </if>
+            <if test="(modId != null and modId != '') or modId == 0"> MOD_ID = #{modId, jdbcType=BIGINT}</if>
         </where>
     </update>
 
     <delete id="deleteSysModule" parameterType="SysModule">
         delete from SYS_MODULE
         <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="id != null and id != ''">MOD_ID = #{modId}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
@@ -136,4 +143,49 @@
         </where>
     </delete>
 
+    <select id="selectSysModuleCountFuzzy" resultType="int" parameterType="sysModule">
+        select count(*) from SYS_MODULE t where 1 = 1
+        <include refid="queryFuzzy"/>
+    </select>
+
+    <select id="selectSysModulePaginatedListFuzzy" resultMap="sysModuleResult" parameterType="sysModule">
+        select * from (
+        select t.*,t1.MOD_NAME AS MOD_PNAME, ROW_NUMBER() OVER ( order by t.MOD_ID desc ) as _rn
+        from SYS_MODULE t
+        left join SYS_MODULE t1 on t.PAR_ID = t1.MOD_ID
+        where 1 = 1
+        <include refid="queryFuzzy"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <select id="selectSysModuleMaxOrderValue" resultType="int" >
+        select
+         CASE WHEN MAX(t.ORDER_VALUE) IS NULL THEN 0 ELSE MAX(t.ORDER_VALUE) END
+        from SYS_MODULE t
+    </select>
+
+    <select id="selectSysModuleDaoListForName" resultMap="sysModuleResult" parameterType="sysModule">
+        SELECT  * FROM  SYS_MODULE t
+        where 1 = 1
+        <include refid="queryFuzzy"/>
+    </select>
+
+    <select id="selectUserParentMenuList" resultMap="sysModuleResult" parameterType="sysUserInfo">
+        SELECT
+        C.*
+        FROM SYS_ROLE_USER A
+        LEFT JOIN SYS_MOD_POPEDOM B ON A.ROLE_ID = B.ROLE_ID
+        LEFT JOIN SYS_MODULE C ON B.MOD_ID = C.MOD_ID
+        WHERE A.USER_ID = ${id} AND  C.MOD_LEVEL = 1  AND C.IS_DEL = 0
+    </select>
+
+    <select id="selectUserChildMenuList" resultMap="sysModuleResult" parameterType="java.util.Map">
+     SELECT
+        C.*
+        FROM SYS_ROLE_USER A
+        LEFT JOIN SYS_MOD_POPEDOM B ON A.ROLE_ID = B.ROLE_ID
+        LEFT JOIN SYS_MODULE C ON B.MOD_ID = C.MOD_ID
+        WHERE A.USER_ID = ${userId} AND  C.MOD_LEVEL = 2  AND C.IS_DEL = 0 AND C.PAR_ID =${parId}
+    </select>
 </mapper>

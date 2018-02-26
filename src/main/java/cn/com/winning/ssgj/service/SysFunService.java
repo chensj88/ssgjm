@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.service;
 import java.util.List;
 
 import cn.com.winning.ssgj.domain.SysFun;
+import cn.com.winning.ssgj.domain.expand.NodeTree;
 
 /**
  *
@@ -26,4 +27,9 @@ public interface SysFunService {
 
     List<SysFun> getSysFunPaginatedList(SysFun t);
 
+    List<SysFun> getSysFunPaginatedListFuzzy(SysFun fun);
+
+    int getSysFunCountFuzzy(SysFun fun);
+
+    List<NodeTree> createSysFunTree(SysFun fun);
 }

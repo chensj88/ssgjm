@@ -5,6 +5,24 @@
  */
 
 
+// 选中父节点时，选中所有子节点
+function getChildNodeIdArr(node) {
+    var ts = [];
+    if (node.nodes) {
+        for (x in node.nodes) {
+            ts.push(node.nodes[x].nodeId);
+            if (node.nodes[x].nodes) {
+                var getNodeDieDai = getChildNodeIdArr(node.nodes[x]);
+                for (j in getNodeDieDai) {
+                    ts.push(getNodeDieDai[j]);
+                }
+            }
+        }
+    } else {
+        ts.push(node.nodeId);
+    }
+    return ts;
+}
 
 $(function () {
     function editRole(data) {
@@ -20,7 +38,7 @@ $(function () {
      * @constructor
      */
     function SearchData(){
-        $('#flowTable').bootstrapTable('refresh', { pageNumber: 1 });
+        $('#roleTable').bootstrapTable('refresh', { pageNumber: 1 });
     }
 
     /**
@@ -62,17 +80,6 @@ $(function () {
                             regexp: /^[\u0391-\uFFE5A-Za-z0-9]+$/,
                             message: '角色名称只能包含汉字、大写、小写、数字和下划线'
                         }
-                        /*,remote: {
-                            url: Common.getRootPath() + '/admin/role/validateRoleNameExist.do',
-                            message: '角色名称已经存在',
-                            /!**自定义提交数据，默认值提交当前input value*!/
-                            data: function (validator) {
-                                return {
-                                    roleType: $('#roleType').val(),
-                                    roleName: $('#roleName').val()
-                                };
-                            }
-                        }*/
                     }
                 },
                 roleDesc: {
@@ -88,6 +95,51 @@ $(function () {
 
     }
 
+    function initTreeView() {
+        $.ajax({
+            type: "post",
+            url: Common.getRootPath() + "/admin/module/tree.do",
+            dataType: "json",
+            data:{'modName':$('#modName').val()},
+            cache : false,
+            async: false,
+            success: function (result) {
+                $('#tree').treeview({
+                    data: result.data,         // 数据源
+                    showCheckbox: true,   //是否显示复选框
+                    highlightSelected: true,    //是否高亮选中
+                    icon:'',                                  //列表树节点上的图标，通常是节点左边的图标。
+                    uncheckedIcon:"",                         //设置图标为未选择状态的checkbox图标。
+                    nodeIcon:'glyphicon glyphicon-unchecked', //设置所有列表树节点上的默认图标。
+                    selectedIcon:"glyphicon glyphicon-check", //设置所有被选择的节点上的默认图标。
+                    color:"#000000",
+                    backColor:"#FFFFFF",
+                    emptyIcon: '',    //设置列表树中没有子节点的节点的图标。
+                    multiSelect: true,      //多选
+                    onNodeSelected:function (event,node) {
+                        var selectNodes = getChildNodeIdArr(node);
+                        if (selectNodes) { //子节点不为空，则选中所有子节点
+                            $('#tree').treeview('selectNode', [selectNodes, { silent: true }]);
+                        }
+                        $('#tree').treeview('selectNode', [node.nodeId, { silent: true }]);
+                    },
+                    onNodeUnselected:function (event,node) {
+                        var selectNodes = getChildNodeIdArr(node);
+                        if (selectNodes) { //子节点不为空，则取消选中所有子节点
+                            $('#tree').treeview('unselectNode', [selectNodes, { silent: true }]);
+                        }
+                        $('#tree').treeview('unselectNode', [node.nodeId, { silent: true }]);
+                    }
+
+                });
+            },
+            error: function () {
+                alert("树形结构加载失败！")
+            }
+        });
+
+    }
+    
     $('#roleTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/role/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法<b class="arrow icon-angle-down"></b>
@@ -163,7 +215,8 @@ $(function () {
             formatter: function (value, row, index) {
                 var e = '<a href="#" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.id +'" >编辑</a> ';
                 var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
-                return e + d;
+                var f = '<a href="####" class="btn btn-success btn-xs" name="tree" mce_href="#" aid="' + row.id + '">配置菜单</a> ';
+                return e + d + f;
             }
         },],
     });
@@ -181,6 +234,8 @@ $(function () {
 
     $('#roleTable').on('click', 'a[name="edit"]', function (e) {
         e.preventDefault();
+        $('#roleForm').bootstrapValidator('destroy');
+        validateForm();
         var roleId = $(this).attr('aid');
         $.ajax({
             url: Common.getRootPath() + '/admin/role/getById.do',
@@ -211,7 +266,7 @@ $(function () {
             $.ajax({
                 type: "post",
                 url: Common.getRootPath() + '/admin/role/deleteById.do',
-                data: {"roleId": roleId},
+                data: {"id": roleId},
                 dataType: 'json',
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
@@ -228,6 +283,46 @@ $(function () {
         });
     });
 
+
+    $('#roleTable').on('click', 'a[name="tree"]', function (e) {
+        e.preventDefault();
+        var roleId = $(this).attr('aid');
+        initTreeView();
+        $.ajax({
+            type: "post",
+            url: Common.getRootPath() + "/admin/rolemodule/query.do",
+            dataType: "json",
+            data:{'roleId':roleId},
+            cache : false,
+            async: false,
+            success: function (result) {
+                if(result.status == Common.SUCCESS){
+                    $('#roleIdQ').val(roleId);
+                    var data = result.data;
+                    var enableNode = $('#tree').treeview('getEnabled');
+                    $.each(data,function (index,value,array) {
+                        $.each(enableNode,function (eindex,evalue,earray) {
+                            if(value == evalue.id){
+                                $('#tree').treeview('selectNode',
+                                    [ evalue.nodeId, { silent: true }]);
+                            }
+                        })
+                    });
+                }
+            }
+        });
+        $('#treeModal').modal('show');
+
+    });
+
+    //选中节点
+    $('#tree').on('nodeSelected',function (event,node) {
+        alert(node);
+    });
+
+    $('#tree').on('nodeUnchecked',function (event,node) {
+        alert(node);
+    });
     /**
      * 保存用户按钮
      * 通过隐藏域判断用户是否存在，而使用不同的方法进行新增或者修改
@@ -271,4 +366,60 @@ $(function () {
      * 查询按钮
      */
     $('#query').on('click',SearchData);
+
+    $('#saveRoleModule').on('click',function (e) {
+        //阻止默认行为
+        e.preventDefault();
+        var selectNode = $('#tree').treeview('getSelected');
+        var nodeLength = selectNode.length;
+        console.log(selectNode);
+        var roleId = $('#roleIdQ').val();
+        var roleModule = '';
+        if(nodeLength > 0){
+            $.each(selectNode,function (index,value,array) {
+                if(index == nodeLength -1 ){
+                    roleModule += roleId +','+value.id;
+                }else{
+                    roleModule += roleId +','+value.id +';';
+                }
+            });
+            $.ajax({
+                url: Common.getRootPath() + '/admin/rolemodule/add.do',
+                data: {'idList':roleModule},
+                type: "post",
+                dataType: 'json',
+                async: false,
+                cache: false,
+                success: function (result) {
+                    var _result = eval(result);
+                    if (_result.status == Common.SUCCESS) {
+                        $('#treeModal').modal('hide');
+                    }
+                },
+                error :function (msg) {
+                    alert(msg.statusText);
+                    console.log(msg);
+                }
+            });
+        }else {
+            $.ajax({
+                url: Common.getRootPath() + '/admin/rolemodule/delete.do',
+                data: {'roleId': roleId},
+                type: "post",
+                dataType: 'json',
+                async: false,
+                cache: false,
+                success: function (result) {
+                    var _result = eval(result);
+                    if (_result.status == Common.SUCCESS) {
+                        $('#treeModal').modal('hide');
+                    }
+                },
+                error: function (msg) {
+                    alert(msg.statusText);
+                    console.log(msg);
+                }
+            });
+        }
+    });
 });

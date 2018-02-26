@@ -26,4 +26,7 @@ public interface SysModFunService {
 
     List<SysModFun> getSysModFunPaginatedList(SysModFun t);
 
+    List<Long> getFunIdsList(SysModFun fun);
+
+    void createSysModFunForIdList(String idList);
 }

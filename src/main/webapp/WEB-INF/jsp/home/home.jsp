@@ -369,7 +369,7 @@
                         <li><a href="<%=basePath%>admin/thirx/interfaceInfo.do"><i class="icon-double-angle-right"></i>第三方接口类型信息</a></li>
                         <li><a href="<%=basePath%>admin/hardware/shInfo.do"><i class="icon-double-angle-right"></i>软硬件设备类型信息</a></li>
                         <li><a href="<%=basePath%>admin/report/reportInfo.do"><i class="icon-double-angle-right"></i>报表单据信息</a></li>
-                        <li><a href="<%=basePath%>admin/fq/fqInfo.do"><i class="icon-double-angle-right"></i>流程调研问卷清单</a></li>
+                        <li><a href="<%=basePath%>admin/fq/fqInfo.do"><i class="icon-double-angle-right"></i>流程问卷清单</a></li>
                     </ul>
                 </li>
                 <li>
@@ -397,9 +397,6 @@
                         <li><a href="<%=basePath%>admin/role/roleInfo.do"><i class="icon-double-angle-right"></i>角色信息</a></li>
                         <li><a href="<%=basePath%>admin/module/moduleInfo.do"><i class="icon-double-angle-right"></i>菜单信息</a></li>
                         <li><a href="<%=basePath%>admin/func/funcInfo.do"><i class="icon-double-angle-right"></i>功能点信息</a></li>
-                        <li><a href="<%=basePath%>admin/auth/authInfo.do"><i class="icon-double-angle-right"></i>用户角色</a></li>
-                        <li><a href="<%=basePath%>admin/auth/authInfo.do"><i class="icon-double-angle-right"></i>角色菜单</a></li>
-                        <li><a href="<%=basePath%>admin/auth/authInfo.do"><i class="icon-double-angle-right"></i>菜单功能点</a></li>
                     </ul>
                 </li>
                 <li>
@@ -550,7 +547,7 @@
 <script src="<%=basePath%>resources/assets/js/ace.min.js"></script>
 <!-- inline scripts related to this page -->
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/js/index/index.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/js/home/home.js"></script>
 </body>
 </html>
 

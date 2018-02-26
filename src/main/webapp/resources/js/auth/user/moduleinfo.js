@@ -3,35 +3,108 @@
  * @author chensj
  * @version 1.0.0
  */
+
 $(function () {
-    new Page();
-});
+    function queryParams(params) {
+        return {
+            count: params.limit,    // 每页显示条数
+            first: params.offset,   // 显示条数
+            sort: params.sort,      // 排序列名
+            order: params.order,     // 排位命令（desc，asc）
+            modName :$.trim($('#modQName').val())
+        };
+    }
 
-function Page() {
-    _self = this;
-    this.init();
-}
+    function SearchData(){
+        $('#moduleTable').bootstrapTable('refresh', { pageNumber: 1 });
+    }
+    function initTreeView() {
+        $.ajax({
+            type: "post",
+            url: Common.getRootPath() + "/admin/func/tree.do",
+            dataType: "json",
+            data:{'funName':$('#funName').val()},
+            cache : false,
+            async: false,
+            success: function (result) {
+                $('#tree').treeview({
+                    data: result.data,         // 数据源
+                    showCheckbox: true,   //是否显示复选框
+                    highlightSelected: true,    //是否高亮选中
+                    icon:'',                                  //列表树节点上的图标，通常是节点左边的图标。
+                    uncheckedIcon:"",                         //设置图标为未选择状态的checkbox图标。
+                    nodeIcon:'glyphicon glyphicon-unchecked', //设置所有列表树节点上的默认图标。
+                    selectedIcon:"glyphicon glyphicon-check", //设置所有被选择的节点上的默认图标。
+                    color:"#000000",
+                    backColor:"#FFFFFF",
+                    emptyIcon: '',    //设置列表树中没有子节点的节点的图标。
+                    multiSelect: true      //多选
 
-Page.prototype.init = function () {
-    this.editObj = null;
-    this.funcType = {};
-    this.initCodes();
-    this.initDataGrid();
-    this.bindEvent();
-    this.validateForm();
-};
-/**
- * 初始化下拉列表值
- */
-Page.prototype.initCodes = function () {
-    Common.getCodes(Common.CODETYPE_ID_FUNC_TYPE, _self.funcType, $('#funcType'), '前台功能');
-};
-/**
- * 初始化Table
- */
-Page.prototype.initDataGrid = function () {
-    $('#funcTable').bootstrapTable({
-        url: Common.getRootPath() + '/admin/func/list.do',// 要请求数据的文件路径
+                });
+            },
+            error: function () {
+                alert("树形结构加载失败！")
+            }
+        });
+
+    }
+
+    function validataForm() {
+        $('#moduleForm').bootstrapValidator({
+            message: '输入的值不符合规格',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                modName: {
+                    message: '模块名称验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '模块名称不能为空'
+                        },
+                        stringLength: {
+                            min: 2,
+                            max: 18,
+                            message: '模块名称长度必须在2到18位之间'
+                        },
+                        regexp: {
+                            regexp: /^[\u0391-\uFFE5A-Za-z0-9]+$/,
+                            message: '模块名称只能包含汉字、大写、小写、数字和下划线'
+                        }
+                    }
+                },
+                modDesc: {
+                    message: '模块说明验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '模块说明不能为空'
+                        }
+                    }
+                },
+                iconPath :{
+                    message: '模块图标验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '模块图标不能为空'
+                        }
+                    }
+                },
+                modUrl :{
+                    message: '链接地址验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '链接地址不能为空'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    $('#moduleTable').bootstrapTable({
+        url: Common.getRootPath() + '/admin/module/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         // contentType: "application/x-www-form-urlencoded",//必须要有！！！！ POST必须有
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -43,163 +116,185 @@ Page.prototype.initDataGrid = function () {
         pageSize: 10,                     // 每页的记录行数（*）
         pageList: [10, 25, 50, 100],        // 可供选择的每页的行数（*）
         showPaginationSwitch: false,			//显示 数据条数选择框
-        search: true,                      // 是否显示表格搜索
-        strictSearch: true,
-        showColumns: true,                  // 是否显示所有的列（选择显示的列）
-        showRefresh: true,                  // 是否显示刷新按钮
         minimumCountColumns: 2,             // 最少允许的列数
         clickToSelect: true,                // 是否启用点击选中行
         idField: 'id',
         sortName: 'id',
         uniqueId: "id",                 // 每一行的唯一标识，一般为主键列
-        //showToggle: true,                   // 是否显示详细视图和列表视图的切换按钮
         cardView: false,                    // 是否显示详细视图
         detailView: false,                  // 是否显示父子表
-        toolbar: '#funcbtntoolbar',
+        toolbar: '#modulebtntoolbar',
         toolbarAlign: 'right',
         paginationPreText: '上一页',
         paginationNextText: '下一页',
         paginationLoop: false, //分页条无限循环的功能
         selectItemName: '单选框',
         singleSelect: true,
-        /*showColumns:true,           //内容列下拉框  */
-        // 得到查询的参数
-        queryParams: function (params) {
-            var temp = {
-                count: params.limit,    // 每页显示条数
-                first: params.offset,   // 显示条数
-                sort: params.sort,      // 排序列名
-                order: params.order     // 排位命令（desc，asc）
-            };
-            return temp;
-        },
+        queryParams: queryParams,
         columns: [{
-            checkbox: true,
-            align: 'center',
-            title: '单选框',
-            valign: 'middle',
-            halign: 'middle',
-            width: '10px',
-        }, {
-            field: "id",
-            title: "ID",
-            width: '40px',
+            field: "modName",
+            title: "模块名称",
+            width: '20px',
+            align: 'center'
+        },{
+            field: "modDesc",
+            title: "模块说明",
+            width: '25px',
+            align: 'center'
+        },  {
+            field: "modPName",
+            title: "上级模块名称",
+            width: '20px',
             align: 'center'
         }, {
-            field: "funcName",
-            title: "功能名称",
-            width: '40px',
-            align: 'center'
-        }, {
-            field: "funcAction",
-            title: "功能路径",
-            width: '80px',
-            align: 'center'
-        }, {
-            field: "funcType",
-            title: "功能类型",
-            width: '40px',
+            field: "modLevel",
+            title: "模块等级",
+            width: '15px',
             align: 'center',
             formatter: function (value) {
-                if (value == '0') {
-                    return '前台功能';
-                } else if (value == '1') {
-                    return '后台功能';
+                if (value == '1') {
+                    return '一级模块';
+                } else {
+                    return '二级模块';
+                }
+            }
+
+        }, {
+            field: "modUrl",
+            title: "链接地址",
+            width: '40px',
+            align: 'center'
+        }, {
+            field: "iconPath",
+            title: "模块图标",
+            width: '33px',
+            align: 'center'
+        }, {
+            field: "isLeaf",
+            title: "叶子节点",
+            width: '20px',
+            align: 'center',
+            formatter: function (value) {
+                if (value == '1') {
+                    return '是';
+                } else {
+                    return '否';
                 }
             }
         }, {
-            field: "funcDesc",
-            title: "功能描述",
-            width: '40px',
-            align: 'center'
-        }, {
-            field: 'lastUpdateTime',
-            title: '最后维护时间',
-            width: '40px',
+            field: "isManager",
+            title: "管理员功能",
+            width: '20px',
+            align: 'center',
             formatter: function (value) {
-                var date = new Date();
-                date.setTime(value);
-                return Common.getDateTime(date);
-            },
-            align: 'center'
+                if (value == '1') {
+                    return '是';
+                } else {
+                    return '否';
+                }
+            }
         }, {
             title: '操作',
             field: 'id',
             align: 'center',
-            width: '40px',
+            width: '38px',
             formatter: function (value, row, index) {
-                var e = '<a href="####" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.funcId + '">编辑</a> ';
-                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.funcId + '">删除</a> ';
-                return e + d;
+                var e = '<a href="####" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.modId + '">编辑</a> ';
+                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.modId + '">删除</a> ';
+                var f = '<a href="####" class="btn btn-success btn-xs" name="tree" mce_href="#" aid="' + row.modId + '">配置功能</a> ';
+                return e + d + f;
             }
         },],
     });
-};
-/**
- * 按钮绑定事件
- */
-Page.prototype.bindEvent = function () {
-    /**
-     * 新增用户
-     * 需要清理表格数据
-     */
-    $('#addfunc').on('click', function () {
-        $("input[type=reset]").trigger("click");
-        $('#funcId').val('');
-        $('#funcType').attr('readonly', false);
-        $('#funcModal').modal('show');
-    });
-    /**
-     * 修改用户
-     * 只能修改一条数据
-     */
-    $('#modifyfunc').on('click', function () {
-        var arrselections = $("#funcTable").bootstrapTable('getSelections');
-        $('#funcType').attr('readonly', true);
-        if (arrselections.length > 1) {
-            toastr.warning('只能选择一行进行编辑');
-            return;
-        }
-        if (arrselections.length <= 0) {
-            toastr.warning('请选择有效数据');
-            return;
-        }
-        var funcId = arrselections[0].funcId;
-        $.ajax({
-            url: Common.getRootPath() + '/admin/func/getById.do',
-            data: {'funcId': funcId},
-            type: "post",
-            dataType: 'json',
-            async: false,
-            success: function (result) {
-                var _result = eval(result);
-                if (_result.status == Common.SUCCESS) {
-                    $('#funcForm').initForm(_result.data);
-                    $('#funcModal').modal('show');
-                }
 
-            }
-        });
+    $('#query').on('click',SearchData);
+
+    $('#addmodule').on('click', function () {
+        $("input[type=reset]").trigger("click");
+        $('#modId').val('');
+        $('#modLevel').val('1');
+        $('#isLeaf').val('1');
+        $('#pModule').hide();
+        $('#moduleForm').bootstrapValidator('destroy');
+        validataForm();
+        $('#moduleModal').modal('show');
+    });
+
+    $('#modLevel').on('change',function () {
+       var selVal = $(this).val();
+       if(selVal == '1'){
+           $('#pModule').hide();
+       }else{
+           $('#pModule').show();
+       }
+    });
+
+    $.fn.typeahead.Constructor.prototype.blur = function () {
+        var that = this;
+        setTimeout(function () { that.hide() }, 250);
+    };
+    var objMap = {};//定义一个空的js对象
+
+    $('#modPName').typeahead({
+        source : function (query,process) {
+            var matchCount =this.options.items;//允许返回结果集最大数量
+            $.ajax({
+                url : Common.getRootPath() + '/admin/module/queryModule.do',
+                type: "post",
+                dataType: 'json',
+                async: false,
+                data: {'modName':query,'matchCount':matchCount},
+                success: function (result) {
+                    var _result = eval(result);
+                    if (_result.status == Common.SUCCESS) {
+                        var data = _result.data;
+                        if (data == "" || data.length == 0) {
+                            console.log("没有查询到相关结果");
+                        };
+                        var results = [];
+                        for (var i = 0; i < data.length; i++) {
+                            objMap[data[i].modName] = data[i].modId;
+                            results.push(data[i].modName);
+                        }
+                        process(results);
+                    }
+                }
+            });
+        },
+        highlighter: function (item) {
+            return item;
+        },
+        afterSelect: function (item) {       //选择项之后的事件，item是当前选中的选项
+            var selectItemId = objMap[item];
+            $('#parId').val(selectItemId);
+        },
+        items : 10,
     });
     /**
      * 列表中按钮
      *   编辑用户信息
      */
-    $('#funcTable').on('click', 'a[name="edit"]', function (e) {
+    $('#moduleTable').on('click', 'a[name="edit"]', function (e) {
         e.preventDefault();
-        var funcId = $(this).attr('aid');
-        $('#funcType').attr('readonly', true);
+        $('#moduleForm').bootstrapValidator('destroy');
+        validataForm();
+        var modId = $(this).attr('aid');
         $.ajax({
-            url: Common.getRootPath() + '/admin/func/getById.do',
-            data: {'funcId': funcId},
+            url: Common.getRootPath() + '/admin/module/getById.do',
+            data: {'modId': modId},
             type: "post",
             dataType: 'json',
             async: false,
             success: function (result) {
                 var _result = eval(result);
                 if (_result.status == Common.SUCCESS) {
-                    $('#funcForm').initForm(_result.data);
-                    $('#funcModal').modal('show');
+                    $('#moduleForm').initForm(_result.data);
+                    if(_result.data.modLevel == '2'){
+                        $('#pModule').show();
+                    }else{
+                        $('#pModule').hide();
+                    }
+                    $('#moduleModal').modal('show');
                 }
             }
         });
@@ -208,22 +303,22 @@ Page.prototype.bindEvent = function () {
      * 列表中按钮
      *   删除用户信息
      */
-    $('#funcTable').on('click', 'a[name="delete"]', function (e) {
+    $('#moduleTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
-        var funcId = $(this).attr('aid');
+        var modId = $(this).attr('aid');
         Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
             if (!e) {
                 return;
             }
             $.ajax({
                 type: "post",
-                url: Common.getRootPath() + '/admin/func/deleteById.do',
-                data: {"funcId": funcId},
+                url: Common.getRootPath() + '/admin/module/deleteById.do',
+                data: {"modId": modId},
                 dataType: 'json',
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
-                        toastr.success('提交数据成功');
-                        $("#funcTable").bootstrapTable('refresh');
+                        /*toastr.success('提交数据成功');*/
+                        $("#moduleTable").bootstrapTable('refresh');
                     }
                 },
                 error: function () {
@@ -234,133 +329,130 @@ Page.prototype.bindEvent = function () {
             });
         });
     });
-    /**
-     * 删除用户
-     * 只能删除一条数据
-     */
-    $('#deletefunc').on('click', function () {
-        var arrselections = $("#funcTable").bootstrapTable('getSelections');
-        if (arrselections.length > 1) {
-            toastr.warning('只能选择一行进行编辑');
-            return;
-        }
-        if (arrselections.length <= 0) {
-            toastr.warning('请选择有效数据');
-            return;
-        }
-        var funcId = arrselections[0].funcId;
-        Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
-            if (!e) {
-                return;
-            }
-            $.ajax({
-                type: "post",
-                url: Common.getRootPath() + '/admin/func/deleteById.do',
-                data: {"funcId": funcId},
-                dataType: 'json',
-                success: function (data, status) {
-                    if (status == Common.SUCCESS) {
-                        toastr.success('提交数据成功');
-                        $("#funcTable").bootstrapTable('refresh');
-                    }
-                },
-                error: function () {
-                    toastr.error('Error');
-                },
-                complete: function () {
+
+
+    $('#moduleTable').on('click', 'a[name="tree"]', function (e) {
+        e.preventDefault();
+        var modId = $(this).attr('aid');
+        initTreeView();
+        $.ajax({
+            type: "post",
+            url: Common.getRootPath() + "/admin/moduleFun/query.do",
+            dataType: "json",
+            data:{'modId':modId},
+            cache : false,
+            async: false,
+            success: function (result) {
+                if(result.status == Common.SUCCESS){
+                    $('#modIdQ').val(modId);
+                    var data = result.data;
+                    var enableNode = $('#tree').treeview('getEnabled');
+                    $.each(data,function (index,value,array) {
+                        $.each(enableNode,function (eindex,evalue,earray) {
+                            if(value == evalue.id){
+                                $('#tree').treeview('selectNode',
+                                    [ evalue.nodeId, { silent: true }]);
+                            }
+                        })
+                    });
                 }
-            });
+            }
         });
+        $('#treeModal').modal('show');
     });
-    /**
-     * 保存用户按钮
-     * 通过隐藏域判断用户是否存在，而使用不同的方法进行新增或者修改
-     */
-    $('#savefunc').on('click', function (e) {
+
+
+    $('#savemodule').on('click', function (e) {
         //阻止默认行为
         e.preventDefault();
-        var bootstrapValidator = $("#funcForm").data('bootstrapValidator');
+        var bootstrapValidator = $("#moduleForm").data('bootstrapValidator');
         //修复记忆的组件不验证
         if (bootstrapValidator) {
             bootstrapValidator.validate();
         }
         var url = '';
-        if ($('#funcId').val().length == 0) {
-            url = Common.getRootPath() + '/admin/func/add.do';
+        if ($('#modId').val().length == 0) {
+            url = Common.getRootPath() + '/admin/module/add.do';
         } else {
-            url = Common.getRootPath() + '/admin/func/update.do';
+            url = Common.getRootPath() + '/admin/module/update.do';
         }
         if (bootstrapValidator.isValid()) {
             $.ajax({
                 url: url,
-                data: $("#funcForm").serialize(),
+                data: $("#moduleForm").serialize(),
                 type: "post",
                 dataType: 'json',
                 async: false,
                 success: function (result) {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
-                        $('#funcModal').modal('hide');
-                        $("#funcTable").bootstrapTable('refresh');
+                        $('#moduleModal').modal('hide');
+                        $("#moduleTable").bootstrapTable('refresh');
                     }
                 },
                 fail: function (result) {
-                    tostr.error(result);
+                    Ewin.alert(result);
                 }
             });
         }
     });
-};
-/**
- * 表单验证
- */
-Page.prototype.validateForm = function () {
-    //表单验证
-    //this._changeEvent = (ieVersion === 9 || !('oninput' in el)) ? 'keyup' : 'input'; 源码修改
-    //this._changeEvent = (ieVersion === 9 || !('onblur' in el)) ? 'keyup' : 'blur'; 
-    $('#funcForm').bootstrapValidator({
-        message: '输入的值不符合规格',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            funcName: {
-                message: '功能名称验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '功能名称不能为空'
-                    },
-                    stringLength: {
-                        min: 2,
-                        max: 18,
-                        message: '功能名称长度必须在2到18位之间'
-                    },
-                    regexp: {
-                        regexp: /^[\u0391-\uFFE5A-Za-z0-9]+$/,
-                        message: '功能名称只能包含汉字、大写、小写、数字和下划线'
-                    },
-                    remote: {
-                        url: Common.getRootPath() + '/admin/func/validatefuncNameExist.do',
-                        message: '功能名称已经存在',
-                        /**自定义提交数据，默认值提交当前input value*/
-                        data: function (validator) {
-                            return {
-                                funcName: $('#funcName').val()
-                            };
-                        }
-                    }
+
+    $('#queryFun').on('click',initTreeView);
+
+    $('#saveRoleModule').on('click',function (e) {
+        //阻止默认行为
+        e.preventDefault();
+        var selectNode = $('#tree').treeview('getSelected');
+        var nodeLength = selectNode.length;
+        console.log(selectNode);
+        var moduleId = $('#modIdQ').val();
+        var moduleFun = '';
+        if(nodeLength > 0){
+            $.each(selectNode,function (index,value,array) {
+                if(index == nodeLength -1 ){
+                    moduleFun += moduleId +','+value.id;
+                }else{
+                    moduleFun += moduleId +','+value.id +';';
                 }
-            },
-            funcDesc: {
-                message: '功能信息描述验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '功能信息描述不能为空'
+            });
+            $.ajax({
+                url: Common.getRootPath() + '/admin/moduleFun/add.do',
+                data: {'idList':moduleFun},
+                type: "post",
+                dataType: 'json',
+                async: false,
+                cache: false,
+                success: function (result) {
+                    var _result = eval(result);
+                    if (_result.status == Common.SUCCESS) {
+                        $('#treeModal').modal('hide');
                     }
+                },
+                error :function (msg) {
+                    alert(msg.statusText);
+                    console.log(msg);
                 }
-            }
+            });
+        }else{
+            $.ajax({
+                url: Common.getRootPath() + '/admin/moduleFun/delete.do',
+                data: {'modId':moduleId},
+                type: "post",
+                dataType: 'json',
+                async: false,
+                cache: false,
+                success: function (result) {
+                    var _result = eval(result);
+                    if (_result.status == Common.SUCCESS) {
+                        $('#treeModal').modal('hide');
+                    }
+                },
+                error :function (msg) {
+                    alert(msg.statusText);
+                    console.log(msg);
+                }
+            });
         }
+
     });
-};
+});

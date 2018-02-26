@@ -122,6 +122,21 @@ public class SSGJHelper {
     @Qualifier("sysRoleUserIdService")
     private StepSequenceFactory sysRoleUserIdService;
 
+    @Autowired
+    @Qualifier("sysModIdService")
+    private StepSequenceFactory sysModIdService;
+
+    @Autowired
+    @Qualifier("sysRoleModIdService")
+    private StepSequenceFactory sysRoleModIdService;
+
+
+    public long createSysRoleModId(){
+        return (long) sysRoleModIdService.create();
+    }
+    public long createSysModId(){
+        return (long) sysModIdService.create();
+    }
     public long createRoleUserId() {
         return (long) sysRoleUserIdService.create();
     }

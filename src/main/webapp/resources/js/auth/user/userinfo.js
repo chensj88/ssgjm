@@ -256,9 +256,14 @@ $(function () {
                 if(result.status == Common.SUCCESS){
                     $('#userIdQ').val(userId);
                     var data = result.data;
+                    var enableNode = $('#tree').treeview('getEnabled');
                     $.each(data,function (index,value,array) {
-                        $('#tree').treeview('selectNode',
-                            [ value, { silent: true }]);
+                        $.each(enableNode,function (eindex,evalue,earray) {
+                            if(value == evalue.id){
+                                $('#tree').treeview('selectNode',
+                                    [ evalue.nodeId, { silent: true }]);
+                            }
+                        })
                     });
                 }
             }
@@ -351,35 +356,58 @@ $(function () {
         e.preventDefault();
         var selectNode = $('#tree').treeview('getSelected');
         var nodeLength = selectNode.length;
-        console.log(selectNode);
-        var userId = $('#userIdQ').val();
+        console.log(selectNode)
         var userRole = '';
-        $.each(selectNode,function (index,value,array) {
-            if(index == nodeLength -1 ){
-                userRole += userId +','+value.nodeId;
-            }else{
-                userRole += userId +','+value.nodeId +';';
-            }
-        });
-        $.ajax({
-            url: Common.getRootPath() + '/admin/userrole/add.do',
-            data: {'idStr':userRole},
-            type: "post",
-            dataType: 'json',
-            async: false,
-            cache: false,
-            success: function (result) {
-                var _result = eval(result);
-                if (_result.status == Common.SUCCESS) {
-                    $('#treeModal').modal('hide');
+        var userId = $('#userIdQ').val();
+        if(nodeLength > 0){
+            $.each(selectNode,function (index,value,array) {
+                if(index == nodeLength -1 ){
+                    userRole += userId +','+value.id;
+                }else{
+                    userRole += userId +','+value.id +';';
                 }
-            },
-            error :function (msg) {
-                alert(msg.statusText);
-                console.log(msg);
-            }
-        });
+            });
+            $.ajax({
+                url: Common.getRootPath() + '/admin/userrole/add.do',
+                data: {'idStr':userRole},
+                type: "post",
+                dataType: 'json',
+                async: false,
+                cache: false,
+                success: function (result) {
+                    var _result = eval(result);
+                    if (_result.status == Common.SUCCESS) {
+                        $('#treeModal').modal('hide');
+                    }
+                },
+                error :function (msg) {
+                    alert(msg.statusText);
+                    console.log(msg);
+                }
+            });
+        }else{
+            $.ajax({
+                url: Common.getRootPath() + '/admin/userrole/delete.do',
+                data: {'userId':userId},
+                type: "post",
+                dataType: 'json',
+                async: false,
+                cache: false,
+                success: function (result) {
+                    var _result = eval(result);
+                    if (_result.status == Common.SUCCESS) {
+                        $('#treeModal').modal('hide');
+                    }
+                },
+                error :function (msg) {
+                    alert(msg.statusText);
+                    console.log(msg);
+                }
+            });
+        }
+
     });
+
     function validateForm() {
         $('#userForm').bootstrapValidator({
             message: '输入的值不符合规格',

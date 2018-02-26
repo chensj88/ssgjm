@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 import org.springframework.stereotype.Service;
 
@@ -47,11 +48,13 @@ public class SysRoleInfoServiceImpl implements SysRoleInfoService {
     public List<NodeTree> getRoleInfoTree(String roleName) {
         SysRoleInfo roleInfo = new SysRoleInfo();
         roleInfo.setRoleName(roleName);
+        roleInfo.setIsDel(Constants.STATUS_UNUSE);
         List<SysRoleInfo> roleInfos = this.sysRoleInfoDao.selectSysRoleInfoListForName(roleInfo);
         List<NodeTree> roleTree = new ArrayList<NodeTree>();
         for (SysRoleInfo info : roleInfos) {
             NodeTree tree = new NodeTree();
             tree.setNodeId(info.getId());
+            tree.setId(info.getId());
             tree.setText(info.getRoleName());
             roleTree.add(tree);
         }

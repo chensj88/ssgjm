@@ -4,7 +4,7 @@
 
     <resultMap id="sysModFunResultForList" type="sysModFun">
         <result column="MOD_ID" property="modId" jdbcType="BIGINT"/>
-        <result column="FUN_CODE" property="funCode" jdbcType="VARCHAR"/>
+        <result column="FUN_ID" property="funId" jdbcType="BIGINT"/>
     </resultMap>
 
     <resultMap id="sysModFunResult" type="sysModFun" extends="sysModFunResultForList">
@@ -12,7 +12,7 @@
 
     <sql id="sf-sysModFun">
         <if test="(modId != null and modId != '') or modId == 0">and t.MOD_ID = #{modId}</if>
-        <if test="funCode != null and funCode != ''">and t.FUN_CODE = #{funCode}</if>
+        <if test="(funId != null and funId != '') or funId == 0">and t.FUN_ID = #{funId}</if>
     </sql>
 
     <select id="selectSysModFun" resultMap="sysModFunResult" parameterType="sysModFun">
@@ -47,12 +47,12 @@
         insert into SYS_MOD_FUN
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(modId != null and modId != '') or modId == 0">MOD_ID,</if>
-            <if test="funCode != null and funCode != ''">FUN_CODE,</if>
+            <if test="(funId != null and funId != '') or funId == 0">FUN_ID,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(modId != null and modId != '') or modId == 0">#{modId, jdbcType=BIGINT},</if>
-            <if test="funCode != null and funCode != ''">#{funCode, jdbcType=VARCHAR},</if>
+            <if test="(funId != null and funId != '') or funId == 0">#{funId, jdbcType=BIGINT},</if>
         </trim>
     </insert>
 
@@ -61,27 +61,34 @@
         <set>
             <trim suffixOverrides=",">
                 <if test="(modId != null and modId != '') or modId == 0">MOD_ID = #{modId, jdbcType=BIGINT},</if>
-                <if test="funCode != null and funCode != ''">FUN_CODE = #{funCode, jdbcType=VARCHAR},</if>
+                <if test="(funId != null and funId != '') or funId == 0">FUN_ID = #{funId, jdbcType=BIGINT},</if>
             </trim>
         </set>
         <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
-            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
-                ID in
-                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
-</if>
+            <if test="(modId != null and modId != '') or modId == 0">AND MOD_ID = #{modId, jdbcType=BIGINT}</if>
+            <if test="(funId != null and funId != '') or funId == 0">AND FUN_ID = #{funId, jdbcType=BIGINT}</if>
         </where>
     </update>
 
     <delete id="deleteSysModFun" parameterType="SysModFun">
         delete from SYS_MOD_FUN
         <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
-            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
-                ID in
-                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            <if test="(modId != null and modId != '') or modId == 0">AND MOD_ID = #{modId, jdbcType=BIGINT}</if>
+        </where>
+    </delete>
+    <select id="selectFunIdsList" resultType="java.lang.Long" parameterType="sysModFun">
+        select
+        DISTINCT t.FUN_ID
+        from SYS_MOD_FUN t where 1 = 1
+        <include refid="sf-sysModFun"/>
+        <!-- order by ID asc -->
+    </select>
+    <delete id="deleteSysModFuncForIds" parameterType="java.util.Map">
+        delete from SYS_MOD_FUN
+        <where>
+            <if test=" ids != null and ids != ''">
+                ${ids}
             </if>
         </where>
     </delete>
-
 </mapper>
