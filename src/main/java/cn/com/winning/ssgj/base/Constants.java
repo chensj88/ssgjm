@@ -37,11 +37,11 @@ public class Constants implements Serializable {
      */
     public static final String USER_INFO = "userInfo";
     /**
-     * 状态码  0 不使用/失效
+     * 状态码  0 不使用/失效 否
      */
     public static final Integer STATUS_UNUSE = 0;
     /**
-     * 状态码  1 使用/生效
+     * 状态码  1 使用/生效 是
      */
     public static final Integer STATUS_USE = 1;
 

@@ -312,7 +312,12 @@
 			<artifactId>shiro-spring</artifactId>
 			<version>${shiro.version}</version>
 		</dependency>
-		<!-- shiro插件库结束 -->
+        <!--<dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+        </dependency>-->
+        <!-- shiro插件库结束 -->
 	</dependencies>
 	<build>
 		<finalName>ssgjm</finalName>
