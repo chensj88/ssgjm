@@ -46,9 +46,9 @@ public interface Facade {
 
     EtThirdIntterfaceService getEtThirdIntterfaceService();
 
-    EtTrainViedoListService getEtTrainViedoListService();
+    EtTrainVideoListService getEtTrainVideoListService();
 
-    EtTrainViedoRecordService getEtTrainViedoRecordService();
+    EtTrainVideoRecordService getEtTrainVideoRecordService();
 
     EtUserInfoService getEtUserInfoService();
 

@@ -74,10 +74,10 @@ public class FacadeImpl implements Facade {
     EtThirdIntterfaceService etThirdIntterfaceService;
 
     @Resource
-    EtTrainViedoListService etTrainViedoListService;
+    EtTrainVideoListService etTrainVideoListService;
 
     @Resource
-    EtTrainViedoRecordService etTrainViedoRecordService;
+    EtTrainVideoRecordService etTrainVideoRecordService;
 
     @Resource
     EtUserInfoService etUserInfoService;
@@ -252,12 +252,12 @@ public class FacadeImpl implements Facade {
         return etThirdIntterfaceService;
     }
 
-    public EtTrainViedoListService getEtTrainViedoListService() {
-        return etTrainViedoListService;
+    public EtTrainVideoListService getEtTrainVideoListService() {
+        return etTrainVideoListService;
     }
 
-    public EtTrainViedoRecordService getEtTrainViedoRecordService() {
-        return etTrainViedoRecordService;
+    public EtTrainVideoRecordService getEtTrainVideoRecordService() {
+        return etTrainVideoRecordService;
     }
 
     public EtUserInfoService getEtUserInfoService() {

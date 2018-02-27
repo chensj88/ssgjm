@@ -9,11 +9,11 @@ import cn.com.winning.ssgj.domain.BaseDomain;
  * Coder AutoGenerator generate.
  *
  * @author Coder AutoGenerator
- * @date 2018-02-24 10:57:35
+ * @date 2018-02-27 16:02:52
  */
  
-@Alias("etTrainViedoList")
-public class EtTrainViedoList extends BaseDomain implements Serializable {
+@Alias("etTrainVideoList")
+public class EtTrainVideoList extends BaseDomain implements Serializable {
 
 	private static final long serialVersionUID = -1L;
 
@@ -62,7 +62,7 @@ public class EtTrainViedoList extends BaseDomain implements Serializable {
 	 */
 	private String remark;
 	
-	public EtTrainViedoList() {
+	public EtTrainVideoList() {
 
 	}
 
