@@ -160,7 +160,7 @@
     </delete>
 
 
-    <select id="querySysSoftHardwareInfoCountForSelective" resultType="int" parameterType="sysSoftHardwareInfo">
+    <select id="selectSysSoftHardwareInfoCountByselective" resultType="int" parameterType="sysSoftHardwareInfo">
         select count(*) from SYS_SOFT_HARDWARE_INFO t
         <where>
             <include refid="query-sysSoftHardwareInfo"/>
@@ -168,7 +168,7 @@
 
     </select>
 
-    <select id="querySysSoftHardwareInfoPaginatedListForSelective" resultMap="sysSoftHardwareInfoResult"
+    <select id="selectSysSoftHardwareInfoPaginatedListByselective" resultMap="sysSoftHardwareInfoResult"
             parameterType="sysSoftHardwareInfo">
         select * from (
         select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
@@ -180,4 +180,23 @@
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
 
+    <select id="selectSysSoftHardwareInfoListByIds" parameterType="sysSoftHardwareInfo" resultMap="sysSoftHardwareInfoResult">
+        select * from SYS_SOFT_HARDWARE_INFO t
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0 )">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectSysSoftHardwareInfoListForNames" parameterType="sysSoftHardwareInfo" resultMap="sysSoftHardwareInfoResult">
+        select *
+        from SYS_SOFT_HARDWARE_INFO t
+        <where>
+            <if test="shName != null and shName != ''">and t.SH_NAME LIKE '%${shName}%'</if>
+            <if test="shCode != null and shCode != ''">and t.SH_CODE LIKE '%${shCode}%'</if>
+        </where>
+    </select>
 </mapper>

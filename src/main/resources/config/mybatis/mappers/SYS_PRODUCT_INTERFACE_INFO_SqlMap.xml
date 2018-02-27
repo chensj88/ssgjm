@@ -9,6 +9,12 @@
 		<result column="EXPIRE_DATE" property="expireDate" jdbcType="TIMESTAMP" />
 		<result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT" />
 		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+		<result column="PD_NAME" property="pdName" jdbcType="VARCHAR"/>
+		<result column="PD_CODE" property="pdCode" jdbcType="VARCHAR"/>
+		<result column="INTER_NAME" property="interName" jdbcType="VARCHAR"/>
+		<result column="INTER_CODE" property="interCode" jdbcType="VARCHAR"/>
+		<result column="INTER_DESC" property="interDesc" jdbcType="VARCHAR"/>
+		<result column="LAST_UPDATE" property="lastUpdate" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<resultMap id="sysProductInterfaceInfoResult" type="sysProductInterfaceInfo" extends="sysProductInterfaceInfoResultForList">
@@ -107,4 +113,58 @@
 		</if>
 	</delete>
 
+	<select id="selectSysProductInterfaceInfoByIds" resultMap="sysProductInterfaceInfoResult" parameterType="sysProductInterfaceInfo">
+		SELECT
+		A.*,
+		B.CODE AS PD_CODE,
+		B.NAME AS PD_NAME,
+		C.INTER_NAME AS INTER_NAME,
+		C.INTER_CODE AS INTER_CODE,
+		C.INTER_DESC AS INTER_DESC,
+		D.YHMC AS LAST_UPDATE
+		FROM SYS_PRODUCT_INTERFACE_INFO A
+		LEFT JOIN PMIS_PRODUCT_INFO B ON A.PD_ID = B.ID
+		LEFT JOIN SYS_THIRD_INTERFACE_INFO C ON A.INTER_ID = C.ID
+		LEFT JOIN SYS_USER_INFO D ON A.LAST_UPDATOR = D.ID
+		<where>
+			<if test="pdId != null and pdId != 0">
+				AND A.PD_ID = ${pdId}
+			</if>
+			<if test="interIds !=null and interIds !='' ">
+				AND A.INTER_ID IN ( ${interIds} )
+			</if>
+			AND (CURRENT_TIMESTAMP  BETWEEN A.EFFECTIVE_DATE AND A.EXPIRE_DATE )
+		</where>
+	</select>
+
+	<update id="removeSysProductInterInfoByIds" parameterType="java.util.Map">
+		update SYS_PRODUCT_INTERFACE_INFO
+		<set>
+			<trim suffixOverrides=",">
+				<if test="user != null and user != ''">
+					LAST_UPDATOR =${user},
+				</if>
+				<if test="user != null and user != ''">
+					EXPIRE_DATE = CURRENT_TIMESTAMP,
+				</if>
+			</trim>
+
+		</set>
+		<where>
+			<if test=" ids != null and ids != ''">
+				${ids}
+			</if>
+		</where>
+	</update>
+
+	<select id="selectSysProductInterfaceInfoForIds" resultMap="sysProductInterfaceInfoResult" parameterType="sysProductInterfaceInfo">
+		SELECT
+		A.*
+		FROM SYS_PRODUCT_INTERFACE_INFO A
+		<where>
+			<if test=" ids != null and ids != ''">
+				${ids}
+			</if>
+		</where>
+	</select>
 </mapper>

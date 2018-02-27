@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import cn.com.winning.ssgj.domain.SysDataInfo;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.SysThirdInterfaceInfoDao;
@@ -60,5 +61,16 @@ public class SysThirdInterfaceInfoServiceImpl implements SysThirdInterfaceInfoSe
     public List<SysThirdInterfaceInfo> getSysThirdInterfaceInfoPaginatedListForSelectiveKey(SysThirdInterfaceInfo t) {
         return this.sysThirdInterfaceInfoDao.selectSysThirdInterfaceInfoPaginatedListByselective(t);
     }
+
+    @Override
+    public List<SysThirdInterfaceInfo> getSysThirdInterfaceInfoListByIds(SysThirdInterfaceInfo sysThirdInterfaceInfo) {
+        return this.sysThirdInterfaceInfoDao.selectSysThirdInterfaceInfoListByIds(sysThirdInterfaceInfo);
+    }
+
+    @Override
+    public List<SysThirdInterfaceInfo> getSysThirdInterfaceInfoListForNames(SysThirdInterfaceInfo interfaceInfo) {
+        return this.sysThirdInterfaceInfoDao.selectSysThirdInterfaceInfoListForNames(interfaceInfo);
+    }
+
 
 }

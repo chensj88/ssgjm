@@ -2,13 +2,8 @@ package cn.com.winning.ssgj.web.controller;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.domain.SysDataInfo;
-import cn.com.winning.ssgj.domain.SysDictInfo;
 import cn.com.winning.ssgj.domain.SysProductDataInfo;
-import cn.com.winning.ssgj.domain.SysUserInfo;
-import cn.com.winning.ssgj.service.SysDataInfoService;
-import cn.com.winning.ssgj.service.SysProductDataInfoService;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,21 +17,21 @@ import java.util.Map;
 
 /**
  * @author chenshijie
- * @title 产品基础数据Controller
+ * @title 产品报表Controller
  * @email chensj@winning.com.cm
  * @package cn.com.winning.ssgj.web.controller
  * @date 2018-02-07 11:15
  */
 @Controller
 @RequestMapping(value = "/admin")
-public class ProductBDataController extends BaseController {
+public class ProductReportController extends BaseController {
 
-    @RequestMapping(value = "/mapping/pBdataInfo.do")
+    @RequestMapping(value = "/mapping/pReportinfo.do")
     public String queryMappingPage(HttpServletRequest request, Model model){
-        return "auth/mapping/productBDMapping";
+        return "auth/mapping/productReportMapping";
     }
 
-    @RequestMapping(value = "/pBdata/queryById.do")
+    @RequestMapping(value = "/pReport/queryById.do")
     @ResponseBody
     public Map<String,Object> queryBdataInfoById(SysProductDataInfo dataInfo){
         List<SysProductDataInfo> dataInfoList = super.getFacade().getSysProductDataInfoService().getSysProductDataInfoList(dataInfo);
@@ -57,7 +52,7 @@ public class ProductBDataController extends BaseController {
 
     }
 
-    @RequestMapping(value = "/pBdata/queryProductDataInfoById.do")
+    @RequestMapping(value = "/pReport/queryProductDataInfoById.do")
     @ResponseBody
     public Map<String,Object> queryProductDataInfoById(Integer pdId,String bdIds){
         List<SysProductDataInfo> dataInfos = super.getFacade().getSysProductDataInfoService().getSysProductDataInfoByIds(pdId,bdIds);
@@ -67,7 +62,7 @@ public class ProductBDataController extends BaseController {
         return result;
     }
 
-    @RequestMapping(value = "/pBdata/removeMapping.do")
+    @RequestMapping(value = "/pReport/removeMapping.do")
     @ResponseBody
     public Map<String,Object> removePBMapping(String idList){
         super.getFacade().getSysProductDataInfoService().removeSysProductDataInfo(idList);
@@ -78,12 +73,12 @@ public class ProductBDataController extends BaseController {
 
     }
 
-    @RequestMapping(value = "/pBdata/addProduct.do")
+    @RequestMapping(value = "/pReport/addProduct.do")
     @ResponseBody
     public Map<String,Object> addPBMapping(String idList) throws ParseException {
-        SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
+        //TODO 添加操作人
         System.out.println(idList);
-        super.getFacade().getSysProductDataInfoService().addSysProductDataInfoMapping(idList,userInfo);
+        super.getFacade().getSysProductDataInfoService().addSysProductDataInfoMapping(idList,null);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         return result;

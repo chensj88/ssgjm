@@ -43,7 +43,7 @@ jQuery(function($) {
 
                 content +=    "</ul></li>";
             }
-            console.log(content);
+           /* console.log(content);*/
             $('#navlist').append(content);
         });
 
