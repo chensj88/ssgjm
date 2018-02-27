@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.EtTrainVideoListDao">
+
+	<resultMap id="etTrainVideoListResultForList" type="etTrainVideoList">
+		<result column="ID" property="id" jdbcType="BIGINT" />
+		<result column="C_ID" property="cId" jdbcType="BIGINT" />
+		<result column="PM_ID" property="pmId" jdbcType="BIGINT" />
+		<result column="PD_ID" property="pdId" jdbcType="BIGINT" />
+		<result column="VIDEO_NAME" property="videoName" jdbcType="VARCHAR" />
+		<result column="VIDEO_TIME" property="videoTime" jdbcType="TIME" />
+		<result column="NUM" property="num" jdbcType="INTEGER" />
+		<result column="VIDEO_PATH" property="videoPath" jdbcType="LONGVARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="LONGVARCHAR" />
+	</resultMap>
+
+	<resultMap id="etTrainVideoListResult" type="etTrainVideoList" extends="etTrainVideoListResultForList">
+	</resultMap>
+
+	<sql id="sf-etTrainVideoList">
+	   <if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
+	   <if test="(cId != null and cId != '') or cId == 0"> and t.C_ID = #{cId} </if>
+	   <if test="(pmId != null and pmId != '') or pmId == 0"> and t.PM_ID = #{pmId} </if>
+	   <if test="(pdId != null and pdId != '') or pdId == 0"> and t.PD_ID = #{pdId} </if>
+	   <if test="videoName != null and videoName != ''"> and t.VIDEO_NAME = #{videoName} </if>
+	   <if test="videoTime != null and videoTime != ''"> and t.VIDEO_TIME = #{videoTime} </if>
+	   <if test="(num != null and num != '') or num == 0"> and t.NUM = #{num} </if>
+	   <if test="videoPath != null and videoPath != ''"> and t.VIDEO_PATH = #{videoPath} </if>
+	   <if test="remark != null and remark != ''"> and t.REMARK = #{remark} </if>
+	</sql>
+
+	<select id="selectEtTrainVideoList" resultMap="etTrainVideoListResult" parameterType="etTrainVideoList">
+		select * from ET_TRAIN_VIDEO_LIST t where 1 = 1
+		<include refid="sf-etTrainVideoList" />
+	</select>
+
+	<select id="selectEtTrainVideoListList" resultMap="etTrainVideoListResultForList" parameterType="etTrainVideoList">
+		select
+		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
+		 * from ET_TRAIN_VIDEO_LIST t where 1 = 1
+		<include refid="sf-etTrainVideoList" />
+		<!-- order by ID asc -->
+	</select>
+
+	<select id="selectEtTrainVideoListCount" resultType="int" parameterType="etTrainVideoList">
+		select count(*) from ET_TRAIN_VIDEO_LIST t where 1 = 1
+		<include refid="sf-etTrainVideoList" />
+	</select>
+
+	<select id="selectEtTrainVideoListPaginatedList" resultMap="etTrainVideoListResult" parameterType="etTrainVideoList">
+		select * from (
+			select *, ROW_NUMBER() OVER ( order by id desc ) as _rn 
+				from ET_TRAIN_VIDEO_LIST t where 1 = 1
+			<include refid="sf-etTrainVideoList" />
+			<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
+
+	<insert id="insertEtTrainVideoList" parameterType="etTrainVideoList">
+	<selectKey resultType="String"  order="BEFORE"  keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID</selectKey>
+		insert into ET_TRAIN_VIDEO_LIST 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> ID, </if>
+	       <if test="(cId != null and cId != '') or cId == 0"> C_ID, </if>
+	       <if test="(pmId != null and pmId != '') or pmId == 0"> PM_ID, </if>
+	       <if test="(pdId != null and pdId != '') or pdId == 0"> PD_ID, </if>
+		   <if test="videoName != null and videoName != ''"> VIDEO_NAME, </if>
+		   <if test="videoTime != null and videoTime != ''"> VIDEO_TIME, </if>
+	       <if test="(num != null and num != '') or num == 0"> NUM, </if>
+		   <if test="videoPath != null and videoPath != ''"> VIDEO_PATH, </if>
+		   <if test="remark != null and remark != ''"> REMARK, </if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> #{id, jdbcType=BIGINT}, </if>
+	       <if test="(cId != null and cId != '') or cId == 0"> #{cId, jdbcType=BIGINT}, </if>
+	       <if test="(pmId != null and pmId != '') or pmId == 0"> #{pmId, jdbcType=BIGINT}, </if>
+	       <if test="(pdId != null and pdId != '') or pdId == 0"> #{pdId, jdbcType=BIGINT}, </if>
+		   <if test="videoName != null and videoName != ''"> #{videoName, jdbcType=VARCHAR}, </if>
+		   <if test="videoTime != null and videoTime != ''"> #{videoTime, jdbcType=TIME}, </if>
+	       <if test="(num != null and num != '') or num == 0"> #{num, jdbcType=INTEGER}, </if>
+		   <if test="videoPath != null and videoPath != ''"> #{videoPath, jdbcType=LONGVARCHAR}, </if>
+		   <if test="remark != null and remark != ''"> #{remark, jdbcType=LONGVARCHAR}, </if>
+		</trim>
+	</insert>
+
+	<update id="updateEtTrainVideoList" parameterType="EtTrainVideoList">
+		update ET_TRAIN_VIDEO_LIST
+		<set>
+			<trim suffixOverrides=",">
+			   <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>
+			   <if test="(cId != null and cId != '') or cId == 0"> C_ID = #{cId, jdbcType=BIGINT}, </if>
+			   <if test="(pmId != null and pmId != '') or pmId == 0"> PM_ID = #{pmId, jdbcType=BIGINT}, </if>
+			   <if test="(pdId != null and pdId != '') or pdId == 0"> PD_ID = #{pdId, jdbcType=BIGINT}, </if>
+			   <if test="videoName != null and videoName != ''"> VIDEO_NAME = #{videoName, jdbcType=VARCHAR}, </if>
+			   <if test="videoTime != null and videoTime != ''"> VIDEO_TIME = #{videoTime, jdbcType=TIME}, </if>
+			   <if test="(num != null and num != '') or num == 0"> NUM = #{num, jdbcType=INTEGER}, </if>
+			   <if test="videoPath != null and videoPath != ''"> VIDEO_PATH = #{videoPath, jdbcType=LONGVARCHAR}, </if>
+			   <if test="remark != null and remark != ''"> REMARK = #{remark, jdbcType=LONGVARCHAR}, </if>
+			</trim>
+		</set>
+		where
+		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</update>
+
+	<delete id="deleteEtTrainVideoList" parameterType="EtTrainVideoList">
+		delete from ET_TRAIN_VIDEO_LIST where
+		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</delete>
+
+</mapper>
