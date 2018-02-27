@@ -27,137 +27,137 @@ public class EtProcessManager extends BaseDomain implements Serializable {
 	private Long pmId;
 	
 	/**
-	 * @val 项目开始 0未开始，1结束
+	 * @val 项目开始 0未开始，1结束，2异常
 	 */
 	private Integer isStart;
 	
 	/**
-	 * @val 项目接单 0未开始，1结束
+	 * @val 项目接单 0未开始，1结束，2异常
 	 */
 	private Integer isAccept;
 	
 	/**
-	 * @val 完善项目信息 0未开始，1结束
+	 * @val 完善项目信息 0未开始，1结束，2异常
 	 */
 	private Integer isImprove;
 	
 	/**
-	 * @val  测试硬件清单制作 0未开始，1结束
+	 * @val  测试硬件清单制作 0未开始，1结束，2异常
 	 */
 	private Integer isTestHardware;
 	
 	/**
-	 * @val 项目人员入场 0未开始，1结束
+	 * @val 项目人员入场 0未开始，1结束，2异常
 	 */
 	private Integer isPmEntrance;
-	
+
 	/**
-	 * @val  测试环境搭建 0未开始，1结束
+	 * @val 实施计划制定 0未开始，1结束，2异常
+	 */
+	private Integer isEtPlan;
+
+	/**
+	 * @val  测试环境搭建 0未开始，1结束，2异常
 	 */
 	private Integer isCreateTestEnv;
 	
 	/**
-	 * @val 项目范围确认 0未开始，1结束
+	 * @val 项目范围确认 0未开始，1结束，2异常
 	 */
 	private Integer isPmScope;
 	
 	/**
-	 * @val 实施计划制定 0未开始，1结束
-	 */
-	private Integer isEtPlan;
-	
-	/**
-	 * @val 项目启动会 0未开始，1结束
+	 * @val 项目启动会 0未开始，1结束，2异常
 	 */
 	private Integer isPmStartMeeting;
-	
+
 	/**
-	 * @val 基础数据维护 0未开始，1结束
-	 */
-	private Integer isBasicDataUse;
-	
-	/**
-	 * @val 易用数据维护 0未开始，1结束
-	 */
-	private Integer isEasyDataUse;
-	
-	/**
-	 * @val 基础数据校验 0未开始，1结束
-	 */
-	private Integer isBasicDataCheck;
-	
-	/**
-	 * @val 易用数据校验 0未开始，1结束
-	 */
-	private Integer isEasyDataCheck;
-	
-	/**
-	 * @val 流程数量确认 0未开始，1结束
-	 */
-	private Integer isFlowAffirm;
-	
-	/**
-	 * @val 流程调研与配置 0未开始，1结束
-	 */
-	private Integer isFlowConfig;
-	
-	/**
-	 * @val 接口数量确认 0未开始，1结束
-	 */
-	private Integer isInterfaceAffirm;
-	
-	/**
-	 * @val 接口开发与交付 0未开始，1结束
-	 */
-	private Integer isInterfaceDev;
-	
-	/**
-	 * @val 报表类确认 0未开始，1结束
-	 */
-	private Integer isPaperAffirm;
-	
-	/**
-	 * @val 报表类开发与交付 0未开始，1结束
-	 */
-	private Integer isPaperDev;
-	
-	/**
-	 * @val 硬件设施清单 0未开始，1结束
-	 */
-	private Integer isHardwareList;
-	
-	/**
-	 * @val 站点设施安装 0未开始，1结束
-	 */
-	private Integer isSiteInstall;
-	
-	/**
-	 * @val 用户培训与考核 0未开始，1结束
-	 */
-	private Integer isTraining;
-	
-	/**
-	 * @val 系统模拟运行 0未开始，1结束
+	 * @val 系统模拟运行 0未开始，1结束，2异常，3实施中
 	 */
 	private Integer isSimulation;
-	
+
 	/**
-	 * @val 上线可行性 0未开始，1结束
+	 * @val 培训客户&考核 0未开始，1结束，2异常，3实施中
+	 */
+	private Integer isTraining;
+
+	/**
+	 * @val 安装站点软硬件 0未开始，1结束，2异常，3实施中
+	 */
+	private Integer isSiteInstall;  //15
+
+	/**
+	 * @val 校验易用数据 0未开始，1结束，2异常，3实施中
+	 */
+	private Integer isEasyDataCheck; //16
+
+	/**
+	 * @val 校验基础数据 0未开始，1结束，2异常，3实施中
+	 */
+	private Integer isBasicDataCheck;
+
+	/**
+	 * @val 基础数据维护 0未开始，1结束，2异常，3实施中
+	 */
+	private Integer isBasicDataUse;
+
+	/**
+	 * @val 易用数据维护 0未开始，1结束，2异常，3实施中
+	 */
+	private Integer isEasyDataUse;
+
+	/**
+	 * @val 流程调研与配置 0未开始，1结束，2异常，3实施中
+	 */
+	private Integer isFlowConfig;
+
+	/**
+	 * @val 接口开发与交付 0未开始，1结束，2异常，3实施中
+	 */
+	private Integer isInterfaceDev;
+
+	/**
+	 * @val 单据报表&交付 0未开始，1结束，2异常，3实施中
+	 */
+	private Integer isPaperDev;
+
+	/**
+	 * @val 流程数量确认 0未开始，1结束，2异常，3实施中
+	 */
+	private Integer isFlowAffirm;
+
+	/**
+	 * @val 接口数量确认 0未开始，1结束，2异常，3实施中
+	 */
+	private Integer isInterfaceAffirm;
+
+	/**
+	 * @val 硬件设施清单 0未开始，1结束，2异常，3实施中
+	 */
+	private Integer isHardwareList;
+
+	/**
+	 * @val 报表类确认 0未开始，1结束，2异常，3实施中
+	 */
+	private Integer isPaperAffirm; //26
+
+	/**
+	 * @val 评估上线可行性 0未开始，1结束，2异常，3实施中
 	 */
 	private Integer isOnline;
 	
 	/**
-	 * @val 切换方案 0未开始，1结束
+	 * @val 审批切换方案 0未开始，1结束，2异常，3实施中
 	 */
 	private Integer isSwitchPlan;
 	
 	/**
-	 * @val 支持人员 0未开始，1结束
+	 * @val 安排人员到岗 0未开始，1结束，2异常，3实施中
 	 */
 	private Integer isSupportStaff;
 	
 	/**
-	 * @val 项目切换 0未开始，1结束
+	 * @val 项目切换 0未开始，1结束，2异常，3实施中
 	 */
 	private Integer isEnd;
 	
