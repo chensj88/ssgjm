@@ -194,80 +194,9 @@ public class EtProcessManagerController extends BaseController {
             pModel31.setText("结束");
             pModelList_Three.add(pModel31);
             result.put("result_Three",pModelList_Three);
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        isCommon = processManagerList.get(0).getIsStart();
-//        pModel.setState(stateClass(isCommon,1));
-//        pModel.setText("开始");
-//        pModelList.add(pModel);
-//        ProcessModel pModel2 = new ProcessModel();
-//        isCommon = processManagerList.get(0).getIsAccept();
-//        pModel2.setState(stateClass(isCommon,1));
-//        pModel2.setText("项目接单");
-//        pModelList.add(pModel2);
-//        ProcessModel pModel3 = new ProcessModel();
-//        isCommon = processManagerList.get(0).getIsImprove();
-//        pModel3.setState(stateClass(isCommon,1));
-//        pModel3.setText("完善项目信息");
-//        pModelList.add(pModel3);
-//        ProcessModel pModel4 = new ProcessModel();
-//        isCommon = processManagerList.get(0).getIsTestHardware();
-//        pModel4.setState(stateClass(isCommon,1));
-//        pModel4.setText("硬件清单准备");
-//        pModelList.add(pModel4);
-//        ProcessModel pModel5 = new ProcessModel();
-//        isCommon = processManagerList.get(0).getIsPmEntrance();
-//        pModel5.setState(stateClass(isCommon,1));
-//        pModel5.setText("入场准备");
-//        pModelList.add(pModel5);
-//        ProcessModel pModel6 = new ProcessModel();
-//        isCommon = processManagerList.get(0).getIsEtPlan();
-//        pModel6.setState(stateClass(isCommon,1));
-//        pModel6.setText("实施计划制");
-//        pModelList.add(pModel6);
-//        ProcessModel pModel7 = new ProcessModel();
-//        isCommon = processManagerList.get(0).getIsCreateTestEnv();
-//        pModel7.setState(stateClass(isCommon,1));
-//        pModel7.setText("测试环境搭建");
-//        pModelList.add(pModel7);
-//        ProcessModel pModel8 = new ProcessModel();
-//        isCommon = processManagerList.get(0).getIsPmScope();
-//        pModel8.setState(stateClass(isCommon,1));
-//        pModel8.setText("确认项目范围");
-//        pModelList.add(pModel8);
-//        ProcessModel pModel9 = new ProcessModel();
-//        isCommon = processManagerList.get(0).getIsPmStartMeeting();
-//        pModel9.setState(stateClass(isCommon,1));
-//        pModel9.setText("项目启动");
-//        pModelList.add(pModel9);
-//
-//        /***  实施人员流程信息 line2 *****/
-//
-//        List<ProcessModel> pModelList_Two = new ArrayList<ProcessModel>();
-//        ProcessModel pModel_two = new ProcessModel();
-//        isCommon = processManagerList.get(0).getIsBasicDataUse();
-//        pModel_two.setState(stateClass(isCommon,2));
-//        pModel_two.setText("基础数据维护");
-//        pModelList_Two.add(pModel_two);
-//        ProcessModel pModel_two2 = new ProcessModel();
-//        isCommon = processManagerList.get(0).getIsEasyDataUse();
-//        pModel_two2.setState(stateClass(isCommon,2));
-//        pModel_two2.setText("易用数据维护");
-//        pModelList_Two.add(pModel_two2);
-//        ProcessModel pModel_two3 = new ProcessModel();
-//        isCommon = processManagerList.get(0).getIsBasicDataCheck();
-//        pModel_two3.setState(stateClass(isCommon,2));
-//        pModel_two3.setText("基础数据校验");
-//        pModelList_Two.add(pModel_two3);
-//        ProcessModel pModel_two4 = new ProcessModel();
-//        isCommon = processManagerList.get(0).getIsBasicDataCheck();
-//        pModel_two4.setState(stateClass(isCommon,2));
-//        pModel_two4.setText("基础数据校验");
-//        pModelList_Two.add(pModel_two4);
-
 
         return result;
 
