@@ -81,21 +81,29 @@ $(function () {
     function initMenu(data) {
         $.each(data,function (index,value,array) {
             var content = '';
-            if( index == 0){
+            if( index == 0 ){
                 content = "<li class=\"active\" >\n" +
-                    "                    <a href=\"#\">\n" +
+                    "                    <a href=\""+Common.getRootPath()+value.urlPath+"\">\n" +
                     "                        <i class=\""+value.nodeIcon+"\"></i>\n" +
                     "                        <span class=\"menu-text\"> "+value.text+" </span>\n" +
                     "                    </a>\n" +
                     "                </li>";
             }else{
                 content = "<li >\n" +
-                    "                    <a href=\"#\">\n" +
+                    "                    <a href=\"#\" class=\"dropdown-toggle\">\n" +
                     "                        <i class=\""+value.nodeIcon+"\"></i>\n" +
                     "                        <span class=\"menu-text\"> "+value.text+" </span>\n" +
-                    "                    </a>\n" +
-                    "                </li>";
+                    "                        <b class=\"arrow icon-angle-down\"></b>"+
+                    "                    </a>\n"+
+                    "                    <ul class=\"submenu\">";
+                    $.each(value.nodes,function (cindex,cvalue,carray) {
+                        content += "<li><a href=\""+Common.getRootPath()+cvalue.urlPath+"\">" +
+                            "        <i class=\""+cvalue.nodeIcon+"\"></i>"+cvalue.text+"</a></li>";
+                    });
+
+                content +=    "</ul></li>";
             }
+           /* console.log(content);*/
             $('#nav').append(content);
         });
 

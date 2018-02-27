@@ -349,7 +349,7 @@
             </div><!-- #sidebar-shortcuts -->
 
             <ul class="nav nav-list" id="navlist">
-                <li class="active" id="index">
+                <%--<li class="active" id="index">
                     <a href="#">
                         <i class="icon-dashboard"></i>
                         <span class="menu-text"> 控制台 </span>
@@ -422,7 +422,7 @@
                         <li><a href="#"> <i class="icon-double-angle-right"></i>菜单设置</a></li>
                         <li><a href="form-wizard.html"><i class="icon-double-angle-right"></i>功能点设置</a></li>
                     </ul>
-                </li>
+                </li>--%>
             </ul><!-- /.nav-list -->
             <div class="sidebar-collapse" id="sidebar-collapse">
                 <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
