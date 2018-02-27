@@ -157,4 +157,11 @@
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
+
+    <select id="countUserInfoByType" resultType="cn.com.winning.ssgj.domain.expand.FlotDataInfo">
+        SELECT  DICT_LABEL label,COUNT(1) data  FROM  SYS_USER_INFO
+        LEFT JOIN SYS_DICT_INFO ON USER_TYPE = DICT_VALUE AND DICT_CODE ='userType'
+        WHERE STATUS = '1'
+        GROUP  BY  DICT_LABEL
+    </select>
 </mapper>

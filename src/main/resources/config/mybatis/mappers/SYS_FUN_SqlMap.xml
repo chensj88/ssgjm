@@ -8,6 +8,7 @@
         <result column="FUN_NAME" property="funName" jdbcType="VARCHAR"/>
         <result column="ICON_PATH" property="iconPath" jdbcType="VARCHAR"/>
         <result column="ORDER_VALUE" property="orderValue" jdbcType="INTEGER"/>
+        <result column="IS_DEL" property="isDel" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="sysFunResult" type="sysFun" extends="sysFunResultForList">
@@ -19,6 +20,7 @@
         <if test="funName != null and funName != ''">and t.FUN_NAME = #{funName}</if>
         <if test="iconPath != null and iconPath != ''">and t.ICON_PATH = #{iconPath}</if>
         <if test="(orderValue != null and orderValue != '') or orderValue == 0">and t.ORDER_VALUE = #{orderValue}</if>
+        <if test="(isDel != null )">and t.IS_DEL = #{isDel}</if>
     </sql>
 
     <select id="selectSysFun" resultMap="sysFunResult" parameterType="sysFun">
@@ -57,6 +59,7 @@
             <if test="funName != null and funName != ''">FUN_NAME,</if>
             <if test="iconPath != null and iconPath != ''">ICON_PATH,</if>
             <if test="(orderValue != null and orderValue != '') or orderValue == 0">ORDER_VALUE,</if>
+            <if test="(isDel != null )">IS_DEL,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -66,6 +69,7 @@
             <if test="iconPath != null and iconPath != ''">#{iconPath, jdbcType=VARCHAR},</if>
             <if test="(orderValue != null and orderValue != '') or orderValue == 0">#{orderValue, jdbcType=INTEGER},
             </if>
+            <if test="(isDel != null )">#{isDel, jdbcType=INTEGER},</if>
         </trim>
     </insert>
 
@@ -80,6 +84,7 @@
                 <if test="(orderValue != null and orderValue != '') or orderValue == 0">ORDER_VALUE =
                     #{orderValue, jdbcType=INTEGER},
                 </if>
+                <if test="(isDel != null )">IS_DEL = #{isDel, jdbcType=INTEGER},</if>
             </trim>
         </set>
         <where>
@@ -102,4 +107,35 @@
         </where>
     </delete>
 
+
+    <sql id="sysFunFuzzy">
+        <if test="funName != null and funName != ''">and t.FUN_NAME LIKE '%${funName}%'</if>
+        <if test="(isDel != null )">and t.IS_DEL = #{isDel}</if>
+    </sql>
+
+    <select id="selectSysFunCountFuzzy" resultType="int" parameterType="sysFun">
+        select count(*) from SYS_FUN t where 1 = 1
+        <include refid="sysFunFuzzy"/>
+    </select>
+
+    <select id="selectSysFunPaginatedListFuzzy" resultMap="sysFunResult" parameterType="sysFun">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from SYS_FUN t where 1 = 1
+        <include refid="sysFunFuzzy"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <select id="selectSysFunMaxOrderValue" resultType="int" >
+        select
+          CASE WHEN MAX(t.ORDER_VALUE) IS NULL THEN 0 ELSE MAX(t.ORDER_VALUE) END
+        from SYS_FUN t
+    </select>
+
+    <select id="selectSysFunListForName" resultMap="sysFunResult" parameterType="sysFun">
+        select *
+        from SYS_FUN t where 1 = 1
+        <include refid="sysFunFuzzy"/>
+    </select>
 </mapper>

@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/commons/header.jsp" %>
-<!DOCTYPE html >
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Insert title here</title>
-    <base href="<%=basePath%>">
+    <title>菜单信息</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="卫宁实施工具">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css">
@@ -28,9 +27,9 @@
 <div class="row" id="queryScope">
     <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center" >
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
-            <label class="col-sm-6 control-label text-right" for="roleQName">角色名称：</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control input-sm" id="roleQName"/>
+            <label class="col-sm-6 control-label text-right" for="modQName">模块名称：</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control input-sm" id="modQName"/>
             </div>
         </div>
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
@@ -42,63 +41,96 @@
     </form>
 </div>
 <!--表格区域  -->
-<table id="roleTable" class="table-align">
-
-</table>
+<table id="moduleTable" class="table-align"></table>
 <!--toolbar区域  -->
-<div class="btn-group" id="rolebtntoolbar">
-    <button id="addRole" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
+<div class="btn-group" id="modulebtntoolbar">
+    <button id="addmodule" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
 </div>
 <!--模态框  -->
-<div class="modal fade" id="roleModal" tabindex="-1" role="dialog" aria-labelledby="roleFormModal">
+<div class="modal fade" id="moduleModal" tabindex="-1" role="dialog" aria-labelledby="moduleFormModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content" style="width:450px;">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">角色信息</h4>
+                <h4 class="modal-title" id="myModalLabel">模块信息</h4>
             </div>
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
-                        <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="roleForm">
+                        <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="moduleForm">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="roleName">角色名称</label>
+                                <label class="col-sm-3 control-label" for="modName">模块名称</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="roleName" name="roleName"
-                                           placeholder="请输入角色名称">
+                                    <input type="text" class="form-control" id="modName" name="modName"
+                                           placeholder="请输入模块名称">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="roleDesc">角色描述</label>
+                                <label class="col-sm-3 control-label" for="modDesc">模块说明</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="roleDesc" name="roleDesc"
-                                           placeholder="请输入角色信息描述">
+                                    <input type="text" class="form-control" id="modDesc" name="modDesc"
+                                           placeholder="请输入模块说明">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="isLock">是否锁定</label>
+                                <label class="col-sm-3 control-label" for="modLevel">模块等级</label>
                                 <div class="col-sm-6">
-                                    <select class="form-control" name="isLock" id="isLock">
+                                    <select class="form-control" name="modLevel" id="modLevel">
+                                        <option value="1">一级模块</option>
+                                        <option value="2">二级模块</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="pModule" style="display: none">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="modPName">上级模块名称</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="modPName" name="modPName"
+                                               placeholder="请输入上级模块名称" data-provide="typeahead" >
+                                    </div>
+                                </div>
+                                <input type="hidden" id="parId" name="parId">
+                            </div>
+                            <div class="form-group" id="modUrlDiv">
+                                <label class="col-sm-3 control-label" for="modUrl">链接地址</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="modUrl" name="modUrl"
+                                           placeholder="请输入链接地址">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="iconPath">模块图标</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="iconPath" name="iconPath"
+                                           placeholder="请输入模块图标">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="isLeaf">叶子节点</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" name="isLeaf" id="isLeaf">
                                         <option value="1">是</option>
                                         <option value="0">否</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="isDel">是否删除</label>
+                                <label class="col-sm-3 control-label" for="isManager">管理员功能</label>
                                 <div class="col-sm-6">
-                                    <select class="form-control" name="isDel" id="isDel">
+                                    <select class="form-control" name="isManager" id="isManager">
                                         <option value="1">是</option>
                                         <option value="0">否</option>
                                     </select>
                                 </div>
                             </div>
-                            <input type="hidden" id="id" name="id">
+                            <input type="hidden" id="modId" name="modId">
+                            <input type="hidden" id="isDel" name="isDel">
+                            <input type="hidden" id="orderValue" name="orderValue">
                             <input type="reset" style="display:none;"/>
                             <div class="text-center">
-                                <button class="btn btn-primary" id="saveRole" type="submit">保存</button>
+                                <button class="btn btn-primary" id="savemodule" type="button">保存</button>
                                 <button class="btn btn-danger" data-dismiss="modal">取消</button>
                             </div>
                         </form>
@@ -115,24 +147,24 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="treeModalLabel">模块信息</h4>
+                <h4 class="modal-title" id="treeModalLabel">功能信息</h4>
             </div>
             <div class="modal-body">
                 <div class="container">
                     <div class="row"  style="font-size: 12px">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <div class="input-group col-sm-10">
-                                <label class="col-sm-3 control-label text-left" for="modName">模块名称：</label>
+                                <label class="col-sm-3 control-label text-left" for="funName">功能名称：</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control input-sm" id="modName" name="modName" placeholder="请输入角色名称"/>
+                                    <input type="text" class="form-control input-sm" id="funName" name="funName" placeholder="请输入功能名称"/>
                                 </div>
-                                <button type="button" class="btn btn-success btn-sm" id="queryMod">
+                                <button type="button" class="btn btn-success btn-sm" id="queryFun">
                                     <span class="glyphicon glyphicon-search"></span>
                                     查询
                                 </button>
                             </div>
                         </div>
-                        <input type="hidden" id="roleIdQ">
+                        <input type="hidden" id="modIdQ">
                     </div>
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -160,7 +192,8 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrapValidator.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/language/zh_CN.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/toastr.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap3-typeahead.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap-treeview.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/js/auth/user/roleinfo.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/js/auth/user/moduleinfo.js"></script>
 </html>

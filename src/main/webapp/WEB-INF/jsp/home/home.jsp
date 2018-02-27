@@ -1,4 +1,5 @@
 <%@ page import="cn.com.winning.ssgj.domain.SysUserInfo" %>
+<%@ page import="org.apache.shiro.SecurityUtils" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/commons/header.jsp" %>
 <!DOCTYPE html>
@@ -265,7 +266,8 @@
                         <span class="user-info">
 									<small>欢迎光临,</small>
 									<%--<%=((SysUserInfo)request.getAttribute("user")).getYhmc()%>--%>
-                                    admin
+                                   <%-- admin--%>
+                                   <%=((SysUserInfo)SecurityUtils.getSubject().getPrincipal()).getName()%>
 								</span>
 
                         <i class="icon-caret-down"></i>
@@ -289,7 +291,7 @@
                         <li class="divider"></li>
 
                         <li>
-                            <a href="#">
+                            <a href="/logout">
                                 <i class="icon-off"></i>
                                 退出
                             </a>
@@ -347,7 +349,7 @@
             </div><!-- #sidebar-shortcuts -->
 
             <ul class="nav nav-list" id="navlist">
-                <li class="active">
+                <%--<li class="active" id="index">
                     <a href="#">
                         <i class="icon-dashboard"></i>
                         <span class="menu-text"> 控制台 </span>
@@ -367,7 +369,7 @@
                         <li><a href="<%=basePath%>admin/thirx/interfaceInfo.do"><i class="icon-double-angle-right"></i>第三方接口类型信息</a></li>
                         <li><a href="<%=basePath%>admin/hardware/shInfo.do"><i class="icon-double-angle-right"></i>软硬件设备类型信息</a></li>
                         <li><a href="<%=basePath%>admin/report/reportInfo.do"><i class="icon-double-angle-right"></i>报表单据信息</a></li>
-                        <li><a href="<%=basePath%>admin/fq/fqInfo.do"><i class="icon-double-angle-right"></i>流程调研问卷清单</a></li>
+                        <li><a href="<%=basePath%>admin/fq/fqInfo.do"><i class="icon-double-angle-right"></i>流程问卷清单</a></li>
                     </ul>
                 </li>
                 <li>
@@ -393,8 +395,8 @@
                     <ul class="submenu">
                         <li><a href="<%=basePath%>admin/user/userinfo.do"><i class="icon-double-angle-right"></i>用户信息</a></li>
                         <li><a href="<%=basePath%>admin/role/roleInfo.do"><i class="icon-double-angle-right"></i>角色信息</a></li>
-                        <li><a href="<%=basePath%>admin/func/funcInfo.do"><i class="icon-double-angle-right"></i>功能信息</a></li>
-                        <li><a href="<%=basePath%>admin/auth/authInfo.do"><i class="icon-double-angle-right"></i>角色权限配置</a></li>
+                        <li><a href="<%=basePath%>admin/module/moduleInfo.do"><i class="icon-double-angle-right"></i>菜单信息</a></li>
+                        <li><a href="<%=basePath%>admin/func/funcInfo.do"><i class="icon-double-angle-right"></i>功能点信息</a></li>
                     </ul>
                 </li>
                 <li>
@@ -411,12 +413,16 @@
                 </li>
 
                 <li>
-                    <a href="#" class="dropdown-toggle"><i class="icon-list-alt"></i><span class="menu-text"> 系统设置 </span></a>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-list-alt"></i>
+                        <span class="menu-text"> 系统设置 </span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
                     <ul class="submenu">
                         <li><a href="#"> <i class="icon-double-angle-right"></i>菜单设置</a></li>
                         <li><a href="form-wizard.html"><i class="icon-double-angle-right"></i>功能点设置</a></li>
                     </ul>
-                </li>
+                </li>--%>
             </ul><!-- /.nav-list -->
             <div class="sidebar-collapse" id="sidebar-collapse">
                 <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
@@ -541,7 +547,7 @@
 <script src="<%=basePath%>resources/assets/js/ace.min.js"></script>
 <!-- inline scripts related to this page -->
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/js/index/index.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/js/home/home.js"></script>
 </body>
 </html>
 

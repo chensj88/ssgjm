@@ -6,6 +6,9 @@ import cn.com.winning.ssgj.dao.SysModPopedomDao;
 import cn.com.winning.ssgj.domain.SysModPopedom;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  *
  *
@@ -15,4 +18,15 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 @Service
 public class SysModPopedomDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysModPopedom> implements SysModPopedomDao {
 
+    @Override
+    public List<Long> selectModuleIdList(SysModPopedom modPopedom) {
+        String statement = "selectModuleIdList";
+        return super.getSqlSession().selectList(statement,modPopedom);
+    }
+
+    @Override
+    public void deleteSysModPopedomForIds(Map<String, Object> param) {
+        String statement = "deleteSysModPopedomForIds";
+        super.getSqlSession().update(statement,param);
+    }
 }

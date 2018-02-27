@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
 
+import cn.com.winning.ssgj.domain.expand.NodeTree;
 import org.apache.ibatis.type.Alias;
 import cn.com.winning.ssgj.domain.BaseDomain;
 
@@ -26,6 +27,10 @@ public class SysFun extends BaseDomain implements Serializable {
     private String iconPath;
 
     private Integer orderValue;
+
+    private Integer isDel;
+
+    private NodeTree nodeTree = new NodeTree();
 
     public SysFun() {
 
@@ -71,4 +76,18 @@ public class SysFun extends BaseDomain implements Serializable {
         this.orderValue = orderValue;
     }
 
+    public Integer getIsDel() {
+        return isDel;
+    }
+
+    public void setIsDel(Integer isDel) {
+        this.isDel = isDel;
+    }
+
+    public NodeTree getNodeTree(){
+        nodeTree.setId(this.id);
+        nodeTree.setNodeId(this.id);
+        nodeTree.setText(this.funName);
+        return nodeTree;
+    }
 }

@@ -93,12 +93,24 @@
     <delete id="deleteSysModPopedom" parameterType="SysModPopedom">
         delete from SYS_MOD_POPEDOM
         <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
-            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
-                ID in
-                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-            </if>
+            <if test="(id != null and id != '') or id == 0">AND ID = #{id, jdbcType=BIGINT}</if>
+            <if test="(modId != null and modId != '') or modId == 0">AND MOD_ID = #{modId, jdbcType=BIGINT}</if>
+            <if test="(roleId != null and roleId != '') or roleId == 0">AND ROLE_ID = #{roleId, jdbcType=BIGINT}</if>
         </where>
     </delete>
 
+    <select id="selectModuleIdList" resultType="java.lang.Long" parameterType="sysModPopedom">
+        select DISTINCT t.MOD_ID from SYS_MOD_POPEDOM t where 1 = 1
+        <include refid="sf-sysModPopedom"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <delete id="deleteSysModPopedomForIds" parameterType="java.util.Map">
+        delete from SYS_MOD_POPEDOM
+        <where>
+            <if test=" ids != null and ids != ''">
+                ${ids}
+            </if>
+        </where>
+    </delete>
 </mapper>

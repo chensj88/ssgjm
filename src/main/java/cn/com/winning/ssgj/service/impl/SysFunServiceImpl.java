@@ -1,9 +1,12 @@
 package cn.com.winning.ssgj.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.domain.expand.NodeTree;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.SysFunDao;
@@ -24,6 +27,8 @@ public class SysFunServiceImpl implements SysFunService {
 
 
     public Integer createSysFun(SysFun t) {
+        int maxOrderValue = this.sysFunDao.selectSysFunMaxOrderValue();
+        t.setOrderValue(maxOrderValue + 1);
         return this.sysFunDao.insertEntity(t);
     }
 
@@ -49,6 +54,27 @@ public class SysFunServiceImpl implements SysFunService {
 
     public List<SysFun> getSysFunPaginatedList(SysFun t) {
         return this.sysFunDao.selectEntityPaginatedList(t);
+    }
+
+    @Override
+    public List<SysFun> getSysFunPaginatedListFuzzy(SysFun fun) {
+        return this.sysFunDao.selectSysFunPaginatedListFuzzy(fun);
+    }
+
+    @Override
+    public int getSysFunCountFuzzy(SysFun fun) {
+        return this.sysFunDao.selectSysFunCountFuzzy(fun);
+    }
+
+    @Override
+    public List<NodeTree> createSysFunTree(SysFun fun) {
+        fun.setIsDel(Constants.STATUS_UNUSE);
+        List<SysFun> funList = this.sysFunDao.selectSysFunListForName(fun);
+        List<NodeTree> treeList = new ArrayList<NodeTree>();
+        for (SysFun sysFun : funList) {
+            treeList.add(sysFun.getNodeTree());
+        }
+        return treeList;
     }
 
 }

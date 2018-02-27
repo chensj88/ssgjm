@@ -19,8 +19,8 @@
         <if test="roleName != null and roleName != ''">and t.ROLE_NAME = #{roleName}</if>
         <if test="roleDesc != null and roleDesc != ''">and t.ROLE_DESC = #{roleDesc}</if>
         <if test="(orderValue != null and orderValue != '') or orderValue == 0">and t.ORDER_VALUE = #{orderValue}</if>
-        <if test="(isLock != null and isLock != '') or isLock == 0">and t.IS_LOCK = #{isLock}</if>
-        <if test="(isDel != null and isDel != '') or isDel == 0">and t.is_del = #{isDel}</if>
+        <if test="(isLock != null )">and t.IS_LOCK = #{isLock}</if>
+        <if test="(isDel != null )">and t.is_del = #{isDel}</if>
     </sql>
 
     <select id="selectSysRoleInfo" resultMap="sysRoleInfoResult" parameterType="sysRoleInfo">
@@ -58,8 +58,8 @@
             <if test="roleName != null and roleName != ''">ROLE_NAME,</if>
             <if test="roleDesc != null and roleDesc != ''">ROLE_DESC,</if>
             <if test="(orderValue != null and orderValue != '') or orderValue == 0">ORDER_VALUE,</if>
-            <if test="(isLock != null and isLock != '') or isLock == 0">IS_LOCK,</if>
-            <if test="(isDel != null and isDel != '') or isDel == 0">is_del,</if>
+            <if test="(isLock != null )">IS_LOCK,</if>
+            <if test="(isDel != null )">is_del,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -68,8 +68,8 @@
             <if test="roleDesc != null and roleDesc != ''">#{roleDesc, jdbcType=VARCHAR},</if>
             <if test="(orderValue != null and orderValue != '') or orderValue == 0">#{orderValue, jdbcType=INTEGER},
             </if>
-            <if test="(isLock != null and isLock != '') or isLock == 0">#{isLock, jdbcType=INTEGER},</if>
-            <if test="(isDel != null and isDel != '') or isDel == 0">#{isDel, jdbcType=INTEGER},</if>
+            <if test="(isLock != null )">#{isLock, jdbcType=INTEGER},</if>
+            <if test="(isDel != null )">#{isDel, jdbcType=INTEGER},</if>
         </trim>
     </insert>
 
@@ -83,8 +83,8 @@
                 <if test="(orderValue != null and orderValue != '') or orderValue == 0">ORDER_VALUE =
                     #{orderValue, jdbcType=INTEGER},
                 </if>
-                <if test="(isLock != null and isLock != '') or isLock == 0">IS_LOCK = #{isLock, jdbcType=INTEGER},</if>
-                <if test="(isDel != null and isDel != '') or isDel == 0">is_del = #{isDel, jdbcType=INTEGER},</if>
+                <if test="(isLock != null )">IS_LOCK = #{isLock, jdbcType=INTEGER},</if>
+                <if test="(isDel != null )">is_del = #{isDel, jdbcType=INTEGER},</if>
             </trim>
         </set>
         <where>
@@ -106,5 +106,38 @@
 </if>
         </where>
     </delete>
+
+    <select id="selectSysRoleInfoCountForName" resultType="int" parameterType="sysRoleInfo">
+        select count(*) from SYS_ROLE_INFO t
+        <where>
+            <if test="roleName != null and roleName != ''"> AND t.ROLE_NAME LIKE '%${roleName}%'</if>
+            <if test="(isDel != null )"> and is_del = #{isDel, jdbcType=INTEGER}</if>
+        </where>
+    </select>
+
+    <select id="selectSysRoleInfoPaginatedListForName" resultMap="sysRoleInfoResult" parameterType="sysRoleInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from SYS_ROLE_INFO t
+        <where>
+            <if test="roleName != null and roleName != ''"> AND t.ROLE_NAME LIKE '%${roleName}%'</if>
+            <if test="(isDel != null )"> AND is_del = #{isDel, jdbcType=INTEGER}</if>
+        </where>
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <select id="selectSysRoleInfoListForName" resultMap="sysRoleInfoResult" parameterType="sysRoleInfo">
+        select * FROM SYS_ROLE_INFO t
+        <where>
+            <if test="roleName != null and roleName != ''">AND t.ROLE_NAME LIKE '%${roleName}%'</if>
+            <if test="(isDel != null )"> AND t.is_del = #{isDel, jdbcType=INTEGER}</if>
+        </where>
+    </select>
+
+      <select id="selectRoleInfoMaxOrderValue" resultType="int" >
+        select
+            CASE WHEN MAX(t.ORDER_VALUE) IS NULL THEN 0 ELSE MAX(t.ORDER_VALUE) END
+        from SYS_ROLE_INFO t
+    </select>
 
 </mapper>

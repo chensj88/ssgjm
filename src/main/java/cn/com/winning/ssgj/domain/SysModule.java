@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
 
+import cn.com.winning.ssgj.domain.expand.NodeTree;
 import org.apache.ibatis.type.Alias;
 import cn.com.winning.ssgj.domain.BaseDomain;
 
@@ -23,6 +24,8 @@ public class SysModule extends BaseDomain implements Serializable {
 
     private String modName;
 
+    private String modPName;
+
     private String modDesc;
 
     private Integer modLevel;
@@ -38,6 +41,8 @@ public class SysModule extends BaseDomain implements Serializable {
     private Integer orderValue;
 
     private Integer isDel;
+
+    private NodeTree nodeTree = new NodeTree();
 
     public SysModule() {
 
@@ -131,4 +136,25 @@ public class SysModule extends BaseDomain implements Serializable {
         this.isDel = isDel;
     }
 
+    public String getModPName() {
+        return modPName;
+    }
+
+    public void setModPName(String modPName) {
+        this.modPName = modPName;
+    }
+
+    public NodeTree getNodeTree() {
+        nodeTree.setId(modId);
+        nodeTree.setNodeId(modId);
+        nodeTree.setNodePid(parId);
+        nodeTree.setText(modName);
+        nodeTree.setNodeIcon(iconPath);
+        nodeTree.setUrlPath(modUrl);
+        return nodeTree;
+    }
+
+    public void setNodeTree(NodeTree nodeTree) {
+        this.nodeTree = nodeTree;
+    }
 }

@@ -36,7 +36,27 @@ public class StringUtil {
         idString.append(" ) ");
         return  idString.toString();
     }
-
+    /**
+     * ID字符串生成动态SQL 实例 156,1;156,2
+     * @param idList  ID字符串，使用分号作为分隔符，使用逗号作为ID分隔符
+     * @param firstColName 第一个ID列名
+     * @return
+     */
+    public  static  String  generateDeleteSqlString(String idList,String firstColName){
+        String[] objectList = idList.split(";");
+        StringBuilder idString = new StringBuilder();
+        idString.append(firstColName+" IN ( ");
+        for (int i=0;i < objectList.length ; i++) {
+            String[] strArr = objectList[i].split(",");
+            if( i == objectList.length -1  ) {
+                idString.append( strArr[0]  );
+            }else{
+                idString.append( strArr[0] + " , ");
+            }
+        }
+        idString.append(" ) ");
+        return  idString.toString();
+    }
 
     /**
      * 检查字符串是否为NULL或“”
@@ -226,6 +246,15 @@ public class StringUtil {
             }
         }
 
+        return  resIdList;
+    }
+
+    public static List<String> generateStringList(String idList) {
+        String[] objectList = idList.split(";");
+        List<String> resIdList = new ArrayList<String>();
+        for (String s : objectList) {
+            resIdList.add(s);
+        }
         return  resIdList;
     }
 

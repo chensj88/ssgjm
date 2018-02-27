@@ -46,8 +46,8 @@ $(function () {
         showPaginationSwitch: false,			//显示 数据条数选择框
         search: false,                      // 是否显示表格搜索
         strictSearch: true,
-        showColumns: true,                  // 是否显示所有的列（选择显示的列）
-        showRefresh: true,                  // 是否显示刷新按钮
+       /* showColumns: true,                  // 是否显示所有的列（选择显示的列）
+        showRefresh: true,                  // 是否显示刷新按钮*/
         minimumCountColumns: 2,             // 最少允许的列数
         clickToSelect: true,                // 是否启用点击选中行
         idField: 'id',

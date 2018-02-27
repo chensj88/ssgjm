@@ -1,34 +1,4 @@
-jQuery(function($) {
-   /* $('.easy-pie-chart.percentage').each(function(){
-        var $box = $(this).closest('.infobox');
-        var barColor = $(this).data('color') || (!$box.hasClass('infobox-dark') ? $box.css('color') : 'rgba(255,255,255,0.95)');
-        var trackColor = barColor == 'rgba(255,255,255,0.95)' ? 'rgba(255,255,255,0.25)' : '#E2E2E2';
-        var size = parseInt($(this).data('size')) || 50;
-        $(this).easyPieChart({
-            barColor: barColor,
-            trackColor: trackColor,
-            scaleColor: false,
-            lineCap: 'butt',
-            lineWidth: parseInt(size/10),
-            animate: /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase()) ? false : 1000,
-            size: size
-        });
-    })
-
-    $('.sparkline').each(function(){
-        var $box = $(this).closest('.infobox');
-        var barColor = !$box.hasClass('infobox-dark') ? $box.css('color') : '#FFF';
-        $(this).sparkline('html', {tagValuesAttribute:'data-values', type: 'bar', barColor: barColor , chartRangeMin:$(this).data('min') || 0} );
-    });
-
-    var placeholder = $('#piechart-placeholder').css({'width':'90%' , 'min-height':'150px'});
-    var data = [
-        { label: "social networks",  data: 38.7, color: "#68BC31"},
-        { label: "search engines",  data: 24.5, color: "#2091CF"},
-        { label: "ad campaigns",  data: 8.2, color: "#AF4E96"},
-        { label: "direct traffic",  data: 18.6, color: "#DA5430"},
-        { label: "other",  data: 10, color: "#FEE074"}
-    ]
+$(function () {
     function drawPieChart(placeholder, data, position) {
         $.plot(placeholder, data, {
             series: {
@@ -58,14 +28,102 @@ jQuery(function($) {
             }
         })
     }
-    drawPieChart(placeholder, data);
+    var data = [];
+    var placeholder = $('#piechart-placeholder').css({'width':'90%' , 'min-height':'150px'});
+    $.ajax({
+        url : Common.getRootPath() + '/admin/user/count.do',
+        type:'post',
+        cache : false,
+        dataType: 'json',
+        async: false,
+        success :function (result) {
+            var _result = eval(result);
+            if(_result.status == Common.SUCCESS){
+                data = _result.data;
+                drawPieChart(placeholder,_result.data);
+                placeholder.data('chart', _result.data);
+                placeholder.data('draw', drawPieChart);
+            }
+        }
+    });
 
-    /!**
-     we saved the drawing function and the data to redraw with different position later when switching to RTL mode dynamically
-     so that's not needed actually.
-     *!/
-    placeholder.data('chart', data);
-    placeholder.data('draw', drawPieChart);
+    $.ajax({
+        url : Common.getRootPath() + '/admin/user/count.do',
+        type:'post',
+        cache : false,
+        dataType: 'json',
+        async: false,
+        success :function (result) {
+            var _result = eval(result);
+            if(_result.status == Common.SUCCESS){
+                data = _result.data;
+                drawPieChart(placeholder,_result.data);
+                placeholder.data('chart', _result.data);
+                placeholder.data('draw', drawPieChart);
+            }
+        }
+    });
+    $.ajax({
+        url : Common.getRootPath() + '/home/loadMenu.do',
+        type:'post',
+        cache : false,
+        dataType: 'json',
+        async: false,
+        success :function (result) {
+            var _result = eval(result);
+            if(_result.status == Common.SUCCESS){
+                var menu = _result.data;
+                initMenu(menu);
+            }
+        }
+    });
+
+    function initMenu(data) {
+        $.each(data,function (index,value,array) {
+            var content = '';
+            if( index == 0 ){
+                content = "<li class=\"active\" >\n" +
+                    "                    <a href=\""+Common.getRootPath()+value.urlPath+"\">\n" +
+                    "                        <i class=\""+value.nodeIcon+"\"></i>\n" +
+                    "                        <span class=\"menu-text\"> "+value.text+" </span>\n" +
+                    "                    </a>\n" +
+                    "                </li>";
+            }else{
+                content = "<li >\n" +
+                    "                    <a href=\"#\" class=\"dropdown-toggle\">\n" +
+                    "                        <i class=\""+value.nodeIcon+"\"></i>\n" +
+                    "                        <span class=\"menu-text\"> "+value.text+" </span>\n" +
+                    "                        <b class=\"arrow icon-angle-down\"></b>"+
+                    "                    </a>\n"+
+                    "                    <ul class=\"submenu\">";
+                    $.each(value.nodes,function (cindex,cvalue,carray) {
+                        content += "<li><a href=\""+Common.getRootPath()+cvalue.urlPath+"\">" +
+                            "        <i class=\""+cvalue.nodeIcon+"\"></i>"+cvalue.text+"</a></li>";
+                    });
+
+                content +=    "</ul></li>";
+            }
+           /* console.log(content);*/
+            $('#nav').append(content);
+        });
+
+    }
+    $.each(data,function (index,value,array) {
+        var content =
+            "<div class=\"grid3\">\n" +
+            "                <span class=\"grey\">\n" +
+            "                <i class=\"icon-facebook-sign icon-2x blue\"></i>\n" +
+            "                &nbsp; "+value.label+"\n" +
+            "            </span>\n" +
+            "            <h4 class=\"bigger pull-right\">"+value.data+"</h4>\n" +
+            "            </div>";
+        $('#userContent').append(content);
+        /*if(index == cLength - 1){
+            bdids += value.id;
+        }else{
+            bdids += value.id +',';
+        }*/
+    });
 
 
 
@@ -184,29 +242,5 @@ jQuery(function($) {
     $('#tasks input:checkbox').removeAttr('checked').on('click', function(){
         if(this.checked) $(this).closest('li').addClass('selected');
         else $(this).closest('li').removeClass('selected');
-    });*/
-
-    $('#coniframe').attr('src',Common.getRootPath()+'/home/index.do');
-    var content = '<li><i class="icon-home home-icon"></i><a href="#">首页</a></li> <li class="active">控制台</li>';
-    $('#breadcrumbMenu').empty();
-    $(content).appendTo($('#breadcrumbMenu'));
-    $('#navlist li a').on('click',function(e){
-        e.preventDefault();
-        var src = $(this).attr('href');
-        var title = $(this).text();
-        var parenTitle = $(this).parents('.submenu').prev('a').find('span').text();
-        var breadcrumbMenu = $('#breadcrumbMenu');
-        /*console.log(src+'-'+parenTitle+'-'+title);*/
-        if(parenTitle){
-            var content = '<li><i class="icon-home home-icon"></i>'+parenTitle.trim()+'</li> <li class="active">'+title+'</li>'
-            breadcrumbMenu.empty();
-            $(content).appendTo(breadcrumbMenu);
-            $('#coniframe').attr('src',src);
-        }else {
-            var content = '<li><i class="icon-home home-icon"></i>控制台</li> <li class="active">'+title+'</li>';
-            breadcrumbMenu.empty();
-            $(content).appendTo(breadcrumbMenu);
-        }
-
     });
 });

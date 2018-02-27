@@ -19,7 +19,7 @@ public class SysModFun extends BaseDomain implements Serializable {
 
     private Long modId;
 
-    private String funCode;
+    private Long funId;
 
     public SysModFun() {
 
@@ -33,12 +33,11 @@ public class SysModFun extends BaseDomain implements Serializable {
         this.modId = modId;
     }
 
-    public String getFunCode() {
-        return funCode;
+    public Long getFunId() {
+        return funId;
     }
 
-    public void setFunCode(String funCode) {
-        this.funCode = funCode;
+    public void setFunId(Long funId) {
+        this.funId = funId;
     }
-
 }

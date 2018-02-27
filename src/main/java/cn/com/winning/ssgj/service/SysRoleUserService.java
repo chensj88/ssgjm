@@ -26,4 +26,7 @@ public interface SysRoleUserService {
 
     List<SysRoleUser> getSysRoleUserPaginatedList(SysRoleUser t);
 
+    List<Long> getRoleIdList(SysRoleUser roleUser);
+
+    void createSysRoleUserByIdString(String idStr);
 }

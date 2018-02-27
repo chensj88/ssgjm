@@ -81,12 +81,28 @@
     <delete id="deleteSysRoleUser" parameterType="SysRoleUser">
         delete from SYS_ROLE_USER
         <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
-            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
-          ID in
-                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
-</if>
+            <if test="(roleId != null and roleId != '') or roleId == 0">AND ROLE_ID = #{roleId, jdbcType=BIGINT}</if>
+            <if test="(userId != null and userId != '') or userId == 0">AND USER_ID = #{userId, jdbcType=BIGINT}</if>
         </where>
     </delete>
 
+    <select id="selectSysRoleUserForIds" resultMap="sysRoleUserResultForList" parameterType="java.util.Map">
+        SELECT
+        A.*
+        FROM SYS_ROLE_USER
+        <where>
+            <if test=" ids != null and ids != ''">
+                ${ids}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteSysRoleUserForIds" parameterType="java.util.Map">
+       DELETE
+        FROM SYS_ROLE_USER
+        <where>
+            <if test=" ids != null and ids != ''">
+                ${ids}
+            </if>
+        </where>
+    </delete>
 </mapper>

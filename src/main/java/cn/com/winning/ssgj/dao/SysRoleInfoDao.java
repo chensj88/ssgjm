@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.dao;
 import cn.com.winning.ssgj.domain.SysRoleInfo;
 import cn.com.winning.ssgj.dao.EntityDao;
 
+import java.util.List;
+
 /**
  *
  *
@@ -11,4 +13,11 @@ import cn.com.winning.ssgj.dao.EntityDao;
  */
 public interface SysRoleInfoDao extends EntityDao<SysRoleInfo> {
 
+    Integer selectRoleInfoMaxOrderValue();
+
+    Integer selectSysRoleInfoCountForName(SysRoleInfo t);
+
+    List<SysRoleInfo> selectSysRoleInfoPaginatedListForName(SysRoleInfo t);
+
+    List<SysRoleInfo> selectSysRoleInfoListForName(SysRoleInfo roleInfo);
 }

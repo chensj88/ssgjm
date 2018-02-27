@@ -4,6 +4,8 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.domain.SysRoleInfo;
+import cn.com.winning.ssgj.domain.SysUserInfo;
+import cn.com.winning.ssgj.domain.expand.NodeTree;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.slf4j.Logger;
@@ -40,11 +42,11 @@ public class SysRoleController extends BaseController {
     @RequestMapping(value = "/list.do")
     @ResponseBody
     @ILog(operationName="角色列表",operationType="list")
-    public Map<String,Object> sysRoleList(Row row) {
-        SysRoleInfo role = new SysRoleInfo();
+    public Map<String,Object> sysRoleList(SysRoleInfo role,Row row) {
         role.setRow(row);
-        List<SysRoleInfo> roleInfos = super.getFacade().getSysRoleInfoService().getSysRoleInfoPaginatedList(role);
-        int total = super.getFacade().getSysRoleInfoService().getSysRoleInfoCount(role);
+        role.setIsDel(Constants.STATUS_UNUSE);
+        List<SysRoleInfo> roleInfos = super.getFacade().getSysRoleInfoService().getSysRoleInfoPaginatedListForName(role);
+        int total = super.getFacade().getSysRoleInfoService().getSysRoleInfoCountForName(role);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         result.put("total", total);
@@ -53,7 +55,60 @@ public class SysRoleController extends BaseController {
     }
 
 
+    @RequestMapping("/getById.do")
+    @ResponseBody
+    @ILog(operationName="使用ID查询角色",operationType="queryRoleById")
+    public Map<String, Object> queryRoleById(SysRoleInfo role){
+        role = super.getFacade().getSysRoleInfoService().getSysRoleInfo(role);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("data", role);
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
+
+    @RequestMapping("/deleteById.do")
+    @ResponseBody
+    @ILog(operationName="使用ID删除角色",operationType="deleteRoleById")
+    public Map<String, Object> deleteRoleById(SysRoleInfo role){
+        role.setIsDel(Constants.STATUS_USE);
+        super.getFacade().getSysRoleInfoService().modifySysRoleInfo(role);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
 
 
+    @RequestMapping("/add.do")
+    @ResponseBody
+    @ILog(operationName="添加角色",operationType="addRole")
+    public Map<String, Object> addRole(SysRoleInfo roleInfo) {
+        roleInfo.setId(ssgjHelper.createRoleId());
+        roleInfo.setIsDel(Constants.STATUS_UNUSE);
+        super.getFacade().getSysRoleInfoService().createSysRoleInfo(roleInfo);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
 
+    @RequestMapping("/update.do")
+    @ResponseBody
+    @ILog(operationName="更新角色",operationType="updateRole")
+    public Map<String, Object> updateRole(SysRoleInfo roleInfo) {
+        super.getFacade().getSysRoleInfoService().modifySysRoleInfo(roleInfo);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
+
+    @RequestMapping(value = "/tree.do")
+    @ResponseBody
+    public Map<String,Object> queryRoleTree(String roleName){
+
+        List<NodeTree> roleInfoList = super.getFacade().getSysRoleInfoService().getRoleInfoTree(roleName);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data",roleInfoList);
+        return result;
+
+    }
 }

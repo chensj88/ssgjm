@@ -91,6 +91,22 @@ public class Constants implements Serializable {
          * 用户类型  医院
          */
         public static final String USER_TYPE_HOSPITAL = "0";
+        /**
+         * 用户类型  管理员
+         */
+        public static final String USER_TYPE_ADMIN = "2";
+        /**
+         * 用户类型  公司
+         */
+        public static final String USER_TYPE_COMPANY_LABEL = "公司";
+        /**
+         * 用户类型  医院
+         */
+        public static final String USER_TYPE_HOSPITAL_LABEL = "医院";
+        /**
+         * 用户类型  管理员
+         */
+        public static final String USER_TYPE_ADMIN_LABEL = "管理员";
     }
 
     public class Role {
