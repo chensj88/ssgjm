@@ -36,6 +36,11 @@ public class EtTrainVideoList extends BaseDomain implements Serializable {
 	 * @val 分类(产品ID)
 	 */
 	private Long pdId;
+
+	/**
+	 * @val 用户ID
+	 */
+	private Long userId;
 	
 	/**
 	 * @val 视频名称
@@ -121,7 +126,17 @@ public class EtTrainVideoList extends BaseDomain implements Serializable {
 	public void setPdId(Long pdId) {
 		this.pdId = pdId;
 	}
-	
+
+	/**
+	 * @val 用户ID
+	 */
+	public Long getUserId() { return userId; }
+
+	/**
+	 * @val 用户ID
+	 */
+	public void setUserId(Long userId) { this.userId = userId; }
+
 	/**
 	 * @val 视频名称
 	 */

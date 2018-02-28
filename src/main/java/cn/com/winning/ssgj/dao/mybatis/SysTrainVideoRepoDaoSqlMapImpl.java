@@ -6,6 +6,8 @@ import cn.com.winning.ssgj.dao.SysTrainVideoRepoDao;
 import cn.com.winning.ssgj.domain.SysTrainVideoRepo;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.List;
+
 /**
  * Coder AutoGenerator generate.
  *
@@ -15,4 +17,8 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 @Service
 public class SysTrainVideoRepoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysTrainVideoRepo> implements SysTrainVideoRepoDao {
 
+    @Override
+    public List<SysTrainVideoRepo> selectSysTrainVideoRepoTypeList(SysTrainVideoRepo t) {
+        return this.getSqlSession().selectList("selectSysTrainVideoRepoTypeList",t);
+    }
 }
