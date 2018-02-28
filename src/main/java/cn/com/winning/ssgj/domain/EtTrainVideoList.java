@@ -40,7 +40,7 @@ public class EtTrainVideoList extends BaseDomain implements Serializable {
 	/**
 	 * @val 用户ID
 	 */
-	private Long userId;
+	private String userId;
 	
 	/**
 	 * @val 视频名称
@@ -66,6 +66,11 @@ public class EtTrainVideoList extends BaseDomain implements Serializable {
 	 * @val 备注
 	 */
 	private String remark;
+
+	/**
+	 * @val 微信唯一标识
+	 */
+	private String openId;
 	
 	public EtTrainVideoList() {
 
@@ -130,12 +135,12 @@ public class EtTrainVideoList extends BaseDomain implements Serializable {
 	/**
 	 * @val 用户ID
 	 */
-	public Long getUserId() { return userId; }
+	public String getUserId() { return userId; }
 
 	/**
 	 * @val 用户ID
 	 */
-	public void setUserId(Long userId) { this.userId = userId; }
+	public void setUserId(String userId) { this.userId = userId; }
 
 	/**
 	 * @val 视频名称
@@ -206,5 +211,15 @@ public class EtTrainVideoList extends BaseDomain implements Serializable {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	
+
+	/**
+	 * @val 微信唯一标识
+	 */
+	public String getOpenId() { return openId; }
+
+	/**
+	 * @val 微信唯一标识
+	 */
+	public void setOpenId(String openId) { this.openId = openId; }
+
 }

@@ -45,7 +45,8 @@ public class TrainVideoListController extends BaseController {
             //视频信息
             List<SysTrainVideoRepo> trainVideoProList = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepoList(repo);
             //视频播放记录
-
+            EtTrainVideoList trainVideo = new EtTrainVideoList();
+            //trainVideo.setUserId(OPENID);
             List<EtTrainVideoList> trainVideoList = super.getFacade().getEtTrainVideoListService().getEtTrainVideoListList(null);
 
             return null;

@@ -7,12 +7,13 @@
 		<result column="C_ID" property="cId" jdbcType="BIGINT" />
 		<result column="PM_ID" property="pmId" jdbcType="BIGINT" />
 		<result column="PD_ID" property="pdId" jdbcType="BIGINT" />
-		<result column="USER_ID" property="userId" jdbcType="BIGINT" />
+		<result column="USER_ID" property="userId" jdbcType="VARCHAR" />
 		<result column="VIDEO_NAME" property="videoName" jdbcType="VARCHAR" />
 		<result column="VIDEO_TIME" property="videoTime" jdbcType="TIME" />
 		<result column="NUM" property="num" jdbcType="INTEGER" />
 		<result column="VIDEO_PATH" property="videoPath" jdbcType="LONGVARCHAR" />
 		<result column="REMARK" property="remark" jdbcType="LONGVARCHAR" />
+		<result column="OPEN_ID" property="openId" jdbcType="VARCHAR" />
 
 	</resultMap>
 
@@ -24,12 +25,13 @@
 	   <if test="(cId != null and cId != '') or cId == 0"> and t.C_ID = #{cId} </if>
 	   <if test="(pmId != null and pmId != '') or pmId == 0"> and t.PM_ID = #{pmId} </if>
 	   <if test="(pdId != null and pdId != '') or pdId == 0"> and t.PD_ID = #{pdId} </if>
-		<if test="(userId != null and userId != '') or userId == 0"> and t.USER_ID = #{userId} </if>
+		<if test="userId != null and userId != ''"> and t.USER_ID = #{userId} </if>
 		<if test="videoName != null and videoName != ''"> and t.VIDEO_NAME = #{videoName} </if>
 	   <if test="videoTime != null and videoTime != ''"> and t.VIDEO_TIME = #{videoTime} </if>
 	   <if test="(num != null and num != '') or num == 0"> and t.NUM = #{num} </if>
 	   <if test="videoPath != null and videoPath != ''"> and t.VIDEO_PATH = #{videoPath} </if>
 	   <if test="remark != null and remark != ''"> and t.REMARK = #{remark} </if>
+		<if test="openId != null and openId != ''"> and t.OPEN_ID = #{openId} </if>
 	</sql>
 
 	<select id="selectEtTrainVideoList" resultMap="etTrainVideoListResult" parameterType="etTrainVideoList">
@@ -67,12 +69,13 @@
 	       <if test="(cId != null and cId != '') or cId == 0"> C_ID, </if>
 	       <if test="(pmId != null and pmId != '') or pmId == 0"> PM_ID, </if>
 	       <if test="(pdId != null and pdId != '') or pdId == 0"> PD_ID, </if>
-			<if test="(userId != null and userId != '') or userId == 0"> USER_ID, </if>
+			<if test="userId != null and userId != ''"> USER_ID, </if>
 		   <if test="videoName != null and videoName != ''"> VIDEO_NAME, </if>
 		   <if test="videoTime != null and videoTime != ''"> VIDEO_TIME, </if>
 	       <if test="(num != null and num != '') or num == 0"> NUM, </if>
 		   <if test="videoPath != null and videoPath != ''"> VIDEO_PATH, </if>
 		   <if test="remark != null and remark != ''"> REMARK, </if>
+			<if test="openId != null and openId != ''"> OPEN_ID, </if>
 		</trim>
 		values
 		<trim prefix="(" suffix=")" suffixOverrides=",">
@@ -80,12 +83,14 @@
 	       <if test="(cId != null and cId != '') or cId == 0"> #{cId, jdbcType=BIGINT}, </if>
 	       <if test="(pmId != null and pmId != '') or pmId == 0"> #{pmId, jdbcType=BIGINT}, </if>
 	       <if test="(pdId != null and pdId != '') or pdId == 0"> #{pdId, jdbcType=BIGINT}, </if>
-			<if test="(userId != null and userId != '') or userId == 0"> #{userId, jdbcType=BIGINT}, </if>
+			<if test="userId != null and userId != ''"> #{userId, jdbcType=VARCHAR}, </if>
 			<if test="videoName != null and videoName != ''"> #{videoName, jdbcType=VARCHAR}, </if>
 		   <if test="videoTime != null and videoTime != ''"> #{videoTime, jdbcType=TIME}, </if>
 	       <if test="(num != null and num != '') or num == 0"> #{num, jdbcType=INTEGER}, </if>
 		   <if test="videoPath != null and videoPath != ''"> #{videoPath, jdbcType=LONGVARCHAR}, </if>
 		   <if test="remark != null and remark != ''"> #{remark, jdbcType=LONGVARCHAR}, </if>
+			<if test="openId != null and openId != ''"> #{openId, jdbcType=VARCHAR}, </if>
+
 		</trim>
 	</insert>
 
@@ -97,12 +102,14 @@
 			   <if test="(cId != null and cId != '') or cId == 0"> C_ID = #{cId, jdbcType=BIGINT}, </if>
 			   <if test="(pmId != null and pmId != '') or pmId == 0"> PM_ID = #{pmId, jdbcType=BIGINT}, </if>
 			   <if test="(pdId != null and pdId != '') or pdId == 0"> PD_ID = #{pdId, jdbcType=BIGINT}, </if>
-				<if test="(userId != null and userId != '') or userId == 0"> and USER_ID = #{userId, jdbcType=BIGINT}, </if>
+				<if test="userId != null and userId != ''"> and USER_ID = #{userId, jdbcType=VARCHAR}, </if>
 				<if test="videoName != null and videoName != ''"> VIDEO_NAME = #{videoName, jdbcType=VARCHAR}, </if>
 			   <if test="videoTime != null and videoTime != ''"> VIDEO_TIME = #{videoTime, jdbcType=TIME}, </if>
 			   <if test="(num != null and num != '') or num == 0"> NUM = #{num, jdbcType=INTEGER}, </if>
 			   <if test="videoPath != null and videoPath != ''"> VIDEO_PATH = #{videoPath, jdbcType=LONGVARCHAR}, </if>
 			   <if test="remark != null and remark != ''"> REMARK = #{remark, jdbcType=LONGVARCHAR}, </if>
+				<if test="openId != null and openId != ''"> and OPEN_ID = #{openId, jdbcType=VARCHAR}, </if>
+
 			</trim>
 		</set>
 		where
