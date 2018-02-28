@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.domain.SysUserInfo;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,7 +76,8 @@ public class SysFlowAnswerServiceImpl implements SysFlowAnswerService {
             answer.setAnswerContent(items[2]);
             answer.setStatus(Constants.STATUS_USE);
             answer.setLastUpdateTime(new Date());
-            //TODO 修改人
+            SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
+            answer.setLastUpdator(userInfo.getId());
             this.sysFlowAnswerDao.insertEntity(answer);
         }
     }

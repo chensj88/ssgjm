@@ -149,7 +149,17 @@
 
 	<update id="removeSysProductFlowInfoMappingByIds" parameterType="java.util.Map">
 		update SYS_PRODUCT_FLOW_INFO
-		SET  EXPIRE_DATE = CURRENT_TIMESTAMP
+		<set>
+			<trim suffixOverrides=",">
+				<if test="user != null and user != ''">
+					LAST_UPDATOR =${user},
+				</if>
+				<if test="user != null and user != ''">
+					EXPIRE_DATE = CURRENT_TIMESTAMP,
+				</if>
+			</trim>
+
+		</set>
 		<where>
 			<if test=" ids != null and ids != ''">
 				${ids}

@@ -3,9 +3,11 @@ package cn.com.winning.ssgj.web.controller;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.domain.SysFlowInfo;
+import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,8 +84,8 @@ public class FlowInfoController extends BaseController {
 
         flow.setLastUpdateTime(new Date());
         flow.setStatus(Constants.STATUS_USE);
-        System.out.println(flow);
-        //TODO 添加修改用户
+        SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
+        flow.setLastUpdator(userInfo.getId());
         super.getFacade().getSysFlowInfoService().createSysFlowInfo(flow);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
@@ -98,9 +100,6 @@ public class FlowInfoController extends BaseController {
             flowCode += "-";
             reFlowCode = flowCode + super.getFacade().getSysFlowInfoService().createFlowCode(flowCode,flowType);
         }
-        System.out.println(flowType);
-        System.out.println(flowCode);
-        System.out.println(reFlowCode);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("data", reFlowCode);
         result.put("status", Constants.SUCCESS);
@@ -111,7 +110,6 @@ public class FlowInfoController extends BaseController {
     @ResponseBody
     public Map<String,Object> getFlowById(SysFlowInfo flow){
      flow = super.getFacade().getSysFlowInfoService().getSysFlowInfo(flow);
-     System.out.println(flow);
      Map<String,Object> result = new HashMap<String,Object>();
      result.put("status", Constants.SUCCESS);
      result.put("data", flow);
@@ -123,8 +121,8 @@ public class FlowInfoController extends BaseController {
     @Transactional
     public Map<String,Object> updateFlowById(SysFlowInfo flow){
         flow.setLastUpdateTime(new Date());
-        System.out.println(flow);
-        //TODO 添加修改用户
+        SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
+        flow.setLastUpdator(userInfo.getId());
         super.getFacade().getSysFlowInfoService().modifySysFlowInfo(flow);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);

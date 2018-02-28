@@ -4,7 +4,9 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.domain.SysDataInfo;
 import cn.com.winning.ssgj.domain.SysFlowInfo;
 import cn.com.winning.ssgj.domain.SysProductFlowInfo;
+import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -85,9 +87,8 @@ public class ProductFlowController extends BaseController {
     @ResponseBody
     public Map<String,Object> addProductFlowInfoMapping(String idList) throws ParseException {
 
-        //TODO 添加操作人
-        System.out.println(idList);
-        super.getFacade().getSysProductFlowInfoService().addSysProductFlowInfoMapping(idList,null);
+        SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
+        super.getFacade().getSysProductFlowInfoService().addSysProductFlowInfoMapping(idList,userInfo);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         return result;
@@ -96,10 +97,8 @@ public class ProductFlowController extends BaseController {
     @RequestMapping(value = "/pFlow/removeMapping.do")
     @ResponseBody
     public Map<String,Object> removeProductFlowInfoMapping(String idList) throws ParseException {
-
-        //TODO 添加操作人
-        System.out.println(idList);
-        super.getFacade().getSysProductFlowInfoService().removeSysProductFlowInfoMappingByIds(idList);
+        SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
+        super.getFacade().getSysProductFlowInfoService().removeSysProductFlowInfoMappingByIds(idList,userInfo);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data","");

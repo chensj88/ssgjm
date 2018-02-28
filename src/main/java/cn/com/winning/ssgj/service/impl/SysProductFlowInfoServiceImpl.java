@@ -74,8 +74,7 @@ public class SysProductFlowInfoServiceImpl implements SysProductFlowInfoService 
         for (SysProductFlowInfo info : updateList) {
             info.setEffectiveDate(new Date());
             info.setExpireDate(DateUtil.parse("9999-12-31"));
-            //TODO 添加维护人员
-            //info.setLastUpdator(user.getId());
+            info.setLastUpdator(user.getId());
             info.setLastUpdateTime(new Date());
             this.sysProductFlowInfoDao.updateEntity(info);
             idsList.add(info.getPdId()+","+info.getFlowId());
@@ -89,17 +88,17 @@ public class SysProductFlowInfoServiceImpl implements SysProductFlowInfoService 
             info.setFlowId(Long.valueOf(s.split(",")[1]));
             info.setEffectiveDate(new Date());
             info.setExpireDate(DateUtil.parse("9999-12-31"));
-            //TODO 添加维护人员
-            //info.setLastUpdator(user.getId());
+            info.setLastUpdator(user.getId());
             info.setLastUpdateTime(new Date());
             this.sysProductFlowInfoDao.insertEntity(info);
         }
     }
 
     @Override
-    public Integer removeSysProductFlowInfoMappingByIds(String idList) {
+    public Integer removeSysProductFlowInfoMappingByIds(String idList, SysUserInfo userInfo) {
         Map<String,Object> param = new HashMap<String, Object>();
         param.put("ids", StringUtil.generateSqlString(idList,"PD_ID","FLOW_ID"));
+        param.put("user",userInfo.getId());
         return this.sysProductFlowInfoDao.removeSysProductFlowInfoMappingByIds(param);
     }
 

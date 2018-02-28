@@ -3,7 +3,9 @@ package cn.com.winning.ssgj.web.controller;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.domain.SysDataInfo;
 import cn.com.winning.ssgj.domain.SysProductDataInfo;
+import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,6 +67,8 @@ public class ProductReportController extends BaseController {
     @RequestMapping(value = "/pReport/removeMapping.do")
     @ResponseBody
     public Map<String,Object> removePBMapping(String idList){
+        SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
+
         super.getFacade().getSysProductDataInfoService().removeSysProductDataInfo(idList);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
@@ -76,9 +80,9 @@ public class ProductReportController extends BaseController {
     @RequestMapping(value = "/pReport/addProduct.do")
     @ResponseBody
     public Map<String,Object> addPBMapping(String idList) throws ParseException {
-        //TODO 添加操作人
-        System.out.println(idList);
-        super.getFacade().getSysProductDataInfoService().addSysProductDataInfoMapping(idList,null);
+        SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
+        super.getFacade().getSysProductDataInfoService().
+                addSysProductDataInfoMapping(idList,userInfo);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         return result;
