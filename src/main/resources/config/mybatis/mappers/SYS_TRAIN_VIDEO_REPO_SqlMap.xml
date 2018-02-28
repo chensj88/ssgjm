@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysTrainVideoRepoDao">
+
+	<resultMap id="sysTrainVideoRepoResultForList" type="sysTrainVideoRepo">
+		<result column="ID" property="id" jdbcType="BIGINT" />
+		<result column="VIDEO_NAME" property="videoName" jdbcType="VARCHAR" />
+		<result column="VIDEO_DESC" property="videoDesc" jdbcType="LONGVARCHAR" />
+		<result column="VIDEO_TYPE" property="videoType" jdbcType="VARCHAR" />
+		<result column="REMOTE_PATH" property="remotePath" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="INTEGER" />
+		<result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT" />
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<resultMap id="sysTrainVideoRepoResult" type="sysTrainVideoRepo" extends="sysTrainVideoRepoResultForList">
+	</resultMap>
+
+	<sql id="sf-sysTrainVideoRepo">
+	   <if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
+	   <if test="videoName != null and videoName != ''"> and t.VIDEO_NAME = #{videoName} </if>
+	   <if test="videoDesc != null and videoDesc != ''"> and t.VIDEO_DESC = #{videoDesc} </if>
+	   <if test="videoType != null and videoType != ''"> and t.VIDEO_TYPE = #{videoType} </if>
+	   <if test="remotePath != null and remotePath != ''"> and t.REMOTE_PATH = #{remotePath} </if>
+	   <if test="(status != null and status != '') or status == 0"> and t.STATUS = #{status} </if>
+	   <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> and t.LAST_UPDATOR = #{lastUpdator} </if>
+	   <if test="lastUpdateTime != null and lastUpdateTime != ''"> and t.LAST_UPDATE_TIME = #{lastUpdateTime} </if>
+	</sql>
+
+	<select id="selectSysTrainVideoRepo" resultMap="sysTrainVideoRepoResult" parameterType="sysTrainVideoRepo">
+		select * from SYS_TRAIN_VIDEO_REPO t where 1 = 1
+		<include refid="sf-sysTrainVideoRepo" />
+	</select>
+
+	<select id="selectSysTrainVideoRepoList" resultMap="sysTrainVideoRepoResultForList" parameterType="sysTrainVideoRepo">
+		select
+		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
+		 * from SYS_TRAIN_VIDEO_REPO t where 1 = 1
+		<include refid="sf-sysTrainVideoRepo" />
+		<!-- order by ID asc -->
+	</select>
+
+	<select id="selectSysTrainVideoRepoCount" resultType="int" parameterType="sysTrainVideoRepo">
+		select count(*) from SYS_TRAIN_VIDEO_REPO t where 1 = 1
+		<include refid="sf-sysTrainVideoRepo" />
+	</select>
+
+	<select id="selectSysTrainVideoRepoPaginatedList" resultMap="sysTrainVideoRepoResult" parameterType="sysTrainVideoRepo">
+		select * from (
+			select *, ROW_NUMBER() OVER ( order by id desc ) as _rn 
+				from SYS_TRAIN_VIDEO_REPO t where 1 = 1
+			<include refid="sf-sysTrainVideoRepo" />
+			<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
+
+	<insert id="insertSysTrainVideoRepo" parameterType="sysTrainVideoRepo">
+	<selectKey resultType="String"  order="BEFORE"  keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID</selectKey>
+		insert into SYS_TRAIN_VIDEO_REPO 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> ID, </if>
+		   <if test="videoName != null and videoName != ''"> VIDEO_NAME, </if>
+		   <if test="videoDesc != null and videoDesc != ''"> VIDEO_DESC, </if>
+		   <if test="videoType != null and videoType != ''"> VIDEO_TYPE, </if>
+		   <if test="remotePath != null and remotePath != ''"> REMOTE_PATH, </if>
+	       <if test="(status != null and status != '') or status == 0"> STATUS, </if>
+	       <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> LAST_UPDATOR, </if>
+		   <if test="lastUpdateTime != null and lastUpdateTime != ''"> LAST_UPDATE_TIME, </if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> #{id, jdbcType=BIGINT}, </if>
+		   <if test="videoName != null and videoName != ''"> #{videoName, jdbcType=VARCHAR}, </if>
+		   <if test="videoDesc != null and videoDesc != ''"> #{videoDesc, jdbcType=LONGVARCHAR}, </if>
+		   <if test="videoType != null and videoType != ''"> #{videoType, jdbcType=VARCHAR}, </if>
+		   <if test="remotePath != null and remotePath != ''"> #{remotePath, jdbcType=VARCHAR}, </if>
+	       <if test="(status != null and status != '') or status == 0"> #{status, jdbcType=INTEGER}, </if>
+	       <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> #{lastUpdator, jdbcType=BIGINT}, </if>
+		   <if test="lastUpdateTime != null and lastUpdateTime != ''"> #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
+		</trim>
+	</insert>
+
+	<update id="updateSysTrainVideoRepo" parameterType="SysTrainVideoRepo">
+		update SYS_TRAIN_VIDEO_REPO
+		<set>
+			<trim suffixOverrides=",">
+			   <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>
+			   <if test="videoName != null and videoName != ''"> VIDEO_NAME = #{videoName, jdbcType=VARCHAR}, </if>
+			   <if test="videoDesc != null and videoDesc != ''"> VIDEO_DESC = #{videoDesc, jdbcType=LONGVARCHAR}, </if>
+			   <if test="videoType != null and videoType != ''"> VIDEO_TYPE = #{videoType, jdbcType=VARCHAR}, </if>
+			   <if test="remotePath != null and remotePath != ''"> REMOTE_PATH = #{remotePath, jdbcType=VARCHAR}, </if>
+			   <if test="(status != null and status != '') or status == 0"> STATUS = #{status, jdbcType=INTEGER}, </if>
+			   <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> LAST_UPDATOR = #{lastUpdator, jdbcType=BIGINT}, </if>
+			   <if test="lastUpdateTime != null and lastUpdateTime != ''"> LAST_UPDATE_TIME = #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
+			</trim>
+		</set>
+		where
+		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</update>
+
+	<delete id="deleteSysTrainVideoRepo" parameterType="SysTrainVideoRepo">
+		delete from SYS_TRAIN_VIDEO_REPO where
+		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</delete>
+
+</mapper>
