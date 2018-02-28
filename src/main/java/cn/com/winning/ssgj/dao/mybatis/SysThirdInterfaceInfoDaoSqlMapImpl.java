@@ -19,13 +19,25 @@ public class SysThirdInterfaceInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysT
 
     @Override
     public Integer selectSysThirdInterfaceInfoCountByselective(SysThirdInterfaceInfo t) {
-        String statement = "query" + t.getClass().getSimpleName() + "CountForSelective";
+        String statement = "selectSysThirdInterfaceInfoCountByselective";
         return super.getSqlSession().selectOne(statement,t);
     }
 
     @Override
     public List<SysThirdInterfaceInfo> selectSysThirdInterfaceInfoPaginatedListByselective(SysThirdInterfaceInfo t) {
-        String statement = "query" + t.getClass().getSimpleName() + "PaginatedListForSelective";
+        String statement = "selectSysThirdInterfaceInfoPaginatedListByselective";
         return super.getSqlSession().selectList(statement,t);
+    }
+
+    @Override
+    public List<SysThirdInterfaceInfo> selectSysThirdInterfaceInfoListByIds(SysThirdInterfaceInfo sysThirdInterfaceInfo) {
+        String statement = "selectSysThirdInterfaceInfoListByIds";
+        return super.getSqlSession().selectList(statement,sysThirdInterfaceInfo);
+    }
+
+    @Override
+    public List<SysThirdInterfaceInfo> selectSysThirdInterfaceInfoListForNames(SysThirdInterfaceInfo info) {
+        String statement = "selectSysThirdInterfaceInfoListForNames";
+        return super.getSqlSession().selectList(statement,info);
     }
 }

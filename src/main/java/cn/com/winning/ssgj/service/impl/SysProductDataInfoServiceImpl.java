@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import cn.com.winning.ssgj.base.util.DateUtil;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.SysUserInfo;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.SysProductDataInfoDao;
@@ -78,6 +79,7 @@ public class SysProductDataInfoServiceImpl implements SysProductDataInfoService 
         String ids = StringUtil.generateSqlString(idList,"PD_ID","BD_ID");
         Map<String,Object> param = new HashMap<String, Object>();
         param.put("ids",ids);
+        param.put("user", ((SysUserInfo) SecurityUtils.getSubject().getPrincipal()).getId());
         return this.sysProductDataInfoDao.removeSysProductDataInfoByIds(param);
     }
 
@@ -91,8 +93,7 @@ public class SysProductDataInfoServiceImpl implements SysProductDataInfoService 
         for (SysProductDataInfo info : updateList) {
             info.setEffectiveDate(new Date());
             info.setExpireDate(DateUtil.parse("9999-12-31"));
-            //TODO 添加维护人员
-            //info.setLastUpdator(user.getId());
+            info.setLastUpdator(user.getId());
             info.setLastUpdateTime(new Date());
             this.sysProductDataInfoDao.updateEntity(info);
             idsList.add(info.getPdId()+","+info.getBdId());
@@ -106,8 +107,7 @@ public class SysProductDataInfoServiceImpl implements SysProductDataInfoService 
             info.setBdId(Long.valueOf(s.split(",")[1]));
             info.setEffectiveDate(new Date());
             info.setExpireDate(DateUtil.parse("9999-12-31"));
-            //TODO 添加维护人员
-            //info.setLastUpdator(user.getId());
+            info.setLastUpdator(user.getId());
             info.setLastUpdateTime(new Date());
             this.sysProductDataInfoDao.insertEntity(info);
         }

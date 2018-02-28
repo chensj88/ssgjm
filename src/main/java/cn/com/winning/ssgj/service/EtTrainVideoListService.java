@@ -27,3 +27,4 @@ public interface EtTrainVideoListService {
 	List<EtTrainVideoList> getEtTrainVideoListPaginatedList(EtTrainVideoList t);
 
 }
+

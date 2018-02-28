@@ -124,4 +124,23 @@ public class SysSoftHardwareInfoController extends BaseController {
 		map.put("status", Constants.SUCCESS);
 		return map;
 	}
+
+
+
+	/**
+	 *软硬件设备类型信息表
+	 * @param info
+	 * @return
+	 */
+	@RequestMapping("/listNoPage.do")
+	@ResponseBody
+	@ILog(operationName="软硬件设备类型信息表",operationType="list")
+	public Map<String, Object> listNoPage(SysSoftHardwareInfo info) {
+		List<SysSoftHardwareInfo> infos = getFacade().getSysSoftHardwareInfoService().getSysSoftHardwareInfoListForNames(info);
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("rows", infos);
+		map.put("status", Constants.SUCCESS);
+		return map;
+	}
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import cn.com.winning.ssgj.domain.SysDataInfo;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.SysSoftHardwareInfoDao;
@@ -59,6 +60,17 @@ public class SysSoftHardwareInfoServiceImpl implements SysSoftHardwareInfoServic
     @Override
     public List<SysSoftHardwareInfo> getSysSoftHardwareInfoPaginatedListForSelectiveKey(SysSoftHardwareInfo t) {
         return this.sysSoftHardwareInfoDao.selectSysSoftHardwareInfoPaginatedListByselective(t);
+    }
+
+    @Override
+    public List<SysSoftHardwareInfo> getSysSoftHardwareInfoListByIds(SysSoftHardwareInfo data) {
+
+        return this.sysSoftHardwareInfoDao.selectSysSoftHardwareInfoListByIds(data) ;
+    }
+
+    @Override
+    public List<SysSoftHardwareInfo> getSysSoftHardwareInfoListForNames(SysSoftHardwareInfo info) {
+        return this.sysSoftHardwareInfoDao.selectSysSoftHardwareInfoListForNames(info);
     }
 
 }

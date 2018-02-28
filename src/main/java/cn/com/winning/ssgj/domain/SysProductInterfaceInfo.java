@@ -46,7 +46,14 @@ public class SysProductInterfaceInfo extends BaseDomain implements Serializable 
 	 * @val 维护时间
 	 */
 	private Date lastUpdateTime;
-	
+
+	private String pdName;
+	private String pdCode;
+	private String interName;
+	private String interCode;
+	private String interDesc;
+	private String lastUpdate;
+
 	public SysProductInterfaceInfo() {
 
 	}
@@ -134,5 +141,53 @@ public class SysProductInterfaceInfo extends BaseDomain implements Serializable 
 	public void setLastUpdateTime(Date lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
 	}
-	
+
+
+	public String getPdName() {
+		return pdName;
+	}
+
+	public void setPdName(String pdName) {
+		this.pdName = pdName;
+	}
+
+	public String getPdCode() {
+		return pdCode;
+	}
+
+	public void setPdCode(String pdCode) {
+		this.pdCode = pdCode;
+	}
+
+	public String getInterName() {
+		return interName;
+	}
+
+	public void setInterName(String interName) {
+		this.interName = interName;
+	}
+
+	public String getInterCode() {
+		return interCode;
+	}
+
+	public void setInterCode(String interCode) {
+		this.interCode = interCode;
+	}
+
+	public String getInterDesc() {
+		return interDesc;
+	}
+
+	public void setInterDesc(String interDesc) {
+		this.interDesc = interDesc;
+	}
+
+	public String getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(String lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 }

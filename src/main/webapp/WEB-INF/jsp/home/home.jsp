@@ -11,7 +11,8 @@
     <meta name="description" content="实施工具后台管理系统" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- basic styles -->
-    <link href="<%=basePath%>resources/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <%--<link href="<%=basePath%>resources//css/bootstrap.min.css" rel="stylesheet" />--%>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/font-awesome.min.css" />
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
     <!--[if IE 7]>
@@ -51,222 +52,11 @@
 
         <div class="navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
-                <li class="grey">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <i class="icon-tasks"></i>
-                        <span class="badge badge-grey">4</span>
-                    </a>
-
-                    <ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
-                        <li class="dropdown-header">
-                            <i class="icon-ok"></i>
-                            还有4个任务完成
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                <div class="clearfix">
-                                    <span class="pull-left">软件更新</span>
-                                    <span class="pull-right">65%</span>
-                                </div>
-
-                                <div class="progress progress-mini ">
-                                    <div style="width:65%" class="progress-bar "></div>
-                                </div>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                <div class="clearfix">
-                                    <span class="pull-left">硬件更新</span>
-                                    <span class="pull-right">35%</span>
-                                </div>
-
-                                <div class="progress progress-mini ">
-                                    <div style="width:35%" class="progress-bar progress-bar-danger"></div>
-                                </div>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                <div class="clearfix">
-                                    <span class="pull-left">单元测试</span>
-                                    <span class="pull-right">15%</span>
-                                </div>
-
-                                <div class="progress progress-mini ">
-                                    <div style="width:15%" class="progress-bar progress-bar-warning"></div>
-                                </div>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                <div class="clearfix">
-                                    <span class="pull-left">错误修复</span>
-                                    <span class="pull-right">90%</span>
-                                </div>
-
-                                <div class="progress progress-mini progress-striped active">
-                                    <div style="width:90%" class="progress-bar progress-bar-success"></div>
-                                </div>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                查看任务详情
-                                <i class="icon-arrow-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="purple">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <i class="icon-bell-alt icon-animated-bell"></i>
-                        <span class="badge badge-important">8</span>
-                    </a>
-
-                    <ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
-                        <li class="dropdown-header">
-                            <i class="icon-warning-sign"></i>
-                            8条通知
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                <div class="clearfix">
-											<span class="pull-left">
-												<i class="btn btn-xs no-hover btn-pink icon-comment"></i>
-												新闻评论
-											</span>
-                                    <span class="pull-right badge badge-info">+12</span>
-                                </div>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                <i class="btn btn-xs btn-primary icon-user"></i>
-                                切换为编辑登录..
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                <div class="clearfix">
-											<span class="pull-left">
-												<i class="btn btn-xs no-hover btn-success icon-shopping-cart"></i>
-												新订单
-											</span>
-                                    <span class="pull-right badge badge-success">+8</span>
-                                </div>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                <div class="clearfix">
-											<span class="pull-left">
-												<i class="btn btn-xs no-hover btn-info icon-twitter"></i>
-												粉丝
-											</span>
-                                    <span class="pull-right badge badge-info">+11</span>
-                                </div>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                查看所有通知
-                                <i class="icon-arrow-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="green">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <i class="icon-envelope icon-animated-vertical"></i>
-                        <span class="badge badge-success">5</span>
-                    </a>
-
-                    <ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
-                        <li class="dropdown-header">
-                            <i class="icon-envelope-alt"></i>
-                            5条消息
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                <img src="<%=basePath%>resources/assets/avatars/avatar.png" class="msg-photo" alt="Alex's Avatar" />
-                                <span class="msg-body">
-											<span class="msg-title">
-												<span class="blue">Alex:</span>
-												不知道写啥 ...
-											</span>
-
-											<span class="msg-time">
-												<i class="icon-time"></i>
-												<span>1分钟以前</span>
-											</span>
-										</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                <img src="<%=basePath%>resources/assets/avatars/avatar3.png" class="msg-photo" alt="Susan's Avatar" />
-                                <span class="msg-body">
-											<span class="msg-title">
-												<span class="blue">Susan:</span>
-												不知道翻译...
-											</span>
-
-											<span class="msg-time">
-												<i class="icon-time"></i>
-												<span>20分钟以前</span>
-											</span>
-										</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                <img src="<%=basePath%>resources/assets/avatars/avatar4.png" class="msg-photo" alt="Bob's Avatar" />
-                                <span class="msg-body">
-											<span class="msg-title">
-												<span class="blue">Bob:</span>
-												到底是不是英文 ...
-											</span>
-
-											<span class="msg-time">
-												<i class="icon-time"></i>
-												<span>下午3:15</span>
-											</span>
-										</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="inbox.html">
-                                查看所有消息
-                                <i class="icon-arrow-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="light-blue">
+                 <li class="green">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                         <img class="nav-user-photo" src="<%=basePath%>resources/assets/avatars/user.jpg" alt="Jason's Photo" />
                         <span class="user-info">
 									<small>欢迎光临,</small>
-									<%--<%=((SysUserInfo)request.getAttribute("user")).getYhmc()%>--%>
-                                   <%-- admin--%>
                                    <%=((SysUserInfo)SecurityUtils.getSubject().getPrincipal()).getName()%>
 								</span>
 
@@ -274,22 +64,6 @@
                     </a>
 
                     <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                        <li>
-                            <a href="#">
-                                <i class="icon-cog"></i>
-                                设置
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                <i class="icon-user"></i>
-                                个人资料
-                            </a>
-                        </li>
-
-                        <li class="divider"></li>
-
                         <li>
                             <a href="/logout">
                                 <i class="icon-off"></i>
@@ -349,80 +123,7 @@
             </div><!-- #sidebar-shortcuts -->
 
             <ul class="nav nav-list" id="navlist">
-                <%--<li class="active" id="index">
-                    <a href="#">
-                        <i class="icon-dashboard"></i>
-                        <span class="menu-text"> 控制台 </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="dropdown-toggle">
-                        <i class="icon-text-width"></i>
-                        <span class="menu-text"> 项目信息 </span>
-                        <b class="arrow icon-angle-down"></b>
-                    </a>
-                    <ul class="submenu">
-                        <li><a href="<%=basePath%>admin/productInfo/product.do"><i class="icon-double-angle-right"></i>产品信息</a></li>
-                        <li><a href="<%=basePath%>admin/productLineInfo/productLine.do"><i class="icon-double-angle-right"></i>产品条线信息</a></li>
-                        <li><a href="<%=basePath%>admin/basicData/dataInfo.do"><i class="icon-double-angle-right"></i>基础数据类型信息</a></li>
-                        <li><a href="<%=basePath%>admin/flow/flowInfo.do"><i class="icon-double-angle-right"></i>业务流程信息</a></li>
-                        <li><a href="<%=basePath%>admin/thirx/interfaceInfo.do"><i class="icon-double-angle-right"></i>第三方接口类型信息</a></li>
-                        <li><a href="<%=basePath%>admin/hardware/shInfo.do"><i class="icon-double-angle-right"></i>软硬件设备类型信息</a></li>
-                        <li><a href="<%=basePath%>admin/report/reportInfo.do"><i class="icon-double-angle-right"></i>报表单据信息</a></li>
-                        <li><a href="<%=basePath%>admin/fq/fqInfo.do"><i class="icon-double-angle-right"></i>流程问卷清单</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" class="dropdown-toggle">
-                        <i class="icon-desktop"></i>
-                        <span class="menu-text"> 项目映射关系信息 </span>
-                        <b class="arrow icon-angle-down"></b>
-                    </a>
-                    <ul class="submenu">
-                        <li><a href="<%=basePath%>admin/mapping/pBdataInfo.do"><i class="icon-double-angle-right"></i>产品与基础数据信息</a></li>
-                        <li><a href="<%=basePath%>admin/mapping/pflowinfo.do"><i class="icon-double-angle-right"></i>产品与业务流程信息</a></li>
-                        <li><a href="#"><i class="icon-double-angle-right"></i>产品与第三方接口信息</a></li>
-                        <li><a href="#"><i class="icon-double-angle-right"></i>产品与软硬件设备信息</a></li>
-                        <li><a href="#"><i class="icon-double-angle-right"></i>产品与报表单据信息</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" class="dropdown-toggle">
-                        <i class="icon-list"></i>
-                        <span class="menu-text"> 用户管理 </span>
-                        <b class="arrow icon-angle-down"></b>
-                    </a>
-                    <ul class="submenu">
-                        <li><a href="<%=basePath%>admin/user/userinfo.do"><i class="icon-double-angle-right"></i>用户信息</a></li>
-                        <li><a href="<%=basePath%>admin/role/roleInfo.do"><i class="icon-double-angle-right"></i>角色信息</a></li>
-                        <li><a href="<%=basePath%>admin/module/moduleInfo.do"><i class="icon-double-angle-right"></i>菜单信息</a></li>
-                        <li><a href="<%=basePath%>admin/func/funcInfo.do"><i class="icon-double-angle-right"></i>功能点信息</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" class="dropdown-toggle">
-                        <i class="icon-edit"></i>
-                        <span class="menu-text"> 基础资料 </span>
-                        <b class="arrow icon-angle-down"></b>
-                    </a>
 
-                    <ul class="submenu">
-                        <li><a href="<%=basePath%>admin/dict/pageInfo.do"><i class="icon-double-angle-right"></i>字典管理</a></li>
-                        <li><a href="<%=basePath%>admin/param/pageInfo.do"><i class="icon-double-angle-right"></i>参数管理</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#" class="dropdown-toggle">
-                        <i class="icon-list-alt"></i>
-                        <span class="menu-text"> 系统设置 </span>
-                        <b class="arrow icon-angle-down"></b>
-                    </a>
-                    <ul class="submenu">
-                        <li><a href="#"> <i class="icon-double-angle-right"></i>菜单设置</a></li>
-                        <li><a href="form-wizard.html"><i class="icon-double-angle-right"></i>功能点设置</a></li>
-                    </ul>
-                </li>--%>
             </ul><!-- /.nav-list -->
             <div class="sidebar-collapse" id="sidebar-collapse">
                 <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
@@ -442,9 +143,6 @@
                 </ul>
             </div>
             <div class="page-content">
-              <%--  <div class="page-header">
-                    <h1>控制台<small><i class="icon-double-angle-right"></i>查看</small></h1>
-                </div>--%>
                 <div class="row">
                     <div class="col-xs-12">
                         <!-- PAGE CONTENT BEGINS -->
@@ -529,7 +227,7 @@
 <script type="text/javascript">
     if("ontouchend" in document) document.write("<script src='<%=basePath%>assets/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
 </script>
-<script src="<%=basePath%>resources/assets/js/bootstrap.min.js"></script>
+<script src="<%=basePath%>resources/bootstrap/js/bootstrap.min.js"></script>
 <script src="<%=basePath%>resources/assets/js/typeahead-bs2.min.js"></script>
 <!--[if lte IE 8]>
 <script src="<%=basePath%>resources/assets/js/excanvas.min.js"></script>

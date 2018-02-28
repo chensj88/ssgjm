@@ -4,8 +4,10 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.domain.SysFlowInfo;
 import cn.com.winning.ssgj.domain.SysFlowQuestion;
+import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -114,10 +116,11 @@ public class SYSFlowQuestionController extends BaseController {
     @RequestMapping(value = "/add.do")
     @ResponseBody
     public Map<String,Object> addSysFlowQuestion(SysFlowQuestion question){
+        SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         question.setId(ssgjHelper.createSysFlowQuestionId());
         question.setQuesCode(ssgjHelper.createSysFlowQuestionCode());
         question.setLastUpdateTime(new Date());
-        //TODO 添加最后维护人员
+        question.setLastUpdator(userInfo.getId());
         super.getFacade().getSysFlowQuestionService().createSysFlowQuestion(question);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
@@ -133,8 +136,9 @@ public class SYSFlowQuestionController extends BaseController {
     @RequestMapping(value = "/update.do")
     @ResponseBody
     public Map<String,Object> updateSysFlowQuestion(SysFlowQuestion question){
+        SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         question.setLastUpdateTime(new Date());
-        //TODO 添加最后维护人员
+        question.setLastUpdator(userInfo.getId());
         super.getFacade().getSysFlowQuestionService().modifySysFlowQuestion(question);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
@@ -150,7 +154,8 @@ public class SYSFlowQuestionController extends BaseController {
     public Map<String,Object> deleteSysFlowQuestion(SysFlowQuestion question){
         question.setLastUpdateTime(new Date());
         question.setStatus(Constants.STATUS_UNUSE);
-        //TODO 添加最后维护人员
+        SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
+        question.setLastUpdator(userInfo.getId());
         super.getFacade().getSysFlowQuestionService().modifySysFlowQuestion(question);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);

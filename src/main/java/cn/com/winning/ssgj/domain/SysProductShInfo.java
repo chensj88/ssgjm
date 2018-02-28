@@ -46,6 +46,13 @@ public class SysProductShInfo extends BaseDomain implements Serializable {
 	 * @val 维护时间
 	 */
 	private Date lastUpdateTime;
+
+	private String pdName;
+	private String pdCode;
+	private String shName;
+	private String shCode;
+	private String shDesc;
+	private String lastUpdate;
 	
 	public SysProductShInfo() {
 
@@ -134,5 +141,52 @@ public class SysProductShInfo extends BaseDomain implements Serializable {
 	public void setLastUpdateTime(Date lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
 	}
-	
+
+	public String getPdName() {
+		return pdName;
+	}
+
+	public void setPdName(String pdName) {
+		this.pdName = pdName;
+	}
+
+	public String getPdCode() {
+		return pdCode;
+	}
+
+	public void setPdCode(String pdCode) {
+		this.pdCode = pdCode;
+	}
+
+	public String getShName() {
+		return shName;
+	}
+
+	public void setShName(String shName) {
+		this.shName = shName;
+	}
+
+	public String getShCode() {
+		return shCode;
+	}
+
+	public void setShCode(String shCode) {
+		this.shCode = shCode;
+	}
+
+	public String getShDesc() {
+		return shDesc;
+	}
+
+	public void setShDesc(String shDesc) {
+		this.shDesc = shDesc;
+	}
+
+	public String getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(String lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 }

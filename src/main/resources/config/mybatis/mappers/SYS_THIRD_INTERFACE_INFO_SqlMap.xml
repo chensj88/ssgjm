@@ -141,7 +141,7 @@
         </where>
     </delete>
 
-    <select id="querySysThirdInterfaceInfoCountForSelective" resultType="int" parameterType="sysThirdInterfaceInfo">
+    <select id="selectSysThirdInterfaceInfoCountByselective" resultType="int" parameterType="sysThirdInterfaceInfo">
         select count(*) from SYS_THIRD_INTERFACE_INFO t
         <where>
             <include refid="query-sysThirdInterfaceInfo"/>
@@ -149,7 +149,7 @@
 
     </select>
 
-    <select id="querySysThirdInterfaceInfoPaginatedListForSelective" resultMap="sysThirdInterfaceInfoResult"
+    <select id="selectSysThirdInterfaceInfoPaginatedListByselective" resultMap="sysThirdInterfaceInfoResult"
             parameterType="sysThirdInterfaceInfo">
         select * from (
         select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
@@ -159,5 +159,27 @@
         </where>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+
+    <select id="selectSysThirdInterfaceInfoListByIds" resultMap="sysThirdInterfaceInfoResult"  parameterType="sysThirdInterfaceInfo">
+      select * from SYS_THIRD_INTERFACE_INFO t
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0 )">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
+    </select>
+
+
+    <select id="selectSysThirdInterfaceInfoListForNames" parameterType="sysThirdInterfaceInfo" resultMap="sysThirdInterfaceInfoResult">
+        select *
+        from SYS_THIRD_INTERFACE_INFO t
+        <where>
+            <if test="interCode != null and interCode != ''">and t.INTER_CODE LIKE '%${interCode}%'</if>
+            <if test="interName != null and interName != ''">and t.INTER_NAME LIKE '%${interName}%'</if>
+        </where>
     </select>
 </mapper>

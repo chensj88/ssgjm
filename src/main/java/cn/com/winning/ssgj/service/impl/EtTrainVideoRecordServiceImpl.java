@@ -21,7 +21,7 @@ public class EtTrainVideoRecordServiceImpl implements EtTrainVideoRecordService 
 
 	@Resource
 	private EtTrainVideoRecordDao etTrainVideoRecordDao;
-	
+
 
 	public Integer createEtTrainVideoRecord(EtTrainVideoRecord t) {
 		return this.etTrainVideoRecordDao.insertEntity(t);

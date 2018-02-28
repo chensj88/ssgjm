@@ -45,12 +45,7 @@
 				<value>
 				/login/**   	            = anon
 				/resources/**               = anon
-				/admin/**			        = anon
-				/css/** 			        = anon
-				/font/** 			        = anon
-				/fonts/** 			        = anon
-				/images/** 			        = anon
-				/js/** 			            = anon
+				/admin/**			        = authc
 				/logout=logout
 				/**							= authc
 				</value>
