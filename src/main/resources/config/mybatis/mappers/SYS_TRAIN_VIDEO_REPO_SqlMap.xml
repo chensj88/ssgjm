@@ -54,6 +54,14 @@
 		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
 	</select>
 
+	<!-- Chen,Kuai 2018-2-28 10:34:57 获取分类集合-->
+	<select id="selectSysTrainVideoRepoTypeList" resultMap="sysTrainVideoRepoResult" parameterType="sysTrainVideoRepo">
+		SELECT t.VIDEO_TYPE FROM SYS_TRAIN_VIDEO_REPO t
+		<include refid="sf-sysTrainVideoRepo" /> GROUP BY VIDEO_TYPE ;
+	</select>
+
+
+
 	<insert id="insertSysTrainVideoRepo" parameterType="sysTrainVideoRepo">
 		insert into SYS_TRAIN_VIDEO_REPO
 		<trim prefix="(" suffix=")" suffixOverrides=",">

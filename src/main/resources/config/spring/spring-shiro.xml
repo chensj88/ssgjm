@@ -40,12 +40,14 @@
 	               <entry key="logout" value-ref="logoutFilter"/>  
 	           </map>  
 	       	</property>  -->
-	        <!-- 配置需要拦截处理的请求 -->
+	        <!-- 配置需要拦截处理的请求-->
 			<property name="filterChainDefinitions">
 				<value>
 				/login/**   	            = anon
 				/resources/**               = anon
 				/admin/**			        = authc
+				/vue/**			        = anon
+				/mobile/**			    = anon
 				/logout=logout
 				/**							= authc
 				</value>
