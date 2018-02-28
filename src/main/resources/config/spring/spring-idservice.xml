@@ -276,4 +276,12 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
+
+    <!--培训视频ID-->
+    <bean id="sysTrainVideoRepoIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="TV_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
 </beans>

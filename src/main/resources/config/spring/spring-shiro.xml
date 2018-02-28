@@ -33,7 +33,7 @@
 			<!-- 验证成功跳转页面 -->
 			<property name="successUrl" value="/home/home.do" />
 			 <!-- 认证失败之后跳转的页面 -->
-			<property name="unauthorizedUrl" value="/login/login.do" />
+			<property name="unauthorizedUrl" value="/" />
 			<!-- 配置shiro里边需要使用到的过滤器 -->
 			<!--<property name="filters">
 	           <map>  

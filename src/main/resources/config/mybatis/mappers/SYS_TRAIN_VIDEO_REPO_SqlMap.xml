@@ -55,8 +55,7 @@
 	</select>
 
 	<insert id="insertSysTrainVideoRepo" parameterType="sysTrainVideoRepo">
-	<selectKey resultType="String"  order="BEFORE"  keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID</selectKey>
-		insert into SYS_TRAIN_VIDEO_REPO 
+		insert into SYS_TRAIN_VIDEO_REPO
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 	       <if test="(id != null and id != '') or id == 0"> ID, </if>
 		   <if test="videoName != null and videoName != ''"> VIDEO_NAME, </if>
@@ -95,7 +94,7 @@
 			</trim>
 		</set>
 		where
-		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="id != null and id != ''"> ID = #{id} </if>
 		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
 			ID in
 			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
@@ -104,11 +103,29 @@
 
 	<delete id="deleteSysTrainVideoRepo" parameterType="SysTrainVideoRepo">
 		delete from SYS_TRAIN_VIDEO_REPO where
-		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="id != null and id != ''"> ID = #{id} </if>
 		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
 			ID in
 			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
 		</if>
 	</delete>
+
+	<sql id="fuzzy">
+		<if test="videoName != null and videoName != ''"> AND t.VIDEO_NAME LIKE '%${videoName}%'</if>
+        <if test="status != null "> AND t.STATUS = #{status, jdbcType=INTEGER}</if>
+	</sql>
+	<select id="selectSysTrainVideoRepoCountBySelective" resultType="java.lang.Integer" parameterType="sysTrainVideoRepo">
+		select count(*) from SYS_TRAIN_VIDEO_REPO t where 1 = 1
+		<include refid="fuzzy" />
+	</select>
+
+	<select id="selectSysTrainVideoRepoPageListBySelective" resultMap="sysTrainVideoRepoResult" parameterType="sysTrainVideoRepo">
+		select * from (
+		select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+		from SYS_TRAIN_VIDEO_REPO t where 1 = 1
+		<include refid="fuzzy" />
+		<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
 
 </mapper>

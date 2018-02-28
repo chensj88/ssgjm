@@ -51,4 +51,14 @@ public class SysTrainVideoRepoServiceImpl implements SysTrainVideoRepoService {
 		return this.sysTrainVideoRepoDao.selectEntityPaginatedList(t);
 	}
 
+	@Override
+	public Integer getSysTrainVideoRepoCountBySelective(SysTrainVideoRepo t) {
+		return this.sysTrainVideoRepoDao.selectSysTrainVideoRepoCountBySelective(t);
+	}
+
+	@Override
+	public List<SysTrainVideoRepo> getSysTrainVideoRepoPageListBySelective(SysTrainVideoRepo t) {
+		return this.sysTrainVideoRepoDao.selectSysTrainVideoRepoPageListBySelective(t);
+	}
+
 }

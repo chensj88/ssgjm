@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.dao;
 import cn.com.winning.ssgj.domain.SysTrainVideoRepo;
 import cn.com.winning.ssgj.dao.EntityDao;
 
+import java.util.List;
+
 /**
  * Coder AutoGenerator generate.
  *
@@ -11,4 +13,7 @@ import cn.com.winning.ssgj.dao.EntityDao;
  */
 public interface SysTrainVideoRepoDao extends EntityDao<SysTrainVideoRepo> {
 
+    int selectSysTrainVideoRepoCountBySelective(SysTrainVideoRepo repo);
+
+    List<SysTrainVideoRepo> selectSysTrainVideoRepoPageListBySelective(SysTrainVideoRepo repo);
 }
