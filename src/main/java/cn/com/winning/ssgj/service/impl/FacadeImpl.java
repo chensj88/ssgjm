@@ -175,6 +175,8 @@ public class FacadeImpl implements Facade {
     @Resource
     SysUserInfoService sysUserInfoService;
 
+    @Resource
+    SysTrainVideoRepoService sysTrainVideoRepoService;
 
     public EtUserLookProjectService getEtUserLookProjectService() {
         return etUserLookProjectService;
@@ -387,5 +389,8 @@ public class FacadeImpl implements Facade {
     public SysUserInfoService getSysUserInfoService() {
         return sysUserInfoService;
     }
+
+    public SysTrainVideoRepoService getSysTrainVideoRepoService() { return sysTrainVideoRepoService; }
+
 
 }

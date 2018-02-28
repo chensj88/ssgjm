@@ -114,4 +114,6 @@ public interface Facade {
 
     SysUserInfoService getSysUserInfoService();
 
+    SysTrainVideoRepoService getSysTrainVideoRepoService();
+
 }
