@@ -67,6 +67,10 @@ public class SSGJHelper {
     private StepSequenceFactory flowIdService;
 
     @Autowired
+    @Qualifier("videoIdService")
+    private StepSequenceFactory videoIdService;
+
+    @Autowired
     @Qualifier("flowCodeService")
     private StepSequenceFactory flowCodeService;
 
@@ -130,7 +134,9 @@ public class SSGJHelper {
     @Qualifier("sysRoleModIdService")
     private StepSequenceFactory sysRoleModIdService;
 
-
+    public long createVideoIdService(){
+        return (long) videoIdService.create();
+    }
     public long createSysRoleModId(){
         return (long) sysRoleModIdService.create();
     }
