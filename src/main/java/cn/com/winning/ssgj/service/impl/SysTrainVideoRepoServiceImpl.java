@@ -52,7 +52,6 @@ public class SysTrainVideoRepoServiceImpl implements SysTrainVideoRepoService {
 	}
 
 	@Override
-<<<<<<< HEAD
 	public Integer getSysTrainVideoRepoCountBySelective(SysTrainVideoRepo t) {
 		return this.sysTrainVideoRepoDao.selectSysTrainVideoRepoCountBySelective(t);
 	}
@@ -60,11 +59,10 @@ public class SysTrainVideoRepoServiceImpl implements SysTrainVideoRepoService {
 	@Override
 	public List<SysTrainVideoRepo> getSysTrainVideoRepoPageListBySelective(SysTrainVideoRepo t) {
 		return this.sysTrainVideoRepoDao.selectSysTrainVideoRepoPageListBySelective(t);
-=======
-	public List<SysTrainVideoRepo> getSysTrainVideoRepoTypeList(SysTrainVideoRepo t) {
+	}
 
+	public List<SysTrainVideoRepo> getSysTrainVideoRepoTypeList(SysTrainVideoRepo t) {
 		return this.sysTrainVideoRepoDao.selectSysTrainVideoRepoTypeList(t);
->>>>>>> a600f38be7192b2483d1dff049557671a837a8b6
 	}
 
 }
