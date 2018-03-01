@@ -59,10 +59,10 @@ $(function () {
         console.fileinput({
             language: "zh",//配置语言
             uploadUrl: url,
-            showUpload : true,
+            showUpload : false,
             showRemove : true,
             showPreview : false,
-            showCaption: false,//是否显示标题
+            showCaption: true,//是否显示标题
             uploadAsync: true,
             dropZoneEnabled:false,
             uploadLabel: "上传",//设置上传按钮的汉字
@@ -70,11 +70,14 @@ $(function () {
             maxFileSize : 0,
             maxFileCount: 1,/*允许最大上传数，可以多个，当前设置单个*/
             enctype: 'multipart/form-data',
-            allowedPreviewTypes : [ 'video' ], //allowedFileTypes: ['image', 'video', 'flash'],
+            allowedPreviewTypes : [ 'video' ],
             allowedFileExtensions : ["avi", "mp4","wmv","rm","rmvb"],/*上传文件格式*/
             msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
             showBrowse: false,
             browseOnZoneClick: true,
+            uploadExtraData:function (previewId, index) {
+                return {'videoType':$('#atype').val(),'id':$('#vid').val()};
+            },
             slugCallback : function(filename) {
                 return filename.replace('(', '_').replace(']', '_');
             }
@@ -110,41 +113,36 @@ $(function () {
         singleSelect: true,
         selectItemName: '单选框',
         queryParams: queryParams,  // 得到查询的参数
-        columns: [ {
-            field: "id",
-            title: "序号",
-            width: '40px',
-            align: 'center'
-        }, {
+        columns: [{
             field: "videoName",
             title: "视频名称",
-            width: '40px',
+            width: '50px',
             align: 'center'
         }, {
             field: "videoDesc",
             title: "视频描述",
-            width: '40px',
+            width: '50px',
             align: 'center'
         }, {
             field: "videoType",
             title: "视频分类",
-            width: '40px',
+            width: '50px',
             align: 'center'
         }, {
             field: "remotePath",
             title: "远程地址",
-            width: '40px',
+            width: '80px',
             align: 'center'
         }, {
             title: '操作',
             field: 'id',
             align: 'center',
-            width: '80px',
+            width: '40px',
             formatter: function (value, row, index) {
                 var e = '<a href="####" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.id + '">编辑</a> ';
-                var f = '<a href="####" class="btn btn-success btn-xs" name="upload" mce_href="#" aid="' + row.id + '">上传视频</a> ';
+                var f = '<a href="####" class="btn btn-success btn-xs" name="upload" mce_href="#" aid="' + row.id + '"  atype="'+row.videoType+'">上传</a> ';
                 var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
-                return e + f + d;
+                return e + d + f;
             }
         }],
     });
@@ -158,9 +156,9 @@ $(function () {
         //清空验证信息
         $('#trainForm').bootstrapValidator("destroy");
         validateForm();
-        initFileInput($('#uploadFile'),Common.getRootPath() +"/admin/upload/tvideo.do");
         $('#trainModal').modal('show');
     });
+
     /**
      * 列表中按钮
      *   编辑流程信息
@@ -170,7 +168,6 @@ $(function () {
         //清空验证信息
         $('#trainForm').bootstrapValidator("destroy");
         validateForm();
-        initFileInput($('#uploadFile'),Common.getRootPath() +"/admin/upload/tvideo.do");
         var vid = $(this).attr('aid');
         $.ajax({
             url: Common.getRootPath() + '/admin/train/getById.do',
@@ -220,6 +217,15 @@ $(function () {
         });
     });
 
+    $('#table').on('click', 'a[name="upload"]', function (e) {
+        e.preventDefault();
+        var vid = $(this).attr('aid');
+        var atype = $(this).attr('atype');
+        $('#vid').val(vid);
+        $('#atype').val(atype);
+        initFileInput($('#uploadFile'),Common.getRootPath() +"/admin/upload/tvideo.do");
+        $('#videoModal').modal('show');
+    });
     /**
      * 保存流程按钮
      * 通过隐藏域判断流程是否存在，而使用不同的方法进行新增或者修改
@@ -256,13 +262,39 @@ $(function () {
             });
         }
     });
-     //初始化上传文件框
 
 
-    $('#upload').on('click',function (){// 提交图片信息 //
-        //先上传文件，然后在回调函数提交表单
-        $('#videoUp').fileinput('upload');
+    $('#saveUpload').on('click',function (){// 提交图片信息 //
+        $('#uploadFile').fileinput('upload');
+        $('#videoModal').modal('hide');
+        Ewin.alert('视频正在后台上传中，请稍后。。。。。。');
+        $('#vid').val('');
+        $('#atype').val('');
+    });
 
+    $("#uploadFile").on("fileuploaded", function(event, data, previewId, index) {
+        console.log(data);
+        var _data = data.response;
+        if(_data.status == Common.SUCCESS){
+            var urlPath = _data.filePath;
+            var rdata = _data.data;
+            var jdata = {'id':rdata.id,'remotePath':urlPath};
+            $.ajax({
+                url: Common.getRootPath() + '/admin/train/update.do',
+                data: jdata,
+                type: "post",
+                dataType: 'json',
+                async: false,
+                cache : false,
+                success: function (result) {
+                    var _result = eval(result);
+                    if (_result.status == Common.SUCCESS) {
+                        Ewin.alert('视频上传完成！');
+                        $("#table").bootstrapTable('refresh');
+                    }
+                }
+            });
+        }
     });
 
 });

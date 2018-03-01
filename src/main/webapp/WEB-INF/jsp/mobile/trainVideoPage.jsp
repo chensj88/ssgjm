@@ -102,16 +102,46 @@
                                            placeholder="视频分类">
                                 </div>
                             </div>
+
+                            <input type="hidden" name="id" id="id">
+                            <input type="reset" style="display:none;"/>
+                            <div class="col-sm-8 text-center">
+                                <button class="btn btn-primary" id="save" type="button">保存</button>
+                                <button class="btn btn-danger" data-dismiss="modal">取消</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--模态框  -->
+<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="trainFormModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width:600px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="videoModalLabel">上传视频信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <form class="form-horizontal col-lg-8 col-md-8 col-sm-6 col-xs-8" role="form" id="videoForm">
+
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="uploadFile">上传文件</label>
                                 <div class="col-sm-6">
                                     <input id="uploadFile" name="uploadFile" type="file">
                                 </div>
                             </div>
-                            <input type="hidden" name="id" id="id">
+                            <input type="hidden" name="vid" id="vid">
+                            <input type="hidden" name="atype" id="atype">
                             <input type="reset" style="display:none;"/>
                             <div class="col-sm-8 text-center">
-                                <button class="btn btn-primary" id="save" type="button">保存</button>
+                                <button class="btn btn-primary" id="saveUpload" type="button">上传</button>
                                 <button class="btn btn-danger" data-dismiss="modal">取消</button>
                             </div>
                         </form>
