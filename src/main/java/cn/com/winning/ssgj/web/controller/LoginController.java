@@ -37,6 +37,11 @@ public class LoginController extends BaseController{
         return "login/login";
     }
 
+    @RequestMapping("/error.do")
+    public String unauthorizedUrlPage(HttpServletRequest request,Model model){
+        return "index/error";
+    }
+
     @RequestMapping(value = "/check.do")
     @ResponseBody
     public Map<String,Object> check(HttpServletRequest request,String username, String password){

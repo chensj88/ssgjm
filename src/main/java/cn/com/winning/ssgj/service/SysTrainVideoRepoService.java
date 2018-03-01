@@ -26,5 +26,9 @@ public interface SysTrainVideoRepoService {
 
 	List<SysTrainVideoRepo> getSysTrainVideoRepoPaginatedList(SysTrainVideoRepo t);
 
+	Integer getSysTrainVideoRepoCountBySelective(SysTrainVideoRepo t);
+
+	List<SysTrainVideoRepo> getSysTrainVideoRepoPageListBySelective(SysTrainVideoRepo t);
+
     List<SysTrainVideoRepo> getSysTrainVideoRepoTypeList(SysTrainVideoRepo t);
 }

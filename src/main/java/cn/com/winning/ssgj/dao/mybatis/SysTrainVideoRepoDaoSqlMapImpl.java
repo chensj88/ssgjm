@@ -18,6 +18,17 @@ import java.util.List;
 public class SysTrainVideoRepoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysTrainVideoRepo> implements SysTrainVideoRepoDao {
 
     @Override
+    public int selectSysTrainVideoRepoCountBySelective(SysTrainVideoRepo repo) {
+        String statement = "selectSysTrainVideoRepoCountBySelective";
+        return super.getSqlSession().selectOne(statement,repo);
+    }
+
+    @Override
+    public List<SysTrainVideoRepo> selectSysTrainVideoRepoPageListBySelective(SysTrainVideoRepo repo) {
+        String statement = "selectSysTrainVideoRepoPageListBySelective";
+        return super.getSqlSession().selectList(statement,repo);
+    }
+
     public List<SysTrainVideoRepo> selectSysTrainVideoRepoTypeList(SysTrainVideoRepo t) {
         return this.getSqlSession().selectList("selectSysTrainVideoRepoTypeList",t);
     }

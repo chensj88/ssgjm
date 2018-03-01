@@ -133,9 +133,15 @@ public class SSGJHelper {
     @Autowired
     @Qualifier("sysRoleModIdService")
     private StepSequenceFactory sysRoleModIdService;
+    @Autowired
+    @Qualifier("sysTrainVideoRepoIdService")
+    private StepSequenceFactory sysTrainVideoRepoIdService;
 
     public long createVideoIdService(){
         return (long) videoIdService.create();
+    }
+    public long createSysTrainVideoRepoId(){
+        return (long) sysTrainVideoRepoIdService.create();
     }
     public long createSysRoleModId(){
         return (long) sysRoleModIdService.create();

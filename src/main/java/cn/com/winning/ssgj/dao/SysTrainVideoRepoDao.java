@@ -13,5 +13,10 @@ import java.util.List;
  */
 public interface SysTrainVideoRepoDao extends EntityDao<SysTrainVideoRepo> {
 
+    int selectSysTrainVideoRepoCountBySelective(SysTrainVideoRepo repo);
+
+    List<SysTrainVideoRepo> selectSysTrainVideoRepoPageListBySelective(SysTrainVideoRepo repo);
+
     List<SysTrainVideoRepo> selectSysTrainVideoRepoTypeList(SysTrainVideoRepo t);
+
 }
