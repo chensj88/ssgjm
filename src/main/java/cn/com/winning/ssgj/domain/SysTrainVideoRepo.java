@@ -127,5 +127,5 @@ public class SysTrainVideoRepo extends BaseDomain implements Serializable {
 	public void setLastUpdateTime(Date lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
 	}
-	
+
 }

@@ -37,7 +37,7 @@ public class FtpUtils {
 		return uploadFile(remote, new FileInputStream(file));
 	}
 
-	public static boolean uploadFile(final String remote, final InputStream is) {
+	public static boolean uploadFile(final String remote, final InputStream is) throws IOException {
 		if (isEnabledFtpUpload) {
 			logger.info("====开启FTP服务器上传功能====");
 			boolean success = false; // 初始表示上传失败
@@ -81,6 +81,7 @@ public class FtpUtils {
 				logger.info("====FTP服务器上传文件成功,dir:[{}] name:[{}]", dir, filename);
 			} catch (IOException e) {
 				e.printStackTrace();
+				throw e;
 			} finally {
 				if (ftp.isConnected()) {
 					try {

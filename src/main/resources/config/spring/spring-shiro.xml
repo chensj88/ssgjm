@@ -32,8 +32,8 @@
 			<property name="loginUrl" value="/login/login.do" />
 			<!-- 验证成功跳转页面 -->
 			<property name="successUrl" value="/home/home.do" />
-			 <!-- 认证失败之后跳转的页面 -->
-			<property name="unauthorizedUrl" value="/" />
+			 <!-- 权限不足提示页面 -->
+			<property name="unauthorizedUrl" value="/login/error.do" />
 			<!-- 配置shiro里边需要使用到的过滤器 -->
 			<!--<property name="filters">
 	           <map>  

@@ -63,7 +63,7 @@ $(function () {
             showRemove : true,
             showPreview : false,
             showCaption: true,//是否显示标题
-            uploadAsync: true,
+            uploadAsync: false,
             dropZoneEnabled:false,
             uploadLabel: "上传",//设置上传按钮的汉字
             uploadClass: "btn btn-primary",//设置上传按钮样式
@@ -266,35 +266,40 @@ $(function () {
 
     $('#saveUpload').on('click',function (){// 提交图片信息 //
         $('#uploadFile').fileinput('upload');
-        $('#videoModal').modal('hide');
-        Ewin.alert('视频正在后台上传中，请稍后。。。。。。');
+
+        $("#uploadFile").on("fileuploaded", function(event, data, previewId, index) {
+            console.log(data);
+            var _data = data.response;
+            if(_data.status == Common.SUCCESS){
+                var urlPath = _data.filePath;
+                var rdata = _data.data;
+                var jdata = {'id':rdata.id,'remotePath':urlPath};
+                $.ajax({
+                    url: Common.getRootPath() + '/admin/train/update.do',
+                    data: jdata,
+                    type: "post",
+                    dataType: 'json',
+                    async: false,
+                    cache : false,
+                    success: function (result) {
+                        var _result = eval(result);
+                        if (_result.status == Common.SUCCESS) {
+                            Ewin.alert('视频上传完成！');
+                            $("#table").bootstrapTable('refresh');
+                            $('#videoModal').modal('hide');
+                        }
+                    }
+                });
+            }else{
+                Ewin.alert(data.response.msg);
+            }
+        });
+
+
         $('#vid').val('');
         $('#atype').val('');
     });
 
-    $("#uploadFile").on("fileuploaded", function(event, data, previewId, index) {
-        console.log(data);
-        var _data = data.response;
-        if(_data.status == Common.SUCCESS){
-            var urlPath = _data.filePath;
-            var rdata = _data.data;
-            var jdata = {'id':rdata.id,'remotePath':urlPath};
-            $.ajax({
-                url: Common.getRootPath() + '/admin/train/update.do',
-                data: jdata,
-                type: "post",
-                dataType: 'json',
-                async: false,
-                cache : false,
-                success: function (result) {
-                    var _result = eval(result);
-                    if (_result.status == Common.SUCCESS) {
-                        Ewin.alert('视频上传完成！');
-                        $("#table").bootstrapTable('refresh');
-                    }
-                }
-            });
-        }
-    });
+
 
 });

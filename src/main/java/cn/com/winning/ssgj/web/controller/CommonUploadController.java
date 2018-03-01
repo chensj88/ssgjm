@@ -1,8 +1,12 @@
 package cn.com.winning.ssgj.web.controller;
 
+import cn.com.winning.ssgj.base.util.FtpPropertiesLoader;
 import cn.com.winning.ssgj.base.util.FtpUtils;
+import cn.com.winning.ssgj.base.util.SFtpUtils;
+import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.SysOrganization;
 import cn.com.winning.ssgj.domain.SysTrainVideoRepo;
+import com.jcraft.jsch.ChannelSftp;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,6 +29,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/admin/upload")
 public class CommonUploadController {
+
+    private static int port = Integer.valueOf(FtpPropertiesLoader.getProperty("ftp.port")).intValue();
 
     @RequestMapping(value = "/tvideo.do")
     @ResponseBody
@@ -49,13 +55,42 @@ public class CommonUploadController {
             }
             //将上传文件保存到一个目标文件当中
             File newFile = new File(path + File.separator + filename);
+            if(newFile.exists()){
+                newFile.delete();
+            }
             uploadFile.transferTo(newFile);
             String remoteFile = "/video/" + parentFile + "/" + filename;
-            FtpUtils.uploadFile(remoteFile, newFile);
-            newFile.delete();
-            result.put("status", "success");
-            result.put("filePath", remoteFile);
-            result.put("data", repo);
+            String dir ="/video/" + parentFile + "/";
+            boolean ftpStatus = false;
+            String msg = "";
+            if (port == 21){
+                try {
+                    ftpStatus = FtpUtils.uploadFile(remoteFile, newFile);
+                }catch (IOException e){
+                    msg = e.getMessage();
+                }
+            }else if(port == 22){
+                try {
+                    SFtpUtils.uploadFile(newFile.getPath(),dir,filename);
+                    ftpStatus = true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ftpStatus = false;
+                    msg = e.getMessage();
+                }
+            }
+
+            if(ftpStatus){
+                newFile.delete();
+                result.put("status", "success");
+                result.put("filePath", remoteFile);
+                result.put("data", repo);
+            }else if(!StringUtil.isEmptyOrNull(msg)){
+                newFile.delete();
+                result.put("status", "error");
+                result.put("msg", "上传文件失败,原因是："+msg);
+                result.put("data", repo);
+            }
         } else {
             result.put("status", "error");
         }
