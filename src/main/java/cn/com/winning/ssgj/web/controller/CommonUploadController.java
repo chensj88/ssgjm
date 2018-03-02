@@ -4,9 +4,10 @@ import cn.com.winning.ssgj.base.util.FtpPropertiesLoader;
 import cn.com.winning.ssgj.base.util.FtpUtils;
 import cn.com.winning.ssgj.base.util.SFtpUtils;
 import cn.com.winning.ssgj.base.util.StringUtil;
-import cn.com.winning.ssgj.domain.SysOrganization;
 import cn.com.winning.ssgj.domain.SysTrainVideoRepo;
-import com.jcraft.jsch.ChannelSftp;
+import it.sauronsoftware.jave.Encoder;
+import it.sauronsoftware.jave.EncoderException;
+import it.sauronsoftware.jave.MultimediaInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -59,6 +60,7 @@ public class CommonUploadController {
                 newFile.delete();
             }
             uploadFile.transferTo(newFile);
+            repo.setVideoTime(getVideoTime(newFile));
             String remoteFile = "/video/" + parentFile + "/" + filename;
             String dir ="/video/" + parentFile + "/";
             boolean ftpStatus = false;
@@ -95,5 +97,17 @@ public class CommonUploadController {
             result.put("status", "error");
         }
         return result;
+    }
+
+
+    private Long getVideoTime(File file) {
+        Encoder encoder = new Encoder();
+        MultimediaInfo m = null;
+        try {
+            m = encoder.getInfo(file);
+        } catch (EncoderException e) {
+            e.printStackTrace();
+        }
+        return m.getDuration();
     }
 }

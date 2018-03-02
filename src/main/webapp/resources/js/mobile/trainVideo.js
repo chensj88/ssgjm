@@ -58,12 +58,12 @@ $(function () {
         var console = ele;
         console.fileinput({
             language: "zh",//配置语言
-            uploadUrl: url,
-            showUpload : false,
+            uploadUrl: Common.getRootPath() +"/admin/upload/tvideo.do",
+            showUpload : true,
             showRemove : true,
             showPreview : false,
             showCaption: true,//是否显示标题
-            uploadAsync: false,
+            uploadAsync: true,
             dropZoneEnabled:false,
             uploadLabel: "上传",//设置上传按钮的汉字
             uploadClass: "btn btn-primary",//设置上传按钮样式
@@ -81,6 +81,33 @@ $(function () {
             slugCallback : function(filename) {
                 return filename.replace('(', '_').replace(']', '_');
             }
+        }).on('filepreupload', function(event, data, previewId, index) {     //上传中
+            $('#close').attr('disabled',true);
+        }).on('fileuploaded',function(event, data, previewId, index){    //一个文件上传成功
+            var _data = data.response;
+            if(_data.status == Common.SUCCESS){
+                var urlPath = _data.filePath;
+                var rdata = _data.data;
+                var jdata = {'id':rdata.id,'remotePath':urlPath,'videoTime':rdata.videoTime};
+                $.ajax({
+                    url: Common.getRootPath() + '/admin/train/update.do',
+                    data: jdata,
+                    type: "post",
+                    dataType: 'json',
+                    async: false,
+                    cache : false,
+                    success: function (result) {
+                        var _result = eval(result);
+                        if (_result.status == Common.SUCCESS) {
+                            $('#close').attr('disabled',false);
+                            $('#videoModal').modal('hide');
+                            $("#table").bootstrapTable('refresh');
+                        }
+                    }
+                });
+            }
+            $('#vid').val('');
+            $('#atype').val('');
         });
     }
 
@@ -223,7 +250,7 @@ $(function () {
         var atype = $(this).attr('atype');
         $('#vid').val(vid);
         $('#atype').val(atype);
-        initFileInput($('#uploadFile'),Common.getRootPath() +"/admin/upload/tvideo.do");
+        initFileInput($('#uploadFile'));
         $('#videoModal').modal('show');
     });
     /**
@@ -263,42 +290,6 @@ $(function () {
         }
     });
 
-
-    $('#saveUpload').on('click',function (){// 提交图片信息 //
-        $('#uploadFile').fileinput('upload');
-
-        $("#uploadFile").on("fileuploaded", function(event, data, previewId, index) {
-            console.log(data);
-            var _data = data.response;
-            if(_data.status == Common.SUCCESS){
-                var urlPath = _data.filePath;
-                var rdata = _data.data;
-                var jdata = {'id':rdata.id,'remotePath':urlPath};
-                $.ajax({
-                    url: Common.getRootPath() + '/admin/train/update.do',
-                    data: jdata,
-                    type: "post",
-                    dataType: 'json',
-                    async: false,
-                    cache : false,
-                    success: function (result) {
-                        var _result = eval(result);
-                        if (_result.status == Common.SUCCESS) {
-                            Ewin.alert('视频上传完成！');
-                            $("#table").bootstrapTable('refresh');
-                            $('#videoModal').modal('hide');
-                        }
-                    }
-                });
-            }else{
-                Ewin.alert(data.response.msg);
-            }
-        });
-
-
-        $('#vid').val('');
-        $('#atype').val('');
-    });
 
 
 

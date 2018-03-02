@@ -26,6 +26,10 @@ public class SysTrainVideoRepo extends BaseDomain implements Serializable {
 	private String videoType;
 	
 	private String remotePath;
+	/**
+	 * 视频时长
+	 */
+	private Long videoTime;
 	
 	/**
 	 * @val 状态 0失效;1 生效
@@ -128,4 +132,11 @@ public class SysTrainVideoRepo extends BaseDomain implements Serializable {
 		this.lastUpdateTime = lastUpdateTime;
 	}
 
+	public Long getVideoTime() {
+		return videoTime;
+	}
+
+	public void setVideoTime(Long videoTime) {
+		this.videoTime = videoTime;
+	}
 }

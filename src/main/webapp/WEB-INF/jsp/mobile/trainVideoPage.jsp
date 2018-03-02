@@ -141,8 +141,7 @@
                             <input type="hidden" name="atype" id="atype">
                             <input type="reset" style="display:none;"/>
                             <div class="col-sm-8 text-center">
-                                <button class="btn btn-primary" id="saveUpload" type="button">上传</button>
-                                <button class="btn btn-danger" data-dismiss="modal">取消</button>
+                                <button id="close" class="btn btn-danger" data-dismiss="modal">关闭</button>
                             </div>
                         </form>
                     </div>

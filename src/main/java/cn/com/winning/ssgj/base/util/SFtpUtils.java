@@ -161,10 +161,13 @@ public class SFtpUtils {
     public static void uploadFile(final String srcFile, final String dir,
                                   final String fileName)
             throws Exception {
+        logger.info("====开启SFTP服务器上传功能====");
         ChannelSftp sftp = getSftpConnect();
         mkdir(dir, sftp);
         sftp.cd(dir);
         sftp.put(srcFile, fileName);
+        logger.info("====SFTP服务器上传文件成功,dir:[{}] name:[{}]", dir, fileName);
+        exit(sftp);
     }
 
     /**

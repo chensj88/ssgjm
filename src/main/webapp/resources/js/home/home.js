@@ -82,4 +82,13 @@ jQuery(function($) {
     });
 
 
+    $('#coniframe').on('load',function () {
+        var source = $(this).attr('src');
+        console.log(source);
+        var loginUrl = Common.getRootPath() + "/login/login.do";
+        if(source == loginUrl){
+            window.location.href = loginUrl;
+        }
+    })
+
 });

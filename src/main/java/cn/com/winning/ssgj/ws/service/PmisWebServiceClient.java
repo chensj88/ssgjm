@@ -197,9 +197,9 @@ public class PmisWebServiceClient {
                     sb.append("(" + values.get(j)+",");
                 }else  if ((j== values.size() -1) && (colInfos.get(j).getType() == 1) &&
                         (i == recordList.size()-1)){
-                    sb.append( values.get(j)+",\'1\',-1 );  \n");
+                    sb.append( values.get(j)+",\'1\',-1 ,null);  \n");
                 }else  if ((j== values.size() -1) && (colInfos.get(j).getType() == 1)){
-                    sb.append( values.get(j)+",\'1\',-1 ),  \n");
+                    sb.append( values.get(j)+",\'1\',-1 ,null),  \n");
                 }else if ( j== 0 && colInfos.get(j).getType() == 0){
                     sb.append("(\'" + values.get(j)+"\',");
                 }else  if ((j== values.size() -1) && (colInfos.get(j).getType() == 0)){

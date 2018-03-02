@@ -317,6 +317,13 @@
 			<artifactId>jsch</artifactId>
 			<version>0.1.54</version>
 		</dependency>
+		<dependency>
+			<groupId>it.sauronsoftware</groupId>
+			<artifactId>jave</artifactId>
+			<version>1.02</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/jave-1.0.2.jar</systemPath>
+		</dependency>
 		<!--<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -366,6 +373,23 @@
 				<configuration>
 					<mainClass>org.test.int1.Main</mainClass>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>${project.basedir}/lib</directory>
+							<targetPath>WEB-INF/lib</targetPath>
+							<filtering>false</filtering>
+							<includes>
+								<include>**/*.jar</include>
+							</includes>
+						</resource>
+					</webResources>
+				</configuration>
+				<version> 2.3</version>
 			</plugin>
 		</plugins>
 	</build>
