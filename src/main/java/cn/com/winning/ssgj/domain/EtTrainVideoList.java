@@ -71,6 +71,11 @@ public class EtTrainVideoList extends BaseDomain implements Serializable {
 	 * @val 微信唯一标识
 	 */
 	private String openId;
+
+	/**
+	 * @val 关联视频ID
+	 */
+	private Long videoId;
 	
 	public EtTrainVideoList() {
 
@@ -222,4 +227,11 @@ public class EtTrainVideoList extends BaseDomain implements Serializable {
 	 */
 	public void setOpenId(String openId) { this.openId = openId; }
 
+	public Long getVideoId() {
+		return videoId;
+	}
+
+	public void setVideoId(Long videoId) {
+		this.videoId = videoId;
+	}
 }

@@ -19,4 +19,5 @@ public interface SysTrainVideoRepoDao extends EntityDao<SysTrainVideoRepo> {
 
     List<SysTrainVideoRepo> selectSysTrainVideoRepoTypeList(SysTrainVideoRepo t);
 
+    List<SysTrainVideoRepo> selectSysTrainVideoWithRecoedList(SysTrainVideoRepo t);
 }

@@ -32,4 +32,9 @@ public class SysTrainVideoRepoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysTrain
     public List<SysTrainVideoRepo> selectSysTrainVideoRepoTypeList(SysTrainVideoRepo t) {
         return this.getSqlSession().selectList("selectSysTrainVideoRepoTypeList",t);
     }
+
+    @Override
+    public List<SysTrainVideoRepo> selectSysTrainVideoWithRecoedList(SysTrainVideoRepo t) {
+        return this.getSqlSession().selectList("selectSysTrainVideoWithRecoedList",t);
+    }
 }

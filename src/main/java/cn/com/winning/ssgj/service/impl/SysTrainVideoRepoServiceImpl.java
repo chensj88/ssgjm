@@ -65,4 +65,9 @@ public class SysTrainVideoRepoServiceImpl implements SysTrainVideoRepoService {
 		return this.sysTrainVideoRepoDao.selectSysTrainVideoRepoTypeList(t);
 	}
 
+	@Override
+	public List<SysTrainVideoRepo> getSysTrainVideoWithRecoedList(SysTrainVideoRepo t) {
+		return this.sysTrainVideoRepoDao.selectSysTrainVideoWithRecoedList(t);
+	}
+
 }
