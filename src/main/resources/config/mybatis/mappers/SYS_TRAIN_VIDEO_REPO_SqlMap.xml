@@ -153,7 +153,7 @@
 	<select id="selectSysTrainVideoWithRecoedList" resultMap="sysTrainVideoRepoResult" parameterType="sysTrainVideoRepo">
 		SELECT t.*, tt.num FROM SYS_TRAIN_VIDEO_REPO t
 		LEFT JOIN (
-		SELECT SUM (NUM) AS num,VIDEO_ID FROM ET_TRAIN_VIEDO_LIST
+		SELECT SUM (NUM) AS num,VIDEO_ID FROM ET_TRAIN_VIDEO_LIST
 		WHERE
 		OPEN_ID = #{map.OPENID, jdbcType=VARCHAR}
 		GROUP BY
