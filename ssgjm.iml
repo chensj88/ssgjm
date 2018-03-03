@@ -10,6 +10,7 @@
           <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/web.xml" />
         </descriptors>
         <webroots>
+          <root url="file://$MODULE_DIR$/lib" relative="WEB-INF/lib" />
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
         <sourceRoots>
@@ -122,5 +123,14 @@
     <orderEntry type="library" name="Maven: org.apache.shiro:shiro-web:1.3.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.shiro:shiro-spring:1.3.2" level="project" />
     <orderEntry type="library" name="Maven: com.jcraft:jsch:0.1.54" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: it.sauronsoftware:jave:1.02">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/jave-1.0.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

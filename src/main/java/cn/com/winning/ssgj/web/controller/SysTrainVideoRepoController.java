@@ -43,7 +43,7 @@ public class SysTrainVideoRepoController extends BaseController {
     @ResponseBody
     public Map<String,Object> getTrainVideoList(SysTrainVideoRepo repo, Row row){
         repo.setRow(row);
-        repo.setStatus(Constants.STATUS_USE);
+        /*repo.setStatus(Constants.STATUS_USE);*/
         List<SysTrainVideoRepo> repoList = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepoPageListBySelective(repo);
         int total = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepoCountBySelective(repo);
         Map<String,Object> result = new HashMap<String,Object>();
@@ -91,16 +91,31 @@ public class SysTrainVideoRepoController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/deleteById.do")
+    @RequestMapping(value = "/modifyById.do")
     @ResponseBody
     @Transactional
     public Map<String,Object>  modifyTrainVideoById(SysTrainVideoRepo repo){
        /* repo.setLastUpdateTime(new Date());*/
         repo.setLastUpdator(((SysUserInfo)SecurityUtils.getSubject().getPrincipal()).getId());
-        repo.setStatus(Constants.STATUS_UNUSE);
+        if(repo.getStatus() == Constants.STATUS_UNUSE){
+            repo.setStatus(Constants.STATUS_USE);
+        }else{
+            repo.setStatus(Constants.STATUS_UNUSE);
+        }
         super.getFacade().getSysTrainVideoRepoService().modifySysTrainVideoRepo(repo);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         return result;
+    }
+
+    @RequestMapping(value = "/existVideoName.do")
+    @ResponseBody
+    public Map<String,Object> existVideoName(SysTrainVideoRepo repo){
+        boolean exists = super.getFacade().getSysTrainVideoRepoService().existVideoName(repo);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("valid", exists);
+        result.put("status", Constants.SUCCESS);
+        return result;
+
     }
 }

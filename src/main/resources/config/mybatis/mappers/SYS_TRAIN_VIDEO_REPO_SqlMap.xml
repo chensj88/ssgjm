@@ -141,4 +141,11 @@
 		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
 	</select>
 
+
+	<select id="selectCountByVideoName" resultType="java.lang.Integer" parameterType="sysTrainVideoRepo">
+	  SELECT  COUNT(1) FROM  SYS_TRAIN_VIDEO_REPO t
+		<where>
+			<if test="videoName != null and videoName != ''"> AND t.VIDEO_NAME LIKE '${videoName}%'</if>
+		</where>
+	</select>
 </mapper>

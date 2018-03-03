@@ -65,4 +65,13 @@ public class SysTrainVideoRepoServiceImpl implements SysTrainVideoRepoService {
 		return this.sysTrainVideoRepoDao.selectSysTrainVideoRepoTypeList(t);
 	}
 
+	@Override
+	public boolean existVideoName(SysTrainVideoRepo repo) {
+		int count = this.sysTrainVideoRepoDao.selectCountByVideoName(repo);
+		if(count > 0){
+			return  false;
+		}
+		return true;
+	}
+
 }

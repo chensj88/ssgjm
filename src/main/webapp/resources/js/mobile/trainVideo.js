@@ -31,7 +31,22 @@ $(function () {
                     validators: {
                         notEmpty: {
                             message: '视频名称不能为空'
-                        }
+                        },
+                        threshold :  2 , //有2字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
+                        remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}
+                            url: Common.getRootPath() + '/admin/train/existVideoName.do',//验证地址
+                            message: '视频名称已存在',//提示消息
+                           /* delay :  1000,*///每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+                            type: 'POST'//请求方式
+                            /**自定义提交数据，默认值提交当前input value
+                             data: function(validator) {
+                               return {
+                                   password: $('[name="passwordNameAttributeInYourForm"]').val(),
+                                   whatever: $('[name="whateverNameAttributeInYourForm"]').val()
+                               };
+                            }
+                             */
+                        },
                     }
                 },
                 videoDesc : {
@@ -111,6 +126,21 @@ $(function () {
         });
     }
 
+    function queryInfoByDataId(id) {
+        var data = {};
+        $.ajax({
+            url: Common.getRootPath() + '/admin/train/getById.do',
+            data: {'id': id},
+            type: "post",
+            dataType: 'json',
+            async: false,
+            cache: false,
+            success: function (result) {
+               data = result.data;
+            }
+        });
+        return data;
+    }
     $('#table').bootstrapTable({
         url: Common.getRootPath() + '/admin/train/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
@@ -143,12 +173,12 @@ $(function () {
         columns: [{
             field: "videoName",
             title: "视频名称",
-            width: '50px',
+            width: '60px',
             align: 'center'
         }, {
             field: "videoDesc",
             title: "视频描述",
-            width: '50px',
+            width: '40px',
             align: 'center'
         }, {
             field: "videoType",
@@ -161,14 +191,32 @@ $(function () {
             width: '80px',
             align: 'center'
         }, {
+            field: "status",
+            title: "状态",
+            width: '20px',
+            align: 'center',
+            formatter:function (value) {
+                if(value == '0'){
+                    return '失效';
+                }else{
+                    return '生效';
+                }
+            }
+        }, {
             title: '操作',
             field: 'id',
             align: 'center',
             width: '40px',
             formatter: function (value, row, index) {
+                var  title = '';
+                if(row.status =='0'){
+                    title ='启用';
+                }else{
+                    title ='停用';
+                }
                 var e = '<a href="####" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.id + '">编辑</a> ';
                 var f = '<a href="####" class="btn btn-success btn-xs" name="upload" mce_href="#" aid="' + row.id + '"  atype="'+row.videoType+'">上传</a> ';
-                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
+                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">'+title+'</a> ';
                 return e + d + f;
             }
         }],
@@ -196,21 +244,9 @@ $(function () {
         $('#trainForm').bootstrapValidator("destroy");
         validateForm();
         var vid = $(this).attr('aid');
-        $.ajax({
-            url: Common.getRootPath() + '/admin/train/getById.do',
-            data: {'id': vid},
-            type: "post",
-            dataType: 'json',
-            async: false,
-            cache: false,
-            success: function (result) {
-                var _result = eval(result);
-                if (_result.status == Common.SUCCESS) {
-                    $('#trainForm').initForm(_result.data);
-                    $('#trainModal').modal('show');
-                }
-            }
-        });
+        var data = queryInfoByDataId(vid);
+        $('#trainForm').initForm(_result.data);
+        $('#trainModal').modal('show');
     });
     /**
      * 列表中按钮
@@ -219,19 +255,28 @@ $(function () {
     $('#table').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var vid = $(this).attr('aid');
-        Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
+        var data = queryInfoByDataId(vid);
+        var videoName = data.videoName;
+        var status = data.status;
+        var alterName = '';
+        if(status == '0'){
+            alterName = '确认要启用视频['+videoName+']吗？';
+        }else{
+            alterName = '确认要停用视频['+videoName+']吗？';
+        }
+        Ewin.confirm({message: alterName }).on(function (e) {
             if (!e) {
                 return;
             }
             $.ajax({
                 type: "post",
-                url: Common.getRootPath() + '/admin/train/deleteById.do',
-                data: {'id': vid},
+                url: Common.getRootPath() + '/admin/train/modifyById.do',
+                data: {'id': vid,'status':status},
                 dataType: 'json',
                 success: function (data, status) {
                     var result = eval(data);
                     if (result.status == Common.SUCCESS) {
-                        Ewin.alert('提交数据成功');
+                       /* Ewin.alert('提交数据成功');*/
                         $("#table").bootstrapTable('refresh');
                     }
                 },
