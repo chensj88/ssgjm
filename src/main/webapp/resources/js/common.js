@@ -125,6 +125,20 @@
         });
     };
 
+    Common.getHHMMSSDate = function (longTime) {
+        var date = new Date();
+        date.setTime(longTime);
+        var dateType = "";
+        dateType += "  " + getHours(date); // 时
+        dateType += ":" + getMinutes(date); // 分
+        dateType += ":" + getSeconds(date); // 分
+        return dateType;
+    }
+    Common.getDate = function (longTime) {
+        var date = new Date();
+        date.setTime(longTime);
+        return Common.getDateTime(date);
+    }
     Common.getDateTime = function (date) {
         var dateType = "";
         dateType += date.getFullYear(); // 年
