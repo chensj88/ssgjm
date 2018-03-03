@@ -32,5 +32,8 @@ public interface SysTrainVideoRepoService {
 
     List<SysTrainVideoRepo> getSysTrainVideoRepoTypeList(SysTrainVideoRepo t);
 
+    boolean existVideoName(SysTrainVideoRepo repo);
+
     List<SysTrainVideoRepo> getSysTrainVideoWithRecoedList(SysTrainVideoRepo repo);
+
 }
