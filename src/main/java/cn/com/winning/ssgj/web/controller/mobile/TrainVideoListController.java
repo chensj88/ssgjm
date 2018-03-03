@@ -121,7 +121,7 @@ public class TrainVideoListController extends BaseController {
      * @Description: 视频播放记录信息
      */
     @RequestMapping(value = "/videoPlay.do")
-    public String clickVideoListRecord(String OPENID, Long id) {
+    public String clickVideoListRecord(Model model,String OPENID, Long id) {
         //点击播放  存储播放信息
         EtTrainVideoList trainVideo = new EtTrainVideoList();
         trainVideo.setId(ssgjHelper.createVideoIdService());
@@ -137,7 +137,7 @@ public class TrainVideoListController extends BaseController {
         repo.setId((long)id);
         repo.setStatus(1);
         repo =super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepo(repo);
-
+        model.addAttribute("repo",repo);
         return "mobile/service/course-detail";
     }
 
