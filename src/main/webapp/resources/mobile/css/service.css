@@ -1,0 +1,200 @@
+/*
+ * 服务号模块
+ * */
+
+/*桥接页*/
+.bridge{
+	text-align: center;
+}
+.bridge-item a{
+	height: 80px;
+	line-height: 80px;
+	color: #666;
+	font-size: 18px;
+	margin-top: -1px;
+	margin-left: -1px;
+	border:1px solid #eee;
+	border-bottom: none;
+	border-right: none;
+}
+/*课程学习*/
+.course {}
+.course-study {
+	overflow: hidden;
+}
+.course-study>div{
+	float: left;
+	width: 50%;
+	margin: 23px 0px;
+	text-align: center;
+}
+.course-study p{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	margin-bottom: 12px;
+	color: #999999;
+	font-size: 14px;
+}
+.course-study strong{
+	display: block;
+	line-height: 28px;
+	font-size: 20px;
+	font-weight: normal;
+}
+.course-study i{
+	font-size: 20px;
+	color: #39C1FF;
+	font-style: normal;
+}
+.course-study .left{
+	border-right: 1px dashed #E2E2E2;
+}
+.course-study .left strong{
+	color: #666;
+}
+.course-study .right strong{
+	color: #2A2A2A;
+}
+.course-tab{
+}
+.course-tab .top{
+	padding: 10px 7px;
+	background-color: #F3F5F7;
+}
+.course-tab ul{
+	overflow: hidden;
+	border-radius: 5px;
+	background-color: #fff;
+}
+.course-tab li{
+	float: left;
+	width: 33%;
+	background-color: #fff;
+	line-height: 40px;
+	color: #666;
+	font-size: 13px;
+	text-align: center;
+}
+.course-tab li.active{
+	color: #fff;
+	background: #81B3FF;
+}
+.course-tab li:nth-child(2){
+	width: 34%;
+	border-left:1px solid #F3F5F7;
+	border-right:1px solid #F3F5F7;
+}
+.course-tab .btm{
+	background: #f3f5f7;
+	border-bottom: 1px solid transparent;
+}
+.course-tab .btm>div{
+	display: none;
+}
+.course-tab .btm>div.current{
+	display: block;
+}
+.course-tab .btm a{
+	color: #333;
+}
+.course-tab .item{
+	height: 110px;
+	padding: 10px 12px;
+	margin-bottom: 10px;
+	background: #fff;
+}
+.course-tab dt{
+	float: left;
+	width: 100px;
+	height: 90px;
+	margin-right: 14px;
+	color: #333;
+}
+.course-tab dd{
+	font-size: 12px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.course-tab dd.item-title{
+	margin-bottom: 13px;
+}
+.course-tab dd.item-title span{
+	color: #3F3F3F;
+}
+.course-tab dd.item-time{
+	color: #666;
+}
+.course-tab dd.item-time span{
+	color: #5591EA;
+}
+.course-tab dd.item-count{
+	margin-top: 10px;
+	color: #999;
+	text-align: right;
+}
+.course-tab dd.item-count strong{
+	color: #2A2A2A;
+	font-size: 20px;
+}
+/*学习详情页*/
+.detail{
+	background: #dbe9ff;
+}
+.detail-play>video{
+	background: #000;
+}
+.detail-infor{
+	padding-left: 12px;
+}
+.detail-infor dt{
+	color: #333333;
+	font-size: 13px;
+}
+.detail-infor dt span{
+	color: #3F3F3F;
+	font-size: 12px;
+}
+.detail-support{
+	height: 40px;
+	line-height: 40px;
+	padding-left: 12px;
+	font-size: 13px;
+	color: #999999;
+	background: #f3f5f7;
+}
+/*楼层问题*/
+.floor{}
+.floor-table{
+}
+.floor-table table{
+	table-layout: fixed;
+	padding:0px 12px;
+	line-height: 40px;
+	color: #666666;
+	font-size: 13px;
+	text-align: center;
+}
+.floor-table th{
+	font-size: 13px;
+}
+.floor-head{
+	border-bottom:1px solid #EBEBEB;
+}
+.floor-table table strong{
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.floor-table table span{
+	color: #679DF1;
+}
+.floor-line{
+	margin: 0 auto;
+	width: 95%;
+	border-bottom: 1px dashed #E2E2E2;
+}
+.floor-count{
+	border-top:1px solid #EBEBEB;
+}

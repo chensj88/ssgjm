@@ -79,6 +79,11 @@ public class SysUserInfo extends BaseDomain implements Serializable {
 	 */
 	private Long linkId;
 
+	/**
+	 * @val  用户微信ID
+	 */
+	private String openId;
+
 
 	public SysUserInfo() {
 
@@ -262,6 +267,14 @@ public class SysUserInfo extends BaseDomain implements Serializable {
 	 */
 	public void setUserType(String userType) {
 		this.userType = userType;
+	}
+
+	public String getOpenId() {
+		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
 	}
 
 }

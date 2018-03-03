@@ -15,6 +15,8 @@
 	</resultMap>
 
 	<resultMap id="sysTrainVideoRepoResult" type="sysTrainVideoRepo" extends="sysTrainVideoRepoResultForList">
+		<result column="NUM" property="map.num" jdbcType="VARCHAR" />
+
 	</resultMap>
 
 	<sql id="sf-sysTrainVideoRepo">
@@ -148,4 +150,16 @@
 			<if test="videoName != null and videoName != ''"> AND t.VIDEO_NAME LIKE '${videoName}%'</if>
 		</where>
 	</select>
+	<select id="selectSysTrainVideoWithRecoedList" resultMap="sysTrainVideoRepoResult" parameterType="sysTrainVideoRepo">
+		SELECT t.*, tt.num FROM SYS_TRAIN_VIDEO_REPO t
+		LEFT JOIN (
+		SELECT SUM (NUM) AS num,VIDEO_ID FROM ET_TRAIN_VIEDO_LIST
+		WHERE
+		OPEN_ID = #{map.OPENID, jdbcType=VARCHAR}
+		GROUP BY
+		VIDEO_ID
+		) tt ON t.ID = tt.VIDEO_ID <include refid="fuzzy" />
+
+	</select>
+
 </mapper>

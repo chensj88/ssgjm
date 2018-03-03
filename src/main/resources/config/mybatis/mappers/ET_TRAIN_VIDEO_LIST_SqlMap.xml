@@ -14,6 +14,7 @@
 		<result column="VIDEO_PATH" property="videoPath" jdbcType="LONGVARCHAR" />
 		<result column="REMARK" property="remark" jdbcType="LONGVARCHAR" />
 		<result column="OPEN_ID" property="openId" jdbcType="VARCHAR" />
+		<result column="VIDEO_ID" property="videoId" jdbcType="BIGINT" />
 
 	</resultMap>
 
@@ -32,6 +33,7 @@
 	   <if test="videoPath != null and videoPath != ''"> and t.VIDEO_PATH = #{videoPath} </if>
 	   <if test="remark != null and remark != ''"> and t.REMARK = #{remark} </if>
 		<if test="openId != null and openId != ''"> and t.OPEN_ID = #{openId} </if>
+		<if test="(videoId != null and videoId != '') or videoId == 0"> and t.VIDEO_ID = #{videoId} </if>
 	</sql>
 
 	<select id="selectEtTrainVideoList" resultMap="etTrainVideoListResult" parameterType="etTrainVideoList">
@@ -76,6 +78,8 @@
 		   <if test="videoPath != null and videoPath != ''"> VIDEO_PATH, </if>
 		   <if test="remark != null and remark != ''"> REMARK, </if>
 			<if test="openId != null and openId != ''"> OPEN_ID, </if>
+			<if test="(videoId != null and videoId != '') or videoId == 0"> VIDEO_ID, </if>
+
 		</trim>
 		values
 		<trim prefix="(" suffix=")" suffixOverrides=",">
@@ -90,6 +94,7 @@
 		   <if test="videoPath != null and videoPath != ''"> #{videoPath, jdbcType=LONGVARCHAR}, </if>
 		   <if test="remark != null and remark != ''"> #{remark, jdbcType=LONGVARCHAR}, </if>
 			<if test="openId != null and openId != ''"> #{openId, jdbcType=VARCHAR}, </if>
+			<if test="(videoId != null and videoId != '') or videoId == 0"> #{videoId, jdbcType=BIGINT}, </if>
 
 		</trim>
 	</insert>
@@ -109,7 +114,7 @@
 			   <if test="videoPath != null and videoPath != ''"> VIDEO_PATH = #{videoPath, jdbcType=LONGVARCHAR}, </if>
 			   <if test="remark != null and remark != ''"> REMARK = #{remark, jdbcType=LONGVARCHAR}, </if>
 				<if test="openId != null and openId != ''"> and OPEN_ID = #{openId, jdbcType=VARCHAR}, </if>
-
+				<if test="(videoId != null and videoId != '') or videoId == 0"> VIDEO_ID = #{videoId, jdbcType=BIGINT}, </if>
 			</trim>
 		</set>
 		where
