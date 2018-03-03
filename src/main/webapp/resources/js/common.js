@@ -173,7 +173,7 @@
     // 返回小时
     function getHours(date) {
         var hours = "";
-        hours = date.getHours();
+        hours = date.getHours()-8;
         if (hours < 10) {
             hours = "0" + hours;
         }

@@ -11,6 +11,8 @@
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
+		<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
+		<script src="<%=basePath%>resources/js/common.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 
 	<body>
@@ -24,17 +26,22 @@
 			<div class="hole"></div>
 			<div class="detail-play">
 				<video width="100%" height="200" controls>
-				  <source src="<%=basePath%>resources/mobile/video/movie.mp4" type="video/mp4">
-				  <source src="<%=basePath%>resources/mobile/video/movie.ogg" type="video/ogg">
-				  您的浏览器不支持 HTML5 video 标签。
+
+					<source src="<%=basePath%>shareFolder${repo.remotePath}" type="video/mp4">
+					<source src="<%=basePath%>shareFolder${repo.remotePath}" type="video/avi">
+					<source src="<%=basePath%>shareFolder${repo.remotePath}" type="video/wmv">
+
+					您的浏览器不支持 HTML5 video 标签。
 				</video>
 				<div class="course-tab">
 					<div class="btm">
 						<dl class="item">
-							<dd class="item-title">医生接诊及诊断录入<span>-门诊医生站</span></dd>
-							<dd class="item-time">视频时长 <span>04:06</span></dd>
+							<dd class="item-title">${repo.videoName}<span>-${repo.videoType}</span></dd>
+							<dd class="item-time">视频时长 <span><script>
+										document.write(Common.getHHMMSSDate(${repo.videoTime}));
+									</script></span></dd>
 							<dd class="item-count">
-								<span>学习  <strong>1</strong>次</span>
+								<span>学习  <strong>${num}</strong>次</span>
 							</dd>
 						</dl>
 					</div>
