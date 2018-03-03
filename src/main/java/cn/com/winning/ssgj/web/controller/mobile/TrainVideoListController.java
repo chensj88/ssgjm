@@ -2,18 +2,21 @@ package cn.com.winning.ssgj.web.controller.mobile;
 
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.Base64Utils;
+import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.EtTrainVideoList;
 import cn.com.winning.ssgj.domain.SysTrainVideoRepo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -88,14 +91,27 @@ public class TrainVideoListController extends BaseController {
      */
     @RequestMapping("/video.do")
     public String TrainVideoList(Model model, String video_type, String OPENID) {
+        DecimalFormat df = new DecimalFormat("0.00");
         SysTrainVideoRepo repo = new SysTrainVideoRepo();
         repo.setVideoType(video_type); //根据分类
         repo.getMap().put("OPENID",OPENID);
-        List<SysTrainVideoRepo> SysTrainVideoWithRecoed =super.getFacade().getSysTrainVideoRepoService()
+        List<SysTrainVideoRepo> SysTrainVideoWithRecord =super.getFacade().getSysTrainVideoRepoService()
                 .getSysTrainVideoWithRecoedList(repo);
-
-        model.addAttribute("videoWithRecoed", SysTrainVideoWithRecoed);
+        //计算时长
+        Long timeNum=0L;
+        int study_num=0;
+        for (int i = 0; i < SysTrainVideoWithRecord.size(); i++) {
+            timeNum = timeNum + (long) SysTrainVideoWithRecord.get(i).getVideoTime();
+            if(StringUtils.isNotBlank(SysTrainVideoWithRecord.get(i).getMap().get("num")+"")){
+                study_num +=1;
+            }
+        }
+        System.out.println(df.format((float)timeNum/3600000));
+        model.addAttribute("videoWithRecoed", SysTrainVideoWithRecord);
         model.addAttribute("OPENID", OPENID);
+        model.addAttribute("timeNum",df.format((float)timeNum/3600000));
+        model.addAttribute("size",SysTrainVideoWithRecord.size());
+        model.addAttribute("study_num",study_num);
         return "mobile/service/course-study";
     }
 
@@ -125,4 +141,12 @@ public class TrainVideoListController extends BaseController {
         return "mobile/service/course-detail";
     }
 
+
+    public static void main(String[] args) {
+        DecimalFormat df = new DecimalFormat("0.00");
+        Long timeNum =9200000L;
+        int timeNum2 = 7000000;
+        System.out.println((float)timeNum2/9);
+        System.out.println("此视频时长为:"+df.format((float)timeNum2/3600000));
+    }
 }
