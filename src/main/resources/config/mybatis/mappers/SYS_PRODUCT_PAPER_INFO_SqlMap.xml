@@ -9,6 +9,12 @@
 		<result column="EXPIRE_DATE" property="expireDate" jdbcType="TIMESTAMP" />
 		<result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT" />
 		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+		<result column="PD_NAME" property="pdName" jdbcType="VARCHAR"/>
+		<result column="PD_CODE" property="pdCode" jdbcType="VARCHAR"/>
+		<result column="REPORT_NAME" property="reportName" jdbcType="VARCHAR"/>
+		<result column="REPORT_CODE" property="reportCode" jdbcType="VARCHAR"/>
+		<result column="REPORT_DESC" property="reportDesc" jdbcType="VARCHAR"/>
+		<result column="LAST_UPDATE" property="lastUpdate" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<resultMap id="sysProductPaperInfoResult" type="sysProductPaperInfo" extends="sysProductPaperInfoResultForList">
@@ -74,7 +80,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSysProductPaperInfo" parameterType="SysProductPaperInfo">
+	<update id="updateSysProductPaperInfo" parameterType="sysProductPaperInfo">
 		update SYS_PRODUCT_PAPER_INFO
 		<set>
 			<trim suffixOverrides=",">
@@ -88,21 +94,15 @@
 		</set>
 		<where>
 			<if test="(pdId != null and pdId != '') ">
-				AND t.PD_ID = #{pdId}
+				AND PD_ID = #{pdId}
 			</if>
 			<if test="(rId != null and rId != '') ">
-				AND t.R_ID = #{rId}
+				AND R_ID = #{rId}
 			</if>
 		</where>
-		<if test="(pdId != null and pdId != '') ">
-			AND t.PD_ID = #{pdId}
-		</if>
-		<if test="(rId != null and rId != '') ">
-			AND t.R_ID = #{rId}
-		</if>
 	</update>
 
-	<delete id="deleteSysProductPaperInfo" parameterType="SysProductPaperInfo">
+	<delete id="deleteSysProductPaperInfo" parameterType="sysProductPaperInfo">
 		delete from SYS_PRODUCT_PAPER_INFO where
 		<if test="id != null and id != ''"> ID = #{id} </if>
 		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
@@ -110,5 +110,59 @@
 			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
 		</if>
 	</delete>
+
+	<select id="selectSysProductPaperInfoByIds" parameterType="java.util.Map" resultMap="sysProductPaperInfoResult">
+		SELECT
+		A.*,
+		B.CODE AS PD_CODE,
+		B.NAME AS PD_NAME,
+		C.REPORT_NAME AS REPORT_NAME,
+		C.REPORT_CODE AS REPORT_CODE,
+		C.REPOET_DESC AS REPOET_DESC,
+		D.YHMC AS LAST_UPDATE
+		FROM SYS_PRODUCT_PAPER_INFO A
+		LEFT JOIN PMIS_PRODUCT_INFO B ON A.PD_ID = B.ID
+		LEFT JOIN SYS_REPORT_INFO C ON A.R_ID = C.ID
+		LEFT JOIN SYS_USER_INFO D ON A.LAST_UPDATOR = D.ID
+		<where>
+			<if test="pdId != null and pdId != 0">
+				AND A.PD_ID = ${pdId}
+			</if>
+			<if test="reportIds !=null and reportIds !='' ">
+				AND A.R_ID IN ( ${reportIds} )
+			</if>
+			AND (CURRENT_TIMESTAMP  BETWEEN A.EFFECTIVE_DATE AND A.EXPIRE_DATE )
+		</where>
+	</select>
+
+	<update id="removeSysProductPaperInfoMapping" parameterType="java.util.Map">
+		update SYS_PRODUCT_PAPER_INFO
+		<set>
+			<trim suffixOverrides=",">
+				<if test="user != null and user != ''">
+					LAST_UPDATOR =${user},
+				</if>
+				<if test="user != null and user != ''">
+					EXPIRE_DATE = CURRENT_TIMESTAMP,
+				</if>
+			</trim>
+		</set>
+		<where>
+			<if test=" ids != null and ids != ''">
+				${ids}
+			</if>
+		</where>
+	</update>
+
+	<select id="selectSysProductPaperInfoByIdMap" parameterType="java.util.Map" resultMap="sysProductPaperInfoResult">
+		SELECT
+		A.*
+		FROM SYS_PRODUCT_PAPER_INFO A
+		<where>
+			<if test=" ids != null and ids != ''">
+				${ids}
+			</if>
+		</where>
+	</select>
 
 </mapper>

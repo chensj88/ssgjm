@@ -52,6 +52,12 @@
             vertical-align:middle;
             line-height:200px;
         }
+        #infoTable{
+            font-size:12px;
+        }
+        .success {
+            background-color:#337AB7;
+        }
     </style>
 </head>
 <body class="container-fluid">

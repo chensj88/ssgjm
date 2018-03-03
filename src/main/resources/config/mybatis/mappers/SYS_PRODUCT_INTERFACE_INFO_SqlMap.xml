@@ -95,10 +95,10 @@
 		</set>
 		<where>
 			<if test="(pdId != null and pdId != '')">
-			  AND t.PD_ID = #{pdId}
+			  AND PD_ID = #{pdId}
 			</if>
 			<if test="(interId != null and interId != '')">
-			  AND t.INTER_ID = #{interId}
+			  AND INTER_ID = #{interId}
 			</if>
 		</where>
 

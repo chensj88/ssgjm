@@ -1,6 +1,8 @@
 package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
+
+import cn.com.winning.ssgj.domain.expand.NodeTree;
 import org.apache.ibatis.type.Alias;
 import java.util.Date;
 import cn.com.winning.ssgj.domain.BaseDomain;
@@ -77,6 +79,8 @@ public class SysDataInfo extends BaseDomain implements Serializable {
 	 * @val 维护时间
 	 */
 	private Date lastUpdateName;
+
+	private NodeTree nodeTree = new NodeTree();
 	
 	public SysDataInfo() {
 
@@ -259,5 +263,15 @@ public class SysDataInfo extends BaseDomain implements Serializable {
 	public void setLastUpdateName(Date lastUpdateName) {
 		this.lastUpdateName = lastUpdateName;
 	}
-	
+
+	public NodeTree getNodeTree() {
+		nodeTree.setId(id);
+		nodeTree.setNodeId(id);
+		nodeTree.setText(tableCnName+'['+tableName+']');
+		return nodeTree;
+	}
+
+	public void setNodeTree(NodeTree nodeTree) {
+		this.nodeTree = nodeTree;
+	}
 }

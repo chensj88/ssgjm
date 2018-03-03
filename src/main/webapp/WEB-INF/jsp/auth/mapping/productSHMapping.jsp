@@ -37,6 +37,9 @@
         #queryBData tr td:nth-child(1){
             font-size: 12px;
         }
+        #infoTable{
+            font-size:12px;
+        }
         #infoTable tr td:nth-child(1) {
             word-break:keep-all;/* 不换行 */
             white-space:nowrap;/* 不换行 */
@@ -51,6 +54,10 @@
             height:200px;
             vertical-align:middle;
             line-height:200px;
+        }
+
+        .success {
+            background-color:#337AB7;
         }
     </style>
 </head>

@@ -30,5 +30,7 @@ public interface SysReportInfoService {
 
     List<SysReportInfo> getSysReportInfoPaginatedListForSelectiveKey(SysReportInfo t);
 
+    List<SysReportInfo> getSysReportInfoListById(SysReportInfo reportInfo);
 
+    List<SysReportInfo> getSysReportInfolistNoPage(SysReportInfo info);
 }

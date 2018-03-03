@@ -46,6 +46,13 @@ public class SysProductPaperInfo extends BaseDomain implements Serializable {
 	 * @val 维护时间
 	 */
 	private Date lastUpdateTime;
+	private String pdName;
+	private String pdCode;
+	private String reportName;
+	private String reportCode;
+	private String reportDesc;
+	private String lastUpdate;
+
 	
 	public SysProductPaperInfo() {
 
@@ -64,21 +71,7 @@ public class SysProductPaperInfo extends BaseDomain implements Serializable {
 	public void setPdId(Long pdId) {
 		this.pdId = pdId;
 	}
-	
-	/**
-	 * @val 报表类主键
-	 */
-	public Long getRId() {
-		return rId;
-	}
-	
-	/**
-	 * @val 报表类主键
-	 */
-	public void setRId(Long rId) {
-		this.rId = rId;
-	}
-	
+
 	/**
 	 * @val 生效日期
 	 */
@@ -134,5 +127,61 @@ public class SysProductPaperInfo extends BaseDomain implements Serializable {
 	public void setLastUpdateTime(Date lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
 	}
-	
+
+
+	public Long getrId() {
+		return rId;
+	}
+
+	public void setrId(Long rId) {
+		this.rId = rId;
+	}
+
+	public String getPdName() {
+		return pdName;
+	}
+
+	public void setPdName(String pdName) {
+		this.pdName = pdName;
+	}
+
+	public String getPdCode() {
+		return pdCode;
+	}
+
+	public void setPdCode(String pdCode) {
+		this.pdCode = pdCode;
+	}
+
+	public String getReportName() {
+		return reportName;
+	}
+
+	public void setReportName(String reportName) {
+		this.reportName = reportName;
+	}
+
+	public String getReportCode() {
+		return reportCode;
+	}
+
+	public void setReportCode(String reportCode) {
+		this.reportCode = reportCode;
+	}
+
+	public String getReportDesc() {
+		return reportDesc;
+	}
+
+	public void setReportDesc(String reportDesc) {
+		this.reportDesc = reportDesc;
+	}
+
+	public String getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(String lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 }

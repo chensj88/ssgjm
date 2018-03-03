@@ -52,6 +52,12 @@
             vertical-align:middle;
             line-height:200px;
         }
+        #infoTable{
+            font-size:12px;
+        }
+        .success {
+            background-color:#337AB7;
+        }
     </style>
 </head>
 <body class="container-fluid">
@@ -130,7 +136,7 @@
                 </button>
                 <h4 class="modal-title" id="pdModalLabel">列表</h4>
             </div>
-            <div class="modal-body" style="height: 200px;overflow:auto;">
+            <div class="modal-body" style="height: 200px;width:500px;overflow:auto;">
                 <table class="table-hover table-align"  id="infoTable"></table>
             </div>
             <div class="modal-footer">

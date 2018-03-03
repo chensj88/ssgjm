@@ -106,7 +106,7 @@ $(function () {
                     checkbox: true,
                     align: 'center',
                     valign: 'middle',
-                    title: '多选',
+                    title: '多选框',
                     halign: 'middle',
                     width: '13px',
                 }, {
@@ -221,11 +221,6 @@ $(function () {
                     title: "流程名称",
                     width: '15px',
                     align: 'center'
-                }, {
-                    field: "flowDesc",
-                    title: "流程描述",
-                    width: '15px',
-                    align: 'center'
                 },{
                     field: "lastUpdate",
                     title: "操作人",
@@ -235,7 +230,10 @@ $(function () {
                     field: "lastUpdateTime",
                     title: "操作时间",
                     width: '15px',
-                    align: 'center'
+                    align: 'center',
+                    formatter:function (value) {
+                        return Common.getDate(value);
+                    }
                 }
                 ],
             });
@@ -292,7 +290,10 @@ $(function () {
                     field: "lastUpdateTime",
                     title: "操作时间",
                     width: '15px',
-                    align: 'center'
+                    align: 'center',
+                    formatter:function (value) {
+                        return Common.getDate(value);
+                    }
                 }
                 ],
             });
@@ -360,18 +361,18 @@ $(function () {
         paginationNextText: '下一页',
         paginationLoop: false, //分页条无限循环的功能
         singleSelect: true,    //每次只允许选择一条
-        selectItemName: '单选框',
+        selectItemName: '多选框',
         queryParams: queryParams, // 得到查询的参数
-        columns: [{
+         columns: [{
             radio: true,
             align: 'center',
             valign: 'middle',
-            title: '单选框',
+            title: '多选框',
             halign: 'middle',
             width: '13px',
-        }, {
+        },{
             field: "id",
-            title: "ID",
+            title: "序号",
             width: '30px',
             align: 'center'
         }, {
@@ -384,12 +385,12 @@ $(function () {
             title: "产品编号",
             width: '45px',
             align: 'center'
-        }, {
+        }/*, {
             field: "gnms",
             title: "功能描述",
             width: '50px',
             align: 'center'
-        }, {
+        }*/, {
             field: "cptxName",
             title: "产品条线",
             width: '45px',
@@ -483,6 +484,8 @@ $(function () {
      *  产品信息表单击事件
      */
     pdTable.on('click-row.bs.table', function (event, row, element, field) {
+        $('#productTable .success').removeClass('success');//去除之前选中的行的，选中样式
+        $(element).addClass('success');//添加当前选中的 success样式用于区别
         var productId = row.id;
         var url = Common.getRootPath() + "/admin/pFlow/queryById.do";
         $.ajax({
@@ -503,6 +506,7 @@ $(function () {
         });
 
     });
+
 
     /**
      * 左移点击事件 删除

@@ -3,28 +3,72 @@
  * @author chensj
  * @version 1.0.0
  */
+
+function validateForm() {
+    $('#sysReportInfoForm').bootstrapValidator({
+        message: '输入的值不符合规格',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            reportName: {
+                message: '名称验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '名称不能为空'
+                    }
+                }
+            },
+            repoetDesc: {
+                validators: {
+                    notEmpty: {
+                        message: '描述不能为空'
+                    }
+                }
+            }
+        }
+    });
+}
+
+function edit(id,reportCode,reportName,repoetDesc,reportType) {
+    $("#code").show();
+    $('#reportCode').val(reportCode);
+    $('#reportName').val(reportName);
+    $('#repoetDesc').val(repoetDesc);
+    $('#id').val(id);
+    $('#reportType').val(reportType);
+    $('#sysReportInfoForm').bootstrapValidator("destroy");
+    validateForm();
+    $('#sysReportInfoModal').modal('show');
+}
 $(function () {
-    new Page();
-}); 
+    $('#reportQType').val("");
 
-function Page() {
-    _self = this;
-    this.init();
-}
+    function SearchData(){
+        $('#sysReportInfoTable').bootstrapTable('refresh', { pageNumber: 1 });
+    }
 
-Page.prototype.init = function () {
-    this.editObj = null;
-    this.status = {};
-    this.sex = {};
-    this.userType = {};
-    this.initDataGrid();
-    this.bindEvent();
-//    this.validateForm();
-}
-/**
- * 初始化Table
- */
-Page.prototype.initDataGrid = function () {
+    /**
+     * 查询参数信息
+     * @param params
+     * @returns {{count: *|number, first, sort, order, dbName: string, tableName: *|string, tableCnName: *|string}}
+     */
+    function queryParams(params) {
+        return {
+            count: params.limit,    // 每页显示条数
+            first: params.offset,   // 显示条数
+            sort: params.sort,      // 排序列名
+            order: params.order,     // 排位命令（desc，asc）
+            reportName: $.trim($('#reportQName').val()),
+            reportCode: $.trim($('#reportQCode').val()).toUpperCase(),
+            reportType: $('#reportQType option:selected').val()
+        };
+    }
+
+
+
     $('#sysReportInfoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/report/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
@@ -40,14 +84,11 @@ Page.prototype.initDataGrid = function () {
         showPaginationSwitch: false,			//显示 数据条数选择框
         search: false,                      // 是否显示表格搜索
         strictSearch: true,
-        // showColumns: true,                  // 是否显示所有的列（选择显示的列）
-        // showRefresh: true,                  // 是否显示刷新按钮
         minimumCountColumns: 2,             // 最少允许的列数
         clickToSelect: true,                // 是否启用点击选中行
         idField: 'id',
         sortName: 'id',
         uniqueId: "id",                 // 每一行的唯一标识，一般为主键列
-        //showToggle: true,                   // 是否显示详细视图和列表视图的切换按钮
         cardView: false,                    // 是否显示详细视图
         detailView: false,                  // 是否显示父子表
         toolbar: '#btntoolbar',
@@ -57,29 +98,10 @@ Page.prototype.initDataGrid = function () {
         paginationLoop: false, //分页条无限循环的功能
         singleSelect: true,
         selectItemName: '单选框',
-        /*showColumns:true,           //内容列下拉框  */
-        // 得到查询的参数
-        queryParams: function (params) {
-            // 这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-            var temp = {
-                count: params.limit,    // 每页显示条数
-                first: params.offset,   // 显示条数
-                sort: params.sort,      // 排序列名
-                order: params.order     // 排位命令（desc，asc）
-            };
-            return temp;
-        },
-
-        columns: [{
-            checkbox: true,
-            align: 'center',
-            valign: 'middle',
-            title: '单选框',
-            halign: 'middle',
-            width: '13px',
-        }, {
+        queryParams: queryParams,
+        columns: [ {
             field: "id",
-            title: "ID",
+            title: "序号",
             width: '30px',
             align: 'center'
         }, {
@@ -145,17 +167,6 @@ Page.prototype.initDataGrid = function () {
             title: "描述",
             width: '45px',
             align: 'center'
-        },
-        {
-            field: "lastUpdator",
-            title: "维护人员",
-            width: '40px',
-            align: 'center'
-        },{
-            field: "lastUpdateTime",
-            title: "维护时间",
-            width: '40px',
-            align: 'center'
         },{
             field: "status",
             title: "状态",
@@ -174,26 +185,13 @@ Page.prototype.initDataGrid = function () {
             align: 'center',
             width: '40px',
             formatter: function (value, row, index) {
-                var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.reportCode +"','"+row.reportName +"','"+row.repoetDesc + "') >编辑</a> ";
+                var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.reportCode +"','"+row.reportName +"','"+row.repoetDesc + "','"+row.reportType + "') >编辑</a> ";
                 var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
                 return e + d ;
             }
         }],
     });
-}
 
-function edit(id,reportCode,reportName,repoetDesc) {
-	$("#code").show();
-    $('#reportCode').val(reportCode);
-    $('#reportName').val(reportName);
-    $('#repoetDesc').val(repoetDesc);
-    $('#id').val(id);
-    $('#sysReportInfoModal').modal('show');
-}
-/**
- * 按钮绑定事件
- */
-Page.prototype.bindEvent = function () {
     /**
      * 需要清理表格数据
      */
@@ -204,10 +202,10 @@ Page.prototype.bindEvent = function () {
         $('#reportCode').val("");
         $('#reportName').val("");
         $('#repoetDesc').val("");
+        $('#sysReportInfoForm').bootstrapValidator("destroy");
+        validateForm();
         $('#sysReportInfoModal').modal('show');
     });
-//  
-
 
     $('#sysReportInfoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
@@ -223,12 +221,12 @@ Page.prototype.bindEvent = function () {
                 dataType: 'json',
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
-                        toastr.success('提交数据成功');
+                        Ewin.alert('提交数据成功');
                         $("#sysReportInfoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function () {
-                    toastr.error('Error');
+                    Ewin.alert('Error');
                 },
                 complete: function () {
                 }
@@ -251,138 +249,24 @@ Page.prototype.bindEvent = function () {
         } else {
             url = Common.getRootPath() + '/admin/report/update.do';
         }
-//        if (bootstrapValidator.isValid()) {
-        	console.log($("#sysReportInfoForm").serialize());
-            $.ajax({
-                url: url,
-                data: $("#sysReportInfoForm").serialize(),
-                type: "post",
-                dataType: 'json',
-                async: false,
-                success: function (result) {
-                    var _result = eval(result);
-                    if (_result.status == Common.SUCCESS) {
-                        $('#sysReportInfoModal').modal('hide');
-                        $("#sysReportInfoTable").bootstrapTable('refresh');
-                    }
+      if (bootstrapValidator.isValid()) {
+        $.ajax({
+            url: url,
+            data: $("#sysReportInfoForm").serialize(),
+            type: "post",
+            dataType: 'json',
+            async: false,
+            success: function (result) {
+                var _result = eval(result);
+                if (_result.status == Common.SUCCESS) {
+                    $('#sysReportInfoModal').modal('hide');
+                    $("#sysReportInfoTable").bootstrapTable('refresh');
+                }
 
-                }
-            });
-//        }
-    });
-}
-
- //表单验证
-    $('#sysReportInfoForm').bootstrapValidator({
-        message: '输入的值不符合规格',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-        	reportName: {
-                message: '名称验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '名称不能为空'
-                    },
-                    stringLength: {
-                        min: 2,
-                        max: 18,
-                        message: '名称长度必须在2到18位之间'
-                    }
-                }
-            },
-            repoetDesc: {
-                validators: {
-                    notEmpty: {
-                        message: '设备描述不能为空'
-                    },
-                    stringLength: {
-                        min: 2,
-                        max: 50,
-                        message: '设备描述必须在2到50位之间'
-                    }
-                }
             }
+        });
         }
     });
 
-///**
-//* 删除用户
-//* 只能删除一条数据
-//*/
-//$('#deleteProductInfo').on('click', function () {
-// var arrselections = $("#userTable").bootstrapTable('getSelections');
-// if (arrselections.length > 1) {
-//    // toastr.warning('只能选择一行进行编辑');
-//     Ewin.alert('只能选择一行进行编辑');
-//     return;
-// }
-// if (arrselections.length <= 0) {
-//     //toastr.warning('请选择有效数据');
-//     Ewin.alert('只能选择一行进行编辑');
-//     return;
-// }
-// var userId = arrselections[0].userId;
-// Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
-//     if (!e) {
-//         return;
-//     }
-//     $.ajax({
-//         type: "post",
-//         url: Common.getRootPath() + '/admin/report/deleteById.do',
-//         data: {"userId": userId},
-//         dataType: 'json',
-//         success: function (data, status) {
-//             if (status == Common.SUCCESS) {
-//                 toastr.success('提交数据成功');
-//                 $("#userTable").bootstrapTable('refresh');
-//             }
-//         },
-//         error: function () {
-//             toastr.error('Error');
-//         },
-//         complete: function () {
-//         }
-//     });
-// });
-//});
-/**
-//* 修改用户
-//* 只能修改一条数据
-//*/
-//$('#modifyUser').on('click', function () {
-//  var arrselections = $("#userTable").bootstrapTable('getSelections');
-//  if (arrselections.length > 1) {
-//      //toastr.warning('只能选择一行进行编辑');
-//      Ewin.alert('只能选择一行进行编辑');
-//      return;
-//  }
-//  if (arrselections.length <= 0) {
-//      //toastr.warning('请选择有效数据');
-//      Ewin.alert('请选择有效数据');
-//      return;
-//  }
-//  var userId = arrselections[0].id;
-//  $.ajax({
-//      url: Common.getRootPath() + '/admin/report/getById.do',
-//      data: {'userId': userId},
-//      type: "post",
-//      dataType: 'json',
-//      async: false,
-//      success: function (result) {
-//          var _result = eval(result);
-//          if (_result.status == Common.SUCCESS) {
-//              $('#userForm').initForm(_result.data);
-//              $('#orgid').val(_result.data.orgid);
-//              $('#password').val(_result.data.password);
-//              $('#cpfl').val(_result.data.password);
-//              $('#syfw').val(_result.data.password);
-//              $('#sysDataInfo').modal('show');
-//          }
-//
-//      }
-//  });
-//});
+    $('#query').on('click',SearchData);
+});

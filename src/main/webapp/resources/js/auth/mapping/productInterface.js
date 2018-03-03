@@ -221,11 +221,6 @@ $(function () {
                     title: "接口名称",
                     width: '15px',
                     align: 'center'
-                }, {
-                    field: "interDesc",
-                    title: "接口描述",
-                    width: '15px',
-                    align: 'center'
                 },{
                     field: "lastUpdate",
                     title: "操作人",
@@ -235,7 +230,10 @@ $(function () {
                     field: "lastUpdateTime",
                     title: "操作时间",
                     width: '15px',
-                    align: 'center'
+                    align: 'center',
+                    formatter:function (value) {
+                        return Common.getDate(value);
+                    }
                 }
                 ],
             });
@@ -292,7 +290,10 @@ $(function () {
                     field: "lastUpdateTime",
                     title: "操作时间",
                     width: '15px',
-                    align: 'center'
+                    align: 'center',
+                    formatter:function (value) {
+                        return Common.getDate(value);
+                    }
                 }
                 ],
             });
@@ -371,7 +372,7 @@ $(function () {
             width: '13px',
         }, {
             field: "id",
-            title: "ID",
+            title: "序号",
             width: '30px',
             align: 'center'
         }, {
@@ -483,6 +484,8 @@ $(function () {
      *  产品信息表单击事件
      */
     pdTable.on('click-row.bs.table', function (event, row, element, field) {
+        $('#productTable .success').removeClass('success');//去除之前选中的行的，选中样式
+        $(element).addClass('success');//添加当前选中的 success样式用于区别
         var productId = row.id;
         var url = Common.getRootPath() + "/admin/pthirdinfo/queryById.do";
         $.ajax({
@@ -503,6 +506,7 @@ $(function () {
         });
 
     });
+
 
     /**
      * 左移点击事件 删除

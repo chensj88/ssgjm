@@ -221,11 +221,6 @@ $(function () {
                     title: "软硬件名称",
                     width: '15px',
                     align: 'center'
-                }, {
-                    field: "shDesc",
-                    title: "软硬件描述",
-                    width: '15px',
-                    align: 'center'
                 },{
                     field: "lastUpdate",
                     title: "操作人",
@@ -235,7 +230,10 @@ $(function () {
                     field: "lastUpdateTime",
                     title: "操作时间",
                     width: '15px',
-                    align: 'center'
+                    align: 'center',
+                    formatter:function (value) {
+                        return Common.getDate(value);
+                    }
                 }
                 ],
             });
@@ -292,7 +290,10 @@ $(function () {
                     field: "lastUpdateTime",
                     title: "操作时间",
                     width: '15px',
-                    align: 'center'
+                    align: 'center',
+                    formatter:function (value) {
+                        return Common.getDate(value);
+                    }
                 }
                 ],
             });
@@ -363,15 +364,15 @@ $(function () {
         selectItemName: '单选框',
         queryParams: queryParams, // 得到查询的参数
         columns: [{
-            radio: true,
-            align: 'center',
-            valign: 'middle',
-            title: '单选框',
-            halign: 'middle',
-            width: '13px',
+                radio: true,
+                align: 'center',
+                valign: 'middle',
+                title: '单选框',
+                halign: 'middle',
+                width: '13px',
         }, {
             field: "id",
-            title: "ID",
+            title: "序号",
             width: '30px',
             align: 'center'
         }, {
@@ -383,11 +384,6 @@ $(function () {
             field: "code",
             title: "产品编号",
             width: '45px',
-            align: 'center'
-        }, {
-            field: "gnms",
-            title: "功能描述",
-            width: '50px',
             align: 'center'
         }, {
             field: "cptxName",
@@ -408,6 +404,7 @@ $(function () {
             align: 'center'
         }],
     });
+
     /**
      * 初始化可配置数据Table
      */
@@ -483,8 +480,10 @@ $(function () {
      *  产品信息表单击事件
      */
     pdTable.on('click-row.bs.table', function (event, row, element, field) {
+        $('#productTable .success').removeClass('success');//去除之前选中的行的，选中样式
+        $(element).addClass('success');//添加当前选中的 success样式用于区别
         var productId = row.id;
-        var url = Common.getRootPath() + "/admin/pFlow/queryById.do";
+        var url = Common.getRootPath() + "/admin/pShInfo/queryById.do";
         $.ajax({
             type: "post",
             url: url,
@@ -533,7 +532,7 @@ $(function () {
             }
         });
         console.log("shids:"+shids);
-        var url = Common.getRootPath() + "/admin/pFlow/queryProductFlowInfoById.do";
+        var url = Common.getRootPath() + "/admin/pShInfo/queryProductSHInfoById.do";
         $.ajax({
             type: "post",
             url: url,
@@ -583,7 +582,7 @@ $(function () {
             }
         });
         console.log(bdids);
-        var url = Common.getRootPath() + "/admin/pFlow/addProductFlowInfo.do";
+        var url = Common.getRootPath() + "/admin/pShInfo/addMapping.do";
         $.ajax({
             type: "post",
             url: url,
@@ -613,7 +612,7 @@ $(function () {
             }
         });
         var pdId = tdata[0].pdId;
-        var url = Common.getRootPath() + '/admin/pFlow/removeMapping.do';
+        var url = Common.getRootPath() + '/admin/pShInfo/removeMapping.do';
         $.ajax({
             type: "post",
             url: url,

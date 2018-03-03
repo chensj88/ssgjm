@@ -52,6 +52,12 @@
             vertical-align:middle;
             line-height:200px;
         }
+        #infoTable{
+            font-size:12px;
+        }
+        .success {
+            background-color:#337AB7;
+        }
     </style>
 </head>
 <body class="container-fluid">
@@ -86,7 +92,7 @@
 
 <div class="row" style="height: 300px;">
     <div class="col-sm-5">
-        <table id="queryFlow" class="table-align">
+        <table id="query" class="table-align">
         </table>
     </div>
     <div class="col-sm-2 text-center center">
@@ -106,19 +112,19 @@
         </p>
     </div>
     <div class="col-sm-5">
-         <table id="configFlow" class="table-align">
+         <table id="config" class="table-align">
 
         </table>
     </div>
 </div>
 
 <div id="toolbarA">
-    <div class="columns pull-right search-button"><button class="btn btn-default"  style="height:34px" type="button" name="refresh" title="查询" id="flowInfoAbtn"><i class="glyphicon glyphicon-search icon-search"></i></button></div>
-    <div class="columns pull-right search-input"><input class="form-control" type="text" placeholder="请输入流程名称或编号" id="flowInfoA"></div>
+    <div class="columns pull-right search-button"><button class="btn btn-default"  style="height:34px" type="button" name="refresh" title="查询" id="infoAbtn"><i class="glyphicon glyphicon-search icon-search"></i></button></div>
+    <div class="columns pull-right search-input"><input class="form-control" type="text" placeholder="请输入报表单据名称或编号" id="infoA"></div>
 </div>
 <div id="toolbarB">
-    <div class="columns pull-right search-button"><button class="btn btn-default"  style="height:34px" type="button" name="refresh" title="查询" id="flowInfoBbtn"><i class="glyphicon glyphicon-search icon-search"></i></button></div>
-    <div class="columns pull-right search-input"><input class="form-control" type="text" placeholder="请输入流程名称或编号"  id="flowInfoB"></div>
+    <div class="columns pull-right search-button"><button class="btn btn-default"  style="height:34px" type="button" name="refresh" title="查询" id="infoBbtn"><i class="glyphicon glyphicon-search icon-search"></i></button></div>
+    <div class="columns pull-right search-input"><input class="form-control" type="text" placeholder="请输入报表单据名称或编号"  id="infoB"></div>
 </div>
 <%--弹出框--%>
 <div class="modal fade" id="pdModal" tabindex="-1" role="dialog" aria-labelledby="pdModal">
