@@ -38,6 +38,9 @@
         }
 
     };
+
+    /**登录页面*/
+    Common.LOGIN_URL = Common.getRootPath() + "/login/login.do";
     /**
      * 获取Controller的路径 根据请求的路径获取来获取路径信息
      */
