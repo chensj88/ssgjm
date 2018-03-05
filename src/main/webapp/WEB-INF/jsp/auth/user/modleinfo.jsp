@@ -8,14 +8,14 @@
     <title>菜单信息</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="卫宁实施工具">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-treeview.min.css">
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-treeview.min.css"/>
     <base href="<%=basePath%>">
-    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
-    <style type="text/css">
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
+    <style type="text/css"/>
         .table-align{
             table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
             width: 100%;
@@ -41,10 +41,10 @@
     </form>
 </div>
 <!--表格区域  -->
-<table id="moduleTable" class="table-align"></table>
+<table id="infoTable" class="table-align"></table>
 <!--toolbar区域  -->
 <div class="btn-group" id="modulebtntoolbar">
-    <button id="addmodule" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
+    <button id="add" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
 </div>
 <!--模态框  -->
 <div class="modal fade" id="moduleModal" tabindex="-1" role="dialog" aria-labelledby="moduleFormModal">

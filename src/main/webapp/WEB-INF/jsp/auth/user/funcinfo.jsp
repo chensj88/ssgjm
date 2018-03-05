@@ -8,12 +8,12 @@
     <title>功能信息</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="卫宁实施工具">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css">
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css"/>
     <base href="<%=basePath%>">
-    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
 </head>
 <body>
 <div class="row" id="queryScope">
@@ -33,10 +33,10 @@
     </form>
 </div>
 <!--表格区域  -->
-<table id="funcTable"></table>
+<table id="infoTable"></table>
 <!--toolbar区域  -->
 <div class="btn-group" id="funcbtntoolbar">
-    <button id="addfunc" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
+    <button id="add" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
 </div>
 <!--模态框  -->
 <div class="modal fade" id="funcModal" tabindex="-1" role="dialog" aria-labelledby="funcFormModal">

@@ -8,11 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>第三方接口类型信息</title>
     <meta name="author" content="卫宁实施工具">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css">
-    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css"/>
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
 </head>
 <style>
 	.table-align{
@@ -43,7 +43,7 @@
 	
 </style>
 <body>
-<div class="row" id="queryInteScope">
+<div class="row" id="queryScope">
     <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12" >
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
             <label class="col-sm-5 control-label text-right" for="interQName">接口名称:</label>
@@ -63,21 +63,17 @@
                 <input type="text" class="form-control input-sm" id="refQProductName"/>
             </div>
         </div>
-        <button type="button" class="btn btn-success btn-sm" id="queryInter" style="margin-left:20px">
+        <button type="button" class="btn btn-success btn-sm" id="query" style="margin-left:40px;">
             <span class="glyphicon glyphicon-search"></span>
             查询
         </button>
     </form>
 </div>
 <!--表格区域  -->
-<table id="interFaceInfoTable" class="table-align"></table>
+<table id="infoTable" class="table-align"></table>
 <!--toolbar区域  -->
 <div class="btn-group" id="btntoolbar">
-    <button id="addInterFaceInfo" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
-    <!-- <button id="modifyUser" class="btn btn-default" type="button"><span class="glyphicon glyphicon-edit"></span>修改
-    </button> 
-    <button id="deleteProductInfo" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span>删除
-    </button>-->
+    <button id="add" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
 </div>
 <!--模态框  -->
 <div class="modal fade" id="interFaceInfoModal" tabindex="-1" role="dialog" aria-labelledby="interFaceInfoModal">

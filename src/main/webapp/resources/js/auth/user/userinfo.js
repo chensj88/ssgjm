@@ -12,7 +12,7 @@ $(function () {
      * @constructor
      */
     function SearchData(){
-        $('#userTable').bootstrapTable('refresh', { pageNumber: 1 });
+        $('#infoTable').bootstrapTable('refresh', { pageNumber: 1 });
     }
 
     /**
@@ -61,7 +61,10 @@ $(function () {
         });
 
     }
-    $('#userTable').bootstrapTable({
+
+    $('#emailS').hide();
+
+    $('#infoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/user/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         // contentType: "application/x-www-form-urlencoded",//必须要有！！！！ POST必须有
@@ -166,7 +169,7 @@ $(function () {
         }],
     });
 
-    $('#queryUser').on('click',SearchData);
+    $('#query').on('click',SearchData);
 
     $('#queryRole').on('click',initTreeView);
 
@@ -174,7 +177,7 @@ $(function () {
      * 新增用户
      * 需要清理表格数据
      */
-    $('#addUser').on('click', function () {
+    $('#add').on('click', function () {
         $("input[type=reset]").trigger("click");
         $('#id').val('');
         $('#orgid').val('');
@@ -187,7 +190,7 @@ $(function () {
      * 列表中按钮
      *   编辑用户信息
      */
-    $('#userTable').on('click', 'a[name="edit"]', function (e) {
+    $('#infoTable').on('click', 'a[name="edit"]', function (e) {
         e.preventDefault();
         var userId = $(this).attr('aid');
         $.ajax({
@@ -214,7 +217,7 @@ $(function () {
      * 列表中按钮
      *   删除用户信息
      */
-    $('#userTable').on('click', 'a[name="delete"]', function (e) {
+    $('#infoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var userId = $(this).attr('aid');
         Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
@@ -229,7 +232,7 @@ $(function () {
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
                         Ewin.alert('提交数据成功');
-                        $("#userTable").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function () {
@@ -241,7 +244,7 @@ $(function () {
         });
     });
 
-    $('#userTable').on('click', 'a[name="tree"]', function (e) {
+    $('#infoTable').on('click', 'a[name="tree"]', function (e) {
         e.preventDefault();
         var userId = $(this).attr('aid');
         initTreeView();
@@ -276,7 +279,7 @@ $(function () {
      * 只能删除一条数据
      */
     $('#deleteUser').on('click', function () {
-        var arrselections = $("#userTable").bootstrapTable('getSelections');
+        var arrselections = $("#infoTable").bootstrapTable('getSelections');
         if (arrselections.length > 1) {
             Ewin.alert('只能选择一行进行编辑');
             return;
@@ -298,7 +301,7 @@ $(function () {
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
                         Ewin.alert('提交数据成功');
-                        $("#userTable").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function () {
@@ -322,7 +325,7 @@ $(function () {
             bootstrapValidator.validate();
         }
         var url = '';
-        if ($('#orgid').val().length == 0) {
+        if ($('#id').val().length == 0) {
             url = Common.getRootPath() + '/admin/user/add.do';
         } else {
             url = Common.getRootPath() + '/admin/user/update.do';
@@ -340,7 +343,7 @@ $(function () {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
                         $('#userModal').modal('hide');
-                        $("#userTable").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error :function (msg) {
@@ -477,5 +480,13 @@ $(function () {
     }
 
 
+    $('#userType').on('change',function () {
+       var selEle = $(this).val();
+        if(selEle == '1'){
+            $('#emailS').show();
+        }else{
+            $('#emailS').hide();
+        }
+    });
 
 });

@@ -8,13 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Insert title here</title>
     <meta name="author" content="卫宁实施工具">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-treeview.min.css">
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-treeview.min.css"/>
     <base href="<%=basePath%>">
-    <link rel="shortcut icon" href="resources/img/logo.ico">
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <style type="text/css">
         .table-align{
             table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
@@ -58,19 +58,17 @@
                 <input type="text" class="form-control input-sm" id="telephone"/>
             </div>
         </div>
-        <button type="button" class="btn btn-success btn-sm" id="queryUser">
+        <button type="button" class="btn btn-success btn-sm" id="query">
             <span class="glyphicon glyphicon-search"></span>
             查询
         </button>
     </form>
 </div>
 <!--表格区域  -->
-<table id="userTable" class="table-align table-hover"></table>
+<table id="infoTable" class="table-align table-hover"></table>
 <!--toolbar区域  -->
 <div class="btn-group" id="btntoolbar" >
-    <button id="addUser" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
-    <%--<button id="modifyUser" class="btn btn-warning" type="button"><span class="glyphicon glyphicon-edit"></span>修改</button>
-    <button id="deleteUser" class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"></span>删除 </button>--%>
+    <button id="add" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
 </div>
 
 <!--模态框  -->
@@ -100,7 +98,7 @@
                                     <input type="text" class="form-control" id="yhmc" name="yhmc" placeholder="请输入用户名称">
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="emailS">
                                 <label class="col-sm-3 control-label" for="email">邮箱</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="email" name="email"
@@ -115,7 +113,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" >
                                 <label class="col-sm-3 control-label" for="status">允许登陆</label>
                                 <div class="col-sm-6">
                                     <select class="form-control" name="status" id="status">
@@ -125,7 +123,7 @@
                                 </div>
 
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" >
                                 <label class="col-sm-3 control-label" for="userType">用户类型</label>
                                 <div class="col-sm-6">
                                     <select class="form-control" name="userType" id="userType">

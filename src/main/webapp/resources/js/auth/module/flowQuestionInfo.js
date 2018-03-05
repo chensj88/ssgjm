@@ -100,7 +100,7 @@ $(function () {
      * @constructor
      */
     function SearchData(){
-        $('#flowQuestionInfo').bootstrapTable('refresh', { pageNumber: 1 });
+        $('#infoTable').bootstrapTable('refresh', { pageNumber: 1 });
     }
 
     /**
@@ -123,7 +123,7 @@ $(function () {
     /**
      * 初始化Table
      */
-    $('#flowQuestionInfo').bootstrapTable({
+    $('#infoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/fq/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -234,7 +234,7 @@ $(function () {
      * 新增流程
      * 需要清理表格数据
      */
-    $('#addFlowQuestion').on('click', function () {
+    $('#add').on('click', function () {
         $("input[type=reset]").trigger("click");
         $('#id').val('');
         //清空验证信息
@@ -246,7 +246,7 @@ $(function () {
      * 列表中按钮
      *   编辑流程信息
      */
-    $('#flowQuestionInfo').on('click', 'a[name="view"]', function (e) {
+    $('#infoTable').on('click', 'a[name="view"]', function (e) {
         e.preventDefault();
         var quesId = $(this).attr('aid').split(',')[0];
         var resultNum = $(this).attr('aid').split(',')[1];
@@ -300,7 +300,7 @@ $(function () {
      * 列表中按钮
      *   删除流程信息
      */
-    $('#flowQuestionInfo').on('click', 'a[name="delete"]', function (e) {
+    $('#infoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var fqId = $(this).attr('aid');
         Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
@@ -317,7 +317,7 @@ $(function () {
                     var result = eval(data);
                     if (result.status == Common.SUCCESS) {
                         Ewin.alert('提交数据成功');
-                        $("#flowQuestionInfo").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function (msg) {
@@ -359,7 +359,7 @@ $(function () {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
                         $('#flowQuestionModal').modal('hide');
-                        $("#flowQuestionInfo").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 }
             });
