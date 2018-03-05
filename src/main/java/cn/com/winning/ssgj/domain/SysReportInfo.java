@@ -55,7 +55,7 @@ public class SysReportInfo extends BaseDomain implements Serializable {
 	/**
 	 * @val 描述
 	 */
-	private String repoetDesc;
+	private String reportDesc;
 	
 	/**
 	 * @val 状态 0 失效 1生效
@@ -177,17 +177,16 @@ public class SysReportInfo extends BaseDomain implements Serializable {
 	/**
 	 * @val 描述
 	 */
-	public String getRepoetDesc() {
-		return repoetDesc;
+	public String getReportDesc() {
+		return reportDesc;
 	}
-	
 	/**
 	 * @val 描述
 	 */
-	public void setRepoetDesc(String repoetDesc) {
-		this.repoetDesc = repoetDesc;
+	public void setReportDesc(String reportDesc) {
+		this.reportDesc = reportDesc;
 	}
-	
+
 	/**
 	 * @val 状态 0 失效 1生效
 	 */
