@@ -1,4 +1,10 @@
+
+
 jQuery(function($) {
+
+    var height = window.screen.height;
+
+    $('#jspContent').height( height*0.9);
 
     function initMenu() {
         $.ajax({

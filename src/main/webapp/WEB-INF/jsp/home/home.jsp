@@ -31,7 +31,13 @@
     <script src="<%=basePath%>resources/assets/js/html5shiv.js"></script>
     <script src="<%=basePath%>resources/assets/js/respond.min.js"></script>
     <![endif]-->
-
+    <style type="text/css">
+        .content {
+            background-color: #cc85d9;
+            width: 100%;
+            position: absolute;
+        }
+    </style>
 </head>
 
 <body>
@@ -146,7 +152,7 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <!-- PAGE CONTENT BEGINS -->
-                        <div class="row" id="jspContent" style="height: 500px">
+                       <div class="row" id="jspContent" >
                             <iframe id="coniframe" height="100%" width="100%" frameborder="0" scrolling="yes"></iframe>
                         </div>
                         <!-- PAGE CONTENT ENDS -->
@@ -207,7 +213,7 @@
     <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
         <i class="icon-double-angle-up icon-only bigger-110"></i>
     </a>
-</div><!-- /.main-container -->
+</div>
 <!--[if !IE]> -->
 <script src="<%=basePath%>resources/bootstrap/js/jquery-2.2.4.min.js"></script>
 <!-- <![endif]-->
