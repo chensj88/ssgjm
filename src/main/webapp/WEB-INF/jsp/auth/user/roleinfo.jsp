@@ -42,12 +42,12 @@
     </form>
 </div>
 <!--表格区域  -->
-<table id="roleTable" class="table-align">
+<table id="infoTable" class="table-align">
 
 </table>
 <!--toolbar区域  -->
 <div class="btn-group" id="rolebtntoolbar">
-    <button id="addRole" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
+    <button id="add" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
 </div>
 <!--模态框  -->
 <div class="modal fade" id="roleModal" tabindex="-1" role="dialog" aria-labelledby="roleFormModal">

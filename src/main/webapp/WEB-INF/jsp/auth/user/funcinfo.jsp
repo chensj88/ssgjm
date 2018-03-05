@@ -33,10 +33,10 @@
     </form>
 </div>
 <!--表格区域  -->
-<table id="funcTable"></table>
+<table id="infoTable"></table>
 <!--toolbar区域  -->
 <div class="btn-group" id="funcbtntoolbar">
-    <button id="addfunc" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
+    <button id="add" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
 </div>
 <!--模态框  -->
 <div class="modal fade" id="funcModal" tabindex="-1" role="dialog" aria-labelledby="funcFormModal">

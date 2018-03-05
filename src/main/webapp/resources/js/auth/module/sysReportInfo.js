@@ -47,7 +47,7 @@ $(function () {
     $('#reportQType').val("");
 
     function SearchData(){
-        $('#sysReportInfoTable').bootstrapTable('refresh', { pageNumber: 1 });
+        $('#infoTable').bootstrapTable('refresh', { pageNumber: 1 });
     }
 
     /**
@@ -69,7 +69,7 @@ $(function () {
 
 
 
-    $('#sysReportInfoTable').bootstrapTable({
+    $('#infoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/report/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         // contentType: "application/x-www-form-urlencoded",//必须要有！！！！ POST必须有
@@ -195,7 +195,7 @@ $(function () {
     /**
      * 需要清理表格数据
      */
-    $('#addSysReportInfo').on('click', function () {
+    $('#add').on('click', function () {
         $("input[type=reset]").trigger("click");
         $("#code").hide();
         $("#id").val("");
@@ -207,7 +207,7 @@ $(function () {
         $('#sysReportInfoModal').modal('show');
     });
 
-    $('#sysReportInfoTable').on('click', 'a[name="delete"]', function (e) {
+    $('#infoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var productInfoId = $(this).attr('aid');
         Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
@@ -222,7 +222,7 @@ $(function () {
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
                         Ewin.alert('提交数据成功');
-                        $("#sysReportInfoTable").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function () {
@@ -260,7 +260,7 @@ $(function () {
                 var _result = eval(result);
                 if (_result.status == Common.SUCCESS) {
                     $('#sysReportInfoModal').modal('hide');
-                    $("#sysReportInfoTable").bootstrapTable('refresh');
+                    $("#infoTable").bootstrapTable('refresh');
                 }
 
             }

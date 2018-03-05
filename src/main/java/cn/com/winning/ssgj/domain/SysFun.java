@@ -87,7 +87,7 @@ public class SysFun extends BaseDomain implements Serializable {
     public NodeTree getNodeTree(){
         nodeTree.setId(this.id);
         nodeTree.setNodeId(this.id);
-        nodeTree.setText(this.funName);
+        nodeTree.setText(this.funName + '['+funCode+']');
         return nodeTree;
     }
 }

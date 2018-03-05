@@ -69,7 +69,7 @@
     </form>
 </div>
 <!--表格区域  -->
-<table id="table" class="table-align"></table>
+<table id="infoTable" class="table-align"></table>
 <!--toolbar区域  -->
 <div class="btn-group" id="btntoolbar" >
     <button id="add" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>

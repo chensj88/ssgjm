@@ -25,7 +25,7 @@ $(function () {
      * @constructor
      */
     function SearchData(){
-        $('#sysSoftHardwareInfoTable').bootstrapTable('refresh', { pageNumber: 1 });
+        $('#infoTable').bootstrapTable('refresh', { pageNumber: 1 });
     }
 
     /**
@@ -48,7 +48,7 @@ $(function () {
     /**
      * 初始化Table
      */
-    $('#sysSoftHardwareInfoTable').bootstrapTable({
+    $('#infoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/hardware/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         // contentType: "application/x-www-form-urlencoded",//必须要有！！！！ POST必须有
@@ -165,11 +165,11 @@ $(function () {
             }],
     });
     //查询
-    $('#querySh').on('click',SearchData);
+    $('#query').on('click',SearchData);
     /**
      * 需要清理表格数据
      */
-    $('#addSysSoftHardwareInfo').on('click', function () {
+    $('#add').on('click', function () {
         $("input[type=reset]").trigger("click");
         $("#id").val("");
         $('#shCode').val("");
@@ -180,7 +180,7 @@ $(function () {
         $('#sysSoftHardwareInfoModal').modal('show');
     });
 
-    $('#sysSoftHardwareInfoTable').on('click', 'a[name="delete"]', function (e) {
+    $('#infoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var productInfoId = $(this).attr('aid');
         Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
@@ -195,7 +195,7 @@ $(function () {
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
                         toastr.success('提交数据成功');
-                        $("#sysSoftHardwareInfoTable").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function () {
@@ -233,7 +233,7 @@ $(function () {
                 var _result = eval(result);
                 if (_result.status == Common.SUCCESS) {
                     $('#sysSoftHardwareInfoModal').modal('hide');
-                    $("#sysSoftHardwareInfoTable").bootstrapTable('refresh');
+                    $("#infoTable").bootstrapTable('refresh');
                 }
 
             }

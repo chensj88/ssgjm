@@ -51,7 +51,7 @@
             </div>
         </div>
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
-            <button type="button" class="btn btn-success btn-sm" id="queryProductLineInfo">
+            <button type="button" class="btn btn-success btn-sm" id="query">
                 <span class="glyphicon glyphicon-search"></span>
                 查询
             </button>

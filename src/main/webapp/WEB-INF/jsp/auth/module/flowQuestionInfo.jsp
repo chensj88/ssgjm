@@ -80,10 +80,10 @@
     </form>
 </div>
 <!--表格区域  -->
-<table id="flowQuestionInfo" class="table-align"></table>
+<table id="infoTable" class="table-align"></table>
 <!--toolbar区域  -->
 <div class="btn-group" id="btntoolbar">
-    <button id="addFlowQuestion" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
+    <button id="add" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
 </div>
 <!--模态框  问题信息-->
 <div class="modal fade" id="flowQuestionModal" tabindex="-1" role="dialog" aria-labelledby="flowQuestionModal">

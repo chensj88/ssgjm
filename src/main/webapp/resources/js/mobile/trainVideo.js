@@ -14,7 +14,7 @@ $(function () {
     }
 
     function SearchData() {
-        $('#table').bootstrapTable('refresh', {pageNumber: 1});
+        $('#infoTable').bootstrapTable('refresh', {pageNumber: 1});
     }
 
     function validateForm() {
@@ -116,7 +116,7 @@ $(function () {
                         if (_result.status == Common.SUCCESS) {
                             $('#close').attr('disabled',false);
                             $('#videoModal').modal('hide');
-                            $("#table").bootstrapTable('refresh');
+                            $("#infoTable").bootstrapTable('refresh');
                         }
                     }
                 });
@@ -141,7 +141,7 @@ $(function () {
         });
         return data;
     }
-    $('#table').bootstrapTable({
+    $('#infoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/train/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -238,7 +238,7 @@ $(function () {
      * 列表中按钮
      *   编辑流程信息
      */
-    $('#table').on('click', 'a[name="edit"]', function (e) {
+    $('#infoTable').on('click', 'a[name="edit"]', function (e) {
         e.preventDefault();
         //清空验证信息
         $('#trainForm').bootstrapValidator("destroy");
@@ -252,7 +252,7 @@ $(function () {
      * 列表中按钮
      *   删除流程信息
      */
-    $('#table').on('click', 'a[name="delete"]', function (e) {
+    $('#infoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var vid = $(this).attr('aid');
         var data = queryInfoByDataId(vid);
@@ -277,7 +277,7 @@ $(function () {
                     var result = eval(data);
                     if (result.status == Common.SUCCESS) {
                        /* Ewin.alert('提交数据成功');*/
-                        $("#table").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function (msg) {
@@ -289,7 +289,7 @@ $(function () {
         });
     });
 
-    $('#table').on('click', 'a[name="upload"]', function (e) {
+    $('#infoTable').on('click', 'a[name="upload"]', function (e) {
         e.preventDefault();
         var vid = $(this).attr('aid');
         var atype = $(this).attr('atype');
@@ -328,7 +328,7 @@ $(function () {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
                         $('#trainModal').modal('hide');
-                        $("#table").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 }
             });
