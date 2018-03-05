@@ -21,7 +21,7 @@ function validateForm() {
                     }
                 }
             },
-            repoetDesc: {
+            reportDesc: {
                 validators: {
                     notEmpty: {
                         message: '描述不能为空'
@@ -32,11 +32,11 @@ function validateForm() {
     });
 }
 
-function edit(id,reportCode,reportName,repoetDesc,reportType) {
+function edit(id,reportCode,reportName,reportDesc,reportType) {
     $("#code").show();
     $('#reportCode').val(reportCode);
     $('#reportName').val(reportName);
-    $('#repoetDesc').val(repoetDesc);
+    $('#reportDesc').val(reportDesc);
     $('#id').val(id);
     $('#reportType').val(reportType);
     $('#sysReportInfoForm').bootstrapValidator("destroy");
@@ -163,7 +163,7 @@ $(function () {
             },
             align: 'center'
         }, {
-            field: "repoetDesc",
+            field: "reportDesc",
             title: "描述",
             width: '45px',
             align: 'center'
@@ -185,7 +185,7 @@ $(function () {
             align: 'center',
             width: '40px',
             formatter: function (value, row, index) {
-                var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.reportCode +"','"+row.reportName +"','"+row.repoetDesc + "','"+row.reportType + "') >编辑</a> ";
+                var e = "<a  class='btn btn-info btn-xs' onclick=edit('"+ row.id +"','"+row.reportCode +"','"+row.reportName +"','"+row.reportDesc + "','"+row.reportType + "') >编辑</a> ";
                 var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
                 return e + d ;
             }
@@ -201,7 +201,7 @@ $(function () {
         $("#id").val("");
         $('#reportCode').val("");
         $('#reportName').val("");
-        $('#repoetDesc').val("");
+        $('#reportDesc').val("");
         $('#sysReportInfoForm').bootstrapValidator("destroy");
         validateForm();
         $('#sysReportInfoModal').modal('show');

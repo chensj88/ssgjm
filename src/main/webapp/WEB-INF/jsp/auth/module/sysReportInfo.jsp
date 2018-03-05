@@ -17,6 +17,7 @@
 <style>
 	.table-align{
 	    table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
+        font-size:12px;
 	}
 	.table-align tr td:nth-child(3) {
   	word-break:keep-all;/* 不换行 */
@@ -121,7 +122,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label" >描述:</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="repoetDesc" name="repoetDesc"
+                                    <input type="text" class="form-control" id="reportDesc" name="reportDesc"
                                            placeholder="请输入描述">
                                 </div>
                             </div>

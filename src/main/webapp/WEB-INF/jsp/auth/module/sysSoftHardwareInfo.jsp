@@ -17,6 +17,7 @@
 <style>
 	.table-align{
 	    table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
+        font-size:12px;
 	}
 	.table-align tr td:nth-child(3) {
   	word-break:keep-all;/* 不换行 */

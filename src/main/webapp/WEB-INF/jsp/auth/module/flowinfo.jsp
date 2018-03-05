@@ -14,6 +14,25 @@
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css">
     <base href="<%=basePath%>">
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
+    <style type="text/css">
+        .table-align{
+            table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
+            font-size:12px;
+        }
+        .table-align tr td:nth-child(3),
+        .table-align tr td:nth-child(4),
+        .table-align tr td:nth-child(6) {
+
+        }
+        .table-align tr td:nth-child(5) {
+            word-break:keep-all;/* 不换行 */
+            white-space:nowrap;/* 不换行 */
+            overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+            text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+            font-size:12px;
+        }
+
+    </style>
 </head>
 <body>
 <div class="row" id="queryScope">
@@ -39,7 +58,7 @@
     </form>
 </div>
 <!--表格区域  -->
-<table id="flowTable"></table>
+<table id="flowTable" class="table-align"></table>
 <!--toolbar区域  -->
 <div class="btn-group" id="btntoolbar">
     <button id="addFlow" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>

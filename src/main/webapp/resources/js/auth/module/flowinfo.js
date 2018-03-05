@@ -84,17 +84,17 @@ $(function () {
         }, {
             field: "flowCode",
             title: "流程编号",
-            width: '40px',
+            width: '50px',
             align: 'center'
         }, {
             field: "flowName",
             title: "流程名称",
-            width: '40px',
+            width: '60px',
             align: 'center'
         }, {
             field: "flowDesc",
             title: "流程描述",
-            width: '40px',
+            width: '60px',
             align: 'center'
         }, {
             field: "flowParentCode",
@@ -110,7 +110,7 @@ $(function () {
             title: '操作',
             field: 'id',
             align: 'center',
-            width: '80px',
+            width: '40px',
             formatter: function (value, row, index) {
                 var e = '<a href="####" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.id + '">编辑</a> ';
                 var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
