@@ -10,4 +10,7 @@
     if(user == null ){
         request.getRequestDispatcher("/login/login.do").forward(request,response);
     }*/
+
+    String basePathNuName = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/";
+
 %>

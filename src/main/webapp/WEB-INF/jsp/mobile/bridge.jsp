@@ -17,7 +17,7 @@
 		<div class="mui-content bridge">
 			<div class="mui-row bridge-item">
 				<c:forEach var="repoType" items="${repoTypeList}" >
-					<a href="<%=basePath%>mobile/trainVideoList/video.do?video_type=${repoType.videoType}&OPENID=${OPENID}" class="mui-col-xs-12">${repoType.videoType}</a>
+					<a href="<%=basePath%>mobile/trainVideoList/video.do?video_type=${repoType.videoType}&OPENID=${OPENID}" class="mui-col-xs-6 mui-col-sm-4" >${repoType.videoType}</a>
 				</c:forEach>
 
 			</div>

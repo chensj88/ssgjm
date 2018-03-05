@@ -18,18 +18,12 @@
 	<body>
 		<div class="mui-content detail">
 			<!--header-->
-			<div class="header">
-				<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
-				<div>站点安装登记</div>
-				<span class="mui-icon mui-icon-more"></span>
-			</div>
-			<div class="hole"></div>
 			<div class="detail-play">
 				<video width="100%" height="200" controls>
 
-					<source src="<%=basePath%>shareFolder${repo.remotePath}" type="video/mp4">
-					<source src="<%=basePath%>shareFolder${repo.remotePath}" type="video/avi">
-					<source src="<%=basePath%>shareFolder${repo.remotePath}" type="video/wmv">
+					<source src="<%=basePathNuName%>shareFolder${repo.remotePath}" type="video/mp4">
+					<source src="<%=basePathNuName%>shareFolder${repo.remotePath}" type="video/avi">
+					<source src="<%=basePathNuName%>shareFolder${repo.remotePath}" type="video/wmv">
 
 					您的浏览器不支持 HTML5 video 标签。
 				</video>
