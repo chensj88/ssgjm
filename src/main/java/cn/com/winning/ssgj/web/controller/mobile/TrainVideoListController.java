@@ -10,6 +10,7 @@ import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -37,7 +38,7 @@ public class TrainVideoListController extends BaseController {
      * @author: Chen, Kuai
      * @Description: 获取视频分类
      */
-    @Resource
+    @Autowired
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/list.do")
@@ -128,15 +129,17 @@ public class TrainVideoListController extends BaseController {
         trainVideo.setVideoId(id);
         trainVideo =super.getFacade().getEtTrainVideoListService().getEtTrainVideoList(trainVideo);
         if(trainVideo==null){
-            trainVideo.setId(ssgjHelper.createVideoIdService());
-            trainVideo.setCId((long) -2);//微信游客类型
-            trainVideo.setPmId((long) -2);
-            trainVideo.setPdId((long) -2);
-            trainVideo.setUserId("yk0001");
-            trainVideo.setOpenId(OPENID);           //微信登陆唯一标识
-            trainVideo.setVideoId(id);
+            EtTrainVideoList trainVideo_new = new EtTrainVideoList();
+            Long id2= ssgjHelper.createVideoIdService();
+            trainVideo_new.setId(ssgjHelper.createVideoIdService());
+            trainVideo_new.setCId((long) -2);//微信游客类型
+            trainVideo_new.setPmId((long) -2);
+            trainVideo_new.setPdId((long) -2);
+            trainVideo_new.setUserId("yk0001");
+            trainVideo_new.setOpenId(OPENID);           //微信登陆唯一标识
+            trainVideo_new.setVideoId(id);
             //trainVideo.setVideoTime(new Date());
-            super.getFacade().getEtTrainVideoListService().createEtTrainVideoList(trainVideo);
+            super.getFacade().getEtTrainVideoListService().createEtTrainVideoList(trainVideo_new);
         }else{
             trainVideo.setNum(trainVideo.getNum()+1);
             super.getFacade().getEtTrainVideoListService().modifyEtTrainVideoList(trainVideo);
@@ -151,6 +154,14 @@ public class TrainVideoListController extends BaseController {
         repo =super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepo(repo);
         model.addAttribute("repo",repo);
         model.addAttribute("num",trainVideo.getNum());
+
+        SysTrainVideoRepo repo_new = new SysTrainVideoRepo();
+        repo_new.setVideoType(repo.getVideoType()); //根据分类
+        repo_new.getMap().put("not_id",repo.getId());
+        repo_new.getMap().put("OPENID",OPENID);
+        List<SysTrainVideoRepo> SysTrainVideoWithRecord =super.getFacade().getSysTrainVideoRepoService()
+                .getSysTrainVideoWithRecoedList(repo_new);
+        model.addAttribute("videoWithRecoed", SysTrainVideoWithRecord);
 
         return "mobile/service/course-detail";
     }
