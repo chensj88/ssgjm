@@ -10,7 +10,7 @@
 		<result column="PAPER_FORMAT" property="paperFormat" jdbcType="INTEGER" />
 		<result column="PRD_USE_SCOPE" property="prdUseScope" jdbcType="VARCHAR" />
 		<result column="PRD_USER" property="prdUser" jdbcType="VARCHAR" />
-		<result column="REPOET_DESC" property="repoetDesc" jdbcType="LONGVARCHAR" />
+		<result column="REPORT_DESC" property="reportDesc" jdbcType="LONGVARCHAR" />
 		<result column="STATUS" property="status" jdbcType="INTEGER" />
 		<result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT" />
 		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
@@ -27,7 +27,7 @@
 	   <if test="(paperFormat != null and paperFormat != '') or paperFormat == 0"> and t.PAPER_FORMAT = #{paperFormat} </if>
 	   <if test="prdUseScope != null and prdUseScope != ''"> and t.PRD_USE_SCOPE = #{prdUseScope} </if>
 	   <if test="prdUser != null and prdUser != ''"> and t.PRD_USER = #{prdUser} </if>
-	   <if test="repoetDesc != null and repoetDesc != ''"> and t.REPOET_DESC = #{repoetDesc} </if>
+	   <if test="reportDesc != null and reportDesc != ''"> and t.REPORT_DESC = #{reportDesc} </if>
 	   <if test="(status != null )"> and t.STATUS = #{status} </if>
 	   <if test="(lastUpdator != null and lastUpdator != '')"> and t.LAST_UPDATOR = #{lastUpdator} </if>
 	   <if test="lastUpdateTime != null "> and t.LAST_UPDATE_TIME = #{lastUpdateTime} </if>
@@ -77,7 +77,7 @@
 	       <if test="(paperFormat != null and paperFormat != '') or paperFormat == 0"> PAPER_FORMAT, </if>
 		   <if test="prdUseScope != null and prdUseScope != ''"> PRD_USE_SCOPE, </if>
 		   <if test="prdUser != null and prdUser != ''"> PRD_USER, </if>
-		   <if test="repoetDesc != null and repoetDesc != ''"> REPOET_DESC, </if>
+		   <if test="reportDesc != null and reportDesc != ''"> REPORT_DESC, </if>
 	       <if test="(status != null )"> STATUS, </if>
 	       <if test="(lastUpdator != null and lastUpdator != '')"> LAST_UPDATOR, </if>
 		   <if test="lastUpdateTime != null "> LAST_UPDATE_TIME, </if>
@@ -91,7 +91,7 @@
 	       <if test="(paperFormat != null and paperFormat != '') or paperFormat == 0"> #{paperFormat, jdbcType=INTEGER}, </if>
 		   <if test="prdUseScope != null and prdUseScope != ''"> #{prdUseScope, jdbcType=VARCHAR}, </if>
 		   <if test="prdUser != null and prdUser != ''"> #{prdUser, jdbcType=VARCHAR}, </if>
-		   <if test="repoetDesc != null and repoetDesc != ''"> #{repoetDesc, jdbcType=LONGVARCHAR}, </if>
+		   <if test="reportDesc != null and reportDesc != ''"> #{reportDesc, jdbcType=LONGVARCHAR}, </if>
 	       <if test="(status != null )"> #{status, jdbcType=INTEGER}, </if>
 	       <if test="(lastUpdator != null and lastUpdator != '')"> #{lastUpdator, jdbcType=BIGINT}, </if>
 		   <if test="lastUpdateTime != null "> #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
@@ -109,7 +109,7 @@
 			   <if test="(paperFormat != null and paperFormat != '') or paperFormat == 0"> PAPER_FORMAT = #{paperFormat, jdbcType=INTEGER}, </if>
 			   <if test="prdUseScope != null and prdUseScope != ''"> PRD_USE_SCOPE = #{prdUseScope, jdbcType=VARCHAR}, </if>
 			   <if test="prdUser != null and prdUser != ''"> PRD_USER = #{prdUser, jdbcType=VARCHAR}, </if>
-			   <if test="repoetDesc != null and repoetDesc != ''"> REPOET_DESC = #{repoetDesc, jdbcType=LONGVARCHAR}, </if>
+			   <if test="reportDesc != null and reportDesc != ''"> REPORT_DESC = #{reportDesc, jdbcType=LONGVARCHAR}, </if>
 			   <if test="(status != null )"> STATUS = #{status, jdbcType=INTEGER}, </if>
 			   <if test="(lastUpdator != null and lastUpdator != '')"> LAST_UPDATOR = #{lastUpdator, jdbcType=BIGINT}, </if>
 			   <if test="lastUpdateTime != null "> LAST_UPDATE_TIME = #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
