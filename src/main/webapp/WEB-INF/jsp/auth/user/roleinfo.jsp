@@ -153,6 +153,59 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="gridModal" tabindex="-1" role="dialog" aria-labelledby="gridFormModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width:450px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="gridModalLabel">模块信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row"  style="font-size: 12px">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="input-group col-sm-10">
+                                <label class="col-sm-3 control-label text-left" for="modQName">模块名称：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control input-sm" id="modQName" name="modQName" placeholder="请输入模块名称"/>
+                                </div>
+                                <button type="button" class="btn btn-success btn-sm" id="queryQMod">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                    查询
+                                </button>
+                            </div>
+                        </div>
+                        <input type="hidden" id="roleQId">
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="col-sm-10">
+                               <table class="">
+                                   <thead>
+                                      <tr>
+                                          <td>菜单ID</td>
+                                          <td>菜单名称</td>
+                                          <td>菜单</td>
+                                      </tr>
+                                   </thead>
+                               </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5 text-center">
+                            <button class="btn btn-primary" id="saveP" type="button">保存</button>
+                            <button class="btn btn-danger" data-dismiss="modal">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap.min.js"></script>
