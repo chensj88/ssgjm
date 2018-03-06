@@ -188,9 +188,13 @@
                                       <tr>
                                           <td>菜单ID</td>
                                           <td>菜单名称</td>
-                                          <td>菜单</td>
+                                          <td>按钮信息</td>
                                       </tr>
                                    </thead>
+                                   <tbody id="treeGrid">
+                                        
+                                   </tbody>
+                               </table>
                                </table>
                             </div>
                         </div>

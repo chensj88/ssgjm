@@ -8,6 +8,9 @@
         <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
         <result column="ROLE_ID" property="roleId" jdbcType="BIGINT"/>
         <result column="POPEDOM_CODE" property="popedomCode" jdbcType="LONGVARCHAR"/>
+        <result column="MOD_NAME" property="modName" jdbcType="VARCHAR"/>
+        <result column="PAR_ID" property="parId" jdbcType="BIGINT"/>
+        <result column="MOD_LEVEL" property="modLevel" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="sysModPopedomResult" type="sysModPopedom" extends="sysModPopedomResultForList">
@@ -113,4 +116,22 @@
             </if>
         </where>
     </delete>
+
+    <select id="selectModulePopedomInfoList" parameterType="sysModPopedom"  resultMap="sysModPopedomResult">
+        SELECT
+         A.*,
+         B.PAR_ID,
+         B.MOD_NAME,
+         B.MOD_LEVEL
+        FROM SYS_MOD_POPEDOM A
+        LEFT JOIN SYS_MODULE B ON A.MOD_ID = B.MOD_ID
+        <where>
+            <if test="(roleId != null and roleId != '') or roleId == 0">
+                A.ROLE_ID = #{roleId, jdbcType=BIGINT}
+            </if>
+            <if test="(modLevel != null and modLevel != '') or modLevel == 0">
+                B.MOD_LEVEL = #{modLevel, jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
 </mapper>
