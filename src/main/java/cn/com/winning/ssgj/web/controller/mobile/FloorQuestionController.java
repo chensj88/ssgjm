@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  **/
 @Controller
 @CrossOrigin
-@RequestMapping("/mobile/trainVideoList")
+@RequestMapping("/mobile/floorQuestion")
 public class FloorQuestionController extends BaseController {
     @RequestMapping(value = "/list.do")
     public String TrainVideoTypeList(Model model, String parameter) {

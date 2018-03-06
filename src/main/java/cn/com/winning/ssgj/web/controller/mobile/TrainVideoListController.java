@@ -70,13 +70,11 @@ public class TrainVideoListController extends BaseController {
                 List<SysUserInfo> userIfonList =super.getFacade().getSysUserInfoService().getSysUserInfoList(info_old);
                 if(userIfonList.size() ==0 || userIfonList ==null){
                     super.getFacade().getSysUserInfoService().createSysUserInfo(info);
+                    return "/mobile/bridge_null";
                 }
             }
             //获取全部视频
             SysTrainVideoRepo repo = new SysTrainVideoRepo();
-
-
-
             List<SysTrainVideoRepo> repoTypeList = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepoTypeList(repo);
             model.addAttribute("repoTypeList", repoTypeList);
             model.addAttribute("OPENID", info.getOpenId());
