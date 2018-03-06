@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.dao;
 import cn.com.winning.ssgj.domain.PmisCustomerInformation;
 import cn.com.winning.ssgj.dao.EntityDao;
 
+import java.util.List;
+
 /**
  *
  *
@@ -11,4 +13,6 @@ import cn.com.winning.ssgj.dao.EntityDao;
  */
 public interface PmisCustomerInformationDao extends EntityDao<PmisCustomerInformation> {
 
+    public int selectPmisCustomerInformationCountFuzzy(PmisCustomerInformation c);
+    public List<PmisCustomerInformation> selectPmisCustomerInformationPageListFuzzy(PmisCustomerInformation c);
 }

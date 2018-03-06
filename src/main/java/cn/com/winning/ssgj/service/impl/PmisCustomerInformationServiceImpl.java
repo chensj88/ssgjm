@@ -51,4 +51,14 @@ public class PmisCustomerInformationServiceImpl implements PmisCustomerInformati
         return this.pmisCustomerInformationDao.selectEntityPaginatedList(t);
     }
 
+    @Override
+    public int getPmisCustomerInformationCountFuzzy(PmisCustomerInformation c) {
+        return this.pmisCustomerInformationDao.selectPmisCustomerInformationCountFuzzy(c);
+    }
+
+    @Override
+    public List<PmisCustomerInformation> getPmisCustomerInformationPageListFuzzy(PmisCustomerInformation c) {
+        return this.pmisCustomerInformationDao.selectPmisCustomerInformationPageListFuzzy(c);
+    }
+
 }

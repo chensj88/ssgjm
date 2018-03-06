@@ -112,10 +112,10 @@
                                 <div class="form-group" >
                                     <label class="col-sm-3 control-label" for="custName">客户名称</label>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control" id="custName" name="custName" placeholder="请输入客户名称">
+                                        <input type="text" class="form-control" id="custName" name="custName" placeholder="请输入客户名称" data-provide="typeahead">
                                     </div>
                                 </div>
-                                <input type="hidden" id="custId">
+                                <input type="hidden" id="cId" name="cId">
                                 <div class="form-group" >
                                     <label class="col-sm-3 control-label" for="videoCType">客户视频分类</label>
                                     <div class="col-sm-6">
@@ -182,6 +182,7 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap3-typeahead.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/fileinput.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/fileinput_locale_zh.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap3-typeahead.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/mobile/trainVideo.js"></script>
 </html>

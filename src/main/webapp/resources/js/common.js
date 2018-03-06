@@ -17,6 +17,7 @@
     Common.CODETYPE_ID_FUNC_TYPE = "funcType";
     /**成功标志*/
     Common.SUCCESS = "success";
+    Common.VIDEO_TYPE_CUSTOMER = "99";
 
     /**
      * 获取项目根路径
@@ -62,10 +63,26 @@
         if (!$parent || !data) {
             return;
         }
-//        debugger
         $parent.empty();
         for (var key in data) {
             $('<option value="' + key + '">' + data[key] + '</option>').appendTo($parent);
+        }
+    };
+    /**
+     * 设置选中的下拉框值
+     * @param dropdownBox 下拉框对象
+     * @param dropdownValue  下拉框值
+     */
+    Common.setSelectedOption = function (dropdownBox, dropdownValue) {
+        if (!dropdownBox || !dropdownValue) {
+            return;
+        }
+
+        var options = dropdownBox.find("option");
+        for (var j = 0; j < options.length; j++) {
+            if ($(options[j]).val() == dropdownValue) {
+                $(options[j]).attr("selected", "selected");
+            }
         }
     };
     /**

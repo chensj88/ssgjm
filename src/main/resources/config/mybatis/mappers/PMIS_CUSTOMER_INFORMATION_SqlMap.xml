@@ -119,7 +119,26 @@
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
-
+    <!--模糊查询条件 add chensj  2018-3-6 11:12:25-->
+    <sql id="fuzzy">
+        <if test="name != null and name != ''">and t.NAME LIKE '%${name}%'</if>
+        <if test="(zt != null and zt != '') or zt == 0">and t.ZT = #{zt}</if>
+    </sql>
+    <!--模糊查询List add chensj 2018-3-6 11:12:48-->
+    <select id="selectPmisCustomerInformationPageListFuzzy" resultMap="pmisCustomerInformationResult"
+            parameterType="pmisCustomerInformation">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from PMIS_CUSTOMER_INFORMATION t where 1 = 1
+        <include refid="fuzzy"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+    <!--模糊查询统计  add chensj 2018-3-6 11:12:48-->
+    <select id="selectPmisCustomerInformationCountFuzzy" resultType="int" parameterType="pmisCustomerInformation">
+        select count(*) from PMIS_CUSTOMER_INFORMATION t where 1 = 1
+        <include refid="fuzzy"/>
+    </select>
     <insert id="insertPmisCustomerInformation" parameterType="pmisCustomerInformation">
 
         insert into PMIS_CUSTOMER_INFORMATION

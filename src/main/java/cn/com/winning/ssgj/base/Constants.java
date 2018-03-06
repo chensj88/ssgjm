@@ -46,6 +46,19 @@ public class Constants implements Serializable {
     public static final Integer STATUS_USE = 1;
 
     /**
+     * PMIS状态码  2|作废
+     */
+    public static final Integer PMIS_STATUS_UNUSE = 2;
+    /**
+     * PMIS状态码  1|生效;
+     */
+    public static final Integer PMIS_STATUS_USE = 1;
+    /**
+     * 视频类型 用户自定义
+     */
+    public static final String VIDEO_TYPE_OF_CUSTOMER = "99";
+
+    /**
      * 系统配置
      */
     public static final String SYS_CONFIG = "sysConfig";

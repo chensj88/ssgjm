@@ -4,6 +4,8 @@
 $(function () {
 
     var videoType = {};
+    var objMap = {};
+    $('#customer').hide();
     function queryParams(params) {
         return {
             count: params.limit,    // 每页显示条数
@@ -58,14 +60,14 @@ $(function () {
                         }
                     }
                 },
-                videoType : {
-                    message: '视频分类验证失败',
-                    validators: {
-                        notEmpty: {
-                            message: '视频分类不能为空'
-                        }
-                    }
-                },
+                // videoType : {
+                //     message: '视频分类验证失败',
+                //     validators: {
+                //         notEmpty: {
+                //             message: '视频分类不能为空'
+                //         }
+                //     }
+                // },
             }
         });
     }
@@ -92,7 +94,7 @@ $(function () {
             showBrowse: false,
             browseOnZoneClick: true,
             uploadExtraData:function (previewId, index) {
-                return {'videoType':$('#atype').val(),'id':$('#vid').val()};
+                return {'id':$('#vid').val()};
             },
             slugCallback : function(filename) {
                 return filename.replace('(', '_').replace(']', '_');
@@ -102,28 +104,13 @@ $(function () {
         }).on('fileuploaded',function(event, data, previewId, index){    //一个文件上传成功
             var _data = data.response;
             if(_data.status == Common.SUCCESS){
-                var urlPath = _data.filePath;
-                var rdata = _data.data;
-                var jdata = {'id':rdata.id,'remotePath':urlPath,'videoTime':rdata.videoTime};
-                $.ajax({
-                    url: Common.getRootPath() + '/admin/train/update.do',
-                    data: jdata,
-                    type: "post",
-                    dataType: 'json',
-                    async: false,
-                    cache : false,
-                    success: function (result) {
-                        var _result = eval(result);
-                        if (_result.status == Common.SUCCESS) {
-                            $('#close').attr('disabled',false);
-                            $('#videoModal').modal('hide');
-                            $("#infoTable").bootstrapTable('refresh');
-                        }
-                    }
-                });
+                $('#close').attr('disabled',false);
+                $('#videoModal').modal('hide');
+                $("#infoTable").bootstrapTable('refresh');
+            }else{
+                Ewin.alert(_data.msg)
             }
             $('#vid').val('');
-            $('#atype').val('');
         });
     }
 
@@ -145,6 +132,7 @@ $(function () {
 
     function initCodes() {
         Common.getCodes('videoType',videoType,$('#videoType'));
+        Common.setSelectOption($('#videoCType'),videoType);
     }
 
     initCodes();
@@ -181,17 +169,12 @@ $(function () {
         columns: [{
             field: "videoName",
             title: "视频名称",
-            width: '60px',
-            align: 'center'
-        }, {
-            field: "videoDesc",
-            title: "视频描述",
             width: '40px',
             align: 'center'
         }, {
-            field: "videoType",
+            field: "typeLabel",
             title: "视频分类",
-            width: '50px',
+            width: '20px',
             align: 'center'
         }, {
             field: "remotePath",
@@ -223,19 +206,21 @@ $(function () {
                     title ='停用';
                 }
                 var e = '<a href="####" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.id + '">编辑</a> ';
-                var f = '<a href="####" class="btn btn-success btn-xs" name="upload" mce_href="#" aid="' + row.id + '"  atype="'+row.videoType+'">上传</a> ';
+                var f = '<a href="####" class="btn btn-success btn-xs" name="upload" mce_href="#" aid="' + row.id + '">上传</a> ';
                 var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">'+title+'</a> ';
                 return e + d + f;
             }
         }],
     });
 
-
     $('#query').on('click',SearchData);
 
     $('#add').on('click', function () {
         $("input[type=reset]").trigger("click");
         $('#id').val('');
+        $('#videoType').val('');
+        $('#videoCType').val('');
+        $('#customer').hide();
         //清空验证信息
         $('#trainForm').bootstrapValidator("destroy");
         validateForm();
@@ -248,12 +233,21 @@ $(function () {
      */
     $('#infoTable').on('click', 'a[name="edit"]', function (e) {
         e.preventDefault();
+        $('#customer').hide();
         //清空验证信息
         $('#trainForm').bootstrapValidator("destroy");
         validateForm();
         var vid = $(this).attr('aid');
         var data = queryInfoByDataId(vid);
-        $('#trainForm').initForm(_result.data);
+        console.log(data);
+        //取消默认选中
+        $('#videoType').find('option:selected').attr('selected',false);
+        //赋值
+        $('#trainForm').initForm(data);
+        if(data.videoType == Common.VIDEO_TYPE_CUSTOMER){
+            $('#customer').show();
+            $('#cId').val(data.cId);
+        }
         $('#trainModal').modal('show');
     });
     /**
@@ -300,9 +294,7 @@ $(function () {
     $('#infoTable').on('click', 'a[name="upload"]', function (e) {
         e.preventDefault();
         var vid = $(this).attr('aid');
-        var atype = $(this).attr('atype');
         $('#vid').val(vid);
-        $('#atype').val(atype);
         initFileInput($('#uploadFile'));
         $('#videoModal').modal('show');
     });
@@ -343,7 +335,54 @@ $(function () {
         }
     });
 
+    /**
+     * 客户姓名
+     */
+    $('#custName').typeahead({
+        source : function (query,process) {
+            var matchCount =this.options.items;//允许返回结果集最大数量
+            $.ajax({
+                url : Common.getRootPath() + '/admin/train/queryCustomerName.do',
+                type: "post",
+                dataType: 'json',
+                async: false,
+                data: {'name':query.toUpperCase(),'matchCount':matchCount},
+                success: function (result) {
+                    var _result = eval(result);
+                    if (_result.status == Common.SUCCESS) {
+                        var data = _result.data;
+                        if (data == "" || data.length == 0) {
+                            console.log("没有查询到相关结果");
+                        };
+                        var results = [];
+                        for (var i = 0; i < data.length; i++) {
+                            objMap[data[i].name] = data[i].name + ',' + data[i].id + ',' +data[i].code;
+                            results.push(data[i].name);
+                        }
+                        process(results);
+                    }
+                }
+            });
+        },
+        highlighter: function (item) {
+            return item +'['+objMap[item].split(',')[2] + ']';
+        },
+        afterSelect: function (item) {       //选择项之后的事件，item是当前选中的选项
+            var selectItem = objMap[item];
+            var selectItemId = selectItem.split(',')[1];
+            $('#cId').val(selectItemId);
 
+        },
+        items : 10,
+    });
 
+    $('#videoType').on('change',function () {
+       var selectedOption = $(this).val();
+       if(selectedOption == Common.VIDEO_TYPE_CUSTOMER){
+           $('#customer').show();
+       }else {
+           $('#customer').hide();
+       }
+    });
 
 });

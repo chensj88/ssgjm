@@ -5,6 +5,7 @@ import cn.com.winning.ssgj.base.util.FtpUtils;
 import cn.com.winning.ssgj.base.util.SFtpUtils;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.SysTrainVideoRepo;
+import cn.com.winning.ssgj.web.controller.common.BaseController;
 import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncoderException;
 import it.sauronsoftware.jave.MultimediaInfo;
@@ -29,7 +30,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "/admin/upload")
-public class CommonUploadController {
+public class CommonUploadController extends BaseController {
 
     private static int port = Integer.valueOf(FtpPropertiesLoader.getProperty("ftp.port")).intValue();
 
@@ -38,7 +39,8 @@ public class CommonUploadController {
     public Map<String,Object> uploadTrainVideo(HttpServletRequest request,
                                                SysTrainVideoRepo repo,
                                                MultipartFile uploadFile) throws IOException {
-        String parentFile = repo.getVideoType();
+        repo = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepo(repo);
+        String parentFile = repo.generateRemoteFile();
         Map<String,Object> result = new HashMap<String,Object>();
         //如果文件不为空，写入上传路径
         if(!uploadFile.isEmpty()) {
@@ -48,7 +50,6 @@ public class CommonUploadController {
             path +=  parentFile + File.separator;
             //上传文件名
             String filename = uploadFile.getOriginalFilename();
-
             File filepath = new File(path,filename);
             //判断路径是否存在，如果不存在就创建一个
             if (!filepath.getParentFile().exists()) {
@@ -61,19 +62,19 @@ public class CommonUploadController {
             }
             uploadFile.transferTo(newFile);
             repo.setVideoTime(getVideoTime(newFile));
-            String remoteFile = "/video/" + parentFile + "/" + filename;
-            String dir ="/video/" + parentFile + "/";
+            String remotePath = "/video/" + parentFile + "/" + filename;
+            String remoteDir ="/video/" + parentFile + "/";
             boolean ftpStatus = false;
             String msg = "";
             if (port == 21){
                 try {
-                    ftpStatus = FtpUtils.uploadFile(remoteFile, newFile);
+                    ftpStatus = FtpUtils.uploadFile(remotePath, newFile);
                 }catch (IOException e){
                     msg = e.getMessage();
                 }
             }else if(port == 22){
                 try {
-                    SFtpUtils.uploadFile(newFile.getPath(),dir,filename);
+                    SFtpUtils.uploadFile(newFile.getPath(),remoteDir,filename);
                     ftpStatus = true;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -85,21 +86,25 @@ public class CommonUploadController {
             if(ftpStatus){
                 newFile.delete();
                 result.put("status", "success");
-                result.put("filePath", remoteFile);
-                result.put("data", repo);
+                repo.setRemotePath(remotePath);
+                super.getFacade().getSysTrainVideoRepoService().modifySysTrainVideoRepo(repo);
             }else if(!StringUtil.isEmptyOrNull(msg)){
                 newFile.delete();
                 result.put("status", "error");
                 result.put("msg", "上传文件失败,原因是："+msg);
-                result.put("data", repo);
             }
         } else {
             result.put("status", "error");
+            result.put("msg", "上传文件失败,原因是：上传文件为空");
         }
         return result;
     }
 
-
+    /**
+     * 获取上传视频的时间，取毫秒数
+     * @param file
+     * @return
+     */
     private Long getVideoTime(File file) {
         Encoder encoder = new Encoder();
         MultimediaInfo m = null;
