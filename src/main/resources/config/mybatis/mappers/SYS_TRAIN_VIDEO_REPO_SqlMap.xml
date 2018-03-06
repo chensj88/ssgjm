@@ -134,7 +134,7 @@
 			</trim>
 		</set>
 		where
-		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="id != null and id != ''"> ID = #{id} </if>
 		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
 			ID in
 			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
@@ -143,7 +143,7 @@
 
 	<delete id="deleteSysTrainVideoRepo" parameterType="SysTrainVideoRepo">
 		delete from SYS_TRAIN_VIDEO_REPO where
-		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="id != null and id != ''"> ID = #{id} </if>
 		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
 			ID in
 			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>

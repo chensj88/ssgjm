@@ -218,6 +218,7 @@ $(function () {
     $('#add').on('click', function () {
         $("input[type=reset]").trigger("click");
         $('#id').val('');
+        $('#cId').val('');
         $('#videoType').val('');
         $('#videoCType').val('');
         $('#customer').hide();
