@@ -17,6 +17,12 @@
         <result column="USER_TYPE" property="userType" jdbcType="VARCHAR" />
         <result column="LINK_ID" property="linkId" jdbcType="BIGINT" />
         <result column="OPEN_ID" property="openId" jdbcType="VARCHAR" />
+        <result column="VIDEO_DROIT" property="videoDroit" jdbcType="VARCHAR" />
+        <result column="COL1" property="clo1" jdbcType="VARCHAR" />
+        <result column="COL2" property="clo2" jdbcType="VARCHAR" />
+        <result column="COL3" property="clo3" jdbcType="VARCHAR" />
+        <result column="COL4" property="clo4" jdbcType="VARCHAR" />
+        <result column="COL5" property="clo5" jdbcType="VARCHAR" />
 
     </resultMap>
 
@@ -38,6 +44,12 @@
         <if test="(linkId != null and linkId != '') or linkId == 0"> and t.LINK_ID = #{linkId} </if>
         <if test="userType != null and userType != ''"> and t.USER_TYPE = #{userType} </if>
         <if test="openId != null and openId != ''"> and t.OPEN_ID = #{openId} </if>
+        <if test="videoDroit != null and videoDroit != ''"> and t.VIDEO_DROIT = #{videoDroit} </if>
+        <if test="clo1 != null and clo1 != ''"> and t.CLO1 = #{clo1} </if>
+        <if test="clo2 != null and clo2 != ''"> and t.CLO2 = #{clo2} </if>
+        <if test="clo3 != null and clo3 != ''"> and t.CLO3 = #{clo3} </if>
+        <if test="clo4 != null and clo4 != ''"> and t.CLO4 = #{clo4} </if>
+        <if test="clo5 != null and clo5 != ''"> and t.CLO5 = #{clo5} </if>
 
     </sql>
 
@@ -92,6 +104,12 @@
             <if test="(linkId != null and linkId != '') "> LINK_ID, </if>
             <if test="userType != null and userType != ''"> USER_TYPE, </if>
             <if test="openId != null and openId != ''"> OPEN_ID, </if>
+            <if test="videoDroit != null and videoDroit != ''"> VIDEO_DROIT, </if>
+            <if test="clo1 != null and clo1 != ''"> CLO1, </if>
+            <if test="clo2 != null and clo2 != ''"> CLO2, </if>
+            <if test="clo3 != null and clo3 != ''"> CLO3, </if>
+            <if test="clo4 != null and clo4 != ''"> CLO4, </if>
+            <if test="clo5 != null and clo5 != ''"> CLO5, </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -109,6 +127,13 @@
             <if test="(linkId != null and linkId != '') "> #{linkId, jdbcType=BIGINT}, </if>
             <if test="userType != null and userType != ''"> #{userType, jdbcType=VARCHAR}, </if>
             <if test="openId != null and openId != ''"> #{openId, jdbcType=VARCHAR}, </if>
+
+            <if test="videoDroit != null and videoDroit != ''"> #{videoDroit, jdbcType=VARCHAR}, </if>
+            <if test="clo1 != null and clo1 != ''"> #{clo1, jdbcType=VARCHAR}, </if>
+            <if test="clo2 != null and clo2 != ''"> #{clo2, jdbcType=VARCHAR}, </if>
+            <if test="clo3 != null and clo3 != ''"> #{clo3, jdbcType=VARCHAR}, </if>
+            <if test="clo4 != null and clo4 != ''"> #{clo4, jdbcType=VARCHAR}, </if>
+            <if test="clo5 != null and clo5 != ''"> #{clo5, jdbcType=VARCHAR}, </if>
 
         </trim>
     </insert>
@@ -131,6 +156,12 @@
                 <if test="(linkId != null and linkId != '')"> LINK_ID = #{linkId, jdbcType=BIGINT}, </if>
                 <if test="userType != null and userType != ''"> USER_TYPE = #{userType, jdbcType=VARCHAR}, </if>
                 <if test="openId != null and openId != ''"> OPEN_ID = #{openId, jdbcType=VARCHAR}, </if>
+                <if test="videoDroit != null and videoDroit != ''"> VIDEO_DROIT = #{videoDroit, jdbcType=VARCHAR}, </if>
+                <if test="clo1 != null and clo1 != ''"> CLO1 = #{clo1, jdbcType=VARCHAR}, </if>
+                <if test="clo2 != null and clo2 != ''"> CLO2 = #{clo2, jdbcType=VARCHAR}, </if>
+                <if test="clo3 != null and clo3 != ''"> CLO3 = #{clo3, jdbcType=VARCHAR}, </if>
+                <if test="clo4 != null and clo4 != ''"> CLO4 = #{clo4, jdbcType=VARCHAR}, </if>
+                <if test="clo5 != null and clo5 != ''"> CLO5 = #{clo5, jdbcType=VARCHAR}, </if>
 
             </trim>
         </set>

@@ -18,12 +18,6 @@
 	<body>
 		<div class="mui-content course">
 			<!--header-->
-			<div class="header">
-				<span class="mui-icon mui-icon-arrowleft"></span>
-				<div>站点安装登记</div>
-				<span class="mui-icon mui-icon-more"></span>
-			</div>
-			<div class="hole"></div>
 			<!--study-->
 			<div class="course-study">
 				<div class="left">
@@ -63,19 +57,43 @@
 						</c:forEach>
 
 					</div>
-					<!--
+
+
+                    <div>
+						<c:forEach var="studied" items="${sysTrainVideoStudied}"  >
+							<a href="<%=basePath%>mobile/trainVideoList/videoPlay.do?id=${studied.id}&OPENID=${OPENID}">
+								<dl class="item">
+									<dt><img src="<%=basePath%>resources/mobile/images/video.png"/></dt>
+									<dd class="item-title"><span>${studied.videoName}</span></dd>
+									<dd class="item-time">视频时长 <span><script>
+										document.write(Common.getHHMMSSDate(${studied.videoTime}));
+									</script></span></dd>
+									<dd class="item-count">
+										<span>学习  <strong>${studied.map.get("num")==null ?0:studied.map.get("num")}</strong>次</span>
+									</dd>
+								</dl>
+							</a>
+
+						</c:forEach>
+                    </div>
+
 					<div>
-						<a href="course-detail.jsp">
-							<dl class="item">
-								<dt><img src="<%=basePath%>resources/mobile/images/video.png"/></dt>
-								<dd class="item-title">（未学习）医生接诊及诊断录入<span>-门诊医生站</span></dd>
-								<dd class="item-time">视频时长 <span>04:06</span></dd>
-								<dd class="item-count">
-									<span>学习  <strong>2</strong>次</span>
-								</dd>
-							</dl>
-						</a>
-					</div>-->
+						<c:forEach var="studied" items="${sysTrainVideoUnStudy}"  >
+							<a href="<%=basePath%>mobile/trainVideoList/videoPlay.do?id=${studied.id}&OPENID=${OPENID}">
+								<dl class="item">
+									<dt><img src="<%=basePath%>resources/mobile/images/video.png"/></dt>
+									<dd class="item-title"><span>${studied.videoName}</span></dd>
+									<dd class="item-time">视频时长 <span><script>
+										document.write(Common.getHHMMSSDate(${studied.videoTime}));
+									</script></span></dd>
+									<dd class="item-count">
+										<span>学习  <strong>${studied.map.get("num")==null ?0:studied.map.get("num")}</strong>次</span>
+									</dd>
+								</dl>
+							</a>
+
+						</c:forEach>
+					</div>
 				</div>
 			</div>
 		</div>
