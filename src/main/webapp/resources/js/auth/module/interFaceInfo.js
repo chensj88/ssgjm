@@ -9,7 +9,7 @@ $(function () {
      * @constructor
      */
     function SearchData(){
-        $('#interFaceInfoTable').bootstrapTable('refresh', { pageNumber: 1 });
+        $('#infoTable').bootstrapTable('refresh', { pageNumber: 1 });
     }
 
     /**
@@ -31,7 +31,7 @@ $(function () {
     /**
      * 初始化Table
      */
-    $('#interFaceInfoTable').bootstrapTable({
+    $('#infoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/thirx/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         // contentType: "application/x-www-form-urlencoded",//必须要有！！！！ POST必须有
@@ -123,12 +123,12 @@ $(function () {
     });
 
 
-    $('#queryInter').on('click',SearchData);
+    $('#query').on('click',SearchData);
     /**
      * 新增适用产品
      * 需要清理表格数据
      */
-    $('#addInterFaceInfo').on('click', function () {
+    $('#add').on('click', function () {
         $("input[type=reset]").trigger("click");
         $("#id").val("");
         $('#interName').val("");
@@ -143,7 +143,7 @@ $(function () {
      * 列表中按钮
      *   删除适用产品信息
      */
-    $('#interFaceInfoTable').on('click', 'a[name="delete"]', function (e) {
+    $('#infoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var productInfoId = $(this).attr('aid');
         Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
@@ -158,7 +158,7 @@ $(function () {
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
                         Ewin.alert('提交数据成功');
-                        $("#interFaceInfoTable").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function () {
@@ -199,7 +199,7 @@ $(function () {
                 var _result = eval(result);
                 if (_result.status == Common.SUCCESS) {
                     $('#interFaceInfoModal').modal('hide');
-                    $("#interFaceInfoTable").bootstrapTable('refresh');
+                    $("#infoTable").bootstrapTable('refresh');
                 }
 
             }

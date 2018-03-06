@@ -83,4 +83,15 @@ public class SysDictInfoController extends BaseController {
         return result;
 
     }
+
+    @RequestMapping(value = "/getCodes.do")
+    @ResponseBody
+    public Map<String,Object> queryDictInfo(SysDictInfo dict){
+        List<SysDictInfo> dictInfos = super.getFacade().getSysDictInfoService().getSysDictInfoList(dict);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data",dictInfos);
+        return result;
+
+    }
 }

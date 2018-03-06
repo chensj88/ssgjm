@@ -31,8 +31,8 @@ public class SysProductShInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysProduc
     }
 
     @Override
-    public List<SysProductShInfo> selectSysProductInterfaceInfoByIdMap(Map<String, Object> param) {
-        String statement = "selectSysProductInterfaceInfoByIdMap";
+    public List<SysProductShInfo> selectSysProductSHInfoByIdMap(Map<String, Object> param) {
+        String statement = "selectSysProductSHInfoByIdMap";
         return super.getSqlSession().selectList(statement,param);
     }
 }

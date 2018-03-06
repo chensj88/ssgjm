@@ -20,13 +20,23 @@ public class SysReportInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysReportInf
 
     @Override
     public Integer selectSysReportInfoCountByselective(SysReportInfo t) {
-        String statement = "query" + t.getClass().getSimpleName() + "CountForSelective";
+        String statement = "selectSysReportInfoCountByselective";
         return super.getSqlSession().selectOne(statement,t);
     }
 
     @Override
     public List<SysReportInfo> selectSysReportInfoPaginatedListByselective(SysReportInfo t) {
-        String statement = "query" + t.getClass().getSimpleName() + "PaginatedListForSelective";
+        String statement = "selectSysReportInfoPaginatedListByselective";
         return super.getSqlSession().selectList(statement,t);
+    }
+
+    @Override
+    public List<SysReportInfo> selectSysReportInfoListByIds(SysReportInfo reportInfo) {
+        return super.getSqlSession().selectList("selectSysReportInfoListByIds",reportInfo);
+    }
+
+    @Override
+    public List<SysReportInfo> selectSysReportInfolistNoPage(SysReportInfo info) {
+        return  super.getSqlSession().selectList("selectSysReportInfolistNoPage",info);
     }
 }

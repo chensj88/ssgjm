@@ -1,4 +1,10 @@
+
+
 jQuery(function($) {
+
+    var height = window.screen.height;
+
+    $('#jspContent').height( height*0.9);
 
     function initMenu() {
         $.ajax({
@@ -84,10 +90,9 @@ jQuery(function($) {
 
     $('#coniframe').on('load',function () {
         var source = $(this).attr('src');
-        console.log(source);
-        var loginUrl = Common.getRootPath() + "/login/login.do";
-        if(source == loginUrl){
-            window.location.href = loginUrl;
+        var url = $(this)[0].contentWindow.location.href;
+        if(url.indexOf("login.do")!=-1){
+            window.location.href = "/login/login.do";
         }
     })
 

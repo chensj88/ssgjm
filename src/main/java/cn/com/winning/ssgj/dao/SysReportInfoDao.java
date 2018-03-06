@@ -16,4 +16,7 @@ public interface SysReportInfoDao extends EntityDao<SysReportInfo> {
     public Integer selectSysReportInfoCountByselective(SysReportInfo t);
     public List<SysReportInfo> selectSysReportInfoPaginatedListByselective(SysReportInfo t);
 
+    List<SysReportInfo> selectSysReportInfoListByIds(SysReportInfo reportInfo);
+
+    List<SysReportInfo> selectSysReportInfolistNoPage(SysReportInfo info);
 }

@@ -21,7 +21,7 @@
     <!-- basic styles -->
     <link href="<%=basePath%>resources/assets/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/font-awesome.min.css" />
-    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <!--[if IE 7]>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/font-awesome-ie7.min.css" />
     <![endif]-->

@@ -8,15 +8,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>软硬件设备类型表</title>
     <meta name="author" content="卫宁实施工具">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css">
-    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css"/>
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
 </head>
 <style>
 	.table-align{
 	    table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
+        font-size:12px;
 	}
 	.table-align tr td:nth-child(3) {
   	word-break:keep-all;/* 不换行 */
@@ -42,7 +43,7 @@
 	
 </style>
 <body>
-<div class="row" id="queryDataScope">
+<div class="row" id="queryScope">
     <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12" >
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3" >
             <label class="col-sm-5 control-label text-right" for="shQCode">软硬件编号：</label>
@@ -59,27 +60,23 @@
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
             <label class="col-sm-6 control-label text-right" for="shQType">设备分类：</label>
             <div class="col-sm-4">
-                <select name="shType" id="shQType">
+                <select name="shType" id="shQType" class="form-control">
                     <option value="0">软件</option>
                     <option value="1">硬件</option>
                 </select>
             </div>
         </div>
-        <button type="button" class="btn btn-success btn-sm" id="querySh" style="margin-left:20px">
+        <button type="button" class="btn btn-success btn-sm" id="query" style="margin-left:20px">
             <span class="glyphicon glyphicon-search"></span>
             查询
         </button>
     </form>
 </div>
 <!--表格区域  -->
-<table id="sysSoftHardwareInfoTable" class="table-align"></table>
+<table id="infoTable" class="table-align"></table>
 <!--toolbar区域  -->
 <div class="btn-group" id="btntoolbar">
-    <button id="addSysSoftHardwareInfo" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
-    <!-- <button id="modifyUser" class="btn btn-default" type="button"><span class="glyphicon glyphicon-edit"></span>修改
-    </button> 
-    <button id="deleteProductInfo" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span>删除
-    </button>-->
+    <button id="add" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
 </div>
 <!--模态框  -->
 <div class="modal fade" id="sysSoftHardwareInfoModal" tabindex="-1" role="dialog" aria-labelledby="sysSoftHardwareInfoModal">
@@ -105,7 +102,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label" >设备分类</label>
                                 <div class="col-sm-6">
-	                                <select name="shType" id="shType" >
+	                                <select name="shType" id="shType" class="form-control" >
 										<option value="0">软件</option>
 										<option value="1">硬件</option>
 									</select>        
@@ -114,7 +111,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label" >应用环境</label>
                                 <div class="col-sm-6">
-	                                <select name="shEnvType" id="shEnvType">
+	                                <select name="shEnvType" id="shEnvType" class="form-control" >
 										<option value="0">测试</option>
 										<option value="1">正式</option>
 										<option value="2">测试&正式</option>

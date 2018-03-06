@@ -78,7 +78,7 @@ public class ProductBDataController extends BaseController {
 
     }
 
-    @RequestMapping(value = "/pBdata/addProduct.do")
+    @RequestMapping(value = "/pBdata/addMapping.do")
     @ResponseBody
     public Map<String,Object> addPBMapping(String idList) throws ParseException {
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();

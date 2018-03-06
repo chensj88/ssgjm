@@ -26,4 +26,8 @@ public interface PmisCustomerInformationService {
 
     List<PmisCustomerInformation> getPmisCustomerInformationPaginatedList(PmisCustomerInformation t);
 
+    public int getPmisCustomerInformationCountFuzzy(PmisCustomerInformation c);
+
+    public List<PmisCustomerInformation> getPmisCustomerInformationPageListFuzzy(PmisCustomerInformation c);
+
 }

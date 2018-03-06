@@ -362,10 +362,10 @@ $(function () {
             valign: 'middle',
             title: '单选框',
             halign: 'middle',
-            width: '13px',
+            width: '13px'
         }, {
             field: "id",
-            title: "ID",
+            title: "序号",
             width: '30px',
             align: 'center'
         }, {
@@ -379,11 +379,6 @@ $(function () {
             width: '45px',
             align: 'center'
         }, {
-            field: "gnms",
-            title: "功能描述",
-            width: '50px',
-            align: 'center'
-        }, {
             field: "cptxName",
             title: "产品条线",
             width: '45px',
@@ -392,14 +387,15 @@ $(function () {
             field: "zt",
             title: "状态",
             width: '20px',
+            align: 'center',
             formatter: function (value) {
                 if (value == '1') {
                     return '生效';
                 } else if (value = '2') {
                     return '失效';
                 }
-            },
-            align: 'center'
+            }
+
         }],
     });
     /**
@@ -477,6 +473,10 @@ $(function () {
      *  产品信息表单击事件
      */
     pdTable.on('click-row.bs.table', function (event, row, element, field) {
+        $('#productTable .success').removeClass('success');//去除之前选中的行的，选中样式
+        $(element).addClass('success');//添加当前选中的 success样式用于区别
+
+        console.log(row);
         var productId = row.id;
         var url = Common.getRootPath() + "/admin/pBdata/queryById.do";
         $.ajax({
@@ -577,7 +577,7 @@ $(function () {
             }
         });
         console.log(bdids);
-        var url = Common.getRootPath() + "/admin/pBdata/addProduct.do";
+        var url = Common.getRootPath() + "/admin/pBdata/addMapping.do";
         $.ajax({
             type: "post",
             url: url,

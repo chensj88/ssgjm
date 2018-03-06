@@ -9,7 +9,7 @@ $(function () {
      * @constructor
      */
     function SearchData(){
-        $('#flowTable').bootstrapTable('refresh', { pageNumber: 1 });
+        $('#infoTable').bootstrapTable('refresh', { pageNumber: 1 });
     }
 
     /**
@@ -31,7 +31,7 @@ $(function () {
     /**
      * 初始化Table
      */
-    $('#flowTable').bootstrapTable({
+    $('#infoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/flow/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -84,17 +84,17 @@ $(function () {
         }, {
             field: "flowCode",
             title: "流程编号",
-            width: '40px',
+            width: '50px',
             align: 'center'
         }, {
             field: "flowName",
             title: "流程名称",
-            width: '40px',
+            width: '60px',
             align: 'center'
         }, {
             field: "flowDesc",
             title: "流程描述",
-            width: '40px',
+            width: '60px',
             align: 'center'
         }, {
             field: "flowParentCode",
@@ -110,7 +110,7 @@ $(function () {
             title: '操作',
             field: 'id',
             align: 'center',
-            width: '80px',
+            width: '40px',
             formatter: function (value, row, index) {
                 var e = '<a href="####" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.id + '">编辑</a> ';
                 var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
@@ -129,7 +129,7 @@ $(function () {
      * 新增流程
      * 需要清理表格数据
      */
-    $('#addFlow').on('click', function () {
+    $('#add').on('click', function () {
         $("input[type=reset]").trigger("click");
         $('#id').val('');
         $('#flowPid').val('');
@@ -146,7 +146,7 @@ $(function () {
      * 列表中按钮
      *   编辑流程信息
      */
-    $('#flowTable').on('click', 'a[name="edit"]', function (e) {
+    $('#infoTable').on('click', 'a[name="edit"]', function (e) {
         e.preventDefault();
         //清空验证信息
         $('#flowForm').bootstrapValidator("destroy");
@@ -180,7 +180,7 @@ $(function () {
      * 列表中按钮
      *   删除流程信息
      */
-    $('#flowTable').on('click', 'a[name="delete"]', function (e) {
+    $('#infoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var flowId = $(this).attr('aid');
         Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
@@ -196,7 +196,7 @@ $(function () {
                     var result = eval(data);
                     if (result.status == Common.SUCCESS) {
                         Ewin.alert('提交数据成功');
-                        $("#flowTable").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function (msg) {
@@ -238,7 +238,7 @@ $(function () {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
                         $('#flowModal').modal('hide');
-                        $("#flowTable").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 }
             });
@@ -345,5 +345,5 @@ $(function () {
     /**
      * 查询按钮
      */
-    $('#queryFlow').on('click',SearchData);
+    $('#query').on('click',SearchData);
 });

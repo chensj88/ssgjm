@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
-            <button type="button" class="btn btn-success btn-sm" id="queryDict">
+            <button type="button" class="btn btn-success btn-sm" id="query">
                 <span class="glyphicon glyphicon-search"></span>
                 查询
             </button>
@@ -44,10 +44,10 @@
     </form>
 </div>
 <!--表格区域  -->
-<table id="dictTable"></table>
+<table id="infoTable"></table>
 <!--toolbar区域  -->
 <div class="btn-group" id="btntoolbar">
-    <button id="addDict" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
+    <button id="add" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
 </div>
 <!--模态框  -->
 <div class="modal fade" id="dictModal" tabindex="-1" role="dialog" aria-labelledby="dictModal">
@@ -71,7 +71,7 @@
                                            placeholder="请输入字典编码">
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="dictValueDiv">
                                 <label class="col-sm-3 control-label" for="dictValue">字典值</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="dictValue" name="dictValue"

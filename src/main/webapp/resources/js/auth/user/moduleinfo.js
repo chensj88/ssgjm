@@ -16,7 +16,7 @@ $(function () {
     }
 
     function SearchData(){
-        $('#moduleTable').bootstrapTable('refresh', { pageNumber: 1 });
+        $('#infoTable').bootstrapTable('refresh', { pageNumber: 1 });
     }
     function initTreeView() {
         $.ajax({
@@ -103,7 +103,7 @@ $(function () {
         });
     }
 
-    $('#moduleTable').bootstrapTable({
+    $('#infoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/module/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         // contentType: "application/x-www-form-urlencoded",//必须要有！！！！ POST必须有
@@ -209,7 +209,7 @@ $(function () {
 
     $('#query').on('click',SearchData);
 
-    $('#addmodule').on('click', function () {
+    $('#add').on('click', function () {
         $("input[type=reset]").trigger("click");
         $('#modId').val('');
         $('#modLevel').val('1');
@@ -274,7 +274,7 @@ $(function () {
      * 列表中按钮
      *   编辑用户信息
      */
-    $('#moduleTable').on('click', 'a[name="edit"]', function (e) {
+    $('#infoTable').on('click', 'a[name="edit"]', function (e) {
         e.preventDefault();
         $('#moduleForm').bootstrapValidator('destroy');
         validataForm();
@@ -303,7 +303,7 @@ $(function () {
      * 列表中按钮
      *   删除用户信息
      */
-    $('#moduleTable').on('click', 'a[name="delete"]', function (e) {
+    $('#infoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var modId = $(this).attr('aid');
         Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
@@ -318,7 +318,7 @@ $(function () {
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
                         /*toastr.success('提交数据成功');*/
-                        $("#moduleTable").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function () {
@@ -331,7 +331,7 @@ $(function () {
     });
 
 
-    $('#moduleTable').on('click', 'a[name="tree"]', function (e) {
+    $('#infoTable').on('click', 'a[name="tree"]', function (e) {
         e.preventDefault();
         var modId = $(this).attr('aid');
         initTreeView();
@@ -387,7 +387,7 @@ $(function () {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
                         $('#moduleModal').modal('hide');
-                        $("#moduleTable").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 fail: function (result) {

@@ -14,11 +14,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>产品流程信息映射</title>
     <meta name="author" content="卫宁实施工具">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css">
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css"/>
     <base href="<%=basePath%>">
-    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <style type="text/css">
         .table-align{
             table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
@@ -51,6 +51,12 @@
             height:200px;
             vertical-align:middle;
             line-height:200px;
+        }
+        #infoTable{
+            font-size:12px;
+        }
+        .success {
+            background-color:#337AB7;
         }
     </style>
 </head>
@@ -130,7 +136,7 @@
                 </button>
                 <h4 class="modal-title" id="pdModalLabel">列表</h4>
             </div>
-            <div class="modal-body" style="height: 200px;overflow:auto;">
+            <div class="modal-body" style="height: 200px;width:500px;overflow:auto;">
                 <table class="table-hover table-align"  id="infoTable"></table>
             </div>
             <div class="modal-footer">

@@ -14,7 +14,7 @@ $(function () {
      * @constructor
      */
     function SearchData() {
-        $('#paramTable').bootstrapTable('refresh', {pageNumber: 1});
+        $('#infoTable').bootstrapTable('refresh', {pageNumber: 1});
     }
 
     /**
@@ -93,7 +93,7 @@ $(function () {
     /**
      * 初始化Table
      */
-    $('#paramTable').bootstrapTable({
+    $('#infoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/param/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -106,8 +106,8 @@ $(function () {
         pageList: [10, 25, 50, 100],        // 可供选择的每页的行数（*）
         showPaginationSwitch: false,			//显示 数据条数选择框
         search: false,                       // 是否显示表格搜索
-        strictSearch: true,
-        showColumns: true,                  // 是否显示所有的列（选择显示的列）
+      /*  strictSearch: true,
+        showColumns: true,                  // 是否显示所有的列（选择显示的列）*/
         showRefresh: false,                  // 是否显示刷新按钮
         minimumCountColumns: 2,             // 最少允许的列数
         clickToSelect: true,                // 是否启用点击选中行
@@ -187,7 +187,7 @@ $(function () {
      * 新增流程
      * 需要清理表格数据
      */
-    $('#addParam').on('click', function () {
+    $('#add').on('click', function () {
         $("input[type=reset]").trigger("click");
         resetValidate();
         $('#paramModal').modal('show');
@@ -216,14 +216,14 @@ $(function () {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
                         $('#paramModal').modal('hide');
-                        $("#paramTable").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 }
             });
         }
     });
 
-    $('#paramTable').on('click', 'a[name="delete"]', function (e) {
+    $('#infoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var paramId = $(this).attr('aid');
 
@@ -240,7 +240,7 @@ $(function () {
                     var result = eval(data);
                     if (result.status == Common.SUCCESS) {
                         Ewin.alert('提交数据成功');
-                        $("#paramTable").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function (msg) {
@@ -252,5 +252,5 @@ $(function () {
         });
     });
 
-    $('#queryParam').on('click',SearchData);
+    $('#query').on('click',SearchData);
 });

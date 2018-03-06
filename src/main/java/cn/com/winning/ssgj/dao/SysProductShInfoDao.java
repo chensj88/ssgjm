@@ -18,5 +18,5 @@ public interface SysProductShInfoDao extends EntityDao<SysProductShInfo> {
 
     int removeSysProductShInfoMapping(Map<String, Object> param);
 
-    List<SysProductShInfo> selectSysProductInterfaceInfoByIdMap(Map<String, Object> param);
+    List<SysProductShInfo> selectSysProductSHInfoByIdMap(Map<String, Object> param);
 }

@@ -17,6 +17,7 @@
     Common.CODETYPE_ID_FUNC_TYPE = "funcType";
     /**成功标志*/
     Common.SUCCESS = "success";
+    Common.VIDEO_TYPE_CUSTOMER = "99";
 
     /**
      * 获取项目根路径
@@ -38,6 +39,9 @@
         }
 
     };
+
+    /**登录页面*/
+    Common.LOGIN_URL = Common.getRootPath() + "/login/login.do";
     /**
      * 获取Controller的路径 根据请求的路径获取来获取路径信息
      */
@@ -59,10 +63,26 @@
         if (!$parent || !data) {
             return;
         }
-//        debugger
         $parent.empty();
         for (var key in data) {
             $('<option value="' + key + '">' + data[key] + '</option>').appendTo($parent);
+        }
+    };
+    /**
+     * 设置选中的下拉框值
+     * @param dropdownBox 下拉框对象
+     * @param dropdownValue  下拉框值
+     */
+    Common.setSelectedOption = function (dropdownBox, dropdownValue) {
+        if (!dropdownBox || !dropdownValue) {
+            return;
+        }
+
+        var options = dropdownBox.find("option");
+        for (var j = 0; j < options.length; j++) {
+            if ($(options[j]).val() == dropdownValue) {
+                $(options[j]).attr("selected", "selected");
+            }
         }
     };
     /**
@@ -81,7 +101,7 @@
         if (top.Common.codes[type]) {
             var codes = top.Common.codes[type];
             for (var i = 0; i < codes.length; i++) {
-                data[codes[i].codeinfoCode] = codes[i].codeinfoValue;
+                data[codes[i].dictValue] = codes[i].dictLabel;
             }
             if (dropdownBox) {
                 Common.setSelectOption(dropdownBox, data);
@@ -97,7 +117,7 @@
             return;
         }
         $.ajax({
-            url: Common.getRootPath() + "/common/getCode.do",
+            url: Common.getRootPath() + "/admin/dict/getCodes.do",
             data: {
                 dictCode: type
             },
@@ -105,10 +125,10 @@
             dataType: 'json',
             async: false,
             success: function (result) {
-                var codeInfo = result.codeInfo;
+                var codeInfo = result.data;
                 top.Common.codes[type] = type;
                 for (var i = 0; i < codeInfo.length; i++) {
-                    data[codeInfo[i].data] = codeInfo[i].label;
+                    data[codeInfo[i].dictValue] = codeInfo[i].dictLabel;
                 }
                 if (dropdownBox) {
                     Common.setSelectOption(dropdownBox, data);
@@ -125,6 +145,20 @@
         });
     };
 
+    Common.getHHMMSSDate = function (longTime) {
+        var date = new Date();
+        date.setTime(longTime);
+        var dateType = "";
+        dateType += "  " + getHours(date); // 时
+        dateType += ":" + getMinutes(date); // 分
+        dateType += ":" + getSeconds(date); // 分
+        return dateType;
+    }
+    Common.getDate = function (longTime) {
+        var date = new Date();
+        date.setTime(longTime);
+        return Common.getDateTime(date);
+    }
     Common.getDateTime = function (date) {
         var dateType = "";
         dateType += date.getFullYear(); // 年
@@ -159,7 +193,7 @@
     // 返回小时
     function getHours(date) {
         var hours = "";
-        hours = date.getHours();
+        hours = date.getHours()-8;
         if (hours < 10) {
             hours = "0" + hours;
         }

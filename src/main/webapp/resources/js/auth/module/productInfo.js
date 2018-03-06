@@ -5,13 +5,64 @@
  */
 
 $(function () {
+    function validateForm() {
+        $('#productInfoForm').bootstrapValidator({
+            message: '输入的值不符合规格',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                cpmc: {
+                    message: '产品名称验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '产品名称不能为空'
+                        },
+                        stringLength: {
+                            min: 2,
+                            max: 18,
+                            message: '产品名称长度必须在2到18位之间'
+                        }
+
+                    }
+                },
+                cptxName: {
+                    validators: {
+                        notEmpty: {
+                            message: '产品条线不能为空'
+                        },
+                        stringLength: {
+                            min: 2,
+                            max: 12,
+                            message: '产品条线长度必须在2到12位之间'
+                        }
+                    }
+                },
+                gnms : {
+                    validators: {
+                        notEmpty: {
+                            message: '功能描述不能为空'
+                        },
+                        stringLength: {
+                            min: 2,
+                            max: 50,
+                            message: '功能描述必须在2到50位之间'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     var objMap = {};//定义一个空的js对象
     /**
      * 查询
      * @constructor
      */
     function SearchData(){
-        $('#productInfo').bootstrapTable('refresh', { pageNumber: 1 });
+        $('#infoTable').bootstrapTable('refresh', { pageNumber: 1 });
     }
 
     /**
@@ -31,7 +82,7 @@ $(function () {
     }
 
     //初始化Table
-    $('#productInfo').bootstrapTable({
+    $('#infoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/productInfo/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         // contentType: "application/x-www-form-urlencoded",//必须要有！！！！ POST必须有
@@ -127,13 +178,15 @@ $(function () {
      * 新增产品
      * 需要清理表格数据
      */
-    $('#addProductInfo').on('click', function () {
+    $('#add').on('click', function () {
         $("input[type=reset]").trigger("click");
         $("#codeDiv").hide();
         $("#id").val("");
         $('#cpmc').val("");
         $('#gnms').val("");
         $('#cptx').val("");
+        $('#productInfoForm').bootstrapValidator("destroy");
+        validateForm();
         $('#productInfoModal').modal('show');
     });
 
@@ -141,7 +194,7 @@ $(function () {
      * 列表中按钮
      *   删除产品信息
      */
-    $('#productInfo').on('click', 'a[name="delete"]', function (e) {
+    $('#infoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var productInfoId = $(this).attr('aid');
         // alert(productInfoId);
@@ -157,7 +210,7 @@ $(function () {
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
                         toastr.success('提交数据成功');
-                        $("#productInfo").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function () {
@@ -198,7 +251,7 @@ $(function () {
                 var _result = eval(result);
                 if (_result.status == Common.SUCCESS) {
                     $('#productInfoModal').modal('hide');
-                    $("#productInfo").bootstrapTable('refresh');
+                    $("#infoTable").bootstrapTable('refresh');
                 }
 
             }
@@ -248,6 +301,10 @@ $(function () {
         },
         items : 8,
     });
+
+    $('#query').on('click',SearchData);
+
+
 })
 
 /**
@@ -271,51 +328,3 @@ function edit(id,name,code,gnms,cptx,cptxName) {
 }
 
 // 表单验证
-$('#productInfoForm').bootstrapValidator({
-    message: '输入的值不符合规格',
-    feedbackIcons: {
-        valid: 'glyphicon glyphicon-ok',
-        invalid: 'glyphicon glyphicon-remove',
-        validating: 'glyphicon glyphicon-refresh'
-    },
-    fields: {
-    	cpmc: {
-            message: '产品名称验证失败',
-            validators: {
-                notEmpty: {
-                    message: '产品名称不能为空'
-                },
-                stringLength: {
-                    min: 2,
-                    max: 18,
-                    message: '产品名称长度必须在2到18位之间'
-                }
-
-            }
-        },
-        cptxName: {
-            validators: {
-                notEmpty: {
-                    message: '产品条线不能为空'
-                },
-                stringLength: {
-                    min: 2,
-                    max: 12,
-                    message: '产品条线长度必须在2到12位之间'
-                }
-            }
-        },
-        gnms : {
-            validators: {
-                notEmpty: {
-                    message: '功能描述不能为空'
-                },
-                stringLength: {
-                    min: 2,
-                    max: 50,
-                    message: '功能描述必须在2到50位之间'
-                }
-            }
-        }
-    }
-});

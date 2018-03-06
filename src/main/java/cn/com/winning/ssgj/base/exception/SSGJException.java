@@ -7,6 +7,10 @@ public class SSGJException extends RuntimeException {
      */
     private static final long serialVersionUID = 1L;
 
+    private String responseMsg;
+
+    private String responseCode;
+
     public SSGJException(String message) {
         super(message);
     }
@@ -28,4 +32,19 @@ public class SSGJException extends RuntimeException {
     }
 
 
+    public String getResponseMsg() {
+        return responseMsg;
+    }
+
+    public void setResponseMsg(String responseMsg) {
+        this.responseMsg = responseMsg;
+    }
+
+    public String getResponseCode() {
+        return responseCode;
+    }
+
+    public void setResponseCode(String responseCode) {
+        this.responseCode = responseCode;
+    }
 }

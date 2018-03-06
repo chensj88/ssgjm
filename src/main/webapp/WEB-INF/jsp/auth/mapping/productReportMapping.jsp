@@ -14,11 +14,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>产品报表信息映射</title>
     <meta name="author" content="卫宁实施工具">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css">
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css"/>
     <base href="<%=basePath%>">
-    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <style type="text/css">
         .table-align{
             table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
@@ -51,6 +51,12 @@
             height:200px;
             vertical-align:middle;
             line-height:200px;
+        }
+        #infoTable{
+            font-size:12px;
+        }
+        .success {
+            background-color:#337AB7;
         }
     </style>
 </head>
@@ -86,7 +92,7 @@
 
 <div class="row" style="height: 300px;">
     <div class="col-sm-5">
-        <table id="queryFlow" class="table-align">
+        <table id="query" class="table-align">
         </table>
     </div>
     <div class="col-sm-2 text-center center">
@@ -106,19 +112,19 @@
         </p>
     </div>
     <div class="col-sm-5">
-         <table id="configFlow" class="table-align">
+         <table id="config" class="table-align">
 
         </table>
     </div>
 </div>
 
 <div id="toolbarA">
-    <div class="columns pull-right search-button"><button class="btn btn-default"  style="height:34px" type="button" name="refresh" title="查询" id="flowInfoAbtn"><i class="glyphicon glyphicon-search icon-search"></i></button></div>
-    <div class="columns pull-right search-input"><input class="form-control" type="text" placeholder="请输入流程名称或编号" id="flowInfoA"></div>
+    <div class="columns pull-right search-button"><button class="btn btn-default"  style="height:34px" type="button" name="refresh" title="查询" id="infoAbtn"><i class="glyphicon glyphicon-search icon-search"></i></button></div>
+    <div class="columns pull-right search-input"><input class="form-control" type="text" placeholder="请输入报表单据名称或编号" id="infoA"></div>
 </div>
 <div id="toolbarB">
-    <div class="columns pull-right search-button"><button class="btn btn-default"  style="height:34px" type="button" name="refresh" title="查询" id="flowInfoBbtn"><i class="glyphicon glyphicon-search icon-search"></i></button></div>
-    <div class="columns pull-right search-input"><input class="form-control" type="text" placeholder="请输入流程名称或编号"  id="flowInfoB"></div>
+    <div class="columns pull-right search-button"><button class="btn btn-default"  style="height:34px" type="button" name="refresh" title="查询" id="infoBbtn"><i class="glyphicon glyphicon-search icon-search"></i></button></div>
+    <div class="columns pull-right search-input"><input class="form-control" type="text" placeholder="请输入报表单据名称或编号"  id="infoB"></div>
 </div>
 <%--弹出框--%>
 <div class="modal fade" id="pdModal" tabindex="-1" role="dialog" aria-labelledby="pdModal">

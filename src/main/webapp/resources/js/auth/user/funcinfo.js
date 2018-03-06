@@ -17,12 +17,12 @@ $(function () {
     }
 
     function SearchData() {
-        $('#funcTable').bootstrapTable('refresh', { pageNumber: 1 });
+        $('#infoTable').bootstrapTable('refresh', { pageNumber: 1 });
     }
 
     $('#query').on('click',SearchData);
 
-    $('#funcTable').bootstrapTable({
+    $('#infoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/func/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -85,7 +85,7 @@ $(function () {
         },],
     });
 
-    $('#addfunc').on('click', function () {
+    $('#add').on('click', function () {
         $("input[type=reset]").trigger("click");
         $('#id').val('');
         $('#orderValue').val('');
@@ -94,7 +94,7 @@ $(function () {
         $('#funcModal').modal('show');
     });
 
-    $('#funcTable').on('click', 'a[name="edit"]', function (e) {
+    $('#infoTable').on('click', 'a[name="edit"]', function (e) {
         e.preventDefault();
         var id = $(this).attr('aid');
         $('#funcForm').bootstrapValidator('destroy');
@@ -115,7 +115,7 @@ $(function () {
         });
     });
 
-    $('#funcTable').on('click', 'a[name="delete"]', function (e) {
+    $('#infoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var id = $(this).attr('aid');
         Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
@@ -129,7 +129,7 @@ $(function () {
                 dataType: 'json',
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
-                        $("#funcTable").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function (data) {
@@ -168,7 +168,7 @@ $(function () {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
                         $('#funcModal').modal('hide');
-                        $("#funcTable").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function (result) {

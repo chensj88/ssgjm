@@ -10,6 +10,7 @@ import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -37,7 +38,7 @@ public class TrainVideoListController extends BaseController {
      * @author: Chen, Kuai
      * @Description: 获取视频分类
      */
-    @Resource
+    @Autowired
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/list.do")
@@ -62,6 +63,7 @@ public class TrainVideoListController extends BaseController {
                     info.setUserid((String)io.get("HOSPCODE")+(String)io.get("WORKNUM"));
                     info.setPassword((String)io.get("WORKNUM"));
                     info.setMobile((String)io.get("USERPHONE"));
+                    info.setSsgs((long)io.get("HOSPCODE"));
                 }
                 SysUserInfo info_old = new SysUserInfo();
                 info_old.setOpenId(info.getOpenId());
@@ -72,6 +74,9 @@ public class TrainVideoListController extends BaseController {
             }
             //获取全部视频
             SysTrainVideoRepo repo = new SysTrainVideoRepo();
+
+
+
             List<SysTrainVideoRepo> repoTypeList = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepoTypeList(repo);
             model.addAttribute("repoTypeList", repoTypeList);
             model.addAttribute("OPENID", info.getOpenId());
@@ -100,14 +105,23 @@ public class TrainVideoListController extends BaseController {
         //计算时长
         Long timeNum=0L;
         int study_num=0;
+        List<SysTrainVideoRepo> SysTrainVideoStudied = new ArrayList<SysTrainVideoRepo>();
+        List<SysTrainVideoRepo> SysTrainVideoUnStudy = new ArrayList<SysTrainVideoRepo>();
         for (int i = 0; i < SysTrainVideoWithRecord.size(); i++) {
             timeNum = timeNum + (long) SysTrainVideoWithRecord.get(i).getVideoTime();
-            if(StringUtils.isNotBlank(SysTrainVideoWithRecord.get(i).getMap().get("num")+"")){
+            String mapNum = SysTrainVideoWithRecord.get(i).getMap().get("num")+"";
+            if(mapNum!=null && !mapNum.equals("null")){
                 study_num +=1;
+                //已经学习
+                SysTrainVideoStudied.add(SysTrainVideoWithRecord.get(i));
+            }else{
+                //未学习
+                SysTrainVideoUnStudy.add(SysTrainVideoWithRecord.get(i));
             }
         }
-        System.out.println(df.format((float)timeNum/3600000));
         model.addAttribute("videoWithRecoed", SysTrainVideoWithRecord);
+        model.addAttribute("sysTrainVideoStudied", SysTrainVideoStudied);
+        model.addAttribute("sysTrainVideoUnStudy", SysTrainVideoUnStudy);
         model.addAttribute("OPENID", OPENID);
         model.addAttribute("timeNum",df.format((float)timeNum/3600000));
         model.addAttribute("size",SysTrainVideoWithRecord.size());
@@ -121,32 +135,55 @@ public class TrainVideoListController extends BaseController {
      * @Description: 视频播放记录信息
      */
     @RequestMapping(value = "/videoPlay.do")
-    public String clickVideoListRecord(String OPENID, Long id) {
+    public String clickVideoListRecord(Model model,String OPENID, Long id) {
         //点击播放  存储播放信息
         EtTrainVideoList trainVideo = new EtTrainVideoList();
-        trainVideo.setId(ssgjHelper.createVideoIdService());
-        trainVideo.setCId((long) -2);//微信游客类型
-        trainVideo.setPmId((long) -2);
-        trainVideo.setPdId((long) -2);
-        trainVideo.setUserId("yk0001");
-        trainVideo.setOpenId(OPENID);           //微信登陆唯一标识
-        //trainVideo.setVideoTime(new Date());
-       // super.getFacade().getEtTrainVideoListService().createEtTrainVideoList(trainVideo);
+        trainVideo.setOpenId(OPENID);
+        trainVideo.setVideoId(id);
+        trainVideo =super.getFacade().getEtTrainVideoListService().getEtTrainVideoList(trainVideo);
+        if(trainVideo==null){
+            EtTrainVideoList trainVideo_new = new EtTrainVideoList();
+            Long id2= ssgjHelper.createVideoIdService();
+            trainVideo_new.setId(ssgjHelper.createVideoIdService());
+            trainVideo_new.setCId((long) -2);//微信游客类型
+            trainVideo_new.setPmId((long) -2);
+            trainVideo_new.setPdId((long) -2);
+            trainVideo_new.setUserId("yk0001");
+            trainVideo_new.setOpenId(OPENID);           //微信登陆唯一标识
+            trainVideo_new.setVideoId(id);
+            //trainVideo.setVideoTime(new Date());
+            super.getFacade().getEtTrainVideoListService().createEtTrainVideoList(trainVideo_new);
+        }else{
+            trainVideo.setNum(trainVideo.getNum()+1);
+            super.getFacade().getEtTrainVideoListService().modifyEtTrainVideoList(trainVideo);
+        }
+
+        //EtTrainVideoList trainVideo = new EtTrainVideoList();
+
         //获取链接地址
         SysTrainVideoRepo repo = new SysTrainVideoRepo();
         repo.setId((long)id);
         repo.setStatus(1);
         repo =super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepo(repo);
+        model.addAttribute("repo",repo);
+        if(trainVideo.getNum()!=null && !trainVideo.getNum().equals("")){
+            model.addAttribute("num",trainVideo.getNum());
+        }else{
+            model.addAttribute("num",0);
+
+        }
+
+        SysTrainVideoRepo repo_new = new SysTrainVideoRepo();
+        repo_new.setVideoType(repo.getVideoType()); //根据分类
+        repo_new.getMap().put("not_id",repo.getId());
+        repo_new.getMap().put("OPENID",OPENID);
+        List<SysTrainVideoRepo> SysTrainVideoWithRecord =super.getFacade().getSysTrainVideoRepoService()
+                .getSysTrainVideoWithRecoedList(repo_new);
+        model.addAttribute("videoWithRecoed", SysTrainVideoWithRecord);
+        model.addAttribute("OPENID", OPENID);
 
         return "mobile/service/course-detail";
     }
 
 
-    public static void main(String[] args) {
-        DecimalFormat df = new DecimalFormat("0.00");
-        Long timeNum =9200000L;
-        int timeNum2 = 7000000;
-        System.out.println((float)timeNum2/9);
-        System.out.println("此视频时长为:"+df.format((float)timeNum2/3600000));
-    }
 }

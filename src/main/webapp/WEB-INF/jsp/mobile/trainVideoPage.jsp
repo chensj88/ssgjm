@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-treeview.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/fileinput.min.css"/>
     <base href="<%=basePath%>">
-    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <style type="text/css">
         .table-align{
             table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
@@ -69,7 +69,7 @@
     </form>
 </div>
 <!--表格区域  -->
-<table id="table" class="table-align"></table>
+<table id="infoTable" class="table-align"></table>
 <!--toolbar区域  -->
 <div class="btn-group" id="btntoolbar" >
     <button id="add" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
@@ -105,11 +105,25 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="videoType">视频分类</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="videoType" name="videoType"
-                                           placeholder="视频分类">
+                                    <select class="form-control" id="videoType" name="videoType"></select>
                                 </div>
                             </div>
+                            <div id="customer">
+                                <div class="form-group" >
+                                    <label class="col-sm-3 control-label" for="custName">客户名称</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="custName" name="custName" placeholder="请输入客户名称" data-provide="typeahead">
+                                    </div>
+                                </div>
+                                <input type="hidden" id="cId" name="cId">
+                                <div class="form-group" >
+                                    <label class="col-sm-3 control-label" for="videoCType">客户视频分类</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="videoCType" name="videoCType"></select>
+                                    </div>
+                                </div>
 
+                            </div>
                             <input type="hidden" name="id" id="id">
                             <input type="reset" style="display:none;"/>
                             <div class="col-sm-8 text-center">
@@ -168,6 +182,7 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap3-typeahead.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/fileinput.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/fileinput_locale_zh.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap3-typeahead.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/mobile/trainVideo.js"></script>
 </html>

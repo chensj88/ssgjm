@@ -14,11 +14,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>产品软硬件信息映射</title>
     <meta name="author" content="卫宁实施工具">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css">
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css"/>
     <base href="<%=basePath%>">
-    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <style type="text/css">
         .table-align{
             table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
@@ -37,6 +37,9 @@
         #queryBData tr td:nth-child(1){
             font-size: 12px;
         }
+        #infoTable{
+            font-size:12px;
+        }
         #infoTable tr td:nth-child(1) {
             word-break:keep-all;/* 不换行 */
             white-space:nowrap;/* 不换行 */
@@ -51,6 +54,10 @@
             height:200px;
             vertical-align:middle;
             line-height:200px;
+        }
+
+        .success {
+            background-color:#337AB7;
         }
     </style>
 </head>

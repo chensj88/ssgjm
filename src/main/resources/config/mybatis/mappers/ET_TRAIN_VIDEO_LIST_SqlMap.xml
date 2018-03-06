@@ -64,8 +64,7 @@
 	</select>
 
 	<insert id="insertEtTrainVideoList" parameterType="etTrainVideoList">
-	<selectKey resultType="String"  order="BEFORE"  keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID</selectKey>
-		insert into ET_TRAIN_VIDEO_LIST 
+		insert into ET_TRAIN_VIDEO_LIST
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 	       <if test="(id != null and id != '') or id == 0"> ID, </if>
 	       <if test="(cId != null and cId != '') or cId == 0"> C_ID, </if>
@@ -107,18 +106,18 @@
 			   <if test="(cId != null and cId != '') or cId == 0"> C_ID = #{cId, jdbcType=BIGINT}, </if>
 			   <if test="(pmId != null and pmId != '') or pmId == 0"> PM_ID = #{pmId, jdbcType=BIGINT}, </if>
 			   <if test="(pdId != null and pdId != '') or pdId == 0"> PD_ID = #{pdId, jdbcType=BIGINT}, </if>
-				<if test="userId != null and userId != ''"> and USER_ID = #{userId, jdbcType=VARCHAR}, </if>
+				<if test="userId != null and userId != ''"> USER_ID = #{userId, jdbcType=VARCHAR}, </if>
 				<if test="videoName != null and videoName != ''"> VIDEO_NAME = #{videoName, jdbcType=VARCHAR}, </if>
 			   <if test="videoTime != null and videoTime != ''"> VIDEO_TIME = #{videoTime, jdbcType=TIME}, </if>
 			   <if test="(num != null and num != '') or num == 0"> NUM = #{num, jdbcType=INTEGER}, </if>
 			   <if test="videoPath != null and videoPath != ''"> VIDEO_PATH = #{videoPath, jdbcType=LONGVARCHAR}, </if>
 			   <if test="remark != null and remark != ''"> REMARK = #{remark, jdbcType=LONGVARCHAR}, </if>
-				<if test="openId != null and openId != ''"> and OPEN_ID = #{openId, jdbcType=VARCHAR}, </if>
+				<if test="openId != null and openId != ''"> OPEN_ID = #{openId, jdbcType=VARCHAR}, </if>
 				<if test="(videoId != null and videoId != '') or videoId == 0"> VIDEO_ID = #{videoId, jdbcType=BIGINT}, </if>
 			</trim>
 		</set>
 		where
-		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="id != null and id != ''"> ID = #{id} </if>
 		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
 			ID in
 			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>

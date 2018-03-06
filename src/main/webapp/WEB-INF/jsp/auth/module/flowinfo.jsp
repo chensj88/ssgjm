@@ -8,12 +8,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>流程信息</title>
     <meta name="author" content="卫宁实施工具">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css">
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css"/>
     <base href="<%=basePath%>">
-    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
+    <style type="text/css">
+        .table-align{
+            table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
+            font-size:12px;
+        }
+        .table-align tr td:nth-child(3),
+        .table-align tr td:nth-child(4),
+        .table-align tr td:nth-child(6) {
+
+        }
+        .table-align tr td:nth-child(5) {
+            word-break:keep-all;/* 不换行 */
+            white-space:nowrap;/* 不换行 */
+            overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+            text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+            font-size:12px;
+        }
+
+    </style>
 </head>
 <body>
 <div class="row" id="queryScope">
@@ -31,7 +50,7 @@
             </div>
         </div>
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
-            <button type="button" class="btn btn-success btn-sm" id="queryFlow">
+            <button type="button" class="btn btn-success btn-sm" id="query">
                 <span class="glyphicon glyphicon-search"></span>
                 查询
             </button>
@@ -39,12 +58,10 @@
     </form>
 </div>
 <!--表格区域  -->
-<table id="flowTable"></table>
+<table id="infoTable" class="table-align"></table>
 <!--toolbar区域  -->
 <div class="btn-group" id="btntoolbar">
-    <button id="addFlow" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
-   <%-- <button id="modifyFlow" class="btn btn-default" type="button"><span class="glyphicon glyphicon-edit"></span>修改</button>
-    <button id="deleteFlow" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span>删除</button>--%>
+    <button id="add" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
 </div>
 <!--模态框  -->
 <div class="modal fade" id="flowModal" tabindex="-1" role="dialog" aria-labelledby="flowFormModal">

@@ -8,15 +8,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>产品信息</title>
     <meta name="author" content="卫宁实施工具">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css">
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css">
-    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico">
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css"/>
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
 </head>
 <style>
 	.table-align{
 	    table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
+        font-size:12px;
 	}
 	.table-align tr td:nth-child(3) {
   	word-break:keep-all;/* 不换行 */
@@ -66,10 +67,10 @@
     </form>
 </div>
 <!--表格区域  -->
-<table id="productInfo" class="table-align"></table>
+<table id="infoTable" class="table-align"></table>
 <!--toolbar区域  -->
 <div class="btn-group" id="btntoolbar">
-    <button id="addProductInfo" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
+    <button id="add" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
 </div>
 <!--模态框  -->
 <div class="modal fade" id="productInfoModal" tabindex="-1" role="dialog" aria-labelledby="productInfoModal">
@@ -86,19 +87,19 @@
                     <div class="row">
                         <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="productInfoForm">
                             <div class="form-group" id="codeDiv" style="display:none;">
-                                <label class="col-sm-2 control-label" >产品代码</label>
+                                <label class="col-sm-3 control-label" >产品代码</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" readonly="readonly" id="code" name="code" >
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" >产品名称</label>
+                                <label class="col-sm-3 control-label" >产品名称</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="cpmc" name="name" placeholder="请输入产品名称">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" >产品条线</label>
+                                <label class="col-sm-3 control-label" >产品条线</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="cptxName" name="cptxName" data-provide="typeahead"
                                            placeholder="请输入产品条线">
@@ -106,7 +107,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" >功能描述</label>
+                                <label class="col-sm-3 control-label" >功能描述</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="gnms" name="gnms"
                                            placeholder="请输入功能描述">

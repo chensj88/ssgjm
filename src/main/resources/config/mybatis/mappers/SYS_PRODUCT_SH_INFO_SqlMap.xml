@@ -81,7 +81,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSysProductShInfo" parameterType="SysProductShInfo">
+	<update id="updateSysProductShInfo" parameterType="sysProductShInfo">
 		update SYS_PRODUCT_SH_INFO
 		<set>
 			<trim suffixOverrides=",">
@@ -103,7 +103,7 @@
 		</where>
 	</update>
 
-	<delete id="deleteSysProductShInfo" parameterType="SysProductShInfo">
+	<delete id="deleteSysProductShInfo" parameterType="sysProductShInfo">
 		delete from SYS_PRODUCT_SH_INFO where
 		<if test="id != null and id != ''"> id = #{id} </if>
 		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
@@ -154,7 +154,7 @@
 			</if>
 		</where>
 	</update>
-	<select id="selectSysProductInterfaceInfoByIdMap" parameterType="java.util.Map" resultMap="sysProductShInfoResult">
+	<select id="selectSysProductSHInfoByIdMap" parameterType="java.util.Map" resultMap="sysProductShInfoResult">
 		SELECT
 		A.*
 		FROM SYS_PRODUCT_SH_INFO A

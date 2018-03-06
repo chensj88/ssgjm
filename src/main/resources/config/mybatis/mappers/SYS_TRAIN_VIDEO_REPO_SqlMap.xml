@@ -6,12 +6,17 @@
 		<result column="ID" property="id" jdbcType="BIGINT" />
 		<result column="VIDEO_NAME" property="videoName" jdbcType="VARCHAR" />
 		<result column="VIDEO_DESC" property="videoDesc" jdbcType="LONGVARCHAR" />
-		<result column="VIDEO_TYPE" property="videoType" jdbcType="VARCHAR" />
+		<result column="TYPE_LABEL" property="typeLabel" jdbcType="VARCHAR" />
 		<result column="REMOTE_PATH" property="remotePath" jdbcType="VARCHAR" />
-		<result column="VIDEO_TIME" property="videoTime" jdbcType="BIGINT" />
 		<result column="STATUS" property="status" jdbcType="INTEGER" />
 		<result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT" />
 		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+		<result column="VIDEO_TIME" property="videoTime" jdbcType="BIGINT" />
+		<result column="VIDEO_TYPE" property="videoType" jdbcType="VARCHAR" />
+		<result column="C_ID" property="cId" jdbcType="BIGINT" />
+		<result column="CUST_NAME" property="custName" jdbcType="VARCHAR" />
+		<result column="VIDEO_C_TYPE" property="videoCType" jdbcType="VARCHAR" />
+		<result column="VIDEO_C_LABEL" property="videoCLabel" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<resultMap id="sysTrainVideoRepoResult" type="sysTrainVideoRepo" extends="sysTrainVideoRepoResultForList">
@@ -23,12 +28,17 @@
 	   <if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
 	   <if test="videoName != null and videoName != ''"> and t.VIDEO_NAME = #{videoName} </if>
 	   <if test="videoDesc != null and videoDesc != ''"> and t.VIDEO_DESC = #{videoDesc} </if>
-	   <if test="videoType != null and videoType != ''"> and t.VIDEO_TYPE = #{videoType} </if>
+	   <if test="typeLabel != null and typeLabel != ''"> and t.TYPE_LABEL = #{typeLabel} </if>
 	   <if test="remotePath != null and remotePath != ''"> and t.REMOTE_PATH = #{remotePath} </if>
-	   <if test="(videoTime != null and videoTime != '') or videoTime == 0"> and t.VIDEO_ITME = #{videoTime} </if>
-	   <if test="(status != null and status != '') or status == 0"> and t.STATUS = #{status} </if>
+	   <if test="(status != null )"> and t.STATUS = #{status} </if>
 	   <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> and t.LAST_UPDATOR = #{lastUpdator} </if>
 	   <if test="lastUpdateTime != null and lastUpdateTime != ''"> and t.LAST_UPDATE_TIME = #{lastUpdateTime} </if>
+	   <if test="(videoTime != null and videoTime != '') or videoTime == 0"> and t.VIDEO_TIME = #{videoTime} </if>
+	   <if test="videoType != null and videoType != ''"> and t.VIDEO_TYPE = #{videoType} </if>
+	   <if test="(cId != null and cId != '') or cId == 0"> and t.C_ID = #{cId} </if>
+	   <if test="custName != null and custName != ''"> and t.CUST_NAME = #{custName} </if>
+		<if test="videoCType != null and videoCType != ''"> and t.VIDEO_C_TYPE = #{videoCType} </if>
+		<if test="videoCLabel != null and videoCLabel != ''"> and t.VIDEO_C_LABEL = #{videoCLabel} </if>
 	</sql>
 
 	<select id="selectSysTrainVideoRepo" resultMap="sysTrainVideoRepoResult" parameterType="sysTrainVideoRepo">
@@ -60,36 +70,46 @@
 
 	<!-- Chen,Kuai 2018-2-28 10:34:57 获取分类集合-->
 	<select id="selectSysTrainVideoRepoTypeList" resultMap="sysTrainVideoRepoResult" parameterType="sysTrainVideoRepo">
-		SELECT t.VIDEO_TYPE FROM SYS_TRAIN_VIDEO_REPO t
-		<include refid="sf-sysTrainVideoRepo" /> GROUP BY VIDEO_TYPE ;
+		SELECT t.TYPE_LABEL FROM SYS_TRAIN_VIDEO_REPO t
+		<include refid="sf-sysTrainVideoRepo" /> GROUP BY TYPE_LABEL ;
 	</select>
 
 
 
 	<insert id="insertSysTrainVideoRepo" parameterType="sysTrainVideoRepo">
-		insert into SYS_TRAIN_VIDEO_REPO
+		insert into SYS_TRAIN_VIDEO_REPO 
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 	       <if test="(id != null and id != '') or id == 0"> ID, </if>
 		   <if test="videoName != null and videoName != ''"> VIDEO_NAME, </if>
 		   <if test="videoDesc != null and videoDesc != ''"> VIDEO_DESC, </if>
-		   <if test="videoType != null and videoType != ''"> VIDEO_TYPE, </if>
+		   <if test="typeLabel != null and typeLabel != ''"> TYPE_LABEL, </if>
 		   <if test="remotePath != null and remotePath != ''"> REMOTE_PATH, </if>
-			<if test="(videoTime != null and videoTime != '') or videoTime == 0"> VIDEO_ITME, </if>
-	       <if test="(status != null and status != '') or status == 0"> STATUS, </if>
+	       <if test="(status != null )"> STATUS, </if>
 	       <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> LAST_UPDATOR, </if>
 		   <if test="lastUpdateTime != null and lastUpdateTime != ''"> LAST_UPDATE_TIME, </if>
+	       <if test="(videoTime != null and videoTime != '') or videoTime == 0"> VIDEO_TIME, </if>
+		   <if test="videoType != null and videoType != ''"> VIDEO_TYPE, </if>
+	       <if test="(cId != null and cId != '') or cId == 0"> C_ID, </if>
+		   <if test="custName != null and custName != ''"> CUST_NAME, </if>
+			<if test="videoCType != null and videoCType != ''">  VIDEO_C_TYPE, </if>
+			<if test="videoCLabel != null and videoCLabel != ''"> VIDEO_C_LABEL ,</if>
 		</trim>
 		values
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 	       <if test="(id != null and id != '') or id == 0"> #{id, jdbcType=BIGINT}, </if>
 		   <if test="videoName != null and videoName != ''"> #{videoName, jdbcType=VARCHAR}, </if>
 		   <if test="videoDesc != null and videoDesc != ''"> #{videoDesc, jdbcType=LONGVARCHAR}, </if>
-		   <if test="videoType != null and videoType != ''"> #{videoType, jdbcType=VARCHAR}, </if>
+		   <if test="typeLabel != null and typeLabel != ''"> #{typeLabel, jdbcType=VARCHAR}, </if>
 		   <if test="remotePath != null and remotePath != ''"> #{remotePath, jdbcType=VARCHAR}, </if>
-			<if test="(videoTime != null and videoTime != '') or videoTime == 0">#{videoTime, jdbcType=BIGINT}, </if>
-	       <if test="(status != null and status != '') or status == 0"> #{status, jdbcType=INTEGER}, </if>
+	       <if test="(status != null )"> #{status, jdbcType=INTEGER}, </if>
 	       <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> #{lastUpdator, jdbcType=BIGINT}, </if>
 		   <if test="lastUpdateTime != null and lastUpdateTime != ''"> #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
+	       <if test="(videoTime != null and videoTime != '') or videoTime == 0"> #{videoTime, jdbcType=BIGINT}, </if>
+		   <if test="videoType != null and videoType != ''"> #{videoType, jdbcType=VARCHAR}, </if>
+	       <if test="(cId != null and cId != '') or cId == 0"> #{cId, jdbcType=BIGINT}, </if>
+		   <if test="custName != null and custName != ''"> #{custName, jdbcType=VARCHAR}, </if>
+			<if test="videoCType != null and videoCType != ''">  #{videoCType, jdbcType=VARCHAR} ,</if>
+			<if test="videoCLabel != null and videoCLabel != ''">  #{videoCLabel, jdbcType=VARCHAR} ,</if>
 		</trim>
 	</insert>
 
@@ -100,12 +120,17 @@
 			   <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>
 			   <if test="videoName != null and videoName != ''"> VIDEO_NAME = #{videoName, jdbcType=VARCHAR}, </if>
 			   <if test="videoDesc != null and videoDesc != ''"> VIDEO_DESC = #{videoDesc, jdbcType=LONGVARCHAR}, </if>
-			   <if test="videoType != null and videoType != ''"> VIDEO_TYPE = #{videoType, jdbcType=VARCHAR}, </if>
+			   <if test="typeLabel != null and typeLabel != ''"> TYPE_LABEL = #{typeLabel, jdbcType=VARCHAR}, </if>
 			   <if test="remotePath != null and remotePath != ''"> REMOTE_PATH = #{remotePath, jdbcType=VARCHAR}, </if>
-			   <if test="(videoTime != null and videoTime != '') or videoTime == 0"> VIDEO_ITME = #{videoTime, jdbcType=BIGINT}, </if>
-			   <if test="(status != null and status != '') or status == 0"> STATUS = #{status, jdbcType=INTEGER}, </if>
+			   <if test="(status != null )"> STATUS = #{status, jdbcType=INTEGER}, </if>
 			   <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> LAST_UPDATOR = #{lastUpdator, jdbcType=BIGINT}, </if>
 			   <if test="lastUpdateTime != null and lastUpdateTime != ''"> LAST_UPDATE_TIME = #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
+			   <if test="(videoTime != null and videoTime != '') or videoTime == 0"> VIDEO_TIME = #{videoTime, jdbcType=BIGINT}, </if>
+			   <if test="videoType != null and videoType != ''"> VIDEO_TYPE = #{videoType, jdbcType=VARCHAR}, </if>
+			   <if test="(cId != null and cId != '') or cId == 0"> C_ID = #{cId, jdbcType=BIGINT}, </if>
+			   <if test="custName != null and custName != ''"> CUST_NAME = #{custName, jdbcType=VARCHAR}, </if>
+				<if test="videoCType != null and videoCType != ''"> VIDEO_C_TYPE = #{videoCType, jdbcType=VARCHAR} ,</if>
+				<if test="videoCLabel != null and videoCLabel != ''">  VIDEO_C_LABEL =#{videoCLabel, jdbcType=VARCHAR} ,</if>
 			</trim>
 		</set>
 		where
@@ -153,12 +178,14 @@
 	<select id="selectSysTrainVideoWithRecoedList" resultMap="sysTrainVideoRepoResult" parameterType="sysTrainVideoRepo">
 		SELECT t.*, tt.num FROM SYS_TRAIN_VIDEO_REPO t
 		LEFT JOIN (
-		SELECT SUM (NUM) AS num,VIDEO_ID FROM ET_TRAIN_VIEDO_LIST
+		SELECT SUM (NUM) AS num,VIDEO_ID FROM ET_TRAIN_VIDEO_LIST
 		WHERE
-		OPEN_ID = #{map.OPENID, jdbcType=VARCHAR}
+		OPEN_ID = #{map.OPENID}
 		GROUP BY
 		VIDEO_ID
-		) tt ON t.ID = tt.VIDEO_ID <include refid="fuzzy" />
+		) tt ON t.ID = tt.VIDEO_ID where 1 = 1 <include refid="sf-sysTrainVideoRepo" />
+		<if test="map.not_id != null and map.not_id != ''"> AND ID not in (#{map.not_id}) </if>
+
 
 	</select>
 

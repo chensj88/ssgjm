@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.dao.SysDictInfoDao;
+import cn.com.winning.ssgj.domain.SysDictInfo;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.SysTrainVideoRepoDao;
@@ -21,9 +24,12 @@ public class SysTrainVideoRepoServiceImpl implements SysTrainVideoRepoService {
 
 	@Resource
 	private SysTrainVideoRepoDao sysTrainVideoRepoDao;
+	@Resource
+	private SysDictInfoDao sysDictInfoDao;
 	
 
 	public Integer createSysTrainVideoRepo(SysTrainVideoRepo t) {
+		t = initObjectValue(t);
 		return this.sysTrainVideoRepoDao.insertEntity(t);
 	}
 
@@ -40,6 +46,7 @@ public class SysTrainVideoRepoServiceImpl implements SysTrainVideoRepoService {
 	}
 
 	public int modifySysTrainVideoRepo(SysTrainVideoRepo t) {
+		t = initObjectValue(t);
 		return this.sysTrainVideoRepoDao.updateEntity(t);
 	}
 
@@ -78,4 +85,25 @@ public class SysTrainVideoRepoServiceImpl implements SysTrainVideoRepoService {
 		return this.sysTrainVideoRepoDao.selectSysTrainVideoWithRecoedList(t);
 	}
 
+	/**
+	 * 设置字典显示值
+	 * @param repo
+	 * @return
+	 */
+	private SysTrainVideoRepo initObjectValue(SysTrainVideoRepo repo){
+		if(!Constants.VIDEO_TYPE_OF_CUSTOMER.equals(repo.getVideoType())){
+			repo.setVideoCType(null);
+		}else{
+			repo.setVideoCLabel(getDictLabel("videoType",repo.getVideoCType()));
+		}
+		repo.setTypeLabel(getDictLabel("videoType",repo.getVideoType()));
+		return  repo;
+	}
+
+	private String getDictLabel(String dictType,String dictValue){
+		SysDictInfo dictInfo = new SysDictInfo();
+		dictInfo.setDictCode(dictType);
+		dictInfo.setDictValue(dictValue);
+		return this.sysDictInfoDao.selectEntity(dictInfo).getDictLabel();
+	}
 }

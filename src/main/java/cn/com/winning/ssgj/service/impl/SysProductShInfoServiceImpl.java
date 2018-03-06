@@ -86,7 +86,7 @@ public class SysProductShInfoServiceImpl implements SysProductShInfoService {
     public int addSysProductShInfoMapping(String idList, SysUserInfo userInfo) throws ParseException {
         Map<String,Object> param = new HashMap<String, Object>();
         param.put("ids",StringUtil.generateSqlString(idList,"PD_ID","SH_ID"));
-        List<SysProductShInfo> updateList = this.sysProductShInfoDao.selectSysProductInterfaceInfoByIdMap(param);
+        List<SysProductShInfo> updateList = this.sysProductShInfoDao.selectSysProductSHInfoByIdMap(param);
         List<String> idsList = new ArrayList<String>();
         for (SysProductShInfo info : updateList) {
             info.setEffectiveDate(new Date());

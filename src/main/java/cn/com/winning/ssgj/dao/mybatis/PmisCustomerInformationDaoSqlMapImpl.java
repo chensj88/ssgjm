@@ -6,6 +6,8 @@ import cn.com.winning.ssgj.dao.PmisCustomerInformationDao;
 import cn.com.winning.ssgj.domain.PmisCustomerInformation;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.List;
+
 /**
  *
  *
@@ -15,4 +17,13 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 @Service
 public class PmisCustomerInformationDaoSqlMapImpl extends EntityDaoSqlMapImpl<PmisCustomerInformation> implements PmisCustomerInformationDao {
 
+    @Override
+    public int selectPmisCustomerInformationCountFuzzy(PmisCustomerInformation c) {
+        return super.getSqlSession().selectOne("selectPmisCustomerInformationCountFuzzy",c);
+    }
+
+    @Override
+    public List<PmisCustomerInformation> selectPmisCustomerInformationPageListFuzzy(PmisCustomerInformation c) {
+        return super.getSqlSession().selectList("selectPmisCustomerInformationPageListFuzzy",c);
+    }
 }

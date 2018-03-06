@@ -61,4 +61,14 @@ public class SysReportInfoServiceImpl implements SysReportInfoService {
         return this.sysReportInfoDao.selectSysReportInfoPaginatedListByselective(t);
     }
 
+    @Override
+    public List<SysReportInfo> getSysReportInfoListById(SysReportInfo reportInfo) {
+        return this.sysReportInfoDao.selectSysReportInfoListByIds(reportInfo);
+    }
+
+    @Override
+    public List<SysReportInfo> getSysReportInfolistNoPage(SysReportInfo info) {
+        return this.sysReportInfoDao.selectSysReportInfolistNoPage(info);
+    }
+
 }

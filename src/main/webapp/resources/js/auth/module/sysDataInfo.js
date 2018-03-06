@@ -9,7 +9,7 @@ $(function () {
      * @constructor
      */
     function SearchData(){
-        $('#sysDataInfo').bootstrapTable('refresh', { pageNumber: 1 });
+        $('#infoTable').bootstrapTable('refresh', { pageNumber: 1 });
     }
 
     /**
@@ -33,7 +33,7 @@ $(function () {
     /**
      * 初始化Table
      */
-    $('#sysDataInfo').bootstrapTable({
+    $('#infoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/basicData/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         // contentType: "application/x-www-form-urlencoded",//必须要有！！！！ POST必须有
@@ -149,12 +149,12 @@ $(function () {
     });
 
 
-    $('#queryData').on('click',SearchData);
+    $('#query').on('click',SearchData);
     /**
      * 新增数据表格
      * 需要清理表格数据
      */
-    $('#addSysDataInfo').on('click', function () {
+    $('#add').on('click', function () {
         $("input[type=reset]").trigger("click");
         $("#id").val("");
         $('#dbName').val("");
@@ -169,7 +169,7 @@ $(function () {
      * 列表中按钮
      *   删除数据信息
      */
-    $('#sysDataInfo').on('click', 'a[name="delete"]', function (e) {
+    $('#infoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var productInfoId = $(this).attr('aid');
         alert(productInfoId);
@@ -325,80 +325,3 @@ $('#sysDataInfoForm').bootstrapValidator({
         }
     }
 });
-///**
-//* 删除数据
-//* 只能删除一条数据
-//*/
-//$('#deleteProductInfo').on('click', function () {
-// var arrselections = $("#userTable").bootstrapTable('getSelections');
-// if (arrselections.length > 1) {
-//    // toastr.warning('只能选择一行进行编辑');
-//     Ewin.alert('只能选择一行进行编辑');
-//     return;
-// }
-// if (arrselections.length <= 0) {
-//     //toastr.warning('请选择有效数据');
-//     Ewin.alert('只能选择一行进行编辑');
-//     return;
-// }
-// var userId = arrselections[0].userId;
-// Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
-//     if (!e) {
-//         return;
-//     }
-//     $.ajax({
-//         type: "post",
-//         url: Common.getRootPath() + '/admin/basicData/deleteById.do',
-//         data: {"userId": userId},
-//         dataType: 'json',
-//         success: function (data, status) {
-//             if (status == Common.SUCCESS) {
-//                 toastr.success('提交数据成功');
-//                 $("#userTable").bootstrapTable('refresh');
-//             }
-//         },
-//         error: function () {
-//             toastr.error('Error');
-//         },
-//         complete: function () {
-//         }
-//     });
-// });
-//});
-/**
-//* 修改数据
-//* 只能修改一条数据
-//*/
-//$('#modifyUser').on('click', function () {
-//  var arrselections = $("#userTable").bootstrapTable('getSelections');
-//  if (arrselections.length > 1) {
-//      //toastr.warning('只能选择一行进行编辑');
-//      Ewin.alert('只能选择一行进行编辑');
-//      return;
-//  }
-//  if (arrselections.length <= 0) {
-//      //toastr.warning('请选择有效数据');
-//      Ewin.alert('请选择有效数据');
-//      return;
-//  }
-//  var userId = arrselections[0].id;
-//  $.ajax({
-//      url: Common.getRootPath() + '/admin/basicData/getById.do',
-//      data: {'userId': userId},
-//      type: "post",
-//      dataType: 'json',
-//      async: false,
-//      success: function (result) {
-//          var _result = eval(result);
-//          if (_result.status == Common.SUCCESS) {
-//              $('#userForm').initForm(_result.data);
-//              $('#orgid').val(_result.data.orgid);
-//              $('#password').val(_result.data.password);
-//              $('#cpfl').val(_result.data.password);
-//              $('#syfw').val(_result.data.password);
-//              $('#sysDataInfo').modal('show');
-//          }
-//
-//      }
-//  });
-//});

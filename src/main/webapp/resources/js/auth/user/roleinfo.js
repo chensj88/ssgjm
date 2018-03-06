@@ -24,6 +24,23 @@ function getChildNodeIdArr(node) {
     return ts;
 }
 
+/**
+ * 遍历子节点中被选中的节点
+ * @param node
+ * @returns {Array}
+ */
+function getChildNodeIdSelectArr(node) {
+    var ts = [];
+    if (node.nodes) {
+        for (x in node.nodes) {
+            if (node.nodes[x].state.selected) {
+                ts.push(node.nodes[x].nodeId);
+            }
+        }
+    }
+    return ts;
+}
+
 $(function () {
     function editRole(data) {
         $('#id').val(data.id);
@@ -38,7 +55,7 @@ $(function () {
      * @constructor
      */
     function SearchData(){
-        $('#roleTable').bootstrapTable('refresh', { pageNumber: 1 });
+        $('#infoTable').bootstrapTable('refresh', { pageNumber: 1 });
     }
 
     /**
@@ -118,17 +135,28 @@ $(function () {
                     multiSelect: true,      //多选
                     onNodeSelected:function (event,node) {
                         var selectNodes = getChildNodeIdArr(node);
+                        console.log(selectNodes);
+                        console.log(node);
                         if (selectNodes) { //子节点不为空，则选中所有子节点
                             $('#tree').treeview('selectNode', [selectNodes, { silent: true }]);
                         }
                         $('#tree').treeview('selectNode', [node.nodeId, { silent: true }]);
+                        $('#tree').treeview('selectNode', [node.parentId, { silent: true }]);
                     },
                     onNodeUnselected:function (event,node) {
                         var selectNodes = getChildNodeIdArr(node);
+                        console.log(selectNodes);
+                        console.log(node);
                         if (selectNodes) { //子节点不为空，则取消选中所有子节点
                             $('#tree').treeview('unselectNode', [selectNodes, { silent: true }]);
                         }
                         $('#tree').treeview('unselectNode', [node.nodeId, { silent: true }]);
+                        var pNode = $('#tree').treeview('getNode', node.parentId);
+                        var cNodes = getChildNodeIdSelectArr(pNode);
+                        console.log(cNodes);
+                        if(cNodes.length == 0){
+                            $('#tree').treeview('unselectNode', [node.parentId, { silent: true }]);
+                        }
                     }
 
                 });
@@ -140,7 +168,7 @@ $(function () {
 
     }
     
-    $('#roleTable').bootstrapTable({
+    $('#infoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/role/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法<b class="arrow icon-angle-down"></b>
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -216,7 +244,8 @@ $(function () {
                 var e = '<a href="#" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.id +'" >编辑</a> ';
                 var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
                 var f = '<a href="####" class="btn btn-success btn-xs" name="tree" mce_href="#" aid="' + row.id + '">配置菜单</a> ';
-                return e + d + f;
+                var g = '<a href="####" class="btn btn-success btn-xs" name="button" mce_href="#" aid="' + row.id + '">配置按钮</a> ';
+                return e + d + f + g;
             }
         },],
     });
@@ -224,7 +253,7 @@ $(function () {
      * 新增用户
      * 需要清理表格数据
      */
-    $('#addRole').on('click', function () {
+    $('#add').on('click', function () {
         $("input[type=reset]").trigger("click");
         $('#roleForm').bootstrapValidator("destroy");
         validateForm();
@@ -232,7 +261,7 @@ $(function () {
         $('#roleModal').modal('show');
     });
 
-    $('#roleTable').on('click', 'a[name="edit"]', function (e) {
+    $('#infoTable').on('click', 'a[name="edit"]', function (e) {
         e.preventDefault();
         $('#roleForm').bootstrapValidator('destroy');
         validateForm();
@@ -256,7 +285,7 @@ $(function () {
      * 列表中按钮
      *   删除用户信息
      */
-    $('#roleTable').on('click', 'a[name="delete"]', function (e) {
+    $('#infoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var roleId = $(this).attr('aid');
         Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
@@ -271,7 +300,7 @@ $(function () {
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
                         Ewin.alert('提交数据成功');
-                        $("#roleTable").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function () {
@@ -284,7 +313,7 @@ $(function () {
     });
 
 
-    $('#roleTable').on('click', 'a[name="tree"]', function (e) {
+    $('#infoTable').on('click', 'a[name="tree"]', function (e) {
         e.preventDefault();
         var roleId = $(this).attr('aid');
         initTreeView();
@@ -315,14 +344,37 @@ $(function () {
 
     });
 
-    //选中节点
-    $('#tree').on('nodeSelected',function (event,node) {
-        alert(node);
+    $('#infoTable').on('click', 'a[name="button"]', function (e) {
+        e.preventDefault();
+        var roleId = $(this).attr('aid');
+        initTreeView();
+        $.ajax({
+            type: "post",
+            url: Common.getRootPath() + "/admin/rolemodule/query.do",
+            dataType: "json",
+            data:{'roleId':roleId},
+            cache : false,
+            async: false,
+            success: function (result) {
+                if(result.status == Common.SUCCESS){
+                    $('#roleIdQ').val(roleId);
+                    var data = result.data;
+                    var enableNode = $('#tree').treeview('getEnabled');
+                    $.each(data,function (index,value,array) {
+                        $.each(enableNode,function (eindex,evalue,earray) {
+                            if(value == evalue.id){
+                                $('#tree').treeview('selectNode',
+                                    [ evalue.nodeId, { silent: true }]);
+                            }
+                        })
+                    });
+                }
+            }
+        });
+        $('#treeModal').modal('show');
+
     });
 
-    $('#tree').on('nodeUnchecked',function (event,node) {
-        alert(node);
-    });
     /**
      * 保存用户按钮
      * 通过隐藏域判断用户是否存在，而使用不同的方法进行新增或者修改
@@ -352,7 +404,7 @@ $(function () {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
                         $('#roleModal').modal('hide');
-                        $("#roleTable").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 fail: function (result) {

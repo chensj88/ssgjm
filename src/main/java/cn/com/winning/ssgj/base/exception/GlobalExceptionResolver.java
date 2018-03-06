@@ -1,11 +1,12 @@
 package cn.com.winning.ssgj.base.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
@@ -15,36 +16,49 @@ import java.io.PrintWriter;
  * @package cn.com.winning.ssgj.base.exception
  * @date 2018-02-23 15:27
  */
-public class GlobalExceptionResolver extends SimpleMappingExceptionResolver {
+public class GlobalExceptionResolver implements HandlerExceptionResolver {
 
-    protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        String viewName = determineViewName(ex, request);
-        response.setCharacterEncoding("UTF-8");
-        if (viewName != null) {// JSP格式返回
-            if (!(request.getHeader("accept").contains("application/json") || (request.getHeader("X-Requested-With") != null
-                    && request.getHeader("X-Requested-With").contains("XMLHttpRequest")))) {
-                // 如果不是异步请求
-                // Apply HTTP status code for error views, if specified.
-                // Only apply it if we're processing a top-level request.
-                Integer statusCode = determineStatusCode(request, viewName);
-                if (statusCode != null) {
-                    applyStatusCodeIfPossible(request, response, statusCode);
-                }
-                System.out.println("JSP格式返回" + viewName);
-                return getModelAndView(viewName, ex, request);
-            } else {// JSON格式返回
-                try {
-                    PrintWriter writer = response.getWriter();
-                    writer.write(ex.getMessage());
-                    writer.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("JSON格式返回" + viewName);
-                return null;
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionResolver.class);
+    @Override
+    public ModelAndView resolveException(HttpServletRequest req, HttpServletResponse resp, Object o, Exception ex) {
+        boolean isAsync = req.getHeader("X-Requested-With") != null && "XMLHttpRequest".equals(req.getHeader("X-Requested-With").toString());
+
+        if(isAsync) {
+            //WebTransException是自定义异常
+            if (ex instanceof SSGJException) {
+                SSGJException ssgjException = (SSGJException) ex;
+                printWrite(ssgjException.getResponseMsg(), resp);
+                logger.warn("ajax warn - [{}]", ssgjException.getResponseCode()+":"+ssgjException.getResponseMsg());
+            }else {
+                ex.printStackTrace();
+                printWrite("系统异常！", resp);
             }
-        } else {
-            return null;
+
+            return new ModelAndView();
+        }
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("error/500");
+
+        if(ex instanceof SSGJException)
+            modelAndView.addObject("WebTransException", ex);
+        else
+            ex.printStackTrace();
+
+        return modelAndView;
+    }
+
+    public void printWrite(String msg, HttpServletResponse response) {
+        try {
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/html; charset=UTF-8");
+
+            PrintWriter pw = response.getWriter();
+            pw.write(msg);
+            pw.flush();
+            pw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

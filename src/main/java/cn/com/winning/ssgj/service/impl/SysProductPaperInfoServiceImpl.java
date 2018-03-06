@@ -1,9 +1,13 @@
 package cn.com.winning.ssgj.service.impl;
 
-import java.util.List;
+import java.text.ParseException;
+import java.util.*;
 
 import javax.annotation.Resource;
 
+import cn.com.winning.ssgj.base.util.DateUtil;
+import cn.com.winning.ssgj.base.util.StringUtil;
+import cn.com.winning.ssgj.domain.SysUserInfo;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.SysProductPaperInfoDao;
@@ -49,6 +53,62 @@ public class SysProductPaperInfoServiceImpl implements SysProductPaperInfoServic
 
     public List<SysProductPaperInfo> getSysProductPaperInfoPaginatedList(SysProductPaperInfo t) {
         return this.sysProductPaperInfoDao.selectEntityPaginatedList(t);
+    }
+
+    @Override
+    public List<String> getSysPaperInfoIds(List<SysProductPaperInfo> paperInfoList) {
+        List<String> idList = new ArrayList<String>();
+        for (SysProductPaperInfo sysProductPaperInfo : paperInfoList) {
+            idList.add(sysProductPaperInfo.getrId()+"");
+        }
+        return idList;
+    }
+
+    @Override
+    public List<SysProductPaperInfo> getSysProductPaperInfoByIds(Integer pdId, String reportids) {
+        Map<String,Object> param = new HashMap<String, Object>();
+        param.put("pdId",pdId);
+        param.put("reportIds",reportids);
+        return this.sysProductPaperInfoDao.selectSysProductPaperInfoByIds(param);
+    }
+
+    @Override
+    public int removeSysProductPaperInfoMapping(String idList, SysUserInfo userInfo) {
+        String ids = StringUtil.generateSqlString(idList,"PD_ID","R_ID");
+        Map<String,Object> param = new HashMap<String, Object>();
+        param.put("ids",ids);
+        param.put("user", userInfo.getId());
+        return this.sysProductPaperInfoDao.removeSysProductPaperInfoMapping(param);
+    }
+
+    @Override
+    public int addSysProductPaperInfoMapping(String idList, SysUserInfo userInfo) throws ParseException {
+        Map<String,Object> param = new HashMap<String, Object>();
+        param.put("ids",StringUtil.generateSqlString(idList,"PD_ID","R_ID"));
+        List<SysProductPaperInfo> updateList = this.sysProductPaperInfoDao.selectSysProductPaperInfoByIdMap(param);
+        List<String> idsList = new ArrayList<String>();
+        for (SysProductPaperInfo info : updateList) {
+            info.setEffectiveDate(new Date());
+            info.setExpireDate(DateUtil.parse("9999-12-31"));
+            info.setLastUpdator(userInfo.getId());
+            info.setLastUpdateTime(new Date());
+            this.sysProductPaperInfoDao.updateEntity(info);
+            idsList.add(info.getPdId()+","+info.getrId());
+        }
+
+        List<String> addPBInfo = StringUtil.compareStringWithList(idList,idsList);
+
+        for (String s : addPBInfo) {
+            SysProductPaperInfo info = new SysProductPaperInfo();
+            info.setPdId(Long.valueOf(s.split(",")[0]));
+            info.setrId(Long.valueOf(s.split(",")[1]));
+            info.setEffectiveDate(new Date());
+            info.setExpireDate(DateUtil.parse("9999-12-31"));
+            info.setLastUpdator(userInfo.getId());
+            info.setLastUpdateTime(new Date());
+            this.sysProductPaperInfoDao.insertEntity(info);
+        }
+        return 0;
     }
 
 }

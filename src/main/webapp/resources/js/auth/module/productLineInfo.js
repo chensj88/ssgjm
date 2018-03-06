@@ -135,5 +135,5 @@ $(function () {
         ],
     });
 
-    $('#queryProductLineInfo').on('click',SearchData);
+    $('#query').on('click',SearchData);
 });

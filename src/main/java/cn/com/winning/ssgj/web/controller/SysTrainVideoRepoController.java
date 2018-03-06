@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.web.controller;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.domain.PmisCustomerInformation;
 import cn.com.winning.ssgj.domain.SysTrainVideoRepo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
@@ -97,6 +98,7 @@ public class SysTrainVideoRepoController extends BaseController {
     public Map<String,Object>  modifyTrainVideoById(SysTrainVideoRepo repo){
        /* repo.setLastUpdateTime(new Date());*/
         repo.setLastUpdator(((SysUserInfo)SecurityUtils.getSubject().getPrincipal()).getId());
+        repo = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepo(repo);
         if(repo.getStatus() == Constants.STATUS_UNUSE){
             repo.setStatus(Constants.STATUS_USE);
         }else{
@@ -116,6 +118,21 @@ public class SysTrainVideoRepoController extends BaseController {
         result.put("valid", exists);
         result.put("status", Constants.SUCCESS);
         return result;
+    }
 
+    @RequestMapping(value = "/queryCustomerName.do")
+    @ResponseBody
+    public Map<String,Object> queryCustomerNameInfo(String name,int matchCount){
+        PmisCustomerInformation customer = new PmisCustomerInformation();
+        customer.setName(name);
+        customer.setZt(Constants.PMIS_STATUS_USE);
+        Row row = new Row(0,matchCount);
+        customer.setRow(row);
+        List<PmisCustomerInformation> customerInformationList = super.getFacade().getPmisCustomerInformationService().getPmisCustomerInformationPageListFuzzy(customer);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("total", matchCount);
+        result.put("status", Constants.SUCCESS);
+        result.put("data", customerInformationList);
+        return result;
     }
 }

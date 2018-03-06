@@ -46,11 +46,11 @@ public class SysReportInfoController extends BaseController {
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@ILog(operationName="报表类信息表",operationType="list")
-	public Map<String, Object> list(Row row) {
-		SysReportInfo info = new SysReportInfo();
+	public Map<String, Object> list(SysReportInfo info,Row row) {
 		info.setRow(row);
-		List<SysReportInfo> infos = getFacade().getSysReportInfoService().getSysReportInfoPaginatedList(info);
-		int total =  getFacade().getSysReportInfoService().getSysReportInfoCount(info);
+		info.setStatus(1);
+		List<SysReportInfo> infos = getFacade().getSysReportInfoService().getSysReportInfoPaginatedListForSelectiveKey(info);
+		int total =  getFacade().getSysReportInfoService().getSysReportInfoCountForSelectiveKey(info);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("rows", infos);
 		map.put("total", total);
@@ -59,7 +59,7 @@ public class SysReportInfoController extends BaseController {
 	}
 	/**
      * 通过产品ID查询报表类信息表
-     * @param user
+     * @param t
      * @return
      */
 	@RequestMapping("/getById.do")
@@ -111,7 +111,7 @@ public class SysReportInfoController extends BaseController {
 	}
 	/**
      * 修改报表类信息表
-     * @param user
+     * @param t
      * @return
      */
 	@RequestMapping("/update.do")
@@ -121,6 +121,23 @@ public class SysReportInfoController extends BaseController {
 	public Map<String, Object> update(SysReportInfo t) {
         getFacade().getSysReportInfoService().modifySysReportInfo(t);
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("status", Constants.SUCCESS);
+		return map;
+	}
+
+	/**
+	 *报表类信息表
+	 * @param info
+	 * @return
+	 */
+	@RequestMapping("/listNoPage.do")
+	@ResponseBody
+	@ILog(operationName="报表类信息表",operationType="list")
+	public Map<String, Object> listNoPage(SysReportInfo info) {
+		info.setStatus(1);
+		List<SysReportInfo> infos = getFacade().getSysReportInfoService().getSysReportInfolistNoPage(info);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("rows", infos);
 		map.put("status", Constants.SUCCESS);
 		return map;
 	}

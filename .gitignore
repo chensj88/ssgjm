@@ -8,3 +8,4 @@ target/*
 *.zip
 *.iml
 *.iml
+*.pdb

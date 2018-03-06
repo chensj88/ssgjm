@@ -84,6 +84,35 @@ public class SysUserInfo extends BaseDomain implements Serializable {
 	 */
 	private String openId;
 
+	/**
+	 * @val  视频权限
+	 */
+	private String videoDroit;
+
+	/**
+	 * @val  扩展字段
+	 */
+	private String clo1;
+
+	/**
+	 * @val  扩展字段
+	 */
+	private String clo2;
+
+	/**
+	 * @val  扩展字段
+	 */
+	private String clo3;
+
+	/**
+	 * @val  扩展字段
+	 */
+	private String clo4;
+
+	/**
+	 * @val  扩展字段
+	 */
+	private String clo5;
 
 	public SysUserInfo() {
 
@@ -277,4 +306,51 @@ public class SysUserInfo extends BaseDomain implements Serializable {
 		this.openId = openId;
 	}
 
+	public String getVideoDroit() {
+		return videoDroit;
+	}
+
+	public void setVideoDroit(String videoDroit) {
+		this.videoDroit = videoDroit;
+	}
+
+	public String getClo1() {
+		return clo1;
+	}
+
+	public void setClo1(String clo1) {
+		this.clo1 = clo1;
+	}
+
+	public String getClo2() {
+		return clo2;
+	}
+
+	public void setClo2(String clo2) {
+		this.clo2 = clo2;
+	}
+
+	public String getClo3() {
+		return clo3;
+	}
+
+	public void setClo3(String clo3) {
+		this.clo3 = clo3;
+	}
+
+	public String getClo4() {
+		return clo4;
+	}
+
+	public void setClo4(String clo4) {
+		this.clo4 = clo4;
+	}
+
+	public String getClo5() {
+		return clo5;
+	}
+
+	public void setClo5(String clo5) {
+		this.clo5 = clo5;
+	}
 }
