@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class FloorQuestionController extends BaseController {
     @RequestMapping(value = "/list.do")
     public String TrainVideoTypeList(Model model, String parameter) {
-        EtFloorQuestionInfo info = new EtFloorQuestionInfo();
         //进行中的项目
 
 
