@@ -3,6 +3,7 @@
  */
 $(function () {
 
+    var videoType = {};
     function queryParams(params) {
         return {
             count: params.limit,    // 每页显示条数
@@ -141,6 +142,13 @@ $(function () {
         });
         return data;
     }
+
+    function initCodes() {
+        Common.getCodes('videoType',videoType,$('#videoType'));
+    }
+
+    initCodes();
+
     $('#infoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/train/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法

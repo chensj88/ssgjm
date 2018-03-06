@@ -244,7 +244,8 @@ $(function () {
                 var e = '<a href="#" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.id +'" >编辑</a> ';
                 var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
                 var f = '<a href="####" class="btn btn-success btn-xs" name="tree" mce_href="#" aid="' + row.id + '">配置菜单</a> ';
-                return e + d + f;
+                var g = '<a href="####" class="btn btn-success btn-xs" name="button" mce_href="#" aid="' + row.id + '">配置按钮</a> ';
+                return e + d + f + g;
             }
         },],
     });
@@ -343,14 +344,37 @@ $(function () {
 
     });
 
-    //选中节点
-    $('#tree').on('nodeSelected',function (event,node) {
-        alert(node);
+    $('#infoTable').on('click', 'a[name="button"]', function (e) {
+        e.preventDefault();
+        var roleId = $(this).attr('aid');
+        initTreeView();
+        $.ajax({
+            type: "post",
+            url: Common.getRootPath() + "/admin/rolemodule/query.do",
+            dataType: "json",
+            data:{'roleId':roleId},
+            cache : false,
+            async: false,
+            success: function (result) {
+                if(result.status == Common.SUCCESS){
+                    $('#roleIdQ').val(roleId);
+                    var data = result.data;
+                    var enableNode = $('#tree').treeview('getEnabled');
+                    $.each(data,function (index,value,array) {
+                        $.each(enableNode,function (eindex,evalue,earray) {
+                            if(value == evalue.id){
+                                $('#tree').treeview('selectNode',
+                                    [ evalue.nodeId, { silent: true }]);
+                            }
+                        })
+                    });
+                }
+            }
+        });
+        $('#treeModal').modal('show');
+
     });
 
-    $('#tree').on('nodeUnchecked',function (event,node) {
-        alert(node);
-    });
     /**
      * 保存用户按钮
      * 通过隐藏域判断用户是否存在，而使用不同的方法进行新增或者修改

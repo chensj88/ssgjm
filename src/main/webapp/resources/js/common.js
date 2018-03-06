@@ -84,7 +84,7 @@
         if (top.Common.codes[type]) {
             var codes = top.Common.codes[type];
             for (var i = 0; i < codes.length; i++) {
-                data[codes[i].codeinfoCode] = codes[i].codeinfoValue;
+                data[codes[i].dictValue] = codes[i].dictLabel;
             }
             if (dropdownBox) {
                 Common.setSelectOption(dropdownBox, data);
@@ -100,7 +100,7 @@
             return;
         }
         $.ajax({
-            url: Common.getRootPath() + "/common/getCode.do",
+            url: Common.getRootPath() + "/admin/dict/getCodes.do",
             data: {
                 dictCode: type
             },
@@ -108,10 +108,10 @@
             dataType: 'json',
             async: false,
             success: function (result) {
-                var codeInfo = result.codeInfo;
+                var codeInfo = result.data;
                 top.Common.codes[type] = type;
                 for (var i = 0; i < codeInfo.length; i++) {
-                    data[codeInfo[i].data] = codeInfo[i].label;
+                    data[codeInfo[i].dictValue] = codeInfo[i].dictLabel;
                 }
                 if (dropdownBox) {
                     Common.setSelectOption(dropdownBox, data);

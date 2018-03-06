@@ -71,7 +71,7 @@
                                            placeholder="请输入字典编码">
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="dictValueDiv">
                                 <label class="col-sm-3 control-label" for="dictValue">字典值</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="dictValue" name="dictValue"

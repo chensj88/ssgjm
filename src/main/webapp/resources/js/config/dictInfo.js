@@ -1,6 +1,7 @@
 function editDict(dictCode,dictValue,dictLabel,dictDesc,dictSort){
     $('#dictCode').val(dictCode);
     $('#dictValue').val(dictValue);
+    $('#dictValueDiv').hide();
     $('#dictLabel').val(dictLabel);
     $('#dictDesc').val(dictDesc);
     $('#dictSort').val(dictSort);

@@ -105,11 +105,25 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="videoType">视频分类</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="videoType" name="videoType"
-                                           placeholder="视频分类">
+                                    <select class="form-control" id="videoType" name="videoType"></select>
                                 </div>
                             </div>
+                            <div id="customer">
+                                <div class="form-group" >
+                                    <label class="col-sm-3 control-label" for="custName">客户名称</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="custName" name="custName" placeholder="请输入客户名称">
+                                    </div>
+                                </div>
+                                <input type="hidden" id="custId">
+                                <div class="form-group" >
+                                    <label class="col-sm-3 control-label" for="videoCType">客户视频分类</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="videoCType" name="videoCType"></select>
+                                    </div>
+                                </div>
 
+                            </div>
                             <input type="hidden" name="id" id="id">
                             <input type="reset" style="display:none;"/>
                             <div class="col-sm-8 text-center">
