@@ -65,6 +65,7 @@ public class SysTrainVideoRepoController extends BaseController {
      super.getFacade().getSysTrainVideoRepoService().createSysTrainVideoRepo(repo);
      Map<String,Object> result = new HashMap<String,Object>();
      result.put("status", Constants.SUCCESS);
+     result.put("data", repo.getId());
      return result;
     }
 
@@ -77,6 +78,7 @@ public class SysTrainVideoRepoController extends BaseController {
         super.getFacade().getSysTrainVideoRepoService().modifySysTrainVideoRepo(repo);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
+        result.put("data", repo.getId());
         return result;
     }
 
