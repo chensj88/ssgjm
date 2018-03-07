@@ -42,6 +42,11 @@ function getChildNodeIdSelectArr(node) {
 }
 
 $(function () {
+
+    /**
+     * 角色编辑信息
+     * @param data
+     */
     function editRole(data) {
         $('#id').val(data.id);
         $('#roleName').val(data.roleName);
@@ -165,6 +170,10 @@ $(function () {
                 alert("树形结构加载失败！")
             }
         });
+
+    }
+
+    function generateTreeGrid(data) {
 
     }
     
@@ -350,14 +359,14 @@ $(function () {
         initTreeView();
         $.ajax({
             type: "post",
-            url: Common.getRootPath() + "/admin/rolemodule/query.do",
+            url: Common.getRootPath() + "/admin/rolemodule/queryBtn.do",
             dataType: "json",
             data:{'roleId':roleId},
             cache : false,
             async: false,
             success: function (result) {
                 if(result.status == Common.SUCCESS){
-                    $('#roleIdQ').val(roleId);
+                    $('#roleQId').val(roleId);
                     var data = result.data;
                     var enableNode = $('#tree').treeview('getEnabled');
                     $.each(data,function (index,value,array) {
@@ -418,7 +427,9 @@ $(function () {
      * 查询按钮
      */
     $('#query').on('click',SearchData);
-
+    /**
+     * 保存角色模块信息
+     */
     $('#saveRoleModule').on('click',function (e) {
         //阻止默认行为
         e.preventDefault();
@@ -474,4 +485,8 @@ $(function () {
             });
         }
     });
+
+    function initModuleButton() {
+
+    }
 });

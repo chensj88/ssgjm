@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.StringUtil;
+import cn.com.winning.ssgj.domain.expand.NodeTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,6 +79,13 @@ public class SysModPopedomServiceImpl implements SysModPopedomService {
            this.sysModPopedomDao.insertEntity(modPopedom);
         }
 
+    }
+
+    @Override
+    public List<NodeTree> getModulePopedomInfoList(SysModPopedom modPopedom) {
+        List<SysModPopedom> sysModPopedomList = this.sysModPopedomDao.selectModulePopedomInfoList(modPopedom);
+
+        return null;
     }
 
 }

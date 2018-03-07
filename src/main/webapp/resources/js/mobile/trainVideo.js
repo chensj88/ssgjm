@@ -4,6 +4,7 @@
 $(function () {
 
     var videoType = {};
+    var videoCType = {};
     var objMap = {};
     $('#customer').hide();
     function queryParams(params) {
@@ -132,7 +133,7 @@ $(function () {
 
     function initCodes() {
         Common.getCodes('videoType',videoType,$('#videoType'));
-        Common.setSelectOption($('#videoCType'),videoType);
+        Common.getCodes('videoCType',videoCType,$('#videoCType'));
     }
 
     initCodes();

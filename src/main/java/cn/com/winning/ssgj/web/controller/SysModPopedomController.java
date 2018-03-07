@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.web.controller;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.domain.SysModPopedom;
+import cn.com.winning.ssgj.domain.expand.NodeTree;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ public class SysModPopedomController extends BaseController {
 
     @RequestMapping(value = "/query.do")
     @ResponseBody
-    public Map<String,Object> queryModPopedomMapping(Long roleId){
+    public Map<String,Object> queryRoleModuleMapping(Long roleId){
         SysModPopedom modPopedom = new SysModPopedom();
         modPopedom.setRoleId(roleId);
         List<Long> modIdList = super.getFacade().getSysModPopedomService().getModuleIdList(modPopedom);
@@ -49,6 +50,19 @@ public class SysModPopedomController extends BaseController {
         super.getFacade().getSysModPopedomService().removeSysModPopedom(modPopedom);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
+        return result;
+    }
+
+
+    @RequestMapping(value = "/queryBtn.do")
+    @ResponseBody
+    public Map<String,Object> queryModPopedomMapping(Long roleId){
+        SysModPopedom modPopedom = new SysModPopedom();
+        modPopedom.setRoleId(roleId);
+        List<NodeTree> modIdList = super.getFacade().getSysModPopedomService().getModulePopedomInfoList(modPopedom);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", modIdList);
         return result;
     }
 }
