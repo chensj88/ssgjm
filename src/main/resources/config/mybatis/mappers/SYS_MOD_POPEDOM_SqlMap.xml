@@ -134,4 +134,18 @@
             </if>
         </where>
     </select>
+
+    <select id="selectSysModPopedomHasPopedomList" parameterType="sysModPopedom" resultMap="sysModPopedomResult">
+         SELECT
+         A.*
+        FROM SYS_MOD_POPEDOM A
+        <where>
+            <if test="(roleId != null and roleId != '') or roleId == 0">
+                AND  A.ROLE_ID = #{roleId, jdbcType=BIGINT}
+            </if>
+            <if test="(roleId != null and roleId != '') or roleId == 0">
+                AND A.POPEDOM_CODE IS NOT NULL
+            </if>
+        </where>
+    </select>
 </mapper>

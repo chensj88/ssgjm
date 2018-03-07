@@ -109,7 +109,6 @@ public class SysModPopedom extends BaseDomain implements Serializable {
         nodeTree.setId(id);
         nodeTree.setNodeId(id);
         nodeTree.setText(modName);
-        nodeTree.setLevel(modLevel);
         nodeTree.setNodePid(parId);
         return nodeTree;
     }

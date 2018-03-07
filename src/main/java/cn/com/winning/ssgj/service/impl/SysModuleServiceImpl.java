@@ -8,8 +8,12 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.dao.SysFunDao;
+import cn.com.winning.ssgj.domain.SysFun;
+import cn.com.winning.ssgj.domain.SysRoleInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.SysModuleDao;
@@ -27,6 +31,8 @@ public class SysModuleServiceImpl implements SysModuleService {
 
     @Resource
     private SysModuleDao sysModuleDao;
+    @Autowired
+    private SysFunDao sysFunDao;
 
 
     public Integer createSysModule(SysModule t) {
@@ -107,18 +113,52 @@ public class SysModuleServiceImpl implements SysModuleService {
             param.put("parId",pModule.getModId());
             List<SysModule> childModule = this.sysModuleDao.selectUserChildMenuList(param);
             NodeTree nodeTree = pModule.getNodeTree();
-            nodeTree.setNodes(getChildNodeList(childModule));
+            nodeTree.setNodes(getChildNodeListWithoutFun(childModule));
             userMenu.add(nodeTree);
         }
         return userMenu;
     }
 
-    private List<NodeTree> getChildNodeList(List<SysModule> moduleList) {
+    @Override
+    public List<NodeTree> getRoleMenu(SysRoleInfo roleInfo) {
+        List<NodeTree> roleMenu = new ArrayList<NodeTree>();
+        Map<String,Object> param = new HashMap<String,Object>();
+        param.put("roleId",roleInfo.getId());
+        List<SysModule> childModule = this.sysModuleDao.selectRoleChildMenuList(param);
+        roleMenu = getChildNodeList(childModule);
+        return roleMenu;
+    }
+
+    private List<NodeTree> getChildNodeListWithoutFun(List<SysModule> moduleList) {
         List<NodeTree> nodes = new ArrayList<NodeTree>();
         for (SysModule sysModule : moduleList) {
             nodes.add(sysModule.getNodeTree());
         }
         return nodes;
     }
+    private List<NodeTree> getChildNodeList(List<SysModule> moduleList) {
+        List<NodeTree> nodes = new ArrayList<NodeTree>();
+        for (SysModule sysModule : moduleList) {
+            String funcInfo = getNodeTreeFunInfoString(sysModule);
+            NodeTree node = sysModule.getNodeTree();
+            node.setText(sysModule.getModPath());
+            node.setFunInfo(funcInfo);
+            node.setId(sysModule.getPopedomId());
+            nodes.add(node);
+        }
+        return nodes;
+    }
 
+
+    private String  getNodeTreeFunInfoString(SysModule module) {
+        StringBuilder funcInfoSB = new StringBuilder();
+        Map<String,Object> param = new HashMap<String,Object>();
+        param.put("modId",module.getModId());
+        List<SysFun> funList = this.sysFunDao.selectSysFunByModuleInfo(param);
+        for (SysFun sysFun : funList) {
+            funcInfoSB.append(sysFun.getFunCode() +":" + sysFun.getFunName()+";");
+        }
+        System.out.println(funcInfoSB);
+       return funcInfoSB.toString();
+    }
 }

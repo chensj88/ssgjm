@@ -31,5 +31,7 @@ public interface SysModPopedomService {
 
     void createSysModPopedomForIdList(String idList);
 
-    List<NodeTree> getModulePopedomInfoList(SysModPopedom modPopedom);
+    void modifyModPopedomMapping(String idList);
+
+    List<SysModPopedom> getSysModPopedomHasPopedomList(SysModPopedom modPopedom);
 }

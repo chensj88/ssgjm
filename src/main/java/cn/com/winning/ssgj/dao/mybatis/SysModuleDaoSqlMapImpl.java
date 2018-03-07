@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.dao.mybatis;
 
+import cn.com.winning.ssgj.domain.SysRoleInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import org.springframework.stereotype.Service;
 
@@ -53,5 +54,15 @@ public class SysModuleDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysModule> imple
     public List<SysModule> selectUserChildMenuList(Map<String,Object> param) {
         String statement = "selectUserChildMenuList";
         return super.getSqlSession().selectList(statement,param);
+    }
+
+    @Override
+    public List<SysModule> selectRoleParentMenuList(SysRoleInfo sysRoleInfo) {
+        return super.getSqlSession().selectList("selectRoleParentMenuList",sysRoleInfo);
+    }
+
+    @Override
+    public List<SysModule> selectRoleChildMenuList(Map<String, Object> param) {
+        return super.getSqlSession().selectList("selectRoleChildMenuList",param);
     }
 }

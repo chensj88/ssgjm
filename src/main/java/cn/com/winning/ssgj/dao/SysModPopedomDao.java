@@ -19,4 +19,6 @@ public interface SysModPopedomDao extends EntityDao<SysModPopedom> {
     void deleteSysModPopedomForIds(Map<String, Object> param);
 
     List<SysModPopedom> selectModulePopedomInfoList(SysModPopedom modPopedom);
+
+    List<SysModPopedom> selectSysModPopedomHasPopedomList(SysModPopedom modPopedom);
 }

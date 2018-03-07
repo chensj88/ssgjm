@@ -7,6 +7,7 @@ import cn.com.winning.ssgj.base.util.PmisWSUtil;
 import cn.com.winning.ssgj.ws.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,6 +24,7 @@ import java.util.Map;
  * @package cn.com.winning.ssgj.ws.service
  * @date 2018-02-05 13:09
  */
+@Component
 public class PmisWebServiceClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PmisWebServiceClient.class);
@@ -60,6 +62,16 @@ public class PmisWebServiceClient {
     }
 
     /**
+     * 加载PMIS系统接口数据
+     */
+    public void importPmisData(){
+        for (String dataType : pmisInfoData.keySet()) {
+            String tableNam = pmisInfoData.get(dataType);
+            generateDymaicSql(tableNam,dataType);
+        }
+    }
+
+    /**
      * 导入特定PMIS接口表数据
      * @param dataType
      */
@@ -67,6 +79,7 @@ public class PmisWebServiceClient {
             String tableName = pmisInfoData.get(dataType);
             generateDymaicSql(tableName,dataType);
     }
+
 
     /**
      * SQL数据生成

@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.service;
 import java.util.List;
 
 import cn.com.winning.ssgj.domain.SysModule;
+import cn.com.winning.ssgj.domain.SysRoleInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 
@@ -35,4 +36,6 @@ public interface SysModuleService {
     List<NodeTree> getSysModuleNodeTree(SysModule module);
 
     List<NodeTree> getUserMenu(SysUserInfo sysUserInfo);
+
+    List<NodeTree> getRoleMenu(SysRoleInfo roleInfo);
 }

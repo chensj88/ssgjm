@@ -61,14 +61,14 @@ $(function () {
                         }
                     }
                 },
-                // videoType : {
-                //     message: '视频分类验证失败',
-                //     validators: {
-                //         notEmpty: {
-                //             message: '视频分类不能为空'
-                //         }
-                //     }
-                // },
+                custName : {
+                    message: '客户名称验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '客户名称不能为空'
+                        }
+                    }
+                },
             }
         });
     }

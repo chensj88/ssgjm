@@ -248,12 +248,12 @@ $(function () {
             title: '操作',
             field: 'id',
             align: 'center',
-            width: '40px',
+            width: '60px',
             formatter: function (value, row, index) {
                 var e = '<a href="#" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.id +'" >编辑</a> ';
-                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
+                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '" aname="' + row.roleName + '">删除</a> ';
                 var f = '<a href="####" class="btn btn-success btn-xs" name="tree" mce_href="#" aid="' + row.id + '">配置菜单</a> ';
-                var g = '<a href="####" class="btn btn-success btn-xs" name="button" mce_href="#" aid="' + row.id + '">配置按钮</a> ';
+                var g = '<a href="####" class="btn btn-success btn-xs" name="button" mce_href="#" aid="' + row.id + '" aname="' + row.roleName + '">配置按钮</a> ';
                 return e + d + f + g;
             }
         },],
@@ -292,12 +292,12 @@ $(function () {
     });
     /**
      * 列表中按钮
-     *   删除用户信息
      */
     $('#infoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var roleId = $(this).attr('aid');
-        Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
+        var roleName = $(this).attr('aname');
+        Ewin.confirm({message: "确认要删除["+roleName+"]的数据吗？"}).on(function (e) {
             if (!e) {
                 return;
             }
@@ -320,7 +320,6 @@ $(function () {
             });
         });
     });
-
 
     $('#infoTable').on('click', 'a[name="tree"]', function (e) {
         e.preventDefault();
@@ -353,10 +352,38 @@ $(function () {
 
     });
 
+    function configButtonTable(roleId) {
+        $.ajax({
+            type: "post",
+            url: Common.getRootPath() + "/admin/rolemodule/queryRolePopedom.do",
+            dataType: "json",
+            data:{'roleId':roleId},
+            cache : false,
+            async: false,
+            success: function (result) {
+                if(result.status == Common.SUCCESS) {
+                    var data = result.data;
+                    $.each(data, function (index, value, array) {
+                        var aid = value.id +":" + value.modId;
+                        var popedomCode = value.popedomCode.split(",");
+                        $.each(popedomCode,function (ii,v) {
+                          var e = $('input[aid=\''+aid+'\']');
+                          for(var i=0;i<e.length;i++){
+                              if($(e[i]).val() == v){
+                                  $(e[i]).attr("checked",true);
+                              }
+                          }
+                        });
+                    });
+                }
+            }
+        });
+    }
+
     $('#infoTable').on('click', 'a[name="button"]', function (e) {
         e.preventDefault();
         var roleId = $(this).attr('aid');
-        initTreeView();
+        var roleName = $(this).attr('aname');
         $.ajax({
             type: "post",
             url: Common.getRootPath() + "/admin/rolemodule/queryBtn.do",
@@ -367,25 +394,23 @@ $(function () {
             success: function (result) {
                 if(result.status == Common.SUCCESS){
                     $('#roleQId').val(roleId);
-                    var data = result.data;
-                    var enableNode = $('#tree').treeview('getEnabled');
-                    $.each(data,function (index,value,array) {
-                        $.each(enableNode,function (eindex,evalue,earray) {
-                            if(value == evalue.id){
-                                $('#tree').treeview('selectNode',
-                                    [ evalue.nodeId, { silent: true }]);
-                            }
-                        })
-                    });
+                    if(result.data.length <= 0){
+                        Ewin.alert('角色['+roleName+']配置的菜单中<span style="background-color: red;">没有</span>需要配置的按钮');
+                    }else{
+                        $('#gridModalLabel').text(roleName+'按钮信息');
+                        initModuleButton(result.data);
+                        configButtonTable(roleId);
+                        $('#gridModal').modal('show');
+                    }
                 }
             }
         });
-        $('#treeModal').modal('show');
+
 
     });
 
     /**
-     * 保存用户按钮
+     * 保存按钮
      * 通过隐藏域判断用户是否存在，而使用不同的方法进行新增或者修改
      */
     $('#saveRole').on('click', function (e) {
@@ -416,7 +441,7 @@ $(function () {
                         $("#infoTable").bootstrapTable('refresh');
                     }
                 },
-                fail: function (result) {
+                error: function (result) {
                     Ewin.alert(result);
                 }
             });
@@ -486,7 +511,96 @@ $(function () {
         }
     });
 
-    function initModuleButton() {
-
+    /**
+     * 生成一级菜单
+     * @param data
+     */
+    function initModuleButton(data) {
+        $('#gridTable').bootstrapTable("destroy").bootstrapTable({
+            data: data,
+            cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: false,                   // 是否显示分页（*）
+            sortable: true,                     // 是否启用排序
+            sortOrder: "asc",                   // 排序方式
+            sidePagination: "server",           // 分页方式：client客户端分页，server服务端分页（*）
+            strictSearch: true,
+            showColumns: false,                  // 是否显示所有的列（选择显示的列）
+            showRefresh: false,                  // 是否显示刷新按钮
+            minimumCountColumns: 2,             // 最少允许的列数
+            clickToSelect: true,                // 是否启用点击选中行
+            idField: 'id',
+            sortName: 'id',
+            uniqueId: "id",                 // 每一行的唯一标识，一般为主键列
+            cardView: false,                    // 是否显示详细视图
+            detailView: false,                  // 是否显示父子表
+            toolbarAlign: 'right',
+            paginationLoop: false, //分页条无限循环的功能
+            singleSelect: false,
+            columns: [{
+                field: "text",
+                title: "菜单信息",
+                width: '55px',
+                align: 'center'
+            }, {
+                field: "funInfo",
+                title: "按钮信息",
+                width: '45px',
+                align: 'center',
+                formatter: generateMenuButton
+            }],
+        });
     }
+
+    function generateMenuButton(value,row) {
+        var funArr = value.split(';');
+        var modId = row.id +':' + row.nodeId;
+        var content = "";
+        for( var i=0;i<funArr.length - 1;i++){
+            var btn = funArr[i];
+            var btnArr = btn.split(":");
+            content +="<input type='checkbox' aid="+modId+" value='"+btnArr[0]+"'>"+btnArr[1]+"";
+        }
+        return content;
+    }
+
+    $('#saveP').on('click',function (e) {
+        e.preventDefault();
+        var checkedArr = $('#gridTable').find('input[type=checkbox]:checked');
+        var roleId = $('#roleQId').val();
+        var btnMap = {};
+        $.each(checkedArr,function (index,value,array) {
+            var mid = $(value).attr('aid');
+            var val = $(value).val();
+            if(btnMap[mid]){
+                btnMap[mid] += val +',';
+            }else{
+                btnMap[mid] = val +',';
+            }
+        });
+
+        var idList = '';
+        for( var key in btnMap){
+            var value = Common.substr(btnMap[key],',');
+            idList += key +':' +roleId +':' + value +';';
+        }
+        idList = Common.substr(idList,';')
+        console.log(idList);
+        $.ajax({
+            url: Common.getRootPath() + '/admin/rolemodule/addPopedom.do',
+            data: {"idList":idList},
+            type: "post",
+            dataType: 'json',
+            async: false,
+            success: function (result) {
+                var _result = eval(result);
+                if (_result.status == Common.SUCCESS) {
+                    $('#gridModal').modal('hide');
+                    $("#infoTable").bootstrapTable('refresh');
+                }
+            },
+            error: function (result) {
+                Ewin.alert(result);
+            }
+        });
+    })
 });
