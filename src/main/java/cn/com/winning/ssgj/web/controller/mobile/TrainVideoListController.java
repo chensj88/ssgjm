@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.web.controller.mobile;
 
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.Base64Utils;
+import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.EtTrainVideoList;
 import cn.com.winning.ssgj.domain.SysTrainVideoRepo;
@@ -62,13 +63,13 @@ public class TrainVideoListController extends BaseController {
                     info.setOpenId((String)io.get("OPENID"));
                     info.setName((String)io.get("USERNAME"));
                     info.setUserid((String)io.get("HOSPCODE")+(String)io.get("WORKNUM"));
-                    info.setPassword((String)io.get("WORKNUM"));
+                    info.setPassword(MD5.stringMD5ForBarCode((String)io.get("WORKNUM")));
                     info.setMobile((String)io.get("USERPHONE"));
                     info.setSsgs(Long.parseLong((String)io.get("HOSPCODE")));
                 }
                 //判断用户 userId 是否存在
                 SysUserInfo info_old = new SysUserInfo();
-                info_old.setOpenId(info.getUserid());
+                info_old.setUserid(info.getUserid());
                 List<SysUserInfo> userIfonList =super.getFacade().getSysUserInfoService().getSysUserInfoList(info_old);
 
                 if(info.getSsgs() != 11980){
