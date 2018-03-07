@@ -30,7 +30,7 @@
 				<div class="course-tab">
 					<div class="btm">
 						<dl class="item">
-							<dd class="item-title">${repo.videoName}<span>-${repo.videoType}</span></dd>
+							<dd class="item-title">${repo.videoName}<span>-${repo.typeLabel}</span></dd>
 							<dd class="item-time">视频时长 <span><script>
 										document.write(Common.getHHMMSSDate(${repo.videoTime}));
 									</script></span></dd>
@@ -49,7 +49,7 @@
 					<a href="<%=basePath%>mobile/trainVideoList/videoPlay.do?id=${vwr.id}&OPENID=${OPENID}">
 						<dl class="item">
 							<dt><img src="<%=basePath%>resources/mobile/images/video.png"/></dt>
-							<dd class="item-title">${vwr.videoName}<span>-${vwr.videoType}</span></dd>
+							<dd class="item-title">${vwr.videoName}<span>-${vwr.typeLabel}</span></dd>
 							<dd class="item-time">视频时长 <span><script>
 										document.write(Common.getHHMMSSDate(${vwr.videoTime}));
 									</script></span></dd>
