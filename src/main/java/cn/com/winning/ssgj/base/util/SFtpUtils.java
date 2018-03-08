@@ -116,10 +116,10 @@ public class SFtpUtils {
     /**
      * 删除文件-sftp协议.
      * @param deleteFile 要删除的文件
-     * @param sftp sftp连接
      * @throws Exception 异常
      */
-    public static void rmFile(final String deleteFile, final ChannelSftp sftp) throws Exception {
+    public static void rmFile(final String deleteFile) throws Exception {
+        final ChannelSftp sftp = getSftpConnect();
         try {
             sftp.rm(deleteFile);
         } catch (Exception e) {

@@ -190,6 +190,7 @@ $(function () {
     $('#add').on('click', function () {
         $("input[type=reset]").trigger("click");
         resetValidate();
+        $('#id').val('');
         $('#paramModal').modal('show');
     });
 

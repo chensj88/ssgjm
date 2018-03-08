@@ -1,10 +1,14 @@
 package cn.com.winning.ssgj.service.impl;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.exception.SSGJException;
+import cn.com.winning.ssgj.base.util.FtpUtils;
+import cn.com.winning.ssgj.base.util.SFtpUtils;
 import cn.com.winning.ssgj.dao.SysDictInfoDao;
 import cn.com.winning.ssgj.domain.SysDictInfo;
 import org.springframework.stereotype.Service;
@@ -85,6 +89,38 @@ public class SysTrainVideoRepoServiceImpl implements SysTrainVideoRepoService {
 		return this.sysTrainVideoRepoDao.selectSysTrainVideoWithRecoedList(t);
 	}
 
+	@Override
+	public boolean deleteSysTrainVideoRepo(SysTrainVideoRepo repo) {
+		repo = this.sysTrainVideoRepoDao.selectEntity(repo);
+		String msg= "";
+		boolean ftpStatus = false;
+		if (port == 21){
+			try {
+				ftpStatus = FtpUtils.deleteFtpFile(repo.getRemotePath());
+			}catch (IOException e){
+				msg = e.getMessage();
+			}
+		}else if(port == 22){
+			try {
+				SFtpUtils.rmFile(repo.getRemotePath());
+				ftpStatus = true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				ftpStatus = false;
+				msg = e.getMessage();
+			}
+		}
+		if(msg != ""){
+			throw new SSGJException(msg);
+		}
+		System.out.println(msg);
+		System.out.println(ftpStatus);
+		if(ftpStatus){
+			this.sysTrainVideoRepoDao.deleteEntity(repo);
+		}
+		return ftpStatus;
+	}
+
 	/**
 	 * 设置字典显示值
 	 * @param repo
@@ -94,7 +130,7 @@ public class SysTrainVideoRepoServiceImpl implements SysTrainVideoRepoService {
 		if(!Constants.VIDEO_TYPE_OF_CUSTOMER.equals(repo.getVideoType())){
 			repo.setVideoCType(null);
 		}else{
-			repo.setVideoCLabel(getDictLabel("videoType",repo.getVideoCType()));
+			repo.setVideoCLabel(getDictLabel("videoCType",repo.getVideoCType()));
 		}
 		repo.setTypeLabel(getDictLabel("videoType",repo.getVideoType()));
 		return  repo;

@@ -133,5 +133,35 @@ public class FtpUtils {
 		}
 		return true;
 	}
-	
+
+
+
+	public static boolean deleteFtpFile(String source) throws IOException {
+		boolean flag = false;
+		FTPClient ftp = new FTPClient();// 创建FTPClient对象
+		try {
+			ftp.setControlEncoding(DEFAULT_ENCODER);
+			FTPClientConfig conf = new FTPClientConfig(FTPClientConfig.SYST_NT);
+			conf.setServerLanguageCode("zh");
+			// 连接FTP服务器
+			// 如果采用默认端口，可以使用ftp.connect(url)的方式直接连接FTP服务器
+			ftp.connect(server, port);
+		    ftp.enterLocalPassiveMode();
+		    // 登录ftp
+		    ftp.login(username, password);
+		    flag = ftp.deleteFile(source);
+		} catch (IOException e) {
+			e.printStackTrace();
+			flag = false;
+			throw e;
+		}finally {
+			if (ftp.isConnected()) {
+				try {
+					ftp.disconnect();
+				} catch (IOException ioe) {
+				}
+			}
+		}
+		return  flag;
+	}
 }

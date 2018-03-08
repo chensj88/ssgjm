@@ -123,7 +123,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="isModifyDiv">
+                                <label class="col-sm-3 control-label" for="isModify">文件替换</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="isModify" name="isModify">
+                                        <option value="0">否</option>
+                                        <option value="1">是</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" id="uploadFileDiv">
                                 <label class="col-sm-3 control-label" for="uploadFile">上传文件</label>
                                 <div class="col-sm-6">
                                     <input id="uploadFile" name="uploadFile" type="file">

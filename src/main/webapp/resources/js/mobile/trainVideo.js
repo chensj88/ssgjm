@@ -7,6 +7,7 @@ $(function () {
     var videoCType = {};
     var objMap = {};
     $('#customer').hide();
+    $('#isModifyDiv').hide();
     function queryParams(params) {
         return {
             count: params.limit,    // 每页显示条数
@@ -231,10 +232,12 @@ $(function () {
         $('#videoCType').val('');
         $('#customer').hide();
         $('#videoNameDiv').hide();
+        $('#isModifyDiv').hide();
         //清空验证信息
         $('#trainForm').bootstrapValidator("destroy");
         validateForm();
         initFileInput($('#uploadFile'));
+        $('#uploadFileDiv').show();
         $('#trainModal').modal('show');
     });
 
@@ -253,6 +256,9 @@ $(function () {
         initFileInput($('#uploadFile'));
         //取消默认选中
         $('#videoType').find('option:selected').attr('selected',false);
+        $('#isModifyDiv').show();
+        $('#uploadFileDiv').hide();
+        $('#videoNameDiv').hide();
         //赋值
         $('#trainForm').initForm(data);
         if(data.videoType == Common.VIDEO_TYPE_CUSTOMER){
@@ -389,6 +395,15 @@ $(function () {
        }else {
            $('#customer').hide();
        }
+    });
+
+    $('#isModify').on('change',function () {
+        var selectedOption = $(this).val();
+        if(selectedOption == "1"){
+            $('#uploadFileDiv').show();
+        }else {
+            $('#uploadFileDiv').hide();
+        }
     });
 
 });
