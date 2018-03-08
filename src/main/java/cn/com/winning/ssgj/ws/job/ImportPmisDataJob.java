@@ -1,10 +1,13 @@
 package cn.com.winning.ssgj.ws.job;
 
 import cn.com.winning.ssgj.ws.service.PmisWebServiceClient;
-import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.quartz.QuartzJobBean;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author chenshijie
@@ -16,15 +19,19 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
  *  继承  org.springframework.scheduling.quartz.QuartzJobBean
  *
  */
-public class ImportPmisDataJob extends QuartzJobBean {
+public class ImportPmisDataJob {
 
+    private static final Logger logger = LoggerFactory.getLogger(ImportPmisDataJob.class);
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Autowired
     private PmisWebServiceClient pmisWebServiceClient;
 
-    @Override
-    protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
+    public void execute() throws JobExecutionException {
+        logger.info("开始导入PMIS数据，开始时间为[{}]",sdf.format(new Date()));
         pmisWebServiceClient.importPmisData();
+        logger.info("PMIS数据导入结束，结束时间为[{}]",sdf.format(new Date()));
     }
+
 
     public PmisWebServiceClient getPmisWebServiceClient() {
         return pmisWebServiceClient;
