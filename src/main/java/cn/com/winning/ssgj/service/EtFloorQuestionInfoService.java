@@ -26,4 +26,7 @@ public interface EtFloorQuestionInfoService {
 
     List<EtFloorQuestionInfo> getEtFloorQuestionInfoPaginatedList(EtFloorQuestionInfo t);
 
+    List<EtFloorQuestionInfo> getEtFloorQuestionInfoWithHospitalList(EtFloorQuestionInfo questionInfo);
+
+    List<EtFloorQuestionInfo> getEtFloorQuestionInfoSummaryList(EtFloorQuestionInfo questionInfo);
 }

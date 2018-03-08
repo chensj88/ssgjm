@@ -78,6 +78,9 @@ public class EtFloorQuestionInfo extends BaseDomain implements Serializable {
 	 * @val 操作时间
 	 */
 	private Date operatorTime;
+
+	private String cause;
+
 	
 	public EtFloorQuestionInfo() {
 
@@ -258,5 +261,13 @@ public class EtFloorQuestionInfo extends BaseDomain implements Serializable {
 	public void setOperatorTime(Date operatorTime) {
 		this.operatorTime = operatorTime;
 	}
-	
+
+	public String getCause() {
+		return cause;
+	}
+
+	public void setCause(String cause) {
+		this.cause = cause;
+	}
+
 }

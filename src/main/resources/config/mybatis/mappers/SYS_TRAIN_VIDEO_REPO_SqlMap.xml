@@ -184,8 +184,8 @@
 		OPEN_ID = #{map.OPENID}
 		GROUP BY
 		VIDEO_ID
-		) tt ON t.ID = tt.VIDEO_ID where 1 = 1 <include refid="sf-sysTrainVideoRepo" />
-		<if test="map.not_id != null and map.not_id != ''"> AND ID not in (#{map.not_id}) </if>
+		) tt ON t.ID = tt.VIDEO_ID where 1 = 1 AND  t.REMOTE_PATH IS NOT  NULL  <include refid="sf-sysTrainVideoRepo" />
+		<if test="map.not_id != null and map.not_id != ''"> AND t.ID not in (#{map.not_id}) </if>
 
 
 	</select>
