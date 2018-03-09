@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/fileinput.min.css"/>
     <base href="<%=basePath%>">
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <style type="text/css">
@@ -125,7 +126,23 @@
                                            placeholder="请输入流程描述">
                                 </div>
                             </div>
+                            <div class="form-group" id="isModifyDiv">
+                                <label class="col-sm-3 control-label" for="isModify">文件替换</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="isModify" name="isModify">
+                                        <option value="0">否</option>
+                                        <option value="1">是</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" id="uploadFileDiv">
+                                <label class="col-sm-3 control-label" for="uploadFile">调研问卷</label>
+                                <div class="col-sm-6">
+                                    <input id="uploadFile" name="uploadFile" type="file">
+                                </div>
+                            </div>
                             <input type="hidden" name="id" id="id">
+                            <input type="hidden" name="vid" id="vid">
                             <input type="hidden" name="flowPid" id="flowPid">
                             <input type="reset" style="display:none;"/>
                             <div class="col-sm-8 text-center">
@@ -148,6 +165,8 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/language/zh_CN.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/toastr.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap3-typeahead.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/fileinput.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/fileinput_locale_zh.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/auth/module/flowinfo.js"></script>
 </html>

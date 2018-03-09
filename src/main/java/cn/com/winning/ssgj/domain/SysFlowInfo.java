@@ -64,6 +64,10 @@ public class SysFlowInfo extends BaseDomain implements Serializable {
      * @val 维护时间
      */
     private java.sql.Timestamp lastUpdateTime;
+    /**
+     * @val 流程调研报告上传地址
+     */
+    private String remotePath;
 
     public SysFlowInfo() {
 
@@ -220,6 +224,14 @@ public class SysFlowInfo extends BaseDomain implements Serializable {
 
     public void setFlowParentName(String flowParentName) {
         this.flowParentName = flowParentName;
+    }
+
+    public String getRemotePath() {
+        return remotePath;
+    }
+
+    public void setRemotePath(String remotePath) {
+        this.remotePath = remotePath;
     }
 
     @Override

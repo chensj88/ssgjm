@@ -82,7 +82,6 @@ public class FlowInfoController extends BaseController {
         }else{
             flow.setFlowCode(ssgjHelper.createFlowCode());
         }
-
         flow.setLastUpdateTime(new Timestamp(new Date().getTime()));
         flow.setStatus(Constants.STATUS_USE);
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
@@ -90,6 +89,7 @@ public class FlowInfoController extends BaseController {
         super.getFacade().getSysFlowInfoService().createSysFlowInfo(flow);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
+        result.put("data", flow.getId());
         return result;
     }
 
@@ -124,9 +124,11 @@ public class FlowInfoController extends BaseController {
         flow.setLastUpdateTime(new Timestamp(new Date().getTime()));
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         flow.setLastUpdator(userInfo.getId());
+        flow.setLastUpdateTime(new Timestamp(new Date().getTime()));
         super.getFacade().getSysFlowInfoService().modifySysFlowInfo(flow);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
+        result.put("data", flow.getId());
         return result;
 
     }
@@ -146,7 +148,6 @@ public class FlowInfoController extends BaseController {
     @RequestMapping(value = "/listNoPage.do")
     @ResponseBody
     public Map<String,Object> queryFlowListNoPage(SysFlowInfo flowInfo){
-
         List<SysFlowInfo> sysDataInfos = getFacade().getSysFlowInfoService().getSysFlowInfoListForSelectiveKey(flowInfo);
         int total =  getFacade().getSysFlowInfoService().getSysFlowInfoCountForSelectiveKey(flowInfo);
         Map<String, Object> map = new HashMap<String, Object>();

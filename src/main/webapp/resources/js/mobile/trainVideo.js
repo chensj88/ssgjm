@@ -6,6 +6,7 @@ $(function () {
     var videoType = {};
     var videoCType = {};
     var objMap = {};
+    var selectedFlie = false;
     $('#customer').hide();
     $('#isModifyDiv').hide();
     function queryParams(params) {
@@ -112,6 +113,7 @@ $(function () {
             var name = Common.substr(files[0].name,'.');
             $('#videoName').val(name);
             $('#videoNameDiv').show();
+            selectedFlie = true;
         }).on('filepreupload', function(event, data, previewId, index) {     //上传中
         }).on('fileuploaded',function(event, data, previewId, index){    //一个文件上传成功
             var _data = data.response;
@@ -338,7 +340,9 @@ $(function () {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
                         $('#vid').val(_result.data);
-                        $("#uploadFile").fileinput("upload");
+                        if(selectedFlie){
+                            $("#uploadFile").fileinput("upload");
+                        }
                         $('#trainModal').modal('hide');
                         $("#infoTable").bootstrapTable('refresh');
                     }
