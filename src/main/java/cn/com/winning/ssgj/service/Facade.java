@@ -116,4 +116,6 @@ public interface Facade {
 
     SysTrainVideoRepoService getSysTrainVideoRepoService();
 
+    SysDataCheckScriptService getSysDataCheckScriptService();
+
 }

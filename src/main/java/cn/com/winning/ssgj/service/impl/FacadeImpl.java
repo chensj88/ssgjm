@@ -178,6 +178,9 @@ public class FacadeImpl implements Facade {
     @Resource
     SysTrainVideoRepoService sysTrainVideoRepoService;
 
+    @Resource
+    SysDataCheckScriptService sysDataCheckScriptService;
+
     public EtUserLookProjectService getEtUserLookProjectService() {
         return etUserLookProjectService;
     }
@@ -392,5 +395,7 @@ public class FacadeImpl implements Facade {
 
     public SysTrainVideoRepoService getSysTrainVideoRepoService() { return sysTrainVideoRepoService; }
 
-
+    public SysDataCheckScriptService getSysDataCheckScriptService() {
+        return sysDataCheckScriptService;
+    }
 }
