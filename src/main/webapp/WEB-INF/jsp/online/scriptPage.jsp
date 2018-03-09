@@ -55,9 +55,9 @@
 <div class="row text-center" id="queryScope">
     <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12" >
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
-            <label class="col-sm-6 control-label text-right" for="videoQName">视频名称：</label>
+            <label class="col-sm-6 control-label text-right" for="QName">脚本名称：</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control input-sm" id="videoQName"/>
+                <input type="text" class="form-control input-sm" id="QName"/>
             </div>
         </div>
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -76,53 +76,41 @@
 </div>
 
 <!--模态框  -->
-<div class="modal fade" id="trainModal" tabindex="-1" role="dialog" aria-labelledby="trainFormModal">
+<div class="modal fade" id="scriptModal" tabindex="-1" role="dialog" aria-labelledby="scriptFormModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content" style="width:450px;">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">培训视频信息</h4>
+                <h4 class="modal-title" id="myModalLabel">脚本信息</h4>
             </div>
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
-                        <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="trainForm">
+                        <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="scriptForm">
                             <div class="form-group" id="videoNameDiv">
-                                <label class="col-sm-3 control-label" for="videoName">视频名称</label>
+                                <label class="col-sm-3 control-label" for="name">脚本名称</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="videoName" name="videoName"
-                                           placeholder="请输入视频名称">
+                                    <input type="text" class="form-control" id="name" name="name"
+                                           placeholder="请输入脚本名称">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="videoDesc">视频描述</label>
+                                <label class="col-sm-3 control-label" for="desc">脚本描述</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="videoDesc" name="videoDesc" placeholder="请输入视频描述">
+                                    <input type="text" class="form-control" id="desc" name="desc" placeholder="请输入脚本描述">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="videoType">视频分类</label>
-                                <div class="col-sm-6">
-                                    <select class="form-control" id="videoType" name="videoType"></select>
-                                </div>
-                            </div>
-                            <div id="customer">
                                 <div class="form-group" >
-                                    <label class="col-sm-3 control-label" for="custName">客户名称</label>
+                                    <label class="col-sm-3 control-label" for="appName">适用系统：</label>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control" id="custName" name="custName" placeholder="请输入客户名称" data-provide="typeahead">
+                                        <input type="text" class="form-control" id="appName" name="custName" appName="请输入适用系统" data-provide="typeahead">
                                     </div>
                                 </div>
-                                <input type="hidden" id="cId" name="cId">
-                                <div class="form-group" >
-                                    <label class="col-sm-3 control-label" for="videoCType">客户视频分类</label>
-                                    <div class="col-sm-6">
-                                        <select class="form-control" id="videoCType" name="videoCType"></select>
-                                    </div>
-                                </div>
-                            </div>
+                                <input type="hidden" id="appId" name="appId">
+
+
                             <div class="form-group" id="isModifyDiv">
                                 <label class="col-sm-3 control-label" for="isModify">文件替换</label>
                                 <div class="col-sm-6">

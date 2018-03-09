@@ -26,4 +26,7 @@ public interface SysDataCheckScriptService {
 
 	List<SysDataCheckScript> getSysDataCheckScriptPaginatedList(SysDataCheckScript t);
 
+	List<SysDataCheckScript> getSysDataCheckScriptPageListFuzzy(SysDataCheckScript script);
+
+	int getSysDataCheckScriptCountFuzzy(SysDataCheckScript script);
 }

@@ -7,6 +7,8 @@
 		<result column="NAME" property="name" jdbcType="VARCHAR" />
 		<result column="DESC" property="desc" jdbcType="LONGVARCHAR" />
 		<result column="REMOTE_PATH" property="remotePath" jdbcType="VARCHAR" />
+		<result column="APP_ID" property="appId" jdbcType="BIGINT" />
+		<result column="APP_NAME" property="appName" jdbcType="VARCHAR" />
 		<result column="STATUS" property="status" jdbcType="INTEGER" />
 		<result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT" />
 		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
@@ -19,6 +21,8 @@
 	   <if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
 	   <if test="name != null and name != ''"> and t.NAME = #{name} </if>
 	   <if test="desc != null and desc != ''"> and t.DESC = #{desc} </if>
+		<if test="appId != null "> and t.APP_ID = #{appId} </if>
+		<if test="appName != null and appName != ''"> and t.APP_NAME = #{appName} </if>
 	   <if test="remotePath != null and remotePath != ''"> and t.REMOTE_PATH = #{remotePath} </if>
 	   <if test="(status != null and status != '') or status == 0"> and t.STATUS = #{status} </if>
 	   <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> and t.LAST_UPDATOR = #{lastUpdator} </if>
@@ -77,6 +81,8 @@
 	       <if test="(id != null and id != '') or id == 0"> ID, </if>
 		   <if test="name != null and name != ''"> NAME, </if>
 		   <if test="desc != null and desc != ''"> DESC, </if>
+			<if test="appId != null ">  APP_ID, </if>
+			<if test="appName != null and appName != ''"> APP_NAME</if>
 		   <if test="remotePath != null and remotePath != ''"> REMOTE_PATH, </if>
 	       <if test="(status != null and status != '') or status == 0"> STATUS, </if>
 	       <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> LAST_UPDATOR, </if>
@@ -87,6 +93,8 @@
 	       <if test="(id != null and id != '') or id == 0"> #{id, jdbcType=BIGINT}, </if>
 		   <if test="name != null and name != ''"> #{name, jdbcType=VARCHAR}, </if>
 		   <if test="desc != null and desc != ''"> #{desc, jdbcType=LONGVARCHAR}, </if>
+			<if test="appId != null "> #{appId,jdbcType=BIGINT} </if>
+			<if test="appName != null and appName != ''"> #{appName, jdbcType=VARCHAR} </if>
 		   <if test="remotePath != null and remotePath != ''"> #{remotePath, jdbcType=VARCHAR}, </if>
 	       <if test="(status != null and status != '') or status == 0"> #{status, jdbcType=INTEGER}, </if>
 	       <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> #{lastUpdator, jdbcType=BIGINT}, </if>
@@ -101,6 +109,8 @@
 			   <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>
 			   <if test="name != null and name != ''"> NAME = #{name, jdbcType=VARCHAR}, </if>
 			   <if test="desc != null and desc != ''"> DESC = #{desc, jdbcType=LONGVARCHAR}, </if>
+				<if test="appId != null ">  APP_ID = #{appId,jdbcType=BIGINT}, </if>
+				<if test="appName != null and appName != ''"> APP_NAME = #{appName, jdbcType=VARCHAR},</if>
 			   <if test="remotePath != null and remotePath != ''"> REMOTE_PATH = #{remotePath, jdbcType=VARCHAR}, </if>
 			   <if test="(status != null and status != '') or status == 0"> STATUS = #{status, jdbcType=INTEGER}, </if>
 			   <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> LAST_UPDATOR = #{lastUpdator, jdbcType=BIGINT}, </if>

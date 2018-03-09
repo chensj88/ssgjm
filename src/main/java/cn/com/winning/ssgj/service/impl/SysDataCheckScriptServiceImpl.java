@@ -51,4 +51,14 @@ public class SysDataCheckScriptServiceImpl implements SysDataCheckScriptService 
 		return this.sysDataCheckScriptDao.selectEntityPaginatedList(t);
 	}
 
+	@Override
+	public List<SysDataCheckScript> getSysDataCheckScriptPageListFuzzy(SysDataCheckScript script) {
+		return this.sysDataCheckScriptDao.selectSysDataCheckScriptPageListFuzzy(script);
+	}
+
+	@Override
+	public int getSysDataCheckScriptCountFuzzy(SysDataCheckScript script) {
+		return this.sysDataCheckScriptDao.selectSysDataCheckScriptCountFuzzy(script);
+	}
+
 }

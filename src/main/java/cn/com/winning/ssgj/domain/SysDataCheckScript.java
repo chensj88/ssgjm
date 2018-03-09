@@ -24,6 +24,10 @@ public class SysDataCheckScript extends BaseDomain implements Serializable {
 	private String desc;
 	
 	private String remotePath;
+
+	private Long appId;
+
+	private String appName;
 	
 	private Integer status;
 	
@@ -90,5 +94,20 @@ public class SysDataCheckScript extends BaseDomain implements Serializable {
 	public void setLastUpdateTime(Date lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
 	}
-	
+
+	public Long getAppId() {
+		return appId;
+	}
+
+	public void setAppId(Long appId) {
+		this.appId = appId;
+	}
+
+	public String getAppName() {
+		return appName;
+	}
+
+	public void setAppName(String appName) {
+		this.appName = appName;
+	}
 }
