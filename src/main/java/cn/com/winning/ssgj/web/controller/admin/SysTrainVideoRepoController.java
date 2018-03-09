@@ -65,7 +65,7 @@ public class SysTrainVideoRepoController extends BaseController {
     @Transactional
     public Map<String,Object>  addTrainVideo(SysTrainVideoRepo repo){
      repo.setId(ssgjHelper.createSysTrainVideoRepoId());
-     /*repo.setLastUpdateTime(new Date());*/
+     repo.setLastUpdateTime(DateUtil.getCurrentTimestamp());
      repo.setLastUpdator(((SysUserInfo)SecurityUtils.getSubject().getPrincipal()).getId());
      repo.setStatus(Constants.STATUS_USE);
      super.getFacade().getSysTrainVideoRepoService().createSysTrainVideoRepo(repo);
@@ -79,8 +79,8 @@ public class SysTrainVideoRepoController extends BaseController {
     @ResponseBody
     @Transactional
     public Map<String,Object>  updateTrainVideo(SysTrainVideoRepo repo){
-        /*repo.setLastUpdateTime(new Date());*/
         repo.setLastUpdator(((SysUserInfo)SecurityUtils.getSubject().getPrincipal()).getId());
+        repo.setLastUpdateTime(DateUtil.getCurrentTimestamp());
         super.getFacade().getSysTrainVideoRepoService().modifySysTrainVideoRepo(repo);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
@@ -104,14 +104,14 @@ public class SysTrainVideoRepoController extends BaseController {
     @ResponseBody
     @Transactional
     public Map<String,Object>  modifyTrainVideoById(SysTrainVideoRepo repo){
-       repo.setLastUpdateTime(DateUtil.getCurrentTimestamp());
-        repo.setLastUpdator(((SysUserInfo)SecurityUtils.getSubject().getPrincipal()).getId());
         repo = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepo(repo);
         if(repo.getStatus() == Constants.STATUS_UNUSE){
             repo.setStatus(Constants.STATUS_USE);
         }else{
             repo.setStatus(Constants.STATUS_UNUSE);
         }
+        repo.setLastUpdateTime(DateUtil.getCurrentTimestamp());
+        repo.setLastUpdator(((SysUserInfo)SecurityUtils.getSubject().getPrincipal()).getId());
         super.getFacade().getSysTrainVideoRepoService().modifySysTrainVideoRepo(repo);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);

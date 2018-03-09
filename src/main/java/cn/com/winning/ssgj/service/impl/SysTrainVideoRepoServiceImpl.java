@@ -94,22 +94,27 @@ public class SysTrainVideoRepoServiceImpl implements SysTrainVideoRepoService {
 		repo = this.sysTrainVideoRepoDao.selectEntity(repo);
 		String msg= "";
 		boolean ftpStatus = false;
-		if (port == 21){
-			try {
-				ftpStatus = FtpUtils.deleteFtpFile(repo.getRemotePath());
-			}catch (IOException e){
-				msg = e.getMessage();
-			}
-		}else if(port == 22){
-			try {
-				SFtpUtils.rmFile(repo.getRemotePath());
-				ftpStatus = true;
-			} catch (Exception e) {
-				e.printStackTrace();
-				ftpStatus = false;
-				msg = e.getMessage();
+		if(repo.getRemotePath() == null){
+			ftpStatus = true;
+		}else{
+			if (port == 21){
+				try {
+					ftpStatus = FtpUtils.deleteFtpFile(repo.getRemotePath());
+				}catch (IOException e){
+					msg = e.getMessage();
+				}
+			}else if(port == 22){
+				try {
+					SFtpUtils.rmFile(repo.getRemotePath());
+					ftpStatus = true;
+				} catch (Exception e) {
+					e.printStackTrace();
+					ftpStatus = false;
+					msg = e.getMessage();
+				}
 			}
 		}
+
 		if(msg != ""){
 			throw new SSGJException(msg);
 		}
