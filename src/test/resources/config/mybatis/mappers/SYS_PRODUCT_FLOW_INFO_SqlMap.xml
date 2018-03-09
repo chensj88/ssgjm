@@ -56,7 +56,7 @@
             <if test="(pdId != null and pdId != '') or pdId == 0">PD_ID,</if>
             <if test="(flowId != null and flowId != '') or flowId == 0">FLOW_ID,</if>
             <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR,</if>
-            <if test="lastUpdateTime != null ">LAST_UPDATE_TIME,</if>
+            LAST_UPDATE_TIME
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -65,7 +65,7 @@
             <if test="(lastUpdator != null and lastUpdator != '')">
                 #{lastUpdator, jdbcType=BIGINT},
             </if>
-            <if test="lastUpdateTime != null ">#{lastUpdateTime, jdbcType=TIMESTAMP},</if>
+            CURRENT_TIMESTAMP
         </trim>
     </insert>
 

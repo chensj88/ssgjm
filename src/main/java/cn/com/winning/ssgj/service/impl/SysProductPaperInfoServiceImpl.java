@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.service.impl;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.*;
 
@@ -91,7 +92,7 @@ public class SysProductPaperInfoServiceImpl implements SysProductPaperInfoServic
             info.setEffectiveDate(new Date());
             info.setExpireDate(DateUtil.parse("9999-12-31"));
             info.setLastUpdator(userInfo.getId());
-            info.setLastUpdateTime(new Date());
+            info.setLastUpdateTime(new Timestamp(new Date().getTime()));
             this.sysProductPaperInfoDao.updateEntity(info);
             idsList.add(info.getPdId()+","+info.getrId());
         }
@@ -105,7 +106,7 @@ public class SysProductPaperInfoServiceImpl implements SysProductPaperInfoServic
             info.setEffectiveDate(new Date());
             info.setExpireDate(DateUtil.parse("9999-12-31"));
             info.setLastUpdator(userInfo.getId());
-            info.setLastUpdateTime(new Date());
+            info.setLastUpdateTime(new Timestamp(new Date().getTime()));
             this.sysProductPaperInfoDao.insertEntity(info);
         }
         return 0;

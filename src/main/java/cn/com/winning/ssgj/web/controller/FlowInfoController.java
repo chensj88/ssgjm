@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +83,7 @@ public class FlowInfoController extends BaseController {
             flow.setFlowCode(ssgjHelper.createFlowCode());
         }
 
-        flow.setLastUpdateTime(new Date());
+        flow.setLastUpdateTime(new Timestamp(new Date().getTime()));
         flow.setStatus(Constants.STATUS_USE);
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         flow.setLastUpdator(userInfo.getId());
@@ -120,7 +121,7 @@ public class FlowInfoController extends BaseController {
     @ResponseBody
     @Transactional
     public Map<String,Object> updateFlowById(SysFlowInfo flow){
-        flow.setLastUpdateTime(new Date());
+        flow.setLastUpdateTime(new Timestamp(new Date().getTime()));
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         flow.setLastUpdator(userInfo.getId());
         super.getFacade().getSysFlowInfoService().modifySysFlowInfo(flow);

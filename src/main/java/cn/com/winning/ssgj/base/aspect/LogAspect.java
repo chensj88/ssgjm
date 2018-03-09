@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.base.aspect;
 
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -140,7 +141,7 @@ public class LogAspect {
             //暂时放空
             log.setSerialNo(null);
             log.setOperator(operator.getId());
-            log.setOperatorTime(new Date());
+            log.setOperatorTime(new Timestamp(new Date().getTime()));
             log.setContent(content);
             log.setClientIp(ip);
             log.setClientName(remoteHost);

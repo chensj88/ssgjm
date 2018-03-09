@@ -89,9 +89,9 @@
             <if test="(num != null and num != '') or num == 0">NUM,</if>
             <if test="(status != null )">STATUS,</if>
             <if test="(creator != null and creator != '') or creator == 0">CREATOR,</if>
-            <if test="createTime != null and createTime != ''">CREATE_TIME,</if>
+            CREATE_TIME,
             <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
-            <if test="operatorTime != null and operatorTime != ''">OPERATOR_TIME,</if>
+            OPERATOR_TIME
             <if test="remark != null and remark != ''">REMARK,</if>
         </trim>
         values

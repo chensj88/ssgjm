@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -119,7 +120,7 @@ public class SYSFlowQuestionController extends BaseController {
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         question.setId(ssgjHelper.createSysFlowQuestionId());
         question.setQuesCode(ssgjHelper.createSysFlowQuestionCode());
-        question.setLastUpdateTime(new Date());
+        question.setLastUpdateTime(new Timestamp(new Date().getTime()));
         question.setLastUpdator(userInfo.getId());
         super.getFacade().getSysFlowQuestionService().createSysFlowQuestion(question);
         Map<String,Object> result = new HashMap<String,Object>();
@@ -137,7 +138,7 @@ public class SYSFlowQuestionController extends BaseController {
     @ResponseBody
     public Map<String,Object> updateSysFlowQuestion(SysFlowQuestion question){
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
-        question.setLastUpdateTime(new Date());
+        question.setLastUpdateTime(new Timestamp(new Date().getTime()));
         question.setLastUpdator(userInfo.getId());
         super.getFacade().getSysFlowQuestionService().modifySysFlowQuestion(question);
         Map<String,Object> result = new HashMap<String,Object>();
@@ -152,7 +153,7 @@ public class SYSFlowQuestionController extends BaseController {
     @RequestMapping(value = "/deleteById.do")
     @ResponseBody
     public Map<String,Object> deleteSysFlowQuestion(SysFlowQuestion question){
-        question.setLastUpdateTime(new Date());
+        question.setLastUpdateTime(new Timestamp(new Date().getTime()));
         question.setStatus(Constants.STATUS_UNUSE);
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         question.setLastUpdator(userInfo.getId());

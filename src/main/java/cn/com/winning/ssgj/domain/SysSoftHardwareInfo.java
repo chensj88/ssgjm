@@ -80,7 +80,7 @@ public class SysSoftHardwareInfo extends BaseDomain implements Serializable {
 	/**
 	 * @val 维护时间
 	 */
-	private Date lastUpdateTime;
+	private java.sql.Timestamp lastUpdateTime;
 	
 	public SysSoftHardwareInfo() {
 
@@ -257,14 +257,14 @@ public class SysSoftHardwareInfo extends BaseDomain implements Serializable {
 	/**
 	 * @val 维护时间
 	 */
-	public Date getLastUpdateTime() {
+	public java.sql.Timestamp getLastUpdateTime() {
 		return lastUpdateTime;
 	}
 	
 	/**
 	 * @val 维护时间
 	 */
-	public void setLastUpdateTime(Date lastUpdateTime) {
+	public void setLastUpdateTime(java.sql.Timestamp lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
 	}
 	
