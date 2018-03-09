@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 楼层问题汇报
@@ -34,10 +36,10 @@ public class FloorQuestionController extends BaseController {
     @RequestMapping(value = "/list.do")
     public String floorQuestionList(Model model, String parameter) {
         //进行中的项目
-        String parameter2 = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
+        //String parameter2 = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
         try {
-            byte[] byteArray = Base64Utils.decryptBASE64(parameter2);
-            String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter2), "UTF-8") + "]";
+            byte[] byteArray = Base64Utils.decryptBASE64(parameter);
+            String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
             ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
             SysUserInfo info = new SysUserInfo();
             if (userList != null && !userList.equals("")) {
@@ -87,13 +89,30 @@ public class FloorQuestionController extends BaseController {
         return "/mobile/service/floor-report";
     }
 
+    @RequestMapping("/causeFloorData.do")
+    @ResponseBody
+    public Map<String,Object> causeFloorData (Long id){
+        Map<String,Object> map = new HashMap<String,Object>();
+        EtFloorQuestionInfo info = new EtFloorQuestionInfo();
+        info.setId(id);
+        info = super.getFacade().getEtFloorQuestionInfoService().getEtFloorQuestionInfo(info);
+        map.put("info",info);
+        return map;
+    }
+
 
     @RequestMapping("/causeFloor.do")
     @ResponseBody
-    public  void causeFloor (EtFloorQuestionInfo info){
-
-        super.getFacade().getEtFloorQuestionInfoService().modifyEtFloorQuestionInfo(info);
-
+    public  Map<String,Object> causeFloor (EtFloorQuestionInfo info){
+        Map<String,Object> map = new HashMap<String,Object>();
+        try {
+            super.getFacade().getEtFloorQuestionInfoService().modifyEtFloorQuestionInfo(info);
+            map.put("status",true);
+        }catch (Exception e){
+            e.printStackTrace();
+            map.put("status",false);
+        }
+        return map;
     }
 
 }

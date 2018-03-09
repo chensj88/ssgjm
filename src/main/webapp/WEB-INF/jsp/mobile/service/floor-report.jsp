@@ -31,8 +31,9 @@
 						<h1>${vwr.floorName}</h1>
 						<div class="select-down">
 							<span class="solve">${vwr.isOperation=='1'?'已解决':'未解决'}</span>
-							<input type="hidden" name="id" value="${vwr.id}">
-							<i class="mui-icon mui-icon-arrowdown"></i>
+							<i class="mui-icon mui-icon-arrowdown">
+								<input type="hidden" id="${vwr.id}" value="${vwr.id}">
+							</i>
 						</div>
 					</div>
 					<div class="type">
@@ -48,7 +49,7 @@
 					<div class="timeline">
 						<dl>
 							<dt>2018.01.03</dt>
-							<dd><strong>更新人：</strong>${vwr.operator}</dd>
+							<dd><strong>更新人：</strong>${vwr.map.get("name")}</dd>
 							<dd><strong>状态变更：</strong>${vwr.isOperation=='1'?'已解决':'未解决'}</dd>
 						</dl>
 
@@ -61,6 +62,7 @@
 				<div class="null"></div>
 				</c:forEach>
 
+				<input type="hidden" id="current_id" >
 
 
 
@@ -73,7 +75,7 @@
 					    <div class="mui-col-xs-9 radio">
 					    	<div class="mui-input-row mui-radio mui-left mui-inline">
 							    <label>未解决</label>
-							    <input name="radio" type="radio" value="0" checked >
+							    <input name="radio" type="radio" value="0"  >
 							</div>
 							<div class="mui-input-row mui-radio mui-left mui-inline">
 							    <label>已安装</label>
@@ -107,6 +109,24 @@
 				});
 				$('.select-down i').click(function(){
 					$('.mask').fadeIn();
+					$("#current_id").val($(this).find("input").val());
+					//回显内容
+                    $.ajax({
+                        type: "POST",
+                        url:"<%=basePath%>/mobile/floorQuestion/causeFloorData.do",
+                        data:{"id":$(this).find("input").val()},
+                        dataType:"json",
+                        cache : false,
+                        error: function(request) {
+                            alert("服务端错误，或网络不稳定，本次操作被终止。");
+                            console.log(request);
+                        },
+                        success: function(data) {
+                            $("#reason").val(data.info.cause);
+                            $('.radio input[type="radio"]').eq(data.info.isOperation).attr("checked",true);
+                        }
+                    });
+
 				})
 				$('.mask-btn').click(function(){
 					$('.mask').fadeOut();
@@ -117,10 +137,12 @@
 			    //获取值
 				var radio = $("input[name='radio']:checked").val();
                 var reason = $("#reason").val();
+                var id = $("#current_id").val();
+
                 $.ajax({
                     type: "POST",
-                    url:Common.getRootPath()+"/login/check.do",
-                    data:{"radio":radio,"reason":reason},
+                    url:"<%=basePath%>/mobile/floorQuestion/causeFloor.do",
+                    data:{"isOperation":radio,"cause":reason,id:id},
                     dataType:"json",
                     cache : false,
                     error: function(request) {
@@ -129,9 +151,10 @@
                     },
                     success: function(data) {
                         if(data.status) {
-                            $("#loginSub").submit();
+                            alert("修改成功");
+                            location.reload();
                         } else {
-                            alert(data.message);
+                            alert("修改失败");
                         }
                     }
                 });

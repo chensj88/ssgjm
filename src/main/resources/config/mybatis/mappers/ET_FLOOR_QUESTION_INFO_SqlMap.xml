@@ -24,6 +24,7 @@
         <result column="num" property="map.num" jdbcType="VARCHAR"/>
         <result column="num_no" property="map.num_no" jdbcType="VARCHAR"/>
         <result column="num_use" property="map.num_use" jdbcType="VARCHAR"/>
+        <result column="NAME" property="map.name" jdbcType="VARCHAR"/>
 
     </resultMap>
 
@@ -78,8 +79,8 @@
     <!--  Chen,Kuai 2018年3月7日13:24:39 楼层具体信息 -->
     <select id="selectEtFloorQuestionInfoWithHospitalList" resultMap="etFloorQuestionInfoResult"
             parameterType="etFloorQuestionInfo">
-         SELECT f.* from ET_FLOOR_QUESTION_INFO f LEFT JOIN
-        (SELECT t.USERID,p.NAME,c.CODE,i.ID,i.HTYHF,i.ZHTXX,
+         SELECT f.*,tt.NAME from ET_FLOOR_QUESTION_INFO f LEFT JOIN
+        (SELECT t.USERID,t.NAME,c.CODE,t.ID,i.HTYHF,i.ZHTXX,
                      m.IS_END ,m.C_ID,m.PM_ID FROM SYS_USER_INFO t
             LEFT JOIN PMIS_CUSTOMER_INFORMATION c ON t.SSGS = c.ID
             LEFT JOIN PMIS_CONTRACT_INFO i ON i.HTYHF = c.CODE
