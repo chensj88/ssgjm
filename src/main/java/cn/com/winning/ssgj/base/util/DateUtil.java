@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.base.util;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -168,5 +169,9 @@ public final class DateUtil {
         return df.format(new Date());
     }
 
+
+    public static Timestamp getCurrentTimestamp(){
+        return  new Timestamp(new Date().getTime());
+    }
 
 }

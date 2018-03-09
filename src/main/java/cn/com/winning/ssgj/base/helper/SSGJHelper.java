@@ -137,6 +137,14 @@ public class SSGJHelper {
     @Qualifier("sysTrainVideoRepoIdService")
     private StepSequenceFactory sysTrainVideoRepoIdService;
 
+    @Autowired
+    @Qualifier(value = "dataCheckScriptIdService")
+    private StepSequenceFactory  dataCheckScriptIdService;
+
+    public long createDataCheckScriptIdService(){
+        return (long) dataCheckScriptIdService.create();
+    }
+
     public long createVideoIdService(){
         return (long) videoIdService.create();
     }

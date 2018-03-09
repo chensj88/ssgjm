@@ -4,6 +4,7 @@
  * 2018-01-25
  */
 $(function () {
+    var selectedFlie = false;
     /**
      * 查询
      * @constructor
@@ -133,12 +134,16 @@ $(function () {
         $("input[type=reset]").trigger("click");
         $('#id').val('');
         $('#flowPid').val('');
+        $('#vid').val('');
         //清空验证信息
         $('#flowForm').bootstrapValidator("destroy");
        /* $('#flowForm').bootstrapValidator(null);*/
         validateForm();
+        initFileInput();
         $('#flowParent').show();
         $('#flowCodeDiv').show();
+        $('#uploadFileDiv').show();
+        $('#isModifyDiv').hide();
         $('#flowCodeDiv').attr('readonly',true);
         $('#flowModal').modal('show');
     });
@@ -148,6 +153,7 @@ $(function () {
      */
     $('#infoTable').on('click', 'a[name="edit"]', function (e) {
         e.preventDefault();
+        $('#isModify').val('');
         //清空验证信息
         $('#flowForm').bootstrapValidator("destroy");
         /*$('#flowForm').bootstrapValidator(null);*/
@@ -167,9 +173,14 @@ $(function () {
                     $('#flowCode').attr('readonly','true');
                     if(_result.data.flowType == "0"){
                         $('#flowParent').hide();
+                        $('#uploadFileDiv').hide();
                     }else{
                         $('#flowParent').show();
+                        $('#isModifyDiv').show();
+                        $('#uploadFileDiv').hide();
                     }
+                    initFileInput();
+                    $('#vid').val(_result.data.id);
                     $('#flowModal').modal('show');
                 }
 
@@ -237,6 +248,10 @@ $(function () {
                 success: function (result) {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
+                        $('#vid').val(_result.data);
+                        if(selectedFlie){
+                            $("#uploadFile").fileinput("upload");
+                        }
                         $('#flowModal').modal('hide');
                         $("#infoTable").bootstrapTable('refresh');
                     }
@@ -251,12 +266,53 @@ $(function () {
         if(selEle == '1'){
             $('#flowParent').show();
             $('#flowCodeDiv').show();
+            $('#uploadFileDiv').show();
         }else{
             $('#flowParent').hide();
             $('#flowCodeDiv').hide();
+            $('#uploadFileDiv').hide();
         }
     });
 
+    function initFileInput() {
+        $('#uploadFile').fileinput({
+            language: "zh",//配置语言
+            uploadUrl: Common.getRootPath() +"/admin/upload/flow.do",
+            showUpload : false,
+            showRemove : true,
+            showPreview : false,
+            showCaption: true,//是否显示标题
+            uploadAsync: true,
+            dropZoneEnabled:false,
+            uploadLabel: "上传",//设置上传按钮的汉字
+            uploadClass: "btn btn-primary",//设置上传按钮样式
+            maxFileSize : 0,
+            maxFileCount: 1,/*允许最大上传数，可以多个，当前设置单个*/
+            enctype: 'multipart/form-data',
+            /*allowedPreviewTypes : [ 'video' ],*/
+            allowedFileExtensions : ["doc", "docx","xls","xlsx"],/*上传文件格式*/
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+            showBrowse: false,
+            browseOnZoneClick: true,
+            uploadExtraData:function (previewId, index) {
+                return {'id':$('#vid').val()};
+            },
+            slugCallback : function(filename) {
+                return filename.replace('(', '_').replace(']', '_');
+            }
+        }).on("filebatchselected",function(event, files){
+            selectedFlie = true;
+        }).on('filepreupload', function(event, data, previewId, index) {     //上传中
+        }).on('fileuploaded',function(event, data, previewId, index){    //一个文件上传成功
+            var _data = data.response;
+            if(_data.status == Common.SUCCESS){
+                $("#infoTable").bootstrapTable('refresh');
+            }else{
+                Ewin.alert(_data.msg)
+            }
+            $('#vid').val('');
+        });
+    }
     //自动补全
     $('#flowParentCode').typeahead({
         source : function (query,process) {
@@ -313,6 +369,7 @@ $(function () {
         },
         items : 8,
     });
+
     function validateForm() {
         $('#flowForm').bootstrapValidator({
             message: '输入的值不符合规格',
@@ -346,4 +403,14 @@ $(function () {
      * 查询按钮
      */
     $('#query').on('click',SearchData);
+
+
+    $('#isModify').on('change',function () {
+        var selectedOption = $(this).val();
+        if(selectedOption == "1"){
+            $('#uploadFileDiv').show();
+        }else {
+            $('#uploadFileDiv').hide();
+        }
+    });
 });
