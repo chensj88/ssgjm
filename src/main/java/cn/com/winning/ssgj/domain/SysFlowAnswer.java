@@ -41,7 +41,7 @@ public class SysFlowAnswer extends BaseDomain implements Serializable {
 
     private Long lastUpdator;
 
-    private Date lastUpdateTime;
+    private java.sql.Timestamp lastUpdateTime;
 
     public SysFlowAnswer() {
 
@@ -95,11 +95,11 @@ public class SysFlowAnswer extends BaseDomain implements Serializable {
         this.lastUpdator = lastUpdator;
     }
 
-    public Date getLastUpdateTime() {
+    public java.sql.Timestamp getLastUpdateTime() {
         return lastUpdateTime;
     }
 
-    public void setLastUpdateTime(Date lastUpdateTime) {
+    public void setLastUpdateTime(java.sql.Timestamp lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
 

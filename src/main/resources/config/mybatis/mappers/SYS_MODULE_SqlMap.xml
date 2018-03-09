@@ -15,6 +15,9 @@
         <result column="IS_MANAGER" property="isManager" jdbcType="INTEGER"/>
         <result column="ORDER_VALUE" property="orderValue" jdbcType="INTEGER"/>
         <result column="IS_DEL" property="isDel" jdbcType="INTEGER"/>
+        <result column="MOD_PATH" property="modPath" jdbcType="VARCHAR"/>
+        <result column="POPEDOM_ID" property="popedomId" jdbcType="BIGINT"/>
+
     </resultMap>
 
     <resultMap id="sysModuleResult" type="sysModule" extends="sysModuleResultForList">
@@ -187,5 +190,25 @@
         LEFT JOIN SYS_MOD_POPEDOM B ON A.ROLE_ID = B.ROLE_ID
         LEFT JOIN SYS_MODULE C ON B.MOD_ID = C.MOD_ID
         WHERE A.USER_ID = ${userId} AND  C.MOD_LEVEL = 2  AND C.IS_DEL = 0 AND C.PAR_ID =${parId}
+    </select>
+
+    <!--查询角色父级菜单-->
+    <select id="selectRoleParentMenuList" resultMap="sysModuleResult" parameterType="sysRoleInfo">
+        SELECT
+        C.*
+        FROM SYS_MOD_POPEDOM B
+        LEFT JOIN SYS_MODULE C ON B.MOD_ID = C.MOD_ID
+        WHERE B.ROLE_ID = ${id} AND  C.MOD_LEVEL = 1  AND C.IS_DEL = 0
+    </select>
+    <!--查询角色子级菜单-->
+    <select id="selectRoleChildMenuList" resultMap="sysModuleResult" parameterType="java.util.Map">
+        SELECT
+        C.*,
+        B.ID AS POPEDOM_ID,
+        D.MOD_NAME +'/' + C.MOD_NAME AS MOD_PATH
+        FROM SYS_MOD_POPEDOM B
+        LEFT JOIN SYS_MODULE C ON B.MOD_ID = C.MOD_ID
+        LEFT JOIN  SYS_MODULE D ON C.PAR_ID = D.MOD_ID
+        WHERE B.ROLE_ID = ${roleId} AND  C.MOD_LEVEL = 2  AND C.IS_DEL = 0
     </select>
 </mapper>

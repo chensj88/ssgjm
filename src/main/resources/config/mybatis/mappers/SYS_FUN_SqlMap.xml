@@ -138,4 +138,12 @@
         from SYS_FUN t where 1 = 1
         <include refid="sysFunFuzzy"/>
     </select>
+
+    <select id="selectSysFunByModuleInfo" resultMap="sysFunResult" parameterType="java.util.Map">
+        SELECT
+        C.*
+        FROM SYS_MOD_FUN B
+        LEFT JOIN SYS_FUN C ON B.FUN_ID = C.ID
+        WHERE  B.MOD_ID = ${modId}
+    </select>
 </mapper>

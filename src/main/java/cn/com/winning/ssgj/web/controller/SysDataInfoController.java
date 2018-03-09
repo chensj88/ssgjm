@@ -1,5 +1,7 @@
 package cn.com.winning.ssgj.web.controller;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -137,6 +139,7 @@ public class SysDataInfoController extends BaseController {
 	@Transactional
 	@ILog(operationName="修改基础数据类型",operationType="update")
 	public Map<String, Object> update(SysDataInfo t) {
+		t.setLastUpdateName(new Timestamp(new Date().getTime()));
         getFacade().getSysDataInfoService().modifySysDataInfo(t);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", Constants.SUCCESS);

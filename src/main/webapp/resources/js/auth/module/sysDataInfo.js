@@ -3,7 +3,92 @@
  * @author chensj
  * @version 1.0.0
  */
+
+
+/**
+ * 表单验证
+ */
+function validateForm() {
+    $('#sysDataInfoForm').bootstrapValidator({
+        message: '输入的值不符合规格',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            dbName: {
+                message: '数据库名称验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '数据库名不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 20,
+                        message: '数据库名长度必须在2到20位之间'
+                    }
+                }
+            },
+            tableName: {
+                validators: {
+                    notEmpty: {
+                        message: '数据库表名不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 20,
+                        message: '数据库表名长度必须在2到20位之间'
+                    }
+//                ,
+//                regexp: {
+//                    regexp: /[\u4e00-\u9fa5]/,
+//                    message: '数据库表名不能包含中文'
+//                }
+                }
+            },
+            tableCnName : {
+                validators: {
+                    notEmpty: {
+                        message: '库表中文名不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 50,
+                        message: '库表中文名必须在2到50位之间'
+                    }
+                }
+            },
+            tableAttention : {
+                validators: {
+                    notEmpty: {
+                        message: '注意事项不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 50,
+                        message: '注意事项必须在2到50位之间'
+                    }
+                }
+            },
+            standardCode : {
+                validators: {
+                    notEmpty: {
+                        message: '标准文号不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 50,
+                        message: '标准文号必须在2到50位之间'
+                    }
+                }
+            }
+        }
+    });
+}
+
 $(function () {
+
     /**
      * 查询
      * @constructor
@@ -100,13 +185,13 @@ $(function () {
                 formatter: function (value) {
                     if (value == '1') {
                         return '行标数据';
-                    } else if (value = '0') {
+                    } else if (value == '0') {
                         return '国标数据';
                     }
-                    else if (value = '2') {
+                    else if (value == '2') {
                         return '共享数据';
                     }
-                    else if (value = '3') {
+                    else if (value == '3') {
                         return '易用数据';
                     }
                 },
@@ -162,6 +247,8 @@ $(function () {
         $('#tableCnName').val("");
         $('#tableAttention').val("");
         $('#standardCode').val("");
+        $('#sysDataInfoForm').bootstrapValidator("destroy");
+        validateForm();
         $('#sysDataInfoModal').modal('show');
     });
 
@@ -215,7 +302,6 @@ $(function () {
         } else {
             url = Common.getRootPath() + '/admin/basicData/update.do';
         }
-        console.log($("#sysDataInfoForm").serialize());
         $.ajax({
             url: url,
             data: $("#sysDataInfoForm").serialize(),
@@ -226,7 +312,7 @@ $(function () {
                 var _result = eval(result);
                 if (_result.status == Common.SUCCESS) {
                     $('#sysDataInfoModal').modal('hide');
-                    $("#sysDataInfo").bootstrapTable('refresh');
+                    $("#infoTable").bootstrapTable('refresh');
                 }
 
             }
@@ -244,84 +330,9 @@ function edit(id,dbName,tableName,tableCnName,tableAttention,standardCode) {
     $('#tableAttention').val(tableAttention);
     $('#standardCode').val(standardCode);
     $('#id').val(id);
+    $('#sysDataInfoForm').bootstrapValidator("destroy");
+    validateForm();
     $('#sysDataInfoModal').modal('show');
 }
-/**
- * 表单验证
- */
-$('#sysDataInfoForm').bootstrapValidator({
-    message: '输入的值不符合规格',
-    feedbackIcons: {
-        valid: 'glyphicon glyphicon-ok',
-        invalid: 'glyphicon glyphicon-remove',
-        validating: 'glyphicon glyphicon-refresh'
-    },
-    fields: {
-    	dbName: {
-            message: '数据库名称验证失败',
-            validators: {
-                notEmpty: {
-                    message: '数据库名不能为空'
-                },
-                stringLength: {
-                    min: 2,
-                    max: 20,
-                    message: '数据库名长度必须在2到20位之间'
-                }
-            }
-        },
-        tableName: {
-            validators: {
-                notEmpty: {
-                    message: '数据库表名不能为空'
-                },
-                stringLength: {
-                    min: 2,
-                    max: 20,
-                    message: '数据库表名长度必须在2到20位之间'
-                }
-//                ,
-//                regexp: {
-//                    regexp: /[\u4e00-\u9fa5]/,
-//                    message: '数据库表名不能包含中文'
-//                }
-            }
-        },
-        tableCnName : {
-            validators: {
-                notEmpty: {
-                    message: '库表中文名不能为空'
-                },
-                stringLength: {
-                    min: 2,
-                    max: 50,
-                    message: '库表中文名必须在2到50位之间'
-                }
-            }
-        },
-        tableAttention : {
-            validators: {
-                notEmpty: {
-                    message: '注意事项不能为空'
-                },
-                stringLength: {
-                    min: 2,
-                    max: 50,
-                    message: '注意事项必须在2到50位之间'
-                }
-            }
-        },
-        standardCode : {
-            validators: {
-                notEmpty: {
-                    message: '标准文号不能为空'
-                },
-                stringLength: {
-                    min: 2,
-                    max: 50,
-                    message: '标准文号必须在2到50位之间'
-                }
-            }
-        }
-    }
-});
+
+

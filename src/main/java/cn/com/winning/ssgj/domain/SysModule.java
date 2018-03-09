@@ -42,6 +42,12 @@ public class SysModule extends BaseDomain implements Serializable {
 
     private Integer isDel;
 
+    private String modPath;
+    /**
+     * 关联角色信息表主键
+     */
+    private Long popedomId;
+
     private NodeTree nodeTree = new NodeTree();
 
     public SysModule() {
@@ -151,10 +157,27 @@ public class SysModule extends BaseDomain implements Serializable {
         nodeTree.setText(modName);
         nodeTree.setNodeIcon(iconPath);
         nodeTree.setUrlPath(modUrl);
+        nodeTree.setLevel(modLevel);
         return nodeTree;
     }
 
     public void setNodeTree(NodeTree nodeTree) {
         this.nodeTree = nodeTree;
+    }
+
+    public String getModPath() {
+        return modPath;
+    }
+
+    public void setModPath(String modPath) {
+        this.modPath = modPath;
+    }
+
+    public Long getPopedomId() {
+        return popedomId;
+    }
+
+    public void setPopedomId(Long popedomId) {
+        this.popedomId = popedomId;
     }
 }

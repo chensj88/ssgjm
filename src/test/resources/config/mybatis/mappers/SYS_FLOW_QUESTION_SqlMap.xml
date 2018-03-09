@@ -73,7 +73,7 @@
             <if test="quesDesc != null and quesDesc != ''">QUES_DESC,</if>
             <if test="(status != null )">STATUS,</if>
             <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR,</if>
-            <if test="lastUpdateTime != null ">LAST_UPDATE_TIME,</if>
+            LAST_UPDATE_TIME
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -88,7 +88,7 @@
             <if test="(lastUpdator != null and lastUpdator != '')">
                 #{lastUpdator, jdbcType=BIGINT},
             </if>
-            <if test="lastUpdateTime != null ">#{lastUpdateTime, jdbcType=TIMESTAMP},</if>
+            CURRENT_TIMESTAMP
         </trim>
     </insert>
 

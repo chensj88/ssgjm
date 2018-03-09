@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 import org.apache.ibatis.type.Alias;
+
+import java.sql.Timestamp;
 import java.util.Date;
 import cn.com.winning.ssgj.domain.BaseDomain;
 
@@ -78,7 +80,7 @@ public class SysDataInfo extends BaseDomain implements Serializable {
 	/**
 	 * @val 维护时间
 	 */
-	private Date lastUpdateName;
+	private java.sql.Timestamp lastUpdateName;
 
 	private NodeTree nodeTree = new NodeTree();
 	
@@ -253,14 +255,14 @@ public class SysDataInfo extends BaseDomain implements Serializable {
 	/**
 	 * @val 维护时间
 	 */
-	public Date getLastUpdateName() {
+	public Timestamp getLastUpdateName() {
 		return lastUpdateName;
 	}
 	
 	/**
 	 * @val 维护时间
 	 */
-	public void setLastUpdateName(Date lastUpdateName) {
+	public void setLastUpdateName(Timestamp lastUpdateName) {
 		this.lastUpdateName = lastUpdateName;
 	}
 

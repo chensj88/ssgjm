@@ -51,4 +51,14 @@ public class EtFloorQuestionInfoServiceImpl implements EtFloorQuestionInfoServic
         return this.etFloorQuestionInfoDao.selectEntityPaginatedList(t);
     }
 
+    @Override
+    public List<EtFloorQuestionInfo> getEtFloorQuestionInfoWithHospitalList(EtFloorQuestionInfo t) {
+        return this.etFloorQuestionInfoDao.selectEtFloorQuestionInfoWithHospitalList(t);
+    }
+
+    @Override
+    public List<EtFloorQuestionInfo> getEtFloorQuestionInfoSummaryList(EtFloorQuestionInfo t) {
+        return this.etFloorQuestionInfoDao.selectEtFloorQuestionInfoSummaryList(t);
+    }
+
 }

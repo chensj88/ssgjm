@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.dao.mybatis;
 
+import cn.com.winning.ssgj.domain.SysModule;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +9,7 @@ import cn.com.winning.ssgj.domain.SysFun;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -38,5 +40,10 @@ public class SysFunDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysFun> implements 
     public List<SysFun> selectSysFunListForName(SysFun fun) throws DataAccessException {
         String statement = "selectSysFunListForName";
         return super.getSqlSession().selectList(statement, fun);
+    }
+
+    @Override
+    public List<SysFun> selectSysFunByModuleInfo(Map<String,Object> param) {
+        return  super.getSqlSession().selectList("selectSysFunByModuleInfo", param);
     }
 }

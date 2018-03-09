@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.dao;
 
 import cn.com.winning.ssgj.domain.SysModule;
 import cn.com.winning.ssgj.dao.EntityDao;
+import cn.com.winning.ssgj.domain.SysRoleInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 
 import java.util.List;
@@ -26,4 +27,8 @@ public interface SysModuleDao extends EntityDao<SysModule> {
     List<SysModule> selectUserParentMenuList(SysUserInfo sysUserInfo);
 
     List<SysModule> selectUserChildMenuList(Map<String,Object> param);
+
+    List<SysModule> selectRoleParentMenuList(SysRoleInfo sysRoleInfo);
+
+    List<SysModule> selectRoleChildMenuList(Map<String,Object> param);
 }

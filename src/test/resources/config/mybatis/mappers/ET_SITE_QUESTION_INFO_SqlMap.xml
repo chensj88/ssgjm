@@ -101,9 +101,9 @@
             <if test="(isOperation != null and isOperation != '') or isOperation == 0">IS_OPERATION,</if>
             <if test="remark != null and remark != ''">REMARK,</if>
             <if test="(creator != null and creator != '') or creator == 0">CREATOR,</if>
-            <if test="createTime != null and createTime != ''">CREATE_TIME,</if>
+            CREATE_TIME,
             <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
-            <if test="operatorTime != null and operatorTime != ''">OPERATOR_TIME,</if>
+            OPERATOR_TIME
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">

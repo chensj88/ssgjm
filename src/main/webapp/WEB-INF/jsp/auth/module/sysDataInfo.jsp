@@ -115,7 +115,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label" >数据类型</label>
                                 <div class="col-sm-6">
-	                                <select name="dataType" id="dataType">
+	                                <select name="dataType" class="form-control" id="dataType">
 										<option value="0">国标数据</option>
 										<option value="1">行标数据</option>
 										<option value="2">共享数据</option>

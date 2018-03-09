@@ -39,6 +39,11 @@ public class SysTrainVideoRepoController extends BaseController {
         return "mobile/trainVideoPage";
     }
 
+    @RequestMapping(value = "/video.do")
+    public String getDeletePageInfo(HttpServletRequest request, Model model){
+        return "mobile/trainVideo";
+    }
+
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
@@ -65,6 +70,7 @@ public class SysTrainVideoRepoController extends BaseController {
      super.getFacade().getSysTrainVideoRepoService().createSysTrainVideoRepo(repo);
      Map<String,Object> result = new HashMap<String,Object>();
      result.put("status", Constants.SUCCESS);
+     result.put("data", repo.getId());
      return result;
     }
 
@@ -77,6 +83,7 @@ public class SysTrainVideoRepoController extends BaseController {
         super.getFacade().getSysTrainVideoRepoService().modifySysTrainVideoRepo(repo);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
+        result.put("data", repo.getId());
         return result;
     }
 
@@ -135,4 +142,16 @@ public class SysTrainVideoRepoController extends BaseController {
         result.put("data", customerInformationList);
         return result;
     }
+
+    @RequestMapping(value = "/delete.do")
+    @ResponseBody
+    @Transactional
+    public Map<String,Object>  deleteTrainVideo(SysTrainVideoRepo repo){
+        super.getFacade().getSysTrainVideoRepoService().deleteSysTrainVideoRepo(repo);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
+
+
 }

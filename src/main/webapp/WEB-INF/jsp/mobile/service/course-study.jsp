@@ -41,6 +41,7 @@
 				<div class="btm">
 					<div class="current">
 						<c:forEach var="vwr" items="${videoWithRecoed}"  >
+
 							<a href="<%=basePath%>mobile/trainVideoList/videoPlay.do?id=${vwr.id}&OPENID=${OPENID}">
 								<dl class="item">
 									<dt><img src="<%=basePath%>resources/mobile/images/video.png"/></dt>

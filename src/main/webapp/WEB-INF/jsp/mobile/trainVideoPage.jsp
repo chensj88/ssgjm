@@ -89,7 +89,7 @@
                 <div class="container">
                     <div class="row">
                         <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="trainForm">
-                            <div class="form-group">
+                            <div class="form-group" id="videoNameDiv">
                                 <label class="col-sm-3 control-label" for="videoName">视频名称</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="videoName" name="videoName"
@@ -122,9 +122,24 @@
                                         <select class="form-control" id="videoCType" name="videoCType"></select>
                                     </div>
                                 </div>
-
+                            </div>
+                            <div class="form-group" id="isModifyDiv">
+                                <label class="col-sm-3 control-label" for="isModify">文件替换</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="isModify" name="isModify">
+                                        <option value="0">否</option>
+                                        <option value="1">是</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" id="uploadFileDiv">
+                                <label class="col-sm-3 control-label" for="uploadFile">上传文件</label>
+                                <div class="col-sm-6">
+                                    <input id="uploadFile" name="uploadFile" type="file">
+                                </div>
                             </div>
                             <input type="hidden" name="id" id="id">
+                            <input type="hidden" name="vid" id="vid">
                             <input type="reset" style="display:none;"/>
                             <div class="col-sm-8 text-center">
                                 <button class="btn btn-primary" id="save" type="button">保存</button>
@@ -137,40 +152,7 @@
         </div>
     </div>
 </div>
-<!--模态框  -->
-<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="trainFormModal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width:600px;">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <h4 class="modal-title" id="videoModalLabel">上传视频信息</h4>
-            </div>
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row">
-                        <form class="form-horizontal col-lg-8 col-md-8 col-sm-6 col-xs-8" role="form" id="videoForm">
 
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="uploadFile">上传文件</label>
-                                <div class="col-sm-6">
-                                    <input id="uploadFile" name="uploadFile" type="file">
-                                </div>
-                            </div>
-                            <input type="hidden" name="vid" id="vid">
-                            <input type="hidden" name="atype" id="atype">
-                            <input type="reset" style="display:none;"/>
-                            <div class="col-sm-8 text-center">
-                                <button id="close" class="btn btn-danger" data-dismiss="modal">关闭</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 </body>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap.min.js"></script>

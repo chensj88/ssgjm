@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.service.impl;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.*;
 
@@ -75,7 +76,7 @@ public class SysProductFlowInfoServiceImpl implements SysProductFlowInfoService 
             info.setEffectiveDate(new Date());
             info.setExpireDate(DateUtil.parse("9999-12-31"));
             info.setLastUpdator(user.getId());
-            info.setLastUpdateTime(new Date());
+            info.setLastUpdateTime(new Timestamp(new Date().getTime()));
             this.sysProductFlowInfoDao.updateEntity(info);
             idsList.add(info.getPdId()+","+info.getFlowId());
         }
@@ -89,7 +90,7 @@ public class SysProductFlowInfoServiceImpl implements SysProductFlowInfoService 
             info.setEffectiveDate(new Date());
             info.setExpireDate(DateUtil.parse("9999-12-31"));
             info.setLastUpdator(user.getId());
-            info.setLastUpdateTime(new Date());
+            info.setLastUpdateTime(new Timestamp(new Date().getTime()));
             this.sysProductFlowInfoDao.insertEntity(info);
         }
     }

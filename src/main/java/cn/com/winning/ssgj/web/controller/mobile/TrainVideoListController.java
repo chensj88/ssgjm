@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.web.controller.mobile;
 
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.Base64Utils;
+import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.EtTrainVideoList;
 import cn.com.winning.ssgj.domain.SysTrainVideoRepo;
@@ -48,11 +49,12 @@ public class TrainVideoListController extends BaseController {
         //{"OPENID":"oyDyLxBcj0rTd9rVWyV5vTOD_Np4","HOSPCODE":"11980","WORKNUM":"1420","USERNAME":"张克福","USERPHONE":"13312345678"}
         byte[] bt = null;
         try {
-            String parameter2 = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
-            byte[] byteArray = Base64Utils.decryptBASE64(parameter2);
-            String userJsonStr = "["+new String(Base64Utils.decryptBASE64(parameter2),"UTF-8")+"]";
+            //String parameter2 = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
+            byte[] byteArray = Base64Utils.decryptBASE64(parameter);
+            String userJsonStr = "["+new String(Base64Utils.decryptBASE64(parameter),"UTF-8")+"]";
             ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
             SysUserInfo info = new SysUserInfo();
+            SysTrainVideoRepo repo = new SysTrainVideoRepo();
             if(userList !=null && !userList.equals("")){
                 for (int i = 0; i < userList.size(); i++) { //  推荐用这个
                     JSONObject io = userList.get(i);
@@ -61,22 +63,31 @@ public class TrainVideoListController extends BaseController {
                     info.setOpenId((String)io.get("OPENID"));
                     info.setName((String)io.get("USERNAME"));
                     info.setUserid((String)io.get("HOSPCODE")+(String)io.get("WORKNUM"));
-                    info.setPassword((String)io.get("WORKNUM"));
+                    info.setPassword(MD5.stringMD5ForBarCode((String)io.get("WORKNUM")));
                     info.setMobile((String)io.get("USERPHONE"));
-                    info.setSsgs((long)io.get("HOSPCODE"));
+                    info.setSsgs(Long.parseLong((String)io.get("HOSPCODE")));
                 }
+                //判断用户 userId 是否存在
                 SysUserInfo info_old = new SysUserInfo();
-                info_old.setOpenId(info.getOpenId());
+                info_old.setUserid(info.getUserid());
                 List<SysUserInfo> userIfonList =super.getFacade().getSysUserInfoService().getSysUserInfoList(info_old);
-                if(userIfonList.size() ==0 || userIfonList ==null){
-                    super.getFacade().getSysUserInfoService().createSysUserInfo(info);
+
+                if(info.getSsgs() != 11980){
+                    //真实用户
+                    if(userIfonList.size() ==0 || userIfonList ==null){
+                        super.getFacade().getSysUserInfoService().createSysUserInfo(info);
+                        return "/mobile/bridge-null";
+                    }else{
+                        info_old = userIfonList.get(0);
+                        repo.getMap().put("video_droit_list",info_old.getVideoDroit());
+                    }
+                }else{
+                    if(userIfonList.size() ==0 || userIfonList ==null){
+                        super.getFacade().getSysUserInfoService().createSysUserInfo(info);
+                    }
                 }
             }
             //获取全部视频
-            SysTrainVideoRepo repo = new SysTrainVideoRepo();
-
-
-
             List<SysTrainVideoRepo> repoTypeList = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepoTypeList(repo);
             model.addAttribute("repoTypeList", repoTypeList);
             model.addAttribute("OPENID", info.getOpenId());
@@ -107,18 +118,21 @@ public class TrainVideoListController extends BaseController {
         int study_num=0;
         List<SysTrainVideoRepo> SysTrainVideoStudied = new ArrayList<SysTrainVideoRepo>();
         List<SysTrainVideoRepo> SysTrainVideoUnStudy = new ArrayList<SysTrainVideoRepo>();
-        for (int i = 0; i < SysTrainVideoWithRecord.size(); i++) {
-            timeNum = timeNum + (long) SysTrainVideoWithRecord.get(i).getVideoTime();
-            String mapNum = SysTrainVideoWithRecord.get(i).getMap().get("num")+"";
-            if(mapNum!=null && !mapNum.equals("null")){
-                study_num +=1;
-                //已经学习
-                SysTrainVideoStudied.add(SysTrainVideoWithRecord.get(i));
-            }else{
-                //未学习
-                SysTrainVideoUnStudy.add(SysTrainVideoWithRecord.get(i));
+        if(SysTrainVideoWithRecord != null   ) {
+            for (int i = 0; i < SysTrainVideoWithRecord.size(); i++) {
+                timeNum = timeNum + (long) SysTrainVideoWithRecord.get(i).getVideoTime();
+                String mapNum = SysTrainVideoWithRecord.get(i).getMap().get("num")+"";
+                if(mapNum!=null && !mapNum.equals("null")){
+                    study_num +=1;
+                    //已经学习
+                    SysTrainVideoStudied.add(SysTrainVideoWithRecord.get(i));
+                }else{
+                    //未学习
+                    SysTrainVideoUnStudy.add(SysTrainVideoWithRecord.get(i));
+                }
             }
         }
+
         model.addAttribute("videoWithRecoed", SysTrainVideoWithRecord);
         model.addAttribute("sysTrainVideoStudied", SysTrainVideoStudied);
         model.addAttribute("sysTrainVideoUnStudy", SysTrainVideoUnStudy);

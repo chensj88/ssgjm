@@ -29,4 +29,14 @@ public class SysModPopedomDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysModPopedo
         String statement = "deleteSysModPopedomForIds";
         super.getSqlSession().update(statement,param);
     }
+
+    @Override
+    public List<SysModPopedom> selectModulePopedomInfoList(SysModPopedom modPopedom) {
+        return super.getSqlSession().selectList("selectModulePopedomInfoList",modPopedom);
+    }
+
+    @Override
+    public List<SysModPopedom> selectSysModPopedomHasPopedomList(SysModPopedom modPopedom) {
+        return super.getSqlSession().selectList("selectSysModPopedomHasPopedomList",modPopedom);
+    }
 }

@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.dao;
 import cn.com.winning.ssgj.domain.EtFloorQuestionInfo;
 import cn.com.winning.ssgj.dao.EntityDao;
 
+import java.util.List;
+
 /**
  *
  *
@@ -11,4 +13,7 @@ import cn.com.winning.ssgj.dao.EntityDao;
  */
 public interface EtFloorQuestionInfoDao extends EntityDao<EtFloorQuestionInfo> {
 
+    List<EtFloorQuestionInfo> selectEtFloorQuestionInfoWithHospitalList(EtFloorQuestionInfo t);
+
+    List<EtFloorQuestionInfo> selectEtFloorQuestionInfoSummaryList(EtFloorQuestionInfo t);
 }

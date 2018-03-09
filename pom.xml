@@ -19,6 +19,7 @@
 		<cxf.version>3.2.1</cxf.version>
 		<!-- shiro版本 -->
 		<shiro.version>1.3.2</shiro.version>
+		<quartz.version>2.2.1</quartz.version>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
@@ -116,6 +117,11 @@
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>sqljdbc4</artifactId>
 			<version>4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.44</version>
 		</dependency>
 		<!-- mybatis分页插件依赖 -->
 		<dependency>
@@ -312,11 +318,14 @@
 			<artifactId>shiro-spring</artifactId>
 			<version>${shiro.version}</version>
 		</dependency>
+		<!-- shiro插件库结束 -->
+		<!--SFTP jar-->
 		<dependency>
 			<groupId>com.jcraft</groupId>
 			<artifactId>jsch</artifactId>
 			<version>0.1.54</version>
 		</dependency>
+		<!--获取视频时间-->
 		<dependency>
 			<groupId>it.sauronsoftware</groupId>
 			<artifactId>jave</artifactId>
@@ -324,17 +333,23 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/jave-1.0.2.jar</systemPath>
 		</dependency>
+		<!-- 定时任务框架Quartz的依赖-->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${quartz.version}</version>
+		</dependency>
+
 		<!--<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+			<version>1.0.2.RELEASE</version>
 		</dependency>-->
-		<!--<dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>7.0</version>
-        </dependency>-->
-        <!-- shiro插件库结束 -->
 	</dependencies>
 	<build>
 		<finalName>ssgjm</finalName>

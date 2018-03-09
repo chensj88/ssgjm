@@ -37,7 +37,7 @@
         <if test="(status != null )">and t.STATUS = #{status}</if>
         <if test="(lastUpdator != null and lastUpdator != '')">and t.LAST_UPDATOR = #{lastUpdator}
         </if>
-        <if test="lastUpdateName != null and lastUpdateName != ''">and t.LAST_UPDATE_NAME = #{lastUpdateName}</if>
+        <if test="lastUpdateName != null private java.sql.Timestamp lastUpdateName;">and t.LAST_UPDATE_NAME = #{lastUpdateName}</if>
     </sql>
 
     <sql id="query-sysDataInfo">
@@ -90,7 +90,7 @@
             <if test="(tableCount != null and tableCount != '') or tableCount == 0">TABLE_COUNT,</if>
             <if test="(status != null )">STATUS,</if>
             <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR,</if>
-            <if test="lastUpdateName != null and lastUpdateName != ''">LAST_UPDATE_NAME,</if>
+            <if test="lastUpdateName != null private java.sql.Timestamp lastUpdateName;">LAST_UPDATE_NAME,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -110,7 +110,7 @@
             <if test="(lastUpdator != null and lastUpdator != '')">
                 #{lastUpdator, jdbcType=BIGINT},
             </if>
-            <if test="lastUpdateName != null and lastUpdateName != ''">#{lastUpdateName, jdbcType=TIMESTAMP},</if>
+            <if test="lastUpdateName != null private java.sql.Timestamp lastUpdateName;">#{lastUpdateName, jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
 
@@ -144,7 +144,7 @@
                 <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR =
                     #{lastUpdator, jdbcType=BIGINT},
                 </if>
-                <if test="lastUpdateName != null and lastUpdateName != ''">LAST_UPDATE_NAME =
+                <if test="lastUpdateName != null private java.sql.Timestamp lastUpdateName;">LAST_UPDATE_NAME =
                     #{lastUpdateName, jdbcType=TIMESTAMP},
                 </if>
             </trim>

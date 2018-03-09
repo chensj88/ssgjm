@@ -4,8 +4,10 @@
 $(function () {
 
     var videoType = {};
+    var videoCType = {};
     var objMap = {};
     $('#customer').hide();
+    $('#isModifyDiv').hide();
     function queryParams(params) {
         return {
             count: params.limit,    // 每页显示条数
@@ -60,24 +62,31 @@ $(function () {
                         }
                     }
                 },
-                // videoType : {
-                //     message: '视频分类验证失败',
-                //     validators: {
-                //         notEmpty: {
-                //             message: '视频分类不能为空'
-                //         }
-                //     }
-                // },
+                custName : {
+                    message: '客户名称验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '客户名称不能为空'
+                        }
+                    }
+                },
+                videoType:{
+                    message: '视频分类验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '视频分类不能为空'
+                        }
+                    }
+                }
             }
         });
     }
 
     function initFileInput(ele,url) {
-        var console = ele;
-        console.fileinput({
+        ele.fileinput({
             language: "zh",//配置语言
             uploadUrl: Common.getRootPath() +"/admin/upload/tvideo.do",
-            showUpload : true,
+            showUpload : false,
             showRemove : true,
             showPreview : false,
             showCaption: true,//是否显示标题
@@ -99,13 +108,14 @@ $(function () {
             slugCallback : function(filename) {
                 return filename.replace('(', '_').replace(']', '_');
             }
+        }).on("filebatchselected",function(event, files){
+            var name = Common.substr(files[0].name,'.');
+            $('#videoName').val(name);
+            $('#videoNameDiv').show();
         }).on('filepreupload', function(event, data, previewId, index) {     //上传中
-            $('#close').attr('disabled',true);
         }).on('fileuploaded',function(event, data, previewId, index){    //一个文件上传成功
             var _data = data.response;
             if(_data.status == Common.SUCCESS){
-                $('#close').attr('disabled',false);
-                $('#videoModal').modal('hide');
                 $("#infoTable").bootstrapTable('refresh');
             }else{
                 Ewin.alert(_data.msg)
@@ -132,7 +142,7 @@ $(function () {
 
     function initCodes() {
         Common.getCodes('videoType',videoType,$('#videoType'));
-        Common.setSelectOption($('#videoCType'),videoType);
+        Common.getCodes('videoCType',videoCType,$('#videoCType'));
     }
 
     initCodes();
@@ -206,9 +216,8 @@ $(function () {
                     title ='停用';
                 }
                 var e = '<a href="####" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.id + '">编辑</a> ';
-                var f = '<a href="####" class="btn btn-success btn-xs" name="upload" mce_href="#" aid="' + row.id + '">上传</a> ';
                 var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">'+title+'</a> ';
-                return e + d + f;
+                return e + d ;
             }
         }],
     });
@@ -222,9 +231,13 @@ $(function () {
         $('#videoType').val('');
         $('#videoCType').val('');
         $('#customer').hide();
+        $('#videoNameDiv').hide();
+        $('#isModifyDiv').hide();
         //清空验证信息
         $('#trainForm').bootstrapValidator("destroy");
         validateForm();
+        initFileInput($('#uploadFile'));
+        $('#uploadFileDiv').show();
         $('#trainModal').modal('show');
     });
 
@@ -240,9 +253,12 @@ $(function () {
         validateForm();
         var vid = $(this).attr('aid');
         var data = queryInfoByDataId(vid);
-        console.log(data);
+        initFileInput($('#uploadFile'));
         //取消默认选中
         $('#videoType').find('option:selected').attr('selected',false);
+        $('#isModifyDiv').show();
+        $('#uploadFileDiv').hide();
+        $('#videoNameDiv').hide();
         //赋值
         $('#trainForm').initForm(data);
         if(data.videoType == Common.VIDEO_TYPE_CUSTOMER){
@@ -292,13 +308,6 @@ $(function () {
         });
     });
 
-    $('#infoTable').on('click', 'a[name="upload"]', function (e) {
-        e.preventDefault();
-        var vid = $(this).attr('aid');
-        $('#vid').val(vid);
-        initFileInput($('#uploadFile'));
-        $('#videoModal').modal('show');
-    });
     /**
      * 保存流程按钮
      * 通过隐藏域判断流程是否存在，而使用不同的方法进行新增或者修改
@@ -328,6 +337,8 @@ $(function () {
                 success: function (result) {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
+                        $('#vid').val(_result.data);
+                        $("#uploadFile").fileinput("upload");
                         $('#trainModal').modal('hide');
                         $("#infoTable").bootstrapTable('refresh');
                     }
@@ -384,6 +395,15 @@ $(function () {
        }else {
            $('#customer').hide();
        }
+    });
+
+    $('#isModify').on('change',function () {
+        var selectedOption = $(this).val();
+        if(selectedOption == "1"){
+            $('#uploadFileDiv').show();
+        }else {
+            $('#uploadFileDiv').hide();
+        }
     });
 
 });

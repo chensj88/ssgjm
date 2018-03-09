@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.service.impl;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -75,7 +76,7 @@ public class SysFlowAnswerServiceImpl implements SysFlowAnswerService {
             answer.setAnswerType(Integer.parseInt(items[1]));
             answer.setAnswerContent(items[2]);
             answer.setStatus(Constants.STATUS_USE);
-            answer.setLastUpdateTime(new Date());
+            answer.setLastUpdateTime(new Timestamp(new Date().getTime()));
             SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
             answer.setLastUpdator(userInfo.getId());
             this.sysFlowAnswerDao.insertEntity(answer);

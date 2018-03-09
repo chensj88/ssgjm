@@ -82,7 +82,7 @@ public class EtOnlineUser extends BaseDomain implements Serializable {
 	/**
 	 * @val 创建时间
 	 */
-	private Date createTime;
+	private java.sql.Timestamp createTime;
 	
 	/**
 	 * @val 操作人
@@ -92,7 +92,7 @@ public class EtOnlineUser extends BaseDomain implements Serializable {
 	/**
 	 * @val 操作时间
 	 */
-	private Date operatorTime;
+	private java.sql.Timestamp operatorTime;
 	
 	public EtOnlineUser() {
 
@@ -277,14 +277,14 @@ public class EtOnlineUser extends BaseDomain implements Serializable {
 	/**
 	 * @val 创建时间
 	 */
-	public Date getCreateTime() {
+	public java.sql.Timestamp getCreateTime() {
 		return createTime;
 	}
 	
 	/**
 	 * @val 创建时间
 	 */
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(java.sql.Timestamp createTime) {
 		this.createTime = createTime;
 	}
 	
@@ -305,14 +305,14 @@ public class EtOnlineUser extends BaseDomain implements Serializable {
 	/**
 	 * @val 操作时间
 	 */
-	public Date getOperatorTime() {
+	public java.sql.Timestamp getOperatorTime() {
 		return operatorTime;
 	}
 	
 	/**
 	 * @val 操作时间
 	 */
-	public void setOperatorTime(Date operatorTime) {
+	public void setOperatorTime(java.sql.Timestamp operatorTime) {
 		this.operatorTime = operatorTime;
 	}
 	

@@ -47,9 +47,9 @@
         </if>
         <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
         <if test="(creator != null and creator != '') or creator == 0">and t.CREATOR = #{creator}</if>
-        <if test="createTime != null and createTime != ''">and t.CREATE_TIME = #{createTime}</if>
+        <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
         <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
-        <if test="operatorTime != null and operatorTime != ''">and t.OPERATOR_TIME = #{operatorTime}</if>
+        <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
     </sql>
 
     <select id="selectEtSiteQuestionInfo" resultMap="etSiteQuestionInfoResult" parameterType="etSiteQuestionInfo">
@@ -101,9 +101,9 @@
             <if test="(isOperation != null and isOperation != '') or isOperation == 0">IS_OPERATION,</if>
             <if test="remark != null and remark != ''">REMARK,</if>
             <if test="(creator != null and creator != '') or creator == 0">CREATOR,</if>
-            <if test="createTime != null and createTime != ''">CREATE_TIME,</if>
+            <if test="createTime != null ">CREATE_TIME,</if>
             <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
-            <if test="operatorTime != null and operatorTime != ''">OPERATOR_TIME,</if>
+            <if test="operatorTime != null ">OPERATOR_TIME,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -127,9 +127,9 @@
             </if>
             <if test="remark != null and remark != ''">#{remark, jdbcType=LONGVARCHAR},</if>
             <if test="(creator != null and creator != '') or creator == 0">#{creator, jdbcType=BIGINT},</if>
-            <if test="createTime != null and createTime != ''">#{createTime, jdbcType=TIMESTAMP},</if>
+            <if test="createTime != null ">#{createTime, jdbcType=TIMESTAMP},</if>
             <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
-            <if test="operatorTime != null and operatorTime != ''">#{operatorTime, jdbcType=TIMESTAMP},</if>
+            <if test="operatorTime != null ">#{operatorTime, jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
 
@@ -167,11 +167,11 @@
                 <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
                 <if test="(creator != null and creator != '') or creator == 0">CREATOR = #{creator, jdbcType=BIGINT},
                 </if>
-                <if test="createTime != null and createTime != ''">CREATE_TIME = #{createTime, jdbcType=TIMESTAMP},</if>
+                <if test="createTime != null ">CREATE_TIME = #{createTime, jdbcType=TIMESTAMP},</if>
                 <if test="(operator != null and operator != '') or operator == 0">OPERATOR =
                     #{operator, jdbcType=BIGINT},
                 </if>
-                <if test="operatorTime != null and operatorTime != ''">OPERATOR_TIME =
+                <if test="operatorTime != null ">OPERATOR_TIME =
                     #{operatorTime, jdbcType=TIMESTAMP},
                 </if>
             </trim>

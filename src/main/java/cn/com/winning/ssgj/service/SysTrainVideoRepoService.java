@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.service;
 
 import java.util.List;
 
+import cn.com.winning.ssgj.base.util.FtpPropertiesLoader;
 import cn.com.winning.ssgj.domain.SysTrainVideoRepo;
 
 /**
@@ -11,6 +12,8 @@ import cn.com.winning.ssgj.domain.SysTrainVideoRepo;
  * @date 2018-02-28 09:00:21
  */
 public interface SysTrainVideoRepoService {
+
+	static int port = Integer.valueOf(FtpPropertiesLoader.getProperty("ftp.port")).intValue();
 
 	Integer createSysTrainVideoRepo(SysTrainVideoRepo t);
 
@@ -35,5 +38,7 @@ public interface SysTrainVideoRepoService {
     boolean existVideoName(SysTrainVideoRepo repo);
 
     List<SysTrainVideoRepo> getSysTrainVideoWithRecoedList(SysTrainVideoRepo repo);
+
+	boolean deleteSysTrainVideoRepo(SysTrainVideoRepo repo);
 
 }

@@ -38,6 +38,14 @@ public class NodeTree {
      * 访问路径
      */
     private String urlPath;
+    /**
+     * 功能信息
+     */
+    private String funInfo;
+    /**
+     * 节点层级
+     */
+    private int level;
 
     private List<NodeTree> nodes;
 
@@ -96,5 +104,22 @@ public class NodeTree {
 
     public void setUrlPath(String urlPath) {
         this.urlPath = urlPath;
+    }
+
+
+    public String getFunInfo() {
+        return funInfo;
+    }
+
+    public void setFunInfo(String funInfo) {
+        this.funInfo = funInfo;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }

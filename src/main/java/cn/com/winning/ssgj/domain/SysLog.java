@@ -32,7 +32,7 @@ public class SysLog extends BaseDomain implements Serializable {
 
     private Long operator;
 
-    private Date operatorTime;
+    private java.sql.Timestamp operatorTime;
 
     private String clientMac;
 
@@ -92,11 +92,11 @@ public class SysLog extends BaseDomain implements Serializable {
         this.operator = operator;
     }
 
-    public Date getOperatorTime() {
+    public java.sql.Timestamp getOperatorTime() {
         return operatorTime;
     }
 
-    public void setOperatorTime(Date operatorTime) {
+    public void setOperatorTime(java.sql.Timestamp operatorTime) {
         this.operatorTime = operatorTime;
     }
 

@@ -153,6 +153,38 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="gridModal" tabindex="-1" role="dialog" aria-labelledby="gridFormModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width:600px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="gridModalLabel">按钮信息</h4>
+            </div>
+            <div class="modal-body" >
+                <div class="container">
+                    <input type="hidden" id="roleQId">
+                    <div class="row" style="height: 200px;overflow:auto;">
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            <div class="col-sm-10">
+                               <table id="gridTable" class="table-align" >
+                               </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5 text-center">
+                            <button class="btn btn-primary" id="saveP" type="button">保存</button>
+                            <button class="btn btn-danger" data-dismiss="modal">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap.min.js"></script>

@@ -169,7 +169,15 @@
         dateType += ":" + getSeconds(date); // 分
         return dateType;
     };
-
+    /**
+     * 字符串去除末尾符号截取
+     * @param val 字符串
+     * @param s 末尾符号
+     * @returns {*|string}
+     */
+    Common.substr = function (val,s) {
+        return val.substr(0,val.lastIndexOf(s));
+    }
     // 返回 01-12 的月份值
     function getMonth(date) {
         var month = "";

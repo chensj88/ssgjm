@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
 
+import cn.com.winning.ssgj.domain.expand.NodeTree;
 import org.apache.ibatis.type.Alias;
 import cn.com.winning.ssgj.domain.BaseDomain;
 
@@ -26,6 +27,14 @@ public class SysModPopedom extends BaseDomain implements Serializable {
     private Long roleId;
 
     private String popedomCode;
+
+    private Long parId;
+
+    private String modName;
+
+    private Integer modLevel;
+
+    private NodeTree nodeTree = new NodeTree();
 
     public SysModPopedom() {
 
@@ -71,4 +80,40 @@ public class SysModPopedom extends BaseDomain implements Serializable {
         this.popedomCode = popedomCode;
     }
 
+    public String getModName() {
+        return modName;
+    }
+
+    public void setModName(String modName) {
+        this.modName = modName;
+    }
+
+    public Long getParId() {
+        return parId;
+    }
+
+    public void setParId(Long parId) {
+        this.parId = parId;
+    }
+
+    public Integer getModLevel() {
+        return modLevel;
+    }
+
+    public void setModLevel(Integer modLevel) {
+        this.modLevel = modLevel;
+    }
+
+
+    public NodeTree getNodeTree() {
+        nodeTree.setId(id);
+        nodeTree.setNodeId(id);
+        nodeTree.setText(modName);
+        nodeTree.setNodePid(parId);
+        return nodeTree;
+    }
+
+    public void setNodeTree(NodeTree nodeTree) {
+        this.nodeTree = nodeTree;
+    }
 }
