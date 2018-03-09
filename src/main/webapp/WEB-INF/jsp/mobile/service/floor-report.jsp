@@ -12,12 +12,14 @@
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
 		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_yjo1hb0ldpnidx6r.css"/>
+		<script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="<%=basePath%>resources/js/common.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 	<body>
 		<div class="mui-content floor">
 			<!--header-->
 			<div class="header">
-				<span class="mui-icon mui-icon-arrowleft"></span>
+				<span class="mui-icon mui-icon-arrowleft"><a href="javascript:history.go(-1);"></a></span>
 				<div>问题汇报</div>
 				<span class="mui-icon mui-icon-more"></span>
 			</div>
@@ -48,7 +50,7 @@
 					</div>
 					<div class="timeline">
 						<dl>
-							<dt>2018.01.03</dt>
+							<dt>${vwr.operatorTime}</dt>
 							<dd><strong>更新人：</strong>${vwr.map.get("name")}</dd>
 							<dd><strong>状态变更：</strong>${vwr.isOperation=='1'?'已解决':'未解决'}</dd>
 						</dl>
@@ -63,7 +65,7 @@
 				</c:forEach>
 
 				<input type="hidden" id="current_id" >
-
+				<input type="hidden" id="user_id" value="${user_id}" >
 
 
 			</div>
@@ -78,7 +80,7 @@
 							    <input name="radio" type="radio" value="0"  >
 							</div>
 							<div class="mui-input-row mui-radio mui-left mui-inline">
-							    <label>已安装</label>
+							    <label>已解决</label>
 							    <input name="radio" type="radio" value="1" >
 							</div>
 					    </div>
@@ -97,7 +99,6 @@
 			</div>
 		</div>
 		<script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			$(function(){
 				mui.init();
@@ -133,16 +134,17 @@
 				})
 			});
 
+			//保存
 			$("#btn_save").click(function(){
 			    //获取值
 				var radio = $("input[name='radio']:checked").val();
                 var reason = $("#reason").val();
                 var id = $("#current_id").val();
-
+                var user_id = $("#user_id").val();
                 $.ajax({
                     type: "POST",
                     url:"<%=basePath%>/mobile/floorQuestion/causeFloor.do",
-                    data:{"isOperation":radio,"cause":reason,id:id},
+                    data:{isOperation:radio,cause:reason,id:id,operator:user_id},
                     dataType:"json",
                     cache : false,
                     error: function(request) {
