@@ -32,7 +32,7 @@
 	   <if test="remotePath != null and remotePath != ''"> and t.REMOTE_PATH = #{remotePath} </if>
 	   <if test="(status != null )"> and t.STATUS = #{status} </if>
 	   <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> and t.LAST_UPDATOR = #{lastUpdator} </if>
-	   <if test="lastUpdateTime != null and lastUpdateTime != ''"> and t.LAST_UPDATE_TIME = #{lastUpdateTime} </if>
+	   <if test="lastUpdateTime != null"> and t.LAST_UPDATE_TIME = #{lastUpdateTime} </if>
 	   <if test="(videoTime != null and videoTime != '') or videoTime == 0"> and t.VIDEO_TIME = #{videoTime} </if>
 	   <if test="videoType != null and videoType != ''"> and t.VIDEO_TYPE = #{videoType} </if>
 	   <if test="(cId != null and cId != '') or cId == 0"> and t.C_ID = #{cId} </if>
@@ -87,7 +87,7 @@
 		   <if test="remotePath != null and remotePath != ''"> REMOTE_PATH, </if>
 	       <if test="(status != null )"> STATUS, </if>
 	       <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> LAST_UPDATOR, </if>
-		   <if test="lastUpdateTime != null and lastUpdateTime != ''"> LAST_UPDATE_TIME, </if>
+		   <if test="lastUpdateTime != null"> LAST_UPDATE_TIME, </if>
 	       <if test="(videoTime != null and videoTime != '') or videoTime == 0"> VIDEO_TIME, </if>
 		   <if test="videoType != null and videoType != ''"> VIDEO_TYPE, </if>
 	       <if test="(cId != null and cId != '') or cId == 0"> C_ID, </if>
@@ -104,7 +104,7 @@
 		   <if test="remotePath != null and remotePath != ''"> #{remotePath, jdbcType=VARCHAR}, </if>
 	       <if test="(status != null )"> #{status, jdbcType=INTEGER}, </if>
 	       <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> #{lastUpdator, jdbcType=BIGINT}, </if>
-		   <if test="lastUpdateTime != null and lastUpdateTime != ''"> #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
+		   <if test="lastUpdateTime != null"> #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
 	       <if test="(videoTime != null and videoTime != '') or videoTime == 0"> #{videoTime, jdbcType=BIGINT}, </if>
 		   <if test="videoType != null and videoType != ''"> #{videoType, jdbcType=VARCHAR}, </if>
 	       <if test="(cId != null and cId != '') or cId == 0"> #{cId, jdbcType=BIGINT}, </if>
@@ -125,7 +125,7 @@
 			   <if test="remotePath != null and remotePath != ''"> REMOTE_PATH = #{remotePath, jdbcType=VARCHAR}, </if>
 			   <if test="(status != null )"> STATUS = #{status, jdbcType=INTEGER}, </if>
 			   <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> LAST_UPDATOR = #{lastUpdator, jdbcType=BIGINT}, </if>
-			   <if test="lastUpdateTime != null and lastUpdateTime != ''"> LAST_UPDATE_TIME = #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
+			   <if test="lastUpdateTime != null"> LAST_UPDATE_TIME = #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
 			   <if test="(videoTime != null and videoTime != '') or videoTime == 0"> VIDEO_TIME = #{videoTime, jdbcType=BIGINT}, </if>
 			   <if test="videoType != null and videoType != ''"> VIDEO_TYPE = #{videoType, jdbcType=VARCHAR}, </if>
 			   <if test="(cId != null and cId != '') or cId == 0"> C_ID = #{cId, jdbcType=BIGINT}, </if>

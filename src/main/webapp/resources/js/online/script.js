@@ -7,8 +7,6 @@ $(function () {
     var videoCType = {};
     var objMap = {};
     var selectedFlie = false;
-    $('#customer').hide();
-
     $('#isModifyDiv').hide();
 
     function queryParams(params) {
@@ -42,13 +40,13 @@ $(function () {
                         },
                         threshold :  2 , //有2字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
                         remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}
-                            url: Common.getRootPath() + '/admin/online/existName.do',//验证地址
+                            url: Common.getRootPath() + '/admin/script/existName.do',//验证地址
                             message: '脚本名称已存在',//提示消息
                             type: 'POST'//请求方式
                         },
                     }
                 },
-                desc : {
+                sDesc : {
                     message: '脚本描述验证失败',
                     validators: {
                         notEmpty: {
@@ -171,7 +169,7 @@ $(function () {
             width: '40px',
             align: 'center'
         }, {
-            field: "desc",
+            field: "sDesc",
             title: "脚本描述",
             width: '20px',
             align: 'center'
@@ -252,10 +250,7 @@ $(function () {
         $('#videoNameDiv').hide();
         //赋值
         $('#scriptForm').initForm(data);
-        if(data.videoType == Common.VIDEO_TYPE_CUSTOMER){
-            $('#customer').show();
-            $('#cId').val(data.cId);
-        }
+        $('#appId').val(data.appId);
         $('#scriptModal').modal('show');
     });
     /**
@@ -286,7 +281,6 @@ $(function () {
                 success: function (data, status) {
                     var result = eval(data);
                     if (result.status == Common.SUCCESS) {
-                       /* Ewin.alert('提交数据成功');*/
                         $("#infoTable").bootstrapTable('refresh');
                     }
                 },
@@ -361,7 +355,7 @@ $(function () {
                         };
                         var results = [];
                         for (var i = 0; i < data.length; i++) {
-                            objMap[data[i].name] = data[i].name + ',' + data[i].id + ',' +data[i].code;
+                            objMap[data[i].name] = data[i].name + ',' + data[i].id ;
                             results.push(data[i].name);
                         }
                         process(results);
@@ -370,7 +364,7 @@ $(function () {
             });
         },
         highlighter: function (item) {
-            return item +'['+objMap[item].split(',')[2] + ']';
+            return item ;
         },
         afterSelect: function (item) {       //选择项之后的事件，item是当前选中的选项
             var selectItem = objMap[item];

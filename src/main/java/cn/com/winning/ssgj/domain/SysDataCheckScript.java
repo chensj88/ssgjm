@@ -2,6 +2,8 @@ package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
 import org.apache.ibatis.type.Alias;
+
+import java.sql.Timestamp;
 import java.util.Date;
 import cn.com.winning.ssgj.domain.BaseDomain;
 
@@ -21,7 +23,7 @@ public class SysDataCheckScript extends BaseDomain implements Serializable {
 	
 	private String name;
 	
-	private String desc;
+	private String sDesc;
 	
 	private String remotePath;
 
@@ -33,7 +35,7 @@ public class SysDataCheckScript extends BaseDomain implements Serializable {
 	
 	private Long lastUpdator;
 	
-	private Date lastUpdateTime;
+	private Timestamp lastUpdateTime;
 	
 	public SysDataCheckScript() {
 
@@ -54,15 +56,15 @@ public class SysDataCheckScript extends BaseDomain implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public String getDesc() {
-		return desc;
+
+	public String getsDesc() {
+		return sDesc;
 	}
-	
-	public void setDesc(String desc) {
-		this.desc = desc;
+
+	public void setsDesc(String sDesc) {
+		this.sDesc = sDesc;
 	}
-	
+
 	public String getRemotePath() {
 		return remotePath;
 	}
@@ -87,11 +89,11 @@ public class SysDataCheckScript extends BaseDomain implements Serializable {
 		this.lastUpdator = lastUpdator;
 	}
 	
-	public Date getLastUpdateTime() {
+	public Timestamp getLastUpdateTime() {
 		return lastUpdateTime;
 	}
 	
-	public void setLastUpdateTime(Date lastUpdateTime) {
+	public void setLastUpdateTime(Timestamp lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
 	}
 

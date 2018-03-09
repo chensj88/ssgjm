@@ -97,20 +97,18 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="desc">脚本描述</label>
+                                <label class="col-sm-3 control-label" for="sDesc">脚本描述</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="desc" name="desc" placeholder="请输入脚本描述">
+                                    <input type="text" class="form-control" id="sDesc" name="sDesc" placeholder="请输入脚本描述">
                                 </div>
                             </div>
                                 <div class="form-group" >
-                                    <label class="col-sm-3 control-label" for="appName">适用系统：</label>
+                                    <label class="col-sm-3 control-label" for="appName">适用系统</label>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control" id="appName" name="custName" appName="请输入适用系统" data-provide="typeahead">
+                                        <input type="text" class="form-control" id="appName" name="appName" appName="请输入适用系统" data-provide="typeahead">
                                     </div>
                                 </div>
                                 <input type="hidden" id="appId" name="appId">
-
-
                             <div class="form-group" id="isModifyDiv">
                                 <label class="col-sm-3 control-label" for="isModify">文件替换</label>
                                 <div class="col-sm-6">

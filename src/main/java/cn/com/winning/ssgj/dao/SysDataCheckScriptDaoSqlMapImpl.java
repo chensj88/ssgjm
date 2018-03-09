@@ -26,4 +26,9 @@ public class SysDataCheckScriptDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysData
     public List<SysDataCheckScript> selectSysDataCheckScriptPageListFuzzy(SysDataCheckScript script) {
         return super.getSqlSession().selectList("selectSysDataCheckScriptPageListFuzzy",script);
     }
+
+    @Override
+    public int selectExistDataCheckScriptName(SysDataCheckScript script) {
+        return super.getSqlSession().selectOne("selectExistDataCheckScriptName",script);
+    }
 }

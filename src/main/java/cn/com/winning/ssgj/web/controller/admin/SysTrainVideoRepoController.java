@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.web.controller.admin;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.DateUtil;
 import cn.com.winning.ssgj.domain.PmisCustomerInformation;
 import cn.com.winning.ssgj.domain.SysTrainVideoRepo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
@@ -103,7 +104,7 @@ public class SysTrainVideoRepoController extends BaseController {
     @ResponseBody
     @Transactional
     public Map<String,Object>  modifyTrainVideoById(SysTrainVideoRepo repo){
-       /* repo.setLastUpdateTime(new Date());*/
+       repo.setLastUpdateTime(DateUtil.getCurrentTimestamp());
         repo.setLastUpdator(((SysUserInfo)SecurityUtils.getSubject().getPrincipal()).getId());
         repo = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepo(repo);
         if(repo.getStatus() == Constants.STATUS_UNUSE){
