@@ -99,14 +99,14 @@
     <!--  Chen,Kuai 2018年3月7日13:24:39 楼层问题汇总 -->
     <select id="selectEtFloorQuestionInfoSummaryList" resultMap="etFloorQuestionInfoResult"
             parameterType="etFloorQuestionInfo">
-        SELECT at.FLOOR_NAME,at.num,bt.num_no,at.num-bt.num_no as num_use from
+        SELECT at.FLOOR_NAME,at.num,ISNULL(bt.num_no, 0) as num_no,at.num-ISNULL(bt.num_no,0) as num_use from
         (SELECT
         t.FLOOR_NAME,
         COUNT(*) AS num
         FROM ET_FLOOR_QUESTION_INFO t
         LEFT JOIN PMIS_CONTRACT_INFO i ON t.C_ID =i.ID  AND i.HTYHF =#{map.Ssgs}
         GROUP BY t.FLOOR_NAME) at
-        INNER JOIN  (
+        LEFT JOIN  (
         SELECT t.FLOOR_NAME,
         COUNT(*) AS num_no
         FROM ET_FLOOR_QUESTION_INFO t

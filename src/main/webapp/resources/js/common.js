@@ -19,6 +19,15 @@
     Common.SUCCESS = "success";
     Common.VIDEO_TYPE_CUSTOMER = "99";
 
+
+    /**
+     * 截取时间
+     */
+    Common.getDateSubStr = function (val) {
+        var strVal = val.substr(0,10);
+        return strVal;
+    }
+
     /**
      * 获取项目根路径
      */

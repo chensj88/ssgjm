@@ -19,7 +19,7 @@
 		<div class="mui-content floor">
 			<!--header-->
 			<div class="header">
-				<span class="mui-icon mui-icon-arrowleft"><a href="javascript:history.go(-1);"></a></span>
+				<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
 				<div>问题汇报</div>
 				<span class="mui-icon mui-icon-more"></span>
 			</div>
@@ -50,7 +50,10 @@
 					</div>
 					<div class="timeline">
 						<dl>
-							<dt>${vwr.operatorTime}</dt>
+							<dt><script>
+                                document.write(Common.getDateSubStr("${vwr.operatorTime}"));
+							</script>
+								</dt>
 							<dd><strong>更新人：</strong>${vwr.map.get("name")}</dd>
 							<dd><strong>状态变更：</strong>${vwr.isOperation=='1'?'已解决':'未解决'}</dd>
 						</dl>

@@ -28,7 +28,7 @@
 		<div class="mui-content floor">
 			<!--header-->
 			<div class="header">
-				<span class="mui-icon mui-icon-arrowleft"></span>
+				<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
 				<div>楼层问题汇报</div>
 				<span class="mui-icon mui-icon-more"></span>
 			</div>
@@ -44,7 +44,7 @@
 					<c:forEach var="vwr" items="${infoList}" >
 
 						<tr>
-							<td><a href="<%=basePath%>/mobile/floorQuestion/floorQuestionReport.do?userId=${userId}&floorName=${vwr.floorName}">${vwr.floorName}</a></td>
+							<td><a style="text-decoration:underline" href="<%=basePath%>/mobile/floorQuestion/floorQuestionReport.do?userId=${userId}&floorName=${vwr.floorName}">${vwr.floorName}</a></td>
 							<td><span class="td1">${vwr.map.get("num")}</span></td>
 							<td><span class="td2">${vwr.map.get("num_no")}</span></td>
 							<td><span class="td3">${vwr.map.get("num_use")}</span></td>

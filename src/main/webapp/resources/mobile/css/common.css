@@ -3,6 +3,9 @@
 	padding: 0px;
 	font-size: 12px;
 }
+body,html{
+	height: 100%;
+}
 body {
 	background-color: #fff;
     font-family: -apple-system, BlinkMacSystemFont, "PingFang SC","Helvetica Neue",STHeiti,"Microsoft Yahei",Tahoma,Simsun,sans-serif;
@@ -39,6 +42,9 @@ ul,li{
 strong{
 	font-weight: normal;
 }
+i{
+	font-style: normal;
+}
 .test{
 	border:1px solid red;
 	box-sizing: border-box;
@@ -73,6 +79,7 @@ table{
 }
 /*reset-mui*/
 .mui-content{
+	height: 100%;
 	background: #fff;
 }
 /*mask*/
@@ -115,4 +122,79 @@ table{
 }
 .mask-content .mask-btn button{
 	margin-right: 5px;
+}
+/*
+ * dropdown
+ * */
+.select{
+	position: relative;
+	display: block;
+	width: 100%;
+	margin-left: 10px;
+	-moz-user-select: none;
+    background-color: #ffffff;
+    border-bottom: 1px solid #E2E2E2;
+    font-size: 12px;
+    height: 30px;
+    min-width: 150px;
+    cursor: pointer;
+}
+.select>a{
+	display: block;
+	background-color: #ffffff;
+    border-radius: 5px !important;
+    color: #929292;
+    cursor: pointer;
+    line-height: 28px;
+    overflow: hidden;
+    padding: 0 35px 0 15px;
+}
+.arrow{
+    position: absolute;
+    width: 0;
+    height: 0;
+    right: 10px;
+    top: 12px;
+	border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid #E2E2E2;
+    cursor: pointer;
+    z-index: 7;
+}
+.arrow.reverse {
+    border-bottom: 7px solid #E2E2E2;
+    border-top: 7px solid transparent;
+    top: 5px;
+}
+.select ul{
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    margin: 10px 0 7px;
+    padding-left: 0;
+    overflow: hidden;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    border-left: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    -moz-border-radius: 5px !important;
+    -ms-border-radius: 5px !important;
+    -webkit-border-radius:  5px !important;
+    border-radius: 5px !important;
+    line-height: 20px;
+    display: none;
+}
+.select li{
+	width: 87%;
+	padding: 7px 15px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: #929292;
+    list-style: outside none none;
+}
+.select li.active,.select li:hover{
+    color: #333;
+    background-color: #e9f3ff;
+    cursor: pointer;
 }

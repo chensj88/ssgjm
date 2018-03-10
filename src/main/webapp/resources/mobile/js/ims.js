@@ -34,8 +34,23 @@ const IMS = {
     	$(element).on("click","th>input[type='checkbox']",function(){
            	$("#pageContent input[type='checkbox']").prop("checked",$(this).prop("checked"));
       	});
-    }
-    
+    },
+    /*
+	 * dropdown
+	 * */
+	dropDown:function(){
+		$(".select").on("click","a",function(){
+			$(this).find("i").toggleClass("reverse");
+			$(this).next("ul").slideToggle();
+		});
+		$(".select").on("click","ul>li",function(){
+			var _this=$(this),_dropd=_this.parent("ul"), _val=_this.data("val"),_txt=_this.text();
+			_dropd.slideToggle();
+			_dropd.siblings("[type='hidden']").val(_val);
+			_dropd.siblings("a").find("span").text(_txt);
+			_dropd.siblings("a").find("i").toggleClass("reverse");
+		});
+	}
 };
 /*服务号*/
 const service = {
@@ -53,4 +68,8 @@ const service = {
 				.removeClass('current');
 		});
 	}
+};
+/*企业号*/
+const enterprise = {
+	
 };

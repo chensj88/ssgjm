@@ -180,7 +180,7 @@ public class TrainVideoListController extends BaseController {
         repo.setStatus(1);
         repo =super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepo(repo);
         model.addAttribute("repo",repo);
-        if(trainVideo.getNum()!=null && !trainVideo.getNum().equals("")){
+        if(trainVideo!=null){
             model.addAttribute("num",trainVideo.getNum());
         }else{
             model.addAttribute("num",0);

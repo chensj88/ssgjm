@@ -18,7 +18,12 @@
 	<body>
 		<div class="mui-content course">
 			<!--header-->
-			<!--study-->
+			<div class="header">
+				<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
+				<div>课程学习</div>
+				<span class="mui-icon mui-icon-more"></span>
+			</div>
+			<div class="hole"></div>
 			<div class="course-study">
 				<div class="left">
 					<p>学习耗时(小时) </p>
