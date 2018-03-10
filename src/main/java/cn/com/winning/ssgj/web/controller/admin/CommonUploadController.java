@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * @author chenshijie
- * @title
+ * @title 通用上传信息
  * @email chensj@winning.com.cm
  * @package cn.com.winning.ssgj.web.controller
  * @date 2018-02-28 14:08
@@ -180,7 +180,7 @@ public class CommonUploadController extends BaseController {
     /**
      * 数据校验脚本
      * @param request
-     * @param flowInfo
+     * @param script
      * @param uploadFile
      * @return
      * @throws IOException

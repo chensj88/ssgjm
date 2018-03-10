@@ -102,15 +102,14 @@ public class SysDataScriptController extends BaseController {
     @ResponseBody
     @Transactional
     public Map<String,Object>  modifySysDataCheckScriptById(SysDataCheckScript script){
-        /* repo.setLastUpdateTime(new Date());*/
-        script.setLastUpdateTime(DateUtil.getCurrentTimestamp());
-        script.setLastUpdator(((SysUserInfo)SecurityUtils.getSubject().getPrincipal()).getId());
         script = super.getFacade().getSysDataCheckScriptService().getSysDataCheckScript(script);
         if(script.getStatus() == Constants.STATUS_UNUSE){
             script.setStatus(Constants.STATUS_USE);
         }else{
             script.setStatus(Constants.STATUS_UNUSE);
         }
+        script.setLastUpdateTime(DateUtil.getCurrentTimestamp());
+        script.setLastUpdator(((SysUserInfo)SecurityUtils.getSubject().getPrincipal()).getId());
         super.getFacade().getSysDataCheckScriptService().modifySysDataCheckScript(script);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);

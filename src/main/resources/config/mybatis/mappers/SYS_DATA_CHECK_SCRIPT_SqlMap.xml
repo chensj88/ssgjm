@@ -53,7 +53,7 @@
 
 	<select id="selectSysDataCheckScriptPageListFuzzy" resultMap="sysDataCheckScriptResult" parameterType="sysDataCheckScript">
 		select * from (
-		select *, ROW_NUMBER() OVER ( order by id desc ) as _rn
+		select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
 		from SYS_DATA_CHECK_SCRIPT t where 1 = 1
 		<include refid="fuzzy" />
 		<!-- order by ID asc -->
@@ -67,7 +67,7 @@
 
 	<select id="selectSysDataCheckScriptPaginatedList" resultMap="sysDataCheckScriptResult" parameterType="sysDataCheckScript">
 		select * from (
-			select *, ROW_NUMBER() OVER ( order by id desc ) as _rn 
+			select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
 				from SYS_DATA_CHECK_SCRIPT t where 1 = 1
 			<include refid="sf-sysDataCheckScript" />
 			<!-- order by ID asc -->
@@ -117,7 +117,7 @@
 			</trim>
 		</set>
 		where
-		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="id != null and id != ''"> ID = #{id} </if>
 		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
 			ID in
 			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
@@ -126,7 +126,7 @@
 
 	<delete id="deleteSysDataCheckScript" parameterType="SysDataCheckScript">
 		delete from SYS_DATA_CHECK_SCRIPT where
-		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="id != null and id != ''"> ID = #{id} </if>
 		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
 			ID in
 			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
@@ -134,6 +134,6 @@
 	</delete>
 	<select id="selectExistDataCheckScriptName" resultType="int" parameterType="sysDataCheckScript">
 		select count(1) from SYS_DATA_CHECK_SCRIPT t
-		WHERE t.NAME = '${name}'
+		WHERE t.NAME = #{name,jdbcType=VARCHAR}
 	</select>
 </mapper>
