@@ -134,6 +134,6 @@
 	</delete>
 	<select id="selectExistDataCheckScriptName" resultType="int" parameterType="sysDataCheckScript">
 		select count(1) from SYS_DATA_CHECK_SCRIPT t
-		WHERE t.NAME LIKE '${name}%'
+		WHERE t.NAME = '${name}'
 	</select>
 </mapper>
