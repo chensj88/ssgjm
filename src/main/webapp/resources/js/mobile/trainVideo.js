@@ -99,7 +99,7 @@ $(function () {
             maxFileCount: 1,/*允许最大上传数，可以多个，当前设置单个*/
             enctype: 'multipart/form-data',
             allowedPreviewTypes : [ 'video' ],
-            allowedFileExtensions : ["avi", "mp4","wmv","rm","rmvb"],/*上传文件格式*/
+            allowedFileExtensions : ["mp4","flv","rmvb"],/*上传文件格式*/
             msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
             showBrowse: false,
             browseOnZoneClick: true,
