@@ -50,6 +50,8 @@ public class CommonUploadController extends BaseController {
         if(!uploadFile.isEmpty()) {
             //上传文件路径
             String path = request.getServletContext().getRealPath("/video/");
+            //图片文件路径
+            String imgPath = request.getServletContext().getRealPath("/image/");
             System.out.println(path);
             path +=  parentFile + File.separator;
             //上传文件名
@@ -59,12 +61,23 @@ public class CommonUploadController extends BaseController {
             if (!filepath.getParentFile().exists()) {
                 filepath.getParentFile().mkdirs();
             }
+            //判断路径是否存在，如果不存在就创建一个
+            filepath = new File(imgPath,filename);
+            if (!filepath.getParentFile().exists()) {
+                filepath.getParentFile().mkdirs();
+            }
             //将上传文件保存到一个目标文件当中
             File newFile = new File(path + File.separator + filename);
+            //删除已经存在文件重新上传
             if(newFile.exists()){
                 newFile.delete();
             }
             uploadFile.transferTo(newFile);
+            //图片文件名称
+            String img = filename.substring(0,filename.lastIndexOf("."));
+            String imgUploadPath = "/image/" + parentFile + "/" + img + ".jpg";
+            repo.setImgPath(imgUploadPath);
+            VideoUtil.grabberFFmpegImage(imgUploadPath,newFile.getPath(),imgPath,repo.getVideoName());
             repo.setVideoTime(VideoUtil.getVideoTime(newFile));
             String remotePath = "/video/" + parentFile + "/" + filename;
             String remoteDir ="/video/" + parentFile + "/";

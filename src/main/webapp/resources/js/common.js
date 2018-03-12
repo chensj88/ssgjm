@@ -107,7 +107,7 @@
      *            选项默认值，选填
      */
     Common.getCodes = function (type, data, dropdownBox, dropdownValue) {
-        if (top.Common.codes[type]) {
+        /*if (top.Common.codes[type]) {
             var codes = top.Common.codes[type];
             for (var i = 0; i < codes.length; i++) {
                 data[codes[i].dictValue] = codes[i].dictLabel;
@@ -124,7 +124,7 @@
                 }
             }
             return;
-        }
+        }*/
         $.ajax({
             url: Common.getRootPath() + "/admin/dict/getCodes.do",
             data: {

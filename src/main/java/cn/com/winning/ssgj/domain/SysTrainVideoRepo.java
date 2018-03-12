@@ -43,6 +43,12 @@ public class SysTrainVideoRepo extends BaseDomain implements Serializable {
 	private String remotePath;
 
 	/**
+	 * @val 第一帧保存地址
+	 */
+	private String imgPath;
+
+
+	/**
 	 * @val 状态 0失效;1 生效
 	 */
 	private Integer status;
@@ -238,5 +244,13 @@ public class SysTrainVideoRepo extends BaseDomain implements Serializable {
 			remotePath.append(custName +"/" + videoCLabel);
 		}
 	return  remotePath.toString();
+	}
+
+	public String getImgPath() {
+		return imgPath;
+	}
+
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
 	}
 }

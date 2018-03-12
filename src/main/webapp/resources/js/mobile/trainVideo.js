@@ -43,15 +43,14 @@ $(function () {
                             url: Common.getRootPath() + '/admin/train/existVideoName.do',//验证地址
                             message: '视频名称已存在',//提示消息
                            /* delay :  1000,*///每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
-                            type: 'POST'//请求方式
-                            /**自定义提交数据，默认值提交当前input value
-                             data: function(validator) {
+                            type: 'POST'// ,请求方式
+                            /**自定义提交数据，默认值提交当前input value*/
+                             /*data: function(validator) {
                                return {
-                                   password: $('[name="passwordNameAttributeInYourForm"]').val(),
-                                   whatever: $('[name="whateverNameAttributeInYourForm"]').val()
+                                   id: $('#id').val(),
+                                   videoName: $('#videoName').val()
                                };
-                            }
-                             */
+                            }*/
                         },
                     }
                 },
@@ -110,10 +109,13 @@ $(function () {
                 return filename.replace('(', '_').replace(']', '_');
             }
         }).on("filebatchselected",function(event, files){
-            var name = Common.substr(files[0].name,'.');
-            $('#videoName').val(name);
-            $('#videoNameDiv').show();
-            selectedFlie = true;
+            if(files.length > 0){
+                var name = Common.substr(files[0].name,'.');
+                $('#videoName').val(name);
+                $('#videoNameDiv').show();
+                selectedFlie = true;
+            }
+
         }).on('filepreupload', function(event, data, previewId, index) {     //上传中
         }).on('fileuploaded',function(event, data, previewId, index){    //一个文件上传成功
             var _data = data.response;
@@ -261,6 +263,7 @@ $(function () {
         $('#isModifyDiv').show();
         $('#uploadFileDiv').hide();
         $('#videoNameDiv').hide();
+        $('#isModify').find('option:selected').attr('selected',false);
         //赋值
         $('#trainForm').initForm(data);
         if(data.videoType == Common.VIDEO_TYPE_CUSTOMER){

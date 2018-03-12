@@ -8,6 +8,7 @@
 		<result column="VIDEO_DESC" property="videoDesc" jdbcType="LONGVARCHAR" />
 		<result column="TYPE_LABEL" property="typeLabel" jdbcType="VARCHAR" />
 		<result column="REMOTE_PATH" property="remotePath" jdbcType="VARCHAR" />
+		<result column="IMG_PATH" property="imgPath" jdbcType="VARCHAR" />
 		<result column="STATUS" property="status" jdbcType="INTEGER" />
 		<result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT" />
 		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
@@ -30,6 +31,7 @@
 	   <if test="videoDesc != null and videoDesc != ''"> and t.VIDEO_DESC = #{videoDesc} </if>
 	   <if test="typeLabel != null and typeLabel != ''"> and t.TYPE_LABEL = #{typeLabel} </if>
 	   <if test="remotePath != null and remotePath != ''"> and t.REMOTE_PATH = #{remotePath} </if>
+		<if test="imgPath != null and imgPath != ''"> and t.IMG_PATH = #{imgPath} </if>
 	   <if test="(status != null )"> and t.STATUS = #{status} </if>
 	   <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> and t.LAST_UPDATOR = #{lastUpdator} </if>
 	   <if test="lastUpdateTime != null"> and t.LAST_UPDATE_TIME = #{lastUpdateTime} </if>
@@ -85,6 +87,7 @@
 		   <if test="videoDesc != null and videoDesc != ''"> VIDEO_DESC, </if>
 		   <if test="typeLabel != null and typeLabel != ''"> TYPE_LABEL, </if>
 		   <if test="remotePath != null and remotePath != ''"> REMOTE_PATH, </if>
+			<if test="imgPath != null and imgPath != ''"> IMG_PATH,</if>
 	       <if test="(status != null )"> STATUS, </if>
 	       <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> LAST_UPDATOR, </if>
 		   <if test="lastUpdateTime != null"> LAST_UPDATE_TIME, </if>
@@ -102,6 +105,7 @@
 		   <if test="videoDesc != null and videoDesc != ''"> #{videoDesc, jdbcType=LONGVARCHAR}, </if>
 		   <if test="typeLabel != null and typeLabel != ''"> #{typeLabel, jdbcType=VARCHAR}, </if>
 		   <if test="remotePath != null and remotePath != ''"> #{remotePath, jdbcType=VARCHAR}, </if>
+			<if test="imgPath != null and imgPath != ''"> #{imgPath, jdbcType=VARCHAR}, </if>
 	       <if test="(status != null )"> #{status, jdbcType=INTEGER}, </if>
 	       <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> #{lastUpdator, jdbcType=BIGINT}, </if>
 		   <if test="lastUpdateTime != null"> #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
@@ -123,6 +127,7 @@
 			   <if test="videoDesc != null and videoDesc != ''"> VIDEO_DESC = #{videoDesc, jdbcType=LONGVARCHAR}, </if>
 			   <if test="typeLabel != null and typeLabel != ''"> TYPE_LABEL = #{typeLabel, jdbcType=VARCHAR}, </if>
 			   <if test="remotePath != null and remotePath != ''"> REMOTE_PATH = #{remotePath, jdbcType=VARCHAR}, </if>
+				<if test="imgPath != null and imgPath != ''">IMG_PATH = #{imgPath, jdbcType=VARCHAR}, </if>
 			   <if test="(status != null )"> STATUS = #{status, jdbcType=INTEGER}, </if>
 			   <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> LAST_UPDATOR = #{lastUpdator, jdbcType=BIGINT}, </if>
 			   <if test="lastUpdateTime != null"> LAST_UPDATE_TIME = #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
@@ -173,7 +178,7 @@
 	<select id="selectCountByVideoName" resultType="java.lang.Integer" parameterType="sysTrainVideoRepo">
 	  SELECT  COUNT(1) FROM  SYS_TRAIN_VIDEO_REPO t
 		<where>
-			<if test="videoName != null and videoName != ''"> AND t.VIDEO_NAME LIKE '${videoName}%'</if>
+			<if test="videoName != null and videoName != ''"> AND t.VIDEO_NAME = '${videoName}'</if>
 		</where>
 	</select>
 	<select id="selectSysTrainVideoWithRecoedList" resultMap="sysTrainVideoRepoResult" parameterType="sysTrainVideoRepo">

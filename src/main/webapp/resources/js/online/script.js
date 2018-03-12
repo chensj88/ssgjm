@@ -101,10 +101,12 @@ $(function () {
                 return filename.replace('(', '_').replace(']', '_');
             }
         }).on("filebatchselected",function(event, files){
-            var name = Common.substr(files[0].name,'.');
-            $('#name').val(name);
-            $('#videoNameDiv').show();
-            selectedFlie = true;
+            if(files.length > 0) {
+                var name = Common.substr(files[0].name, '.');
+                $('#name').val(name);
+                $('#videoNameDiv').show();
+                selectedFlie = true;
+            }
         }).on('filepreupload', function(event, data, previewId, index) {     //上传中
         }).on('fileuploaded',function(event, data, previewId, index){    //一个文件上传成功
             var _data = data.response;
