@@ -46,10 +46,11 @@ public class EtCustomerDetailContorller extends BaseController{
      * @Description: 客户明细信息修改
      * @date: 2018年2月22日16:36:21
      */
-    @RequestMapping("/update")
+    @RequestMapping("/etCustomerDetailUpdate")
     @ResponseBody
     public Map<String,Object> updateEtCustomerDetail(EtCustomerDetail etCustomerDetail){
     	Map<String,Object> result = new HashMap<String,Object>();
+    	System.out.println(etCustomerDetail);
     	int isSucceed = super.getFacade().getEtCustomerDetailService().modifyEtCustomerDetail(etCustomerDetail);
     	result.put("isSucceed", isSucceed);
     	return result;   	

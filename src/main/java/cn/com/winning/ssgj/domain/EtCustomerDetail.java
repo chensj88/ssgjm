@@ -81,7 +81,15 @@ public class EtCustomerDetail extends BaseDomain implements Serializable {
 	public Long getId() {
 		return id;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "EtCustomerDetail [id=" + id + ", custName=" + custName + ", hospitalLevel=" + hospitalLevel
+				+ ", specialType=" + specialType + ", characteristic=" + characteristic + ", areaCode=" + areaCode
+				+ ", outpatientNum=" + outpatientNum + ", bedNum=" + bedNum + ", creator=" + creator + ", createTime="
+				+ createTime + ", operator=" + operator + ", operatorTime=" + operatorTime + "]";
+	}
+
 	/**
 	 * @val ID
 	 */
