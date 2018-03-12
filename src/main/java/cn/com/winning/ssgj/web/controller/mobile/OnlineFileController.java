@@ -31,7 +31,7 @@ public class OnlineFileController extends BaseController {
         return "/mobile/enterprise/data-upload";
     }
 
-    @RequestMapping(value = "/details.do")
+    @RequestMapping("/details.do")
     public String floorQuestionDetailList(Model model, String val_type) {
 
 
