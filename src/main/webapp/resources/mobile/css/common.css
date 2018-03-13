@@ -183,6 +183,7 @@ table{
     border-radius: 5px !important;
     line-height: 20px;
     display: none;
+    z-index: 2;
 }
 .select li{
 	width: 87%;

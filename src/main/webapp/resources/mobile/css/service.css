@@ -6,16 +6,27 @@
 .bridge{
 	text-align: center;
 }
+.bridge-item{
+	display: flex;
+	margin-top: 50px;
+	padding: 0px 35px;
+	flex-wrap: wrap;
+	justify-content:space-between;
+	align-content: flex-start;
+}
 .bridge-item a{
-	height: 80px;
-	line-height: 80px;
-	color: #666;
-	font-size: 18px;
-	margin-top: -1px;
-	margin-left: -1px;
-	border:1px solid #eee;
-	border-bottom: none;
-	border-right: none;
+	width: 48%;
+	height: 70px;
+	margin-top: 16px;
+	color: #505050;
+	font-size: 16px;
+	line-height: 70px;
+	border: 1px solid #c6c6c6;
+	border-radius: 2px;
+}
+.bridge-item a:active{
+	color: #6ea2f2;
+	border: 1px solid #679df1;
 }
 /*课程学习*/
 .course {}

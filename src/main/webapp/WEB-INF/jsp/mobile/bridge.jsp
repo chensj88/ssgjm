@@ -14,8 +14,16 @@
 	</head>
 
 	<body>
-		<div class="mui-content bridge">
-			<div class="mui-row bridge-item">
+		<!--header-->
+		<div class="header">
+			<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
+			<div>课程视频分类</div>
+			<span class="mui-icon mui-icon-more"></span>
+		</div>
+		<div class="hole"></div>
+
+		<div class="bridge">
+			<div class="bridge-item">
 				<c:forEach var="repoType" items="${repoTypeList}" >
 					<a href="<%=basePath%>mobile/trainVideoList/video.do?video_type=${repoType.videoType}&OPENID=${OPENID}" class="mui-col-xs-12" >${repoType.typeLabel}</a>
 				</c:forEach>

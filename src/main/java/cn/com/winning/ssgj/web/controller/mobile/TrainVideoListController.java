@@ -49,9 +49,9 @@ public class TrainVideoListController extends BaseController {
         //{"OPENID":"oyDyLxBcj0rTd9rVWyV5vTOD_Np4","HOSPCODE":"11980","WORKNUM":"1420","USERNAME":"张克福","USERPHONE":"13312345678"}
         byte[] bt = null;
         try {
-            String parameter2 = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
-            byte[] byteArray = Base64Utils.decryptBASE64(parameter2);
-            String userJsonStr = "["+new String(Base64Utils.decryptBASE64(parameter2),"UTF-8")+"]";
+            //String parameter2 = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
+            byte[] byteArray = Base64Utils.decryptBASE64(parameter);
+            String userJsonStr = "["+new String(Base64Utils.decryptBASE64(parameter),"UTF-8")+"]";
             ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
             SysUserInfo info = new SysUserInfo();
             SysTrainVideoRepo repo = new SysTrainVideoRepo();
