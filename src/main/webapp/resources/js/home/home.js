@@ -92,7 +92,7 @@ jQuery(function($) {
         var source = $(this).attr('src');
         var url = $(this)[0].contentWindow.location.href;
         if(url.indexOf("login.do")!=-1){
-            window.location.href = "/login/login.do";
+            window.location.href = Common.getRootPath() + "/login/login.do";
         }
     })
 

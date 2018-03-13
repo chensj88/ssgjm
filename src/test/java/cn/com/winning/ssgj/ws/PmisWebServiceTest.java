@@ -63,6 +63,47 @@ public class PmisWebServiceTest {
         System.out.println(loginResult.getMessage());
     }
 
+    @Test
+    public void testQueryAreaInfoData(){
+        LbParameter parameter = new LbParameter();
+        parameter.setName("Ptype");
+        parameter.setValue("12");
+        List<LbParameter> params = new ArrayList<LbParameter>();
+        params.add(parameter);
+        QueryOption option = new QueryOption();
+        option.setBatchNo(1);
+        option.setBatchSize(1);
+        option.setQueryCount(true);
+        option.setValueOption(ValueOption.VALUE);
+        QueryResult result = LBE_BUSINESS_SERVICE.query(LOGIN_RESULT.getSessionId(),
+                "WS_DS_CXJCXX",params,"",option);
+        System.out.println("Result:"+result.getResult());
+        System.out.println("Message:"+result.getMessage());
+        System.out.println("HasMore:"+result.isHasMore());
+        System.out.println("Count:"+result.getCount());
+        System.out.println("CountId"+result.getQueryId());
+        System.out.println("MetaData:"+result.getMetaData());
+        System.out.println("MetaData.ColumnCount"+result.getMetaData().getColumnCount());
+        System.out.println("MetaData.ColInfo:"+result.getMetaData().getColInfo());
+        List<ColInfo> colInfos = result.getMetaData().getColInfo();
+        for (int i = 0; i < colInfos.size(); i++) {
+            ColInfo info = colInfos.get(i);
+            System.out.println("ColInfo{" +
+                    "label='" + info.getLabel() + '\'' + PinyinTools.cn2FirstSpell(info.getLabel()) +
+                    ", length=" + info.getLength() +
+                    ", name='" + info.getName() + '\'' +
+                    ", scale=" + info.getScale() +
+                    ", type=" + info.getType() +
+                    '}');
+        }
+        System.out.println("Record:"+result.getRecords());
+        List<LbRecord> records = result.getRecords();
+        for (int i = 0; i < records.size(); i++) {
+            System.out.println("record.size:"+records.get(i).getSize());
+            System.out.println("record.string:"+records.get(i).getStrings());
+            System.out.println("record.values:"+records.get(i).getValues());
+        }
+    }
     /**
      * 测试获取用户信息数据
      */
@@ -70,7 +111,7 @@ public class PmisWebServiceTest {
     public void testQueryUserInfoData(){
         LbParameter parameter = new LbParameter();
         parameter.setName("Ptype");
-        parameter.setValue("1");
+        parameter.setValue("10");
         List<LbParameter> params = new ArrayList<LbParameter>();
         params.add(parameter);
         QueryOption option = new QueryOption();
