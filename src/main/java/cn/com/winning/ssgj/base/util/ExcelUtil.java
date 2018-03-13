@@ -28,7 +28,7 @@ public class ExcelUtil {
     private static final String EXCEL_XLSX = "xlsx";
 
     public static void main(String[] args){
-       List<Map> param = new ArrayList<Map>();
+      /* List<Map> param = new ArrayList<Map>();
         for (int i=0;i<50;i++){
            Map m = new HashMap();
            m.put("BankName","test00"+i);
@@ -40,7 +40,20 @@ public class ExcelUtil {
         colList.add("BankName");
         colList.add("Addr");
         colList.add("Phone");
-       writeExcel(param,colList,3,"d:/a.xlsx");
+       writeExcel(param,colList,3,"d:/a.xlsx");*/
+        List<List<Object>> aaa = new ArrayList<>();
+        try {
+            aaa =  importExcel("D:/download/userinfo.xls");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for (List<Object> objects : aaa) {
+            StringBuilder sb = new StringBuilder();
+            for (Object o : objects) {
+                sb.append(o+",");
+            }
+            System.out.println(sb);
+        }
     }
 
     /**
@@ -127,12 +140,12 @@ public class ExcelUtil {
         return wb;
     }
 
-    public  List<List<Object>> getBankListByExcel(InputStream in,String fileName) throws Exception{
+    public  static  List<List<Object>> importExcel(String fileName) throws Exception{
         List<List<Object>> list = null;
 
         //创建Excel工作薄
         File finalXlsxFile = new File(fileName);
-        Workbook work = this.getWorkbook(finalXlsxFile);
+        Workbook work = getWorkbook(finalXlsxFile);
         if(null == work){
             throw new Exception("创建Excel工作薄为空！");
         }
@@ -155,7 +168,7 @@ public class ExcelUtil {
                 List<Object> li = new ArrayList<Object>();
                 for (int y = row.getFirstCellNum(); y < row.getLastCellNum(); y++) {
                     cell = row.getCell(y);
-                    li.add(this.getCellValue(cell));
+                    li.add(getCellValue(cell));
                 }
                 list.add(li);
             }
@@ -168,7 +181,7 @@ public class ExcelUtil {
      * @param cell
      * @return
      */
-    public  Object getCellValue(Cell cell){
+    public  static  Object getCellValue(Cell cell){
         Object value = null;
         DecimalFormat df = new DecimalFormat("0");  //格式化number String字符
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  //日期格式化
