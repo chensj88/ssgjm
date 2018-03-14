@@ -40,6 +40,7 @@
         <if test="row.count != null and row.count != ''">top ${row.count}</if>
         * from SYS_DICT_INFO t where 1 = 1
         <include refid="sf-sysDictInfo"/>
+        order by t.DICT_CODE,convert(INT,t.DICT_SORT) desc
         <!-- order by ID asc -->
     </select>
 
@@ -50,7 +51,7 @@
 
     <select id="selectSysDictInfoPaginatedList" resultMap="sysDictInfoResult" parameterType="sysDictInfo">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        select *, ROW_NUMBER() OVER ( order by t.DICT_CODE,convert(INT,t.DICT_SORT) desc   ) as _rn
         from SYS_DICT_INFO t where 1 = 1
         <include refid="sf-sysDictInfo"/>
         <!-- order by ID asc -->
@@ -104,7 +105,7 @@
 
     <select id="selectEntityListBySelectiveKeyForAnd" resultMap="sysDictInfoResult" parameterType="sysDictInfo">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by t.DICT_CODE desc ) as _rn
+        select *, ROW_NUMBER() OVER ( order by t.DICT_CODE,convert(INT,t.DICT_SORT) desc ) as _rn
         from SYS_DICT_INFO t where 1 = 1
         <include refid="qyeryForAnd-sysDictInfo"/>
         <!-- order by ID asc -->
