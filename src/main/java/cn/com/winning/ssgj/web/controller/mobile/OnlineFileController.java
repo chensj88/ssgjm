@@ -46,13 +46,14 @@ public class OnlineFileController extends BaseController {
 
         EtOnlineFile onlineFile = new  EtOnlineFile();
         String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9";
-        String hospcode ="11980";
-
         try{
             byte[] byteArray = Base64Utils.decryptBASE64(parameter2);
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter2), "UTF-8") + "]";
             ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
-            String worknum="5823"; //(String) userList.get(0).get("WORKNUM");
+
+            String worknum=(String) userList.get(0).get("WORKNUM");
+            String hospcode=(String) userList.get(0).get("HOSPCODE");
+
             //获取用户的信息
             SysUserInfo info = new SysUserInfo();
             info.setUserid(worknum);
