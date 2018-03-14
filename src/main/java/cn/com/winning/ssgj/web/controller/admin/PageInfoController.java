@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @date 2018-02-28 17:16
  */
 @Controller
-public class PageInfoController extends BaseController{
+public class PageInfoController extends BaseController {
 
 
 }

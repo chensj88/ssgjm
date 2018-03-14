@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -23,30 +24,33 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/login")
-public class LoginController extends BaseController{
+public class LoginController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/login.do")
-    public String Login(HttpServletRequest request, Model model){
+    @ILog
+    public String Login(HttpServletRequest request, Model model) {
         return "login/login";
     }
 
     @RequestMapping("/error.do")
-    public String unauthorizedUrlPage(HttpServletRequest request,Model model){
+    @ILog
+    public String unauthorizedUrlPage(HttpServletRequest request, Model model) {
         return "index/error";
     }
 
     @RequestMapping(value = "/check.do")
     @ResponseBody
-    public Map<String,Object> check(HttpServletRequest request,String username, String password){
+    @ILog
+    public Map<String, Object> check(HttpServletRequest request, String username, String password) {
 
         System.out.println(username);
         System.out.println(password);
-        Map<String,Object> map = new HashMap<String,Object>();
-        UsernamePasswordToken token = new UsernamePasswordToken(username,MD5.stringMD5(password));
+        Map<String, Object> map = new HashMap<String, Object>();
+        UsernamePasswordToken token = new UsernamePasswordToken(username, MD5.stringMD5(password));
         Subject subject = SecurityUtils.getSubject();
         String error = null;
         try {
@@ -60,10 +64,10 @@ public class LoginController extends BaseController{
             error = "其他错误：" + e.getMessage();
         }
         //用户名检查
-        if(error != null){
-           map.put("status",false);
-           map.put("message",error);
-        }else {
+        if (error != null) {
+            map.put("status", false);
+            map.put("message", error);
+        } else {
             map.put("status", true);
         }
         return map;

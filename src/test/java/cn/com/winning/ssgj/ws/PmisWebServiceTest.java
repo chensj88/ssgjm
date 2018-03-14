@@ -65,7 +65,90 @@ public class PmisWebServiceTest {
 
     @Test
     public void testQueryAreaInfoData() {
-        generateDymaicSql("SYS_DICT_INFO", "11");
+        //10  areaCode
+        //11  hospitalType
+        //12  hospitalLevel
+        generateDataSql("SYS_DICT_INFO", "12","hospitalLevel");
+    }
+
+    private void generateDataSql(String tableName, String dataType,String dictType) {
+        LBEBusinessService lbeBusinessService = PmisWSUtil.createLBEBusinessService();
+        LoginResult loginResult = PmisWSUtil.createLoginResult();
+        List<LbParameter> params = PmisWSUtil.createLbParameter(dataType);
+        QueryOption queryOption = PmisWSUtil.createFirstCountValueOption();
+        QueryResult result = lbeBusinessService.query(loginResult.getSessionId(), Constants.PmisWSConstants.WS_SERVICE_OBJECT_NAME,
+                params, "", queryOption);
+        if (result.getResult() <= 0) {
+            return;
+        }
+        int total = result.getCount();
+        int pageSize = 1000;
+        int lastPageSize = total % pageSize;
+        int page = 0;
+        boolean pageEnd = false;
+        if (lastPageSize > 0) {
+            page = total / pageSize + 1;
+            pageEnd = true;
+        } else {
+            page = total / pageSize;
+            pageEnd = false;
+        }
+
+        for (int i = 1; i <= page; i++) {
+            if ((i == page) && pageEnd) {
+                queryOption = PmisWSUtil.createQueryValueOption(i, lastPageSize);
+                result = lbeBusinessService.query(loginResult.getSessionId(), Constants.PmisWSConstants.WS_SERVICE_OBJECT_NAME,
+                        params, "", queryOption);
+                generateDictInfo(result, tableName,dictType);
+            } else {
+                queryOption = PmisWSUtil.createQueryValueOption(i);
+                result = lbeBusinessService.query(loginResult.getSessionId(), Constants.PmisWSConstants.WS_SERVICE_OBJECT_NAME,
+                        params, "", queryOption);
+                generateDictInfo(result, tableName,dictType);
+            }
+        }
+    }
+
+    private void generateDictInfo(QueryResult result, String tableName,String dictType) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("insert into " + tableName.toUpperCase() + " values \n");
+        List<LbRecord> recordList = result.getRecords();
+        List<ColInfo> colInfos = result.getMetaData().getColInfo();
+        for (int i = 0; i < recordList.size(); i++) {
+            LbRecord record = recordList.get(i);
+            List<Object> values = record.getValues();
+            for (int j = 0; j < values.size(); j++) {
+//                 开始数据为数字
+                if (j == 0 && colInfos.get(j).getType() == 1) {
+                    sb.append("('" +dictType+"',"+ resolveValue(values.get(j)) + ",");
+//              开始数据为字符或者时间
+                } else if (j == 0 && (colInfos.get(j).getType() == 0 || colInfos.get(j).getType() == 3)) {
+                    sb.append("('" +dictType+"',"+  values.get(j) + "\',");
+//              全部结束数据为数字
+                } else if ((j == values.size() - 1) && (colInfos.get(j).getType() == 1) &&
+                        (i == recordList.size() - 1)) {
+                    sb.append(resolveValue(values.get(j)) + ",null,null );  \n");
+//              全部结束数据为字符或者时间
+                } else if ((j == values.size() - 1) && (colInfos.get(j).getType() == 0 || colInfos.get(j).getType() == 3) &&
+                        (i == recordList.size() - 1)) {
+                    sb.append("\'" + values.get(j) + "\' ,null,null);  \n");
+//              单行结束为数字
+                } else if ((j == values.size() - 1) && (colInfos.get(j).getType() == 1)) {
+                    sb.append(resolveValue(values.get(j)) + "  ,null,null),  \n");
+//              单行结束为字符或者时间
+                } else if ((j == values.size() - 1) && (colInfos.get(j).getType() == 0 || colInfos.get(j).getType() == 3)) {
+                    sb.append("\'" + values.get(j) + " \',null,null ),\n");
+//              字段处理 数字
+                } else if (colInfos.get(j).getType() == 1) {
+                    sb.append(resolveValue(values.get(j)) + ",");
+                } else if (colInfos.get(j).getType() == 0 || colInfos.get(j).getType() == 3) {
+//              字段处理 字符或者时间
+                    sb.append("\'" + values.get(j) + "\',");
+                }
+            }
+        }
+          System.out.println(sb);
+        executeSqlInfo(sb.toString());
     }
 
     /**
@@ -218,12 +301,12 @@ public class PmisWebServiceTest {
                 queryOption = PmisWSUtil.createQueryValueOption(i, lastPageSize);
                 result = lbeBusinessService.query(loginResult.getSessionId(), Constants.PmisWSConstants.WS_SERVICE_OBJECT_NAME,
                         params, "", queryOption);
-               /* resolveWSResult(result, tableName);*/
+                resolveWSResult(result, tableName);
             } else {
                 queryOption = PmisWSUtil.createQueryValueOption(i);
                 result = lbeBusinessService.query(loginResult.getSessionId(), Constants.PmisWSConstants.WS_SERVICE_OBJECT_NAME,
                         params, "", queryOption);
-                /*resolveWSResult(result, tableName);*/
+                resolveWSResult(result, tableName);
             }
         }
     }
@@ -289,12 +372,12 @@ public class PmisWebServiceTest {
                         queryOption = PmisWSUtil.createQueryValueOption(i, lastPageSize);
                         result = lbeBusinessService.query(loginResult.getSessionId(), Constants.PmisWSConstants.WS_SERVICE_OBJECT_NAME,
                                 params, "", queryOption);
-                      /*  resolveWSResult(result, tableName);*/
+                        resolveWSResult(result, tableName);
                     } else {
                         queryOption = PmisWSUtil.createQueryValueOption(i);
                         result = lbeBusinessService.query(loginResult.getSessionId(), Constants.PmisWSConstants.WS_SERVICE_OBJECT_NAME,
                                 params, "", queryOption);
-                      /*  resolveWSResult(result, tableName,);*/
+                        resolveWSResult(result, tableName);
                     }
                 }
             }
@@ -307,12 +390,10 @@ public class PmisWebServiceTest {
      * @param result
      * @param tableName
      */
-    private void resolveWSResult(QueryResult result, String tableName,String dictCode) {
+    private void resolveWSResult(QueryResult result, String tableName) {
         if (tableName.toUpperCase().equals("SYS_USER_INFO")) {
             resolveUserInfoData(result);
-        } else if(tableName.toUpperCase().equals("SYS_DICT_INFO")){
-            generateDictInfo(result,tableName,dictCode);
-        }else {
+        } else {
             generateSQLInfo(result, tableName);
         }
     }
@@ -331,52 +412,6 @@ public class PmisWebServiceTest {
         System.out.println(sb);
     }
 
-    @Test
-    public  void queryDictInfo(){
-
-    }
-
-    private void generateDictInfo(QueryResult result, String tableName,String dictCode) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("insert into " + tableName.toUpperCase() + " values \n");
-        List<LbRecord> recordList = result.getRecords();
-        List<ColInfo> colInfos = result.getMetaData().getColInfo();
-        for (int i = 0; i < recordList.size(); i++) {
-            LbRecord record = recordList.get(i);
-            List<Object> values = record.getValues();
-            for (int j = 0; j < values.size(); j++) {
-//                 开始数据为数字
-                if (j == 0 && colInfos.get(j).getType() == 1) {
-                    sb.append("('"+dictCode+"'," + resolveValue(values.get(j)) + ",");
-//              开始数据为字符或者时间
-                } else if (j == 0 && (colInfos.get(j).getType() == 0 || colInfos.get(j).getType() == 3)) {
-                    sb.append("('"+dictCode+"'," + values.get(j) + "\',");
-//              全部结束数据为数字
-                } else if ((j == values.size() - 1) && (colInfos.get(j).getType() == 1) &&
-                        (i == recordList.size() - 1)) {
-                    sb.append(resolveValue(values.get(j)) + " );  \n");
-//              全部结束数据为字符或者时间
-                } else if ((j == values.size() - 1) && (colInfos.get(j).getType() == 0 || colInfos.get(j).getType() == 3) &&
-                        (i == recordList.size() - 1)) {
-                    sb.append("\'" + values.get(j) + "\' );  \n");
-//              单行结束为数字
-                } else if ((j == values.size() - 1) && (colInfos.get(j).getType() == 1)) {
-                    sb.append(resolveValue(values.get(j)) + "  ),  \n");
-//              单行结束为字符或者时间
-                } else if ((j == values.size() - 1) && (colInfos.get(j).getType() == 0 || colInfos.get(j).getType() == 3)) {
-                    sb.append("\'" + values.get(j) + " \' ),");
-//              字段处理 数字
-                } else if (colInfos.get(j).getType() == 1) {
-                    sb.append(resolveValue(values.get(j)) + ",");
-                } else if (colInfos.get(j).getType() == 0 || colInfos.get(j).getType() == 3) {
-//              字段处理 字符或者时间
-                    sb.append("\'" + values.get(j) + "\',");
-                }
-            }
-        }
-          System.out.println(sb);
-        /*executeSqlInfo(sb.toString());*/
-    }
 
     private void generateSQLInfo(QueryResult result, String tableName) {
         StringBuilder sb = new StringBuilder();
@@ -416,7 +451,7 @@ public class PmisWebServiceTest {
                 }
             }
         }
-        /*  System.out.println(sb);*/
+//        /*  System.out.println(sb);*/
         executeSqlInfo(sb.toString());
     }
 

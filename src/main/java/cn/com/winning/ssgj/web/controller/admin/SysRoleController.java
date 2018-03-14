@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
 import cn.com.winning.ssgj.base.Constants;
+
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.domain.SysRoleInfo;
@@ -34,30 +35,31 @@ public class SysRoleController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/roleInfo.do")
+    @ILog
     public String getRoleInfoPage(HttpServletRequest request, Model model) {
         return "auth/user/roleinfo";
     }
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    @ILog(operationName="角色列表",operationType="list")
-    public Map<String,Object> sysRoleList(SysRoleInfo role,Row row) {
+    @ILog(operationName = "角色列表", operationType = "list")
+    public Map<String, Object> sysRoleList(SysRoleInfo role, Row row) {
         role.setRow(row);
         role.setIsDel(Constants.STATUS_UNUSE);
         List<SysRoleInfo> roleInfos = super.getFacade().getSysRoleInfoService().getSysRoleInfoPaginatedListForName(role);
         int total = super.getFacade().getSysRoleInfoService().getSysRoleInfoCountForName(role);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("total", total);
-		result.put("rows", roleInfos);
+        result.put("rows", roleInfos);
         return result;
     }
 
 
     @RequestMapping("/getById.do")
     @ResponseBody
-    @ILog(operationName="使用ID查询角色",operationType="queryRoleById")
-    public Map<String, Object> queryRoleById(SysRoleInfo role){
+    @ILog(operationName = "使用ID查询角色", operationType = "queryRoleById")
+    public Map<String, Object> queryRoleById(SysRoleInfo role) {
         role = super.getFacade().getSysRoleInfoService().getSysRoleInfo(role);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("data", role);
@@ -67,8 +69,8 @@ public class SysRoleController extends BaseController {
 
     @RequestMapping("/deleteById.do")
     @ResponseBody
-    @ILog(operationName="使用ID删除角色",operationType="deleteRoleById")
-    public Map<String, Object> deleteRoleById(SysRoleInfo role){
+    @ILog(operationName = "使用ID删除角色", operationType = "deleteRoleById")
+    public Map<String, Object> deleteRoleById(SysRoleInfo role) {
         role.setIsDel(Constants.STATUS_USE);
         super.getFacade().getSysRoleInfoService().modifySysRoleInfo(role);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -79,7 +81,7 @@ public class SysRoleController extends BaseController {
 
     @RequestMapping("/add.do")
     @ResponseBody
-    @ILog(operationName="添加角色",operationType="addRole")
+    @ILog(operationName = "添加角色", operationType = "addRole")
     public Map<String, Object> addRole(SysRoleInfo roleInfo) {
         roleInfo.setId(ssgjHelper.createRoleId());
         roleInfo.setIsDel(Constants.STATUS_UNUSE);
@@ -91,7 +93,7 @@ public class SysRoleController extends BaseController {
 
     @RequestMapping("/update.do")
     @ResponseBody
-    @ILog(operationName="更新角色",operationType="updateRole")
+    @ILog(operationName = "更新角色", operationType = "updateRole")
     public Map<String, Object> updateRole(SysRoleInfo roleInfo) {
         super.getFacade().getSysRoleInfoService().modifySysRoleInfo(roleInfo);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -101,12 +103,13 @@ public class SysRoleController extends BaseController {
 
     @RequestMapping(value = "/tree.do")
     @ResponseBody
-    public Map<String,Object> queryRoleTree(String roleName){
+    @ILog
+    public Map<String, Object> queryRoleTree(String roleName) {
 
         List<NodeTree> roleInfoList = super.getFacade().getSysRoleInfoService().getRoleInfoTree(roleName);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
-        result.put("data",roleInfoList);
+        result.put("data", roleInfoList);
         return result;
 
     }

@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 public class IndexController extends BaseController {
 
     @RequestMapping(value = "/index.do")
-    public String indexPageInfo(HttpServletRequest request, Model model){
+    @ILog
+    public String indexPageInfo(HttpServletRequest request, Model model) {
         return "index/index";
     }
 }

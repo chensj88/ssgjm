@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.domain.SysFlowInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
@@ -38,48 +39,53 @@ public class FlowInfoController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping("/flowInfo.do")
+    @ILog
     public String gotoPage(HttpServletRequest request, Model model) {
         return "auth/module/flowinfo";
     }
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String,Object> getFlowList(Row row,SysFlowInfo flowInfo){
+    @ILog
+    public Map<String, Object> getFlowList(Row row, SysFlowInfo flowInfo) {
         flowInfo.setRow(row);
         List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().getSysFlowInfoPaginatedListForSelective(flowInfo);
         int total = super.getFacade().getSysFlowInfoService().getSysFlowInfoCountForSelective(flowInfo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
-        result.put("rows",flowInfos);
+        result.put("rows", flowInfos);
         return result;
     }
 
     @RequestMapping(value = "/queryFlowCode.do")
     @ResponseBody
-    public Map<String,Object> queryFlowCode(String flowCode,int matchCount){
-        Row row = new Row(0,matchCount);
+    @ILog
+    public Map<String, Object> queryFlowCode(String flowCode, int matchCount) {
+        Row row = new Row(0, matchCount);
         SysFlowInfo flowInfo = new SysFlowInfo();
         flowInfo.setRow(row);
         flowInfo.setFlowCode(flowCode);
         flowInfo.setFlowType(Constants.Flow.FLOW_TYPE_BIG);
         List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().querySysFlowInfoList(flowInfo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", matchCount);
         result.put("status", Constants.SUCCESS);
         result.put("data", flowInfos);
         return result;
 
     }
+
     @RequestMapping(value = "/add.do")
     @ResponseBody
     @Transactional
-    public Map<String,Object> addFlowInfo(SysFlowInfo flow){
+    @ILog
+    public Map<String, Object> addFlowInfo(SysFlowInfo flow) {
         flow.setId(ssgjHelper.createFlowId());
 
-        if(Constants.Flow.FLOW_TYPE_SMALL.equals(flow.getFlowType())){
+        if (Constants.Flow.FLOW_TYPE_SMALL.equals(flow.getFlowType())) {
             System.out.println(flow.getFlowCode());
-        }else{
+        } else {
             flow.setFlowCode(ssgjHelper.createFlowCode());
         }
         flow.setLastUpdateTime(new Timestamp(new Date().getTime()));
@@ -87,7 +93,7 @@ public class FlowInfoController extends BaseController {
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         flow.setLastUpdator(userInfo.getId());
         super.getFacade().getSysFlowInfoService().createSysFlowInfo(flow);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", flow.getId());
         return result;
@@ -95,38 +101,41 @@ public class FlowInfoController extends BaseController {
 
     @RequestMapping(value = "/createFlowCode.do")
     @ResponseBody
-    public Map<String,Object> createFlowCode(String flowType,String flowCode){
+    @ILog
+    public Map<String, Object> createFlowCode(String flowType, String flowCode) {
         String reFlowCode = "";
-        if(Constants.Flow.FLOW_TYPE_SMALL.equals(flowType) &&!StringUtils.isBlank(flowCode)){
+        if (Constants.Flow.FLOW_TYPE_SMALL.equals(flowType) && !StringUtils.isBlank(flowCode)) {
             flowCode += "-";
-            reFlowCode = flowCode + super.getFacade().getSysFlowInfoService().createFlowCode(flowCode,flowType);
+            reFlowCode = flowCode + super.getFacade().getSysFlowInfoService().createFlowCode(flowCode, flowType);
         }
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("data", reFlowCode);
         result.put("status", Constants.SUCCESS);
-        return  result;
+        return result;
     }
 
     @RequestMapping(value = "/getById.do")
     @ResponseBody
-    public Map<String,Object> getFlowById(SysFlowInfo flow){
-     flow = super.getFacade().getSysFlowInfoService().getSysFlowInfo(flow);
-     Map<String,Object> result = new HashMap<String,Object>();
-     result.put("status", Constants.SUCCESS);
-     result.put("data", flow);
-     return result;
+    @ILog
+    public Map<String, Object> getFlowById(SysFlowInfo flow) {
+        flow = super.getFacade().getSysFlowInfoService().getSysFlowInfo(flow);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", flow);
+        return result;
     }
 
     @RequestMapping(value = "/update.do")
     @ResponseBody
     @Transactional
-    public Map<String,Object> updateFlowById(SysFlowInfo flow){
+    @ILog
+    public Map<String, Object> updateFlowById(SysFlowInfo flow) {
         flow.setLastUpdateTime(new Timestamp(new Date().getTime()));
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         flow.setLastUpdator(userInfo.getId());
         flow.setLastUpdateTime(new Timestamp(new Date().getTime()));
         super.getFacade().getSysFlowInfoService().modifySysFlowInfo(flow);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", flow.getId());
         return result;
@@ -136,10 +145,11 @@ public class FlowInfoController extends BaseController {
     @RequestMapping(value = "/deleteById.do")
     @ResponseBody
     @Transactional
-    public Map<String,Object> deleteFlowById(SysFlowInfo flow){
+    @ILog
+    public Map<String, Object> deleteFlowById(SysFlowInfo flow) {
         flow.setStatus(Constants.STATUS_UNUSE);
         super.getFacade().getSysFlowInfoService().removeSysFlowInfo(flow);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
 
@@ -147,9 +157,10 @@ public class FlowInfoController extends BaseController {
 
     @RequestMapping(value = "/listNoPage.do")
     @ResponseBody
-    public Map<String,Object> queryFlowListNoPage(SysFlowInfo flowInfo){
+    @ILog
+    public Map<String, Object> queryFlowListNoPage(SysFlowInfo flowInfo) {
         List<SysFlowInfo> sysDataInfos = getFacade().getSysFlowInfoService().getSysFlowInfoListForSelectiveKey(flowInfo);
-        int total =  getFacade().getSysFlowInfoService().getSysFlowInfoCountForSelectiveKey(flowInfo);
+        int total = getFacade().getSysFlowInfoService().getSysFlowInfoCountForSelectiveKey(flowInfo);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", sysDataInfos);
         map.put("total", total);

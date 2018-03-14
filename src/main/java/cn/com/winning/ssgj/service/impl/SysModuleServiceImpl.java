@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import cn.com.winning.ssgj.base.Constants;
+
 import cn.com.winning.ssgj.dao.SysFunDao;
 import cn.com.winning.ssgj.domain.SysFun;
 import cn.com.winning.ssgj.domain.SysRoleInfo;
@@ -21,8 +22,6 @@ import cn.com.winning.ssgj.domain.SysModule;
 import cn.com.winning.ssgj.service.SysModuleService;
 
 /**
- *
- *
  * @author SSGJ
  * @date 2018-01-18 10:11:48
  */
@@ -35,47 +34,57 @@ public class SysModuleServiceImpl implements SysModuleService {
     private SysFunDao sysFunDao;
 
 
+
     public Integer createSysModule(SysModule t) {
         int maxOrderValue = this.sysModuleDao.selectSysModuleMaxOrderValue();
         t.setOrderValue(maxOrderValue + 1);
         return this.sysModuleDao.insertEntity(t);
     }
 
+
     public SysModule getSysModule(SysModule t) {
         return this.sysModuleDao.selectEntity(t);
     }
+
 
     public Integer getSysModuleCount(SysModule t) {
         return (Integer) this.sysModuleDao.selectEntityCount(t);
     }
 
+
     public List<SysModule> getSysModuleList(SysModule t) {
         return this.sysModuleDao.selectEntityList(t);
     }
+
 
     public int modifySysModule(SysModule t) {
         return this.sysModuleDao.updateEntity(t);
     }
 
+
     public int removeSysModule(SysModule t) {
         return this.sysModuleDao.deleteEntity(t);
     }
+
 
     public List<SysModule> getSysModulePaginatedList(SysModule t) {
         return this.sysModuleDao.selectEntityPaginatedList(t);
     }
 
     @Override
+
     public List<SysModule> getSysModulePaginatedListFuzzy(SysModule module) {
         return this.sysModuleDao.selectSysModulePaginatedListFuzzy(module);
     }
 
     @Override
+
     public int getSysModuleCountFuzzy(SysModule module) {
         return this.sysModuleDao.selectSysModuleCountFuzzy(module);
     }
 
     @Override
+
     public List<NodeTree> getSysModuleNodeTree(SysModule module) {
         module.setIsDel(Constants.STATUS_UNUSE);
         module.setModLevel(1);
@@ -104,13 +113,14 @@ public class SysModuleServiceImpl implements SysModuleService {
     }
 
     @Override
+
     public List<NodeTree> getUserMenu(SysUserInfo sysUserInfo) {
         List<SysModule> moduleList = this.sysModuleDao.selectUserParentMenuList(sysUserInfo);
         List<NodeTree> userMenu = new ArrayList<NodeTree>();
         for (SysModule pModule : moduleList) {
-            Map<String,Object> param = new HashMap<String,Object>();
-            param.put("userId",sysUserInfo.getId());
-            param.put("parId",pModule.getModId());
+            Map<String, Object> param = new HashMap<String, Object>();
+            param.put("userId", sysUserInfo.getId());
+            param.put("parId", pModule.getModId());
             List<SysModule> childModule = this.sysModuleDao.selectUserChildMenuList(param);
             NodeTree nodeTree = pModule.getNodeTree();
             nodeTree.setNodes(getChildNodeListWithoutFun(childModule));
@@ -120,10 +130,11 @@ public class SysModuleServiceImpl implements SysModuleService {
     }
 
     @Override
+
     public List<NodeTree> getRoleMenu(SysRoleInfo roleInfo) {
         List<NodeTree> roleMenu = new ArrayList<NodeTree>();
-        Map<String,Object> param = new HashMap<String,Object>();
-        param.put("roleId",roleInfo.getId());
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("roleId", roleInfo.getId());
         List<SysModule> childModule = this.sysModuleDao.selectRoleChildMenuList(param);
         roleMenu = getChildNodeList(childModule);
         return roleMenu;
@@ -136,6 +147,7 @@ public class SysModuleServiceImpl implements SysModuleService {
         }
         return nodes;
     }
+
     private List<NodeTree> getChildNodeList(List<SysModule> moduleList) {
         List<NodeTree> nodes = new ArrayList<NodeTree>();
         for (SysModule sysModule : moduleList) {
@@ -150,15 +162,15 @@ public class SysModuleServiceImpl implements SysModuleService {
     }
 
 
-    private String  getNodeTreeFunInfoString(SysModule module) {
+    private String getNodeTreeFunInfoString(SysModule module) {
         StringBuilder funcInfoSB = new StringBuilder();
-        Map<String,Object> param = new HashMap<String,Object>();
-        param.put("modId",module.getModId());
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("modId", module.getModId());
         List<SysFun> funList = this.sysFunDao.selectSysFunByModuleInfo(param);
         for (SysFun sysFun : funList) {
-            funcInfoSB.append(sysFun.getFunCode() +":" + sysFun.getFunName()+";");
+            funcInfoSB.append(sysFun.getFunCode() + ":" + sysFun.getFunName() + ";");
         }
         System.out.println(funcInfoSB);
-       return funcInfoSB.toString();
+        return funcInfoSB.toString();
     }
 }

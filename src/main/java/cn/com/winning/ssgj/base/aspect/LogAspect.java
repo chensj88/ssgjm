@@ -12,6 +12,7 @@ import cn.com.winning.ssgj.domain.SysLog;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.expand.LoginUserInfo;
 import cn.com.winning.ssgj.service.SysLogService;
+import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -39,18 +40,24 @@ public class LogAspect {
     private static final Logger logger = LoggerFactory.getLogger(LogAspect.class);
 
 
+    @Pointcut("@annotation(cn.com.winning.ssgj.base.annoation.ILog)")
+    public  void  serviceAspect(){}
     // Service层切点，这里如果需要配置多个切入点用“||”
-    @Pointcut("execution(* cn.com.winning.ssgj.*.service.*.login(..))"
-            + "||execution(* cn.com.winning.ssgj.*.service.*.get*(..))"
-            + "||execution(* cn.com.winning.ssgj.*.service.*.create*(..))"
-            + "||execution(* cn.com.winning.ssgj.*.service.*.modify*(..))"
-            + "||execution(* cn.com.winning.ssgj.*.service.*.remove*(..))"
-            + "||execution(* cn.com.winning.ssgj.*.service.*.remove*(..))"
-            + "||execution(* cn.com.winning.ssgj.*.service.*.new*(..))"
-            + "||execution(* cn.com.winning.ssgj.*.service.*.edit*(..))"
-            + "||execution(* cn.com.winning.ssgj.*.service.*.update*(..))"
-            + "||execution(* cn.com.winning.ssgj.*.service.*.query*(..))"
-            + "||execution(* cn.com.winning.ssgj.*.service.*.exists*(..))")
+    @Pointcut("execution(* cn.com.winning.ssgj.web.controller.*.login(..))"
+            + "||execution(* cn.com.winning.ssgj.web.controller.*.upload*(..))"
+            + "||execution(* cn.com.winning.ssgj.web.controller.*.go*(..))"
+            + "||execution(* cn.com.winning.ssgj.web.controller.*.get*(..))"
+            + "||execution(* cn.com.winning.ssgj.web.controller.*.add*(..))"
+            + "||execution(* cn.com.winning.ssgj.web.controller.*.create*(..))"
+            + "||execution(* cn.com.winning.ssgj.web.controller.*.modify*(..))"
+            + "||execution(* cn.com.winning.ssgj.web.controller.*.remove*(..))"
+            + "||execution(* cn.com.winning.ssgj.web.controller.*.delete*(..))"
+            + "||execution(* cn.com.winning.ssgj.web.controller.*.new*(..))"
+            + "||execution(* cn.com.winning.ssgj.web.controller.*.edit*(..))"
+            + "||execution(* cn.com.winning.ssgj.web.controller.*.update*(..))"
+            + "||execution(* cn.com.winning.ssgj.web.controller.*.query*(..))"
+            + "||execution(* cn.com.winning.ssgj.web.controller.*.exists*(..))"
+            + "||execution(* cn.com.winning.ssgj.web.controller.*.select*(..))")
     public void controllerAspect() {
     }
 
@@ -92,7 +99,7 @@ public class LogAspect {
      * 后置通知 用于拦截Controller层记录用户的操作
      * @param joinPoint 切点
      */
-    @After("controllerAspect()")
+    @After("serviceAspect()")
     public void after(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
@@ -101,14 +108,14 @@ public class LogAspect {
         //访问主机名称
         String remoteHost = request.getRemoteHost();
         //登录人员
-        LoginUserInfo operator = (LoginUserInfo) session.getAttribute(Constants.USER_INFO);
+        SysUserInfo operator = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         try {
             String targetName = joinPoint.getTarget().getClass().getName();
             String methodName = joinPoint.getSignature().getName();
             Object[] arguments = joinPoint.getArgs();
             Class targetClass = Class.forName(targetName);
             Method[] methods = targetClass.getMethods();
-            String operationType = "";
+           String operationType = "";
             String operationName = "";
             for (Method method : methods) {
                 if (method.getName().equals(methodName)) {
@@ -122,22 +129,22 @@ public class LogAspect {
             }
 
             // *========控制台输出=========*//
-           logger.info("=====controller后置通知开始=====");
+         /*  logger.info("=====controller后置通知开始=====");
             logger.info("请求方法:"
                     + (joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()")
                     + "." + operationType);
             logger.info("方法描述:" + operationName);
             logger.info("请求人:"  +operator);
-            logger.info("请求IP:" + ip);
+            logger.info("请求IP:" + ip);*/
             String content = "[classs] "+targetName +"[method] "+ methodName
-                    +"[method desc] "+operationName +"[method type] "+operationType
+                   +"[method desc] "+operationName +"[method type] "+operationType
                     +"[user] "+ operator.getYhmc();
             logger.info("访问内容："+content);
             // *========数据库日志=========*//
             SysLog log = new SysLog();
             log.setId(ssgjHelper.createLogId());
-            log.setCId(operator.getcId());
-            log.setPmId(operator.getPmId());
+            log.setCId(Long.valueOf(operator.getMap().get("C_ID").toString()));
+            log.setPmId(Long.valueOf(operator.getMap().get("PM_ID").toString()));
             //暂时放空
             log.setSerialNo(null);
             log.setOperator(operator.getId());
@@ -148,10 +155,10 @@ public class LogAspect {
             //暂时放空
             log.setClientMac(null);
             sysLogServiceImpl.createSysLog(log);
-            logger.info("=====controller后置通知结束=====");
+          /*  logger.info("=====controller后置通知结束=====");*/
         } catch (Exception e) {
             // 记录本地异常日志
-            logger.error("==后置通知异常==");
+            /*logger.error("==后置通知异常==");*/
             logger.error("异常信息:{}", e.getMessage());
         }
     }

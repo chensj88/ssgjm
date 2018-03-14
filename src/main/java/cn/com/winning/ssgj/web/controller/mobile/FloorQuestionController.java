@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.web.controller.mobile;
 
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.Base64Utils;
 import cn.com.winning.ssgj.base.util.DateUtil;
@@ -33,6 +34,7 @@ public class FloorQuestionController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/list.do")
+    @ILog
     public String floorQuestionList(Model model, String parameter) {
         //进行中的项目
         //String parameter2 = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
@@ -63,11 +65,11 @@ public class FloorQuestionController extends BaseController {
                 }
             }
             EtFloorQuestionInfo questionInfo = new EtFloorQuestionInfo();
-            questionInfo.getMap().put("Ssgs",info.getSsgs());
+            questionInfo.getMap().put("Ssgs", info.getSsgs());
             List<EtFloorQuestionInfo> infoList = super.getFacade().getEtFloorQuestionInfoService()
                     .getEtFloorQuestionInfoSummaryList(questionInfo);
-            model.addAttribute("infoList",infoList);
-            model.addAttribute("userId",info.getUserid());
+            model.addAttribute("infoList", infoList);
+            model.addAttribute("userId", info.getUserid());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -76,47 +78,50 @@ public class FloorQuestionController extends BaseController {
     }
 
     @RequestMapping("/floorQuestionReport.do")
-    public  String floorQuestionReport (Model model,String floorName,String userId){
-            EtFloorQuestionInfo questionInfo = new EtFloorQuestionInfo();
-            questionInfo.getMap().put("user_id",userId);
-            questionInfo.setFloorName(floorName);
-            List<EtFloorQuestionInfo> infoList = super.getFacade().getEtFloorQuestionInfoService()
-                    .getEtFloorQuestionInfoWithHospitalList(questionInfo);
-            model.addAttribute("infoList",infoList);
-            model.addAttribute("user_id",userId);
+    @ILog
+    public String floorQuestionReport(Model model, String floorName, String userId) {
+        EtFloorQuestionInfo questionInfo = new EtFloorQuestionInfo();
+        questionInfo.getMap().put("user_id", userId);
+        questionInfo.setFloorName(floorName);
+        List<EtFloorQuestionInfo> infoList = super.getFacade().getEtFloorQuestionInfoService()
+                .getEtFloorQuestionInfoWithHospitalList(questionInfo);
+        model.addAttribute("infoList", infoList);
+        model.addAttribute("user_id", userId);
 
         return "/mobile/service/floor-report";
     }
 
     @RequestMapping("/causeFloorData.do")
     @ResponseBody
-    public Map<String,Object> causeFloorData (Long id){
-        Map<String,Object> map = new HashMap<String,Object>();
+    @ILog
+    public Map<String, Object> causeFloorData(Long id) {
+        Map<String, Object> map = new HashMap<String, Object>();
         EtFloorQuestionInfo info = new EtFloorQuestionInfo();
         info.setId(id);
         info = super.getFacade().getEtFloorQuestionInfoService().getEtFloorQuestionInfo(info);
-        map.put("info",info);
+        map.put("info", info);
         return map;
     }
 
 
     @RequestMapping("/causeFloor.do")
     @ResponseBody
-    public  Map<String,Object> causeFloor (EtFloorQuestionInfo info){
+    @ILog
+    public Map<String, Object> causeFloor(EtFloorQuestionInfo info) {
         SysUserInfo userInfo = new SysUserInfo();
-        userInfo.setUserid(info.getOperator()+"");
+        userInfo.setUserid(info.getOperator() + "");
         userInfo.setStatus(1);
         userInfo.setUserType("0");//0医院
         List<SysUserInfo> userInfoList = super.getFacade().getSysUserInfoService().getSysUserInfoList(userInfo);
         info.setOperator(userInfoList.get(0).getId());
         info.setOperatorTime(new Timestamp(new Date().getTime()));
-        Map<String,Object> map = new HashMap<String,Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         try {
             super.getFacade().getEtFloorQuestionInfoService().modifyEtFloorQuestionInfo(info);
-            map.put("status",true);
-        }catch (Exception e){
+            map.put("status", true);
+        } catch (Exception e) {
             e.printStackTrace();
-            map.put("status",false);
+            map.put("status", false);
         }
         return map;
     }

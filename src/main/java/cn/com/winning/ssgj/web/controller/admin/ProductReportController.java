@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.apache.shiro.SecurityUtils;
@@ -27,20 +28,22 @@ import java.util.Map;
 public class ProductReportController extends BaseController {
 
     @RequestMapping(value = "/mapping/pReportinfo.do")
-    public String queryMappingPage(HttpServletRequest request, Model model){
+    @ILog
+    public String queryMappingPage(HttpServletRequest request, Model model) {
         return "auth/mapping/productReportMapping";
     }
 
     @RequestMapping(value = "/pReport/queryById.do")
     @ResponseBody
-    public Map<String,Object> queryProductReportById(SysProductPaperInfo paperInfo){
+    @ILog
+    public Map<String, Object> queryProductReportById(SysProductPaperInfo paperInfo) {
         List<SysProductPaperInfo> paperInfoList = super.getFacade().
                 getSysProductPaperInfoService().getSysProductPaperInfoList(paperInfo);
-        Map<String,Object> param = new HashMap<String,Object>();
-        Map<String,Object> result = new HashMap<String,Object>();
-        if (paperInfoList != null && paperInfoList.size() > 0 ){
+        Map<String, Object> param = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
+        if (paperInfoList != null && paperInfoList.size() > 0) {
             List<String> idString = super.getFacade().getSysProductPaperInfoService().getSysPaperInfoIds(paperInfoList);
-            param.put("pks",idString);
+            param.put("pks", idString);
             SysReportInfo reportInfo = new SysReportInfo();
             reportInfo.setMap(param);
             List<SysReportInfo> sysReportInfoList = super.getFacade().getSysReportInfoService().getSysReportInfoListById(reportInfo);
@@ -55,10 +58,11 @@ public class ProductReportController extends BaseController {
 
     @RequestMapping(value = "/pReport/queryProductReportInfoById.do")
     @ResponseBody
-    public Map<String,Object> queryProductReportInfoById(Integer pdId,String reportids){
+    @ILog
+    public Map<String, Object> queryProductReportInfoById(Integer pdId, String reportids) {
         List<SysProductPaperInfo> paperInfos = super.getFacade().getSysProductPaperInfoService()
-                .getSysProductPaperInfoByIds(pdId,reportids);
-        Map<String,Object> result = new HashMap<String,Object>();
+                .getSysProductPaperInfoByIds(pdId, reportids);
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", paperInfos);
         return result;
@@ -66,10 +70,11 @@ public class ProductReportController extends BaseController {
 
     @RequestMapping(value = "/pReport/removeMapping.do")
     @ResponseBody
-    public Map<String,Object> removePRMapping(String idList){
+    @ILog
+    public Map<String, Object> removePRMapping(String idList) {
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
-        super.getFacade().getSysProductPaperInfoService().removeSysProductPaperInfoMapping(idList,userInfo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        super.getFacade().getSysProductPaperInfoService().removeSysProductPaperInfoMapping(idList, userInfo);
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
 
@@ -77,11 +82,12 @@ public class ProductReportController extends BaseController {
 
     @RequestMapping(value = "/pReport/addMapping.do")
     @ResponseBody
-    public Map<String,Object> addPRMapping(String idList) throws ParseException {
+    @ILog
+    public Map<String, Object> addPRMapping(String idList) throws ParseException {
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         super.getFacade().getSysProductPaperInfoService().
-                addSysProductPaperInfoMapping(idList,userInfo);
-        Map<String,Object> result = new HashMap<String,Object>();
+                addSysProductPaperInfoMapping(idList, userInfo);
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
 

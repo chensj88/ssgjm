@@ -71,7 +71,7 @@
 
                     <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                         <li>
-                            <a href="/logout">
+                            <a href="<%=basePath%>/logout">
                                 <i class="icon-off"></i>
                                 退出
                             </a>

@@ -4,6 +4,10 @@
 
     <resultMap id="etCustomerDetailResultForList" type="etCustomerDetail">
         <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="C_ID" property="cId" jdbcType="BIGINT" />
+        <result column="PM_ID" property="pmId" jdbcType="BIGINT" />
+        <result column="PM_NAME" property="pmName" jdbcType="VARCHAR" />
+        <result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR" />
         <result column="CUST_NAME" property="custName" jdbcType="VARCHAR"/>
         <result column="HOSPITAL_LEVEL" property="hospitalLevel" jdbcType="INTEGER"/>
         <result column="SPECIAL_TYPE" property="specialType" jdbcType="INTEGER"/>
@@ -21,7 +25,11 @@
     </resultMap>
 
     <sql id="sf-etCustomerDetail">
-        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(id != null ) or id == 0">and t.ID = #{id}</if>
+        <if test="(cId != null ) or cId == 0"> and t.C_ID = #{cId} </if>
+        <if test="(pmId != null ) or pmId == 0"> and t.PM_ID = #{pmId} </if>
+        <if test="serialNo != null and serialNo != ''"> and t.SERIAL_NO = #{serialNo} </if>
+        <if test="pmName != null and pmName != ''"> and t.PM_NAME = #{pmName} </if>
         <if test="custName != null and custName != ''">and t.CUST_NAME = #{custName}</if>
         <if test="(hospitalLevel != null and hospitalLevel != '') or hospitalLevel == 0">and t.HOSPITAL_LEVEL =
             #{hospitalLevel}
@@ -75,6 +83,10 @@
         insert into ET_CUSTOMER_DETAIL
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="(cId != null ) or cId == 0"> C_ID , </if>
+            <if test="(pmId != null ) or pmId == 0"> PM_ID, </if>
+            <if test="serialNo != null and serialNo != ''"> SERIAL_NO ,</if>
+            <if test="pmName != null and pmName != ''"> PM_NAME, </if>
             <if test="custName != null and custName != ''">CUST_NAME,</if>
             <if test="(hospitalLevel != null and hospitalLevel != '') or hospitalLevel == 0">HOSPITAL_LEVEL,</if>
             <if test="(specialType != null and specialType != '') or specialType == 0">SPECIAL_TYPE,</if>
@@ -90,6 +102,10 @@
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="(cId != null ) or cId == 0"> #{cId,jdbcType=BIGINT} , </if>
+            <if test="(pmId != null ) or pmId == 0"> #{pmId,jdbcType=BIGINT} , </if>
+            <if test="serialNo != null and serialNo != ''"> #{serialNo,jdbcType=VARCHAR}  ,</if>
+            <if test="pmName != null and pmName != ''"> #{pmName,jdbcType=VARCHAR} , </if>
             <if test="custName != null and custName != ''">#{custName, jdbcType=VARCHAR},</if>
             <if test="(hospitalLevel != null and hospitalLevel != '') or hospitalLevel == 0">
                 #{hospitalLevel, jdbcType=INTEGER},
@@ -117,6 +133,10 @@
         <set>
             <trim suffixOverrides=",">
                 <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(cId != null ) or cId == 0"> C_ID = #{cId,jdbcType=BIGINT} , </if>
+                <if test="(pmId != null ) or pmId == 0"> PM_ID = #{pmId,jdbcType=BIGINT} , </if>
+                <if test="serialNo != null and serialNo != ''">SERIAL_NO = #{serialNo,jdbcType=VARCHAR}  ,</if>
+                <if test="pmName != null and pmName != ''"> PM_NAME = #{pmName,jdbcType=VARCHAR} , </if>
                 <if test="custName != null and custName != ''">CUST_NAME = #{custName, jdbcType=VARCHAR},</if>
                 <if test="(hospitalLevel != null and hospitalLevel != '') or hospitalLevel == 0">HOSPITAL_LEVEL =
                     #{hospitalLevel, jdbcType=INTEGER},

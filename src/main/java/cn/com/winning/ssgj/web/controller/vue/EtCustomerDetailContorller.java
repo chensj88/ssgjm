@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import cn.com.winning.ssgj.base.annoation.ILog;
 import org.springframework.format.datetime.joda.MillisecondInstantPrinter;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -25,9 +26,10 @@ import cn.com.winning.ssgj.web.controller.common.BaseController;
 @CrossOrigin
 @Controller
 @RequestMapping("/vue/etCustomerDetail")
-public class EtCustomerDetailContorller extends BaseController{
-	@Resource
-	private EtCustomerDetailService ser ;
+public class EtCustomerDetailContorller extends BaseController {
+    @Resource
+    private EtCustomerDetailService ser;
+
     /**
      * @author: 胡万里
      * @Description: 客户明细信息添加
@@ -35,12 +37,14 @@ public class EtCustomerDetailContorller extends BaseController{
      */
     @RequestMapping("/add")
     @ResponseBody
-    public Map<String,Object> addEtCustomerDetail(EtCustomerDetail etCustomerDetail){
-    	 Map<String,Object> result = new HashMap<String,Object>();
-    	Integer isSucceed = super.getFacade().getEtCustomerDetailService().createEtCustomerDetail(etCustomerDetail);
-    	result.put("isSucceed", isSucceed);
-    	return result;   	
+    @ILog
+    public Map<String, Object> addEtCustomerDetail(EtCustomerDetail etCustomerDetail) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        Integer isSucceed = super.getFacade().getEtCustomerDetailService().createEtCustomerDetail(etCustomerDetail);
+        result.put("isSucceed", isSucceed);
+        return result;
     }
+
     /**
      * @author: 胡万里
      * @Description: 客户明细信息修改
@@ -48,13 +52,15 @@ public class EtCustomerDetailContorller extends BaseController{
      */
     @RequestMapping("/etCustomerDetailUpdate")
     @ResponseBody
-    public Map<String,Object> updateEtCustomerDetail(EtCustomerDetail etCustomerDetail){
-    	Map<String,Object> result = new HashMap<String,Object>();
-    	System.out.println(etCustomerDetail);
-    	int isSucceed = super.getFacade().getEtCustomerDetailService().modifyEtCustomerDetail(etCustomerDetail);
-    	result.put("isSucceed", isSucceed);
-    	return result;   	
+    @ILog
+    public Map<String, Object> updateEtCustomerDetail(EtCustomerDetail etCustomerDetail) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        System.out.println(etCustomerDetail);
+        int isSucceed = super.getFacade().getEtCustomerDetailService().modifyEtCustomerDetail(etCustomerDetail);
+        result.put("isSucceed", isSucceed);
+        return result;
     }
+
     /**
      * @author: 胡万里
      * @Description: 客户明细信息
@@ -62,13 +68,14 @@ public class EtCustomerDetailContorller extends BaseController{
      */
     @RequestMapping("/etCustomerDetailFindById")
     @ResponseBody
-    public Map<String,Object> etCustomerDetailFindById(EtCustomerDetail etCustomerDetail){
-    	Map<String,Object> result = new HashMap<String,Object>();
-    	//TODO
-    	etCustomerDetail.setId((long)1);
-    	EtCustomerDetail detail = super.getFacade().getEtCustomerDetailService().getEtCustomerDetail(etCustomerDetail);
-    	
-    	result.put("result", detail);
-    	return result;   	
+    @ILog
+    public Map<String, Object> etCustomerDetailFindById(EtCustomerDetail etCustomerDetail) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        //TODO
+        etCustomerDetail.setId((long) 1);
+        EtCustomerDetail detail = super.getFacade().getEtCustomerDetailService().getEtCustomerDetail(etCustomerDetail);
+
+        result.put("result", detail);
+        return result;
     }
 }

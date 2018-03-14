@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import cn.com.winning.ssgj.base.Constants;
+
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import org.apache.shiro.SecurityUtils;
@@ -18,8 +19,6 @@ import cn.com.winning.ssgj.domain.SysFlowAnswer;
 import cn.com.winning.ssgj.service.SysFlowAnswerService;
 
 /**
- *
- *
  * @author SSGJ
  * @date 2018-01-18 10:11:48
  */
@@ -32,36 +31,44 @@ public class SysFlowAnswerServiceImpl implements SysFlowAnswerService {
     private SSGJHelper ssgjHelper;
 
 
+
     public Integer createSysFlowAnswer(SysFlowAnswer t) {
         return this.sysFlowAnswerDao.insertEntity(t);
     }
+
 
     public SysFlowAnswer getSysFlowAnswer(SysFlowAnswer t) {
         return this.sysFlowAnswerDao.selectEntity(t);
     }
 
+
     public Integer getSysFlowAnswerCount(SysFlowAnswer t) {
         return (Integer) this.sysFlowAnswerDao.selectEntityCount(t);
     }
+
 
     public List<SysFlowAnswer> getSysFlowAnswerList(SysFlowAnswer t) {
         return this.sysFlowAnswerDao.selectEntityList(t);
     }
 
+
     public int modifySysFlowAnswer(SysFlowAnswer t) {
         return this.sysFlowAnswerDao.updateEntity(t);
     }
 
+
     public int removeSysFlowAnswer(SysFlowAnswer t) {
         return this.sysFlowAnswerDao.deleteEntity(t);
     }
+
 
     public List<SysFlowAnswer> getSysFlowAnswerPaginatedList(SysFlowAnswer t) {
         return this.sysFlowAnswerDao.selectEntityPaginatedList(t);
     }
 
     @Override
-    public void createSysFlowAnswer(String info,Long quesId) {
+
+    public void createSysFlowAnswer(String info, Long quesId) {
         SysFlowAnswer delAnswer = new SysFlowAnswer();
         delAnswer.setQuesId(quesId);
         delAnswer.setStatus(Constants.STATUS_UNUSE);

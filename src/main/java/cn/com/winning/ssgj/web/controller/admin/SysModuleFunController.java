@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.domain.SysModFun;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.stereotype.Controller;
@@ -24,28 +25,31 @@ public class SysModuleFunController extends BaseController {
 
     @RequestMapping(value = "/query.do")
     @ResponseBody
-    public Map<String,Object> queryModuleFunMapping(SysModFun modFun){
+    @ILog
+    public Map<String, Object> queryModuleFunMapping(SysModFun modFun) {
         List<Long> funcIdList = super.getFacade().getSysModFunService().getFunIdsList(modFun);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
-        result.put("data",funcIdList);
+        result.put("data", funcIdList);
         return result;
     }
 
     @RequestMapping(value = "/add.do")
     @ResponseBody
-    public Map<String,Object> addModuleFunMapping(String idList){
+    @ILog
+    public Map<String, Object> addModuleFunMapping(String idList) {
         super.getFacade().getSysModFunService().createSysModFunForIdList(idList);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }
 
     @RequestMapping(value = "/delete.do")
     @ResponseBody
-    public Map<String,Object> deleteModuleFunMapping(SysModFun fun){
+    @ILog
+    public Map<String, Object> deleteModuleFunMapping(SysModFun fun) {
         super.getFacade().getSysModFunService().removeSysModFun(fun);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }

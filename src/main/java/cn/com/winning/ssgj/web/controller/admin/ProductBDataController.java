@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.domain.SysDataInfo;
 import cn.com.winning.ssgj.domain.SysDictInfo;
 import cn.com.winning.ssgj.domain.SysProductDataInfo;
@@ -32,19 +33,21 @@ import java.util.Map;
 public class ProductBDataController extends BaseController {
 
     @RequestMapping(value = "/mapping/pBdataInfo.do")
-    public String queryMappingPage(HttpServletRequest request, Model model){
+    @ILog
+    public String queryMappingPage(HttpServletRequest request, Model model) {
         return "auth/mapping/productBDMapping";
     }
 
     @RequestMapping(value = "/pBdata/queryById.do")
     @ResponseBody
-    public Map<String,Object> queryBdataInfoById(SysProductDataInfo dataInfo){
+    @ILog
+    public Map<String, Object> queryBdataInfoById(SysProductDataInfo dataInfo) {
         List<SysProductDataInfo> dataInfoList = super.getFacade().getSysProductDataInfoService().getSysProductDataInfoList(dataInfo);
-        Map<String,Object> param = new HashMap<String,Object>();
-        Map<String,Object> result = new HashMap<String,Object>();
-        if (dataInfoList != null && dataInfoList.size() > 0 ){
+        Map<String, Object> param = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
+        if (dataInfoList != null && dataInfoList.size() > 0) {
             List<String> idString = super.getFacade().getSysProductDataInfoService().getDataInfoId(dataInfoList);
-            param.put("pks",idString);
+            param.put("pks", idString);
             SysDataInfo data = new SysDataInfo();
             data.setMap(param);
             List<SysDataInfo> sysDataInfoList = super.getFacade().getSysDataInfoService().getSysDataInfoListById(data);
@@ -59,9 +62,10 @@ public class ProductBDataController extends BaseController {
 
     @RequestMapping(value = "/pBdata/queryProductDataInfoById.do")
     @ResponseBody
-    public Map<String,Object> queryProductDataInfoById(Integer pdId,String bdIds){
-        List<SysProductDataInfo> dataInfos = super.getFacade().getSysProductDataInfoService().getSysProductDataInfoByIds(pdId,bdIds);
-        Map<String,Object> result = new HashMap<String,Object>();
+    @ILog
+    public Map<String, Object> queryProductDataInfoById(Integer pdId, String bdIds) {
+        List<SysProductDataInfo> dataInfos = super.getFacade().getSysProductDataInfoService().getSysProductDataInfoByIds(pdId, bdIds);
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", dataInfos);
         return result;
@@ -69,22 +73,24 @@ public class ProductBDataController extends BaseController {
 
     @RequestMapping(value = "/pBdata/removeMapping.do")
     @ResponseBody
-    public Map<String,Object> removePBMapping(String idList){
+    @ILog
+    public Map<String, Object> removePBMapping(String idList) {
         super.getFacade().getSysProductDataInfoService().removeSysProductDataInfo(idList);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
-        result.put("data","");
+        result.put("data", "");
         return result;
 
     }
 
     @RequestMapping(value = "/pBdata/addMapping.do")
     @ResponseBody
-    public Map<String,Object> addPBMapping(String idList) throws ParseException {
+    @ILog
+    public Map<String, Object> addPBMapping(String idList) throws ParseException {
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         System.out.println(idList);
-        super.getFacade().getSysProductDataInfoService().addSysProductDataInfoMapping(idList,userInfo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        super.getFacade().getSysProductDataInfoService().addSysProductDataInfoMapping(idList, userInfo);
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
 

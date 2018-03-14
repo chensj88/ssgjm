@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
@@ -17,8 +18,6 @@ import cn.com.winning.ssgj.domain.SysModPopedom;
 import cn.com.winning.ssgj.service.SysModPopedomService;
 
 /**
- *
- *
  * @author SSGJ
  * @date 2018-01-18 10:11:48
  */
@@ -31,59 +30,69 @@ public class SysModPopedomServiceImpl implements SysModPopedomService {
     private SSGJHelper ssgjHelper;
 
 
+
     public Integer createSysModPopedom(SysModPopedom t) {
         return this.sysModPopedomDao.insertEntity(t);
     }
+
 
     public SysModPopedom getSysModPopedom(SysModPopedom t) {
         return this.sysModPopedomDao.selectEntity(t);
     }
 
+
     public Integer getSysModPopedomCount(SysModPopedom t) {
         return (Integer) this.sysModPopedomDao.selectEntityCount(t);
     }
+
 
     public List<SysModPopedom> getSysModPopedomList(SysModPopedom t) {
         return this.sysModPopedomDao.selectEntityList(t);
     }
 
+
     public int modifySysModPopedom(SysModPopedom t) {
         return this.sysModPopedomDao.updateEntity(t);
     }
 
+
     public int removeSysModPopedom(SysModPopedom t) {
         return this.sysModPopedomDao.deleteEntity(t);
     }
+
 
     public List<SysModPopedom> getSysModPopedomPaginatedList(SysModPopedom t) {
         return this.sysModPopedomDao.selectEntityPaginatedList(t);
     }
 
     @Override
+
     public List<Long> getModuleIdList(SysModPopedom modPopedom) {
         return this.sysModPopedomDao.selectModuleIdList(modPopedom);
     }
 
     @Override
+
     public void createSysModPopedomForIdList(String idList) {
-        Map<String,Object> param = new HashMap<String, Object>();
-        param.put("ids", StringUtil.generateDeleteSqlString(idList,"ROLE_ID"));
-        System.out.println(StringUtil.generateDeleteSqlString(idList,"ROLE_ID"));
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("ids", StringUtil.generateDeleteSqlString(idList, "ROLE_ID"));
+        System.out.println(StringUtil.generateDeleteSqlString(idList, "ROLE_ID"));
         this.sysModPopedomDao.deleteSysModPopedomForIds(param);
-        List<String>  addModPopedom = StringUtil.generateStringList(idList);
+        List<String> addModPopedom = StringUtil.generateStringList(idList);
         for (String s : addModPopedom) {
-           SysModPopedom modPopedom = new SysModPopedom();
-           modPopedom.setId(ssgjHelper.createSysRoleModId());
-           modPopedom.setRoleId(Long.valueOf(s.split(",")[0]));
-           modPopedom.setModId(Long.valueOf(s.split(",")[1]));
-           this.sysModPopedomDao.insertEntity(modPopedom);
+            SysModPopedom modPopedom = new SysModPopedom();
+            modPopedom.setId(ssgjHelper.createSysRoleModId());
+            modPopedom.setRoleId(Long.valueOf(s.split(",")[0]));
+            modPopedom.setModId(Long.valueOf(s.split(",")[1]));
+            this.sysModPopedomDao.insertEntity(modPopedom);
         }
 
     }
 
     @Override
+
     public void modifyModPopedomMapping(String idList) {
-        String[] modPopeInfoList =  idList.split(";");
+        String[] modPopeInfoList = idList.split(";");
         for (String s : modPopeInfoList) {
             String[] modPope = s.split(":");
             SysModPopedom mod = new SysModPopedom();
@@ -96,6 +105,7 @@ public class SysModPopedomServiceImpl implements SysModPopedomService {
     }
 
     @Override
+
     public List<SysModPopedom> getSysModPopedomHasPopedomList(SysModPopedom modPopedom) {
 
         return this.sysModPopedomDao.selectSysModPopedomHasPopedomList(modPopedom);

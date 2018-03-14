@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.apache.shiro.SecurityUtils;
@@ -27,19 +28,21 @@ import java.util.Map;
 public class ProductSHController extends BaseController {
 
     @RequestMapping(value = "/mapping/pShInfo.do")
-    public String queryMappingPage(HttpServletRequest request, Model model){
+    @ILog
+    public String queryMappingPage(HttpServletRequest request, Model model) {
         return "auth/mapping/productSHMapping";
     }
 
     @RequestMapping(value = "/pShInfo/queryById.do")
     @ResponseBody
-    public Map<String,Object> queryBdataInfoById(SysProductShInfo shInfo){
+    @ILog
+    public Map<String, Object> queryBdataInfoById(SysProductShInfo shInfo) {
         List<SysProductShInfo> shInfoList = super.getFacade().getSysProductShInfoService().getSysProductShInfoList(shInfo);
-        Map<String,Object> param = new HashMap<String,Object>();
-        Map<String,Object> result = new HashMap<String,Object>();
-        if (shInfoList != null && shInfoList.size() > 0 ){
+        Map<String, Object> param = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
+        if (shInfoList != null && shInfoList.size() > 0) {
             List<String> idString = super.getFacade().getSysProductShInfoService().getSoftwareHardwareInfoId(shInfoList);
-            param.put("pks",idString);
+            param.put("pks", idString);
             SysSoftHardwareInfo data = new SysSoftHardwareInfo();
             data.setMap(param);
             List<SysSoftHardwareInfo> sysSoftHardwareInfoList = super.getFacade().getSysSoftHardwareInfoService().getSysSoftHardwareInfoListByIds(data);
@@ -54,9 +57,10 @@ public class ProductSHController extends BaseController {
 
     @RequestMapping(value = "/pShInfo/queryProductSHInfoById.do")
     @ResponseBody
-    public Map<String,Object> queryProductSHInfoById(Integer pdId,String shIds){
-        List<SysProductShInfo> dataInfos = super.getFacade().getSysProductShInfoService().getSysProductShInfoByIds(pdId,shIds);
-        Map<String,Object> result = new HashMap<String,Object>();
+    @ILog
+    public Map<String, Object> queryProductSHInfoById(Integer pdId, String shIds) {
+        List<SysProductShInfo> dataInfos = super.getFacade().getSysProductShInfoService().getSysProductShInfoByIds(pdId, shIds);
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", dataInfos);
         return result;
@@ -64,23 +68,25 @@ public class ProductSHController extends BaseController {
 
     @RequestMapping(value = "/pShInfo/removeMapping.do")
     @ResponseBody
-    public Map<String,Object> removePSMapping(String idList){
+    @ILog
+    public Map<String, Object> removePSMapping(String idList) {
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
-        super.getFacade().getSysProductShInfoService().removeSysProductShInfoMapping(idList,userInfo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        super.getFacade().getSysProductShInfoService().removeSysProductShInfoMapping(idList, userInfo);
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
-        result.put("data","");
+        result.put("data", "");
         return result;
 
     }
 
     @RequestMapping(value = "/pShInfo/addMapping.do")
     @ResponseBody
-    public Map<String,Object> addPSMapping(String idList) throws ParseException {
+    @ILog
+    public Map<String, Object> addPSMapping(String idList) throws ParseException {
         System.out.println(idList);
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
-        super.getFacade().getSysProductShInfoService().addSysProductShInfoMapping(idList,userInfo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        super.getFacade().getSysProductShInfoService().addSysProductShInfoMapping(idList, userInfo);
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
 

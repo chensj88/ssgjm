@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.domain.SysDictInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -26,17 +27,19 @@ import java.util.Map;
 public class SysDictInfoController extends BaseController {
 
     @RequestMapping(value = "/pageInfo.do")
-    public String getPageInfo(HttpServletRequest request, Model model){
+    @ILog
+    public String getPageInfo(HttpServletRequest request, Model model) {
         return "config/dictInfo";
     }
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String,Object> querySysDictInfoList(Row row, SysDictInfo sysDictInfo){
+    @ILog
+    public Map<String, Object> querySysDictInfoList(Row row, SysDictInfo sysDictInfo) {
         sysDictInfo.setRow(row);
         List<SysDictInfo> dictInfoList = super.getFacade().getSysDictInfoService().getSysDictInfoPageForAnd(sysDictInfo);
         int total = super.getFacade().getSysDictInfoService().getSysDictInfoCountForAnd(sysDictInfo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows", dictInfoList);
@@ -47,38 +50,42 @@ public class SysDictInfoController extends BaseController {
 
     @RequestMapping(value = "/add.do")
     @ResponseBody
-    public Map<String,Object> addSysDictInfo(SysDictInfo sysDictInfo){
+    @ILog
+    public Map<String, Object> addSysDictInfo(SysDictInfo sysDictInfo) {
         super.getFacade().getSysDictInfoService().createSysDictInfo(sysDictInfo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }
 
     @RequestMapping(value = "/existDictValue.do")
     @ResponseBody
-    public Map<String,Object> existDictValue(SysDictInfo dictInfo){
+    @ILog
+    public Map<String, Object> existDictValue(SysDictInfo dictInfo) {
         boolean isValid = super.getFacade().getSysDictInfoService().existDictValue(dictInfo);
         Map<String, Object> result = new HashMap<String, Object>();
-		result.put("valid", isValid);
-		result.put("status", Constants.SUCCESS);
-		return result;
+        result.put("valid", isValid);
+        result.put("status", Constants.SUCCESS);
+        return result;
     }
 
 
     @RequestMapping(value = "/update.do")
     @ResponseBody
-    public Map<String,Object> updateSysDictInfo(SysDictInfo info){
+    @ILog
+    public Map<String, Object> updateSysDictInfo(SysDictInfo info) {
         super.getFacade().getSysDictInfoService().modifySysDictInfo(info);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }
 
     @RequestMapping(value = "/delete.do")
     @ResponseBody
-    public Map<String,Object> deleteSysDictInfo(SysDictInfo info){
+    @ILog
+    public Map<String, Object> deleteSysDictInfo(SysDictInfo info) {
         super.getFacade().getSysDictInfoService().removeSysDictInfo(info);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
 
@@ -86,11 +93,12 @@ public class SysDictInfoController extends BaseController {
 
     @RequestMapping(value = "/getCodes.do")
     @ResponseBody
-    public Map<String,Object> queryDictInfo(SysDictInfo dict){
+    @ILog
+    public Map<String, Object> queryDictInfo(SysDictInfo dict) {
         List<SysDictInfo> dictInfos = super.getFacade().getSysDictInfoService().getSysDictInfoList(dict);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
-        result.put("data",dictInfos);
+        result.put("data", dictInfos);
         return result;
 
     }

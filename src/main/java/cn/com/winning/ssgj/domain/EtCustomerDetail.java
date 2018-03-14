@@ -21,6 +21,23 @@ public class EtCustomerDetail extends BaseDomain implements Serializable {
 	 * @val ID
 	 */
 	private Long id;
+	/**
+	 * 客户ID
+	 */
+	private Long cId;
+	/**
+	 * 项目ID
+	 */
+	private Long pmId;
+
+	/**
+	 * 项目名称
+	 */
+	private String pmName;
+	/**
+	 * 客户号
+	 */
+	private String serialNo;
 	
 	/**
 	 * @val 客户名称
@@ -238,5 +255,36 @@ public class EtCustomerDetail extends BaseDomain implements Serializable {
 	public void setOperatorTime(java.sql.Timestamp operatorTime) {
 		this.operatorTime = operatorTime;
 	}
-	
+
+	public Long getcId() {
+		return cId;
+	}
+
+	public void setcId(Long cId) {
+		this.cId = cId;
+	}
+
+	public Long getPmId() {
+		return pmId;
+	}
+
+	public void setPmId(Long pmId) {
+		this.pmId = pmId;
+	}
+
+	public String getSerialNo() {
+		return serialNo;
+	}
+
+	public void setSerialNo(String serialNo) {
+		this.serialNo = serialNo;
+	}
+
+	public String getPmName() {
+		return pmName;
+	}
+
+	public void setPmName(String pmName) {
+		this.pmName = pmName;
+	}
 }

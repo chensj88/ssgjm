@@ -7,8 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
- *
- *
  * @author SSGJ
  * @date 2018-01-18 10:11:48
  */
@@ -393,7 +391,9 @@ public class FacadeImpl implements Facade {
         return sysUserInfoService;
     }
 
-    public SysTrainVideoRepoService getSysTrainVideoRepoService() { return sysTrainVideoRepoService; }
+    public SysTrainVideoRepoService getSysTrainVideoRepoService() {
+        return sysTrainVideoRepoService;
+    }
 
     public SysDataCheckScriptService getSysDataCheckScriptService() {
         return sysDataCheckScriptService;

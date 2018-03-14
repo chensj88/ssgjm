@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -20,20 +21,22 @@ import java.util.Map;
 @RequestMapping("home")
 public class HomeController extends BaseController {
     @RequestMapping(value = "/home.do")
-    public String Login(HttpServletRequest request, Model model){
+    @ILog
+    public String Login(HttpServletRequest request, Model model) {
 
         return "home/home";
     }
 
     @RequestMapping(value = "/loadMenu.do")
     @ResponseBody
-    public Map<String,Object> loadUserMenu(){
+    @ILog
+    public Map<String, Object> loadUserMenu() {
 
         SysUserInfo sysUserInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         List<NodeTree> menuNodeTree = super.getFacade().getSysModuleService().getUserMenu(sysUserInfo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
-        result.put("data",menuNodeTree);
+        result.put("data", menuNodeTree);
         return result;
 
     }

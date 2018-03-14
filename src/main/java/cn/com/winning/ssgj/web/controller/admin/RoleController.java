@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
-import cn.com.winning.ssgj.base.annoation.ILog;
+
 import cn.com.winning.ssgj.base.util.RequestUtil;
 import cn.com.winning.ssgj.base.Constants;
 

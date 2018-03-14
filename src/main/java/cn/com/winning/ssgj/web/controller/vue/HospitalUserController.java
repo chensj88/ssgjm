@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.vue;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.base.util.MD5;
@@ -35,20 +36,22 @@ public class HospitalUserController extends BaseController {
 
     @Autowired
     private SSGJHelper ssgjHelper;
+
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String,Object> queryHospitalUserInfo(Row row){
+    @ILog
+    public Map<String, Object> queryHospitalUserInfo(Row row) {
 
        /* SysUserInfo user = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         long c_id = (long) user.getMap().get("C_ID");*/
         long c_id = 9879L;
-        SysUserInfo queryUser =  new SysUserInfo();
+        SysUserInfo queryUser = new SysUserInfo();
         queryUser.setRow(row);
         queryUser.setSsgs(c_id);
         queryUser.setUserType(Constants.User.USER_TYPE_HOSPITAL);
         List<SysUserInfo> queryUserList = super.getFacade().getSysUserInfoService().getSysUserInfoPaginatedList(queryUser);
         int total = super.getFacade().getSysUserInfoService().getSysUserInfoCount(queryUser);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows", queryUserList);
@@ -58,18 +61,19 @@ public class HospitalUserController extends BaseController {
 
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
-    public Map<String,Object> addOrModifyHospitalUserInfo(SysUserInfo userInfo){
+    @ILog
+    public Map<String, Object> addOrModifyHospitalUserInfo(SysUserInfo userInfo) {
         userInfo.setUserType(Constants.User.USER_TYPE_HOSPITAL);
         userInfo.setPassword(MD5.stringMD5(userInfo.getUserid()));
         userInfo.setStatus(Constants.PMIS_STATUS_USE);
         userInfo.setSsgs(9879L);
-        if(userInfo.getId() == 0L ){
+        if (userInfo.getId() == 0L) {
             userInfo.setId(ssgjHelper.createUserId());
             super.getFacade().getSysUserInfoService().createSysUserInfo(userInfo);
-        }else{
+        } else {
             super.getFacade().getSysUserInfoService().modifySysUserInfo(userInfo);
         }
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }
@@ -77,11 +81,11 @@ public class HospitalUserController extends BaseController {
     @RequestMapping(value = "/exportExcel.do")
     public HttpServletResponse wiriteExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
         long c_id = 9879L;
-        SysUserInfo queryUser =  new SysUserInfo();
+        SysUserInfo queryUser = new SysUserInfo();
         queryUser.setSsgs(c_id);
         String fileName = "userinfo.xls";
-        String path = getClass().getClassLoader().getResource("/template").getPath()+fileName;
-        super.getFacade().getSysUserInfoService().generateUserInfo(queryUser,path);
+        String path = getClass().getClassLoader().getResource("/template").getPath() + fileName;
+        super.getFacade().getSysUserInfoService().generateUserInfo(queryUser, path);
         try {
             // path是指欲下载的文件的路径。
             File file = new File(path);
@@ -107,7 +111,7 @@ public class HospitalUserController extends BaseController {
             toClient.close();
         } catch (IOException ex) {
             ex.printStackTrace();
-            throw  ex;
+            throw ex;
         }
         return response;
 

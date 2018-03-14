@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.domain.SysRoleUser;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.stereotype.Controller;
@@ -26,11 +27,12 @@ public class SysUserRoleController extends BaseController {
 
     @RequestMapping(value = "/query.do")
     @ResponseBody
-    public Map<String,Object> queryUserRoleMaping(Long userId){
+    @ILog
+    public Map<String, Object> queryUserRoleMaping(Long userId) {
         SysRoleUser roleUser = new SysRoleUser();
         roleUser.setUserId(userId);
-        List<Long>  roleIdList = super.getFacade().getSysRoleUserService().getRoleIdList(roleUser);
-        Map<String,Object> result = new HashMap<String,Object>();
+        List<Long> roleIdList = super.getFacade().getSysRoleUserService().getRoleIdList(roleUser);
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", roleIdList);
         return result;
@@ -39,18 +41,20 @@ public class SysUserRoleController extends BaseController {
 
     @RequestMapping(value = "/add.do")
     @ResponseBody
-    public Map<String,Object> addUserRoleMaping(String idStr){
+    @ILog
+    public Map<String, Object> addUserRoleMaping(String idStr) {
         super.getFacade().getSysRoleUserService().createSysRoleUserByIdString(idStr);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }
 
     @RequestMapping(value = "/delete.do")
     @ResponseBody
-    public Map<String,Object> deleteUserRoleMaping(SysRoleUser roleUser){
+    @ILog
+    public Map<String, Object> deleteUserRoleMaping(SysRoleUser roleUser) {
         super.getFacade().getSysRoleUserService().removeSysRoleUser(roleUser);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }

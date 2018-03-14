@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.domain.SysFlowAnswer;
 import cn.com.winning.ssgj.domain.SysFlowInfo;
@@ -32,19 +33,22 @@ public class SYSFlowQuestionAnswerController extends BaseController {
 
     @Autowired
     private SSGJHelper ssgjHelper;
+
     /**
      * 查询问题答案列表信息
+     *
      * @return
      */
     @RequestMapping(value = "/findByFQId.do")
     @ResponseBody
-    public Map<String,Object> queryFlowQuestionAnswerList(Long quesId){
+    @ILog
+    public Map<String, Object> queryFlowQuestionAnswerList(Long quesId) {
         SysFlowAnswer answer = new SysFlowAnswer();
         answer.setQuesId(quesId);
         answer.setStatus(Constants.STATUS_USE);
         List<SysFlowAnswer> answerList = super.getFacade().getSysFlowAnswerService().getSysFlowAnswerList(answer);
         int total = super.getFacade().getSysFlowAnswerService().getSysFlowAnswerCount(answer);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", answerList);
         result.put("total", total);
@@ -53,19 +57,20 @@ public class SYSFlowQuestionAnswerController extends BaseController {
 
     /**
      * 新增答案
+     *
      * @param info
      * @return
      */
     @RequestMapping(value = "/add.do")
     @ResponseBody
-    public Map<String,Object> addSysFlowQuestion(String info,Long quesId){
-        super.getFacade().getSysFlowAnswerService().createSysFlowAnswer(info,quesId);
-        Map<String,Object> result = new HashMap<String,Object>();
+    @ILog
+    public Map<String, Object> addSysFlowQuestion(String info, Long quesId) {
+        super.getFacade().getSysFlowAnswerService().createSysFlowAnswer(info, quesId);
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
 
     }
-
 
 
 }

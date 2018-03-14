@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.domain.SysParams;
 import cn.com.winning.ssgj.domain.support.Row;
@@ -31,28 +32,32 @@ public class SysParamController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/pageInfo.do")
-    public String getPageInfo(HttpServletRequest request, Model model){
+    @ILog
+    public String getPageInfo(HttpServletRequest request, Model model) {
         return "config/paramInfo";
     }
+
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String,Object> querySysParamPageList(Row row, SysParams params){
+    @ILog
+    public Map<String, Object> querySysParamPageList(Row row, SysParams params) {
         params.setRow(row);
         List<SysParams> paramsList = super.getFacade().getSysParamsService().getSysParamsPageListBySelectiveKey(params);
         int total = super.getFacade().getSysParamsService().getSysParamsPageCountBySelectiveKey(params);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
-        result.put("rows",paramsList);
+        result.put("rows", paramsList);
         return result;
     }
 
     @RequestMapping(value = "/add.do")
     @ResponseBody
-    public Map<String,Object> addSysParamsInfo(SysParams params){
+    @ILog
+    public Map<String, Object> addSysParamsInfo(SysParams params) {
         params.setId(ssgjHelper.createSysParamsId());
         super.getFacade().getSysParamsService().createSysParams(params);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
 
@@ -60,9 +65,10 @@ public class SysParamController extends BaseController {
 
     @RequestMapping(value = "/update.do")
     @ResponseBody
-    public Map<String,Object> updateSysParamsInfo(SysParams params){
+    @ILog
+    public Map<String, Object> updateSysParamsInfo(SysParams params) {
         super.getFacade().getSysParamsService().modifySysParams(params);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
 
@@ -70,9 +76,10 @@ public class SysParamController extends BaseController {
 
     @RequestMapping(value = "/delete.do")
     @ResponseBody
-    public Map<String,Object> deleteSysParamsInfo(SysParams params){
+    @ILog
+    public Map<String, Object> deleteSysParamsInfo(SysParams params) {
         super.getFacade().getSysParamsService().removeSysParams(params);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
 

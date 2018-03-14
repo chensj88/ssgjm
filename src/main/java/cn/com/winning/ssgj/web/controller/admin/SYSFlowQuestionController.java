@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.domain.SysFlowInfo;
 import cn.com.winning.ssgj.domain.SysFlowQuestion;
@@ -34,30 +35,35 @@ public class SYSFlowQuestionController extends BaseController {
 
     @Autowired
     private SSGJHelper ssgjHelper;
+
     /**
      * 获取页面
+     *
      * @param request
      * @param model
      * @return
      */
     @RequestMapping(value = "/fqInfo.do")
-    public String getPageInfo(HttpServletRequest request, Model model){
+    @ILog
+    public String getPageInfo(HttpServletRequest request, Model model) {
         return "auth/module/flowQuestionInfo";
     }
 
     /**
      * 查询问题列表信息
+     *
      * @param question
      * @param row
      * @return
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String,Object> queryFlowQuestionList(SysFlowQuestion question, Row row){
+    @ILog
+    public Map<String, Object> queryFlowQuestionList(SysFlowQuestion question, Row row) {
         question.setRow(row);
         List<SysFlowQuestion> questionList = super.getFacade().getSysFlowQuestionService().getSysFlowQuestionPageList(question);
         int total = super.getFacade().getSysFlowQuestionService().getSysFlowQuestionPageCount(question);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows", questionList);
@@ -67,20 +73,22 @@ public class SYSFlowQuestionController extends BaseController {
 
     /**
      * 模糊查询流程编号
+     *
      * @param flowCode
      * @param matchCount
      * @return
      */
     @RequestMapping(value = "/queryFlowCode.do")
     @ResponseBody
-    public Map<String,Object> queryFlowCode(String flowCode,int matchCount){
-        Row row = new Row(0,matchCount);
+    @ILog
+    public Map<String, Object> queryFlowCode(String flowCode, int matchCount) {
+        Row row = new Row(0, matchCount);
         SysFlowInfo flowInfo = new SysFlowInfo();
         flowInfo.setRow(row);
         flowInfo.setFlowCode(flowCode);
         flowInfo.setFlowType(Constants.Flow.FLOW_TYPE_SMALL);
         List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().querySysFlowInfoList(flowInfo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", matchCount);
         result.put("status", Constants.SUCCESS);
         result.put("data", flowInfos);
@@ -89,20 +97,22 @@ public class SYSFlowQuestionController extends BaseController {
 
     /**
      * 模糊查询流程名称
+     *
      * @param flowName
      * @param matchCount
      * @return
      */
     @RequestMapping(value = "/queryFlowName.do")
     @ResponseBody
-    public Map<String,Object> queryFlowName(String flowName,int matchCount){
-        Row row = new Row(0,matchCount);
+    @ILog
+    public Map<String, Object> queryFlowName(String flowName, int matchCount) {
+        Row row = new Row(0, matchCount);
         SysFlowInfo flowInfo = new SysFlowInfo();
         flowInfo.setRow(row);
         flowInfo.setFlowName(flowName);
         flowInfo.setFlowType(Constants.Flow.FLOW_TYPE_SMALL);
         List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().querySysFlowInfoListForName(flowInfo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", matchCount);
         result.put("status", Constants.SUCCESS);
         result.put("data", flowInfos);
@@ -111,19 +121,21 @@ public class SYSFlowQuestionController extends BaseController {
 
     /**
      * 新增问题
+     *
      * @param question
      * @return
      */
     @RequestMapping(value = "/add.do")
     @ResponseBody
-    public Map<String,Object> addSysFlowQuestion(SysFlowQuestion question){
+    @ILog
+    public Map<String, Object> addSysFlowQuestion(SysFlowQuestion question) {
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         question.setId(ssgjHelper.createSysFlowQuestionId());
         question.setQuesCode(ssgjHelper.createSysFlowQuestionCode());
         question.setLastUpdateTime(new Timestamp(new Date().getTime()));
         question.setLastUpdator(userInfo.getId());
         super.getFacade().getSysFlowQuestionService().createSysFlowQuestion(question);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
 
@@ -131,34 +143,39 @@ public class SYSFlowQuestionController extends BaseController {
 
     /**
      * 更新问题
+     *
      * @param question
      * @return
      */
     @RequestMapping(value = "/update.do")
     @ResponseBody
-    public Map<String,Object> updateSysFlowQuestion(SysFlowQuestion question){
+    @ILog
+    public Map<String, Object> updateSysFlowQuestion(SysFlowQuestion question) {
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         question.setLastUpdateTime(new Timestamp(new Date().getTime()));
         question.setLastUpdator(userInfo.getId());
         super.getFacade().getSysFlowQuestionService().modifySysFlowQuestion(question);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }
+
     /**
      * 删除问题 修改问题状态
+     *
      * @param question
      * @return
      */
     @RequestMapping(value = "/deleteById.do")
     @ResponseBody
-    public Map<String,Object> deleteSysFlowQuestion(SysFlowQuestion question){
+    @ILog
+    public Map<String, Object> deleteSysFlowQuestion(SysFlowQuestion question) {
         question.setLastUpdateTime(new Timestamp(new Date().getTime()));
         question.setStatus(Constants.STATUS_UNUSE);
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         question.setLastUpdator(userInfo.getId());
         super.getFacade().getSysFlowQuestionService().modifySysFlowQuestion(question);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }

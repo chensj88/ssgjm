@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.DateUtil;
 import cn.com.winning.ssgj.domain.PmisCustomerInformation;
@@ -35,25 +36,28 @@ public class SysTrainVideoRepoController extends BaseController {
 
     @Autowired
     private SSGJHelper ssgjHelper;
+
     @RequestMapping(value = "/pageInfo.do")
-    public String getPageInfo(HttpServletRequest request, Model model){
+    @ILog
+    public String getPageInfo(HttpServletRequest request, Model model) {
         return "mobile/trainVideoPage";
     }
 
     @RequestMapping(value = "/video.do")
-    public String getDeletePageInfo(HttpServletRequest request, Model model){
+    public String getDeletePageInfo(HttpServletRequest request, Model model) {
         return "mobile/trainVideo";
     }
 
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String,Object> getTrainVideoList(SysTrainVideoRepo repo, Row row){
+    @ILog
+    public Map<String, Object> getTrainVideoList(SysTrainVideoRepo repo, Row row) {
         repo.setRow(row);
         /*repo.setStatus(Constants.STATUS_USE);*/
         List<SysTrainVideoRepo> repoList = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepoPageListBySelective(repo);
         int total = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepoCountBySelective(repo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows", repoList);
@@ -63,26 +67,28 @@ public class SysTrainVideoRepoController extends BaseController {
     @RequestMapping(value = "/add.do")
     @ResponseBody
     @Transactional
-    public Map<String,Object>  addTrainVideo(SysTrainVideoRepo repo){
-     repo.setId(ssgjHelper.createSysTrainVideoRepoId());
-     repo.setLastUpdateTime(DateUtil.getCurrentTimestamp());
-     repo.setLastUpdator(((SysUserInfo)SecurityUtils.getSubject().getPrincipal()).getId());
-     repo.setStatus(Constants.STATUS_USE);
-     super.getFacade().getSysTrainVideoRepoService().createSysTrainVideoRepo(repo);
-     Map<String,Object> result = new HashMap<String,Object>();
-     result.put("status", Constants.SUCCESS);
-     result.put("data", repo.getId());
-     return result;
+    @ILog
+    public Map<String, Object> addTrainVideo(SysTrainVideoRepo repo) {
+        repo.setId(ssgjHelper.createSysTrainVideoRepoId());
+        repo.setLastUpdateTime(DateUtil.getCurrentTimestamp());
+        repo.setLastUpdator(((SysUserInfo) SecurityUtils.getSubject().getPrincipal()).getId());
+        repo.setStatus(Constants.STATUS_USE);
+        super.getFacade().getSysTrainVideoRepoService().createSysTrainVideoRepo(repo);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", repo.getId());
+        return result;
     }
 
     @RequestMapping(value = "/update.do")
     @ResponseBody
     @Transactional
-    public Map<String,Object>  updateTrainVideo(SysTrainVideoRepo repo){
-        repo.setLastUpdator(((SysUserInfo)SecurityUtils.getSubject().getPrincipal()).getId());
+    @ILog
+    public Map<String, Object> updateTrainVideo(SysTrainVideoRepo repo) {
+        repo.setLastUpdator(((SysUserInfo) SecurityUtils.getSubject().getPrincipal()).getId());
         repo.setLastUpdateTime(DateUtil.getCurrentTimestamp());
         super.getFacade().getSysTrainVideoRepoService().modifySysTrainVideoRepo(repo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", repo.getId());
         return result;
@@ -91,9 +97,10 @@ public class SysTrainVideoRepoController extends BaseController {
 
     @RequestMapping(value = "/getById.do")
     @ResponseBody
-    public Map<String,Object>  getTrainVideoById(SysTrainVideoRepo repo){
+    @ILog
+    public Map<String, Object> getTrainVideoById(SysTrainVideoRepo repo) {
         repo = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepo(repo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", repo);
         return result;
@@ -103,26 +110,28 @@ public class SysTrainVideoRepoController extends BaseController {
     @RequestMapping(value = "/modifyById.do")
     @ResponseBody
     @Transactional
-    public Map<String,Object>  modifyTrainVideoById(SysTrainVideoRepo repo){
+    @ILog
+    public Map<String, Object> modifyTrainVideoById(SysTrainVideoRepo repo) {
         repo = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepo(repo);
-        if(repo.getStatus() == Constants.STATUS_UNUSE){
+        if (repo.getStatus() == Constants.STATUS_UNUSE) {
             repo.setStatus(Constants.STATUS_USE);
-        }else{
+        } else {
             repo.setStatus(Constants.STATUS_UNUSE);
         }
         repo.setLastUpdateTime(DateUtil.getCurrentTimestamp());
-        repo.setLastUpdator(((SysUserInfo)SecurityUtils.getSubject().getPrincipal()).getId());
+        repo.setLastUpdator(((SysUserInfo) SecurityUtils.getSubject().getPrincipal()).getId());
         super.getFacade().getSysTrainVideoRepoService().modifySysTrainVideoRepo(repo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }
 
     @RequestMapping(value = "/existVideoName.do")
     @ResponseBody
-    public Map<String,Object> existVideoName(SysTrainVideoRepo repo){
+    @ILog
+    public Map<String, Object> existVideoName(SysTrainVideoRepo repo) {
         boolean exists = super.getFacade().getSysTrainVideoRepoService().existVideoName(repo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("valid", exists);
         result.put("status", Constants.SUCCESS);
         return result;
@@ -130,14 +139,15 @@ public class SysTrainVideoRepoController extends BaseController {
 
     @RequestMapping(value = "/queryCustomerName.do")
     @ResponseBody
-    public Map<String,Object> queryCustomerNameInfo(String name,int matchCount){
+    @ILog
+    public Map<String, Object> queryCustomerNameInfo(String name, int matchCount) {
         PmisCustomerInformation customer = new PmisCustomerInformation();
         customer.setName(name);
         customer.setZt(Constants.PMIS_STATUS_USE);
-        Row row = new Row(0,matchCount);
+        Row row = new Row(0, matchCount);
         customer.setRow(row);
         List<PmisCustomerInformation> customerInformationList = super.getFacade().getPmisCustomerInformationService().getPmisCustomerInformationPageListFuzzy(customer);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", matchCount);
         result.put("status", Constants.SUCCESS);
         result.put("data", customerInformationList);
@@ -147,9 +157,10 @@ public class SysTrainVideoRepoController extends BaseController {
     @RequestMapping(value = "/delete.do")
     @ResponseBody
     @Transactional
-    public Map<String,Object>  deleteTrainVideo(SysTrainVideoRepo repo){
+    @ILog
+    public Map<String, Object> deleteTrainVideo(SysTrainVideoRepo repo) {
         super.getFacade().getSysTrainVideoRepoService().deleteSysTrainVideoRepo(repo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }
