@@ -1,6 +1,5 @@
 package cn.com.winning.ssgj.web.controller.mobile;
 
-import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +23,17 @@ public class OnlineFileController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/list.do")
-    @ILog
     public String floorQuestionList(Model model, String parameter) {
+
+
 
 
         return "/mobile/enterprise/data-upload";
     }
 
     @RequestMapping("/details.do")
-    @ILog
     public String floorQuestionDetailList(Model model, String val_type) {
+
 
 
         return "/mobile/enterprise/data-upload-report";
