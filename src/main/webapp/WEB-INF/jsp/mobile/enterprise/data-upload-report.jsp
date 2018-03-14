@@ -53,7 +53,7 @@
 					<input type="file" name="uploadFile" value="" onchange="fileSelected();" id="" value="" />
 				</div>
 				<c:forEach var="vul" items="${onlineFiles}">
-					<div><img src="<%=basePathNuName%>${vul.imgPath}"></div>
+					<div><img src="<%=basePathNuName%>shareFolder${vul.imgPath}"></div>
 				</c:forEach>
 
 
@@ -72,11 +72,11 @@
                 var dataName = $("#dataName").val();
                 var dataType = $("#dataType").val();
                 if(dataName == null || dataName ==''){
-                    alert("名称不能为空");
+                    mui.toast('名称不能为空',{ duration:'long(3500ms)', type:'div' });
                     return false;
 				}
                 if(dataType == null || dataType ==''){
-                    alert("请选择类型");
+                    mui.toast('请选择类型',{ duration:'long(3500ms)', type:'div' });
                     return false;
                 }
                 document.getElementById("myForm").submit();
