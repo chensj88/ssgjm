@@ -4,6 +4,8 @@ import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.EtOnlineFile;
+import cn.com.winning.ssgj.domain.SysDataInfo;
+import cn.com.winning.ssgj.domain.SysDictInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSON;
@@ -45,11 +47,12 @@ public class OnlineFileController extends BaseController {
         EtOnlineFile onlineFile = new  EtOnlineFile();
         String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9";
         String hospcode ="11980";
+
         try{
             byte[] byteArray = Base64Utils.decryptBASE64(parameter2);
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter2), "UTF-8") + "]";
             ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
-            String worknum= (String) userList.get(0).get("WORKNUM");
+            String worknum="5823"; //(String) userList.get(0).get("WORKNUM");
             //获取用户的信息
             SysUserInfo info = new SysUserInfo();
             info.setUserid(worknum);
@@ -58,7 +61,7 @@ public class OnlineFileController extends BaseController {
             info = super.getFacade().getSysUserInfoService().getSysUserInfo(info);
             if(info !=null){
                 //根据客户编号 找出对应的全部
-                onlineFile.setSerialNo(worknum);
+                onlineFile.setSerialNo(hospcode);
                 onlineFile.setFileType("1");
                 List<EtOnlineFile> onlineFileList_one = super.getFacade().getEtOnlineFileService().getEtOnlineFileList(onlineFile);
                 onlineFile.setFileType("2");
@@ -92,6 +95,11 @@ public class OnlineFileController extends BaseController {
         info.setFileType(fileType);
         info.setSerialNo(serialNo);
         List<EtOnlineFile> onlineFiles =super.getFacade().getEtOnlineFileService().getEtOnlineFileList(info);
+        //获取文件的类型
+        SysDictInfo info1 = new SysDictInfo();
+        info1.setDictCode("FileType");
+        List<SysDictInfo> dictInfos =super.getFacade().getSysDictInfoService().getSysDictInfoList(info1);
+        model.addAttribute("dictInfos",dictInfos);
         model.addAttribute("onlineFiles",onlineFiles);
         model.addAttribute("serialNo",serialNo);
         model.addAttribute("userId",userId);
