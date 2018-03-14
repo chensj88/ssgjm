@@ -298,4 +298,12 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
+
+    <!--文件上传文本ID-->
+    <bean id="onlineFileIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="DSC_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
 </beans>

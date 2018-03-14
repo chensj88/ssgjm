@@ -71,6 +71,14 @@ public class EtOnlineFile extends BaseDomain implements Serializable {
 	 * @val 操作时间
 	 */
 	private java.sql.Timestamp operatorTime;
+
+	private String fileType;
+
+	private String dataName;
+
+	private String dataType;
+
+	private String remark;
 	
 	public EtOnlineFile() {
 
@@ -229,5 +237,39 @@ public class EtOnlineFile extends BaseDomain implements Serializable {
 	public void setOperatorTime(java.sql.Timestamp operatorTime) {
 		this.operatorTime = operatorTime;
 	}
-	
+
+
+	public String getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
+	}
+
+	public String getDataName() {
+		return dataName;
+	}
+
+	public void setDataName(String dataName) {
+		this.dataName = dataName;
+	}
+
+	public String getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+
 }

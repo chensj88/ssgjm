@@ -69,7 +69,7 @@
 						<c:forEach var="studied" items="${sysTrainVideoStudied}"  >
 							<a href="<%=basePath%>mobile/trainVideoList/videoPlay.do?id=${studied.id}&OPENID=${OPENID}">
 								<dl class="item">
-									<dt><img src="<%=basePathNuName%>shareFolder${vwr.imgPath}"/></dt>
+									<dt><img src="<%=basePathNuName%>shareFolder${studied.imgPath}"/></dt>
 									<dd class="item-title"><span>${studied.videoName}</span></dd>
 									<dd class="item-time">视频时长 <span><script>
 										document.write(Common.getHHMMSSDate(${studied.videoTime}));
@@ -87,7 +87,7 @@
 						<c:forEach var="studied" items="${sysTrainVideoUnStudy}"  >
 							<a href="<%=basePath%>mobile/trainVideoList/videoPlay.do?id=${studied.id}&OPENID=${OPENID}">
 								<dl class="item">
-									<dt><img src="<%=basePathNuName%>shareFolder${vwr.imgPath}"/></dt>
+									<dt><img src="<%=basePathNuName%>shareFolder${studied.imgPath}"/></dt>
 									<dd class="item-title"><span>${studied.videoName}</span></dd>
 									<dd class="item-time">视频时长 <span><script>
 										document.write(Common.getHHMMSSDate(${studied.videoTime}));

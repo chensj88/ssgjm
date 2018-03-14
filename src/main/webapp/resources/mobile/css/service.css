@@ -8,7 +8,7 @@
 }
 .bridge-item{
 	display: flex;
-	margin-top: 50px;
+	margin-top: 20px;
 	padding: 0px 35px;
 	flex-wrap: wrap;
 	justify-content:space-between;
@@ -17,7 +17,7 @@
 .bridge-item a{
 	width: 48%;
 	height: 70px;
-	margin-top: 16px;
+	margin-top: 14px;
 	color: #505050;
 	font-size: 16px;
 	line-height: 70px;

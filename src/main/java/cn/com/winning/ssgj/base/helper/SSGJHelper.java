@@ -65,6 +65,9 @@ public class SSGJHelper {
     @Autowired
     @Qualifier("flowIdService")
     private StepSequenceFactory flowIdService;
+    @Autowired
+    @Qualifier("onlineFileIdService")
+    private StepSequenceFactory onlineFileIdService;
 
     @Autowired
     @Qualifier("videoIdService")
@@ -160,6 +163,8 @@ public class SSGJHelper {
     public long createRoleUserId() {
         return (long) sysRoleUserIdService.create();
     }
+    public long createOnlineFileIdService(){ return (long) onlineFileIdService.create(); }
+
     /**
      * 获取报表类信息表Id
      *
@@ -368,6 +373,8 @@ public class SSGJHelper {
     public String createSysFlowAnswerCode(){
         return sysFlowAnswerCodeService.create().toString();
     }
+
+
 
     /**
      * 流程问题答案ID

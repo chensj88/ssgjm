@@ -14,6 +14,10 @@
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="OPERATOR" property="operator" jdbcType="BIGINT"/>
         <result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP"/>
+        <result column="FILE_TYPE" property="fileType" jdbcType="VARCHAR" />
+        <result column="DATA_NAME" property="dataName" jdbcType="VARCHAR" />
+        <result column="DATA_TYPE" property="dataType" jdbcType="VARCHAR" />
+        <result column="REMARK" property="remark" jdbcType="LONGVARCHAR" />
     </resultMap>
 
     <resultMap id="etOnlineFileResult" type="etOnlineFile" extends="etOnlineFileResultForList">
@@ -31,6 +35,10 @@
         <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
         <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
         <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
+        <if test="fileType != null and fileType != ''"> and t.FILE_TYPE = #{fileType} </if>
+        <if test="dataName != null and dataName != ''"> and t.DATA_NAME = #{dataName} </if>
+        <if test="dataType != null and dataType != ''"> and t.DATA_TYPE = #{dataType} </if>
+        <if test="remark != null and remark != ''"> and t.REMARK = #{remark} </if>
     </sql>
 
     <select id="selectEtOnlineFile" resultMap="etOnlineFileResult" parameterType="etOnlineFile">
@@ -75,6 +83,10 @@
             <if test="createTime != null ">CREATE_TIME,</if>
             <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
             <if test="operatorTime != null ">OPERATOR_TIME,</if>
+            <if test="fileType != null and fileType != ''"> FILE_TYPE, </if>
+            <if test="dataName != null and dataName != ''"> DATA_NAME, </if>
+            <if test="dataType != null and dataType != ''"> DATA_TYPE, </if>
+            <if test="remark != null and remark != ''"> REMARK, </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -89,6 +101,10 @@
             <if test="createTime != null ">#{createTime, jdbcType=TIMESTAMP},</if>
             <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
             <if test="operatorTime != null ">#{operatorTime, jdbcType=TIMESTAMP},</if>
+            <if test="fileType != null and fileType != ''"> #{fileType, jdbcType=VARCHAR}, </if>
+            <if test="dataName != null and dataName != ''"> #{dataName, jdbcType=VARCHAR}, </if>
+            <if test="dataType != null and dataType != ''"> #{dataType, jdbcType=VARCHAR}, </if>
+            <if test="remark != null and remark != ''"> #{remark, jdbcType=LONGVARCHAR}, </if>
         </trim>
     </insert>
 
@@ -116,6 +132,10 @@
                 <if test="operatorTime != null ">OPERATOR_TIME =
                     #{operatorTime, jdbcType=TIMESTAMP},
                 </if>
+                <if test="fileType != null and fileType != ''"> FILE_TYPE = #{fileType, jdbcType=VARCHAR}, </if>
+                <if test="dataName != null and dataName != ''"> DATA_NAME = #{dataName, jdbcType=VARCHAR}, </if>
+                <if test="dataType != null and dataType != ''"> DATA_TYPE = #{dataType, jdbcType=VARCHAR}, </if>
+                <if test="remark != null and remark != ''"> REMARK = #{remark, jdbcType=LONGVARCHAR}, </if>
             </trim>
         </set>
         <where>
