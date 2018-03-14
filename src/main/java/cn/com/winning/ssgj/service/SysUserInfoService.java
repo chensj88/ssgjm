@@ -35,4 +35,6 @@ public interface SysUserInfoService {
     List<FlotDataInfo> countUserInfoByType();
 
     void generateUserInfo(SysUserInfo queryUser, String path);
+
+    void createHospitalUserInfo(List<List<Object>> userList);
 }

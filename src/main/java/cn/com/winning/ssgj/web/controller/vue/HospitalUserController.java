@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,6 +50,7 @@ public class HospitalUserController extends BaseController {
         queryUser.setRow(row);
         queryUser.setSsgs(c_id);
         queryUser.setUserType(Constants.User.USER_TYPE_HOSPITAL);
+        queryUser.setStatus(Constants.PMIS_STATUS_USE);
         List<SysUserInfo> queryUserList = super.getFacade().getSysUserInfoService().getSysUserInfoPaginatedList(queryUser);
         int total = super.getFacade().getSysUserInfoService().getSysUserInfoCount(queryUser);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -79,10 +81,13 @@ public class HospitalUserController extends BaseController {
     }
 
     @RequestMapping(value = "/exportExcel.do")
+    @ILog
     public HttpServletResponse wiriteExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
         long c_id = 9879L;
         SysUserInfo queryUser = new SysUserInfo();
         queryUser.setSsgs(c_id);
+        queryUser.setStatus(Constants.PMIS_STATUS_USE);
+        queryUser.setUserType(Constants.User.USER_TYPE_HOSPITAL);
         String fileName = "userinfo.xls";
         String path = getClass().getClassLoader().getResource("/template").getPath() + fileName;
         super.getFacade().getSysUserInfoService().generateUserInfo(queryUser, path);
@@ -102,7 +107,7 @@ public class HospitalUserController extends BaseController {
             // 清空response
             response.reset();
             // 设置response的Header
-            response.addHeader("Content-Disposition", "attachment;filename=" + new String(filename.getBytes()));
+            response.addHeader("Content-Disposition", "attachment;filename=" + new String("HospitalUserInfo.xls".getBytes()));
             response.addHeader("Content-Length", "" + file.length());
             OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/octet-stream");
@@ -114,7 +119,59 @@ public class HospitalUserController extends BaseController {
             throw ex;
         }
         return response;
+    }
 
+    @RequestMapping(value = "/upload.do")
+    @ResponseBody
+    @ILog
+    public Map<String, Object> uploadHospitalUserTemplate(HttpServletRequest request,
+                                                          MultipartFile file) throws IOException {
+        Map<String, Object> result = new HashMap<String, Object>();
+        //如果文件不为空，写入上传路径
+        if (!file.isEmpty()) {
+            //上传文件路径
+            String path = request.getServletContext().getRealPath("/temp/");
+            //上传文件名
+            String filename = file.getOriginalFilename();
+            File filepath = new File(path, filename);
+            //判断路径是否存在，如果不存在就创建一个
+            if (!filepath.getParentFile().exists()) {
+                filepath.getParentFile().mkdirs();
+            }
+            //将上传文件保存到一个目标文件当中
+            File newFile = new File(path + File.separator + filename);
+            if (newFile.exists()) {
+                newFile.delete();
+            }
+            file.transferTo(newFile);
+
+            try {
+                List<List<Object>> userList = ExcelUtil.importExcel(newFile.getPath());
+                super.getFacade().getSysUserInfoService().createHospitalUserInfo(userList);
+                newFile.delete();
+                result.put("status", "success");
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.put("status", "error");
+                result.put("msg", "上传文件失败,原因是："+e.getMessage());
+            }
+        } else {
+            result.put("status", "error");
+            result.put("msg", "上传文件失败,原因是：上传文件为空");
+        }
+        return result;
+    }
+
+
+    @RequestMapping(value = "/delete.do")
+    @ResponseBody
+    @ILog
+    public Map<String, Object> deleteHospitalUser(SysUserInfo userInfo){
+        userInfo.setStatus(Constants.PMIS_STATUS_UNUSE);
+        super.getFacade().getSysUserInfoService().modifySysUserInfo(userInfo);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
 
     }
 }

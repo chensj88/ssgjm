@@ -75,7 +75,7 @@ public class WinningRealm extends AuthorizingRealm {
 		} else {
 			String password = new String((char[]) token.getCredentials());
 			if (userInfo.getPassword().equals(password)) {
-				userInfo.getMap().put("C_ID",1L);
+				userInfo.getMap().put("C_ID",9879L);
 				userInfo.getMap().put("PM_ID",1L);
 				return new SimpleAuthenticationInfo(userInfo, password, "memberRealm");
 			} else {
