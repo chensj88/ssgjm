@@ -294,7 +294,7 @@
 <script src="<%=basePath%>resources/assets/js/ace-elements.min.js"></script>
 <script src="<%=basePath%>resources/assets/js/ace.min.js"></script>
 <script src="<%=basePath%>resources/js/common.js"></script>
-<script src="/resources/js/index/index.js"></script>
+<script src="<%=basePath%>resources/js/index/index.js"></script>
 </body>
 </html>
 

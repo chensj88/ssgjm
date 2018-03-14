@@ -64,7 +64,7 @@
                     <div class="row">
                         <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="dictForm">
 
-                            <div class="form-group">
+                            <div class="form-group" id="dictCodeDiv">
                                 <label class="col-sm-3 control-label" for="dictCode">字典编码</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="dictCode" name="dictCode"

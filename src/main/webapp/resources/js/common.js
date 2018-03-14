@@ -74,7 +74,7 @@
         }
         $parent.empty();
         for (var key in data) {
-            $('<option value="' + key + '">' + data[key] + '</option>').appendTo($parent);
+            $('<option value="' + data[key].split(':')[0] + '">' + data[key].split(':')[1]+ '</option>').appendTo($parent);
         }
     };
     /**
@@ -107,24 +107,6 @@
      *            选项默认值，选填
      */
     Common.getCodes = function (type, data, dropdownBox, dropdownValue) {
-        /*if (top.Common.codes[type]) {
-            var codes = top.Common.codes[type];
-            for (var i = 0; i < codes.length; i++) {
-                data[codes[i].dictValue] = codes[i].dictLabel;
-            }
-            if (dropdownBox) {
-                Common.setSelectOption(dropdownBox, data);
-                if (dropdownValue) {
-                    var options = dropdownBox.find("option");
-                    for (var j = 0; j < options.length; j++) {
-                        if ($(options[j]).val() == dropdownValue) {
-                            $(options[j]).attr("selected", "selected");
-                        }
-                    }
-                }
-            }
-            return;
-        }*/
         $.ajax({
             url: Common.getRootPath() + "/admin/dict/getCodes.do",
             data: {
@@ -135,9 +117,8 @@
             async: false,
             success: function (result) {
                 var codeInfo = result.data;
-                top.Common.codes[type] = type;
                 for (var i = 0; i < codeInfo.length; i++) {
-                    data[codeInfo[i].dictValue] = codeInfo[i].dictLabel;
+                    data[i] = codeInfo[i].dictValue+':'+codeInfo[i].dictLabel;
                 }
                 if (dropdownBox) {
                     Common.setSelectOption(dropdownBox, data);

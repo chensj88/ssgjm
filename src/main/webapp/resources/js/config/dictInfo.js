@@ -2,6 +2,7 @@ function editDict(dictCode,dictValue,dictLabel,dictDesc,dictSort){
     $('#dictCode').val(dictCode);
     $('#dictValue').val(dictValue);
     $('#dictValueDiv').hide();
+    $('#dictCodeDiv').hide();
     $('#dictLabel').val(dictLabel);
     $('#dictDesc').val(dictDesc);
     $('#dictSort').val(dictSort);
@@ -195,6 +196,8 @@ $(function () {
      */
     $('#add').on('click', function () {
         $("input[type=reset]").trigger("click");
+        $('#dictValueDiv').show();
+        $('#dictCodeDiv').show();
         resetValidate();
         $('#dictModal').modal('show');
     });

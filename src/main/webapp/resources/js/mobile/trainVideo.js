@@ -3,8 +3,8 @@
  */
 $(function () {
 
-    var videoType = {};
-    var videoCType = {};
+    var videoType = [];
+    var videoCType = [];
     var objMap = {};
     var selectedFlie = false;
     $('#customer').hide();

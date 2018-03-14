@@ -1,5 +1,7 @@
 package cn.com.winning.ssgj.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +9,7 @@ import javax.annotation.Resource;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
+import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.domain.expand.FlotDataInfo;
 import org.springframework.stereotype.Service;
 
@@ -81,6 +84,36 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
             }
         }
         return userinfos;
+    }
+
+    @Override
+    public void generateUserInfo(SysUserInfo queryUser, String path) {
+        Map<String,Object> dataMap = new HashMap<String,Object>();
+        List<SysUserInfo> queryUserList = this.sysUserInfoDao.selectEntityList(queryUser);
+        int total = (Integer)this.sysUserInfoDao.selectEntityCount(queryUser);
+        List<String> colList = new ArrayList<String>();
+        colList.add("userid");
+        colList.add("name");
+        colList.add("clo1");
+        colList.add("clo2");
+        colList.add("mobile");
+        colList.add("email");
+        List<Map> dataList = new ArrayList<Map>();
+
+        for (SysUserInfo userInfo : queryUserList) {
+            Map<String,String> userMap = new HashMap<>();
+            userMap.put("userid",userInfo.getUserid());
+            userMap.put("name",userInfo.getName());
+            userMap.put("clo1",userInfo.getClo1());
+            userMap.put("clo2",userInfo.getClo2());
+            userMap.put("mobile",userInfo.getMobile());
+            userMap.put("email",userInfo.getEmail());
+            dataList.add(userMap);
+        }
+        dataMap.put("colList",colList);
+        dataMap.put("colSize",colList.size());
+        dataMap.put("data",dataList);
+        ExcelUtil.writeExcel(dataList, colList, colList.size(),path);
     }
 
 }
