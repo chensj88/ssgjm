@@ -1,0 +1,191 @@
+/*
+ * 企业号模块
+ * */
+@charset "utf-8";
+/*实施资料上传*/
+.datum{
+}
+.datum-item{
+	margin-top: 20px;
+	padding: 0px 12px 12px;
+}
+.datum-row{
+	padding-bottom: 20px;
+}
+.datum-row>span{
+	padding-left: 8px;
+	border-left:3px solid #41B5FD;
+	font-size: 13px;
+}
+.datum-row>a{
+	float: right;
+}
+.datum-row>a i{
+	color:#BEBEBE;
+}
+.datum-row-img li{
+	float: left;
+	width: 23%;
+	height: 94px;
+	margin-right:2%;
+	margin-bottom: 2%;
+	border-radius: 3px;
+	text-align: center;
+	border:1px solid #e2e2e2;
+	overflow: hidden;
+}
+.datum-row-img li h3{
+	margin: 0px;
+	line-height: 18px;
+	color:#7ebbfc ;
+	font-size: 12px;
+	font-weight: normal;
+	background: #ecf6fe;
+}
+.datum-middle{
+	display: table;
+	width: 100%;
+	height: 76px;
+}
+.datum-middle>div{
+	display: table-cell; 
+	vertical-align:middle; 
+}
+.datum-row-add{
+	position: relative;	
+	color: #4ebafd;
+	text-align: center;
+	line-height: 94px;
+}
+.datum-row-add i{
+	font-size: 30px;
+}
+.datum-row-add input,
+.datum-upload>div input{
+    position: absolute;
+    left: 0px;
+    width: 100%;
+    font-size: 64px;
+    opacity: 0;
+    z-index: 0;
+}.interval{
+	height:10px;
+	background: #f3f5f7;
+}
+.gray{
+	background: #f3f5f7;
+}
+.datum-report{
+	padding-bottom:5px;
+	background: #fff;
+}
+.padding-btm-20{
+	padding-bottom: 20px;
+}
+.datum-report>div{
+	display: flex;
+	line-height: 30px;
+	padding: 0px 15px;
+}
+.datum-report-item>span{
+	width: 70px;
+	align-self: center;
+	color: #666;
+	font-size: 13px;
+	text-align: right;
+}
+.datum-report-item>input{
+	margin: 0px 0px 2px 10px;
+	border: none;
+	color: #333;
+	font-size: 13px;
+	border-radius: 0px;
+	border-bottom: 1px solid #E2E2E2;;
+}
+.datum-upload{
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: 8px;
+	padding: 10px 12px 15px;
+	background: #fff;
+}
+.datum-upload>div{
+	position: relative;
+	overflow: hidden;
+	width: 23%;
+	height: 94px;
+	margin-top: 10px;
+	margin-right: 2%;
+	color: #8f8f94;
+	font-size: 13px;
+	text-align: center;
+	line-height: 94px;
+	border: 1px solid #e2e2e2;
+}
+.datum-upload>div i{
+    color: #4ebafd;
+    font-size: 30px;
+}
+/*站点安装*/
+.site-install{
+	margin-bottom: 10px;
+	background: #f3f5f7;
+}
+.site-install>div{
+	padding: 15px 12px;
+	background: #fff;
+}
+.site-install>div.part-item{
+	padding: 0px 12px 15px
+}
+.part-one{
+	display: -webkit-flex;
+	display: flex;
+	border-bottom:1px dashed #E2E2E2;
+}
+.part-one>div{
+	flex-grow: 1;
+}
+.part-one .left>span{
+	padding-left: 8px;
+	color: #333333;
+	font-size: 13px;
+	border-left:3px solid #41B5FD;
+}
+.part-one .right{
+	color: #999999;
+	font-size: 12px;
+	text-align: right;
+}
+.part-one .right p{
+	margin-bottom: 0px;
+}
+.part-one .right i:first-child{
+	color: #FF2F2F;
+	font-size: 20px;
+}
+.part-one .right i:last-child{
+	color: #4fa2fc;
+	font-size: 14px;
+}
+.part-two{
+	display: flex;
+}
+.part-two>div{
+	margin-top:10px ;
+}
+.part-two>div:first-child{
+	flex:0 0 50px;
+}
+.part-two span{
+	padding: 2px 5px;
+	color: #fff;
+	font-size: 12px;
+	border-radius: 2px;
+}
+.part-two span.software{
+	background: #61ceff;
+}
+.part-two span.hardware{
+	background: #9eb8ff;
+}

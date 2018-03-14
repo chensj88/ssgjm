@@ -101,7 +101,8 @@
 				</div>
 			</div>
 		</div>
-		<script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="<%=basePath%>resources/mobile/js/mui.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			$(function(){
 				mui.init();
@@ -135,36 +136,43 @@
 				$('.mask-btn').click(function(){
 					$('.mask').fadeOut();
 				})
-			});
 
-			//保存
-			$("#btn_save").click(function(){
-			    //获取值
-				var radio = $("input[name='radio']:checked").val();
-                var reason = $("#reason").val();
-                var id = $("#current_id").val();
-                var user_id = $("#user_id").val();
-                $.ajax({
-                    type: "POST",
-                    url:"<%=basePath%>/mobile/floorQuestion/causeFloor.do",
-                    data:{isOperation:radio,cause:reason,id:id,operator:user_id},
-                    dataType:"json",
-                    cache : false,
-                    error: function(request) {
-                        alert("服务端错误，或网络不稳定，本次操作被终止。");
-                        console.log(request);
-                    },
-                    success: function(data) {
-                        if(data.status) {
-                            alert("修改成功");
-                            location.reload();
-                        } else {
-                            alert("修改失败");
+
+
+                //保存
+                $("#btn_save").click(function(){
+                    //获取值
+                    var radio = $("input[name='radio']:checked").val();
+                    var reason = $("#reason").val();
+                    var id = $("#current_id").val();
+                    var user_id = $("#user_id").val();
+                    $.ajax({
+                        type: "POST",
+                        url:"<%=basePath%>/mobile/floorQuestion/causeFloor.do",
+                        data:{isOperation:radio,cause:reason,id:id,operator:user_id},
+                        dataType:"json",
+                        cache : false,
+                        error: function(request) {
+                            mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                            console.log(request);
+                        },
+                        success: function(data) {
+                            if(data.status) {
+                                mui.toast('修改成功',{ duration:'long(3500ms)', type:'div' });
+                                setTimeout("location.reload()",3500);
+
+                            } else {
+                                mui.toast('修改失败',{ duration:'long(3500ms)', type:'div' })
+                            }
                         }
-                    }
+                    });
+
                 });
 
+
+
             });
+
 
 
 
