@@ -118,4 +118,6 @@ public interface Facade {
 
     SysDataCheckScriptService getSysDataCheckScriptService();
 
+    SysOrgExtService getSysOrgExtService();
+
 }

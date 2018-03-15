@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysOrgExtDao">
+
+	<resultMap id="sysOrgExtResultForList" type="sysOrgExt">
+		<result column="ORG_ID" property="orgId" jdbcType="BIGINT" />
+		<result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+		<result column="ORG_CODE" property="orgCode" jdbcType="VARCHAR" />
+		<result column="ORG_NAME_EXT" property="orgNameExt" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="sysOrgExtResult" type="sysOrgExt" extends="sysOrgExtResultForList">
+	</resultMap>
+
+	<sql id="sf-sysOrgExt">
+	   <if test="(orgId != null ) or orgId == 0"> and t.ORG_ID = #{orgId} </if>
+	   <if test="orgName != null and orgName != ''"> and t.ORG_NAME = #{orgName} </if>
+	   <if test="orgCode != null and orgCode != ''"> and t.ORG_CODE = #{orgCode} </if>
+	   <if test="orgNameExt != null and orgNameExt != ''"> and t.ORG_NAME_EXT = #{orgNameExt} </if>
+	</sql>
+
+	<select id="selectSysOrgExt" resultMap="sysOrgExtResult" parameterType="sysOrgExt">
+		select * from SYS_ORG_EXT t where 1 = 1
+		<include refid="sf-sysOrgExt" />
+	</select>
+
+	<select id="selectSysOrgExtList" resultMap="sysOrgExtResultForList" parameterType="sysOrgExt">
+		select
+		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
+		 * from SYS_ORG_EXT t where 1 = 1
+		<include refid="sf-sysOrgExt" />
+		<!-- order by ID asc -->
+	</select>
+
+	<select id="selectSysOrgExtCount" resultType="int" parameterType="sysOrgExt">
+		select count(*) from SYS_ORG_EXT t where 1 = 1
+		<include refid="sf-sysOrgExt" />
+	</select>
+
+	<select id="selectSysOrgExtPaginatedList" resultMap="sysOrgExtResult" parameterType="sysOrgExt">
+		select * from (
+			select *, ROW_NUMBER() OVER ( order by id desc ) as _rn 
+				from SYS_ORG_EXT t where 1 = 1
+			<include refid="sf-sysOrgExt" />
+			<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
+
+	<insert id="insertSysOrgExt" parameterType="sysOrgExt">
+	<selectKey resultType="String"  order="BEFORE"  keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID</selectKey>
+		insert into SYS_ORG_EXT 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(orgId != null ) or orgId == 0"> ORG_ID, </if>
+		   <if test="orgName != null and orgName != ''"> ORG_NAME, </if>
+		   <if test="orgCode != null and orgCode != ''"> ORG_CODE, </if>
+		   <if test="orgNameExt != null and orgNameExt != ''"> ORG_NAME_EXT, </if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(orgId != null ) or orgId == 0"> #{orgId, jdbcType=BIGINT}, </if>
+		   <if test="orgName != null and orgName != ''"> #{orgName, jdbcType=VARCHAR}, </if>
+		   <if test="orgCode != null and orgCode != ''"> #{orgCode, jdbcType=VARCHAR}, </if>
+		   <if test="orgNameExt != null and orgNameExt != ''"> #{orgNameExt, jdbcType=VARCHAR}, </if>
+		</trim>
+	</insert>
+
+	<update id="updateSysOrgExt" parameterType="SysOrgExt">
+		update SYS_ORG_EXT
+		<set>
+			<trim suffixOverrides=",">
+			   <if test="(orgId != null ) or orgId == 0"> ORG_ID = #{orgId, jdbcType=BIGINT}, </if>
+			   <if test="orgName != null and orgName != ''"> ORG_NAME = #{orgName, jdbcType=VARCHAR}, </if>
+			   <if test="orgCode != null and orgCode != ''"> ORG_CODE = #{orgCode, jdbcType=VARCHAR}, </if>
+			   <if test="orgNameExt != null and orgNameExt != ''"> ORG_NAME_EXT = #{orgNameExt, jdbcType=VARCHAR}, </if>
+			</trim>
+		</set>
+		where
+		<if test="id != null and id != ''"> ORG_ID = #{orgId, jdbcType=BIGINT} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ORG_ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</update>
+
+	<delete id="deleteSysOrgExt" parameterType="SysOrgExt">
+		delete from SYS_ORG_EXT where
+		<if test="id != null and id != ''">  ORG_ID = #{orgId, jdbcType=BIGINT} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ORG_ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</delete>
+	<select id="callOrgExtInfoProcedure" statementType="CALLABLE">
+		{CALL sp_org_name_ext()}
+	</select>
+</mapper>
