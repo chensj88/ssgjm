@@ -9,8 +9,11 @@ import javax.annotation.Resource;
 
 import cn.com.winning.ssgj.base.Constants;
 
+import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
+import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.domain.expand.FlotDataInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.SysUserInfoDao;
@@ -26,6 +29,8 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
 
     @Resource
     private SysUserInfoDao sysUserInfoDao;
+    @Autowired
+    private SSGJHelper ssgjHelper;
 
 
     public Integer createSysUserInfo(SysUserInfo t) {
@@ -98,7 +103,7 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
         int total = (Integer) this.sysUserInfoDao.selectEntityCount(queryUser);
         List<String> colList = new ArrayList<String>();
         colList.add("userid");
-        colList.add("name");
+        colList.add("yhmc");
         colList.add("clo1");
         colList.add("clo2");
         colList.add("mobile");
@@ -108,7 +113,7 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
         for (SysUserInfo userInfo : queryUserList) {
             Map<String, String> userMap = new HashMap<>();
             userMap.put("userid", userInfo.getUserid());
-            userMap.put("name", userInfo.getName());
+            userMap.put("yhmc", userInfo.getYhmc());
             userMap.put("clo1", userInfo.getClo1());
             userMap.put("clo2", userInfo.getClo2());
             userMap.put("mobile", userInfo.getMobile());
@@ -119,6 +124,50 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
         dataMap.put("colSize", colList.size());
         dataMap.put("data", dataList);
         ExcelUtil.writeExcel(dataList, colList, colList.size(), path);
+    }
+
+    @Override
+    public void createHospitalUserInfo(List<List<Object>> userList) {
+        long c_id = 9879L;
+        for (List<Object> params : userList) {
+            String userid = params.get(0).toString();
+            String yhmc = params.get(1).toString();
+            String clo1 = params.get(2).toString();
+            String clo2 = params.get(3).toString();
+            String mobile = params.get(4).toString();
+            String email = params.get(5).toString();
+            SysUserInfo user = new SysUserInfo();
+            user.setStatus(1);
+            user.setUserType(Constants.User.USER_TYPE_HOSPITAL);
+            user.setUserid(userid);
+            user.setSsgs(c_id);
+            user = this.getSysUserInfo(user);
+            if(user != null){
+                user.setYhmc(yhmc);
+                user.setName(user.getYhmc() + "(" + user.getUserid() + ")");
+                user.setClo1(clo1);
+                user.setClo2(clo2);
+                user.setEmail(email);
+                user.setMobile(mobile);
+                user.setPassword(MD5.stringMD5(user.getUserid()));
+                this.sysUserInfoDao.updateEntity(user);
+            }else{
+                user = new SysUserInfo();
+                user.setId(ssgjHelper.createUserId());
+                user.setStatus(1);
+                user.setUserType(Constants.User.USER_TYPE_HOSPITAL);
+                user.setUserid(userid);
+                user.setSsgs(c_id);
+                user.setYhmc(yhmc);
+                user.setName(user.getYhmc() + "(" + user.getUserid() + ")");
+                user.setClo1(clo1);
+                user.setClo2(clo2);
+                user.setEmail(email);
+                user.setMobile(mobile);
+                user.setPassword(MD5.stringMD5(user.getUserid()));
+                this.sysUserInfoDao.insertEntity(user);
+            }
+        }
     }
 
 }

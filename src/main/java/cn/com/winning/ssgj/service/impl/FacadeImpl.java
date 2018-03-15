@@ -179,6 +179,9 @@ public class FacadeImpl implements Facade {
     @Resource
     SysDataCheckScriptService sysDataCheckScriptService;
 
+    @Resource
+    SysOrgExtService sysOrgExtService;
+
     public EtUserLookProjectService getEtUserLookProjectService() {
         return etUserLookProjectService;
     }
@@ -397,5 +400,10 @@ public class FacadeImpl implements Facade {
 
     public SysDataCheckScriptService getSysDataCheckScriptService() {
         return sysDataCheckScriptService;
+    }
+
+    @Override
+    public SysOrgExtService getSysOrgExtService() {
+        return sysOrgExtService;
     }
 }

@@ -31,20 +31,17 @@ public class LoginController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/login.do")
-    @ILog
     public String Login(HttpServletRequest request, Model model) {
         return "login/login";
     }
 
     @RequestMapping("/error.do")
-    @ILog
     public String unauthorizedUrlPage(HttpServletRequest request, Model model) {
         return "index/error";
     }
 
     @RequestMapping(value = "/check.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> check(HttpServletRequest request, String username, String password) {
 
         System.out.println(username);

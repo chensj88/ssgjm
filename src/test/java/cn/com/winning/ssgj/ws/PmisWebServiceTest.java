@@ -266,6 +266,10 @@ public class PmisWebServiceTest {
         }
     }
 
+    @Test
+    public void  insertUserInfoData(){
+        generateDymaicSql("SYS_USER_INFO", "1");
+    }
     private void generateDymaicSql(String tableName, String dataType) {
 
         if (dataType.equals(Constants.PmisWSConstants.WS_SERVICE_QUERY_USER)) {

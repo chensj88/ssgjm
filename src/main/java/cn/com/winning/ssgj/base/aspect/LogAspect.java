@@ -129,16 +129,16 @@ public class LogAspect {
             }
 
             // *========控制台输出=========*//
-         /*  logger.info("=====controller后置通知开始=====");
+         logger.info("=====controller后置通知开始=====");
             logger.info("请求方法:"
                     + (joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()")
                     + "." + operationType);
-            logger.info("方法描述:" + operationName);
-            logger.info("请求人:"  +operator);
-            logger.info("请求IP:" + ip);*/
+            /*logger.info("方法描述:" + operationName);*/
+            logger.info("请求人:"  +operator.getYhmc());
+            logger.info("请求IP:" + ip);
             String content = "[classs] "+targetName +"[method] "+ methodName
                    +"[method desc] "+operationName +"[method type] "+operationType
-                    +"[user] "+ operator.getYhmc();
+                    +"[user] " + operator.getYhmc();
             logger.info("访问内容："+content);
             // *========数据库日志=========*//
             SysLog log = new SysLog();
