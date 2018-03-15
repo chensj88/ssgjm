@@ -56,7 +56,7 @@ public class LoginController extends BaseController {
             error = "密码解密失败";
         }
         Map<String, Object> map = new HashMap<String, Object>();
-        UsernamePasswordToken token = new UsernamePasswordToken(username, MD5.stringMD5(password));
+        UsernamePasswordToken token = new UsernamePasswordToken(username, MD5.stringMD5(decodePassword));
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
