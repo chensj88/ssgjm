@@ -13,9 +13,10 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -52,7 +53,8 @@ public class OnlineFileController extends BaseController {
             ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
 
             String worknum=(String) userList.get(0).get("WORKNUM");
-            String hospcode=(String) userList.get(0).get("HOSPCODE");
+            //String hospcode=(String) userList.get(0).get("HOSPCODE");
+            String hospcode="11980";
 
             //获取用户的信息
             SysUserInfo info = new SysUserInfo();
@@ -109,13 +111,19 @@ public class OnlineFileController extends BaseController {
     }
 
 
-    @RequestMapping("/uploadImg.do")
-    @ILog
-    public String uploadImg (HttpServletRequest request,EtOnlineFile info,String serialNo,String userId, String fileType, MultipartFile uploadFile){
-        Map<String,Object> map = new HashMap<String,Object>();
-        //如果文件不为空，写入上传路径
-        try{
 
+    @RequestMapping(value="/uploadImgAjax.do", method=RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> uploadImgAjax (HttpServletRequest request,@RequestParam MultipartFile uploadFile){
+        Map<String,Object> map = new HashMap<String,Object>();
+        String serialNo = request.getParameter("serialNo");
+        String userId = request.getParameter("userId");
+        String fileType = request.getParameter("fileType");
+        String dataName = request.getParameter("dataName");
+        String dataType = request.getParameter("dataType");
+        EtOnlineFile info = new EtOnlineFile();
+
+        try{
             if(!uploadFile.isEmpty()) {
                 //上传文件路径
                 String path = request.getServletContext().getRealPath("/onlineFile/");
@@ -139,7 +147,7 @@ public class OnlineFileController extends BaseController {
                 boolean ftpStatus = false;
                 String msg = "";
                 if (port == 21){
-                        ftpStatus = FtpUtils.uploadFile(remotePath, newFile);
+                    ftpStatus = FtpUtils.uploadFile(remotePath, newFile);
                 }else if(port == 22){
                     try {
                         SFtpUtils.uploadFile(newFile.getPath(),remoteDir,filename);
@@ -159,31 +167,116 @@ public class OnlineFileController extends BaseController {
                     //上传资料 1.生成一条记录
                     //2.修改原来图片路径
                     info.setId(ssgjHelper.createOnlineFileIdService());
-                    info.setCId((long)-2);    //11980游客
+                    info.setCId((long)-2);    //移动端
                     info.setPmId((long)-2);
                     info.setSerialNo(serialNo);//客户编码
                     info.setImgPath(remotePath);//图片路径
                     info.setCreator((long)100193);
                     info.setCreateTime(new Timestamp(new Date().getTime()));
                     info.setFileType(fileType);
-
+                    info.setDataName(dataName);
+                    info.setDataType(dataType);
                     super.getFacade().getEtOnlineFileService().createEtOnlineFile(info);
-
+                    map.put("status",true);
 
                 }else if(!StringUtil.isEmptyOrNull(msg)){
+                    map.put("status",false);
 
                 }
             } else {
-
+                map.put("status",false);
             }
 
         }catch (Exception e){
             e.printStackTrace();
+            map.put("status",false);
         }
 
-        return "/mobile/enterprise/data-upload-report";
+
+        return map;
+
     }
-
-
-
 }
+
+
+
+
+//    @RequestMapping(value="/uploadImg.do")
+//    @ILog
+//    public ModelAndView uploadImg (HttpServletRequest request,EtOnlineFile info,String serialNo,String userId, String fileType, MultipartFile uploadFile){
+//        Map<String,Object> map = new HashMap<String,Object>();
+//        //如果文件不为空，写入上传路径
+//        try{
+//
+//            if(!uploadFile.isEmpty()) {
+//                //上传文件路径
+//                String path = request.getServletContext().getRealPath("/onlineFile/");
+//                System.out.println(path);
+//
+//                //上传文件名
+//                String filename = uploadFile.getOriginalFilename();
+//                File filepath = new File(path,filename);
+//                //判断路径是否存在，如果不存在就创建一个
+//                if (!filepath.getParentFile().exists()) {
+//                    filepath.getParentFile().mkdirs();
+//                }
+//                //将上传文件保存到一个目标文件当中
+//                File newFile = new File(path + File.separator + filename);
+//                if(newFile.exists()){
+//                    newFile.delete();
+//                }
+//                uploadFile.transferTo(newFile);
+//                String remotePath = "/onlineFile/"+ filename;
+//                String remoteDir ="/onlineFile/" ;
+//                boolean ftpStatus = false;
+//                String msg = "";
+//                if (port == 21){
+//                        ftpStatus = FtpUtils.uploadFile(remotePath, newFile);
+//                }else if(port == 22){
+//                    try {
+//                        SFtpUtils.uploadFile(newFile.getPath(),remoteDir,filename);
+//                        ftpStatus = true;
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        ftpStatus = false;
+//                        msg = e.getMessage();
+//                    }
+//                }
+//                if(ftpStatus){
+//                    SysUserInfo userInfo = new SysUserInfo();
+//                    userInfo.setUserid(userId+"");//员工编码
+//                    userInfo.setStatus(1);
+//                    userInfo.setUserType("0");//0医院
+//                    List<SysUserInfo> userInfoList = super.getFacade().getSysUserInfoService().getSysUserInfoList(userInfo);
+//                    //上传资料 1.生成一条记录
+//                    //2.修改原来图片路径
+//                    info.setId(ssgjHelper.createOnlineFileIdService());
+//                    info.setCId((long)-2);    //11980游客
+//                    info.setPmId((long)-2);
+//                    info.setSerialNo(serialNo);//客户编码
+//                    info.setImgPath(remotePath);//图片路径
+//                    info.setCreator((long)100193);
+//                    info.setCreateTime(new Timestamp(new Date().getTime()));
+//                    info.setFileType(fileType);
+//
+//                    super.getFacade().getEtOnlineFileService().createEtOnlineFile(info);
+//
+//
+//                }else if(!StringUtil.isEmptyOrNull(msg)){
+//
+//                }
+//            } else {
+//
+//            }
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//
+//        String str = "mobile/implementData/details.do?fileType="+fileType+"&serialNo="+serialNo +"&userId="+userId;
+//        RedirectView redirectView = new RedirectView(str);
+//        return new ModelAndView(redirectView);
+//    }
+
+
+

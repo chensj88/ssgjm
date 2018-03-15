@@ -83,26 +83,19 @@
 				</div>
 				<ul class="datum-row-img clearfix">
 					<li class="datum-row-add"><i class="iconfont icon-plus"></i></li>
-					<li>
-						<h3>报告</h3>
-						<div class="datum-middle">
-							<div>
-								<p>
-									<span>签字确认单</span>
-								</p>
+
+					<c:forEach var="vul" items="${onlineFileList_three}">
+						<li>
+							<h3>${vul.dataType}</h3>
+							<div class="datum-middle">
+								<div>
+									<p>
+										<span>${vul.dataName}</span>
+									</p>
+								</div>
 							</div>
-						</div>
-					</li>
-					<li>
-						<h3>确认单</h3>
-						<div class="datum-middle">
-							<div>
-								<p>
-									<span>上线联调报告</span>
-								</p>
-							</div>
-						</div>
-					</li>
+						</li>
+					</c:forEach>
 				</ul>
 			</div>
 			<div class="interval"></div>
@@ -114,26 +107,18 @@
 				</div>
 				<ul class="datum-row-img clearfix">
 					<li class="datum-row-add"><i class="iconfont icon-plus"></i></li>
-					<li>
-						<h3>报告</h3>
-						<div class="datum-middle">
-							<div>
-								<p>
-									<span>上线联调报告</span>
-								</p>
+					<c:forEach var="vul" items="${onlineFileList_four}">
+						<li>
+							<h3>${vul.dataType}</h3>
+							<div class="datum-middle">
+								<div>
+									<p>
+										<span>${vul.dataName}</span>
+									</p>
+								</div>
 							</div>
-						</div>
-					</li>
-					<li>
-						<h3>确认单</h3>
-						<div class="datum-middle">
-							<div>
-								<p>
-									<span>签字确认单</span>
-								</p>
-							</div>
-						</div>
-					</li>
+						</li>
+					</c:forEach>
 				</ul>
 			</div>
 		</div>
