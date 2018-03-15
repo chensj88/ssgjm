@@ -46,10 +46,10 @@ public class OnlineFileController extends BaseController {
     public String floorQuestionList(Model model, String parameter) {
 
         EtOnlineFile onlineFile = new  EtOnlineFile();
-        String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9";
+        //String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9";
         try{
-            byte[] byteArray = Base64Utils.decryptBASE64(parameter2);
-            String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter2), "UTF-8") + "]";
+            byte[] byteArray = Base64Utils.decryptBASE64(parameter);
+            String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
             ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
 
             String worknum=(String) userList.get(0).get("WORKNUM");
@@ -113,8 +113,6 @@ public class OnlineFileController extends BaseController {
 
     /**
      * Chen,Kuai 上传图片
-     * @param id
-     * @return
      */
     @RequestMapping(value="/uploadImgAjax.do", method=RequestMethod.POST)
     @ResponseBody
