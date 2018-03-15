@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.web.controller.admin;
 
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.Base64Utils;
 import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.apache.shiro.SecurityUtils;
@@ -17,8 +18,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,14 +46,18 @@ public class LoginController extends BaseController {
 
     @RequestMapping(value = "/check.do")
     @ResponseBody
-    public Map<String, Object> check(HttpServletRequest request, String username, String password) {
-
-        System.out.println(username);
-        System.out.println(password);
+    public Map<String, Object> check(HttpServletRequest request, String username, String password)  {
+        String error = null;
+        String decodePassword = null;
+        try {
+            decodePassword = new String(Base64Utils.decryptBASE64(password),"UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+            error = "密码解密失败";
+        }
         Map<String, Object> map = new HashMap<String, Object>();
         UsernamePasswordToken token = new UsernamePasswordToken(username, MD5.stringMD5(password));
         Subject subject = SecurityUtils.getSubject();
-        String error = null;
         try {
             subject.login(token);
         } catch (UnknownAccountException e) {

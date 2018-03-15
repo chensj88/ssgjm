@@ -36,7 +36,7 @@
     <script src="<%=basePath%>resources/assets/js/html5shiv.js"></script>
     <script src="<%=basePath%>resources/assets/js/respond.min.js"></script>
     <script src="<%=basePath%>resources/bootstrap/js/bootstrapValidator.min.js"></script>
-
+    <script src="<%=basePath%>resources/assets/js/base64.min.js"></script>
     <![endif]-->
 </head>
 
@@ -147,10 +147,11 @@
            alert("密码不能为空!");
            return false;
        }
+       var decryptPassword = Base64.encode(password);
        $.ajax({
            type: "POST",
            url:Common.getRootPath()+"/login/check.do",
-           data:{"username":username,"password":password},
+           data:{"username":username,"password":decryptPassword},
            dataType:"json",
            cache : false,
            error: function(request) {

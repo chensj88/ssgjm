@@ -1,6 +1,10 @@
 package cn.com.winning.ssgj;
 
 import org.junit.Test;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
+
+import java.io.IOException;
 
 /**
  * @author chenshijie
@@ -32,4 +36,17 @@ public class StringTest {
         System.out.println(idString);
     }
 
+    @Test
+    public void decodePassword() throws IOException {
+        String password = "";
+        final BASE64Decoder decoder = new BASE64Decoder();
+        System.out.println(new String(decoder.decodeBuffer(password), "UTF-8"));
+    }
+
+    @Test
+    public void enecodePassword() throws IOException {
+        String password = "admin";
+        final BASE64Encoder encoder = new BASE64Encoder();
+        System.out.println(new String(encoder.encodeBuffer(password.getBytes("UTF-8"))));
+    }
 }
