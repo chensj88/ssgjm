@@ -36,7 +36,6 @@
     <script src="<%=basePath%>resources/assets/js/html5shiv.js"></script>
     <script src="<%=basePath%>resources/assets/js/respond.min.js"></script>
     <script src="<%=basePath%>resources/bootstrap/js/bootstrapValidator.min.js"></script>
-    <script src="<%=basePath%>resources/assets/js/base64.min.js"></script>
     <![endif]-->
 </head>
 
@@ -118,11 +117,9 @@
 
 <!-- basic scripts -->
 
-<!--[if !IE]> -->
-
-<script src="<%=basePath%>resources/assets/js/jquery-2.0.3.min.js"></script>
+<script src="<%=basePath%>resources/assets/js/base64.min.js"></script>
+<script src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
 <script src="<%=basePath%>resources/js/common.js"></script>
-<%--<script src="<%=basePath%>resources/assets/js/MD5.js"></script>--%>
 <script type="text/javascript">
     if("ontouchend" in document) document.write("<script src='<%=basePath%>resources/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 </script>

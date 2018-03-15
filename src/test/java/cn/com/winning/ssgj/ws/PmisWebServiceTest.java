@@ -11,6 +11,8 @@ import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.ws.client.*;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,6 +32,7 @@ import java.util.Map;
  */
 public class PmisWebServiceTest {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PmisWebServiceTest.class);
     private static final String url = "http://weberp.winning.com.cn:9080/service/LBEBusiness?wsdl";
     private static final LoginResult LOGIN_RESULT;
     private static final LBEBusinessService LBE_BUSINESS_SERVICE;
@@ -271,13 +274,15 @@ public class PmisWebServiceTest {
         generateDymaicSql("SYS_USER_INFO", "1");
     }
     private void generateDymaicSql(String tableName, String dataType) {
-
-        if (dataType.equals(Constants.PmisWSConstants.WS_SERVICE_QUERY_USER)) {
-            executeSqlInfo("delete from " + tableName + " where USER_TYPE ='1';");
-        } else {
-            executeSqlInfo("delete from " + tableName + " ;");
+        String sql = "";
+        if(dataType.equals(Constants.PmisWSConstants.WS_SERVICE_QUERY_USER)){
+            sql ="DELETE FROM "+tableName + " WHERE USER_TYPE='1';";
+        }else{
+            sql = "DELETE FROM "+tableName + " ;";
         }
-        executeSqlInfo("delete from " + tableName + ";");
+        LOGGER.info("删除表SQL："+sql );
+        executeSqlInfo(sql);
+        LOGGER.info("删除表"+tableName+"数据结束" );
         LBEBusinessService lbeBusinessService = PmisWSUtil.createLBEBusinessService();
         LoginResult loginResult = PmisWSUtil.createLoginResult();
         List<LbParameter> params = PmisWSUtil.createLbParameter(dataType);
