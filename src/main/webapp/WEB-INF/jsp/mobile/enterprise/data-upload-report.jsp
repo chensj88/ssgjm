@@ -57,7 +57,7 @@
 				<c:forEach var="vul" items="${onlineFiles}">
 					<div id="close_id">
 						<!-- <img src="<%=basePathNuName%>shareFolder${vul.imgPath}"/> -->
-						<img src="<%=basePath%>resources/mobile/images/1.jpg"/>
+						<img src="<%=basePathNuName%>shareFolder${vul.imgPath}" />
 						<span class="iconfont icon-close" onclick="closeImg('${vul.id}');"></span>
 						<input type="hidden" />
 					</div>
