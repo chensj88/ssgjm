@@ -71,5 +71,34 @@ const service = {
 };
 /*企业号*/
 const enterprise = {
-	
+	init:function(){
+		this.delUpladImg();
+		this.largeImg();
+	},
+	//删除上传图片
+	delUpladImg:function(){
+		$('.datum-upload').on('click','.icon-close',function(){
+			$(this).parent('div').remove();
+		});
+	},
+	largeImg:function(){
+		$('.datum').on('click','.datum-upload>div',function(){
+			let _img = $(this).find('img');
+			if(_img.length>0){
+				if(_img.attr('src')){
+					$('.large-img>img').attr('src',_img.attr('src'));
+					$('.large-img').fadeIn();
+				}
+			}else{
+				$('.large-img').fadeOut();
+			}
+		});
+		
+		$('.large-img>span').click(function(){
+			enterprise.closeLargeImg();
+		})
+	},
+	closeLargeImg:function(){
+		$('.large-img').fadeOut();
+	}
 };

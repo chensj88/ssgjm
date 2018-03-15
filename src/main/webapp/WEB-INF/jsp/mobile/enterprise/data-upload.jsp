@@ -31,10 +31,11 @@
 						<i class="mui-icon mui-icon-arrowright" ></i></a>
 				</div>
 				<ul class="datum-row-img clearfix">
+					<a href="<%=basePath%>mobile/implementData/details.do?fileType=1&serialNo=${serialNo}&userId=${userId}">
 					<li class="datum-row-add">
 						<i class="iconfont icon-plus"></i>
-						<input type="file" name="" id="" value="" />
 					</li>
+					</a>
 					<c:forEach var="vul" items="${onlineFileList_one}">
 					<li>
 						<h3>${vul.map.get("dictLabel")}</h3>
