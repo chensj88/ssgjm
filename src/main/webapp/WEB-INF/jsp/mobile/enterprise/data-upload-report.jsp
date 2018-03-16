@@ -164,11 +164,11 @@
                     },
                     success: function(data) {
                         if(data.status) {
-                            mui.toast('修改成功',{ duration:'long(3500ms)', type:'div' });
+                            mui.toast('删除成功',{ duration:'long(3500ms)', type:'div' });
                             //追加图片预览
                             setTimeout("location.reload()",3500);
                         } else {
-                            mui.toast('修改失败',{ duration:'long(3500ms)', type:'div' });
+                            mui.toast('删除失败',{ duration:'long(3500ms)', type:'div' });
                             //追加图片预览
                             setTimeout("location.reload()",3500);
 
