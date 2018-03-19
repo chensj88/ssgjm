@@ -57,4 +57,9 @@ public class PmisContractProductInfoServiceImpl implements PmisContractProductIn
         return this.pmisContractProductInfoDao.selectEntityPaginatedList(t);
     }
 
+    @Override
+    public List<PmisContractProductInfo> getPmisContractProductInfoMkList(PmisContractProductInfo t) {
+        return this.pmisContractProductInfoDao.selectPmisContractProductInfoMkList(t);
+    }
+
 }

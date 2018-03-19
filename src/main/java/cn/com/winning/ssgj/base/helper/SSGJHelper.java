@@ -144,6 +144,14 @@ public class SSGJHelper {
     @Qualifier(value = "dataCheckScriptIdService")
     private StepSequenceFactory  dataCheckScriptIdService;
 
+    @Autowired
+    @Qualifier(value = "siteQuestionIdService")
+    private StepSequenceFactory  siteQuestionIdService;
+
+    @Autowired
+    @Qualifier(value = "floorQuestionIdService")
+    private StepSequenceFactory  floorQuestionIdService;
+
     public long createDataCheckScriptIdService(){
         return (long) dataCheckScriptIdService.create();
     }
@@ -164,6 +172,10 @@ public class SSGJHelper {
         return (long) sysRoleUserIdService.create();
     }
     public long createOnlineFileIdService(){ return (long) onlineFileIdService.create(); }
+    public long createSiteQuestionIdService(){ return (long) siteQuestionIdService.create(); }
+    public long createFloorQuestionIdService(){ return (long) floorQuestionIdService.create(); }
+
+
 
     /**
      * 获取报表类信息表Id
@@ -383,6 +395,10 @@ public class SSGJHelper {
     public Long createSysFlowAnswerId(){
         return (Long) sysFlowAnswerIdService.create();
     }
+
+
+
+
     /**
      * 密码加密
      * @param password 明文密码

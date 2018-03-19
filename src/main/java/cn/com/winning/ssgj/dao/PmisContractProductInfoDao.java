@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.dao;
 import cn.com.winning.ssgj.domain.PmisContractProductInfo;
 import cn.com.winning.ssgj.dao.EntityDao;
 
+import java.util.List;
+
 /**
  *
  *
@@ -11,4 +13,5 @@ import cn.com.winning.ssgj.dao.EntityDao;
  */
 public interface PmisContractProductInfoDao extends EntityDao<PmisContractProductInfo> {
 
+    List<PmisContractProductInfo> selectPmisContractProductInfoMkList(PmisContractProductInfo t);
 }

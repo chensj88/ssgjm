@@ -26,4 +26,5 @@ public interface PmisContractProductInfoService {
 
     List<PmisContractProductInfo> getPmisContractProductInfoPaginatedList(PmisContractProductInfo t);
 
+    List<PmisContractProductInfo> getPmisContractProductInfoMkList(PmisContractProductInfo contractProductInfo);
 }

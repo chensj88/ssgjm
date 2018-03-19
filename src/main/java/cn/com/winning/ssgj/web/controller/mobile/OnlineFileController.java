@@ -48,17 +48,16 @@ public class OnlineFileController extends BaseController {
         EtOnlineFile onlineFile = new  EtOnlineFile();
         //String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9";
         try{
-            byte[] byteArray = Base64Utils.decryptBASE64(parameter);
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
             ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
 
-            String worknum=(String) userList.get(0).get("WORKNUM");
+            String work_num=(String) userList.get(0).get("WORKNUM");
             //String hospcode=(String) userList.get(0).get("HOSPCODE");
             String hospcode="11980";
 
             //获取用户的信息
             SysUserInfo info = new SysUserInfo();
-            info.setUserid(worknum);
+            info.setUserid(work_num);
             info.setStatus(1);
             info.setUserType("1");  //0医院1公司员工
             info = super.getFacade().getSysUserInfoService().getSysUserInfo(info);
@@ -80,7 +79,7 @@ public class OnlineFileController extends BaseController {
             }else{
 
             }
-            model.addAttribute("userId",worknum);
+            model.addAttribute("userId",work_num);
             model.addAttribute("serialNo",hospcode);
 
         }catch (Exception e){
@@ -212,13 +211,18 @@ public class OnlineFileController extends BaseController {
         EtOnlineFile info = new EtOnlineFile();
         info.setId(id);
         try{
+            info = super.getFacade().getEtOnlineFileService().getEtOnlineFile(info);
+            if (port == 21) {
+                    FtpUtils.deleteFtpFile(info.getImgPath());
+            } else if (port == 22) {
+                    SFtpUtils.rmFile(info.getImgPath());
+            }
             super.getFacade().getEtOnlineFileService().removeEtOnlineFile(info);
             map.put("status",true);
         }catch (Exception e){
             map.put("status",false);
         }
         return map;
-
     }
 
 

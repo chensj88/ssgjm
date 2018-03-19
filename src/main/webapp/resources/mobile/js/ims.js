@@ -1,13 +1,14 @@
 /**
  * 卫宁健康--实施管理工具
  * @Author jinxl
- * @Data 2018/3/1
+ * @Date 2018/3/1
  * 
  */
 const IMS = {
     //初始化
     init: function () {
     	service.init();
+    	this.tabSwitch();
     },
     //取消空链接
     cclDefault: function () {
@@ -49,6 +50,18 @@ const IMS = {
 			_dropd.siblings("[type='hidden']").val(_val);
 			_dropd.siblings("a").find("span").text(_txt);
 			_dropd.siblings("a").find("i").toggleClass("reverse");
+		});
+	},
+	tabSwitch:function(){
+		$(".tab-nav>div").click(function(){
+			$(this).addClass('active')
+				.siblings('div')
+				.removeClass('active');
+			$('.tab .tab-cnt>div').eq($(this).index())
+				.addClass('active')
+				.siblings('div')
+				.removeClass('active');
+			return false;
 		});
 	}
 };
@@ -100,5 +113,22 @@ const enterprise = {
 	},
 	closeLargeImg:function(){
 		$('.large-img').fadeOut();
+	},
+	selectUser:function(){
+		let _this = null;
+		$('.pro-down').click(function(){
+			$('.select-user').fadeIn();
+			_this = $(this);
+		})
+		$('.icon-close').click(function(){
+			$('.select-user').fadeOut();
+		})
+		$('.select-user-cnt').on('click','p',function(){
+			$(this).addClass('active')
+				.siblings('p')
+				.removeClass('active');
+			_this.text($(this).find('span').text());
+			$('.icon-close').trigger('click');
+		});
 	}
 };
