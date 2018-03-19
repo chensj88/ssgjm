@@ -35,4 +35,6 @@ public interface SysDataInfoService {
 
     List<SysDataInfo> getSysDataInfoListById(SysDataInfo t);
 
+    void createSysDataInfoByList(List<List<Object>> sysDataInfoList);
+
 }
