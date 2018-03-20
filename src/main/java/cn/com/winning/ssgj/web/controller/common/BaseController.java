@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Map;
 
 public class BaseController extends BaseSpringMvcMybatisController{
@@ -85,8 +86,8 @@ public class BaseController extends BaseSpringMvcMybatisController{
         info.setUserid(userId);
         info.setStatus(1);
         info.setUserType("1");  //0医院1公司员工
-        info = this.getFacade().getSysUserInfoService().getSysUserInfo(info);
-        return info.getId();
+        List<SysUserInfo> infoList = this.getFacade().getSysUserInfoService().getSysUserInfoList(info);
+        return infoList.get(0).getId();
     }
 
 
