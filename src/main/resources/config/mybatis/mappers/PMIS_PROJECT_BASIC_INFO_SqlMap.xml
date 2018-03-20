@@ -48,7 +48,7 @@
     </resultMap>
 
     <sql id="sf-pmisProjectBasicInfo">
-        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(id != null ) or id == 0">and t.ID = #{id}</if>
         <if test="fwlx != null and fwlx != ''">and t.FWLX = #{fwlx}</if>
         <if test="xmlx != null and xmlx != ''">and t.XMLX = #{xmlx}</if>
         <if test="xmdj != null and xmdj != ''">and t.XMDJ = #{xmdj}</if>
@@ -122,7 +122,7 @@
 
         insert into PMIS_PROJECT_BASIC_INFO
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="(id != null ) or id == 0">ID,</if>
             <if test="fwlx != null and fwlx != ''">FWLX,</if>
             <if test="xmlx != null and xmlx != ''">XMLX,</if>
             <if test="xmdj != null and xmdj != ''">XMDJ,</if>
@@ -164,7 +164,7 @@
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="(id != null ) or id == 0">#{id, jdbcType=BIGINT},</if>
             <if test="fwlx != null and fwlx != ''">#{fwlx, jdbcType=INTEGER},</if>
             <if test="xmlx != null and xmlx != ''">#{xmlx, jdbcType=VARCHAR},</if>
             <if test="xmdj != null and xmdj != ''">#{xmdj, jdbcType=INTEGER},</if>
@@ -210,7 +210,7 @@
         update PMIS_PROJECT_BASIC_INFO
         <set>
             <trim suffixOverrides=",">
-                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(id != null ) or id == 0">ID = #{id, jdbcType=BIGINT},</if>
                 <if test="fwlx != null and fwlx != ''">FWLX = #{fwlx, jdbcType=INTEGER},</if>
                 <if test="xmlx != null and xmlx != ''">XMLX = #{xmlx, jdbcType=VARCHAR},</if>
                 <if test="xmdj != null and xmdj != ''">XMDJ = #{xmdj, jdbcType=INTEGER},</if>
@@ -253,8 +253,8 @@
             </trim>
         </set>
         <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
-            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
+            <if test="id != null ">ID = #{id}</if>
+            <if test="(id == null ) and (map.pks != null and map.pks.size >0)">
                 ID in
                  <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
             </if>
@@ -264,12 +264,34 @@
     <delete id="deletePmisProjectBasicInfo" parameterType="PmisProjectBasicInfo">
         delete from PMIS_PROJECT_BASIC_INFO
         <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
-            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
+            <if test="id != null ">ID = #{id}</if>
+            <if test="(id == null ) and (map.pks != null and map.pks.size >0)">
                 ID in
                  <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
             </if>
         </where>
     </delete>
 
+    
+    <select id="selectUserProcjectBasicInfo" parameterType="PmisProjectBasicInfo" resultMap="pmisProjectBasicInfoResult">
+        SELECT * FROM  PMIS_PROJECT_BASIC_INFO
+        <where>
+            <if test="(jhzt != null)">AND  JHZT = #{jhzt, jdbcType=INTEGER}</if>
+            <if test="(id == null ) and (map.pks != null and map.pks.size >0)">
+                AND  ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectPmisProjectBasicByKHXXAndIds" parameterType="pmisProjectBasicInfo" resultMap="pmisProjectBasicInfoResult">
+          SELECT * FROM  PMIS_PROJECT_BASIC_INFO
+        <where>
+            <if test="(khxx != null)">AND  KHXX = #{khxx, jdbcType=BIGINT}</if>
+            <if test="(id == null ) and (map.idList != null and map.idList.size >0)">
+                AND  ID in
+                <foreach item="item" collection="map.idList" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
+    </select>
 </mapper>

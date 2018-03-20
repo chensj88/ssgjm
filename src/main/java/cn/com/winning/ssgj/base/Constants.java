@@ -78,6 +78,25 @@ public class Constants implements Serializable {
      */
     public static final String FILE_SERVER_CONTEXT = "fctx";
 
+    public class PMIS {
+        /**
+         * 计划执行状态  暂停/搁置
+         */
+        public static final int JHZXZT_STOP = -1;
+        /**
+         * 计划执行状态 运行
+         */
+        public static final int JHZXZT_RUNING = 0;
+        /**
+         * 计划执行状态 完成
+         */
+        public static final int JHZXZT_FINISH = 1;
+        /**
+         * 计划执行状态 移交
+         */
+        public static final int JHZXZT_TRANSFER = 2;
+
+    }
 
     public class User {
         /**

@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.service;
 import java.util.List;
 
 import cn.com.winning.ssgj.domain.PmisCustomerInformation;
+import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
 
 /**
  *
@@ -30,4 +31,5 @@ public interface PmisCustomerInformationService {
 
     public List<PmisCustomerInformation> getPmisCustomerInformationPageListFuzzy(PmisCustomerInformation c);
 
+    List<PmisCustomerInformation> getCustomerInfoListByProjectList(PmisCustomerInformation basicInfoList);
 }

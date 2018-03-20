@@ -120,4 +120,6 @@ public interface Facade {
 
     SysOrgExtService getSysOrgExtService();
 
+    CommonQueryService getCommonQueryService();
+
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 
+import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.PmisCustomerInformationDao;
@@ -67,6 +68,11 @@ public class PmisCustomerInformationServiceImpl implements PmisCustomerInformati
 
     public List<PmisCustomerInformation> getPmisCustomerInformationPageListFuzzy(PmisCustomerInformation c) {
         return this.pmisCustomerInformationDao.selectPmisCustomerInformationPageListFuzzy(c);
+    }
+
+    @Override
+    public List<PmisCustomerInformation> getCustomerInfoListByProjectList(PmisCustomerInformation custinfo) {
+        return this.pmisCustomerInformationDao.selectCustomerInfoListByProjectList(custinfo);
     }
 
 }

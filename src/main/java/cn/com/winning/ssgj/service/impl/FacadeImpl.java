@@ -182,6 +182,9 @@ public class FacadeImpl implements Facade {
     @Resource
     SysOrgExtService sysOrgExtService;
 
+    @Resource
+    CommonQueryService commonQueryService;
+
     public EtUserLookProjectService getEtUserLookProjectService() {
         return etUserLookProjectService;
     }
@@ -405,5 +408,10 @@ public class FacadeImpl implements Facade {
     @Override
     public SysOrgExtService getSysOrgExtService() {
         return sysOrgExtService;
+    }
+
+    @Override
+    public CommonQueryService getCommonQueryService() {
+        return commonQueryService;
     }
 }

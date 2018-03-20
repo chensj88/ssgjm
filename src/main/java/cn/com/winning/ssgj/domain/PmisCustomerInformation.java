@@ -1,6 +1,8 @@
 package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
+
+import cn.com.winning.ssgj.domain.expand.NodeTree;
 import org.apache.ibatis.type.Alias;
 import cn.com.winning.ssgj.domain.BaseDomain;
 
@@ -210,6 +212,8 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
 	 * @val 状态 1|生效;2|作废
 	 */
 	private Integer zt;
+
+	private NodeTree nodeTree = new NodeTree();
 	
 	public PmisCustomerInformation() {
 
@@ -760,5 +764,15 @@ public class PmisCustomerInformation extends BaseDomain implements Serializable 
 	public void setZt(Integer zt) {
 		this.zt = zt;
 	}
-	
+
+	public NodeTree getNodeTree() {
+		nodeTree.setId(id);
+		nodeTree.setNodeId(id);
+		nodeTree.setText(code+"_"+name);
+		return nodeTree;
+	}
+
+	public void setNodeTree(NodeTree nodeTree) {
+		this.nodeTree = nodeTree;
+	}
 }

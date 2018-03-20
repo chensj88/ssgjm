@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.service;
 
 import java.util.List;
 
+import cn.com.winning.ssgj.domain.PmisProjctUser;
 import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
 
 /**
@@ -26,4 +27,7 @@ public interface PmisProjectBasicInfoService {
 
     List<PmisProjectBasicInfo> getPmisProjectBasicInfoPaginatedList(PmisProjectBasicInfo t);
 
+    List<PmisProjectBasicInfo> getUserProcjectBasicInfo(List<PmisProjctUser> userList);
+
+    List<PmisProjectBasicInfo> getPmisProjectBasicByKHXXAndIds(PmisProjectBasicInfo project);
 }

@@ -26,4 +26,9 @@ public class PmisCustomerInformationDaoSqlMapImpl extends EntityDaoSqlMapImpl<Pm
     public List<PmisCustomerInformation> selectPmisCustomerInformationPageListFuzzy(PmisCustomerInformation c) {
         return super.getSqlSession().selectList("selectPmisCustomerInformationPageListFuzzy",c);
     }
+
+    @Override
+    public List<PmisCustomerInformation> selectCustomerInfoListByProjectList(PmisCustomerInformation custinfo) {
+        return super.getSqlSession().selectList("selectCustomerInfoListByProjectList",custinfo);
+    }
 }

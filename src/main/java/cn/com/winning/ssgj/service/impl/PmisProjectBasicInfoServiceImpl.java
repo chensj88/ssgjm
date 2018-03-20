@@ -1,10 +1,13 @@
 package cn.com.winning.ssgj.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 
+import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.domain.PmisProjctUser;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.PmisProjectBasicInfoDao;
@@ -54,6 +57,24 @@ public class PmisProjectBasicInfoServiceImpl implements PmisProjectBasicInfoServ
 
     public List<PmisProjectBasicInfo> getPmisProjectBasicInfoPaginatedList(PmisProjectBasicInfo t) {
         return this.pmisProjectBasicInfoDao.selectEntityPaginatedList(t);
+    }
+
+    @Override
+    public List<PmisProjectBasicInfo> getUserProcjectBasicInfo(List<PmisProjctUser> userList) {
+        PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
+        basicInfo.setJhzt(Constants.PMIS.JHZXZT_RUNING);
+        List<String> idString = new ArrayList<String>();
+        for (PmisProjctUser projctUser : userList) {
+            idString.add(projctUser.getXmlcb()+"");
+        }
+        basicInfo.getMap().put("pks",idString);
+
+        return this.pmisProjectBasicInfoDao.selectUserProcjectBasicInfo(basicInfo);
+    }
+
+    @Override
+    public List<PmisProjectBasicInfo> getPmisProjectBasicByKHXXAndIds(PmisProjectBasicInfo project) {
+        return this.pmisProjectBasicInfoDao.selectPmisProjectBasicByKHXXAndIds(project);
     }
 
 }

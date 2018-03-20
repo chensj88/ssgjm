@@ -1,6 +1,8 @@
 package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
+
+import cn.com.winning.ssgj.domain.expand.NodeTree;
 import org.apache.ibatis.type.Alias;
 import cn.com.winning.ssgj.domain.BaseDomain;
 
@@ -207,6 +209,8 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
 	 * @val 移交日期
 	 */
 	private String yjrq;
+
+	private NodeTree nodeTree = new NodeTree();
 	
 	public PmisProjectBasicInfo() {
 
@@ -751,5 +755,16 @@ public class PmisProjectBasicInfo extends BaseDomain implements Serializable {
 	public void setYjrq(String yjrq) {
 		this.yjrq = yjrq;
 	}
-	
+
+	public NodeTree getNodeTree() {
+		nodeTree.setId(id);
+		nodeTree.setNodePid(khxx);
+		nodeTree.setNodeId(id);
+		nodeTree.setText(name);
+		return nodeTree;
+	}
+
+	public void setNodeTree(NodeTree nodeTree) {
+		this.nodeTree = nodeTree;
+	}
 }

@@ -291,5 +291,16 @@
             </if>
         </where>
     </delete>
-
+    <select id="selectCustomerInfoListByProjectList" parameterType="pmisCustomerInformation" resultMap="pmisCustomerInformationResult">
+        SELECT C.* FROM PMIS_CUSTOMER_INFORMATION C
+        WHERE C.ID IN  (
+        SELECT DISTINCT P.KHXX FROM  PMIS_PROJECT_BASIC_INFO P
+        <where>
+            <if test="(id == null) and (map.idList != null and map.idList.size >0)">
+                P.ID in
+                <foreach item="item" collection="map.idList" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
+        )
+    </select>
 </mapper>

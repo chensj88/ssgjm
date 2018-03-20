@@ -6,6 +6,8 @@ import cn.com.winning.ssgj.dao.PmisProjectBasicInfoDao;
 import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.List;
+
 /**
  *
  *
@@ -15,4 +17,13 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 @Service
 public class PmisProjectBasicInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<PmisProjectBasicInfo> implements PmisProjectBasicInfoDao {
 
+    @Override
+    public List<PmisProjectBasicInfo> selectUserProcjectBasicInfo(PmisProjectBasicInfo basicInfo) {
+        return super.getSqlSession().selectList("selectUserProcjectBasicInfo",basicInfo);
+    }
+
+    @Override
+    public List<PmisProjectBasicInfo> selectPmisProjectBasicByKHXXAndIds(PmisProjectBasicInfo project) {
+        return super.getSqlSession().selectList("selectPmisProjectBasicByKHXXAndIds",project);
+    }
 }
