@@ -17,4 +17,6 @@ public interface SysDataInfoDao extends EntityDao<SysDataInfo> {
     public List<SysDataInfo> selectSysDataInfoPaginatedListForSelectiveKey(SysDataInfo t);
     public List<SysDataInfo> selectSysDataInfoListForSelectiveKey(SysDataInfo t);
     public List<SysDataInfo> selectSysDataInfoListByIds(SysDataInfo t);
+    public List<SysDataInfo> selectSysDataInfoPaginatedListByIds(SysDataInfo t);
+    public Integer selectSysDataInfoCountByIds(SysDataInfo t);
 }

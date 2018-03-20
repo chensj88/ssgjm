@@ -3,10 +3,16 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.ConnectionUtil;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
+import cn.com.winning.ssgj.base.util.ResultSetUtil;
+import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.SysDataInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.sun.xml.internal.ws.api.addressing.WSEndpointReference;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -30,10 +36,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
+import java.util.Date;
 
 /**
  * 基础数据类型处理Controller
@@ -61,15 +66,27 @@ public class SysDataInfoBufferController extends BaseController {
      *
      * @param row
      * @return
+     * @description 根据id
      */
     @RequestMapping("/list.do")
     @ResponseBody
     @ILog(operationName = "基础数据类型列表", operationType = "list")
-    public Map<String, Object> list(Row row) {
+    public Map<String, Object> list(Row row, String pks) {
         SysDataInfo sysDataInfo = new SysDataInfo();
+        //获取id集合
+        if (StringUtil.isEmptyOrNull(pks)) {
+            return null;
+        }
+        List<String> idList = Arrays.asList(pks.split(","));
+        logger.info("idList:{}", idList);
+        //创建map，封装其他属性
+        Map<String, Object> propMap = new HashMap<String, Object>();
+        //pks为mapping xml中设定的属性名
+        propMap.put("pks", idList);
         sysDataInfo.setRow(row);
-        List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().getSysDataInfoPaginatedListForSelectiveKey(sysDataInfo);
-        int total = getFacade().getSysDataInfoService().getSysDataInfoCountForSelectiveKey(sysDataInfo);
+        sysDataInfo.setMap(propMap);
+        List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().selectSysDataInfoPaginatedListByIds(sysDataInfo);
+        int total = getFacade().getSysDataInfoService().selectSysDataInfoCountByIds(sysDataInfo);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", sysDataInfos);
         map.put("total", total);
@@ -79,7 +96,7 @@ public class SysDataInfoBufferController extends BaseController {
 
 
     /**
-     * 通过产品ID查询基础数据类型
+     * 获取基础数据详情
      *
      * @param t
      * @return
@@ -88,11 +105,31 @@ public class SysDataInfoBufferController extends BaseController {
     @ResponseBody
     @ILog
     public Map<String, Object> detail(SysDataInfo t) {
+        //根据id获取表属性
         SysDataInfo sysDataInfo = getFacade().getSysDataInfoService().getSysDataInfo(t);
-        List<SysDataInfo> details = new ArrayList<SysDataInfo>();
-        details.add(sysDataInfo);
+        //表名
+        String tableName = sysDataInfo.getTableName();
+        logger.info("tableName:{}", tableName);
+        //数据库
+        String dbName = sysDataInfo.getDbName();
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ").append(dbName).append(".dbo.").append(tableName);
+        String sql = sqlBuilder.toString();
+        logger.info("sql:{}", sql);
+        Connection connection = ConnectionUtil.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        JSONArray jsonArray = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            jsonArray = ResultSetUtil.resultSetToJSONArray(resultSet);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("data", details);
+        map.put("data", jsonArray);
         map.put("status", Constants.SUCCESS);
         return map;
     }
@@ -198,55 +235,33 @@ public class SysDataInfoBufferController extends BaseController {
     @ResponseBody
     @ILog
     public void exportDataInfo(HttpServletResponse response, SysDataInfo t) throws IOException {
-        //获取数据信息
+        //根据id获取表属性
         SysDataInfo sysDataInfo = getFacade().getSysDataInfoService().getSysDataInfo(t);
-        logger.info("data_id:" + sysDataInfo.getId());
-        Class clazz = sysDataInfo.getClass();
-        //获取属性集合
-        Field[] fields = clazz.getDeclaredFields();
-        //获取属性名集合
-        List<String> attribute = new ArrayList<String>();
-        for (int i = 0; i < fields.length; i++) {
-            attribute.add(fields[i].getName());
-        }
-        //去掉无用bean属性
-        attribute.remove("isSerialVersionUID");
-        attribute.remove("serialVersionUID");
-        attribute.remove("nodeTree");
-        for (int i = 0; i < attribute.size(); i++) {
-            System.out.println(attribute.get(i));
-        }
-
+        //表名
+        String tableName = sysDataInfo.getTableName();
+        logger.info("tableName:{}", tableName);
+        //数据库
+        String dbName = sysDataInfo.getDbName();
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ").append(dbName).append(".dbo.").append(tableName);
+        String sql = sqlBuilder.toString();
+        logger.info("sql:{}", sql);
+        Connection connection = ConnectionUtil.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        JSONArray jsonArray = null;
         //创建Excel工作簿 Excel 2003
         Workbook wb = new HSSFWorkbook();
-        try {//获取第一页
-            HSSFSheet sheet = (HSSFSheet) wb.createSheet();
-            //属性行
-            HSSFRow row_1 = sheet.createRow(0);
-            for (int i = 0; i < attribute.size(); i++) {
-                row_1.createCell(i).setCellValue(attribute.get(i));
-            }
-            //数据行
-            HSSFRow row_2 = sheet.createRow(1);
-            for (int i = 0; i < attribute.size(); i++) {
-                PropertyDescriptor pd = new PropertyDescriptor(attribute.get(i),
-                        clazz);
-                Method readMethod = pd.getReadMethod();//获得get方法
-                Object o = readMethod.invoke(sysDataInfo);//执行get方法返回一个Object
-                row_2.createCell(i).setCellValue(o == null ? "" : o.toString());
-            }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IntrospectionException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            //将表数据写入表格
+            ResultSetUtil.resultSetToExcel(resultSet, wb);
+
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        String filename = sysDataInfo.getTableName() + ".xls";
-        // 清空response
-        //response.reset();
-        // 设置response的Header
-        //response.setHeader("Access-Control-Allow-Origin", "*")
+        String filename = tableName + ".xls";
         response.setContentType("application/msexcel;charset=UTF-8");
         response.addHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode(filename, "UTF-8"))));
         OutputStream toClient = response.getOutputStream();
@@ -266,13 +281,24 @@ public class SysDataInfoBufferController extends BaseController {
     public void exportSql(HttpServletResponse response, SysDataInfo t) throws IOException {
         //获取数据信息
         SysDataInfo sysDataInfo = getFacade().getSysDataInfoService().getSysDataInfo(t);
-        logger.info("data_id:" + sysDataInfo.getId());
+        String dbName=sysDataInfo.getDbName();
+        String tableName=sysDataInfo.getTableName();
         //导出文件名
         String filename = sysDataInfo.getTableName() + ".sql";
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM SYS_DATA_INFO WHERE ID = '").append(t.getId()
-        ).append("'");
-        //sql语句
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ").append(dbName).append(".dbo.").append(tableName);
         String sql = sqlBuilder.toString();
+        Connection connection = ConnectionUtil.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String sqlStr = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            sqlStr = ResultSetUtil.resultSetToSql(resultSet, dbName, tableName);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         response.setCharacterEncoding("utf-8");
         //设置响应内容的类型
         response.setContentType("text/plain");
@@ -283,7 +309,7 @@ public class SysDataInfoBufferController extends BaseController {
         try {
             outStr = response.getOutputStream();
             buff = new BufferedOutputStream(outStr);
-            buff.write(sql.getBytes("UTF-8"));
+            buff.write(sqlStr.getBytes("UTF-8"));
             buff.flush();
             buff.close();
         } catch (Exception e) {

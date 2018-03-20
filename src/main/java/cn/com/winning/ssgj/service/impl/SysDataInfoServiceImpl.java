@@ -118,4 +118,14 @@ public class SysDataInfoServiceImpl implements SysDataInfoService {
             }
         }
     }
+
+    @Override
+    public List<SysDataInfo> selectSysDataInfoPaginatedListByIds(SysDataInfo t) {
+        return this.sysDataInfoDao.selectSysDataInfoPaginatedListByIds(t);
+    }
+
+    @Override
+    public Integer selectSysDataInfoCountByIds(SysDataInfo t) {
+        return this.sysDataInfoDao.selectSysDataInfoCountByIds(t);
+    }
 }

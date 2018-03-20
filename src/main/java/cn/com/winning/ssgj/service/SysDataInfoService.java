@@ -37,4 +37,8 @@ public interface SysDataInfoService {
 
     void createSysDataInfoByList(List<List<Object>> sysDataInfoList);
 
+    List<SysDataInfo> selectSysDataInfoPaginatedListByIds(SysDataInfo t);
+
+    Integer selectSysDataInfoCountByIds(SysDataInfo t);
+
 }
