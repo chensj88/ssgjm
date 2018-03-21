@@ -7,7 +7,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -210,5 +212,55 @@ public class ExcelUtil {
                 break;
         }
         return value;
+    }
+
+    /**
+     * 导出Excel
+     * @param dataList 数据Map
+     * @param colList  Map中列名称：列名
+     * @param response HTTP 响应
+     * @param workBook Excel工作簿
+     * @param filename Excel导出文件名
+     */
+    public static void exportExcelByStream(List<Map> dataList, List<String> colList, HttpServletResponse response, Workbook workBook, String filename){
+        try {
+            // sheet 对应一个工作页
+            Sheet sheet = workBook.createSheet();
+            //第一行保存列名
+            Row colRow=sheet.createRow(0);
+            for (int i = 0; i < colList.size(); i++) {
+                colRow.createCell(i).setCellValue(colList.get(i).toString());
+            }
+            /**
+             * 往Excel中写新数据
+             */
+            for (int j = 0; j < dataList.size(); j++) {
+                // 创建一行：从第二行开始，跳过属性列
+                Row row = sheet.createRow(j + 1);
+                // 得到要插入的每一条记录
+                Map dataMap = dataList.get(j);
+                for (int k = 0; k < colList.size(); k++) {
+                    // 在一行内循环
+                    Cell cell = row.createCell(k);
+                    String value  = "" ;
+                    if(dataMap.get(colList.get(k)) != null){
+                        value  = dataMap.get(colList.get(k)).toString();
+                    }
+                    cell.setCellValue(value);
+
+                }
+            }
+            //获取响应输出流
+            OutputStream outputStream=new BufferedOutputStream(response.getOutputStream());
+            // 设置response的Header
+            response.setContentType("application/msexcel;charset=UTF-8");
+            response.addHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode(filename, "UTF-8"))));
+            workBook.write(outputStream);
+            outputStream.flush();
+            workBook.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("数据导出成功");
     }
 }

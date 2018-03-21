@@ -13,6 +13,7 @@ import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.sun.xml.internal.ws.api.addressing.WSEndpointReference;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -184,45 +185,31 @@ public class SysDataInfoBufferController extends BaseController {
 
 
     /**
-     * @param request
+     * @description Excel文件导出
      * @param response
-     * @return
-     * @throws IOException
-     * @description 文件导出
      */
     @RequestMapping(value = "/exportExcel.do")
     @ILog
-    public HttpServletResponse wiriteExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String fileName = "datainfo.xls";
-        String path = getClass().getClassLoader().getResource("/template").getPath() + fileName;
-        try {
-            // path是指欲下载的文件的路径。
-            File file = new File(path);
-            // 取得文件名。
-            String filename = file.getName();
-            // 取得文件的后缀名。
-            String ext = filename.substring(filename.lastIndexOf(".") + 1).toUpperCase();
-
-            // 以流的形式下载文件。
-            InputStream fis = new BufferedInputStream(new FileInputStream(path));
-            byte[] buffer = new byte[fis.available()];
-            fis.read(buffer);
-            fis.close();
-            // 清空response
-            response.reset();
-            // 设置response的Header
-            response.addHeader("Content-Disposition", "attachment;filename=" + new String("DataInfo.xls".getBytes()));
-            response.addHeader("Content-Length", "" + file.length());
-            OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
-            response.setContentType("application/octet-stream");
-            toClient.write(buffer);
-            toClient.flush();
-            toClient.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            throw ex;
+    public void wiriteExcel(HttpServletResponse response) {
+        //获取表数据
+        SysDataInfo sysDataInfo = new SysDataInfo();
+        List<SysDataInfo> sysDataInfoList = getFacade().getSysDataInfoService().getSysDataInfoList(sysDataInfo);
+        //参数集合
+        List<Map> dataList = new ArrayList<>();
+        for (int i = 0; i < sysDataInfoList.size(); i++) {
+            dataList.add(ConnectionUtil.objectToMap(sysDataInfoList.get(i)));
         }
-        return response;
+        //属性数组
+        Field[] fields = SysDataInfo.class.getDeclaredFields();
+        //属性集合
+        List<String> attrNameList = new ArrayList<>();
+        for (int i = 0; i < fields.length; i++) {
+            attrNameList.add(fields[i].getName());
+        }
+        String filename = "DataInfo.xls";
+        //创建工作簿
+        Workbook workbook = new HSSFWorkbook();
+        ExcelUtil.exportExcelByStream(dataList, attrNameList, response, workbook, filename);
     }
 
     /**
@@ -281,8 +268,8 @@ public class SysDataInfoBufferController extends BaseController {
     public void exportSql(HttpServletResponse response, SysDataInfo t) throws IOException {
         //获取数据信息
         SysDataInfo sysDataInfo = getFacade().getSysDataInfoService().getSysDataInfo(t);
-        String dbName=sysDataInfo.getDbName();
-        String tableName=sysDataInfo.getTableName();
+        String dbName = sysDataInfo.getDbName();
+        String tableName = sysDataInfo.getTableName();
         //导出文件名
         String filename = sysDataInfo.getTableName() + ".sql";
         StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ").append(dbName).append(".dbo.").append(tableName);
