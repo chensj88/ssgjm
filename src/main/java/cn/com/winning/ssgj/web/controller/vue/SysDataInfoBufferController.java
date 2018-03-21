@@ -3,10 +3,7 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
-import cn.com.winning.ssgj.base.util.ConnectionUtil;
-import cn.com.winning.ssgj.base.util.ExcelUtil;
-import cn.com.winning.ssgj.base.util.ResultSetUtil;
-import cn.com.winning.ssgj.base.util.StringUtil;
+import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.SysDataInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -187,13 +184,25 @@ public class SysDataInfoBufferController extends BaseController {
     /**
      * @description Excel文件导出
      * @param response
+     * @param pks
      */
     @RequestMapping(value = "/exportExcel.do")
     @ILog
-    public void wiriteExcel(HttpServletResponse response) {
-        //获取表数据
-        SysDataInfo sysDataInfo = new SysDataInfo();
-        List<SysDataInfo> sysDataInfoList = getFacade().getSysDataInfoService().getSysDataInfoList(sysDataInfo);
+    public void  wiriteExcel(HttpServletResponse response,String pks) {
+        //根据ids获取id集合
+        SysDataInfo sysDataInfoTemp = new SysDataInfo();
+        //获取id集合
+        if (StringUtil.isEmptyOrNull(pks)) {
+            return;
+        }
+        List<String> idList = Arrays.asList(pks.split(","));
+        logger.info("idList:{}", idList);
+        //创建map，封装其他属性
+        Map<String, Object> propMap = new HashMap<String, Object>();
+        //pks为mapping xml中设定的属性名
+        propMap.put("pks", idList);
+        sysDataInfoTemp.setMap(propMap);
+        List<SysDataInfo> sysDataInfoList = getFacade().getSysDataInfoService().getSysDataInfoListById(sysDataInfoTemp);
         //参数集合
         List<Map> dataList = new ArrayList<>();
         for (int i = 0; i < sysDataInfoList.size(); i++) {
@@ -206,7 +215,7 @@ public class SysDataInfoBufferController extends BaseController {
         for (int i = 0; i < fields.length; i++) {
             attrNameList.add(fields[i].getName());
         }
-        String filename = "DataInfo.xls";
+        String filename = "DataInfo"+ DateUtil.format(DateUtil.PATTERN_14)+".xls";
         //创建工作簿
         Workbook workbook = new HSSFWorkbook();
         ExcelUtil.exportExcelByStream(dataList, attrNameList, response, workbook, filename);

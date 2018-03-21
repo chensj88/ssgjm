@@ -257,6 +257,7 @@ public class ExcelUtil {
             response.addHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode(filename, "UTF-8"))));
             workBook.write(outputStream);
             outputStream.flush();
+            outputStream.close();
             workBook.close();
         } catch (Exception e) {
             e.printStackTrace();
