@@ -28,14 +28,12 @@ import java.util.Map;
 public class ProductSHController extends BaseController {
 
     @RequestMapping(value = "/mapping/pShInfo.do")
-    @ILog
     public String queryMappingPage(HttpServletRequest request, Model model) {
         return "auth/mapping/productSHMapping";
     }
 
     @RequestMapping(value = "/pShInfo/queryById.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryBdataInfoById(SysProductShInfo shInfo) {
         List<SysProductShInfo> shInfoList = super.getFacade().getSysProductShInfoService().getSysProductShInfoList(shInfo);
         Map<String, Object> param = new HashMap<String, Object>();
@@ -57,7 +55,6 @@ public class ProductSHController extends BaseController {
 
     @RequestMapping(value = "/pShInfo/queryProductSHInfoById.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryProductSHInfoById(Integer pdId, String shIds) {
         List<SysProductShInfo> dataInfos = super.getFacade().getSysProductShInfoService().getSysProductShInfoByIds(pdId, shIds);
         Map<String, Object> result = new HashMap<String, Object>();

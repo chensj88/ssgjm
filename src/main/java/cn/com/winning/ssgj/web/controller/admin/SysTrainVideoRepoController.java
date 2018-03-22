@@ -38,7 +38,6 @@ public class SysTrainVideoRepoController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/pageInfo.do")
-    @ILog
     public String getPageInfo(HttpServletRequest request, Model model) {
         return "mobile/trainVideoPage";
     }
@@ -51,7 +50,6 @@ public class SysTrainVideoRepoController extends BaseController {
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> getTrainVideoList(SysTrainVideoRepo repo, Row row) {
         repo.setRow(row);
         /*repo.setStatus(Constants.STATUS_USE);*/
@@ -97,7 +95,6 @@ public class SysTrainVideoRepoController extends BaseController {
 
     @RequestMapping(value = "/getById.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> getTrainVideoById(SysTrainVideoRepo repo) {
         repo = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepo(repo);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -128,7 +125,6 @@ public class SysTrainVideoRepoController extends BaseController {
 
     @RequestMapping(value = "/existVideoName.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> existVideoName(SysTrainVideoRepo repo) {
         boolean exists = super.getFacade().getSysTrainVideoRepoService().existVideoName(repo);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -139,7 +135,6 @@ public class SysTrainVideoRepoController extends BaseController {
 
     @RequestMapping(value = "/queryCustomerName.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryCustomerNameInfo(String name, int matchCount) {
         PmisCustomerInformation customer = new PmisCustomerInformation();
         customer.setName(name);
