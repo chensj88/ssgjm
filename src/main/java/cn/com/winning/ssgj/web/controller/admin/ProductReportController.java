@@ -28,14 +28,12 @@ import java.util.Map;
 public class ProductReportController extends BaseController {
 
     @RequestMapping(value = "/mapping/pReportinfo.do")
-    @ILog
     public String queryMappingPage(HttpServletRequest request, Model model) {
         return "auth/mapping/productReportMapping";
     }
 
     @RequestMapping(value = "/pReport/queryById.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryProductReportById(SysProductPaperInfo paperInfo) {
         List<SysProductPaperInfo> paperInfoList = super.getFacade().
                 getSysProductPaperInfoService().getSysProductPaperInfoList(paperInfo);
@@ -58,7 +56,6 @@ public class ProductReportController extends BaseController {
 
     @RequestMapping(value = "/pReport/queryProductReportInfoById.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryProductReportInfoById(Integer pdId, String reportids) {
         List<SysProductPaperInfo> paperInfos = super.getFacade().getSysProductPaperInfoService()
                 .getSysProductPaperInfoByIds(pdId, reportids);

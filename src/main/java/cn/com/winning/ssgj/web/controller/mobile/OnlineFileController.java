@@ -4,24 +4,22 @@ import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.EtOnlineFile;
-import cn.com.winning.ssgj.domain.SysDataInfo;
 import cn.com.winning.ssgj.domain.SysDictInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.*;
 
 /**
@@ -46,15 +44,20 @@ public class OnlineFileController extends BaseController {
     public String floorQuestionList(Model model, String parameter) {
 
         EtOnlineFile onlineFile = new  EtOnlineFile();
-        //String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9";
+        //parameter="eyJXT1JLTlVNIjoiMTQyMCwiSE9TUENPREUiOiIxMTk4MCJ9";
         try{
+            byte[] byteArray = Base64Utils.decryptBASE64(parameter);
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
-            ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
-
-            String work_num=(String) userList.get(0).get("WORKNUM");
-            //String hospcode=(String) userList.get(0).get("HOSPCODE");
-            String hospcode="11980";
-
+            List<JSONObject> userList = JSON.parseArray(userJsonStr,JSONObject.class);
+            String work_num =null;
+            String hospcode =null;
+            if (userList != null && !userList.equals("")) {
+                for (int i = 0; i < userList.size(); i++) { //  推荐用这个
+                    JSONObject io = userList.get(i);
+                    work_num =(String) io.get("WORKNUM");
+                    hospcode=(String) io.get("HOSPCODE");
+                }
+            }
             //获取用户的信息
             SysUserInfo info = new SysUserInfo();
             info.setUserid(work_num);

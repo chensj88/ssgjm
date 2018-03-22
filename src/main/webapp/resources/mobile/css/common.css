@@ -84,6 +84,15 @@ table{
 	height: 100%;
 	background: #fff;
 }
+.mui-radio input[type=radio]:before{
+	font-size: 16px;
+}
+.mui-checkbox.mui-left label, .mui-radio.mui-left label{
+	padding-left: 40px;
+}
+.mui-checkbox input[type=checkbox], .mui-radio input[type=radio]{
+	top:6px;
+}
 /*mask*/
 .mask{
 	position: fixed;
@@ -206,9 +215,12 @@ table{
 }
 .tab-nav{
 	display: flex;
+	margin-left: -1px;
 }
 .tab-nav>div{
 	flex: 1;
+	border-left: 1px solid #F3F5F7;
+	box-sizing: border-box;
 	text-align: center;
 	background: #fff;
 }
@@ -233,8 +245,7 @@ table{
     border-bottom: 2px solid #61A0FF;
 }
 .tab-nav>div:nth-child(2n){
-	border-left: 1px solid #F3F5F7;
-	box-sizing: border-box;
+	
 }
 .tab-nav>div.active a{
 	color: #5897FB;

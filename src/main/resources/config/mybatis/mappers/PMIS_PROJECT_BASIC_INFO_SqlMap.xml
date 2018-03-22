@@ -49,7 +49,7 @@
 
     <sql id="sf-pmisProjectBasicInfo">
         <if test="(id != null ) or id == 0">and t.ID = #{id}</if>
-        <if test="fwlx != null and fwlx != ''">and t.FWLX = #{fwlx}</if>
+        <if test="fwlx != null ">and t.FWLX = #{fwlx}</if>
         <if test="xmlx != null and xmlx != ''">and t.XMLX = #{xmlx}</if>
         <if test="xmdj != null and xmdj != ''">and t.XMDJ = #{xmdj}</if>
         <if test="name != null and name != ''">and t.NAME = #{name}</if>
@@ -123,7 +123,7 @@
         insert into PMIS_PROJECT_BASIC_INFO
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(id != null ) or id == 0">ID,</if>
-            <if test="fwlx != null and fwlx != ''">FWLX,</if>
+            <if test="fwlx != null ">FWLX,</if>
             <if test="xmlx != null and xmlx != ''">XMLX,</if>
             <if test="xmdj != null and xmdj != ''">XMDJ,</if>
             <if test="name != null and name != ''">NAME,</if>
@@ -165,7 +165,7 @@
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(id != null ) or id == 0">#{id, jdbcType=BIGINT},</if>
-            <if test="fwlx != null and fwlx != ''">#{fwlx, jdbcType=INTEGER},</if>
+            <if test="fwlx != null ">#{fwlx, jdbcType=INTEGER},</if>
             <if test="xmlx != null and xmlx != ''">#{xmlx, jdbcType=VARCHAR},</if>
             <if test="xmdj != null and xmdj != ''">#{xmdj, jdbcType=INTEGER},</if>
             <if test="name != null and name != ''">#{name, jdbcType=VARCHAR},</if>
@@ -211,7 +211,7 @@
         <set>
             <trim suffixOverrides=",">
                 <if test="(id != null ) or id == 0">ID = #{id, jdbcType=BIGINT},</if>
-                <if test="fwlx != null and fwlx != ''">FWLX = #{fwlx, jdbcType=INTEGER},</if>
+                <if test="fwlx != null ">FWLX = #{fwlx, jdbcType=INTEGER},</if>
                 <if test="xmlx != null and xmlx != ''">XMLX = #{xmlx, jdbcType=VARCHAR},</if>
                 <if test="xmdj != null and xmdj != ''">XMDJ = #{xmdj, jdbcType=INTEGER},</if>
                 <if test="name != null and name != ''">NAME = #{name, jdbcType=VARCHAR},</if>

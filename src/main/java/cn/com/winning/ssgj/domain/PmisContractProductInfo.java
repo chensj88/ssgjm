@@ -371,5 +371,5 @@ public class PmisContractProductInfo extends BaseDomain implements Serializable 
 	public void setZt(Integer zt) {
 		this.zt = zt;
 	}
-	
+
 }
