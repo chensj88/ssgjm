@@ -22,10 +22,12 @@
 
     <resultMap id="etFloorQuestionInfoResult" type="etFloorQuestionInfo" extends="etFloorQuestionInfoResultForList">
         <result column="num" property="map.num" jdbcType="VARCHAR"/>
+        <result column="YHMC" property="map.yhmc" jdbcType="VARCHAR"/>
         <result column="num_no" property="map.num_no" jdbcType="VARCHAR"/>
         <result column="num_use" property="map.num_use" jdbcType="VARCHAR"/>
         <result column="NAME" property="map.name" jdbcType="VARCHAR"/>
-
+        <result column="DICT_LABEL" property="map.dict_label" jdbcType="VARCHAR" />
+        <result column="operator_name" property="map.operator_name" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="sf-etFloorQuestionInfo">
@@ -48,15 +50,21 @@
     </sql>
 
     <select id="selectEtFloorQuestionInfo" resultMap="etFloorQuestionInfoResult" parameterType="etFloorQuestionInfo">
-        select * from ET_FLOOR_QUESTION_INFO t where 1 = 1
+        select t.*,d.DICT_LABEL from ET_FLOOR_QUESTION_INFO t
+        LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
+        where 1 = 1
         <include refid="sf-etFloorQuestionInfo"/>
     </select>
 
-    <select id="selectEtFloorQuestionInfoList" resultMap="etFloorQuestionInfoResultForList"
+    <select id="selectEtFloorQuestionInfoList" resultMap="etFloorQuestionInfoResult"
             parameterType="etFloorQuestionInfo">
         select
         <if test="row.count != null and row.count != ''">top ${row.count}</if>
-        * from ET_FLOOR_QUESTION_INFO t where 1 = 1
+        t.*,i.YHMC,ii.YHMC AS operator_name,d.DICT_LABEL from ET_FLOOR_QUESTION_INFO t
+        LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
+        LEFT JOIN SYS_USER_INFO ii ON  t.OPERATOR=ii.ID
+        LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
+        where 1 = 1
         <include refid="sf-etFloorQuestionInfo"/>
         <!-- order by ID asc -->
     </select>
@@ -75,6 +83,13 @@
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
+
+    <select id="selectEtFloorQuestionInfoName" resultMap="etFloorQuestionInfoResult" parameterType="etFloorQuestionInfo">
+        select * from ET_FLOOR_QUESTION_INFO t where 1 = 1
+        <include refid="sf-etFloorQuestionInfo"/>
+
+    </select>
+
 
     <!--  Chen,Kuai 2018年3月7日13:24:39 楼层具体信息 -->
     <select id="selectEtFloorQuestionInfoWithHospitalList" resultMap="etFloorQuestionInfoResult"
