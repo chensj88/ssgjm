@@ -117,18 +117,29 @@ public class SysDataInfoBufferController extends BaseController {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         JSONArray jsonArray = null;
+        //列名集合
+        List cols=new ArrayList();
         try {
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
             jsonArray = ResultSetUtil.resultSetToJSONArray(resultSet);
+            //获取列名
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            //表列数
+            int colNum = metaData.getColumnCount();
+            for (int i = 1; i <=colNum; i++) {
+                cols.add(metaData.getColumnName(i));
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
+
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("data", jsonArray);
         map.put("status", Constants.SUCCESS);
+        map.put("cols",cols);
         return map;
     }
 
