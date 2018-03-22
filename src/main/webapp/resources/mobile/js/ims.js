@@ -119,15 +119,20 @@ const enterprise = {
 		$('.pro-down').click(function(){
 			$('.select-user').fadeIn();
 			_this = $(this);
+			return false;
 		})
 		$('.icon-close').click(function(){
 			$('.select-user').fadeOut();
 		})
 		$('.select-user-cnt').on('click','p',function(){
+			let _key = $(this).data('key');
 			$(this).addClass('active')
 				.siblings('p')
 				.removeClass('active');
 			_this.text($(this).find('span').text());
+			_this.next('input').val(_key);
+			//触发事件
+			allots(_this.prev('input').val(),_key);
 			$('.icon-close').trigger('click');
 		});
 	}

@@ -15,4 +15,8 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 @Service
 public class EtSiteQuestionInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtSiteQuestionInfo> implements EtSiteQuestionInfoDao {
 
+    @Override
+    public void updateEtSiteQuestionInfoImg(EtSiteQuestionInfo t) {
+        this.getSqlSession().update("updateEtSiteQuestionInfoImg",t);
+    }
 }

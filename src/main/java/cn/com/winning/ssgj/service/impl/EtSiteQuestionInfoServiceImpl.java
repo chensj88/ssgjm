@@ -57,4 +57,9 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
         return this.etSiteQuestionInfoDao.selectEntityPaginatedList(t);
     }
 
+    public void updateEtSiteQuestionInfoImg(EtSiteQuestionInfo t) {
+        this.etSiteQuestionInfoDao.updateEtSiteQuestionInfoImg(t);
+
+    }
+
 }
