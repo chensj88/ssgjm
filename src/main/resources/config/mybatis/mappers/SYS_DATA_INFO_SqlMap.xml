@@ -213,4 +213,29 @@
             </if>
         </where>
     </select>
+
+    <sql id="idsCondition">
+        <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0 )">
+            and ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+        </if>
+    </sql>
+
+    <!--根据id集合获取数据信息-->
+    <select id="selectSysDataInfoPaginatedListByIds" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_DATA_INFO t where 1 = 1
+        <include refid="idsCondition"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <!--根据id集合获取所有数据数-->
+    <select id="selectSysDataInfoCountByIds" resultType="int" parameterType="sysDataInfo">
+        select count(*) from SYS_DATA_INFO t where 1 = 1
+        <include refid="idsCondition"/>
+    </select>
+
+
 </mapper>
