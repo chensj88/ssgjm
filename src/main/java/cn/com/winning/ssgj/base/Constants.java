@@ -95,6 +95,18 @@ public class Constants implements Serializable {
          * 计划执行状态 移交
          */
         public static final int JHZXZT_TRANSFER = 2;
+        /**
+         * 服务类型 实施项目
+         */
+        public static final int FWLX_SSXM = 0;
+        /**
+         * 服务类型 服务合同项目
+         */
+        public static final int FWLX_FWHTXM = 1;
+        /**
+         * 服务类型 免费维护项目
+         */
+        public static final int FWLX_MFWHXM = 2;
 
     }
 

@@ -63,6 +63,7 @@ public class PmisProjectBasicInfoServiceImpl implements PmisProjectBasicInfoServ
     public List<PmisProjectBasicInfo> getUserProcjectBasicInfo(List<PmisProjctUser> userList) {
         PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
         basicInfo.setJhzt(Constants.PMIS.JHZXZT_RUNING);
+        basicInfo.setFwlx(Constants.PMIS.FWLX_SSXM);
         List<String> idString = new ArrayList<String>();
         for (PmisProjctUser projctUser : userList) {
             idString.add(projctUser.getXmlcb()+"");

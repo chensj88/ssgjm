@@ -28,7 +28,6 @@ import java.util.Map;
 public class ProductInterfaceController extends BaseController {
 
     @RequestMapping(value = "/mapping/pthirdinfo.do")
-    @ILog
     public String queryMappingPage(HttpServletRequest request, Model model) {
         return "auth/mapping/productInterfaceMapping";
     }
@@ -41,7 +40,6 @@ public class ProductInterfaceController extends BaseController {
      */
     @RequestMapping(value = "/pthirdinfo/queryById.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryBdataInfoById(SysProductInterfaceInfo interfaceInfo) {
         //获取符合要求的接口信息List
         List<SysProductInterfaceInfo> interfaceInfoList = super.getFacade().getSysProductInterfaceInfoService().getSysProductInterfaceInfoList(interfaceInfo);
@@ -72,7 +70,6 @@ public class ProductInterfaceController extends BaseController {
      */
     @RequestMapping(value = "/pthirdinfo/queryProductInterById.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryProductInterById(Integer pdId, String interIds) {
         List<SysProductInterfaceInfo> infoList = super.getFacade().getSysProductInterfaceInfoService().getSysProductInterfaceInfoByIds(pdId, interIds);
         Map<String, Object> result = new HashMap<String, Object>();
