@@ -11,4 +11,5 @@ import cn.com.winning.ssgj.dao.EntityDao;
  */
 public interface EtSiteQuestionInfoDao extends EntityDao<EtSiteQuestionInfo> {
 
+    void updateEtSiteQuestionInfoImg(EtSiteQuestionInfo t);
 }

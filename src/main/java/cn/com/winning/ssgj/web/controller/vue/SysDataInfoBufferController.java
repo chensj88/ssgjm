@@ -3,16 +3,14 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
-import cn.com.winning.ssgj.base.util.ConnectionUtil;
-import cn.com.winning.ssgj.base.util.ExcelUtil;
-import cn.com.winning.ssgj.base.util.ResultSetUtil;
-import cn.com.winning.ssgj.base.util.StringUtil;
+import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.SysDataInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.sun.xml.internal.ws.api.addressing.WSEndpointReference;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -119,18 +117,29 @@ public class SysDataInfoBufferController extends BaseController {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         JSONArray jsonArray = null;
+        //列名集合
+        List cols=new ArrayList();
         try {
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
             jsonArray = ResultSetUtil.resultSetToJSONArray(resultSet);
+            //获取列名
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            //表列数
+            int colNum = metaData.getColumnCount();
+            for (int i = 1; i <=colNum; i++) {
+                cols.add(metaData.getColumnName(i));
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
+
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("data", jsonArray);
         map.put("status", Constants.SUCCESS);
+        map.put("cols",cols);
         return map;
     }
 
@@ -184,45 +193,43 @@ public class SysDataInfoBufferController extends BaseController {
 
 
     /**
-     * @param request
+     * @description Excel文件导出
      * @param response
-     * @return
-     * @throws IOException
-     * @description 文件导出
+     * @param pks
      */
     @RequestMapping(value = "/exportExcel.do")
     @ILog
-    public HttpServletResponse wiriteExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String fileName = "datainfo.xls";
-        String path = getClass().getClassLoader().getResource("/template").getPath() + fileName;
-        try {
-            // path是指欲下载的文件的路径。
-            File file = new File(path);
-            // 取得文件名。
-            String filename = file.getName();
-            // 取得文件的后缀名。
-            String ext = filename.substring(filename.lastIndexOf(".") + 1).toUpperCase();
-
-            // 以流的形式下载文件。
-            InputStream fis = new BufferedInputStream(new FileInputStream(path));
-            byte[] buffer = new byte[fis.available()];
-            fis.read(buffer);
-            fis.close();
-            // 清空response
-            response.reset();
-            // 设置response的Header
-            response.addHeader("Content-Disposition", "attachment;filename=" + new String("DataInfo.xls".getBytes()));
-            response.addHeader("Content-Length", "" + file.length());
-            OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
-            response.setContentType("application/octet-stream");
-            toClient.write(buffer);
-            toClient.flush();
-            toClient.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            throw ex;
+    public void  wiriteExcel(HttpServletResponse response,String pks) {
+        //根据ids获取id集合
+        SysDataInfo sysDataInfoTemp = new SysDataInfo();
+        //获取id集合
+        if (StringUtil.isEmptyOrNull(pks)) {
+            return;
         }
-        return response;
+        List<String> idList = Arrays.asList(pks.split(","));
+        logger.info("idList:{}", idList);
+        //创建map，封装其他属性
+        Map<String, Object> propMap = new HashMap<String, Object>();
+        //pks为mapping xml中设定的属性名
+        propMap.put("pks", idList);
+        sysDataInfoTemp.setMap(propMap);
+        List<SysDataInfo> sysDataInfoList = getFacade().getSysDataInfoService().getSysDataInfoListById(sysDataInfoTemp);
+        //参数集合
+        List<Map> dataList = new ArrayList<>();
+        for (int i = 0; i < sysDataInfoList.size(); i++) {
+            dataList.add(ConnectionUtil.objectToMap(sysDataInfoList.get(i)));
+        }
+        //属性数组
+        Field[] fields = SysDataInfo.class.getDeclaredFields();
+        //属性集合
+        List<String> attrNameList = new ArrayList<>();
+        for (int i = 0; i < fields.length; i++) {
+            attrNameList.add(fields[i].getName());
+        }
+        String filename = "DataInfo"+ DateUtil.format(DateUtil.PATTERN_14)+".xls";
+        //创建工作簿
+        Workbook workbook = new HSSFWorkbook();
+        ExcelUtil.exportExcelByStream(dataList, attrNameList, response, workbook, filename);
     }
 
     /**
@@ -281,8 +288,8 @@ public class SysDataInfoBufferController extends BaseController {
     public void exportSql(HttpServletResponse response, SysDataInfo t) throws IOException {
         //获取数据信息
         SysDataInfo sysDataInfo = getFacade().getSysDataInfoService().getSysDataInfo(t);
-        String dbName=sysDataInfo.getDbName();
-        String tableName=sysDataInfo.getTableName();
+        String dbName = sysDataInfo.getDbName();
+        String tableName = sysDataInfo.getTableName();
         //导出文件名
         String filename = sysDataInfo.getTableName() + ".sql";
         StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ").append(dbName).append(".dbo.").append(tableName);

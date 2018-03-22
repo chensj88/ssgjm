@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.domain;
 import java.io.Serializable;
 import org.apache.ibatis.type.Alias;
 import java.util.Date;
+import java.util.List;
+
 import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
@@ -80,6 +82,8 @@ public class EtFloorQuestionInfo extends BaseDomain implements Serializable {
 	private java.sql.Timestamp operatorTime;
 
 	private String cause;
+
+	private List imgs;
 
 	
 	public EtFloorQuestionInfo() {
@@ -268,6 +272,14 @@ public class EtFloorQuestionInfo extends BaseDomain implements Serializable {
 
 	public void setCause(String cause) {
 		this.cause = cause;
+	}
+
+	public List getImgs() {
+		return imgs;
+	}
+
+	public void setImgs(List imgs) {
+		this.imgs = imgs;
 	}
 
 }
