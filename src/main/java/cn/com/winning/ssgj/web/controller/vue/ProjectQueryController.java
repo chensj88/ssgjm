@@ -61,6 +61,19 @@ public class ProjectQueryController extends BaseController {
         result.put("status", Constants.SUCCESS);
         result.put("data", loginUser);
         return result;
+    }
+
+    @RequestMapping(value = "/common/queryP.do")
+    @ResponseBody
+    public Map<String,Object> queryProductByProjectId(Long pId,Integer htcplb){
+        PmisContractProductInfo cpInfo = new PmisContractProductInfo();
+        cpInfo.setXmlcb(pId);
+        cpInfo.setHtcplb(htcplb);
+
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", "");
+        return result;
 
     }
 }

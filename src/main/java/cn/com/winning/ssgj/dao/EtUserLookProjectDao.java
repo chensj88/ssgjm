@@ -11,4 +11,6 @@ import cn.com.winning.ssgj.dao.EntityDao;
  */
 public interface EtUserLookProjectDao extends EntityDao<EtUserLookProject> {
 
+
+    public EtUserLookProject selectLastUserLookProject(long userId);
 }
