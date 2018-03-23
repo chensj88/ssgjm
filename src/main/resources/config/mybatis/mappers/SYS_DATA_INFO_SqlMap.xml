@@ -41,16 +41,16 @@
     </sql>
 
     <sql id="query-sysDataInfo">
-        <if test="dbName != null and dbName != ''">and t.DB_NAME LIKE '%${dbName}%' </if>
-        <if test="tableName != null and tableName != ''">and t.TABLE_NAME LIKE '%${tableName}%'  </if>
-        <if test="tableCnName != null and tableCnName != ''">and t.TABLE_CN_NAME LIKE '%${tableCnName}%' </if>
+        <if test="dbName != null and dbName != ''">and t.DB_NAME LIKE '%${dbName}%'</if>
+        <if test="tableName != null and tableName != ''">and t.TABLE_NAME LIKE '%${tableName}%'</if>
+        <if test="tableCnName != null and tableCnName != ''">and t.TABLE_CN_NAME LIKE '%${tableCnName}%'</if>
     </sql>
 
 
     <sql id="queryOrSysDataInfo">
-        <if test="dbName != null and dbName != ''">and ( t.DB_NAME LIKE '%${dbName}%' </if>
-        <if test="tableName != null and tableName != ''">OR t.TABLE_NAME LIKE '%${tableName}%'  </if>
-        <if test="tableCnName != null and tableCnName != ''">OR t.TABLE_CN_NAME LIKE '%${tableCnName}%' ) </if>
+        <if test="dbName != null and dbName != ''">and ( t.DB_NAME LIKE '%${dbName}%'</if>
+        <if test="tableName != null and tableName != ''">OR t.TABLE_NAME LIKE '%${tableName}%'</if>
+        <if test="tableCnName != null and tableCnName != ''">OR t.TABLE_CN_NAME LIKE '%${tableCnName}%' )</if>
     </sql>
 
     <select id="selectSysDataInfo" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
@@ -160,7 +160,7 @@
             <if test="id != null and id != ''">ID = #{id}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
-                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
             </if>
         </where>
     </update>
@@ -171,12 +171,13 @@
             <if test="id != null and id != ''">ID = #{id}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
-                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
             </if>
         </where>
     </delete>
 
-    <select id="selectSysDataInfoPaginatedListForSelectiveKey" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
+    <select id="selectSysDataInfoPaginatedListForSelectiveKey" resultMap="sysDataInfoResult"
+            parameterType="sysDataInfo">
         select * from (
         select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
         from SYS_DATA_INFO t
@@ -209,7 +210,7 @@
             <if test="id != null and id != ''">ID = #{id}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0 )">
                 ID in
-                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
             </if>
         </where>
     </select>
@@ -217,7 +218,7 @@
     <sql id="idsCondition">
         <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0 )">
             and ID in
-            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
         </if>
     </sql>
 
@@ -237,5 +238,40 @@
         <include refid="idsCondition"/>
     </select>
 
+
+    <sql id="dataCondition">
+        <if test="(map.pidList != null and map.pidList.size)>0 ">
+            AND ID IN
+            (SELECT t.BD_ID FROM SYS_PRODUCT_DATA_INFO t WHERE
+            GETDATE() BETWEEN t.EFFECTIVE_DATE AND t.EXPIRE_DATE
+            AND
+            t.PD_ID IN <foreach item="item" collection="map.pidList" open="(" separator="," close=")">#{item}</foreach>)
+            AND
+            DATA_TYPE=#{dataType}
+        </if>
+    </sql>
+
+    <!--根据产品ids和dataType获取基础数据 分页-->
+    <select id="selectSysDataInfoPaginatedListByPidAndDataType" resultMap="sysDataInfoResult"
+            parameterType="sysDataInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_DATA_INFO t where 1 = 1
+        <include refid="dataCondition"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <!--根据产品ids和dataType获取基础数据总数 分页-->
+    <select id="countSysDataInfoPaginatedListByPidAndDataType" resultType="int" parameterType="sysDataInfo">
+        select count(*) from SYS_DATA_INFO t where 1 = 1
+        <include refid="dataCondition"/>
+    </select>
+
+    <!--根据产品ids和dataType获取所有基础数据-->
+    <select id="selectSysDataInfoListByPidAndDataType" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
+        SELECT * FROM SYS_DATA_INFO WHERE 1=1
+        <include refid="dataCondition"/>
+    </select>
 
 </mapper>

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 
+import cn.com.winning.ssgj.domain.SysDataInfo;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.EtProcessManagerDao;
@@ -27,11 +28,9 @@ public class EtProcessManagerServiceImpl implements EtProcessManagerService {
     }
 
 
-
     public EtProcessManager getEtProcessManager(EtProcessManager t) {
         return this.etProcessManagerDao.selectEntity(t);
     }
-
 
 
     public Integer getEtProcessManagerCount(EtProcessManager t) {
@@ -39,17 +38,14 @@ public class EtProcessManagerServiceImpl implements EtProcessManagerService {
     }
 
 
-
     public List<EtProcessManager> getEtProcessManagerList(EtProcessManager t) {
         return this.etProcessManagerDao.selectEntityList(t);
     }
 
 
-
     public int modifyEtProcessManager(EtProcessManager t) {
         return this.etProcessManagerDao.updateEntity(t);
     }
-
 
 
     public int removeEtProcessManager(EtProcessManager t) {
@@ -59,6 +55,11 @@ public class EtProcessManagerServiceImpl implements EtProcessManagerService {
 
     public List<EtProcessManager> getEtProcessManagerPaginatedList(EtProcessManager t) {
         return this.etProcessManagerDao.selectEntityPaginatedList(t);
+    }
+
+    @Override
+    public void updateEtProcessManagerByPmId(EtProcessManager etProcessManager) {
+        this.etProcessManagerDao.updateEtProcessManagerByPmId(etProcessManager);
     }
 
 }
