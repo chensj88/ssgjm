@@ -16,7 +16,7 @@ public class EtProcessManagerDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtProcess
 
     @Override
     public void updateEtProcessManagerByPmId(EtProcessManager etProcessManager) {
-        String statement = "update" + etProcessManager.getClass().getSimpleName();
+        String statement = "updateEtProcessManagerByPmId";
         super.getSqlSession().update(statement, etProcessManager);
     }
 }
