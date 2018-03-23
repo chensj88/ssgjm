@@ -25,7 +25,11 @@
 		<div class="bridge">
 			<div class="bridge-item">
 				<c:forEach var="repoType" items="${repoTypeList}" >
-					<a href="<%=basePath%>mobile/trainVideoList/video.do?video_type=${repoType.videoType}&OPENID=${OPENID}" class="mui-col-xs-12" >${repoType.typeLabel}</a>
+					<a href="<%=basePath%>mobile/trainVideoList/video.do?video_type=${repoType.videoType}&OPENID=${OPENID}" class="mui-col-xs-12" >
+							${repoType.typeLabel}
+					</a>
+
+
 				</c:forEach>
 
 			</div>
