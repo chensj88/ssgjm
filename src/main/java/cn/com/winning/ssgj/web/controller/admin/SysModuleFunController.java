@@ -25,7 +25,6 @@ public class SysModuleFunController extends BaseController {
 
     @RequestMapping(value = "/query.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryModuleFunMapping(SysModFun modFun) {
         List<Long> funcIdList = super.getFacade().getSysModFunService().getFunIdsList(modFun);
         Map<String, Object> result = new HashMap<String, Object>();

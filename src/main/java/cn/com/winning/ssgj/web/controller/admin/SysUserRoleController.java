@@ -27,7 +27,6 @@ public class SysUserRoleController extends BaseController {
 
     @RequestMapping(value = "/query.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryUserRoleMaping(Long userId) {
         SysRoleUser roleUser = new SysRoleUser();
         roleUser.setUserId(userId);

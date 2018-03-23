@@ -21,7 +21,6 @@ import java.util.Map;
 @RequestMapping("home")
 public class HomeController extends BaseController {
     @RequestMapping(value = "/home.do")
-    @ILog
     public String Login(HttpServletRequest request, Model model) {
 
         return "home/home";
@@ -29,7 +28,6 @@ public class HomeController extends BaseController {
 
     @RequestMapping(value = "/loadMenu.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> loadUserMenu() {
 
         SysUserInfo sysUserInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();

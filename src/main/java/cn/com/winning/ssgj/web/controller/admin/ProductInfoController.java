@@ -38,7 +38,6 @@ public class ProductInfoController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/product.do")
-    @ILog
     public String userinfo(HttpServletRequest request, Model model) {
         return "auth/module/productInfo";
     }
@@ -51,7 +50,6 @@ public class ProductInfoController extends BaseController {
      */
     @RequestMapping("/list.do")
     @ResponseBody
-    @ILog(operationName = "产品信息列表", operationType = "list")
     public Map<String, Object> list(Row row, PmisProductInfo productInfo) {
         productInfo.setRow(row);
         List<PmisProductInfo> productInfos = getFacade().getPmisProductInfoService().getPmisProductInfoPaginatedListByCodeAndName(productInfo);
@@ -71,7 +69,6 @@ public class ProductInfoController extends BaseController {
      */
     @RequestMapping("/getById.do")
     @ResponseBody
-    @ILog(operationName = "通过产品ID查询产品信息", operationType = "getProductInfoById")
     public Map<String, Object> getProductInfoById(PmisProductInfo t) {
         System.err.println("通过产品ID查询产品信息");
         t = getFacade().getPmisProductInfoService().getPmisProductInfo(t);

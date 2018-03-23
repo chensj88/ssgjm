@@ -44,7 +44,6 @@ public class SYSFlowQuestionController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/fqInfo.do")
-    @ILog
     public String getPageInfo(HttpServletRequest request, Model model) {
         return "auth/module/flowQuestionInfo";
     }
@@ -58,7 +57,6 @@ public class SYSFlowQuestionController extends BaseController {
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryFlowQuestionList(SysFlowQuestion question, Row row) {
         question.setRow(row);
         List<SysFlowQuestion> questionList = super.getFacade().getSysFlowQuestionService().getSysFlowQuestionPageList(question);
@@ -80,7 +78,6 @@ public class SYSFlowQuestionController extends BaseController {
      */
     @RequestMapping(value = "/queryFlowCode.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryFlowCode(String flowCode, int matchCount) {
         Row row = new Row(0, matchCount);
         SysFlowInfo flowInfo = new SysFlowInfo();
@@ -104,7 +101,6 @@ public class SYSFlowQuestionController extends BaseController {
      */
     @RequestMapping(value = "/queryFlowName.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryFlowName(String flowName, int matchCount) {
         Row row = new Row(0, matchCount);
         SysFlowInfo flowInfo = new SysFlowInfo();
