@@ -90,7 +90,7 @@ public class WinningRealm extends AuthorizingRealm {
 					userInfo.getMap().put("C_ID",etUserLookProject.getCId());
 					userInfo.getMap().put("PM_ID",etUserLookProject.getPmId());
 				}
-				userInfo.getMap().put("ORG_EXT",orgExt.getOrgNameExt());
+				userInfo.getMap().put("orgExt",orgExt.getOrgNameExt());
 				return new SimpleAuthenticationInfo(userInfo, password, "memberRealm");
 			} else {
 				throw new IncorrectCredentialsException("密码错误");
