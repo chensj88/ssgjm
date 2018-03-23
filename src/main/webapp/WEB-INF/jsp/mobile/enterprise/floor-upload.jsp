@@ -34,9 +34,9 @@
 			</a>
 
 			<c:forEach var="vwr" items="${infoList}">
-				<div class="site-item">
+				<div class="site-item" onclick="detail(${vwr.id})">
 					<div class="top">
-						<div class="top-left" onclick="detail(${vwr.id})">
+						<div class="top-left" >
 							<div>${vwr.floorName}</div>
 							<span>${vwr.map.get("dict_label")}</span>
 						</div>
