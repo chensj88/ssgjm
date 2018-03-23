@@ -150,16 +150,19 @@ public class SysTrainVideoRepoServiceImpl implements SysTrainVideoRepoService {
         if (!Constants.VIDEO_TYPE_OF_CUSTOMER.equals(repo.getVideoType())) {
             repo.setVideoCType(null);
         } else {
-            repo.setVideoCLabel(getDictLabel("videoCType", repo.getVideoCType()));
+            SysDictInfo dictInfo = getDictLabel("videoCType", repo.getVideoCType());
+            repo.setVideoCLabel(dictInfo.getDictLabel());
         }
-        repo.setTypeLabel(getDictLabel("videoType", repo.getVideoType()));
+        SysDictInfo dictInfo = getDictLabel("videoType", repo.getVideoType());
+        repo.setTypeLabel(dictInfo.getDictLabel());
+        repo.setDictDesc(dictInfo.getDictDesc());
         return repo;
     }
 
-    private String getDictLabel(String dictType, String dictValue) {
+    private SysDictInfo getDictLabel(String dictType, String dictValue) {
         SysDictInfo dictInfo = new SysDictInfo();
         dictInfo.setDictCode(dictType);
         dictInfo.setDictValue(dictValue);
-        return this.sysDictInfoDao.selectEntity(dictInfo).getDictLabel();
+        return this.sysDictInfoDao.selectEntity(dictInfo);
     }
 }

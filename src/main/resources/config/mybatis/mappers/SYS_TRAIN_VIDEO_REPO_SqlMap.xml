@@ -18,6 +18,7 @@
 		<result column="CUST_NAME" property="custName" jdbcType="VARCHAR" />
 		<result column="VIDEO_C_TYPE" property="videoCType" jdbcType="VARCHAR" />
 		<result column="VIDEO_C_LABEL" property="videoCLabel" jdbcType="VARCHAR" />
+		<result column="DICT_DESC" property="dictDesc" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<resultMap id="sysTrainVideoRepoResult" type="sysTrainVideoRepo" extends="sysTrainVideoRepoResultForList">
@@ -41,6 +42,7 @@
 	   <if test="custName != null and custName != ''"> and t.CUST_NAME = #{custName} </if>
 		<if test="videoCType != null and videoCType != ''"> and t.VIDEO_C_TYPE = #{videoCType} </if>
 		<if test="videoCLabel != null and videoCLabel != ''"> and t.VIDEO_C_LABEL = #{videoCLabel} </if>
+		<if test="dictDesc != null and dictDesc != ''"> and t.DICT_DESC = #{dictDesc} </if>
 	</sql>
 
 	<select id="selectSysTrainVideoRepo" resultMap="sysTrainVideoRepoResult" parameterType="sysTrainVideoRepo">
@@ -97,6 +99,7 @@
 		   <if test="custName != null and custName != ''"> CUST_NAME, </if>
 			<if test="videoCType != null and videoCType != ''">  VIDEO_C_TYPE, </if>
 			<if test="videoCLabel != null and videoCLabel != ''"> VIDEO_C_LABEL ,</if>
+			<if test="dictDesc != null and dictDesc != ''"> DICT_DESC ,</if>
 		</trim>
 		values
 		<trim prefix="(" suffix=")" suffixOverrides=",">
@@ -115,6 +118,7 @@
 		   <if test="custName != null and custName != ''"> #{custName, jdbcType=VARCHAR}, </if>
 			<if test="videoCType != null and videoCType != ''">  #{videoCType, jdbcType=VARCHAR} ,</if>
 			<if test="videoCLabel != null and videoCLabel != ''">  #{videoCLabel, jdbcType=VARCHAR} ,</if>
+			<if test="dictDesc != null and dictDesc != ''">  #{dictDesc, jdbcType=VARCHAR} ,</if>
 		</trim>
 	</insert>
 
@@ -137,6 +141,7 @@
 			   <if test="custName != null and custName != ''"> CUST_NAME = #{custName, jdbcType=VARCHAR}, </if>
 				<if test="videoCType != null and videoCType != ''"> VIDEO_C_TYPE = #{videoCType, jdbcType=VARCHAR} ,</if>
 				<if test="videoCLabel != null and videoCLabel != ''">  VIDEO_C_LABEL =#{videoCLabel, jdbcType=VARCHAR} ,</if>
+				<if test="dictDesc != null and dictDesc != ''"> DICT_DESC =  #{dictDesc, jdbcType=VARCHAR} ,</if>
 			</trim>
 		</set>
 		where

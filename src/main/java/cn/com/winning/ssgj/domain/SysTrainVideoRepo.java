@@ -93,6 +93,11 @@ public class SysTrainVideoRepo extends BaseDomain implements Serializable {
 	 */
 	 private String  videoCLabel;
 
+	/**
+	 * @val 视频图标
+	 */
+	private String  dictDesc;
+
 
 
 
@@ -252,5 +257,13 @@ public class SysTrainVideoRepo extends BaseDomain implements Serializable {
 
 	public void setImgPath(String imgPath) {
 		this.imgPath = imgPath;
+	}
+
+	public String getDictDesc() {
+		return dictDesc;
+	}
+
+	public void setDictDesc(String dictDesc) {
+		this.dictDesc = dictDesc;
 	}
 }
