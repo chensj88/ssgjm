@@ -302,7 +302,7 @@
     <!--文件上传文本ID-->
     <bean id="onlineFileIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
-        <property name="type" value="DSC_ID"/>
+        <property name="type" value="OF_ID"/>
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
@@ -310,7 +310,7 @@
     <!--站点问题ID-->
     <bean id="siteQuestionIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
-        <property name="type" value="DSC_ID"/>
+        <property name="type" value="SQ_ID"/>
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
@@ -318,7 +318,7 @@
     <!--楼层问题ID-->
     <bean id="floorQuestionIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
-        <property name="type" value="DSC_ID"/>
+        <property name="type" value="FQ_ID"/>
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
