@@ -31,14 +31,12 @@ public class SysFunctionController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/funcInfo.do")
-    @ILog
     public String getFuncInfoPage(HttpServletRequest request, Model model) {
         return "auth/user/funcinfo";
     }
 
     @RequestMapping("/list.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> listFunction(SysFun fun, Row row) {
         fun.setRow(row);
         fun.setIsDel(Constants.STATUS_UNUSE);
@@ -90,7 +88,6 @@ public class SysFunctionController extends BaseController {
 
     @RequestMapping("/getById.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryFunctiontById(SysFun fun) throws IllegalAccessException, InvocationTargetException {
         fun = super.getFacade().getSysFunService().getSysFun(fun);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -101,7 +98,6 @@ public class SysFunctionController extends BaseController {
 
     @RequestMapping("/tree.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryFunctiontTree(SysFun fun) throws IllegalAccessException, InvocationTargetException {
         List<NodeTree> treeList = super.getFacade().getSysFunService().createSysFunTree(fun);
         Map<String, Object> result = new HashMap<String, Object>();

@@ -35,14 +35,12 @@ public class SysRoleController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/roleInfo.do")
-    @ILog
     public String getRoleInfoPage(HttpServletRequest request, Model model) {
         return "auth/user/roleinfo";
     }
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    @ILog(operationName = "角色列表", operationType = "list")
     public Map<String, Object> sysRoleList(SysRoleInfo role, Row row) {
         role.setRow(row);
         role.setIsDel(Constants.STATUS_UNUSE);
@@ -58,7 +56,6 @@ public class SysRoleController extends BaseController {
 
     @RequestMapping("/getById.do")
     @ResponseBody
-    @ILog(operationName = "使用ID查询角色", operationType = "queryRoleById")
     public Map<String, Object> queryRoleById(SysRoleInfo role) {
         role = super.getFacade().getSysRoleInfoService().getSysRoleInfo(role);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -103,7 +100,6 @@ public class SysRoleController extends BaseController {
 
     @RequestMapping(value = "/tree.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryRoleTree(String roleName) {
 
         List<NodeTree> roleInfoList = super.getFacade().getSysRoleInfoService().getRoleInfoTree(roleName);

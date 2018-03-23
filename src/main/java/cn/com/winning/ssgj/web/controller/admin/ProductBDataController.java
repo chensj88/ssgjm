@@ -33,14 +33,12 @@ import java.util.Map;
 public class ProductBDataController extends BaseController {
 
     @RequestMapping(value = "/mapping/pBdataInfo.do")
-    @ILog
     public String queryMappingPage(HttpServletRequest request, Model model) {
         return "auth/mapping/productBDMapping";
     }
 
     @RequestMapping(value = "/pBdata/queryById.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryBdataInfoById(SysProductDataInfo dataInfo) {
         List<SysProductDataInfo> dataInfoList = super.getFacade().getSysProductDataInfoService().getSysProductDataInfoList(dataInfo);
         Map<String, Object> param = new HashMap<String, Object>();
@@ -62,7 +60,6 @@ public class ProductBDataController extends BaseController {
 
     @RequestMapping(value = "/pBdata/queryProductDataInfoById.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryProductDataInfoById(Integer pdId, String bdIds) {
         List<SysProductDataInfo> dataInfos = super.getFacade().getSysProductDataInfoService().getSysProductDataInfoByIds(pdId, bdIds);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -73,7 +70,6 @@ public class ProductBDataController extends BaseController {
 
     @RequestMapping(value = "/pBdata/removeMapping.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> removePBMapping(String idList) {
         super.getFacade().getSysProductDataInfoService().removeSysProductDataInfo(idList);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -85,7 +81,6 @@ public class ProductBDataController extends BaseController {
 
     @RequestMapping(value = "/pBdata/addMapping.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> addPBMapping(String idList) throws ParseException {
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         System.out.println(idList);

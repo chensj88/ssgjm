@@ -41,7 +41,6 @@ public class SYSFlowQuestionAnswerController extends BaseController {
      */
     @RequestMapping(value = "/findByFQId.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryFlowQuestionAnswerList(Long quesId) {
         SysFlowAnswer answer = new SysFlowAnswer();
         answer.setQuesId(quesId);
@@ -63,7 +62,6 @@ public class SYSFlowQuestionAnswerController extends BaseController {
      */
     @RequestMapping(value = "/add.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> addSysFlowQuestion(String info, Long quesId) {
         super.getFacade().getSysFlowAnswerService().createSysFlowAnswer(info, quesId);
         Map<String, Object> result = new HashMap<String, Object>();

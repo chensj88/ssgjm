@@ -15,4 +15,8 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 @Service
 public class EtUserLookProjectDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtUserLookProject> implements EtUserLookProjectDao {
 
+    @Override
+    public EtUserLookProject selectLastUserLookProject(long userId) {
+        return super.getSqlSession().selectOne("selectLastUserLookProject",userId);
+    }
 }

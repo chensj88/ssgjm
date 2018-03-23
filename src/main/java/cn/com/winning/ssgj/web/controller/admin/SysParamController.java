@@ -32,14 +32,12 @@ public class SysParamController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/pageInfo.do")
-    @ILog
     public String getPageInfo(HttpServletRequest request, Model model) {
         return "config/paramInfo";
     }
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> querySysParamPageList(Row row, SysParams params) {
         params.setRow(row);
         List<SysParams> paramsList = super.getFacade().getSysParamsService().getSysParamsPageListBySelectiveKey(params);

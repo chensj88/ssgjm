@@ -28,7 +28,6 @@ public class SysModPopedomController extends BaseController {
 
     @RequestMapping(value = "/query.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryRoleModuleMapping(Long roleId) {
         SysModPopedom modPopedom = new SysModPopedom();
         modPopedom.setRoleId(roleId);
@@ -62,7 +61,6 @@ public class SysModPopedomController extends BaseController {
 
     @RequestMapping(value = "/queryBtn.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryModPopedomMapping(Long roleId) {
         SysRoleInfo roleInfo = new SysRoleInfo();
         roleInfo.setId(roleId);
@@ -85,7 +83,6 @@ public class SysModPopedomController extends BaseController {
 
     @RequestMapping(value = "/queryRolePopedom.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryRolePopedom(Long roleId) {
         SysModPopedom modPopedom = new SysModPopedom();
         modPopedom.setRoleId(roleId);

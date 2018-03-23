@@ -39,7 +39,6 @@ public class SysDataInfoController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/dataInfo.do")
-    @ILog
     public String userinfo(HttpServletRequest request, Model model) {
         return "auth/module/sysDataInfo";
     }
@@ -52,7 +51,6 @@ public class SysDataInfoController extends BaseController {
      */
     @RequestMapping("/list.do")
     @ResponseBody
-    @ILog(operationName = "基础数据类型列表", operationType = "list")
     public Map<String, Object> list(Row row, SysDataInfo sysDataInfo) {
         sysDataInfo.setRow(row);
         List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().getSysDataInfoPaginatedListForSelectiveKey(sysDataInfo);
@@ -72,7 +70,6 @@ public class SysDataInfoController extends BaseController {
      */
     @RequestMapping("/listNoPage.do")
     @ResponseBody
-    @ILog(operationName = "基础数据类型列表", operationType = "list")
     public Map<String, Object> listNoPage(SysDataInfo sysDataInfo) {
         List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().getSysDataInfoListForSelectiveKey(sysDataInfo);
         int total = getFacade().getSysDataInfoService().getSysDataInfoCount(sysDataInfo);
@@ -91,7 +88,6 @@ public class SysDataInfoController extends BaseController {
      */
     @RequestMapping("/getById.do")
     @ResponseBody
-    @ILog(operationName = "通过产品ID查询基础数据类型", operationType = "getProductInfoById")
     public Map<String, Object> getDataInfoById(SysDataInfo t) {
         System.err.println("通过产品ID查询基础数据类型");
         t = getFacade().getSysDataInfoService().getSysDataInfo(t);

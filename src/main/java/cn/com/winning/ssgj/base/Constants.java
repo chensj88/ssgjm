@@ -107,6 +107,47 @@ public class Constants implements Serializable {
          * 服务类型 免费维护项目
          */
         public static final int FWLX_MFWHXM = 2;
+        /**
+         * 合同产品类别
+         */
+        public static final int CPLB_0 = 0;
+
+        /**
+         * 合同产品类别 标准产品
+         */
+        public static final int CPLB_1 = 1;
+        /**
+         * 合同产品类别 非标产品
+         */
+        public static final int CPLB_2 = 2;
+        /**
+         * 合同产品类别 标准BD产品
+         */
+        public static final int CPLB_3 = 3;
+        /**
+         * 合同产品类别 非BD外购
+         */
+        public static final int CPLB_4 = 4;
+        /**
+         * 合同产品类别 服务清单
+         */
+        public static final int CPLB_5 = 5;
+        /**
+         * 合同产品类别 常规硬件清单
+         */
+        public static final int CPLB_6 = 6;
+        /**
+         * 合同产品类别 软件清单
+         */
+        public static final int CPLB_7 = 7;
+        /**
+         * 合同产品类别 指定转包硬件清单
+         */
+        public static final int CPLB_8 = 8;
+        /**
+         * 合同产品类别 接口/自助机清单
+         */
+        public static final int CPLB_9 = 9;
 
     }
 

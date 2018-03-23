@@ -28,14 +28,12 @@ public class SysModuleController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/moduleInfo.do")
-    @ILog
     public String getFuncInfoPage(HttpServletRequest request, Model model) {
         return "auth/user/modleinfo";
     }
 
     @RequestMapping("/list.do")
     @ResponseBody
-    @ILog(operationName = "功能查询列表", operationType = "list")
     public Map<String, Object> listFunction(SysModule module, Row row) {
         module.setRow(row);
         module.setIsDel(Constants.STATUS_UNUSE);
@@ -50,7 +48,6 @@ public class SysModuleController extends BaseController {
 
     @RequestMapping(value = "/queryModule.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryModule(String modName, int matchCount) {
         SysModule module = new SysModule();
         module.setModName(modName);
@@ -68,6 +65,7 @@ public class SysModuleController extends BaseController {
     @RequestMapping("/add.do")
     @ResponseBody
     @Transactional
+    @ILog
     public Map<String, Object> addModule(SysModule module) {
         module.setModId(ssgjHelper.createSysModId());
         module.setIsDel(Constants.STATUS_UNUSE);
@@ -83,6 +81,7 @@ public class SysModuleController extends BaseController {
     @RequestMapping("/update.do")
     @ResponseBody
     @Transactional
+    @ILog
     public Map<String, Object> updateFunction(SysModule module) {
         super.getFacade().getSysModuleService().modifySysModule(module);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -93,6 +92,7 @@ public class SysModuleController extends BaseController {
     @RequestMapping("/deleteById.do")
     @ResponseBody
     @Transactional
+    @ILog
     public Map<String, Object> deleteFunctionById(SysModule module) {
         module.setIsDel(Constants.STATUS_USE);
         super.getFacade().getSysModuleService().modifySysModule(module);

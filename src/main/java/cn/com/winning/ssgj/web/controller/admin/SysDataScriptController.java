@@ -40,7 +40,6 @@ public class SysDataScriptController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/pageInfo.do")
-    @ILog
     public String getPageInfo(HttpServletRequest request, Model model) {
         return "online/scriptPage";
     }
@@ -48,7 +47,6 @@ public class SysDataScriptController extends BaseController {
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryInfoByPage(SysDataCheckScript script, Row row) {
         script.setRow(row);
         List<SysDataCheckScript> dataCheckScriptList = super.getFacade().getSysDataCheckScriptService().getSysDataCheckScriptPageListFuzzy(script);
@@ -94,7 +92,6 @@ public class SysDataScriptController extends BaseController {
 
     @RequestMapping(value = "/getById.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> getSysDataCheckScriptById(SysDataCheckScript script) {
         script = super.getFacade().getSysDataCheckScriptService().getSysDataCheckScript(script);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -125,7 +122,6 @@ public class SysDataScriptController extends BaseController {
 
     @RequestMapping(value = "/existName.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> existDataCheckScriptName(SysDataCheckScript script) {
         boolean exists = super.getFacade().getSysDataCheckScriptService().existDataCheckScriptName(script);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -137,7 +133,6 @@ public class SysDataScriptController extends BaseController {
 
     @RequestMapping(value = "/queryAppName.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryAppName(String name, int matchCount) {
         PmisProductLineInfo lineInfo = new PmisProductLineInfo();
         lineInfo.setName(name);

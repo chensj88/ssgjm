@@ -69,7 +69,7 @@
         </trim>
     </insert>
 
-    <update id="updateEtUserLookProject" parameterType="EtUserLookProject">
+    <update id="updateEtUserLookProject" parameterType="etUserLookProject">
         update ET_USER_LOOK_PROJECT
         <set>
             <trim suffixOverrides=",">
@@ -89,7 +89,7 @@
         </where>
     </update>
 
-    <delete id="deleteEtUserLookProject" parameterType="EtUserLookProject">
+    <delete id="deleteEtUserLookProject" parameterType="etUserLookProject">
         delete from ET_USER_LOOK_PROJECT
         <where>
             <if test="id != null and id != ''">ID = #{id}</if>
@@ -100,4 +100,12 @@
         </where>
     </delete>
 
+    <select id="selectLastUserLookProject" parameterType="java.lang.Long" resultMap="etUserLookProjectResult">
+      SELECT * FROM  ET_USER_LOOK_PROJECT A
+       WHERE A.LOGIN_TIME =
+        (SELECT MAX(B.LOGIN_TIME) FROM dbo.ET_USER_LOOK_PROJECT B
+          WHERE  B.USER_ID = #{userId, jdbcType=BIGINT}
+        )
+         AND  A.USER_ID = #{userId, jdbcType=BIGINT}
+    </select>
 </mapper>
