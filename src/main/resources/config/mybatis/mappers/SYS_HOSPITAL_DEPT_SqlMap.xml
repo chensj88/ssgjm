@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysHospitalDeptDao">
+
+	<resultMap id="sysHospitalDeptResultForList" type="sysHospitalDept">
+		<result column="ID" property="id" jdbcType="BIGINT" />
+		<result column="SERIAL_NO" property="serialNo" jdbcType="BIGINT" />
+		<result column="SERIAL_NAME" property="serialName" jdbcType="VARCHAR" />
+		<result column="DEPT_CODE" property="deptCode" jdbcType="VARCHAR" />
+		<result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
+		<result column="IS_DEL" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap id="sysHospitalDeptResult" type="sysHospitalDept" extends="sysHospitalDeptResultForList">
+	</resultMap>
+
+	<sql id="sf-sysHospitalDept">
+	   <if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
+	   <if test="(serialNo != null and serialNo != '') or serialNo == 0"> and t.SERIAL_NO = #{serialNo} </if>
+	   <if test="serialName != null and serialName != ''"> and t.SERIAL_NAME = #{serialName} </if>
+	   <if test="deptCode != null and deptCode != ''"> and t.DEPT_CODE = #{deptCode} </if>
+	   <if test="deptName != null and deptName != ''"> and t.DEPT_NAME = #{deptName} </if>
+	   <if test="(isDel != null and isDel != '') or isDel == 0"> and t.IS_DEL = #{isDel} </if>
+	</sql>
+
+	<select id="selectSysHospitalDept" resultMap="sysHospitalDeptResult" parameterType="sysHospitalDept">
+		select * from SYS_HOSPITAL_DEPT t where 1 = 1
+		<include refid="sf-sysHospitalDept" />
+	</select>
+
+	<select id="selectSysHospitalDeptList" resultMap="sysHospitalDeptResultForList" parameterType="sysHospitalDept">
+		select
+		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
+		 * from SYS_HOSPITAL_DEPT t where 1 = 1
+		<include refid="sf-sysHospitalDept" />
+		<!-- order by ID asc -->
+	</select>
+
+	<select id="selectSysHospitalDeptCount" resultType="int" parameterType="sysHospitalDept">
+		select count(*) from SYS_HOSPITAL_DEPT t where 1 = 1
+		<include refid="sf-sysHospitalDept" />
+	</select>
+
+	<select id="selectSysHospitalDeptPaginatedList" resultMap="sysHospitalDeptResult" parameterType="sysHospitalDept">
+		select * from (
+			select *, ROW_NUMBER() OVER ( order by id desc ) as _rn 
+				from SYS_HOSPITAL_DEPT t where 1 = 1
+			<include refid="sf-sysHospitalDept" />
+			<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
+
+	<insert id="insertSysHospitalDept" parameterType="sysHospitalDept">
+	<selectKey resultType="String"  order="BEFORE"  keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID</selectKey>
+		insert into SYS_HOSPITAL_DEPT 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> ID, </if>
+	       <if test="(serialNo != null and serialNo != '') or serialNo == 0"> SERIAL_NO, </if>
+		   <if test="serialName != null and serialName != ''"> SERIAL_NAME, </if>
+		   <if test="deptCode != null and deptCode != ''"> DEPT_CODE, </if>
+		   <if test="deptName != null and deptName != ''"> DEPT_NAME, </if>
+	       <if test="(isDel != null and isDel != '') or isDel == 0"> IS_DEL, </if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> #{id, jdbcType=BIGINT}, </if>
+	       <if test="(serialNo != null and serialNo != '') or serialNo == 0"> #{serialNo, jdbcType=BIGINT}, </if>
+		   <if test="serialName != null and serialName != ''"> #{serialName, jdbcType=VARCHAR}, </if>
+		   <if test="deptCode != null and deptCode != ''"> #{deptCode, jdbcType=VARCHAR}, </if>
+		   <if test="deptName != null and deptName != ''"> #{deptName, jdbcType=VARCHAR}, </if>
+	       <if test="(isDel != null and isDel != '') or isDel == 0"> #{isDel, jdbcType=INTEGER}, </if>
+		</trim>
+	</insert>
+
+	<update id="updateSysHospitalDept" parameterType="SysHospitalDept">
+		update SYS_HOSPITAL_DEPT
+		<set>
+			<trim suffixOverrides=",">
+			   <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>
+			   <if test="(serialNo != null and serialNo != '') or serialNo == 0"> SERIAL_NO = #{serialNo, jdbcType=BIGINT}, </if>
+			   <if test="serialName != null and serialName != ''"> SERIAL_NAME = #{serialName, jdbcType=VARCHAR}, </if>
+			   <if test="deptCode != null and deptCode != ''"> DEPT_CODE = #{deptCode, jdbcType=VARCHAR}, </if>
+			   <if test="deptName != null and deptName != ''"> DEPT_NAME = #{deptName, jdbcType=VARCHAR}, </if>
+			   <if test="(isDel != null and isDel != '') or isDel == 0"> IS_DEL = #{isDel, jdbcType=INTEGER}, </if>
+			</trim>
+		</set>
+		where
+		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</update>
+
+	<delete id="deleteSysHospitalDept" parameterType="SysHospitalDept">
+		delete from SYS_HOSPITAL_DEPT where
+		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</delete>
+
+</mapper>

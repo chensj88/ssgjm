@@ -185,6 +185,11 @@ public class FacadeImpl implements Facade {
     @Resource
     CommonQueryService commonQueryService;
 
+    @Resource
+    SysFloorsService sysFloorsService;
+    @Resource
+    SysHospitalDeptService sysHospitalDeptService;
+
     public EtUserLookProjectService getEtUserLookProjectService() {
         return etUserLookProjectService;
     }
@@ -413,5 +418,15 @@ public class FacadeImpl implements Facade {
     @Override
     public CommonQueryService getCommonQueryService() {
         return commonQueryService;
+    }
+
+    @Override
+    public SysFloorsService getSysFloorsService() {
+        return sysFloorsService;
+    }
+
+    @Override
+    public SysHospitalDeptService getSysHospitalDeptService() {
+        return sysHospitalDeptService;
     }
 }

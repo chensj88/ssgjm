@@ -152,6 +152,13 @@ public class SSGJHelper {
     @Qualifier(value = "floorQuestionIdService")
     private StepSequenceFactory  floorQuestionIdService;
 
+    @Autowired
+    @Qualifier(value = "etLookProjectIdService")
+    private StepSequenceFactory etLookProjectIdService;
+
+    public long createEtLookProjectIdService(){
+        return (long) etLookProjectIdService.create();
+    }
     public long createDataCheckScriptIdService(){
         return (long) dataCheckScriptIdService.create();
     }

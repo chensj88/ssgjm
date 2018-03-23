@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.web.controller;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.base.util.PasswordUtils;
+import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -65,6 +66,7 @@ public class LoginController extends BaseController {
             map.put("status", false);
             map.put("message", error);
         } else {
+            map.put("user",(SysUserInfo)SecurityUtils.getSubject().getPrincipal());
             map.put("status", true);
         }
         return map;
@@ -80,18 +82,18 @@ public class LoginController extends BaseController {
             e.printStackTrace();
             error = "密码解密失败";
         }
-
-        Map<String, Object> map = new HashMap<String, Object>();
-        UsernamePasswordToken token = new UsernamePasswordToken(userid, MD5.stringMD5(decodePassword));
-        Subject subject = SecurityUtils.getSubject();
-        try {
-            subject.login(token);
-        } catch (UnknownAccountException e) {
-            error = "用户名/密码错误";
-        } catch (IncorrectCredentialsException e) {
-            error = "用户名/密码错误";
-        } catch (AuthenticationException e) {
-            error = "其他错误：" + e.getMessage();
+        if( error == null){
+            UsernamePasswordToken token = new UsernamePasswordToken(userid, MD5.stringMD5(decodePassword));
+            Subject subject = SecurityUtils.getSubject();
+            try {
+                subject.login(token);
+            } catch (UnknownAccountException e) {
+                error = "用户名/密码错误";
+            } catch (IncorrectCredentialsException e) {
+                error = "用户名/密码错误";
+            } catch (AuthenticationException e) {
+                error = "其他错误：" + e.getMessage();
+            }
         }
 
         return error;

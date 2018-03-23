@@ -322,5 +322,11 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
-
+    <!--最后查看项目ID-->
+    <bean id="etLookProjectIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="ETLP_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
 </beans>

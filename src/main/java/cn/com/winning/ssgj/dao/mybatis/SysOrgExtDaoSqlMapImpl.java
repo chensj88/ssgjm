@@ -19,4 +19,11 @@ public class SysOrgExtDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysOrgExt> imple
     public void callOrgExtInfoProcedure() {
         super.getSqlSession().selectOne("callOrgExtInfoProcedure");
     }
+
+    @Override
+    public SysOrgExt selectUserOrgExtByUserOrgId(Long ssgs) {
+        SysOrgExt orgExt = new SysOrgExt();
+        orgExt.setOrgId(ssgs);
+        return super.getSqlSession().selectOne("selectUserOrgExtByUserOrgId",orgExt);
+    }
 }

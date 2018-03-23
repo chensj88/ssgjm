@@ -18,7 +18,7 @@
         <if test="(cId != null and cId != '') or cId == 0">and t.C_ID = #{cId}</if>
         <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
         <if test="(userId != null and userId != '') or userId == 0">and t.USER_ID = #{userId}</if>
-        <if test="loginTime != null and loginTime != ''">and t.LOGIN_TIME = #{loginTime}</if>
+        <if test="loginTime != null ">and t.LOGIN_TIME = #{loginTime}</if>
     </sql>
 
     <select id="selectEtUserLookProject" resultMap="etUserLookProjectResult" parameterType="etUserLookProject">
@@ -57,7 +57,7 @@
             <if test="(cId != null and cId != '') or cId == 0">C_ID,</if>
             <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID,</if>
             <if test="(userId != null and userId != '') or userId == 0">USER_ID,</if>
-            <if test="loginTime != null and loginTime != ''">LOGIN_TIME,</if>
+            <if test="loginTime != null ">LOGIN_TIME,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -65,7 +65,7 @@
             <if test="(cId != null and cId != '') or cId == 0">#{cId, jdbcType=BIGINT},</if>
             <if test="(pmId != null and pmId != '') or pmId == 0">#{pmId, jdbcType=BIGINT},</if>
             <if test="(userId != null and userId != '') or userId == 0">#{userId, jdbcType=BIGINT},</if>
-            <if test="loginTime != null and loginTime != ''">#{loginTime, jdbcType=TIMESTAMP},</if>
+            <if test="loginTime != null ">#{loginTime, jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
 
@@ -77,7 +77,7 @@
                 <if test="(cId != null and cId != '') or cId == 0">C_ID = #{cId, jdbcType=BIGINT},</if>
                 <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID = #{pmId, jdbcType=BIGINT},</if>
                 <if test="(userId != null and userId != '') or userId == 0">USER_ID = #{userId, jdbcType=BIGINT},</if>
-                <if test="loginTime != null and loginTime != ''">LOGIN_TIME = #{loginTime, jdbcType=TIMESTAMP},</if>
+                <if test="loginTime != null ">LOGIN_TIME = #{loginTime, jdbcType=TIMESTAMP},</if>
             </trim>
         </set>
         <where>
