@@ -149,12 +149,12 @@
 					<span>处理情况</span>
 					<div>
 						<div class="mui-input-row mui-radio mui-left">
-							<label>未解决</label>
-							<input name="radio" type="radio" value="0">
-						</div>
-						<div class="mui-input-row mui-radio mui-left">
 							<label>已解决</label>
 							<input name="radio" type="radio" value="1" >
+						</div>
+						<div class="mui-input-row mui-radio mui-left">
+							<label>未解决</label>
+							<input name="radio" type="radio" value="0">
 						</div>
 					</div>
 				</div>

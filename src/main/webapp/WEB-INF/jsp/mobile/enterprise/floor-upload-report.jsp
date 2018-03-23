@@ -10,6 +10,7 @@
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css" />
+		<script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
 		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_o710wavlb78n0zfr.css"/>
 	</head>
 	<body>
@@ -83,16 +84,18 @@
 			<div class="datum-report padding-btm-20">
 				<div class="datum-report-item site-radio">
 					<span>处理情况</span>
-					 <div>
-					 	<div class="mui-input-row mui-radio mui-left">
-							<label>已解决</label>
-							<input name="radio1" type="radio">
-						</div>
+					<div>
+
 						<div class="mui-input-row mui-radio mui-left">
 							<label>未解决</label>
-							<input name="radio1" type="radio" checked="checked">
-						</div> 
-					 </div>
+							<input name="radio" type="radio" value="0">
+						</div>
+						<div class="mui-input-row mui-radio mui-left">
+							<label>已解决</label>
+							<input name="radio" type="radio" value="1" >
+						</div>
+
+					</div>
 				</div>
 			</div>
 
@@ -105,7 +108,6 @@
 			<img src="../images/video.png"/>
 			<span class="iconfont icon-close"></span>
 		</div>
-		<script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript" charset="utf-8"></script>
 		<script src="<%=basePath%>resources/mobile/js/mui.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
