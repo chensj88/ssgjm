@@ -12,6 +12,8 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.base.util.MD5;
+import cn.com.winning.ssgj.dao.EtUserLookProjectDao;
+import cn.com.winning.ssgj.domain.EtUserLookProject;
 import cn.com.winning.ssgj.domain.expand.FlotDataInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,8 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
     private SysUserInfoDao sysUserInfoDao;
     @Autowired
     private SSGJHelper ssgjHelper;
+    @Autowired
+    private EtUserLookProjectDao etUserLookProjectDao;
 
 
     public Integer createSysUserInfo(SysUserInfo t) {
@@ -168,6 +172,13 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
                 this.sysUserInfoDao.insertEntity(user);
             }
         }
+    }
+
+    @Override
+    public SysUserInfo getSysUserInfoById(long userid) {
+        SysUserInfo userInfo = new SysUserInfo();
+        userInfo.setId(userid);
+        return sysUserInfoDao.selectEntity(userInfo);
     }
 
 }

@@ -93,4 +93,7 @@
 	<select id="callOrgExtInfoProcedure" statementType="CALLABLE">
 		{CALL sp_org_name_ext()}
 	</select>
+	<select id="selectUserOrgExtByUserOrgId" parameterType="java.lang.Long" resultMap="sysOrgExtResult">
+		SELECT  * FROM SYS_ORG_EXT WHERE  ORG_ID = ${orgId}
+	</select>
 </mapper>

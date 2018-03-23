@@ -6,8 +6,10 @@ import javax.annotation.Resource;
 
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.dao.EtUserLookProjectDao;
+import cn.com.winning.ssgj.dao.SysOrgExtDao;
 import cn.com.winning.ssgj.dao.SysUserInfoDao;
 import cn.com.winning.ssgj.domain.EtUserLookProject;
+import cn.com.winning.ssgj.domain.SysOrgExt;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -41,6 +43,8 @@ public class WinningRealm extends AuthorizingRealm {
 	private SysUserInfoDao sysUserInfoDao; //需要查询用户基本信息及权限的dao接口
 	@Autowired
 	private EtUserLookProjectDao etUserLookProjectDao;
+	@Autowired
+	private SysOrgExtDao sysOrgExtDao;
 	/**
 	 * 
 	 * @param principals
@@ -81,10 +85,12 @@ public class WinningRealm extends AuthorizingRealm {
 			String password = new String((char[]) token.getCredentials());
 			if (userInfo.getPassword().equals(password)) {
 				EtUserLookProject etUserLookProject = etUserLookProjectDao.selectLastUserLookProject(userInfo.getId());
+				SysOrgExt orgExt = sysOrgExtDao.selectUserOrgExtByUserOrgId(userInfo.getSsgs());
 				if(etUserLookProject != null){
 					userInfo.getMap().put("C_ID",etUserLookProject.getCId());
 					userInfo.getMap().put("PM_ID",etUserLookProject.getPmId());
 				}
+				userInfo.getMap().put("ORG_EXT",orgExt.getOrgNameExt());
 				return new SimpleAuthenticationInfo(userInfo, password, "memberRealm");
 			} else {
 				throw new IncorrectCredentialsException("密码错误");

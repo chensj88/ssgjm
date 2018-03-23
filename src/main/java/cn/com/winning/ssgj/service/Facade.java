@@ -122,4 +122,8 @@ public interface Facade {
 
     CommonQueryService getCommonQueryService();
 
+    SysFloorsService getSysFloorsService();
+
+    SysHospitalDeptService getSysHospitalDeptService();
+
 }
