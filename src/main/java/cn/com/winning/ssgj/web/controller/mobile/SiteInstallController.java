@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 站点安装
+ * 站点安装登记
  *
  * @author ChenKuai
  * @create 2018-03-16 上午 9:36
@@ -63,7 +63,7 @@ public class SiteInstallController extends BaseController {
 
         }
 
-        return "";
+        return "/mobile/enterprise/site-install";
     }
 
 

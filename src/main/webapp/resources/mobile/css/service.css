@@ -9,24 +9,36 @@
 .bridge-item{
 	display: flex;
 	margin-top: 20px;
-	padding: 0px 35px;
+	padding: 0px 15px;
 	flex-wrap: wrap;
 	justify-content:space-between;
-	align-content: flex-start;
 }
 .bridge-item a{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	width: 48%;
-	height: 70px;
+	height: 110px;
 	margin-top: 14px;
-	color: #505050;
-	font-size: 16px;
-	line-height: 70px;
-	border: 1px solid #c6c6c6;
+	font-size: 14px;
+	color: #679DF1;
+	background: #FFFFFF;
+	border: 1px solid #E4EAF2;
+	box-shadow: 2px 2px 7px 0 #CAD9F4;
 	border-radius: 2px;
 }
 .bridge-item a:active{
 	color: #6ea2f2;
 	border: 1px solid #679df1;
+}
+.bridge-item a>i{
+	font-size: 30px;
+}
+.bridge-item a>span{
+	margin-top: 9px;
+	font-size: 14px;
+	/*font-weight: bold;*/
+	-webkit-box-reflect: below -8px -webkit-gradient(linear, left top, left bottom, from(rgba(103,157,241,0)), to(rgba(244,250,255,0.3)));
 }
 /*课程学习*/
 .course {}

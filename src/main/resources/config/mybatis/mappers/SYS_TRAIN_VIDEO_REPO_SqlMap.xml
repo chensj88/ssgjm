@@ -75,8 +75,8 @@
 
 	<!-- Chen,Kuai 2018-2-28 10:34:57 获取分类集合-->
 	<select id="selectSysTrainVideoRepoTypeList" resultMap="sysTrainVideoRepoResult" parameterType="sysTrainVideoRepo">
-		SELECT t.TYPE_LABEL,t.VIDEO_TYPE FROM SYS_TRAIN_VIDEO_REPO t
-		<include refid="sf-sysTrainVideoRepo" /> GROUP BY TYPE_LABEL,VIDEO_TYPE ;
+		SELECT t.TYPE_LABEL,t.VIDEO_TYPE,t.DICT_DESC FROM SYS_TRAIN_VIDEO_REPO t
+		<include refid="sf-sysTrainVideoRepo" /> GROUP BY TYPE_LABEL,VIDEO_TYPE,DICT_DESC ;
 	</select>
 
 
