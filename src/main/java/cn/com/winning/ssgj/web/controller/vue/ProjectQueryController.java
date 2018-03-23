@@ -65,14 +65,15 @@ public class ProjectQueryController extends BaseController {
 
     @RequestMapping(value = "/common/queryP.do")
     @ResponseBody
-    public Map<String,Object> queryProductByProjectId(Long pId,Integer htcplb){
-        PmisContractProductInfo cpInfo = new PmisContractProductInfo();
-        cpInfo.setXmlcb(pId);
-        cpInfo.setHtcplb(htcplb);
-
+    public Map<String,Object> queryProductByProjectId(){
+        /*SysUserInfo loginUser = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
+        long cId = (long) loginUser.getMap().get("C_ID");
+        long pmId = (long) loginUser.getMap().get("PM_ID");*/
+        long pmId = 1L;
+        List<PmisProductInfo> productInfos = super.getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId,Constants.PMIS.CPLB_1);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
-        result.put("data", "");
+        result.put("data", productInfos);
         return result;
 
     }
