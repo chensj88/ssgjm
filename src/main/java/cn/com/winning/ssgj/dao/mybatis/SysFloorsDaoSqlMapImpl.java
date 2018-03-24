@@ -6,6 +6,8 @@ import cn.com.winning.ssgj.dao.SysFloorsDao;
 import cn.com.winning.ssgj.domain.SysFloors;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.List;
+
 /**
  * Coder AutoGenerator generate.
  *
@@ -15,4 +17,18 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 @Service
 public class SysFloorsDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysFloors> implements SysFloorsDao {
 
+    @Override
+    public List<SysFloors> selectSysFloorsPageListByFuzzy(SysFloors floors) {
+        return super.getSqlSession().selectList("selectSysFloorsPageListByFuzzy",floors);
+    }
+
+    @Override
+    public int selectSysFloorsCountByFuzzy(SysFloors floors) {
+        return super.getSqlSession().selectOne("selectSysFloorsCountByFuzzy",floors);
+    }
+
+    @Override
+    public int selectSysFloorsExistsFloorsName(SysFloors floors) {
+        return super.getSqlSession().selectOne("selectSysFloorsExistsFloorsName",floors);
+    }
 }

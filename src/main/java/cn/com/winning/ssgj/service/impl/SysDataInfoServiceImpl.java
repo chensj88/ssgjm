@@ -30,7 +30,6 @@ public class SysDataInfoServiceImpl implements SysDataInfoService {
     private SSGJHelper ssgjHelper;
 
 
-
     public Integer createSysDataInfo(SysDataInfo t) {
         return this.sysDataInfoDao.insertEntity(t);
     }
@@ -99,18 +98,18 @@ public class SysDataInfoServiceImpl implements SysDataInfoService {
             SysDataInfo sysDataInfo = new SysDataInfo();
             sysDataInfo.setTableName(tableName);
             sysDataInfo.setTableCnName(tableCnName);
-            if(!StringUtil.isEmptyOrNull(dataType)){
+            if (!StringUtil.isEmptyOrNull(dataType)) {
                 sysDataInfo.setDataType(Integer.parseInt(dataType));
             }
             //根据导入数据查找datainfo
-            SysDataInfo curSysDataInfo=this.getSysDataInfo(sysDataInfo);
-            if(curSysDataInfo != null){
+            SysDataInfo curSysDataInfo = this.getSysDataInfo(sysDataInfo);
+            if (curSysDataInfo != null) {
                 //数据已存在，则更新
                 curSysDataInfo.setTableName(sysDataInfo.getTableName());
                 curSysDataInfo.setTableCnName(sysDataInfo.getTableCnName());
                 curSysDataInfo.setDataType(sysDataInfo.getDataType());
                 this.sysDataInfoDao.updateEntity(curSysDataInfo);
-            }else{
+            } else {
                 //数据不存在
                 curSysDataInfo = sysDataInfo;
                 curSysDataInfo.setId(ssgjHelper.createDataId());
@@ -127,5 +126,20 @@ public class SysDataInfoServiceImpl implements SysDataInfoService {
     @Override
     public Integer selectSysDataInfoCountByIds(SysDataInfo t) {
         return this.sysDataInfoDao.selectSysDataInfoCountByIds(t);
+    }
+
+    @Override
+    public List<SysDataInfo> selectSysDataInfoPaginatedListByPidAndDataType(SysDataInfo t) {
+        return this.sysDataInfoDao.selectSysDataInfoPaginatedListByPidAndDataType(t);
+    }
+
+    @Override
+    public Integer countSysDataInfoPaginatedListByPidAndDataType(SysDataInfo t) {
+        return this.sysDataInfoDao.countSysDataInfoPaginatedListByPidAndDataType(t);
+    }
+
+    @Override
+    public List<SysDataInfo> selectSysDataInfoListByPidAndDataType(SysDataInfo t) {
+        return this.sysDataInfoDao.selectSysDataInfoListByPidAndDataType(t);
     }
 }

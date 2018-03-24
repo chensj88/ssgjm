@@ -25,6 +25,10 @@ public class SysDictInfo extends BaseDomain implements Serializable {
 
     private String dictSort;
     /**
+     * 字典值 int 转换失败几位 null
+     */
+    private Integer dictV;
+    /**
      * 字典说明
      */
     private String dictDesc;
@@ -71,5 +75,18 @@ public class SysDictInfo extends BaseDomain implements Serializable {
 
     public void setDictDesc(String dictDesc) {
         this.dictDesc = dictDesc;
+    }
+
+    public Integer getDictV() {
+        try {
+            return Integer.parseInt(dictValue);
+        }catch (NumberFormatException e){
+            return null;
+        }
+
+    }
+
+    public void setDictV(Integer dictV) {
+        this.dictV = dictV;
     }
 }

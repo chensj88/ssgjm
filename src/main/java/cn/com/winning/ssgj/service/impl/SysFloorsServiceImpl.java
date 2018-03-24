@@ -51,4 +51,24 @@ public class SysFloorsServiceImpl implements SysFloorsService {
 		return this.sysFloorsDao.selectEntityPaginatedList(t);
 	}
 
+	@Override
+	public List<SysFloors> getSysFloorsPageListByFuzzy(SysFloors floors) {
+		return this.sysFloorsDao.selectSysFloorsPageListByFuzzy(floors);
+	}
+
+	@Override
+	public int getSysFloorsCountByFuzzy(SysFloors floors) {
+		return (Integer) this.sysFloorsDao.selectSysFloorsCountByFuzzy(floors);
+	}
+
+	@Override
+	public boolean getSysFloorsExistsFloorsName(SysFloors floors) {
+
+		int conut = this.sysFloorsDao.selectSysFloorsExistsFloorsName(floors);
+		if(conut > 0){
+			return false;
+		}
+		return true;
+	}
+
 }

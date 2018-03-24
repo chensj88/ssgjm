@@ -4,11 +4,12 @@ import cn.com.winning.ssgj.domain.EtCustomerDetail;
 import cn.com.winning.ssgj.dao.EntityDao;
 
 /**
+ * Coder AutoGenerator generate.
  *
- *
- * @author SSGJ
- * @date 2018-01-18 10:11:47
+ * @author Coder AutoGenerator
+ * @date 2018-03-24 14:03:02
  */
 public interface EtCustomerDetailDao extends EntityDao<EtCustomerDetail> {
 
+    EtCustomerDetail selectMergeEtCustomerDetail(EtCustomerDetail t);
 }

@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.dao;
 import cn.com.winning.ssgj.domain.SysHospitalDept;
 import cn.com.winning.ssgj.dao.EntityDao;
 
+import java.util.List;
+
 /**
  * Coder AutoGenerator generate.
  *
@@ -11,4 +13,9 @@ import cn.com.winning.ssgj.dao.EntityDao;
  */
 public interface SysHospitalDeptDao extends EntityDao<SysHospitalDept> {
 
+
+    public List<SysHospitalDept> selectSysHospitalDeptPageListByFuzzy(SysHospitalDept dept);
+    public int selectSysHospitalDeptCountByFuzzy(SysHospitalDept dept);
+
+    int selectSysHospitalDeptName(SysHospitalDept dept);
 }

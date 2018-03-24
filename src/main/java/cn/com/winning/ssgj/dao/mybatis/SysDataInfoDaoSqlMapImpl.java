@@ -52,4 +52,22 @@ public class SysDataInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysDataInfo> i
         String statement = "select"+ t.getClass().getSimpleName() +"CountByIds";
         return super.getSqlSession().selectOne(statement,t);
     }
+
+    @Override
+    public List<SysDataInfo> selectSysDataInfoPaginatedListByPidAndDataType(SysDataInfo t) {
+        String statement = "select"+ t.getClass().getSimpleName() +"PaginatedListByPidAndDataType";
+        return super.getSqlSession().selectList(statement,t);
+    }
+
+    @Override
+    public Integer countSysDataInfoPaginatedListByPidAndDataType(SysDataInfo t) {
+        String statement = "count"+ t.getClass().getSimpleName() +"PaginatedListByPidAndDataType";
+        return super.getSqlSession().selectOne(statement,t);
+    }
+
+    @Override
+    public List<SysDataInfo> selectSysDataInfoListByPidAndDataType(SysDataInfo t) {
+        String statement = "select"+ t.getClass().getSimpleName() +"ListByPidAndDataType";
+        return super.getSqlSession().selectList(statement,t);
+    }
 }

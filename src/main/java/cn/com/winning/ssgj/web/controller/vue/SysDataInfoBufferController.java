@@ -3,16 +3,16 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
-import cn.com.winning.ssgj.base.util.*;
+import cn.com.winning.ssgj.base.util.ConnectionUtil;
+import cn.com.winning.ssgj.base.util.DateUtil;
+import cn.com.winning.ssgj.base.util.ExcelUtil;
+import cn.com.winning.ssgj.base.util.ResultSetUtil;
+import cn.com.winning.ssgj.domain.EtProcessManager;
+import cn.com.winning.ssgj.domain.PmisProductInfo;
 import cn.com.winning.ssgj.domain.SysDataInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.sun.xml.internal.ws.api.addressing.WSEndpointReference;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
@@ -27,16 +27,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.sql.*;
-import java.util.*;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 基础数据类型处理Controller
@@ -63,28 +64,62 @@ public class SysDataInfoBufferController extends BaseController {
      * 基础数据类型列表
      *
      * @param row
+     * @param proStr   项目id
+     * @param dataType 0 国标数据;1 行标数据；2 共享数据；3 易用数据；
      * @return
-     * @description 根据id
+     * @description 根据项目id获取基础数据
      */
     @RequestMapping("/list.do")
     @ResponseBody
     @ILog(operationName = "基础数据类型列表", operationType = "list")
-    public Map<String, Object> list(Row row, String pks) {
-        SysDataInfo sysDataInfo = new SysDataInfo();
-        //获取id集合
-        if (StringUtil.isEmptyOrNull(pks)) {
+    public Map<String, Object> list(Row row, String proStr, String dataType) {
+        //基础数据类型
+        Integer dataTypeNum=Integer.parseInt(dataType);
+        //项目id
+        Long proId = Long.parseLong(proStr);
+        if (proId == null) {
             return null;
         }
-        List<String> idList = Arrays.asList(pks.split(","));
-        logger.info("idList:{}", idList);
+        //根据项目id获取产品
+        List<PmisProductInfo> pmisProductInfos =
+                getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(proId, 1);
+        //产品id集合
+        List pidList = new ArrayList();
+        for (int i = 0; i < pmisProductInfos.size(); i++) {
+            pidList.add(pmisProductInfos.get(i).getId());
+        }
+        logger.info("idList:{}", pidList);
         //创建map，封装其他属性
         Map<String, Object> propMap = new HashMap<String, Object>();
         //pks为mapping xml中设定的属性名
-        propMap.put("pks", idList);
+        propMap.put("pidList", pidList);
+
+        SysDataInfo sysDataInfo = new SysDataInfo();
         sysDataInfo.setRow(row);
+        sysDataInfo.setDataType(dataTypeNum);
         sysDataInfo.setMap(propMap);
-        List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().selectSysDataInfoPaginatedListByIds(sysDataInfo);
-        int total = getFacade().getSysDataInfoService().selectSysDataInfoCountByIds(sysDataInfo);
+        //根据产品id和dataType获取基础数据 dataType:0 国标数据;1 行标数据；2 共享数据；3 易用数据；
+        List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().selectSysDataInfoPaginatedListByPidAndDataType(sysDataInfo);
+        int total = getFacade().getSysDataInfoService().countSysDataInfoPaginatedListByPidAndDataType(sysDataInfo);
+
+        EtProcessManager etProcessManager=new EtProcessManager();
+        etProcessManager.setPmId(proId);
+        if(dataTypeNum==0||dataTypeNum==1||dataTypeNum==2){
+            if(total>0){
+                etProcessManager.setIsBasicDataUse(1);
+            }else{
+                etProcessManager.setIsBasicDataUse(0);
+            }
+        }else if(dataTypeNum==3){
+            if(total>0){
+                etProcessManager.setIsEasyDataUse(1);
+            }else{
+                etProcessManager.setIsEasyDataUse(0);
+            }
+        }
+        getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(etProcessManager);
+
+
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", sysDataInfos);
         map.put("total", total);
@@ -118,7 +153,7 @@ public class SysDataInfoBufferController extends BaseController {
         ResultSet resultSet = null;
         JSONArray jsonArray = null;
         //列名集合
-        List cols=new ArrayList();
+        List cols = new ArrayList();
         try {
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
@@ -127,7 +162,7 @@ public class SysDataInfoBufferController extends BaseController {
             ResultSetMetaData metaData = resultSet.getMetaData();
             //表列数
             int colNum = metaData.getColumnCount();
-            for (int i = 1; i <=colNum; i++) {
+            for (int i = 1; i <= colNum; i++) {
                 cols.add(metaData.getColumnName(i));
             }
 
@@ -139,7 +174,7 @@ public class SysDataInfoBufferController extends BaseController {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("data", jsonArray);
         map.put("status", Constants.SUCCESS);
-        map.put("cols",cols);
+        map.put("cols", cols);
         return map;
     }
 
@@ -193,27 +228,35 @@ public class SysDataInfoBufferController extends BaseController {
 
 
     /**
-     * @description Excel文件导出
      * @param response
      * @param pks
+     * @description Excel文件导出
      */
     @RequestMapping(value = "/exportExcel.do")
     @ILog
-    public void  wiriteExcel(HttpServletResponse response,String pks) {
-        //根据ids获取id集合
-        SysDataInfo sysDataInfoTemp = new SysDataInfo();
-        //获取id集合
-        if (StringUtil.isEmptyOrNull(pks)) {
+    public void wiriteExcel(HttpServletResponse response, String proStr, String dataType) {
+        Long proId = Long.parseLong(proStr);
+        if (proId == null) {
             return;
         }
-        List<String> idList = Arrays.asList(pks.split(","));
-        logger.info("idList:{}", idList);
+        //根据项目id获取产品
+        List<PmisProductInfo> pmisProductInfos =
+                getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(proId, 1);
+        //产品id集合
+        List pidList = new ArrayList();
+        for (int i = 0; i < pmisProductInfos.size(); i++) {
+            pidList.add(pmisProductInfos.get(i).getId());
+        }
+        logger.info("idList:{}", pidList);
         //创建map，封装其他属性
         Map<String, Object> propMap = new HashMap<String, Object>();
         //pks为mapping xml中设定的属性名
-        propMap.put("pks", idList);
-        sysDataInfoTemp.setMap(propMap);
-        List<SysDataInfo> sysDataInfoList = getFacade().getSysDataInfoService().getSysDataInfoListById(sysDataInfoTemp);
+        propMap.put("pidList", pidList);
+        SysDataInfo sysDataInfo = new SysDataInfo();
+        sysDataInfo.setDataType(Integer.parseInt(dataType));
+        sysDataInfo.setMap(propMap);
+        //根据产品id和dataType获取基础数据 dataType:0 国标数据;1 行标数据；2 共享数据；3 易用数据；
+        List<SysDataInfo> sysDataInfoList = getFacade().getSysDataInfoService().selectSysDataInfoListByPidAndDataType(sysDataInfo);
         //参数集合
         List<Map> dataList = new ArrayList<>();
         for (int i = 0; i < sysDataInfoList.size(); i++) {
@@ -226,7 +269,7 @@ public class SysDataInfoBufferController extends BaseController {
         for (int i = 0; i < fields.length; i++) {
             attrNameList.add(fields[i].getName());
         }
-        String filename = "DataInfo"+ DateUtil.format(DateUtil.PATTERN_14)+".xls";
+        String filename = "DataInfo" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
         //创建工作簿
         Workbook workbook = new HSSFWorkbook();
         ExcelUtil.exportExcelByStream(dataList, attrNameList, response, workbook, filename);

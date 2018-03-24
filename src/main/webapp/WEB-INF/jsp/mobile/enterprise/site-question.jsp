@@ -34,8 +34,6 @@
 			<c:forEach var="vwr" items="${siteQuestionInfoList}">
 
 			<div class="site-item" onclick="detail(${vwr.id})">
-
-
 				<div class="top">
 					<div class="top-left">
 						<div>${vwr.siteName}<span>${vwr.productName}</span></div>
@@ -44,18 +42,17 @@
 					<div class="top-right">
 						<c:if test="${vwr.isOperation==1}">
 						<p class="state"><span class="solve">${vwr.isOperation==1?'已解决':'待处理'}</span></p>
-						<p>处理人:<span>${vwr.map.get("allocate_name")}</span></p>
+						<p>处理人:<span>${vwr.map.get("allocate_name")==null?"待分配":vwr.map.get("allocate_name")}</span></p>
 						</c:if>
 						<c:if test="${vwr.isOperation!=1}">
 							<p class="state"><span class="processed">${vwr.isOperation==1?'已解决':'待处理'}</span></p>
 							<p class="dealer">
 								<input class="this_id" type="hidden" value="${vwr.id}">
-								处理人:<span class="pro-down">${vwr.map.get("allocate_name")}</span>
+								处理人:<span class="pro-down">${vwr.map.get("allocate_name")==null?"待分配":vwr.map.get("allocate_name")}</span>
 								<input id="allocateUser" name="allocateUser" type="hidden" value="" onpropertychange="allots(1);" />
 							</p>
 						</c:if>
 					</div>
-
 				</div>
 				<div class="btm">
 					<p>${vwr.questionDesc}</p>

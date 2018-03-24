@@ -7,12 +7,16 @@ import cn.com.winning.ssgj.domain.EtCustomerDetail;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
 /**
+ * Coder AutoGenerator generate.
  *
- *
- * @author SSGJ
- * @date 2018-01-18 10:11:47
+ * @author Coder AutoGenerator
+ * @date 2018-03-24 14:03:02
  */
 @Service
 public class EtCustomerDetailDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtCustomerDetail> implements EtCustomerDetailDao {
 
+    @Override
+    public EtCustomerDetail selectMergeEtCustomerDetail(EtCustomerDetail t) {
+        return super.getSqlSession().selectOne("selectMergeEtCustomerDetail",t);
+    }
 }
