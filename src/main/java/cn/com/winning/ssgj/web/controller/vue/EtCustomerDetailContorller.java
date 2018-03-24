@@ -71,10 +71,7 @@ public class EtCustomerDetailContorller extends BaseController {
     @ILog
     public Map<String, Object> etCustomerDetailFindById(EtCustomerDetail etCustomerDetail) {
         Map<String, Object> result = new HashMap<String, Object>();
-        //TODO
-        etCustomerDetail.setId((long) 1);
-        EtCustomerDetail detail = super.getFacade().getEtCustomerDetailService().getEtCustomerDetail(etCustomerDetail);
-
+        EtCustomerDetail detail = super.getFacade().getEtCustomerDetailService().getMergeEtCustomerDetail(etCustomerDetail);
         result.put("result", detail);
         return result;
     }

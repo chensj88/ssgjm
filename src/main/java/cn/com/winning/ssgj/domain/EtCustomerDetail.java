@@ -9,7 +9,7 @@ import cn.com.winning.ssgj.domain.BaseDomain;
  * Coder AutoGenerator generate.
  *
  * @author Coder AutoGenerator
- * @date 2018-02-24 10:57:29
+ * @date 2018-03-24 14:03:01
  */
  
 @Alias("etCustomerDetail")
@@ -17,169 +17,120 @@ public class EtCustomerDetail extends BaseDomain implements Serializable {
 
 	private static final long serialVersionUID = -1L;
 
-	/**
-	 * @val ID
-	 */
 	private Long id;
-	/**
-	 * 客户ID
-	 */
-	private Long cId;
-	/**
-	 * 项目ID
-	 */
-	private Long pmId;
-
-	/**
-	 * 项目名称
-	 */
+	
+	private String pmCode;
+	
 	private String pmName;
-	/**
-	 * 客户号
-	 */
+	
+	private Long cId;
+	
 	private String serialNo;
 	
-	/**
-	 * @val 客户名称
-	 */
 	private String custName;
 	
-	/**
-	 * @val 医院等级
-	 */
 	private Integer hospitalLevel;
 	
-	/**
-	 * @val 专科类型
-	 */
-	private Integer specialType;
+	private String specialType;
 	
-	/**
-	 * @val 特色科室
-	 */
-	private Integer characteristic;
+	private String characteristic;
 	
-	/**
-	 * @val 所在地区
-	 */
 	private Integer areaCode;
 	
 	private Integer outpatientNum;
 	
 	private Integer bedNum;
 	
-	/**
-	 * @val 创建人
-	 */
 	private Long creator;
 	
-	/**
-	 * @val 创建时间
-	 */
-	private java.sql.Timestamp createTime;
+	private Date createTime;
 	
-	/**
-	 * @val 操作人
-	 */
 	private Long operator;
 	
-	/**
-	 * @val 操作时间
-	 */
-	private java.sql.Timestamp operatorTime;
+	private Date operatorTime;
+	
+	private String column16;
 	
 	public EtCustomerDetail() {
 
 	}
 
-	/**
-	 * @val ID
-	 */
 	public Long getId() {
 		return id;
 	}
-
-	@Override
-	public String toString() {
-		return "EtCustomerDetail [id=" + id + ", custName=" + custName + ", hospitalLevel=" + hospitalLevel
-				+ ", specialType=" + specialType + ", characteristic=" + characteristic + ", areaCode=" + areaCode
-				+ ", outpatientNum=" + outpatientNum + ", bedNum=" + bedNum + ", creator=" + creator + ", createTime="
-				+ createTime + ", operator=" + operator + ", operatorTime=" + operatorTime + "]";
-	}
-
-	/**
-	 * @val ID
-	 */
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
 	
-	/**
-	 * @val 客户名称
-	 */
+	public String getPmCode() {
+		return pmCode;
+	}
+	
+	public void setPmCode(String pmCode) {
+		this.pmCode = pmCode;
+	}
+	
+	public String getPmName() {
+		return pmName;
+	}
+	
+	public void setPmName(String pmName) {
+		this.pmName = pmName;
+	}
+	
+	public Long getCId() {
+		return cId;
+	}
+	
+	public void setCId(Long cId) {
+		this.cId = cId;
+	}
+	
+	public String getSerialNo() {
+		return serialNo;
+	}
+	
+	public void setSerialNo(String serialNo) {
+		this.serialNo = serialNo;
+	}
+	
 	public String getCustName() {
 		return custName;
 	}
 	
-	/**
-	 * @val 客户名称
-	 */
 	public void setCustName(String custName) {
 		this.custName = custName;
 	}
 	
-	/**
-	 * @val 医院等级
-	 */
 	public Integer getHospitalLevel() {
 		return hospitalLevel;
 	}
 	
-	/**
-	 * @val 医院等级
-	 */
 	public void setHospitalLevel(Integer hospitalLevel) {
 		this.hospitalLevel = hospitalLevel;
 	}
 	
-	/**
-	 * @val 专科类型
-	 */
-	public Integer getSpecialType() {
+	public String getSpecialType() {
 		return specialType;
 	}
 	
-	/**
-	 * @val 专科类型
-	 */
-	public void setSpecialType(Integer specialType) {
+	public void setSpecialType(String specialType) {
 		this.specialType = specialType;
 	}
 	
-	/**
-	 * @val 特色科室
-	 */
-	public Integer getCharacteristic() {
+	public String getCharacteristic() {
 		return characteristic;
 	}
 	
-	/**
-	 * @val 特色科室
-	 */
-	public void setCharacteristic(Integer characteristic) {
+	public void setCharacteristic(String characteristic) {
 		this.characteristic = characteristic;
 	}
 	
-	/**
-	 * @val 所在地区
-	 */
 	public Integer getAreaCode() {
 		return areaCode;
 	}
 	
-	/**
-	 * @val 所在地区
-	 */
 	public void setAreaCode(Integer areaCode) {
 		this.areaCode = areaCode;
 	}
@@ -200,91 +151,44 @@ public class EtCustomerDetail extends BaseDomain implements Serializable {
 		this.bedNum = bedNum;
 	}
 	
-	/**
-	 * @val 创建人
-	 */
 	public Long getCreator() {
 		return creator;
 	}
 	
-	/**
-	 * @val 创建人
-	 */
 	public void setCreator(Long creator) {
 		this.creator = creator;
 	}
 	
-	/**
-	 * @val 创建时间
-	 */
-	public java.sql.Timestamp getCreateTime() {
+	public Date getCreateTime() {
 		return createTime;
 	}
 	
-	/**
-	 * @val 创建时间
-	 */
-	public void setCreateTime(java.sql.Timestamp createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 	
-	/**
-	 * @val 操作人
-	 */
 	public Long getOperator() {
 		return operator;
 	}
 	
-	/**
-	 * @val 操作人
-	 */
 	public void setOperator(Long operator) {
 		this.operator = operator;
 	}
 	
-	/**
-	 * @val 操作时间
-	 */
-	public java.sql.Timestamp getOperatorTime() {
+	public Date getOperatorTime() {
 		return operatorTime;
 	}
 	
-	/**
-	 * @val 操作时间
-	 */
-	public void setOperatorTime(java.sql.Timestamp operatorTime) {
+	public void setOperatorTime(Date operatorTime) {
 		this.operatorTime = operatorTime;
 	}
-
-	public Long getcId() {
-		return cId;
+	
+	public String getColumn16() {
+		return column16;
 	}
-
-	public void setcId(Long cId) {
-		this.cId = cId;
+	
+	public void setColumn16(String column16) {
+		this.column16 = column16;
 	}
-
-	public Long getPmId() {
-		return pmId;
-	}
-
-	public void setPmId(Long pmId) {
-		this.pmId = pmId;
-	}
-
-	public String getSerialNo() {
-		return serialNo;
-	}
-
-	public void setSerialNo(String serialNo) {
-		this.serialNo = serialNo;
-	}
-
-	public String getPmName() {
-		return pmName;
-	}
-
-	public void setPmName(String pmName) {
-		this.pmName = pmName;
-	}
+	
 }

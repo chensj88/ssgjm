@@ -7,6 +7,7 @@ import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -24,6 +25,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "/admin/dict")
+@CrossOrigin
 public class SysDictInfoController extends BaseController {
 
     @RequestMapping(value = "/pageInfo.do")
