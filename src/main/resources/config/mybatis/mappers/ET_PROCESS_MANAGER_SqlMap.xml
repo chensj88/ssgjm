@@ -384,4 +384,106 @@
         </where>
     </delete>
 
+
+
+    <update id="updateEtProcessManagerByPmId" parameterType="EtProcessManager">
+        update ET_PROCESS_MANAGER
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(cId != null and cId != '') or cId == 0">C_ID = #{cId, jdbcType=BIGINT},</if>
+                <if test="(isStart != null and isStart != '') or isStart == 0">IS_START =
+                    #{isStart, jdbcType=INTEGER},
+                </if>
+                <if test="(isAccept != null and isAccept != '') or isAccept == 0">IS_ACCEPT =
+                    #{isAccept, jdbcType=INTEGER},
+                </if>
+                <if test="(isImprove != null and isImprove != '') or isImprove == 0">IS_IMPROVE =
+                    #{isImprove, jdbcType=INTEGER},
+                </if>
+                <if test="(isTestHardware != null and isTestHardware != '') or isTestHardware == 0">IS_TEST_HARDWARE =
+                    #{isTestHardware, jdbcType=INTEGER},
+                </if>
+                <if test="(isPmEntrance != null and isPmEntrance != '') or isPmEntrance == 0">IS_PM_ENTRANCE =
+                    #{isPmEntrance, jdbcType=INTEGER},
+                </if>
+                <if test="(isCreateTestEnv != null and isCreateTestEnv != '') or isCreateTestEnv == 0">
+                    IS_CREATE_TEST_ENV = #{isCreateTestEnv, jdbcType=INTEGER},
+                </if>
+                <if test="(isPmScope != null and isPmScope != '') or isPmScope == 0">IS_PM_SCOPE =
+                    #{isPmScope, jdbcType=INTEGER},
+                </if>
+                <if test="(isEtPlan != null and isEtPlan != '') or isEtPlan == 0">IS_ET_PLAN =
+                    #{isEtPlan, jdbcType=INTEGER},
+                </if>
+                <if test="(isPmStartMeeting != null and isPmStartMeeting != '') or isPmStartMeeting == 0">
+                    IS_PM_START_MEETING = #{isPmStartMeeting, jdbcType=INTEGER},
+                </if>
+                <if test="(isBasicDataUse != null and isBasicDataUse != '') or isBasicDataUse == 0">IS_BASIC_DATA_USE =
+                    #{isBasicDataUse, jdbcType=INTEGER},
+                </if>
+                <if test="(isEasyDataUse != null and isEasyDataUse != '') or isEasyDataUse == 0">IS_EASY_DATA_USE =
+                    #{isEasyDataUse, jdbcType=INTEGER},
+                </if>
+                <if test="(isBasicDataCheck != null and isBasicDataCheck != '') or isBasicDataCheck == 0">
+                    IS_BASIC_DATA_CHECK = #{isBasicDataCheck, jdbcType=INTEGER},
+                </if>
+                <if test="(isEasyDataCheck != null and isEasyDataCheck != '') or isEasyDataCheck == 0">
+                    IS_EASY_DATA_CHECK = #{isEasyDataCheck, jdbcType=INTEGER},
+                </if>
+                <if test="(isFlowAffirm != null and isFlowAffirm != '') or isFlowAffirm == 0">IS_FLOW_AFFIRM =
+                    #{isFlowAffirm, jdbcType=INTEGER},
+                </if>
+                <if test="(isFlowConfig != null and isFlowConfig != '') or isFlowConfig == 0">IS_FLOW_CONFIG =
+                    #{isFlowConfig, jdbcType=INTEGER},
+                </if>
+                <if test="(isInterfaceAffirm != null and isInterfaceAffirm != '') or isInterfaceAffirm == 0">
+                    IS_INTERFACE_AFFIRM = #{isInterfaceAffirm, jdbcType=INTEGER},
+                </if>
+                <if test="(isInterfaceDev != null and isInterfaceDev != '') or isInterfaceDev == 0">IS_INTERFACE_DEV =
+                    #{isInterfaceDev, jdbcType=INTEGER},
+                </if>
+                <if test="(isPaperAffirm != null and isPaperAffirm != '') or isPaperAffirm == 0">IS_PAPER_AFFIRM =
+                    #{isPaperAffirm, jdbcType=INTEGER},
+                </if>
+                <if test="(isPaperDev != null and isPaperDev != '') or isPaperDev == 0">IS_PAPER_DEV =
+                    #{isPaperDev, jdbcType=INTEGER},
+                </if>
+                <if test="(isHardwareList != null and isHardwareList != '') or isHardwareList == 0">IS_HARDWARE_LIST =
+                    #{isHardwareList, jdbcType=INTEGER},
+                </if>
+                <if test="(isSiteInstall != null and isSiteInstall != '') or isSiteInstall == 0">IS_SITE_INSTALL =
+                    #{isSiteInstall, jdbcType=INTEGER},
+                </if>
+                <if test="(isTraining != null and isTraining != '') or isTraining == 0">IS_TRAINING =
+                    #{isTraining, jdbcType=INTEGER},
+                </if>
+                <if test="(isSimulation != null and isSimulation != '') or isSimulation == 0">IS_SIMULATION =
+                    #{isSimulation, jdbcType=INTEGER},
+                </if>
+                <if test="(isOnline != null and isOnline != '') or isOnline == 0">IS_ONLINE =
+                    #{isOnline, jdbcType=INTEGER},
+                </if>
+                <if test="(isSwitchPlan != null and isSwitchPlan != '') or isSwitchPlan == 0">IS_SWITCH_PLAN =
+                    #{isSwitchPlan, jdbcType=INTEGER},
+                </if>
+                <if test="(isSupportStaff != null and isSupportStaff != '') or isSupportStaff == 0">IS_SUPPORT_STAFF =
+                    #{isSupportStaff, jdbcType=INTEGER},
+                </if>
+                <if test="(isEnd != null and isEnd != '') or isEnd == 0">IS_END = #{isEnd, jdbcType=INTEGER},</if>
+                <if test="(creator != null and creator != '') or creator == 0">CREATOR = #{creator, jdbcType=BIGINT},
+                </if>
+                <if test="createTime != null ">CREATE_TIME = #{createTime, jdbcType=TIMESTAMP},</if>
+                <if test="(operator != null and operator != '') or operator == 0">OPERATOR =
+                    #{operator, jdbcType=BIGINT},
+                </if>
+                <if test="operatorTime != null ">OPERATOR_TIME =
+                    #{operatorTime, jdbcType=TIMESTAMP},
+                </if>
+            </trim>
+        </set>
+        WHERE
+        PM_ID = #{pmId, jdbcType=BIGINT}
+    </update>
+
 </mapper>

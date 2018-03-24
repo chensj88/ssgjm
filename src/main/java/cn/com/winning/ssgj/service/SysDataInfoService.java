@@ -6,8 +6,6 @@ import cn.com.winning.ssgj.domain.SysDataInfo;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 
 /**
- *
- *
  * @author SSGJ
  * @date 2018-01-18 10:11:48
  */
@@ -40,5 +38,11 @@ public interface SysDataInfoService {
     List<SysDataInfo> selectSysDataInfoPaginatedListByIds(SysDataInfo t);
 
     Integer selectSysDataInfoCountByIds(SysDataInfo t);
+
+    List<SysDataInfo> selectSysDataInfoPaginatedListByPidAndDataType(SysDataInfo t);
+
+    public Integer countSysDataInfoPaginatedListByPidAndDataType(SysDataInfo sysDataInfo);
+
+    public List<SysDataInfo> selectSysDataInfoListByPidAndDataType(SysDataInfo t);
 
 }

@@ -329,4 +329,19 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
+    <!--客户楼层信息-->
+    <bean id="sysFloorsIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="SF_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--客户科室信息-->
+    <bean id="sysHospitalDeptIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="SHD_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
 </beans>

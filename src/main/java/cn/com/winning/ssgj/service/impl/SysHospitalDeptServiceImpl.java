@@ -51,4 +51,24 @@ public class SysHospitalDeptServiceImpl implements SysHospitalDeptService {
 		return this.sysHospitalDeptDao.selectEntityPaginatedList(t);
 	}
 
+	@Override
+	public Integer getSysHospitalDeptCountByFuzzy(SysHospitalDept t) {
+		return this.sysHospitalDeptDao.selectSysHospitalDeptCountByFuzzy(t);
+	}
+
+	@Override
+	public List<SysHospitalDept> getSysHospitalDeptPageListByFuzzy(SysHospitalDept t) {
+		return this.sysHospitalDeptDao.selectSysHospitalDeptPageListByFuzzy(t);
+	}
+
+	@Override
+	public boolean getSysHospitalDeptName(SysHospitalDept dept) {
+		int count = this.sysHospitalDeptDao.selectSysHospitalDeptName(dept);
+
+		if( count > 0){
+			return false;
+		}
+		return true;
+	}
+
 }

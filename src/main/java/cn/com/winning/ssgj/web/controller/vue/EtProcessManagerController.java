@@ -36,13 +36,14 @@ public class EtProcessManagerController extends BaseController {
      */
     @RequestMapping("/info")
     @ResponseBody
-    @ILog
     public Map<String, Object> processManagerInfo(Long c_id, Long pm_id) {
         Map<String, Object> result = new HashMap<String, Object>();
         EtProcessManager entity = new EtProcessManager();
         try {
-            entity.setCId((long) 4);//合同ID
-            entity.setPmId((long) 15);//项目id
+           /* entity.setCId((long) 4);//合同ID
+            entity.setPmId((long) 15);//项目id*/
+           entity.setCId(c_id);
+           entity.setPmId(pm_id);
             List<EtProcessManager> processManagerList = super.getFacade().getEtProcessManagerService()
                     .getEtProcessManagerList(entity);
             //根据vue特殊化处理 项目经理类型，实施人员类型  0：未完成 1：完成 2：异常 3：实施中

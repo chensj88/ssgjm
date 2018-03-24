@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.service;
 import java.util.List;
 
 import cn.com.winning.ssgj.domain.EtProcessManager;
+import cn.com.winning.ssgj.domain.SysDataInfo;
 
 /**
  *
@@ -25,5 +26,7 @@ public interface EtProcessManagerService {
     Integer getEtProcessManagerCount(EtProcessManager t);
 
     List<EtProcessManager> getEtProcessManagerPaginatedList(EtProcessManager t);
+
+    void updateEtProcessManagerByPmId(EtProcessManager etProcessManager);
 
 }

@@ -26,4 +26,9 @@ public interface SysFloorsService {
 
 	List<SysFloors> getSysFloorsPaginatedList(SysFloors t);
 
+    List<SysFloors> getSysFloorsPageListByFuzzy(SysFloors floors);
+
+	int getSysFloorsCountByFuzzy(SysFloors floors);
+
+    boolean getSysFloorsExistsFloorsName(SysFloors floors);
 }
