@@ -26,4 +26,9 @@ public interface SysHospitalDeptService {
 
 	List<SysHospitalDept> getSysHospitalDeptPaginatedList(SysHospitalDept t);
 
+	Integer getSysHospitalDeptCountByFuzzy(SysHospitalDept t);
+
+	List<SysHospitalDept> getSysHospitalDeptPageListByFuzzy(SysHospitalDept t);
+
+    boolean getSysHospitalDeptName(SysHospitalDept dept);
 }
