@@ -56,8 +56,10 @@
     </sql>
 
     <select id="selectEtSiteQuestionInfo" resultMap="etSiteQuestionInfoResult" parameterType="etSiteQuestionInfo">
-        select *,d.DICT_LABEL from ET_SITE_QUESTION_INFO t
+        select *,d.DICT_LABEL,i.YHMC as create_name,ii.YHMC as allocate_name from ET_SITE_QUESTION_INFO t
         LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
+        LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
+        LEFT JOIN SYS_USER_INFO ii ON t.ALLOCATE_USER=ii.ID
         where 1 = 1
         <include refid="sf-etSiteQuestionInfo"/>
     </select>
