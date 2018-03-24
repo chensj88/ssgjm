@@ -34,7 +34,9 @@ public class EtCustomerDetail extends BaseDomain implements Serializable {
 	private String specialType;
 	
 	private String characteristic;
-	
+
+	private Integer cityCode;
+
 	private Integer areaCode;
 	
 	private Integer outpatientNum;
@@ -42,14 +44,13 @@ public class EtCustomerDetail extends BaseDomain implements Serializable {
 	private Integer bedNum;
 	
 	private Long creator;
-	
-	private Date createTime;
+
+	private java.sql.Timestamp createTime;
 	
 	private Long operator;
-	
-	private Date operatorTime;
-	
-	private String column16;
+
+	private java.sql.Timestamp operatorTime;
+
 	
 	public EtCustomerDetail() {
 
@@ -159,11 +160,11 @@ public class EtCustomerDetail extends BaseDomain implements Serializable {
 		this.creator = creator;
 	}
 	
-	public Date getCreateTime() {
+	public java.sql.Timestamp getCreateTime() {
 		return createTime;
 	}
 	
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(java.sql.Timestamp createTime) {
 		this.createTime = createTime;
 	}
 	
@@ -175,20 +176,27 @@ public class EtCustomerDetail extends BaseDomain implements Serializable {
 		this.operator = operator;
 	}
 	
-	public Date getOperatorTime() {
+	public java.sql.Timestamp getOperatorTime() {
 		return operatorTime;
 	}
 	
-	public void setOperatorTime(Date operatorTime) {
+	public void setOperatorTime(java.sql.Timestamp operatorTime) {
 		this.operatorTime = operatorTime;
 	}
-	
-	public String getColumn16() {
-		return column16;
+
+	public Long getcId() {
+		return cId;
 	}
-	
-	public void setColumn16(String column16) {
-		this.column16 = column16;
+
+	public void setcId(Long cId) {
+		this.cId = cId;
 	}
-	
+
+	public Integer getCityCode() {
+		return cityCode;
+	}
+
+	public void setCityCode(Integer cityCode) {
+		this.cityCode = cityCode;
+	}
 }
