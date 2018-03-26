@@ -6,6 +6,7 @@ import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.EtFloorQuestionInfo;
 import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
 import cn.com.winning.ssgj.domain.SysDictInfo;
+import cn.com.winning.ssgj.domain.SysFloors;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -93,6 +94,12 @@ public class FloorQuestionUploadController extends BaseController {
         SysDictInfo info1 = new SysDictInfo();
         info1.setDictCode("questionType");
         List<SysDictInfo> dictInfos =super.getFacade().getSysDictInfoService().getSysDictInfoList(info1);
+        //楼层问题
+        SysFloors floors = new SysFloors();
+        floors.setSerialNo(Long.parseLong(serialNo));
+        List<SysFloors> floorsList= super.getFacade().getSysFloorsService().getSysFloorsList(floors);
+
+        model.addAttribute("floorsList",floorsList);
         model.addAttribute("dictInfos",dictInfos);
         model.addAttribute("floorQuestionInfo",floorQuestionInfo);
         model.addAttribute("userId",userId);

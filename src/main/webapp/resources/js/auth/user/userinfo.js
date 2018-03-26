@@ -136,7 +136,7 @@ $(function () {
             formatter: function (value) {
                 if (value == '1') {
                     return '是';
-                } else if (value = '1') {
+                } else if (value = '2') {
                     return '否';
                 }
             },
@@ -227,7 +227,7 @@ $(function () {
             $.ajax({
                 type: "post",
                 url: Common.getRootPath() + '/admin/user/deleteById.do',
-                data: {"userId": userId},
+                data: {"id": userId},
                 dataType: 'json',
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {

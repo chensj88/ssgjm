@@ -36,7 +36,7 @@ public interface SysUserInfoService {
 
     void generateUserInfo(SysUserInfo queryUser, String path);
 
-    void createHospitalUserInfo(List<List<Object>> userList);
+    void createHospitalUserInfo(List<List<Object>> userList,SysUserInfo userInfo);
 
     SysUserInfo getSysUserInfoById(long userid);
 }

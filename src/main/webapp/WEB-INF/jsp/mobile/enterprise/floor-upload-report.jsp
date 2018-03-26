@@ -28,8 +28,27 @@
 			<div class="datum-report padding-btm-20 padding-top-15">
 				<div class="datum-report-item">
 					<span>楼层名称</span>
-						<input id="floorName" name="floorName" type="text" value="${floorQuestionInfo.floorName}" autocomplete="off" />
+					<div class="select">
+						<c:if test="${floorQuestionInfo.questionType != null}" >
+							<input id="floorName" name="floorName" value="${floorQuestionInfo.floorName}" type="hidden"/>
+							<a href="#"><span>${floorQuestionInfo.floorName}</span><i class="arrow"></i></a>
+						</c:if>
+						<c:if test="${floorQuestionInfo.floorName == null}" >
+							<input id="floorName" name="floorName" type="hidden"/>
+							<a href="#"><span>--请选择--</span><i class="arrow"></i></a>
+						</c:if>
+						<ul>
+							<c:forEach var="vwr" items="${floorsList}">
+								<li data-val="${vwr.floorName}">${vwr.floorName}</li>
+							</c:forEach>
+						</ul>
+					</div>
 				</div>
+
+				<%--<div class="datum-report-item">--%>
+					<%--<span>楼层名称</span>--%>
+						<%--<input id="floorName" name="floorName" type="text" value="${floorQuestionInfo.floorName}" autocomplete="off" />--%>
+				<%--</div>--%>
 			</div>
 
 			<div class="datum-report padding-btm-20">
