@@ -217,7 +217,20 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
-
+    <!--上线支持人员ID-->
+    <bean id="etOnlineInfoIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="ETONLINEINFO_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--项目组信息ID-->
+    <bean id="etUserInfoIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="ETUSERINFO_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
     <!--报表类信息ID-->
     <bean id="sysParamsIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>

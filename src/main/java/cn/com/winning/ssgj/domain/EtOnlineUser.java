@@ -18,7 +18,10 @@ public class EtOnlineUser extends BaseDomain implements Serializable {
 	private static final long serialVersionUID = -1L;
 
 	private Long id;
-	
+	/**
+	 * 状态
+	 */
+	private Integer status;
 	/**
 	 * @val 项目ID
 	 */
@@ -94,6 +97,30 @@ public class EtOnlineUser extends BaseDomain implements Serializable {
 	 */
 	private java.sql.Timestamp operatorTime;
 	
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Long getcId() {
+		return cId;
+	}
+
+	public void setcId(Long cId) {
+		this.cId = cId;
+	}
+
+	public String getcName() {
+		return cName;
+	}
+
+	public void setcName(String cName) {
+		this.cName = cName;
+	}
+
 	public EtOnlineUser() {
 
 	}

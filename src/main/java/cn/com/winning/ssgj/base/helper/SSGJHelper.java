@@ -151,7 +151,21 @@ public class SSGJHelper {
     @Autowired
     @Qualifier(value = "floorQuestionIdService")
     private StepSequenceFactory  floorQuestionIdService;
+    @Autowired
+    @Qualifier(value = "etOnlineInfoIdService")
+    private StepSequenceFactory  etOnlineInfoIdService;
+    @Autowired
+    @Qualifier(value = "etUserInfoIdService")
+    private StepSequenceFactory  etUserInfoIdService;
+    
+    public long createEtOnlineInfoIdService(){
+        return (long) etOnlineInfoIdService.create();
+    }
 
+    public long createEtUserInfoIdService(){
+        return (long) etUserInfoIdService.create();
+    }
+    
     public long createDataCheckScriptIdService(){
         return (long) dataCheckScriptIdService.create();
     }

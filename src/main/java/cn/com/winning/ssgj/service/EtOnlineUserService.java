@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.service;
 import java.util.List;
 
 import cn.com.winning.ssgj.domain.EtOnlineUser;
+import cn.com.winning.ssgj.domain.EtUserInfo;
 
 /**
  *
@@ -25,5 +26,9 @@ public interface EtOnlineUserService {
     Integer getEtOnlineUserCount(EtOnlineUser t);
 
     List<EtOnlineUser> getEtOnlineUserPaginatedList(EtOnlineUser t);
+    
+    void generateEtOnlineUser(EtOnlineUser etUserInfo, String path);
+    
+    void createEtOnlineUserList(List<List<Object>> userList);
 
 }
