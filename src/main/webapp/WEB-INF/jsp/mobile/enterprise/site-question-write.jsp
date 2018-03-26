@@ -176,7 +176,8 @@
 			$(function(){
 				IMS.dropDown();
 				enterprise.init();
-                $('input:radio[name="radio"]').eq(${siteQuestionInfo.isOperation}).attr("checked",true);
+                $("input:radio[name='radio1'][value='${siteQuestionInfo.isOperation}']").attr("checked",'checked');
+
 
             });
 

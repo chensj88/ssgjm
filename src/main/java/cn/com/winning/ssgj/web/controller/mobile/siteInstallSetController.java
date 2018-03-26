@@ -120,5 +120,41 @@ public class siteInstallSetController  extends BaseController {
     }
 
 
+    /**
+     * @author: Chen,Kuai
+     * @Description: 新增站点问题
+     */
+    @RequestMapping(value = "/setPerson.do")
+    @ILog
+    public String setPerson(Model model, String userId,String serialNo,Long id,String siteName) {
+        EtSiteQuestionInfo info = new EtSiteQuestionInfo();
+        info.setSerialNo(serialNo);
+        List<EtSiteQuestionInfo> infoList = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoUserTotal(info);
+        //调出对应的信息
+        EtSiteQuestionInfo info_old = new EtSiteQuestionInfo();
+        info_old.setId(id);
+        info_old = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info_old);
+
+
+        //人员信息
+        List<String> nameList= new ArrayList<String>();
+        List<Integer> numList= new ArrayList<Integer>();
+        if(infoList != null && infoList.size() > 0){
+            for (EtSiteQuestionInfo en:infoList) {
+                nameList.add((String) en.getMap().get("c_name"));
+                numList.add((Integer) en.getMap().get("num"));
+            }
+        }
+        String jsonName = JSON.toJSONString(nameList);
+        model.addAttribute("numList",numList);
+        model.addAttribute("jsonName",jsonName);
+        model.addAttribute("infoList",infoList);
+        model.addAttribute("siteName",siteName);
+        model.addAttribute("info_old",info_old);
+
+        return "/mobile/enterprise/check-distribution03";
+    }
+
+
 
 }
