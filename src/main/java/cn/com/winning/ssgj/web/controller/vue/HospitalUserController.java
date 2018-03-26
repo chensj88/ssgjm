@@ -40,14 +40,11 @@ public class HospitalUserController extends BaseController {
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String, Object> queryHospitalUserInfo(Row row) {
+    public Map<String, Object> queryHospitalUserInfo(SysUserInfo queryUser,Row row) {
 
        /* SysUserInfo user = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         long c_id = (long) user.getMap().get("C_ID");*/
-        long c_id = 9879L;
-        SysUserInfo queryUser = new SysUserInfo();
         queryUser.setRow(row);
-        queryUser.setSsgs(c_id);
         queryUser.setUserType(Constants.User.USER_TYPE_HOSPITAL);
         queryUser.setStatus(Constants.PMIS_STATUS_USE);
         List<SysUserInfo> queryUserList = super.getFacade().getSysUserInfoService().getSysUserInfoPaginatedList(queryUser);
@@ -67,7 +64,6 @@ public class HospitalUserController extends BaseController {
         userInfo.setUserType(Constants.User.USER_TYPE_HOSPITAL);
         userInfo.setPassword(MD5.stringMD5(userInfo.getUserid()));
         userInfo.setStatus(Constants.PMIS_STATUS_USE);
-        userInfo.setSsgs(9879L);
         if (userInfo.getId() == 0L) {
             userInfo.setId(ssgjHelper.createUserId());
             super.getFacade().getSysUserInfoService().createSysUserInfo(userInfo);
@@ -81,10 +77,7 @@ public class HospitalUserController extends BaseController {
 
     @RequestMapping(value = "/exportExcel.do")
     @ILog
-    public HttpServletResponse wiriteExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        long c_id = 9879L;
-        SysUserInfo queryUser = new SysUserInfo();
-        queryUser.setSsgs(c_id);
+    public HttpServletResponse wiriteExcel(SysUserInfo queryUser, HttpServletResponse response) throws IOException {
         queryUser.setStatus(Constants.PMIS_STATUS_USE);
         queryUser.setUserType(Constants.User.USER_TYPE_HOSPITAL);
         String fileName = "userinfo.xls";
@@ -123,7 +116,7 @@ public class HospitalUserController extends BaseController {
     @RequestMapping(value = "/upload.do")
     @ResponseBody
     @ILog
-    public Map<String, Object> uploadHospitalUserTemplate(HttpServletRequest request,
+    public Map<String, Object> uploadHospitalUserTemplate(HttpServletRequest request,SysUserInfo userInfo,
                                                           MultipartFile file) throws IOException {
         Map<String, Object> result = new HashMap<String, Object>();
         //如果文件不为空，写入上传路径
@@ -146,7 +139,7 @@ public class HospitalUserController extends BaseController {
 
             try {
                 List<List<Object>> userList = ExcelUtil.importExcel(newFile.getPath());
-                super.getFacade().getSysUserInfoService().createHospitalUserInfo(userList);
+                super.getFacade().getSysUserInfoService().createHospitalUserInfo(userList,userInfo);
                 newFile.delete();
                 result.put("status", "success");
             } catch (Exception e) {
