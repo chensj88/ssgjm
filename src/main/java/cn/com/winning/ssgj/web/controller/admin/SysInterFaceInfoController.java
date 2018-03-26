@@ -37,7 +37,6 @@ public class SysInterFaceInfoController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/interfaceInfo.do")
-    @ILog
     public String userinfo(HttpServletRequest request, Model model) {
         return "auth/module/interFaceInfo";
     }
@@ -50,7 +49,6 @@ public class SysInterFaceInfoController extends BaseController {
      */
     @RequestMapping("/list.do")
     @ResponseBody
-    @ILog(operationName = "第三方接口类型信息", operationType = "list")
     public Map<String, Object> list(Row row, SysThirdInterfaceInfo sysThirdInterfaceInfo) {
         sysThirdInterfaceInfo.setRow(row);
         List<SysThirdInterfaceInfo> sysThirdInterfaceInfos = getFacade().getSysThirdInterfaceInfoService().getSysThirdInterfaceInfoPaginatedListForSelectiveKey(sysThirdInterfaceInfo);
@@ -70,7 +68,6 @@ public class SysInterFaceInfoController extends BaseController {
      */
     @RequestMapping("/getById.do")
     @ResponseBody
-    @ILog(operationName = "通过产品ID查询第三方接口类型信息", operationType = "getById")
     public Map<String, Object> getById(SysThirdInterfaceInfo t) {
         System.err.println("通过产品ID查询第三方接口类型信息");
         t = getFacade().getSysThirdInterfaceInfoService().getSysThirdInterfaceInfo(t);
@@ -139,7 +136,6 @@ public class SysInterFaceInfoController extends BaseController {
 
     @RequestMapping(value = "/listNoPage.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryInterfaceListNoPage(SysThirdInterfaceInfo interfaceInfo) {
         List<SysThirdInterfaceInfo> infoList = super.getFacade().getSysThirdInterfaceInfoService().getSysThirdInterfaceInfoListForNames(interfaceInfo);
         Map<String, Object> result = new HashMap<String, Object>();

@@ -61,6 +61,31 @@ public class ProjectQueryController extends BaseController {
         result.put("status", Constants.SUCCESS);
         result.put("data", loginUser);
         return result;
+    }
+
+    @RequestMapping(value = "/common/queryP.do")
+    @ResponseBody
+    public Map<String,Object> queryProductByProjectId(){
+        /*SysUserInfo loginUser = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
+        long cId = (long) loginUser.getMap().get("C_ID");
+        long pmId = (long) loginUser.getMap().get("PM_ID");*/
+        long pmId = 1L;
+        List<PmisProductInfo> productInfos = super.getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId,Constants.PMIS.CPLB_1);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", productInfos);
+        return result;
+
+    }
+
+    @RequestMapping(value = "/common/getCodes.do")
+    @ResponseBody
+    public Map<String, Object> queryDictInfo(SysDictInfo dict) {
+        List<SysDictInfo> dictInfos = super.getFacade().getSysDictInfoService().getSysDictInfoList(dict);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", dictInfos);
+        return result;
 
     }
 }

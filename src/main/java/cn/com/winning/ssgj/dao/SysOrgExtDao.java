@@ -14,4 +14,5 @@ public interface SysOrgExtDao extends EntityDao<SysOrgExt> {
 
     public  void callOrgExtInfoProcedure();
 
+    SysOrgExt selectUserOrgExtByUserOrgId(Long ssgs);
 }

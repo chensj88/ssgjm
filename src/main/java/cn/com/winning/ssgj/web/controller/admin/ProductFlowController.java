@@ -38,7 +38,6 @@ public class ProductFlowController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/mapping/pflowinfo.do")
-    @ILog
     public String getProductFlowInfoPage(HttpServletRequest request, Model model) {
         return "auth/mapping/productFlowMapping";
     }
@@ -52,7 +51,6 @@ public class ProductFlowController extends BaseController {
      */
     @RequestMapping(value = "/pFlow/queryById.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryProductFlowById(SysProductFlowInfo productFlowInfo) {
         List<SysProductFlowInfo> flowInfoList = super.getFacade().getSysProductFlowInfoService().getSysProductFlowInfoList(productFlowInfo);
         Map<String, Object> param = new HashMap<String, Object>();
@@ -81,7 +79,6 @@ public class ProductFlowController extends BaseController {
      */
     @RequestMapping(value = "/pFlow/queryProductFlowInfoById.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryProductFlowInfoById(Integer pdId, String flowIds) {
         List<SysProductFlowInfo> flowInfos = super.getFacade().getSysProductFlowInfoService().getSysProductFlowInfoByPdIdAndFlowId(pdId, flowIds);
         Map<String, Object> result = new HashMap<String, Object>();

@@ -39,14 +39,12 @@ public class FlowInfoController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping("/flowInfo.do")
-    @ILog
     public String gotoPage(HttpServletRequest request, Model model) {
         return "auth/module/flowinfo";
     }
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> getFlowList(Row row, SysFlowInfo flowInfo) {
         flowInfo.setRow(row);
         List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().getSysFlowInfoPaginatedListForSelective(flowInfo);
@@ -60,7 +58,6 @@ public class FlowInfoController extends BaseController {
 
     @RequestMapping(value = "/queryFlowCode.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryFlowCode(String flowCode, int matchCount) {
         Row row = new Row(0, matchCount);
         SysFlowInfo flowInfo = new SysFlowInfo();
@@ -116,7 +113,6 @@ public class FlowInfoController extends BaseController {
 
     @RequestMapping(value = "/getById.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> getFlowById(SysFlowInfo flow) {
         flow = super.getFacade().getSysFlowInfoService().getSysFlowInfo(flow);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -157,7 +153,6 @@ public class FlowInfoController extends BaseController {
 
     @RequestMapping(value = "/listNoPage.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryFlowListNoPage(SysFlowInfo flowInfo) {
         List<SysFlowInfo> sysDataInfos = getFacade().getSysFlowInfoService().getSysFlowInfoListForSelectiveKey(flowInfo);
         int total = getFacade().getSysFlowInfoService().getSysFlowInfoCountForSelectiveKey(flowInfo);

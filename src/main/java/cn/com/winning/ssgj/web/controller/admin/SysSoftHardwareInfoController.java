@@ -37,7 +37,6 @@ public class SysSoftHardwareInfoController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/shInfo.do")
-    @ILog
     public String userinfo(HttpServletRequest request, Model model) {
         return "auth/module/sysSoftHardwareInfo";
     }
@@ -50,7 +49,6 @@ public class SysSoftHardwareInfoController extends BaseController {
      */
     @RequestMapping("/list.do")
     @ResponseBody
-    @ILog(operationName = "软硬件设备类型信息表", operationType = "list")
     public Map<String, Object> list(Row row, SysSoftHardwareInfo info) {
         info.setRow(row);
         System.out.println(info);
@@ -71,7 +69,6 @@ public class SysSoftHardwareInfoController extends BaseController {
      */
     @RequestMapping("/getById.do")
     @ResponseBody
-    @ILog(operationName = "通过产品ID查询软硬件设备类型信息表", operationType = "getById")
     public Map<String, Object> getById(SysSoftHardwareInfo t) {
         System.err.println("通过产品ID查询软硬件设备类型信息表");
         t = getFacade().getSysSoftHardwareInfoService().getSysSoftHardwareInfo(t);
@@ -146,7 +143,6 @@ public class SysSoftHardwareInfoController extends BaseController {
      */
     @RequestMapping("/listNoPage.do")
     @ResponseBody
-    @ILog(operationName = "软硬件设备类型信息表", operationType = "list")
     public Map<String, Object> listNoPage(SysSoftHardwareInfo info) {
         List<SysSoftHardwareInfo> infos = getFacade().getSysSoftHardwareInfoService().getSysSoftHardwareInfoListForNames(info);
 

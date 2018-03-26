@@ -39,7 +39,6 @@ public class SysUserController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/userinfo.do")
-    @ILog
     public String userinfoPage(HttpServletRequest request, Model model) {
         return "auth/user/userinfo";
     }
@@ -90,6 +89,7 @@ public class SysUserController extends BaseController {
     @RequestMapping(value = "/deleteById.do")
     @ResponseBody
     @Transactional
+    @ILog
     public Map<String, Object> deleteUserById(SysUserInfo user) {
         user.setStatus(Integer.valueOf(Constants.User.USER_STATUS_LOCKED));
         getFacade().getSysUserInfoService().modifySysUserInfo(user);
@@ -106,6 +106,7 @@ public class SysUserController extends BaseController {
     @RequestMapping(value = "/add.do")
     @ResponseBody
     @Transactional
+    @ILog
     public Map<String, Object> addUser(SysUserInfo user) {
         /*System.out.println(email);*/
         user.setId(ssgjHelper.createUserId());
@@ -139,7 +140,6 @@ public class SysUserController extends BaseController {
 
     @RequestMapping(value = "/count.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> countUserInfo() {
 
         List<FlotDataInfo> flotDataInfos = super.getFacade().getSysUserInfoService().countUserInfoByType();

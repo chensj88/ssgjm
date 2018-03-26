@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 站点安装
+ * 站点安装登记
  *
  * @author ChenKuai
  * @create 2018-03-16 上午 9:36
@@ -36,12 +36,14 @@ public class SiteInstallController extends BaseController {
     @ILog
     public String siteInstall(Model model, String parameter) {
         EtSiteInstall entity = new EtSiteInstall();
-        String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9"; //工号
-        String hospcode="11980";  //客户号
+        //String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9"; //工号
+        //String hospcode="11980";  //客户号
+        parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
         try{
-            String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter2), "UTF-8") + "]";
+            String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
             ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
             String work_num=(String) userList.get(0).get("WORKNUM");
+            String hospcode=(String) userList.get(0).get("HOSPCODE ");
             SysUserInfo info = new SysUserInfo();
             info.setUserid(work_num);
             info.setStatus(1);
@@ -57,13 +59,11 @@ public class SiteInstallController extends BaseController {
             }
             model.addAttribute("userId",work_num);
             model.addAttribute("serialNo",hospcode);
-
-
         }catch (Exception e){
 
         }
 
-        return "";
+        return "/mobile/enterprise/site-install";
     }
 
 

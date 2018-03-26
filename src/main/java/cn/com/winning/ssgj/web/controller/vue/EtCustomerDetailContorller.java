@@ -1,5 +1,7 @@
 package cn.com.winning.ssgj.web.controller.vue;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,8 +57,18 @@ public class EtCustomerDetailContorller extends BaseController {
     @ILog
     public Map<String, Object> updateEtCustomerDetail(EtCustomerDetail etCustomerDetail) {
         Map<String, Object> result = new HashMap<String, Object>();
-        System.out.println(etCustomerDetail);
-        int isSucceed = super.getFacade().getEtCustomerDetailService().modifyEtCustomerDetail(etCustomerDetail);
+        EtCustomerDetail old = super.getFacade().getEtCustomerDetailService().getEtCustomerDetail(etCustomerDetail);
+        int isSucceed = -1;
+        System.out.println(old);
+        if(old != null){
+            etCustomerDetail.setOperatorTime(new Timestamp(new Date().getTime()));
+            isSucceed = super.getFacade().getEtCustomerDetailService().modifyEtCustomerDetail(etCustomerDetail);
+        }else{
+            etCustomerDetail.setCreator(etCustomerDetail.getOperator());
+            etCustomerDetail.setCreateTime(new Timestamp(new Date().getTime()));
+            etCustomerDetail.setOperatorTime(new Timestamp(new Date().getTime()));
+            isSucceed = super.getFacade().getEtCustomerDetailService().createEtCustomerDetail(etCustomerDetail);
+        }
         result.put("isSucceed", isSucceed);
         return result;
     }
@@ -68,13 +80,9 @@ public class EtCustomerDetailContorller extends BaseController {
      */
     @RequestMapping("/etCustomerDetailFindById")
     @ResponseBody
-    @ILog
     public Map<String, Object> etCustomerDetailFindById(EtCustomerDetail etCustomerDetail) {
         Map<String, Object> result = new HashMap<String, Object>();
-        //TODO
-        etCustomerDetail.setId((long) 1);
-        EtCustomerDetail detail = super.getFacade().getEtCustomerDetailService().getEtCustomerDetail(etCustomerDetail);
-
+        EtCustomerDetail detail = super.getFacade().getEtCustomerDetailService().getMergeEtCustomerDetail(etCustomerDetail);
         result.put("result", detail);
         return result;
     }

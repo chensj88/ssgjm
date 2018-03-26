@@ -214,6 +214,17 @@ span.align-self{
 	padding: 0px 12px;
 	background: #fff;
 }
+.register-button{
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 10px;
+	padding: 0px 12px;
+}
+.register-button i{
+	margin-right: 10px;
+	color: #979797;
+	font-size: 20px;
+}
 .register-one{
 	display: flex;
 	padding: 15px 0px;
@@ -228,7 +239,7 @@ span.align-self{
 	transition: all ease .5s;
 }
 .register-one i.up{
-	transform: rotate(-45deg);
+	transform: rotate(180deg);
 }
 .register-one>div:first-child span{
 	padding-left: 8px;
@@ -241,26 +252,43 @@ span.align-self{
 	text-align: right;
 	font-size: 12px;
 }
+.register-one>div:last-child span{
+	font-weight: bold;
+}
+.register-one>div:last-child span.install{
+	color: #20CB2A;;
+}
+.register-one>div:last-child span.no-install{
+	color: #FF5555;
+}
+.register-cnt{
+	display: none;
+}
 .register-item{
 	display: flex;
 	line-height: 40px;
 }
-.register-item div{
+.register-item>div{
 	min-width: 60px;
     color: #666;
     font-size: 12px;
     text-align: right;
 }
-.register-item input{
+.register-item>input{
 	flex: 1;
 	margin-bottom: 0px;
 	margin-left: 10px;
 	font-size: 12px;
-	color: #E3E3E3;
 	line-height: 1;
 	border-radius: 0px;
 	border: none;
 	border-bottom: 1px solid #E2E2E2;
+}
+.register-radio{
+	display: flex;
+}
+.register-radio input{
+	top: 9px!important;
 }
 /*放大图片*/
 .large-img{
@@ -523,7 +551,9 @@ div.select-user-cnt{
 	overflow: auto;
 }
 .fix-hole{
-	height:90px;
+	height: 90px;
+	margin-top: 10px;
+    background: #fff;
 }
 .check-distribuion-list .mui-input-row label{
 	padding:9px 15px;

@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 public class IndexController extends BaseController {
 
     @RequestMapping(value = "/index.do")
-    @ILog
     public String indexPageInfo(HttpServletRequest request, Model model) {
         return "index/index";
     }

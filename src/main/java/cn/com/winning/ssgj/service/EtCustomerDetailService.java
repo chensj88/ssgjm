@@ -26,4 +26,6 @@ public interface EtCustomerDetailService {
 
     List<EtCustomerDetail> getEtCustomerDetailPaginatedList(EtCustomerDetail t);
 
+    EtCustomerDetail getMergeEtCustomerDetail(EtCustomerDetail t);
+
 }

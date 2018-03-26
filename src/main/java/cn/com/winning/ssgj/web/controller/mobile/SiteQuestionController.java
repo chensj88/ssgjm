@@ -27,7 +27,7 @@ import java.util.*;
  **/
 @Controller
 @CrossOrigin
-@RequestMapping("mobile/siteQuestion")
+@RequestMapping("mobile/siteQuestionInfo")
 public class SiteQuestionController extends BaseController {
 
     @Autowired
@@ -42,13 +42,23 @@ public class SiteQuestionController extends BaseController {
     @RequestMapping(value = "/list.do")
     @ILog
     public String SiteQuestionList(Model model, String parameter) {
-        String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9"; //工号
-        String hospcode="11980";  //客户号
+        //String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9"; //工号
+        //String hospcode="11980";  //客户号
         EtSiteQuestionInfo entity = new EtSiteQuestionInfo();
         try{
-            String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter2), "UTF-8") + "]";
-            ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
-            String work_num=(String) userList.get(0).get("WORKNUM");
+            String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
+            List<JSONObject> userList = JSON.parseArray(userJsonStr,JSONObject.class);
+            String work_num =null;
+            String hospcode =null;
+            if (userList != null && !userList.equals("")) {
+                for (int i = 0; i < userList.size(); i++) { //  推荐用这个
+                    JSONObject io = userList.get(i);
+                    work_num =(String) io.get("WORKNUM");
+                    hospcode=(String) io.get("HOSPCODE");
+                }
+            }
+
+
             entity.setSerialNo(hospcode);
             List<EtSiteQuestionInfo> siteQuestionInfoList=super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoList(entity);
             //获取项目成员信息
@@ -82,9 +92,11 @@ public class SiteQuestionController extends BaseController {
         if(id != null && id != 0){
             siteQuestionInfo.setId(id);
             siteQuestionInfo=super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(siteQuestionInfo);
-            String[] imgs=siteQuestionInfo.getImgPath().split(";");
-            List<String> lists= Arrays.asList(imgs);
-            siteQuestionInfo.setImgs(lists);
+            if(StringUtils.isNotBlank(siteQuestionInfo.getImgPath())){
+                String[] imgs=siteQuestionInfo.getImgPath().split(";");
+                List<String> lists= Arrays.asList(imgs);
+                siteQuestionInfo.setImgs(lists);
+            }
             //siteQuestionInfo.setImgPath(imgs);
             model.addAttribute("siteQuestionInfo",siteQuestionInfo);
 
@@ -160,7 +172,11 @@ public class SiteQuestionController extends BaseController {
                 if(StringUtils.isNotBlank(old_id)){
                     info.setId(Long.parseLong(old_id));
                     info = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info);
-                    info.setImgPath(info.getImgPath()+";"+ remotePath);//拼接图片路径
+                    if(StringUtils.isNotBlank(info.getImgPath())){
+                        info.setImgPath(info.getImgPath()+";"+ remotePath);//拼接图片路径
+                    }else{
+                        info.setImgPath(remotePath);
+                    }
                     info.setOperator(super.user_id(userId,"1"));
                     info.setOperatorTime(new Timestamp(new Date().getTime()));
                     super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
@@ -266,8 +282,8 @@ public class SiteQuestionController extends BaseController {
                         str +=imgs[i]+";";
                     }
                 }
-                info.setImgPath(str);
-                super.getFacade().getEtSiteQuestionInfoService().updateEtSiteQuestionInfoImg(info);
+                info.setImgPath(str.substring(0,str.length()-1));
+                super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
             }
             map.put("status",true);
         }catch (Exception e){

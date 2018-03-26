@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 
+import cn.com.winning.ssgj.base.util.StringUtil;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.EtCustomerDetailDao;
@@ -54,6 +55,19 @@ public class EtCustomerDetailServiceImpl implements EtCustomerDetailService {
 
     public List<EtCustomerDetail> getEtCustomerDetailPaginatedList(EtCustomerDetail t) {
         return this.etCustomerDetailDao.selectEntityPaginatedList(t);
+    }
+
+    @Override
+    public EtCustomerDetail getMergeEtCustomerDetail(EtCustomerDetail t) {
+        t = this.etCustomerDetailDao.selectMergeEtCustomerDetail(t);
+        String name = t.getPmName();
+        String code = t.getPmCode();
+        if( StringUtil.isEmptyOrNull(code)){
+            String[] nameCode = name.split("_");
+            t.setPmName(nameCode[1]);
+            t.setPmCode(nameCode[0]);
+        }
+        return t;
     }
 
 }

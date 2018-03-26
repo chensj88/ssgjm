@@ -40,7 +40,6 @@ public class HospitalUserController extends BaseController {
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> queryHospitalUserInfo(Row row) {
 
        /* SysUserInfo user = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();

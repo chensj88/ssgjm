@@ -39,7 +39,7 @@
 						</div>
 					</div>
 					<div class="type">
-						<span>${vwr.questionType}</span>
+						<span>${vwr.map.get("dict_label")}</span>
 					</div>
 					<div class="floor-line"></div>
 					<div class="text">

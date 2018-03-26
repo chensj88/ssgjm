@@ -36,7 +36,6 @@ public class SysReportInfoController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/reportInfo.do")
-    @ILog
     public String userinfo(HttpServletRequest request, Model model) {
         return "auth/module/sysReportInfo";
     }
@@ -49,7 +48,6 @@ public class SysReportInfoController extends BaseController {
      */
     @RequestMapping("/list.do")
     @ResponseBody
-    @ILog(operationName = "报表类信息表", operationType = "list")
     public Map<String, Object> list(SysReportInfo info, Row row) {
         info.setRow(row);
         info.setStatus(1);
@@ -70,7 +68,6 @@ public class SysReportInfoController extends BaseController {
      */
     @RequestMapping("/getById.do")
     @ResponseBody
-    @ILog(operationName = "通过产品ID查询报表类信息表", operationType = "getById")
     public Map<String, Object> getById(SysReportInfo t) {
         System.err.println("通过产品ID查询报表类信息表");
         t = getFacade().getSysReportInfoService().getSysReportInfo(t);
@@ -145,7 +142,6 @@ public class SysReportInfoController extends BaseController {
      */
     @RequestMapping("/listNoPage.do")
     @ResponseBody
-    @ILog(operationName = "报表类信息表", operationType = "list")
     public Map<String, Object> listNoPage(SysReportInfo info) {
         info.setStatus(1);
         List<SysReportInfo> infos = getFacade().getSysReportInfoService().getSysReportInfolistNoPage(info);

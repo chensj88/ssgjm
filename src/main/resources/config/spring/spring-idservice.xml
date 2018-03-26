@@ -315,7 +315,7 @@
     <!--文件上传文本ID-->
     <bean id="onlineFileIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
-        <property name="type" value="DSC_ID"/>
+        <property name="type" value="OF_ID"/>
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
@@ -323,7 +323,7 @@
     <!--站点问题ID-->
     <bean id="siteQuestionIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
-        <property name="type" value="DSC_ID"/>
+        <property name="type" value="SQ_ID"/>
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
@@ -331,7 +331,28 @@
     <!--楼层问题ID-->
     <bean id="floorQuestionIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
-        <property name="type" value="DSC_ID"/>
+        <property name="type" value="FQ_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--最后查看项目ID-->
+    <bean id="etLookProjectIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="ETLP_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--客户楼层信息-->
+    <bean id="sysFloorsIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="SF_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--客户科室信息-->
+    <bean id="sysHospitalDeptIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="SHD_ID"/>
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
