@@ -162,10 +162,33 @@ public class SSGJHelper {
         return (long) etOnlineInfoIdService.create();
     }
 
+
     public long createEtUserInfoIdService(){
         return (long) etUserInfoIdService.create();
     }
-    
+
+    @Autowired
+    @Qualifier(value = "etLookProjectIdService")
+    private StepSequenceFactory etLookProjectIdService;
+
+    @Autowired
+    @Qualifier(value = "sysFloorsIdService")
+    private StepSequenceFactory sysFloorsIdService;
+    @Autowired
+    @Qualifier(value = "sysHospitalDeptIdService")
+    private StepSequenceFactory sysHospitalDeptIdService;
+
+
+    public long createSysFloorsIdService(){
+        return (long)sysFloorsIdService.create();
+    }
+    public long createSysHospitalDeptIdService(){
+        return (long)sysHospitalDeptIdService.create();
+    }
+    public long createEtLookProjectIdService(){
+        return (long) etLookProjectIdService.create();
+    }
+
     public long createDataCheckScriptIdService(){
         return (long) dataCheckScriptIdService.create();
     }
