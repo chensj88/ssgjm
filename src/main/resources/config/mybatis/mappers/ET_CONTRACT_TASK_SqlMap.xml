@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.EtContractTaskDao">
+
+	<resultMap id="etContractTaskResultForList" type="etContractTask">
+		<result column="ID" property="id" jdbcType="BIGINT" />
+		<result column="C_ID" property="cId" jdbcType="BIGINT" />
+		<result column="PM_ID" property="pmId" jdbcType="BIGINT" />
+		<result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR" />
+		<result column="ZXTMC" property="zxtmc" jdbcType="VARCHAR" />
+		<result column="CPZXT" property="cpzxt" jdbcType="BIGINT" />
+		<result column="CPMC" property="cpmc" jdbcType="VARCHAR" />
+		<result column="CPXX" property="cpxx" jdbcType="BIGINT" />
+		<result column="MX" property="mx" jdbcType="VARCHAR" />
+		<result column="BZ" property="bz" jdbcType="LONGVARCHAR" />
+		<result column="CREATOR" property="creator" jdbcType="BIGINT" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="OPERATOR" property="operator" jdbcType="BIGINT" />
+		<result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<resultMap id="etContractTaskResult" type="etContractTask" extends="etContractTaskResultForList">
+	</resultMap>
+
+	<sql id="sf-etContractTask">
+	   <if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
+	   <if test="(cId != null and cId != '') or cId == 0"> and t.C_ID = #{cId} </if>
+	   <if test="(pmId != null ) or pmId == 0"> and t.PM_ID = #{pmId} </if>
+	   <if test="serialNo != null and serialNo != ''"> and t.SERIAL_NO = #{serialNo} </if>
+	   <if test="zxtmc != null and zxtmc != ''"> and t.ZXTMC = #{zxtmc} </if>
+	   <if test="(cpzxt != null and cpzxt != '') or cpzxt == 0"> and t.CPZXT = #{cpzxt} </if>
+	   <if test="cpmc != null and cpmc != ''"> and t.CPMC = #{cpmc} </if>
+	   <if test="(cpxx != null and cpxx != '') or cpxx == 0"> and t.CPXX = #{cpxx} </if>
+	   <if test="mx != null and mx != ''"> and t.MX = #{mx} </if>
+	   <if test="bz != null and bz != ''"> and t.BZ = #{bz} </if>
+	   <if test="(creator != null and creator != '') or creator == 0"> and t.CREATOR = #{creator} </if>
+	   <if test="createTime != null "> and t.CREATE_TIME = #{createTime} </if>
+	   <if test="(operator != null and operator != '') or operator == 0"> and t.OPERATOR = #{operator} </if>
+	   <if test="operatorTime != null "> and t.OPERATOR_TIME = #{operatorTime} </if>
+	</sql>
+
+	<select id="selectEtContractTask" resultMap="etContractTaskResult" parameterType="etContractTask">
+		select * from ET_CONTRACT_TASK t where 1 = 1
+		<include refid="sf-etContractTask" />
+	</select>
+
+	<select id="selectEtContractTaskList" resultMap="etContractTaskResultForList" parameterType="etContractTask">
+		select
+		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
+		 * from ET_CONTRACT_TASK t where 1 = 1
+		<include refid="sf-etContractTask" />
+		<!-- order by ID asc -->
+	</select>
+
+	<select id="selectEtContractTaskCount" resultType="int" parameterType="etContractTask">
+		select count(*) from ET_CONTRACT_TASK t where 1 = 1
+		<include refid="sf-etContractTask" />
+	</select>
+
+	<select id="selectEtContractTaskPaginatedList" resultMap="etContractTaskResult" parameterType="etContractTask">
+		select * from (
+			select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+				from ET_CONTRACT_TASK t where 1 = 1
+			<include refid="sf-etContractTask" />
+			<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
+
+	<insert id="insertEtContractTask" parameterType="etContractTask">
+		insert into ET_CONTRACT_TASK 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> ID, </if>
+	       <if test="(cId != null and cId != '') or cId == 0"> C_ID, </if>
+	       <if test="(pmId != null ) or pmId == 0"> PM_ID, </if>
+		   <if test="serialNo != null and serialNo != ''"> SERIAL_NO, </if>
+		   <if test="zxtmc != null and zxtmc != ''"> ZXTMC, </if>
+	       <if test="(cpzxt != null and cpzxt != '') or cpzxt == 0"> CPZXT, </if>
+		   <if test="cpmc != null and cpmc != ''"> CPMC, </if>
+	       <if test="(cpxx != null and cpxx != '') or cpxx == 0"> CPXX, </if>
+		   <if test="mx != null and mx != ''"> MX, </if>
+		   <if test="bz != null and bz != ''"> BZ, </if>
+	       <if test="(creator != null and creator != '') or creator == 0"> CREATOR, </if>
+		   <if test="createTime != null "> CREATE_TIME, </if>
+	       <if test="(operator != null and operator != '') or operator == 0"> OPERATOR, </if>
+		   <if test="operatorTime != null "> OPERATOR_TIME, </if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> #{id, jdbcType=BIGINT}, </if>
+	       <if test="(cId != null and cId != '') or cId == 0"> #{cId, jdbcType=BIGINT}, </if>
+	       <if test="(pmId != null ) or pmId == 0"> #{pmId, jdbcType=BIGINT}, </if>
+		   <if test="serialNo != null and serialNo != ''"> #{serialNo, jdbcType=VARCHAR}, </if>
+		   <if test="zxtmc != null and zxtmc != ''"> #{zxtmc, jdbcType=VARCHAR}, </if>
+	       <if test="(cpzxt != null and cpzxt != '') or cpzxt == 0"> #{cpzxt, jdbcType=BIGINT}, </if>
+		   <if test="cpmc != null and cpmc != ''"> #{cpmc, jdbcType=VARCHAR}, </if>
+	       <if test="(cpxx != null and cpxx != '') or cpxx == 0"> #{cpxx, jdbcType=BIGINT}, </if>
+		   <if test="mx != null and mx != ''"> #{mx, jdbcType=VARCHAR}, </if>
+		   <if test="bz != null and bz != ''"> #{bz, jdbcType=LONGVARCHAR}, </if>
+	       <if test="(creator != null and creator != '') or creator == 0"> #{creator, jdbcType=BIGINT}, </if>
+		   <if test="createTime != null "> #{createTime, jdbcType=TIMESTAMP}, </if>
+	       <if test="(operator != null and operator != '') or operator == 0"> #{operator, jdbcType=BIGINT}, </if>
+		   <if test="operatorTime != null "> #{operatorTime, jdbcType=TIMESTAMP}, </if>
+		</trim>
+	</insert>
+
+	<update id="updateEtContractTask" parameterType="EtContractTask">
+		update ET_CONTRACT_TASK
+		<set>
+			<trim suffixOverrides=",">
+			   <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>
+			   <if test="(cId != null and cId != '') or cId == 0"> C_ID = #{cId, jdbcType=BIGINT}, </if>
+			   <if test="(pmId != null ) or pmId == 0"> PM_ID = #{pmId, jdbcType=BIGINT}, </if>
+			   <if test="serialNo != null and serialNo != ''"> SERIAL_NO = #{serialNo, jdbcType=VARCHAR}, </if>
+			   <if test="zxtmc != null and zxtmc != ''"> ZXTMC = #{zxtmc, jdbcType=VARCHAR}, </if>
+			   <if test="(cpzxt != null and cpzxt != '') or cpzxt == 0"> CPZXT = #{cpzxt, jdbcType=BIGINT}, </if>
+			   <if test="cpmc != null and cpmc != ''"> CPMC = #{cpmc, jdbcType=VARCHAR}, </if>
+			   <if test="(cpxx != null and cpxx != '') or cpxx == 0"> CPXX = #{cpxx, jdbcType=BIGINT}, </if>
+			   <if test="mx != null and mx != ''"> MX = #{mx, jdbcType=VARCHAR}, </if>
+			   <if test="bz != null and bz != ''"> BZ = #{bz, jdbcType=LONGVARCHAR}, </if>
+			   <if test="(creator != null and creator != '') or creator == 0"> CREATOR = #{creator, jdbcType=BIGINT}, </if>
+			   <if test="createTime != null "> CREATE_TIME = #{createTime, jdbcType=TIMESTAMP}, </if>
+			   <if test="(operator != null and operator != '') or operator == 0"> OPERATOR = #{operator, jdbcType=BIGINT}, </if>
+			   <if test="operatorTime != null "> OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP}, </if>
+			</trim>
+		</set>
+		where
+		<if test="id != null and id != ''"> ID = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</update>
+
+	<delete id="deleteEtContractTask" parameterType="EtContractTask">
+		delete from ET_CONTRACT_TASK where
+		<if test="id != null and id != ''"> ID = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</delete>
+
+
+	<select id="selectEtContractTaskMergeCount" resultType="int" parameterType="etContractTask">
+		SELECT A.NUM + B.NUM  FROM
+		(select count(*) NUM from ET_CONTRACT_TASK t
+		<where>
+			<if test="(pmId != null ) or pmId == 0"> t.PM_ID = #{pmId, jdbcType=BIGINT} </if>
+		</where>) A,
+		(
+		select count(*) NUM from PMIS_CONTRACT_PRODUCT_INFO t
+		<where>
+			<if test="(pmId != null ) or pmId == 0">and t.XMLCB = #{pmId,jdbcType=BIGINT}</if>
+			<if test="(pmId != null ) or pmId == 0">and t.HTCPLB = 1 </if>
+			<if test="(pmId != null ) or pmId == 0">and t.ZT = 1 </if>
+		</where>
+		) B
+	</select>
+
+	<select id="selectEtContractTaskMergePageList" resultMap="etContractTaskResult" parameterType="etContractTask">
+		select * from (
+		select *, ROW_NUMBER() OVER ( order by T.ID desc ) as _rn
+		from (
+		select *
+		from ET_CONTRACT_TASK t
+		<where>
+			<if test="(pmId != null ) or pmId == 0"> t.PM_ID = #{pmId, jdbcType=BIGINT} </if>
+		</where>
+		UNION ALL
+		select
+		 0 AS ID,
+		 t.HTXX AS  C_ID,
+		t.XMLCB AS  PM_ID,
+		t.KHXX  AS  SERIAL_NO,
+		t.ZXTMC AS  ZXTMC,
+		t.CPZXT AS  CPZXT,
+		t.CPMC AS  CPMC,
+		t.CPXX AS  CPXX,
+		'' AS  MX,
+		'' AS  BZ,
+		0 AS  CREATOR,
+		NULL AS  CREATE_TIME,
+		0 AS  OPERATOR,
+		NULL  AS  OPERATOR_TIME
+		from PMIS_CONTRACT_PRODUCT_INFO t
+		<where>
+			<if test="(pmId != null ) or pmId == 0">and t.XMLCB = #{pmId,jdbcType=BIGINT}</if>
+			<if test="(pmId != null ) or pmId == 0">and t.HTCPLB = 1 </if>
+			<if test="(pmId != null ) or pmId == 0">and t.ZT = 1 </if>
+		</where>
+		) T
+		<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
+</mapper>

@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.service;
 
+import cn.com.winning.ssgj.domain.EtContractTask;
 import cn.com.winning.ssgj.domain.PmisCustomerInformation;
 import cn.com.winning.ssgj.domain.PmisProductInfo;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
@@ -25,4 +26,7 @@ public interface CommonQueryService {
      * @return products
      */
     public List<PmisProductInfo> queryProductOfProjectByProjectIdAndType(long pmId,int type);
+
+
+    public List<EtContractTask> queryEtContractTaskByProjectId(long pmId);
 }

@@ -71,6 +71,12 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         productInfo.getMap().put("pks",pIds);
         return pmisProductInfoDao.selectEntityList(productInfo);
     }
+
+    @Override
+    public List<EtContractTask> queryEtContractTaskByProjectId(long pmId) {
+        return null;
+    }
+
     /**
      * 查询项目信息
      * @param pidList 项目IDList

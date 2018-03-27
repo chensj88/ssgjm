@@ -163,7 +163,13 @@ public class SSGJHelper {
     @Qualifier(value = "sysHospitalDeptIdService")
     private StepSequenceFactory sysHospitalDeptIdService;
 
+    @Autowired
+    @Qualifier(value = "etContractTaskIdService")
+    private StepSequenceFactory etContractTaskIdService;
 
+    public long createEtContractTaskIdService(){
+        return (long) etContractTaskIdService.create();
+    }
     public long createSysFloorsIdService(){
         return (long)sysFloorsIdService.create();
     }
