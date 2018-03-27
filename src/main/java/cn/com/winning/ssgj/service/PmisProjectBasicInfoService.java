@@ -30,4 +30,6 @@ public interface PmisProjectBasicInfoService {
     List<PmisProjectBasicInfo> getUserProcjectBasicInfo(List<PmisProjctUser> userList);
 
     List<PmisProjectBasicInfo> getPmisProjectBasicByKHXXAndIds(PmisProjectBasicInfo project);
+
+    PmisProjectBasicInfo queryPmisProjectBasicInfoByProjectId(long pmId);
 }

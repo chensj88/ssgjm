@@ -78,4 +78,9 @@ public class PmisProjectBasicInfoServiceImpl implements PmisProjectBasicInfoServ
         return this.pmisProjectBasicInfoDao.selectPmisProjectBasicByKHXXAndIds(project);
     }
 
+    @Override
+    public PmisProjectBasicInfo queryPmisProjectBasicInfoByProjectId(long pmId) {
+        return this.pmisProjectBasicInfoDao.queryPmisProjectBasicInfoByProjectId(pmId);
+    }
+
 }

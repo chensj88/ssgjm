@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.service;
 import cn.com.winning.ssgj.domain.EtContractTask;
 import cn.com.winning.ssgj.domain.PmisCustomerInformation;
 import cn.com.winning.ssgj.domain.PmisProductInfo;
+import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 import sun.rmi.runtime.Log;
 
@@ -29,4 +30,6 @@ public interface CommonQueryService {
 
 
     public List<EtContractTask> queryEtContractTaskByProjectId(long pmId);
+
+    PmisProjectBasicInfo queryPmisProjectBasicInfoByProjectId(long pmId);
 }

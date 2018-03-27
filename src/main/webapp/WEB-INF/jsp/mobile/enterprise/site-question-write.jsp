@@ -29,12 +29,11 @@
 				<div class="datum-report-item">
 					<span>站点名称</span>
 					<div class="select">
+						<input id="siteName" name="siteName" value="${siteQuestionInfo.siteName}" type="hidden"/>
 						<c:if test="${siteQuestionInfo.siteName != null}" >
-							<input id="siteName" name="siteName" value="${siteQuestionInfo.siteName}" type="hidden"/>
 							<a href="#"><span>${siteQuestionInfo.siteName}</span><i class="arrow"></i></a>
 						</c:if>
 						<c:if test="${siteQuestionInfo.siteName == null}" >
-							<input id="siteName" name="siteName" type="hidden"/>
 							<a href="#"><span>--请选择--</span><i class="arrow"></i></a>
 						</c:if>
 						<ul>
@@ -51,13 +50,11 @@
 				<div class="datum-report-item">
 					<span>系统名称</span>
 					<div class="select">
-
+						<input id="productName" name="productName" value="${siteQuestionInfo.productName}" type="hidden"/>
 						<c:if test="${siteQuestionInfo.productName != null}" >
-							<input id="productName" name="productName" value="${siteQuestionInfo.productName}" type="hidden"/>
 							<a href="#"><span>${siteQuestionInfo.productName}</span><i class="arrow"></i></a>
 						</c:if>
 						<c:if test="${siteQuestionInfo.productName == null}" >
-							<input id="productName" name="productName" type="hidden"/>
 							<a href="#"><span>--请选择--</span><i class="arrow"></i></a>
 						</c:if>
 		                <ul>
@@ -75,12 +72,11 @@
 				<div class="datum-report-item">
 					<span>菜单名称</span>
 					<div class="select">
-						<c:if test="${siteQuestionInfo.menuName != null}" >
-							<input id="menuName" name="menuName" value="${siteQuestionInfo.menuName}" type="hidden"/>
+                        <input id="menuName" name="menuName" value="${siteQuestionInfo.menuName}" type="hidden"/>
+                        <c:if test="${siteQuestionInfo.menuName != null}" >
 							<a href="#"><span>${siteQuestionInfo.menuName}</span><i class="arrow"></i></a>
 						</c:if>
 						<c:if test="${siteQuestionInfo.menuName == null}" >
-							<input id="menuName" name="menuName" type="hidden"/>
 							<a href="#"><span>--请选择--</span><i class="arrow"></i></a>
 						</c:if>
 		                <ul>
@@ -109,9 +105,6 @@
 							<c:forEach var="dict" items="${dictInfos}">
 								<li data-val="${dict.dictValue}">${dict.dictLabel}</li>
 							</c:forEach>
-							<%--<c:forEach var="vwr" items="${contractProductInfos}">--%>
-							<%--<li data-val="${vwr.map.get("meunName")}">${vwr.map.get("meunName")}</li>--%>
-							<%--</c:forEach>--%>
 						</ul>
 					</div>
 				</div>

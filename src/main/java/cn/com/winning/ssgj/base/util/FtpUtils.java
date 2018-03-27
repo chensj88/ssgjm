@@ -1,15 +1,9 @@
 package cn.com.winning.ssgj.base.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPClientConfig;
-import org.apache.commons.net.ftp.FTPReply;
+import org.apache.commons.net.ftp.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -164,4 +158,51 @@ public class FtpUtils {
 		}
 		return  flag;
 	}
+
+
+
+
+	public static void downloadFile( String ftpFileName,  String localPath) throws IOException {
+		FTPClient ftp = new FTPClient();// 创建FTPClient对象
+		// Download.
+		OutputStream out = null;
+		try {
+			// Use passive mode to pass firewalls.
+			ftp.enterLocalPassiveMode();
+
+			// Get file info.
+			FTPFile[] fileInfoArray = ftp.listFiles(ftpFileName);
+			if (fileInfoArray == null) {
+				throw new FileNotFoundException("File " + ftpFileName + " was not found on FTP server.");
+			}
+
+			// Check file size.
+			FTPFile fileInfo = fileInfoArray[0];
+			long size = fileInfo.getSize();
+			if (size > Integer.MAX_VALUE) {
+				throw new IOException("File " + ftpFileName + " is too large.");
+			}
+
+			String localFile=localPath+fileInfo.getName();
+
+			// Download file.
+			out = new BufferedOutputStream(new FileOutputStream(localFile));
+			if (!ftp.retrieveFile(ftpFileName, out)) {
+				throw new IOException("Error loading file " + ftpFileName + " from FTP server. Check FTP permissions and path.");
+			}
+
+			out.flush();
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException ex) {
+				}
+			}
+		}
+	}
+
+
+
+
 }
