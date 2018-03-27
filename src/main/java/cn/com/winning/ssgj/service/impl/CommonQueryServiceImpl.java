@@ -72,12 +72,6 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         return pmisProductInfoDao.selectEntityList(productInfo);
     }
 
-    @Override
-    public List<EtContractTask> queryEtContractTaskByProjectId(long pmId) {
-        return null;
-    }
-
-
 
     /**
      * 根据项目id获取项目基本信息

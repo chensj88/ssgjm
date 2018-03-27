@@ -56,6 +56,7 @@ public class EtContractProjectController extends BaseController {
         Row row = new Row(0,10);
         productInfo.setRow(row);
         productInfo.setZt(Constants.PMIS_STATUS_USE);
+        productInfo.setCplb("1");
         List<PmisProductInfo> productInfos = super.getFacade().getPmisProductInfoService().getPmisProductInfoPaginatedListByCodeAndName(productInfo);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);

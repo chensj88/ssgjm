@@ -29,7 +29,5 @@ public interface CommonQueryService {
     public List<PmisProductInfo> queryProductOfProjectByProjectIdAndType(long pmId,int type);
 
 
-    public List<EtContractTask> queryEtContractTaskByProjectId(long pmId);
-
     PmisProjectBasicInfo queryPmisProjectBasicInfoByProjectId(long pmId);
 }

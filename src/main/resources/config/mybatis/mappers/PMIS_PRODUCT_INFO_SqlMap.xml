@@ -60,6 +60,7 @@
         <if test="name != null and name != ''">and t.NAME LIKE  '%${name}%'</if>
         <if test="(fid != null )">and t.FID = #{fid}</if>
         <if test="(zt != null  )">and t.ZT = #{zt}</if>
+        <if test="cplb != null ">and t.CPLB = #{cplb}</if>
     </sql>
 
     <select id="selectPmisProductInfo" resultMap="pmisProductInfoResult" parameterType="pmisProductInfo">
