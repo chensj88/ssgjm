@@ -62,4 +62,9 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
 
     }
 
+    @Override
+    public List<EtSiteQuestionInfo> getEtSiteQuestionInfoUserTotal(EtSiteQuestionInfo t) {
+        return this.etSiteQuestionInfoDao.selectEtSiteQuestionInfoUserTotal(t);
+    }
+
 }

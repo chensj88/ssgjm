@@ -356,5 +356,11 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
-
+    <!--合同任务单ID-->
+    <bean id="etContractTaskIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="TASK_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
 </beans>

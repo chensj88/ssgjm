@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.dao;
 import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
 import cn.com.winning.ssgj.dao.EntityDao;
 
+import java.util.List;
+
 /**
  *
  *
@@ -12,4 +14,6 @@ import cn.com.winning.ssgj.dao.EntityDao;
 public interface EtSiteQuestionInfoDao extends EntityDao<EtSiteQuestionInfo> {
 
     void updateEtSiteQuestionInfoImg(EtSiteQuestionInfo t);
+
+    List<EtSiteQuestionInfo> selectEtSiteQuestionInfoUserTotal(EtSiteQuestionInfo t);
 }

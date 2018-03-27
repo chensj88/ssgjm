@@ -107,6 +107,8 @@ public class PmisContractProductInfo extends BaseDomain implements Serializable 
 	 * @val 状态 1|生效;2|作废
 	 */
 	private Integer zt;
+
+	private EtContractTask etContractTask = new EtContractTask();
 	
 	public PmisContractProductInfo() {
 
@@ -372,4 +374,19 @@ public class PmisContractProductInfo extends BaseDomain implements Serializable 
 		this.zt = zt;
 	}
 
+	public EtContractTask getEtContractTask() {
+		etContractTask.setId(id);
+		etContractTask.setCId(htxx);
+		etContractTask.setPmId(xmlcb);
+		etContractTask.setSerialNo(khxx+"");
+		etContractTask.setCpzxt(Long.valueOf(cpzxt));
+		etContractTask.setZxtmc(zxtmc);
+		etContractTask.setCpxx(cpxx);
+		etContractTask.setCpmc(cpmc);
+		return etContractTask;
+	}
+
+	public void setEtContractTask(EtContractTask etContractTask) {
+		this.etContractTask = etContractTask;
+	}
 }

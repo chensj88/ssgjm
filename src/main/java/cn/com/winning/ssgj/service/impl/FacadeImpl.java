@@ -190,6 +190,9 @@ public class FacadeImpl implements Facade {
     @Resource
     SysHospitalDeptService sysHospitalDeptService;
 
+    @Resource
+    EtContractTaskService etContractTaskService;
+
     public EtUserLookProjectService getEtUserLookProjectService() {
         return etUserLookProjectService;
     }
@@ -428,5 +431,10 @@ public class FacadeImpl implements Facade {
     @Override
     public SysHospitalDeptService getSysHospitalDeptService() {
         return sysHospitalDeptService;
+    }
+
+    @Override
+    public EtContractTaskService getEtContractTaskService() {
+        return etContractTaskService;
     }
 }

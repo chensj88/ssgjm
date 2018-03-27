@@ -27,4 +27,6 @@ public interface EtSiteQuestionInfoService {
     List<EtSiteQuestionInfo> getEtSiteQuestionInfoPaginatedList(EtSiteQuestionInfo t);
 
     void updateEtSiteQuestionInfoImg(EtSiteQuestionInfo info);
+
+    List<EtSiteQuestionInfo> getEtSiteQuestionInfoUserTotal(EtSiteQuestionInfo info);
 }

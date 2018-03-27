@@ -131,8 +131,8 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
     }
 
     @Override
-    public void createHospitalUserInfo(List<List<Object>> userList) {
-        long c_id = 9879L;
+    public void createHospitalUserInfo(List<List<Object>> userList,SysUserInfo userInfo) {
+        long c_id = userInfo.getSsgs();
         for (List<Object> params : userList) {
             String userid = params.get(0).toString();
             String yhmc = params.get(1).toString();

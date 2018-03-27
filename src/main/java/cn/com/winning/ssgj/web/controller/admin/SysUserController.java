@@ -55,6 +55,7 @@ public class SysUserController extends BaseController {
         System.out.println(row);
         System.out.println(userInfo);
         userInfo.setRow(row);
+        userInfo.setStatus(Constants.PMIS_STATUS_USE);
         List<SysUserInfo> userInfos = getFacade().getSysUserInfoService().getSysUserInfoQueryPaginatedList(userInfo);
         int total = getFacade().getSysUserInfoService().getSysUserInfoQueryCount(userInfo);
         Map<String, Object> map = new HashMap<String, Object>();

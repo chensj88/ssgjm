@@ -126,4 +126,6 @@ public interface Facade {
 
     SysHospitalDeptService getSysHospitalDeptService();
 
+    EtContractTaskService getEtContractTaskService();
+
 }
