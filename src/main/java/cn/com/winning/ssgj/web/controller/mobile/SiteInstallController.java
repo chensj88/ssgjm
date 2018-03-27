@@ -4,6 +4,7 @@ import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.util.Base64Utils;
 import cn.com.winning.ssgj.domain.EtOnlineFile;
 import cn.com.winning.ssgj.domain.EtSiteInstall;
+import cn.com.winning.ssgj.domain.PmisContractProductInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSON;
@@ -35,7 +36,7 @@ public class SiteInstallController extends BaseController {
     @RequestMapping(value = "/list.do")
     @ILog
     public String siteInstall(Model model, String parameter) {
-        EtSiteInstall entity = new EtSiteInstall();
+        PmisContractProductInfo entity = new PmisContractProductInfo();
         //String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9"; //工号
         //String hospcode="11980";  //客户号
         parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
@@ -51,9 +52,11 @@ public class SiteInstallController extends BaseController {
             info = super.getFacade().getSysUserInfoService().getSysUserInfo(info);
             if(info !=null){
                 //根据客户编号 找出对应的全部
-                entity.setSerialNo(hospcode);
-                List<EtSiteInstall> siteInstalls = super.getFacade().getEtSiteInstallService().getEtSiteInstallList(entity);
-                model.addAttribute("siteInstalls",siteInstalls);
+                entity.setKhxx(Long.parseLong(hospcode));
+                //List<PmisContractProductInfo> infoList = super.getFacade().getpmiscon
+
+
+                //model.addAttribute("siteInstalls",siteInstalls);
             }else{
 
             }

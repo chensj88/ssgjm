@@ -103,6 +103,15 @@ span.align-self{
 	font-size: 13px;
 	text-align: right;
 }
+.datum-report-item>a{
+	width: 100%;
+	text-align: right;
+}
+.datum-report-item>a>i{
+	display: inline-block;
+	color: #E2E2E2;
+	transform: rotate(-180deg);
+}
 .datum-report-item>input{
 	margin: 0px 0px 2px 10px;
 	border: none;

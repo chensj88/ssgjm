@@ -25,13 +25,9 @@
 			<div class="datum-report padding-btm-20 padding-top-15">
 				<div class="datum-report-item">
 					<span>处理人</span>
-					<div class="select">
-						<input type="hidden"/>
-						<a href="<%=basePath%>mobile/siteInstallSet/setPerson.do?id=${siteQuestionInfo.id}&serialNo=${hospcode}&userId=${work_num}&siteName=${siteQuestionInfo.siteName}">
+					<a href="<%=basePath%>mobile/siteInstallSet/setPerson.do?id=${siteQuestionInfo.id}&serialNo=${hospcode}&userId=${work_num}&siteName=${siteQuestionInfo.siteName}">
 							<span>${siteQuestionInfo.map.get("allocate_name")==null?"待分配":siteQuestionInfo.map.get("allocate_name")}</span>
 							<i class="iconfont icon-fanhui"></i></a>
-
-					</div>
 				</div>
 			</div>
 			<div class="datum-report padding-btm-20">
