@@ -50,7 +50,10 @@ public class SysReportInfoController extends BaseController {
     @ResponseBody
     public Map<String, Object> list(SysReportInfo info, Row row) {
         info.setRow(row);
-        info.setStatus(1);
+        info.setStatus(Constants.STATUS_USE);
+        if(info.getReportType() == -1){
+            info.setReportType(null);
+        }
         List<SysReportInfo> infos = getFacade().getSysReportInfoService().getSysReportInfoPaginatedListForSelectiveKey(info);
         int total = getFacade().getSysReportInfoService().getSysReportInfoCountForSelectiveKey(info);
         Map<String, Object> map = new HashMap<String, Object>();

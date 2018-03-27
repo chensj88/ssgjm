@@ -51,7 +51,10 @@ public class SysSoftHardwareInfoController extends BaseController {
     @ResponseBody
     public Map<String, Object> list(Row row, SysSoftHardwareInfo info) {
         info.setRow(row);
-        System.out.println(info);
+        info.setStatus(Constants.STATUS_USE);
+        if(info.getShType() == -1){
+            info.setShType(null);
+        }
         List<SysSoftHardwareInfo> infos = getFacade().getSysSoftHardwareInfoService().getSysSoftHardwareInfoPaginatedListForSelectiveKey(info);
         int total = getFacade().getSysSoftHardwareInfoService().getSysSoftHardwareInfoCountForSelectiveKey(info);
         Map<String, Object> map = new HashMap<String, Object>();

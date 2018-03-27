@@ -70,4 +70,9 @@ public class SysDataInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysDataInfo> i
         String statement = "select"+ t.getClass().getSimpleName() +"ListByPidAndDataType";
         return super.getSqlSession().selectList(statement,t);
     }
+
+    @Override
+    public List<SysDataInfo> selectSysDataInfoListForORKey(SysDataInfo t) {
+        return super.getSqlSession().selectList("selectSysDataInfoListForORKey",t);
+    }
 }

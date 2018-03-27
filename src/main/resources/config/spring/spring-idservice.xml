@@ -138,7 +138,7 @@
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="PRODUCT_CODE"/>
         <property name="step" value="1"/>
-        <property name="format" value="WN-TABLE-{######}" />
+        <property name="format" value="WN-PD-{######}" />
     </bean>
     <!--
     业务流程序号

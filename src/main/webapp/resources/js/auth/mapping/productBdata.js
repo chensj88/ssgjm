@@ -24,7 +24,23 @@ $(function () {
      * @constructor
      */
     function SearchConfigData() {
-        $('#configBData').bootstrapTable('refresh');
+        var url = Common.getRootPath() + "/admin/pBdata/queryById.do";
+        $.ajax({
+            type: "post",
+            url: url,
+            data: {"pdId": productId,'tableName': $.trim($('#bdataB').val()),'tableCnName': $.trim($('#bdataB').val())},
+            dataType: 'json',
+            cache:false,
+            success: function (data, status) {
+                if (data.status == Common.SUCCESS) {
+                    initConfigtable(data);
+                }
+            },
+            error: function (e) {
+                console.log(e);
+                Ewin.alert('Error:' + e.statusText);
+            }
+        });
     }
 
     /**
@@ -72,6 +88,7 @@ $(function () {
     var queryTable =  $('#queryBData');
     var configTable =  $('#configBData');
     var infoTable = $('#infoTable');
+    var productId = 0;
     /**=================================事件绑定==============================================*/
     /**
      * 初始化已配置数据Table
@@ -304,6 +321,7 @@ $(function () {
         initInfotable(data);
         $('#pdModal').modal('show');
     }
+
     function refreshConfigTable(productId){
         var url = Common.getRootPath() + "/admin/pBdata/queryById.do";
         $.ajax({
@@ -477,13 +495,14 @@ $(function () {
         $(element).addClass('success');//添加当前选中的 success样式用于区别
 
         console.log(row);
-        var productId = row.id;
+        productId = row.id;
         var url = Common.getRootPath() + "/admin/pBdata/queryById.do";
         $.ajax({
             type: "post",
             url: url,
             data: {"pdId": productId},
             dataType: 'json',
+            cache:false,
             success: function (data, status) {
                 if (data.status == Common.SUCCESS) {
                     /*Ewin.alert('提交数据成功');*/

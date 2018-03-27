@@ -17,9 +17,6 @@ function editSH(id,shCode,shName,shDesc,shBrand,shBrandType) {
 
 $(function () {
 
-    //下拉框默认选中去除
-    $("#shQType").val('');
-    $("#shType").val('');
     /**
      * 查询
      * @constructor

@@ -40,6 +40,7 @@ public class SysFloorsController extends BaseController {
     @ResponseBody
     public Map<String,Object> listPageInfo(SysFloors floors, Row row){
         floors.setRow(row);
+        floors.setIsDel(Constants.STATUS_USE);
         List<SysFloors> floorsList = super.getFacade().getSysFloorsService().getSysFloorsPageListByFuzzy(floors);
         int total = super.getFacade().getSysFloorsService().getSysFloorsCountByFuzzy(floors);
         Map<String,Object> result = new HashMap<String,Object>();

@@ -52,7 +52,7 @@
             </div>
         </div>
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
-            <label class="col-sm-4 control-label text-right" for="interQCode">接口代码:</label>
+            <label class="col-sm-5 control-label text-right" for="interQCode">接口代码:</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control input-sm" id="interQCode"/>
             </div>

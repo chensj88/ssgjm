@@ -42,6 +42,7 @@
         <if test="shCode != null and shCode != ''">and t.SH_CODE LIKE '%${shCode}%' </if>
         <if test="shName != null and shName != '' ">and t.SH_NAME LIKE '%${shName}%' </if>
         <if test="shType != null ">and t.SH_TYPE = #{shType}</if>
+        <if test="(status != null)">and t.STATUS = #{status}</if>
     </sql>
 
     <select id="selectSysSoftHardwareInfo" resultMap="sysSoftHardwareInfoResult" parameterType="sysSoftHardwareInfo">

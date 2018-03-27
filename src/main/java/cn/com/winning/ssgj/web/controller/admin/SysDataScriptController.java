@@ -49,6 +49,7 @@ public class SysDataScriptController extends BaseController {
     @ResponseBody
     public Map<String, Object> queryInfoByPage(SysDataCheckScript script, Row row) {
         script.setRow(row);
+        script.setStatus(Constants.STATUS_USE);
         List<SysDataCheckScript> dataCheckScriptList = super.getFacade().getSysDataCheckScriptService().getSysDataCheckScriptPageListFuzzy(script);
         int total = super.getFacade().getSysDataCheckScriptService().getSysDataCheckScriptCountFuzzy(script);
         Map<String, Object> result = new HashMap<String, Object>();

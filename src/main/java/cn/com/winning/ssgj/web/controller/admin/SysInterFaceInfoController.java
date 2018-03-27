@@ -51,6 +51,7 @@ public class SysInterFaceInfoController extends BaseController {
     @ResponseBody
     public Map<String, Object> list(Row row, SysThirdInterfaceInfo sysThirdInterfaceInfo) {
         sysThirdInterfaceInfo.setRow(row);
+        sysThirdInterfaceInfo.setStatus(Constants.STATUS_USE);
         List<SysThirdInterfaceInfo> sysThirdInterfaceInfos = getFacade().getSysThirdInterfaceInfoService().getSysThirdInterfaceInfoPaginatedListForSelectiveKey(sysThirdInterfaceInfo);
         int total = getFacade().getSysThirdInterfaceInfoService().getSysThirdInterfaceInfoCountForSelectiveKey(sysThirdInterfaceInfo);
         Map<String, Object> map = new HashMap<String, Object>();

@@ -39,15 +39,15 @@ public class ProductBDataController extends BaseController {
 
     @RequestMapping(value = "/pBdata/queryById.do")
     @ResponseBody
-    public Map<String, Object> queryBdataInfoById(SysProductDataInfo dataInfo) {
+    public Map<String, Object> queryBdataInfoById(SysProductDataInfo dataInfo,SysDataInfo data) {
         List<SysProductDataInfo> dataInfoList = super.getFacade().getSysProductDataInfoService().getSysProductDataInfoList(dataInfo);
         Map<String, Object> param = new HashMap<String, Object>();
         Map<String, Object> result = new HashMap<String, Object>();
         if (dataInfoList != null && dataInfoList.size() > 0) {
             List<String> idString = super.getFacade().getSysProductDataInfoService().getDataInfoId(dataInfoList);
             param.put("pks", idString);
-            SysDataInfo data = new SysDataInfo();
             data.setMap(param);
+            data.setStatus(Constants.STATUS_USE);
             List<SysDataInfo> sysDataInfoList = super.getFacade().getSysDataInfoService().getSysDataInfoListById(data);
             result.put("status", Constants.SUCCESS);
             result.put("data", sysDataInfoList);

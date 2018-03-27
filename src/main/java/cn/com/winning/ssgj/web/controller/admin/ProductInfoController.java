@@ -52,6 +52,7 @@ public class ProductInfoController extends BaseController {
     @ResponseBody
     public Map<String, Object> list(Row row, PmisProductInfo productInfo) {
         productInfo.setRow(row);
+        productInfo.setZt(Constants.PMIS_STATUS_USE);
         List<PmisProductInfo> productInfos = getFacade().getPmisProductInfoService().getPmisProductInfoPaginatedListByCodeAndName(productInfo);
         int total = getFacade().getPmisProductInfoService().getPmisProductInfoCountByCodeAndName(productInfo);
         Map<String, Object> map = new HashMap<String, Object>();
