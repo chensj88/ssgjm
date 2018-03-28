@@ -85,9 +85,25 @@
     <!--  合同/任务单 获取模块信息  Chen,Kuai 2018年3月19日16:01:42  -->
     <select id="selectPmisContractProductInfoMkList"  resultMap="pmisContractProductInfoResult"
             parameterType="pmisContractProductInfo">
-        SELECT t.ID,t.ZHTXX,t.ZXTMC,t.CPXX,t.CPMC FROM PMIS_CONTRACT_PRODUCT_INFO t
-        WHERE 1 = 1 AND t.HTCPLB = 1 AND t.ZT = 1
+        SELECT 0 AS ID,
+        t.HTXX AS  C_ID,
+        t.XMLCB AS  PM_ID,
+        t.KHXX  AS  SERIAL_NO,
+        t.ZXTMC AS  ZXTMC,
+        t.CPZXT AS  CPZXT,
+        t.CPMC AS  CPMC,
+        t.CPXX AS  CPXX,
+        '' AS  MX,
+        '' AS  BZ,
+        0 AS  CREATOR,
+        NULL AS  CREATE_TIME,
+        0 AS  OPERATOR,
+        NULL  AS  OPERATOR_TIME
+        FROM PMIS_CONTRACT_PRODUCT_INFO t WHERE 1 = 1 AND t.HTCPLB = 1 AND t.ZT = 1
         <include refid="sf-pmisContractProductInfo"/>
+        UNION ALL
+        SELECT tt.* from ET_CONTRACT_TASK tt  WHERE 1=1
+        <if test="(khxx != null and khxx != '') or khxx == 0"> AND tt.SERIAL_NO = #{khxx}</if>
     </select>
 
 

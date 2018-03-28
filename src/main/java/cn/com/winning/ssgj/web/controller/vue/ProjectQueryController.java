@@ -30,13 +30,10 @@ public class ProjectQueryController extends BaseController {
      * 查询用户的客户列表和项目列表
      * @return
      */
-    @RequestMapping(value = "/common/queryCMenu.do")
+    @RequestMapping(value = "/common/queryCustomerMenu.do")
     @ResponseBody
-    public Map<String,Object> queryUserCustomerAndProjectInfo(){
-
-        /*SysUserInfo loginUser = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
-        Long userid = loginUser.getId();*/
-        Long userid = 225L;
+    public Map<String,Object> queryUserCustomerAndProjectInfo(long userid){
+        userid = 225L;
         List<NodeTree> nodeTreeList = super.getFacade().getCommonQueryService().queryUserCustomerProjectTreeInfo(userid);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
@@ -44,7 +41,10 @@ public class ProjectQueryController extends BaseController {
         return result;
     }
 
-
+    /**
+     * 查询用户的信息
+     * @return
+     */
     @RequestMapping(value = "/common/user.do")
     @ResponseBody
     public Map<String,Object> queryUserInfo(){
@@ -62,22 +62,12 @@ public class ProjectQueryController extends BaseController {
         result.put("data", loginUser);
         return result;
     }
-
-    @RequestMapping(value = "/common/queryP.do")
-    @ResponseBody
-    public Map<String,Object> queryProductByProjectId(){
-        /*SysUserInfo loginUser = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
-        long cId = (long) loginUser.getMap().get("C_ID");
-        long pmId = (long) loginUser.getMap().get("PM_ID");*/
-        long pmId = 1L;
-        List<PmisProductInfo> productInfos = super.getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId,Constants.PMIS.CPLB_1);
-        Map<String,Object> result = new HashMap<String,Object>();
-        result.put("status", Constants.SUCCESS);
-        result.put("data", productInfos);
-        return result;
-
-    }
-
+    
+    /**
+     * 加载字典信息
+     * @param dict
+     * @return
+     */
     @RequestMapping(value = "/common/getCodes.do")
     @ResponseBody
     public Map<String, Object> queryDictInfo(SysDictInfo dict) {

@@ -7,6 +7,7 @@ import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import net.sf.json.JSONArray;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -310,25 +311,36 @@ public class SiteQuestionController extends BaseController {
 
     /**
      * Chen,Kuai 响应数据
-     * @param id
+     * @param
      * @return
      */
     @RequestMapping("/loadData.do")
     @ResponseBody
     @ILog
-    public Map<String,Boolean> loadData(String type,String userId,String serialNo){
-        Map<String,Boolean> map = new HashMap<String,Boolean>();
+    public Map<String,Object> loadData(String type,String name,String serialNo){
+        Map<String,Object> map = new HashMap<String,Object>();
         PmisContractProductInfo contractProductInfo = new PmisContractProductInfo();
         try{
             if("1".equals(type)){  //系统站点
                 //获取合同/任务单(系统名称，菜单名称)
+                //从工作站点安装中直接获取使用系统
+                EtSiteInstall info = new EtSiteInstall();
+                info.setDeptName(name);
+                info.setSerialNo(serialNo);
+                List<EtSiteInstall> infoList = super.getFacade().getEtSiteInstallService().getEtSiteInstallNameList(info);
+                JSONArray xtJsons = JSONArray.fromObject( infoList );
+                map.put("xtJsons",xtJsons);
+            }else{
                 contractProductInfo.setKhxx(Long.parseLong(serialNo));
+                contractProductInfo.setZxtmc(name);
                 List<PmisContractProductInfo> contractProductInfos = super.getFacade().getPmisContractProductInfoService()
                         .getPmisContractProductInfoMkList(contractProductInfo);
+                JSONArray xtJsons = JSONArray.fromObject( contractProductInfos );
+                map.put("xtJsons",xtJsons);
+
             }
-            map.put("status",true);
         }catch (Exception e){
-            map.put("status",false);
+
         }
         return map;
     }

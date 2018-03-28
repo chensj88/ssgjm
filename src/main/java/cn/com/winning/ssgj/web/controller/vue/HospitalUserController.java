@@ -5,6 +5,7 @@ import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.base.util.MD5;
+import cn.com.winning.ssgj.domain.EtProcessManager;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +40,12 @@ public class HospitalUserController extends BaseController {
     @Autowired
     private SSGJHelper ssgjHelper;
 
+    /**
+     * 查询项目下医院用户信息
+     * @param queryUser
+     * @param row
+     * @return
+     */
     @RequestMapping(value = "/list.do")
     @ResponseBody
     public Map<String, Object> queryHospitalUserInfo(SysUserInfo queryUser,Row row) {
@@ -57,6 +65,11 @@ public class HospitalUserController extends BaseController {
 
     }
 
+    /**
+     * 添加或者修改用户信息
+     * @param userInfo
+     * @return
+     */
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
     @ILog
@@ -75,6 +88,13 @@ public class HospitalUserController extends BaseController {
         return result;
     }
 
+    /**
+     * 导出医院用户信息
+     * @param queryUser
+     * @param response
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/exportExcel.do")
     @ILog
     public HttpServletResponse wiriteExcel(SysUserInfo queryUser, HttpServletResponse response) throws IOException {
@@ -99,7 +119,7 @@ public class HospitalUserController extends BaseController {
             // 清空response
             response.reset();
             // 设置response的Header
-            response.addHeader("Content-Disposition", "attachment;filename=" + new String("HospitalUserInfo.xls".getBytes()));
+            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("医院用户信息.xls","UTF-8"));
             response.addHeader("Content-Length", "" + file.length());
             OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/octet-stream");
@@ -113,6 +133,14 @@ public class HospitalUserController extends BaseController {
         return response;
     }
 
+    /**
+     * 上传医院用户信息Excel
+     * @param request
+     * @param userInfo
+     * @param file
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/upload.do")
     @ResponseBody
     @ILog
@@ -154,7 +182,11 @@ public class HospitalUserController extends BaseController {
         return result;
     }
 
-
+    /**
+     * 删除医院用户信息
+     * @param userInfo
+     * @return
+     */
     @RequestMapping(value = "/delete.do")
     @ResponseBody
     @ILog
@@ -164,6 +196,5 @@ public class HospitalUserController extends BaseController {
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         return result;
-
     }
 }

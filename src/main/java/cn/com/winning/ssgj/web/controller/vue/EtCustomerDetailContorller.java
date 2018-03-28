@@ -7,7 +7,9 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
+import cn.com.winning.ssgj.domain.EtProcessManager;
 import org.springframework.format.datetime.joda.MillisecondInstantPrinter;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -69,6 +71,13 @@ public class EtCustomerDetailContorller extends BaseController {
             etCustomerDetail.setOperatorTime(new Timestamp(new Date().getTime()));
             isSucceed = super.getFacade().getEtCustomerDetailService().createEtCustomerDetail(etCustomerDetail);
         }
+        EtProcessManager processManager = new EtProcessManager();
+        processManager.setPmId(etCustomerDetail.getId());
+        processManager = super.getFacade().getEtProcessManagerService().getEtProcessManager(processManager);
+        processManager.setIsImprove(Constants.STATUS_USE);
+        processManager.setOperator(etCustomerDetail.getOperator());
+        processManager.setOperatorTime(new Timestamp(new Date().getTime()));
+        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(processManager);
         result.put("isSucceed", isSucceed);
         return result;
     }

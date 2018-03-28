@@ -182,6 +182,13 @@ public class SSGJHelper {
     @Qualifier(value = "etContractTaskIdService")
     private StepSequenceFactory etContractTaskIdService;
 
+    @Autowired
+    @Qualifier(value = "etProcessManagerIdService")
+    private StepSequenceFactory etProcessManagerIdService;
+
+    public long createEtProcessManagerIdService(){
+        return (long) etProcessManagerIdService.create();
+    }
     public long createEtContractTaskIdService(){
         return (long) etContractTaskIdService.create();
     }

@@ -25,6 +25,7 @@
     </resultMap>
 
     <resultMap id="etSiteInstallResult" type="etSiteInstall" extends="etSiteInstallResultForList">
+        <result column="ZXTMC" property="map.zxtmc" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="sf-etSiteInstall">
@@ -75,6 +76,16 @@
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
+
+
+    <!-- Chen,Kuai  获取站点使用的系统 -->
+    <select id="selectEtSiteInstallNameList" resultMap="etSiteInstallResult" parameterType="etSiteInstall">
+        select t.CPZXT,i.ZXTMC from ET_SITE_INSTALL t LEFT JOIN PMIS_CONTRACT_PRODUCT_INFO i
+        ON i.CPZXT = t.CPZXT where 1 = 1
+        <include refid="sf-etSiteInstall"/>  GROUP BY t.CPZXT,i.ZXTMC
+        <!-- order by ID asc -->
+    </select>
+
 
     <insert id="insertEtSiteInstall" parameterType="etSiteInstall">
 
