@@ -138,6 +138,7 @@ public class SysInterFaceInfoController extends BaseController {
     @RequestMapping(value = "/listNoPage.do")
     @ResponseBody
     public Map<String, Object> queryInterfaceListNoPage(SysThirdInterfaceInfo interfaceInfo) {
+        interfaceInfo.setStatus(Constants.STATUS_USE);
         List<SysThirdInterfaceInfo> infoList = super.getFacade().getSysThirdInterfaceInfoService().getSysThirdInterfaceInfoListForNames(interfaceInfo);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
