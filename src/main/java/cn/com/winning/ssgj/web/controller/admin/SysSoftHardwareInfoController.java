@@ -147,6 +147,7 @@ public class SysSoftHardwareInfoController extends BaseController {
     @RequestMapping("/listNoPage.do")
     @ResponseBody
     public Map<String, Object> listNoPage(SysSoftHardwareInfo info) {
+        info.setStatus(Constants.STATUS_USE);
         List<SysSoftHardwareInfo> infos = getFacade().getSysSoftHardwareInfoService().getSysSoftHardwareInfoListForNames(info);
 
         Map<String, Object> map = new HashMap<String, Object>();

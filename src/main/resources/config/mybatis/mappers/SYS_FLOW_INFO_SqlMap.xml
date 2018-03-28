@@ -35,11 +35,13 @@
     </sql>
 
     <sql id="query-sysFlowInfo">
+        <if test="status != null ">and t.STATUS = #{status} </if>
         <if test="flowCode != null and flowCode != ''">and t.FLOW_CODE LIKE '%${flowCode}%' </if>
         <if test="flowName != null and flowName != ''">and t.FLOW_NAME LIKE '%${flowName}%' </if>
     </sql>
 
     <sql id="queryOrsysFlowInfo">
+        <if test="status != null ">and t.STATUS = #{status} </if>
         <if test="flowCode != null and flowCode != ''">and ( t.FLOW_CODE LIKE '%${flowCode}%' </if>
         <if test="flowName != null and flowName != ''">OR t.FLOW_NAME LIKE '%${flowName}%' )</if>
     </sql>
@@ -82,6 +84,7 @@
         select t.*,ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
         from SYS_FLOW_INFO t
         where 1 = 1
+        <if test="status != null ">and t.STATUS = #{status} </if>
         <if test="flowCode != null and flowCode != ''">and t.FLOW_CODE LIKE '%${flowCode}%'</if>
         <if test="flowType != null and flowType != ''">and t.FLOW_TYPE = #{flowType}</if>
         <!-- order by ID asc -->
@@ -91,6 +94,7 @@
         select t.*
         from SYS_FLOW_INFO t
         where 1 = 1
+        <if test="status != null ">and t.STATUS = #{status} </if>
         <if test="flowCode != null and flowCode != ''">and t.FLOW_CODE LIKE '%${flowCode}%'</if>
         <if test="flowType != null and flowType != ''">and t.FLOW_TYPE = #{flowType}</if>
     </select>
@@ -202,8 +206,11 @@
         from SYS_FLOW_INFO t
         <where>
             <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="status != null ">and t.STATUS = #{status} </if>
+            <if test="flowCode != null and flowCode != ''">and ( t.FLOW_CODE LIKE '%${flowCode}%' </if>
+            <if test="flowName != null and flowName != ''">OR t.FLOW_NAME LIKE '%${flowName}%' )</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0 )">
-                ID in
+                and ID in
                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
             </if>
         </where>

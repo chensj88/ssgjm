@@ -146,7 +146,7 @@ public class SysReportInfoController extends BaseController {
     @RequestMapping("/listNoPage.do")
     @ResponseBody
     public Map<String, Object> listNoPage(SysReportInfo info) {
-        info.setStatus(1);
+        info.setStatus(Constants.STATUS_USE);
         List<SysReportInfo> infos = getFacade().getSysReportInfoService().getSysReportInfolistNoPage(info);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", infos);

@@ -20,6 +20,8 @@
         <result column="OPERATOR" property="operator" jdbcType="BIGINT"/>
         <result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP"/>
         <result column="REMARK" property="remark" jdbcType="LONGVARCHAR"/>
+        <result column="DEPT_CODE" property="deptCode" jdbcType="VARCHAR" />
+        <result column="CPZXT" property="cpzxt" jdbcType="VARCHAR" />
     </resultMap>
 
     <resultMap id="etSiteInstallResult" type="etSiteInstall" extends="etSiteInstallResultForList">
@@ -43,6 +45,8 @@
         <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
         <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
         <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
+        <if test="deptCode != null and deptCode != ''"> and t.DEPT_CODE = #{deptCode} </if>
+        <if test="cpzxt != null and cpzxt != ''"> and t.CPZXT = #{cpzxt} </if>
     </sql>
 
     <select id="selectEtSiteInstall" resultMap="etSiteInstallResult" parameterType="etSiteInstall">
@@ -93,6 +97,8 @@
             <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
             <if test="operatorTime != null ">OPERATOR_TIME,</if>
             <if test="remark != null and remark != ''">REMARK,</if>
+            <if test="deptCode != null and deptCode != ''"> DEPT_CODE, </if>
+            <if test="cpzxt != null and cpzxt != ''"> CPZXT, </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -113,6 +119,8 @@
             <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
             <if test="operatorTime != null ">#{operatorTime, jdbcType=TIMESTAMP},</if>
             <if test="remark != null and remark != ''">#{remark, jdbcType=LONGVARCHAR},</if>
+            <if test="deptCode != null and deptCode != ''"> #{deptCode, jdbcType=VARCHAR}, </if>
+            <if test="cpzxt != null and cpzxt != ''"> #{cpzxt, jdbcType=VARCHAR}, </if>
         </trim>
     </insert>
 
@@ -146,6 +154,8 @@
                     #{operatorTime, jdbcType=TIMESTAMP},
                 </if>
                 <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
+                <if test="deptCode != null and deptCode != ''"> DEPT_CODE = #{deptCode, jdbcType=VARCHAR}, </if>
+                <if test="cpzxt != null and cpzxt != ''"> CPZXT = #{cpzxt, jdbcType=VARCHAR}, </if>
             </trim>
         </set>
         <where>

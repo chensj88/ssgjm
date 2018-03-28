@@ -34,7 +34,7 @@ public class ProductReportController extends BaseController {
 
     @RequestMapping(value = "/pReport/queryById.do")
     @ResponseBody
-    public Map<String, Object> queryProductReportById(SysProductPaperInfo paperInfo) {
+    public Map<String, Object> queryProductReportById(SysProductPaperInfo paperInfo,SysReportInfo reportInfo) {
         List<SysProductPaperInfo> paperInfoList = super.getFacade().
                 getSysProductPaperInfoService().getSysProductPaperInfoList(paperInfo);
         Map<String, Object> param = new HashMap<String, Object>();
@@ -42,7 +42,7 @@ public class ProductReportController extends BaseController {
         if (paperInfoList != null && paperInfoList.size() > 0) {
             List<String> idString = super.getFacade().getSysProductPaperInfoService().getSysPaperInfoIds(paperInfoList);
             param.put("pks", idString);
-            SysReportInfo reportInfo = new SysReportInfo();
+            reportInfo.setStatus(Constants.STATUS_USE);
             reportInfo.setMap(param);
             List<SysReportInfo> sysReportInfoList = super.getFacade().getSysReportInfoService().getSysReportInfoListById(reportInfo);
             result.put("status", Constants.SUCCESS);

@@ -101,6 +101,16 @@ public class EtSiteInstall extends BaseDomain implements Serializable {
 	 * @val 备注
 	 */
 	private String remark;
+
+	/**
+	 * @val 部门编码
+	 */
+	private String deptCode;
+
+	/**
+	 * @val 使用系统（合同主系统）
+	 */
+	private String cpzxt;
 	
 	public EtSiteInstall() {
 
@@ -342,6 +352,22 @@ public class EtSiteInstall extends BaseDomain implements Serializable {
 	 */
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getDeptCode() {
+		return deptCode;
+	}
+
+	public void setDeptCode(String deptCode) {
+		this.deptCode = deptCode;
+	}
+
+	public String getCpzxt() {
+		return cpzxt;
+	}
+
+	public void setCpzxt(String cpzxt) {
+		this.cpzxt = cpzxt;
 	}
 	
 }

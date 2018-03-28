@@ -40,7 +40,7 @@ public class ProductInterfaceController extends BaseController {
      */
     @RequestMapping(value = "/pthirdinfo/queryById.do")
     @ResponseBody
-    public Map<String, Object> queryBdataInfoById(SysProductInterfaceInfo interfaceInfo) {
+    public Map<String, Object> queryBdataInfoById(SysProductInterfaceInfo interfaceInfo,SysThirdInterfaceInfo sysThirdInterfaceInfo) {
         //获取符合要求的接口信息List
         List<SysProductInterfaceInfo> interfaceInfoList = super.getFacade().getSysProductInterfaceInfoService().getSysProductInterfaceInfoList(interfaceInfo);
         Map<String, Object> param = new HashMap<String, Object>();
@@ -49,8 +49,8 @@ public class ProductInterfaceController extends BaseController {
         if (interfaceInfoList != null && interfaceInfoList.size() > 0) {
             List<String> idString = super.getFacade().getSysProductInterfaceInfoService().getInterfaceIds(interfaceInfoList);
             param.put("pks", idString);
-            SysThirdInterfaceInfo sysThirdInterfaceInfo = new SysThirdInterfaceInfo();
             sysThirdInterfaceInfo.setMap(param);
+            sysThirdInterfaceInfo.setStatus(Constants.STATUS_USE);
             List<SysThirdInterfaceInfo> sysThirdInterfaceInfoList = super.getFacade().getSysThirdInterfaceInfoService().getSysThirdInterfaceInfoListByIds(sysThirdInterfaceInfo);
             result.put("status", Constants.SUCCESS);
             result.put("data", sysThirdInterfaceInfoList);

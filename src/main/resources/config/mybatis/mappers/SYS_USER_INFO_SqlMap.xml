@@ -57,6 +57,7 @@
         <if test="userid != null and userid != ''">AND t.USERID LIKE '%${userid}%'</if>
         <if test="yhmc != null and yhmc != ''">AND t.YHMC LIKE '%${yhmc}%'</if>
         <if test="mobile != null and mobile != ''">AND t.MOBILE LIKE '%${mobile}%'</if>
+        <if test="status != null ">AND t.STATUS LIKE ${status}</if>
     </sql>
 
     <select id="selectSysUserInfo" resultMap="sysUserInfoResult" parameterType="sysUserInfo">

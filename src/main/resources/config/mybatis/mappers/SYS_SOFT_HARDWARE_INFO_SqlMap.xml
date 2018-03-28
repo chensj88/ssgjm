@@ -184,9 +184,11 @@
     <select id="selectSysSoftHardwareInfoListByIds" parameterType="sysSoftHardwareInfo" resultMap="sysSoftHardwareInfoResult">
         select * from SYS_SOFT_HARDWARE_INFO t
         <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="status != null ">AND t.STATUS = ${status}</if>
+            <if test="shName != null and shName != ''">AND ( t.SH_NAME LIKE '%${shName}%'</if>
+            <if test="shCode != null and shCode != ''">OR t.SH_CODE LIKE '%${shCode}%')</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0 )">
-                ID in
+                AND ID in
                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
             </if>
         </where>
@@ -196,8 +198,9 @@
         select *
         from SYS_SOFT_HARDWARE_INFO t
         <where>
-            <if test="shName != null and shName != ''">and t.SH_NAME LIKE '%${shName}%'</if>
-            <if test="shCode != null and shCode != ''">and t.SH_CODE LIKE '%${shCode}%'</if>
+            <if test="status != null ">and t.STATUS = ${status}</if>
+            <if test="shName != null and shName != ''">and ( t.SH_NAME LIKE '%${shName}%'</if>
+            <if test="shCode != null and shCode != ''">OR t.SH_CODE LIKE '%${shCode}%')</if>
         </where>
     </select>
 </mapper>
