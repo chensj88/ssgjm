@@ -53,6 +53,7 @@ public class SysDataInfoController extends BaseController {
     @ResponseBody
     public Map<String, Object> list(Row row, SysDataInfo sysDataInfo) {
         sysDataInfo.setRow(row);
+        sysDataInfo.setStatus(Constants.STATUS_USE);
         List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().getSysDataInfoPaginatedListForSelectiveKey(sysDataInfo);
         int total = getFacade().getSysDataInfoService().getSysDataInfoCountForSelectiveKey(sysDataInfo);
         Map<String, Object> map = new HashMap<String, Object>();
@@ -71,11 +72,10 @@ public class SysDataInfoController extends BaseController {
     @RequestMapping("/listNoPage.do")
     @ResponseBody
     public Map<String, Object> listNoPage(SysDataInfo sysDataInfo) {
-        List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().getSysDataInfoListForSelectiveKey(sysDataInfo);
-        int total = getFacade().getSysDataInfoService().getSysDataInfoCount(sysDataInfo);
+        sysDataInfo.setStatus(Constants.STATUS_USE);
+        List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().getSysDataInfoListForORKey(sysDataInfo);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", sysDataInfos);
-        map.put("total", total);
         map.put("status", Constants.SUCCESS);
         return map;
     }

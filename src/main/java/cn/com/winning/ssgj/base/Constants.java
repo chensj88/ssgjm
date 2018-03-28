@@ -148,6 +148,26 @@ public class Constants implements Serializable {
          * 合同产品类别 接口/自助机清单
          */
         public static final int CPLB_9 = 9;
+        /**
+         * 产品类型 软件
+         */
+        public static final int CPLX_1 = 1;
+        /**
+         * 产品类型 硬件
+         */
+        public static final int CPLX_2 = 2;
+        /**
+         * 产品类型 服务
+         */
+        public static final int CPLX_3 = 3;
+        /**
+         * 产品类型 期间服务
+         */
+        public static final int CPLX_4 = 4;
+        /**
+         * 产品类型 集成服务
+         */
+        public static final int CPLX_5 = 5;
 
     }
 

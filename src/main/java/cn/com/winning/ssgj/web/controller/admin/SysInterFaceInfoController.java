@@ -51,6 +51,7 @@ public class SysInterFaceInfoController extends BaseController {
     @ResponseBody
     public Map<String, Object> list(Row row, SysThirdInterfaceInfo sysThirdInterfaceInfo) {
         sysThirdInterfaceInfo.setRow(row);
+        sysThirdInterfaceInfo.setStatus(Constants.STATUS_USE);
         List<SysThirdInterfaceInfo> sysThirdInterfaceInfos = getFacade().getSysThirdInterfaceInfoService().getSysThirdInterfaceInfoPaginatedListForSelectiveKey(sysThirdInterfaceInfo);
         int total = getFacade().getSysThirdInterfaceInfoService().getSysThirdInterfaceInfoCountForSelectiveKey(sysThirdInterfaceInfo);
         Map<String, Object> map = new HashMap<String, Object>();
@@ -137,6 +138,7 @@ public class SysInterFaceInfoController extends BaseController {
     @RequestMapping(value = "/listNoPage.do")
     @ResponseBody
     public Map<String, Object> queryInterfaceListNoPage(SysThirdInterfaceInfo interfaceInfo) {
+        interfaceInfo.setStatus(Constants.STATUS_USE);
         List<SysThirdInterfaceInfo> infoList = super.getFacade().getSysThirdInterfaceInfoService().getSysThirdInterfaceInfoListForNames(interfaceInfo);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);

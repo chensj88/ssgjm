@@ -44,7 +44,7 @@ public class SFtpUtils {
      * @return 连接对象
      * @throws JSchException 异常
      */
-    private static ChannelSftp getSftpConnect() throws JSchException {
+    public static ChannelSftp getSftpConnect() throws JSchException {
         ChannelSftp sftp = null;
         JSch jsch = new JSch();
         jsch.getSession(username, server, port);

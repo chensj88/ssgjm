@@ -44,7 +44,6 @@ function edit(id,reportCode,reportName,reportDesc,reportType) {
     $('#sysReportInfoModal').modal('show');
 }
 $(function () {
-    $('#reportQType').val("");
 
     function SearchData(){
         $('#infoTable').bootstrapTable('refresh', { pageNumber: 1 });
@@ -121,43 +120,43 @@ $(function () {
             formatter: function (value) {
                 if (value == '0') {
                     return '凭条';
-                } else if (value = '1') {
+                } else if (value == '1') {
                     return '发票';
                 }
-                else if (value = '2') {
+                else if (value == '2') {
                     return '缴款';
                 }
-                else if (value = '3') {
+                else if (value == '3') {
                     return '缴款单据';
                 }
-                else if (value = '4') {
+                else if (value == '4') {
                     return '单据';
                 }
-                else if (value = '5') {
+                else if (value == '5') {
                     return '台账';
                 }
-                else if (value = '6') {
+                else if (value == '6') {
                     return '处方医嘱';
                 }
-                else if (value = '7') {
+                else if (value == '7') {
                     return '申请单';
                 }
-                else if (value = '8') {
+                else if (value == '8') {
                     return '治疗单据';
                 }
-                else if (value = '9') {
+                else if (value == '9') {
                     return '医疗文书';
                 }
-                else if (value = '10') {
+                else if (value == '10') {
                     return '临时医嘱';
                 }
-                else if (value = '11') {
+                else if (value == '11') {
                     return '报告调阅';
                 }
-                else if (value = '12') {
+                else if (value == '12') {
                     return '巡视单';
                 }
-                else if (value = '13') {
+                else if (value == '13') {
                     return '报表';
                 }
             },

@@ -8,6 +8,8 @@ import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSONArray;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSchException;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
@@ -22,10 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.sql.*;
@@ -53,7 +52,7 @@ public class EtDataCheckController extends BaseController {
      * 基础数据类型列表
      *
      * @param row
-     * @param proStr   项目id
+     * @param proStr 项目id
      * @return
      * @description 根据项目id获取基础数据
      */
@@ -85,36 +84,26 @@ public class EtDataCheckController extends BaseController {
         //获取基础数据校验
         List<EtDataCheck> pmisProductInfos =
                 getFacade().getEtDataCheckService().getEtDataCheckPaginatedList(etDataCheck);
-        int total = getFacade().getEtDataCheckService().getEtDataCheckCount(etDataCheck);
-        for (int i = 0; i < pmisProductInfos.size(); i++) {
-            EtDataCheck etDataCheckTemp = pmisProductInfos.get(i);
-            //获取产品条线id
-            Long plId = etDataCheckTemp.getPlId();
-            PmisProductLineInfo pmisProductLineInfoTemp = new PmisProductLineInfo();
-            pmisProductLineInfoTemp.setId(plId);
-            //获取产品条线信息
-            PmisProductLineInfo pmisProductLineInfo = getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfoTemp);
-            String pmisProductLineInfoName=pmisProductLineInfo.getName();
-            //获取产品信息id
-            Long pdId = etDataCheckTemp.getPdId();
-            PmisProductInfo pmisProductInfoTemp=new PmisProductInfo();
-            pmisProductInfoTemp.setId(pdId);
-            //获取产品信息
-            PmisProductInfo pmisProductInfo = getFacade().getPmisProductInfoService().getPmisProductInfo(pmisProductInfoTemp);
-            String pmisProductInfoName=pmisProductInfo.getName();
-            //获取脚本文件地址
-            String url=etDataCheck.getScriptPath();
-            String localPath="";
-            try {
-                FtpUtils.downloadFile(url,localPath);
-            } catch (IOException e) {
-                e.printStackTrace();
+        PmisProductInfo pmisProductInfo=new PmisProductInfo();
+        SysDataCheckScript sysDataCheckScript=new SysDataCheckScript();
+        //封装外参数
+        for (EtDataCheck e : pmisProductInfos) {
+            pmisProductInfo.setId(e.getPdId());
+            sysDataCheckScript.setAppId(e.getPlId());
+            pmisProductInfo=getFacade().getPmisProductInfoService().getPmisProductInfo(pmisProductInfo);
+            sysDataCheckScript=getFacade().getSysDataCheckScriptService().getSysDataCheckScript(sysDataCheckScript);
+            Map<String,Object> map=new HashMap();
+            map.put("subSystem",pmisProductInfo.getName());
+            map.put("type",sysDataCheckScript.getAppName());
+            String checkResult = e.getCheckResult();
+            if(checkResult==null||"没问题".equals(checkResult)||"".equals(checkResult)){
+                map.put("state",0);
+            }else {
+                map.put("state",1);
             }
-
-
+            e.setMap(map);
         }
-
-
+        int total = getFacade().getEtDataCheckService().getEtDataCheckCount(etDataCheck);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", pmisProductInfos);
         map.put("total", total);
@@ -132,44 +121,19 @@ public class EtDataCheckController extends BaseController {
     @RequestMapping("/detail.do")
     @ResponseBody
     @ILog
-    public Map<String, Object> detail(SysDataInfo t) {
+    public Map<String, Object> detail(EtDataCheck t) {
         //根据id获取表属性
-        SysDataInfo sysDataInfo = getFacade().getSysDataInfoService().getSysDataInfo(t);
-        //表名
-        String tableName = sysDataInfo.getTableName();
-        logger.info("tableName:{}", tableName);
-        //数据库
-        String dbName = sysDataInfo.getDbName();
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ").append(dbName).append(".dbo.").append(tableName);
-        String sql = sqlBuilder.toString();
-        logger.info("sql:{}", sql);
-        Connection connection = ConnectionUtil.getConnection();
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        JSONArray jsonArray = null;
-        //列名集合
-        List cols = new ArrayList();
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            resultSet = preparedStatement.executeQuery();
-            jsonArray = ResultSetUtil.resultSetToJSONArray(resultSet);
-            //获取列名
-            ResultSetMetaData metaData = resultSet.getMetaData();
-            //表列数
-            int colNum = metaData.getColumnCount();
-            for (int i = 1; i <= colNum; i++) {
-                cols.add(metaData.getColumnName(i));
-            }
+        EtDataCheck etDataCheck = getFacade().getEtDataCheckService().getEtDataCheck(t);
+        //获取content
+        String content = etDataCheck.getContent();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (StringUtil.isEmptyOrNull(content)) {
             return null;
         }
-
+        JSONArray jsonArray = JSONArray.parseArray(content);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("data", jsonArray);
         map.put("status", Constants.SUCCESS);
-        map.put("cols", cols);
         return map;
     }
 
@@ -184,12 +148,14 @@ public class EtDataCheckController extends BaseController {
     @RequestMapping(value = "/upload.do")
     @ResponseBody
     @ILog
-    public Map<String, Object> upload(HttpServletRequest request, MultipartFile file) throws IOException {
+    public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtDataCheck t) throws IOException {
+        //根据id获取表属性
+        EtDataCheck etDataCheck = getFacade().getEtDataCheckService().getEtDataCheck(t);
         Map<String, Object> result = new HashMap<String, Object>();
         //如果文件不为空，写入上传路径
         if (!file.isEmpty()) {
             //上传文件路径
-            String path = request.getServletContext().getRealPath("/temp/");
+            String path = request.getServletContext().getRealPath("/script/");
             //上传文件名
             String filename = file.getOriginalFilename();
             File filepath = new File(path, filename);
@@ -203,10 +169,15 @@ public class EtDataCheckController extends BaseController {
                 newFile.delete();
             }
             file.transferTo(newFile);
-
+            JSONArray jsonArray = new JSONArray();
             try {
-                List<List<Object>> sysDataInfoList = ExcelUtil.importExcel(newFile.getPath());
-                super.getFacade().getSysDataInfoService().createSysDataInfoByList(sysDataInfoList);
+                List<List<Object>> etDataCheckList = ExcelUtil.importExcel(newFile.getPath());
+                for (List<Object> e : etDataCheckList) {
+                    jsonArray.add(e);
+                }
+                System.out.println(jsonArray.toJSONString());
+                etDataCheck.setContent(jsonArray.toJSONString());
+                getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheck);
                 newFile.delete();
                 result.put("status", "success");
             } catch (Exception e) {
@@ -322,27 +293,25 @@ public class EtDataCheckController extends BaseController {
     @RequestMapping(value = "/exportSql.do")
     @ResponseBody
     @ILog
-    public void exportSql(HttpServletResponse response, SysDataInfo t) throws IOException {
-        //获取数据信息
-        SysDataInfo sysDataInfo = getFacade().getSysDataInfoService().getSysDataInfo(t);
-        String dbName = sysDataInfo.getDbName();
-        String tableName = sysDataInfo.getTableName();
-        //导出文件名
-        String filename = sysDataInfo.getTableName() + ".sql";
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ").append(dbName).append(".dbo.").append(tableName);
-        String sql = sqlBuilder.toString();
-        Connection connection = ConnectionUtil.getConnection();
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        String sqlStr = null;
+    public void exportSql(HttpServletResponse response, EtDataCheck t) throws IOException {
+        //获取数据校验信息
+        EtDataCheck etDataCheck = getFacade().getEtDataCheckService().getEtDataCheck(t);
+        //获取脚本地址
+        String scriptPath = etDataCheck.getScriptPath();
+        //获取文件名
+        String filename = scriptPath.substring(scriptPath.lastIndexOf("/") + 1);
+        ChannelSftp sftpConnect = null;
+        byte[] bytes = null;
         try {
-            preparedStatement = connection.prepareStatement(sql);
-            resultSet = preparedStatement.executeQuery();
-            sqlStr = ResultSetUtil.resultSetToSql(resultSet, dbName, tableName);
+            sftpConnect = SFtpUtils.getSftpConnect();
+            //sftpConnect.setFilenameEncoding("GBK");
+            bytes = SFtpUtils.downloadAsByte(scriptPath, sftpConnect);
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+
         response.setCharacterEncoding("utf-8");
         //设置响应内容的类型
         response.setContentType("text/plain");
@@ -353,7 +322,7 @@ public class EtDataCheckController extends BaseController {
         try {
             outStr = response.getOutputStream();
             buff = new BufferedOutputStream(outStr);
-            buff.write(sqlStr.getBytes("UTF-8"));
+            buff.write(bytes);
             buff.flush();
             buff.close();
         } catch (Exception e) {
@@ -366,23 +335,6 @@ public class EtDataCheckController extends BaseController {
                 logger.error("关闭流对象出错 e:{}", e);
             }
         }
-    }
-
-    @RequestMapping(value = "/addOrModify.do")
-    @ResponseBody
-    @ILog
-    public Map<String, Object> addOrModify(SysDataInfo sysDataInfo) {
-        if (sysDataInfo.getId() == 0L || sysDataInfo == null) {
-            //不存在id或id为初始值，则为新增数据
-            sysDataInfo.setId(ssgjHelper.createDataId());
-            super.getFacade().getSysDataInfoService().createSysDataInfo(sysDataInfo);
-        } else {
-            //存在id，则为更新数据
-            super.getFacade().getSysDataInfoService().modifySysDataInfo(sysDataInfo);
-        }
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("status", Constants.SUCCESS);
-        return result;
     }
 }
 

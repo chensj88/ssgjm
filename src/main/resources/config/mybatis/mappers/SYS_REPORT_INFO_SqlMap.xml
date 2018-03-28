@@ -116,7 +116,7 @@
 			</trim>
 		</set>
 		where
-		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="id != null and id != ''"> ID = #{id} </if>
 		<if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
 			ID in
 			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
@@ -125,7 +125,7 @@
 
 	<delete id="deleteSysReportInfo" parameterType="sysReportInfo">
 		delete from SYS_REPORT_INFO where
-		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="id != null and id != ''"> ID = #{id} </if>
 		<if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
 			ID in
 			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
@@ -153,9 +153,11 @@
 	<select id="selectSysReportInfoListByIds" parameterType="sysReportInfo" resultMap="sysReportInfoResult">
 		select * from SYS_REPORT_INFO t
 		<where>
-			<if test="id != null and id != ''">ID = #{id}</if>
+			<if test="reportCode != null and reportCode != ''">AND (t.REPORT_CODE LIKE '%${reportCode}%'</if>
+			<if test="reportName != null and reportName != ''"> OR t.REPORT_NAME LIKE '%${reportName}%' )</if>
+			<if test="status != null"> AND  t.STATUS = #{status, jdbcType=INTEGER} </if>
 			<if test="(id == null or id == '') and (map.pks != null and map.pks.size >0 )">
-				ID in
+				AND ID in
 				<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
 			</if>
 		</where>
@@ -165,8 +167,8 @@
 	   select *
 	   from SYS_REPORT_INFO t
 	   <where>
-		   <if test="reportCode != null and reportCode != ''">and t.REPORT_CODE LIKE '%${reportCode}%'</if>
-		   <if test="reportName != null and reportName != ''">and t.REPORT_NAME LIKE '%${reportName}%'</if>
+		   <if test="reportCode != null and reportCode != ''">AND (t.REPORT_CODE LIKE '%${reportCode}%'</if>
+		   <if test="reportName != null and reportName != ''">OR t.REPORT_NAME LIKE '%${reportName}%' )</if>
 		   <if test="status != null"> AND  t.STATUS = #{status, jdbcType=INTEGER} </if>
 	   </where>
    </select>

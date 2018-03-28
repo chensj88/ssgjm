@@ -46,13 +46,13 @@
 <div class="row" id="queryScope">
     <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12" >
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3" >
-            <label class="col-sm-5 control-label text-right" for="shQCode">软硬件编号：</label>
+            <label class="col-sm-6 control-label text-right" for="shQCode">软硬件编号：</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control input-sm" id="shQCode"/>
             </div>
         </div>
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
-            <label class="col-sm-5 control-label text-right" for="shQName">软硬件名称：</label>
+            <label class="col-sm-6 control-label text-right" for="shQName">软硬件名称：</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control input-sm" id="shQName"/>
             </div>
@@ -61,6 +61,7 @@
             <label class="col-sm-6 control-label text-right" for="shQType">设备分类：</label>
             <div class="col-sm-4">
                 <select name="shType" id="shQType" class="form-control">
+                    <option value="-1"></option>
                     <option value="0">软件</option>
                     <option value="1">硬件</option>
                 </select>

@@ -24,7 +24,22 @@ $(function () {
      * @constructor
      */
     function SearchConfigData() {
-        $('#config').bootstrapTable('refresh');
+        var url = Common.getRootPath() + "/admin/pReport/queryById.do";
+        $.ajax({
+            type: "post",
+            url: url,
+            data: {"pdId": productId,reportCode: $.trim($('#infoB').val()), reportName: $.trim($('#infoB').val())},
+            dataType: 'json',
+            success: function (data, status) {
+                if (data.status == Common.SUCCESS) {
+                    initConfigtable(data);
+                }
+            },
+            error: function (e) {
+                console.log(e);
+                Ewin.alert('Error:' + e.statusText);
+            }
+        });
     }
 
     /**
@@ -72,7 +87,8 @@ $(function () {
     var queryTable =  $('#query');
     var configTable =  $('#config');
     var infoTable = $('#infoTable');
-    /**=================================事件绑定==============================================*/
+    var productId = 0 ;
+        /**=================================事件绑定==============================================*/
     /**
      * 初始化已配置数据Table
      * @param data 后台json
@@ -120,7 +136,7 @@ $(function () {
                     width: '45px',
                     align: 'center'
                 }, {
-                    field: "repoetDesc",
+                    field: "reportDesc",
                     title: "描述",
                     width: '50px',
                     align: 'center'
@@ -449,7 +465,7 @@ $(function () {
             width: '45px',
             align: 'center'
         }, {
-            field: "repoetDesc",
+            field: "reportDesc",
             title: "描述",
             width: '50px',
             align: 'center'
@@ -478,7 +494,7 @@ $(function () {
     pdTable.on('click-row.bs.table', function (event, row, element, field) {
         $('#productTable .success').removeClass('success');//去除之前选中的行的，选中样式
         $(element).addClass('success');//添加当前选中的 success样式用于区别
-        var productId = row.id;
+        productId = row.id;
         var url = Common.getRootPath() + "/admin/pReport/queryById.do";
         $.ajax({
             type: "post",

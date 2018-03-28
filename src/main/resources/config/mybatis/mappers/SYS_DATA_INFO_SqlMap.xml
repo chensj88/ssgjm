@@ -44,14 +44,11 @@
         <if test="dbName != null and dbName != ''">and t.DB_NAME LIKE '%${dbName}%'</if>
         <if test="tableName != null and tableName != ''">and t.TABLE_NAME LIKE '%${tableName}%'</if>
         <if test="tableCnName != null and tableCnName != ''">and t.TABLE_CN_NAME LIKE '%${tableCnName}%'</if>
+        <if test="status != null ">and t.STATUS = ${status}</if>
     </sql>
 
 
-    <sql id="queryOrSysDataInfo">
-        <if test="dbName != null and dbName != ''">and ( t.DB_NAME LIKE '%${dbName}%'</if>
-        <if test="tableName != null and tableName != ''">OR t.TABLE_NAME LIKE '%${tableName}%'</if>
-        <if test="tableCnName != null and tableCnName != ''">OR t.TABLE_CN_NAME LIKE '%${tableCnName}%' )</if>
-    </sql>
+
 
     <select id="selectSysDataInfo" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
         select * from SYS_DATA_INFO t where 1 = 1
@@ -191,11 +188,17 @@
     <select id="selectSysDataInfoCountForSelectiveKey" resultType="java.lang.Integer" parameterType="sysDataInfo">
         select count(*) from SYS_DATA_INFO t
         <where>
-            <include refid="queryOrSysDataInfo"/>
+            <include refid="query-sysDataInfo"/>
         </where>
     </select>
 
-    <select id="selectSysDataInfoListForSelectiveKey" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
+    <sql id="queryOrSysDataInfo">
+        <if test="status != null ">and  t.STATUS = ${status} </if>
+        <if test="tableName != null and tableName != ''">and ( t.TABLE_NAME LIKE '%${tableName}%'</if>
+        <if test="tableCnName != null and tableCnName != ''">OR t.TABLE_CN_NAME LIKE '%${tableCnName}%' )</if>
+    </sql>
+
+    <select id="selectSysDataInfoListForORKey" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
         select *
         from SYS_DATA_INFO t
         <where>
@@ -207,9 +210,11 @@
         select *
         from SYS_DATA_INFO t
         <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="status != null ">and  t.STATUS = ${status} </if>
+            <if test="tableName != null and tableName != ''">and ( t.TABLE_NAME LIKE '%${tableName}%'</if>
+            <if test="tableCnName != null and tableCnName != ''">OR t.TABLE_CN_NAME LIKE '%${tableCnName}%' )</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0 )">
-                ID in
+                AND t.ID in
                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
             </if>
         </where>

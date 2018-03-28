@@ -35,6 +35,7 @@
         <if test="interCode != null and interCode != ''">and t.INTER_CODE LIKE '%${interCode}%' </if>
         <if test="interName != null and interName != ''">and t.INTER_NAME LIKE '%${interName}%'  </if>
         <if test="refProductName != null and refProductName != ''">and t.REF_PRODUCT_NAME LIKE '%${refProductName}%' </if>
+        <if test="(status != null )">and t.STATUS = #{status}</if>
     </sql>
 
     <select id="selectSysThirdInterfaceInfo" resultMap="sysThirdInterfaceInfoResult"
@@ -165,9 +166,11 @@
     <select id="selectSysThirdInterfaceInfoListByIds" resultMap="sysThirdInterfaceInfoResult"  parameterType="sysThirdInterfaceInfo">
       select * from SYS_THIRD_INTERFACE_INFO t
         <where>
-            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="status != null">AND t.STATUS = ${status}</if>
+            <if test="interCode != null and interCode != ''">AND ( t.INTER_CODE LIKE '%${interCode}%'</if>
+            <if test="interName != null and interName != ''">OR t.INTER_NAME LIKE '%${interName}%' )</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0 )">
-                ID in
+                AND  ID in
                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
             </if>
         </where>
@@ -178,8 +181,9 @@
         select *
         from SYS_THIRD_INTERFACE_INFO t
         <where>
-            <if test="interCode != null and interCode != ''">and t.INTER_CODE LIKE '%${interCode}%'</if>
-            <if test="interName != null and interName != ''">and t.INTER_NAME LIKE '%${interName}%'</if>
+            <if test="status != null">and t.STATUS = ${status}</if>
+            <if test="interCode != null and interCode != ''">AND ( t.INTER_CODE LIKE '%${interCode}%'</if>
+            <if test="interName != null and interName != ''">OR t.INTER_NAME LIKE '%${interName}%' )</if>
         </where>
     </select>
 </mapper>

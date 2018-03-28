@@ -44,7 +44,7 @@ public class SiteQuestionController extends BaseController {
     public String SiteQuestionList(Model model, String parameter) {
         //String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9"; //工号
         //String hospcode="11980";  //客户号
-        //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
+        parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
         EtSiteQuestionInfo entity = new EtSiteQuestionInfo();
         try{
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
@@ -88,8 +88,6 @@ public class SiteQuestionController extends BaseController {
     public String addAndUpdate(Model model, String userId,String serialNo,Long id) {
         EtSiteQuestionInfo siteQuestionInfo = new EtSiteQuestionInfo();
         EtSiteInstall install = new EtSiteInstall();
-        PmisContractProductInfo contractProductInfo = new PmisContractProductInfo();
-
         if(id != null && id != 0){
             siteQuestionInfo.setId(id);
             siteQuestionInfo=super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(siteQuestionInfo);
@@ -98,24 +96,17 @@ public class SiteQuestionController extends BaseController {
                 List<String> lists= Arrays.asList(imgs);
                 siteQuestionInfo.setImgs(lists);
             }
-            //siteQuestionInfo.setImgPath(imgs);
             model.addAttribute("siteQuestionInfo",siteQuestionInfo);
-
         }
         //获取站点信息(科室名称，)
         install.setSerialNo(serialNo);
         List<EtSiteInstall> installList = super.getFacade().getEtSiteInstallService().getEtSiteInstallList(install);
-        //菜单名称
-        //获取合同/任务单(系统名称，菜单名称)
-        contractProductInfo.setKhxx(Long.parseLong(serialNo));
-        List<PmisContractProductInfo> contractProductInfos = super.getFacade().getPmisContractProductInfoService()
-                .getPmisContractProductInfoMkList(contractProductInfo);
+
         //获取文件的类型
         SysDictInfo info1 = new SysDictInfo();
         info1.setDictCode("questionType");
         List<SysDictInfo> dictInfos =super.getFacade().getSysDictInfoService().getSysDictInfoList(info1);
         model.addAttribute("dictInfos",dictInfos);
-        model.addAttribute("contractProductInfos",contractProductInfos);
         model.addAttribute("installList",installList);
         model.addAttribute("userId",userId);
         model.addAttribute("serialNo",serialNo);
@@ -309,6 +300,32 @@ public class SiteQuestionController extends BaseController {
         info.setAllocateUser(allocateUser);
         try{
             super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+            map.put("status",true);
+        }catch (Exception e){
+            map.put("status",false);
+        }
+        return map;
+    }
+
+
+    /**
+     * Chen,Kuai 响应数据
+     * @param id
+     * @return
+     */
+    @RequestMapping("/loadData.do")
+    @ResponseBody
+    @ILog
+    public Map<String,Boolean> loadData(String type,String userId,String serialNo){
+        Map<String,Boolean> map = new HashMap<String,Boolean>();
+        PmisContractProductInfo contractProductInfo = new PmisContractProductInfo();
+        try{
+            if("1".equals(type)){  //系统站点
+                //获取合同/任务单(系统名称，菜单名称)
+                contractProductInfo.setKhxx(Long.parseLong(serialNo));
+                List<PmisContractProductInfo> contractProductInfos = super.getFacade().getPmisContractProductInfoService()
+                        .getPmisContractProductInfoMkList(contractProductInfo);
+            }
             map.put("status",true);
         }catch (Exception e){
             map.put("status",false);

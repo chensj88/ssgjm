@@ -108,7 +108,7 @@ $(function () {
             first: params.offset,   // 显示条数
             sort: params.sort,      // 排序列名
             order: params.order,     // 排位命令（desc，asc）
-            dbName: $.trim($('#dbQName').val()).toUpperCase(),
+            dbName: $.trim($('#dbQName').val()),
             tableName: $.trim($('#tableQName').val()),
             tableCnName: $.trim($('#tableQCnName').val())
 
@@ -259,7 +259,6 @@ $(function () {
     $('#infoTable').on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var productInfoId = $(this).attr('aid');
-        alert(productInfoId);
         Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
             if (!e) {
                 return;
@@ -272,7 +271,7 @@ $(function () {
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
                         Ewin.alert('提交数据成功');
-                        $("#productInfo").bootstrapTable('refresh');
+                        $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function () {

@@ -46,7 +46,7 @@
 <div class="row" id="queryScope">
     <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center" >
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3" >
-            <label class="col-sm-5 control-label text-right" for="reportQCode">编号：</label>
+            <label class="col-sm-5 control-label text-right" for="reportQCode">代码：</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control input-sm" id="reportQCode"/>
             </div>
@@ -61,6 +61,7 @@
             <label class="col-sm-6 control-label text-right" for="reportQType">类型：</label>
             <div class="col-sm-4">
                 <select class="form-control" id="reportQType" name="reportQType">
+                    <option value="-1" ></option>
                     <option value="0" >凭条</option>
                     <option value="1" >发票</option>
                     <option value="2" >缴款</option>
