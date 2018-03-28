@@ -47,6 +47,7 @@ public class FlowInfoController extends BaseController {
     @ResponseBody
     public Map<String, Object> getFlowList(Row row, SysFlowInfo flowInfo) {
         flowInfo.setRow(row);
+        flowInfo.setStatus(Constants.STATUS_USE);
         List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().getSysFlowInfoPaginatedListForSelective(flowInfo);
         int total = super.getFacade().getSysFlowInfoService().getSysFlowInfoCountForSelective(flowInfo);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -154,6 +155,7 @@ public class FlowInfoController extends BaseController {
     @RequestMapping(value = "/listNoPage.do")
     @ResponseBody
     public Map<String, Object> queryFlowListNoPage(SysFlowInfo flowInfo) {
+        flowInfo.setStatus(Constants.STATUS_USE);
         List<SysFlowInfo> sysDataInfos = getFacade().getSysFlowInfoService().getSysFlowInfoListForSelectiveKey(flowInfo);
         int total = getFacade().getSysFlowInfoService().getSysFlowInfoCountForSelectiveKey(flowInfo);
         Map<String, Object> map = new HashMap<String, Object>();

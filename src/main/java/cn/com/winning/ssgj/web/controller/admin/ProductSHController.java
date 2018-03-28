@@ -34,15 +34,15 @@ public class ProductSHController extends BaseController {
 
     @RequestMapping(value = "/pShInfo/queryById.do")
     @ResponseBody
-    public Map<String, Object> queryBdataInfoById(SysProductShInfo shInfo) {
+    public Map<String, Object> queryBdataInfoById(SysProductShInfo shInfo,SysSoftHardwareInfo data) {
         List<SysProductShInfo> shInfoList = super.getFacade().getSysProductShInfoService().getSysProductShInfoList(shInfo);
         Map<String, Object> param = new HashMap<String, Object>();
         Map<String, Object> result = new HashMap<String, Object>();
         if (shInfoList != null && shInfoList.size() > 0) {
             List<String> idString = super.getFacade().getSysProductShInfoService().getSoftwareHardwareInfoId(shInfoList);
             param.put("pks", idString);
-            SysSoftHardwareInfo data = new SysSoftHardwareInfo();
             data.setMap(param);
+            data.setStatus(Constants.STATUS_USE);
             List<SysSoftHardwareInfo> sysSoftHardwareInfoList = super.getFacade().getSysSoftHardwareInfoService().getSysSoftHardwareInfoListByIds(data);
             result.put("status", Constants.SUCCESS);
             result.put("data", sysSoftHardwareInfoList);

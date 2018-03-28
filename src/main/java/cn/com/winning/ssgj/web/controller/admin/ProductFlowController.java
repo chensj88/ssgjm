@@ -51,15 +51,15 @@ public class ProductFlowController extends BaseController {
      */
     @RequestMapping(value = "/pFlow/queryById.do")
     @ResponseBody
-    public Map<String, Object> queryProductFlowById(SysProductFlowInfo productFlowInfo) {
+    public Map<String, Object> queryProductFlowById(SysProductFlowInfo productFlowInfo,SysFlowInfo flowInfo) {
         List<SysProductFlowInfo> flowInfoList = super.getFacade().getSysProductFlowInfoService().getSysProductFlowInfoList(productFlowInfo);
         Map<String, Object> param = new HashMap<String, Object>();
         Map<String, Object> result = new HashMap<String, Object>();
         if (flowInfoList != null && flowInfoList.size() > 0) {
             List<String> idString = super.getFacade().getSysFlowInfoService().getFlowInfoId(flowInfoList);
             param.put("pks", idString);
-            SysFlowInfo flowInfo = new SysFlowInfo();
             flowInfo.setMap(param);
+            flowInfo.setStatus(Constants.STATUS_USE);
             List<SysFlowInfo> SysFlowInfoList = super.getFacade().getSysFlowInfoService().getSysFlowInfoListById(flowInfo);
             result.put("status", Constants.SUCCESS);
             result.put("data", SysFlowInfoList);

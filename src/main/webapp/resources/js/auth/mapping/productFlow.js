@@ -24,7 +24,22 @@ $(function () {
      * @constructor
      */
     function SearchConfigData() {
-        $('#configFlow').bootstrapTable('refresh');
+        var url = Common.getRootPath() + "/admin/pFlow/queryById.do";
+        $.ajax({
+            type: "post",
+            url: url,
+            data: {"pdId": productId,flowName: $.trim($('#flowInfoB').val()), flowCode: $.trim($('#flowInfoB').val())},
+            dataType: 'json',
+            success: function (data, status) {
+                if (data.status == Common.SUCCESS) {
+                    initConfigtable(data);
+                }
+            },
+            error: function (e) {
+                console.log(e);
+                Ewin.alert('Error:' + e.statusText);
+            }
+        });
     }
 
     /**
@@ -55,23 +70,12 @@ $(function () {
         };
     }
 
-    /**
-     * 已配置表查询参数
-     * @param params
-     * @returns {{count: *|number, first, sort, order, tableName: *|string, tableCnName: *|string}}
-     */
-    function configFlowInfoParams(params) {
-        return {
-            flowName: $.trim($('#flowInfoB').val()),
-            flowCode: $.trim($('#flowInfoB').val())
-        };
-    }
-
     /**=================================变量定义==============================================*/
     var pdTable =  $('#productTable');
     var queryTable =  $('#queryFlow');
     var configTable =  $('#configFlow');
     var infoTable = $('#infoTable');
+    var productId = 0;
     /**=================================事件绑定==============================================*/
     /**
      * 初始化已配置数据Table
@@ -101,7 +105,7 @@ $(function () {
                 paginationLoop: false, //分页条无限循环的功能
                 singleSelect: false,
                 selectItemName: '多选框',
-                queryParams: configFlowInfoParams, // 得到查询的参数
+               /* queryParams: configFlowInfoParams, // 得到查询的参数*/
                 columns: [{
                     checkbox: true,
                     align: 'center',
@@ -151,7 +155,7 @@ $(function () {
                 paginationLoop: false, //分页条无限循环的功能
                 singleSelect: false,
                 selectItemName: '多选框',
-                queryParams: configFlowInfoParams, // 得到查询的参数
+                /*queryParams: configFlowInfoParams, // 得到查询的参数*/
                 columns: [{
                     checkbox: true,
                     align: 'center',
@@ -486,7 +490,7 @@ $(function () {
     pdTable.on('click-row.bs.table', function (event, row, element, field) {
         $('#productTable .success').removeClass('success');//去除之前选中的行的，选中样式
         $(element).addClass('success');//添加当前选中的 success样式用于区别
-        var productId = row.id;
+        productId = row.id;
         var url = Common.getRootPath() + "/admin/pFlow/queryById.do";
         $.ajax({
             type: "post",
