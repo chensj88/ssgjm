@@ -26,6 +26,10 @@ public class EtUserLookProject extends BaseDomain implements Serializable {
 	 * @val 合同ID
 	 */
 	private Long cId;
+	/**
+	 * @val 客户信息
+	 */
+	private String serialNo;
 	
 	/**
 	 * @val 项目ID
@@ -73,7 +77,16 @@ public class EtUserLookProject extends BaseDomain implements Serializable {
 	public void setCId(Long cId) {
 		this.cId = cId;
 	}
-	
+
+
+	public String getSerialNo() {
+		return serialNo;
+	}
+
+	public void setSerialNo(String serialNo) {
+		this.serialNo = serialNo;
+	}
+
 	/**
 	 * @val 项目ID
 	 */

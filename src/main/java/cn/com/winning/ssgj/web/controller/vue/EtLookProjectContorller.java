@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.web.controller.vue;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.domain.EtProcessManager;
 import cn.com.winning.ssgj.domain.EtUserLookProject;
 import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
@@ -43,16 +44,37 @@ public class EtLookProjectContorller extends BaseController {
         EtUserLookProject project = new EtUserLookProject();
         project.setId(ssgjHelper.createEtLookProjectIdService());
         project.setUserId(userInfo.getId());
-        project.setCId(basicInfo.getKhxx());
+        project.setCId(basicInfo.getHtxx());
+        project.setSerialNo(basicInfo.getKhxx()+"");
         project.setPmId(projectId);
         project.setLoginTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtUserLookProjectService().createEtUserLookProject(project);
-        userInfo.getMap().put("C_ID",basicInfo.getKhxx());
-        userInfo.getMap().put("PM_ID",projectId);
+        createProcessManager(project);
+        userInfo.getMap().put("C_ID",basicInfo.getHtxx()); //合同ID
+        userInfo.getMap().put("CU_ID",basicInfo.getKhxx()); //客户ID
+        userInfo.getMap().put("PM_ID",projectId); //项目ID
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         result.put("user", userInfo);
         return result;
+    }
+
+    private void createProcessManager(EtUserLookProject project){
+        EtProcessManager processManager = new EtProcessManager();
+        processManager.setPmId(project.getPmId());
+        processManager.setCId(project.getCId());
+        processManager = super.getFacade().getEtProcessManagerService().getEtProcessManager(processManager);
+        if(processManager == null){
+            processManager = new EtProcessManager();
+            processManager.setId(ssgjHelper.createEtProcessManagerIdService());
+            processManager.setPmId(project.getPmId());
+            processManager.setCId(project.getCId());
+            processManager.setIsStart(Constants.STATUS_USE);
+            processManager.setIsAccept(Constants.STATUS_USE);
+            processManager.setCreator(project.getUserId());
+            processManager.setCreateTime(new Timestamp(new  Date().getTime()));
+            super.getFacade().getEtProcessManagerService().createEtProcessManager(processManager);
+        }
 
     }
 }

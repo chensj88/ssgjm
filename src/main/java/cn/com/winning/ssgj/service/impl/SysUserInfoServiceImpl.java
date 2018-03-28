@@ -100,7 +100,6 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
     }
 
     @Override
-
     public void generateUserInfo(SysUserInfo queryUser, String path) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         List<SysUserInfo> queryUserList = this.sysUserInfoDao.selectEntityList(queryUser);

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import javax.annotation.Resource;
 
+import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.dao.EtUserLookProjectDao;
 import cn.com.winning.ssgj.dao.SysOrgExtDao;
@@ -78,6 +79,7 @@ public class WinningRealm extends AuthorizingRealm {
 		String userid = (String) token.getPrincipal();
 		SysUserInfo userInfo = new SysUserInfo();
 		userInfo.setUserid(userid);
+		userInfo.setStatus(Constants.PMIS_STATUS_USE);
 		userInfo = sysUserInfoDao.selectEntity(userInfo);//获取用户基本信息
 		if (userInfo == null) {
 			throw new UnknownAccountException("该用户不存在");
@@ -88,6 +90,7 @@ public class WinningRealm extends AuthorizingRealm {
 				SysOrgExt orgExt = sysOrgExtDao.selectUserOrgExtByUserOrgId(userInfo.getSsgs());
 				if(etUserLookProject != null){
 					userInfo.getMap().put("C_ID",etUserLookProject.getCId());
+					userInfo.getMap().put("CU_ID",etUserLookProject.getSerialNo());
 					userInfo.getMap().put("PM_ID",etUserLookProject.getPmId());
 				}
 				userInfo.getMap().put("orgExt",orgExt.getOrgNameExt());

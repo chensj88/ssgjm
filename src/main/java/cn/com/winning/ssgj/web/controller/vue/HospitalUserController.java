@@ -5,6 +5,7 @@ import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.base.util.MD5;
+import cn.com.winning.ssgj.domain.EtProcessManager;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,7 +101,7 @@ public class HospitalUserController extends BaseController {
             // 清空response
             response.reset();
             // 设置response的Header
-            response.addHeader("Content-Disposition", "attachment;filename=" + new String("HospitalUserInfo.xls".getBytes()));
+            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("医院用户信息.xls","UTF-8"));
             response.addHeader("Content-Length", "" + file.length());
             OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/octet-stream");
@@ -161,6 +163,14 @@ public class HospitalUserController extends BaseController {
     public Map<String, Object> deleteHospitalUser(SysUserInfo userInfo){
         userInfo.setStatus(Constants.PMIS_STATUS_UNUSE);
         super.getFacade().getSysUserInfoService().modifySysUserInfo(userInfo);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
+
+    @RequestMapping(value = "/confirm.do")
+    @ResponseBody
+    public Map<String,Object> confirmHospitalUser(EtProcessManager processManager){
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         return result;
