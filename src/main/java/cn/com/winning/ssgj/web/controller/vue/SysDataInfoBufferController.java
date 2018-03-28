@@ -74,7 +74,7 @@ public class SysDataInfoBufferController extends BaseController {
     @ILog(operationName = "基础数据类型列表", operationType = "list")
     public Map<String, Object> list(Row row, String proStr, String dataType) {
         //基础数据类型
-        Integer dataTypeNum=Integer.parseInt(dataType);
+        Integer dataTypeNum = Integer.parseInt(dataType);
         //项目id
         Long proId = Long.parseLong(proStr);
         if (proId == null) {
@@ -101,25 +101,6 @@ public class SysDataInfoBufferController extends BaseController {
         //根据产品id和dataType获取基础数据 dataType:0 国标数据;1 行标数据；2 共享数据；3 易用数据；
         List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().selectSysDataInfoPaginatedListByPidAndDataType(sysDataInfo);
         int total = getFacade().getSysDataInfoService().countSysDataInfoPaginatedListByPidAndDataType(sysDataInfo);
-
-        EtProcessManager etProcessManager=new EtProcessManager();
-        etProcessManager.setPmId(proId);
-        if(dataTypeNum==0||dataTypeNum==1||dataTypeNum==2){
-            if(total>0){
-                etProcessManager.setIsBasicDataUse(1);
-            }else{
-                etProcessManager.setIsBasicDataUse(0);
-            }
-        }else if(dataTypeNum==3){
-            if(total>0){
-                etProcessManager.setIsEasyDataUse(1);
-            }else{
-                etProcessManager.setIsEasyDataUse(0);
-            }
-        }
-        getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(etProcessManager);
-
-
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", sysDataInfos);
         map.put("total", total);
@@ -228,9 +209,10 @@ public class SysDataInfoBufferController extends BaseController {
 
 
     /**
+     * 文件导出
      * @param response
-     * @param pks
-     * @description Excel文件导出
+     * @param proStr
+     * @param dataType
      */
     @RequestMapping(value = "/exportExcel.do")
     @ILog
@@ -374,6 +356,12 @@ public class SysDataInfoBufferController extends BaseController {
         }
     }
 
+    /**
+     * 新增基础数据
+     *
+     * @param sysDataInfo
+     * @return
+     */
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
     @ILog
@@ -389,6 +377,66 @@ public class SysDataInfoBufferController extends BaseController {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
+    }
+
+
+    /**
+     * 确认完成
+     *
+     * @param proStr
+     * @param dataType
+     * @return
+     */
+    @RequestMapping(value = "/confirm.do")
+    @ResponseBody
+    @ILog
+    public Map<String, Object> confirm(String proStr, String dataType) {
+
+        //基础数据类型
+        Integer dataTypeNum = Integer.parseInt(dataType);
+        //项目id
+        Long proId = Long.parseLong(proStr);
+        if (proId == null) {
+            return null;
+        }
+        //根据项目id获取产品
+        List<PmisProductInfo> pmisProductInfos =
+                getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(proId, 1);
+        //产品id集合
+        List pidList = new ArrayList();
+        for (int i = 0; i < pmisProductInfos.size(); i++) {
+            pidList.add(pmisProductInfos.get(i).getId());
+        }
+        logger.info("idList:{}", pidList);
+        //创建map，封装其他属性
+        Map<String, Object> propMap = new HashMap<String, Object>();
+        //pks为mapping xml中设定的属性名
+        propMap.put("pidList", pidList);
+        SysDataInfo sysDataInfo = new SysDataInfo();
+        sysDataInfo.setDataType(dataTypeNum);
+        sysDataInfo.setMap(propMap);
+        int total = getFacade().getSysDataInfoService().countSysDataInfoPaginatedListByPidAndDataType(sysDataInfo);
+        EtProcessManager etProcessManager = new EtProcessManager();
+        etProcessManager.setPmId(proId);
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (total > 0) {
+            if (dataTypeNum == 0 || dataTypeNum == 1 || dataTypeNum == 2) {
+
+                    etProcessManager.setIsBasicDataUse(1);
+
+            } else if (dataTypeNum == 3) {
+
+                    etProcessManager.setIsEasyDataUse(1);
+
+            }
+            getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(etProcessManager);
+            map.put("type", Constants.SUCCESS);
+            map.put("msg", "确认成功！");
+        }else{
+            map.put("type", "info");
+            map.put("msg", "无数据，确认失败！");
+        }
+        return map;
     }
 }
 
