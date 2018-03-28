@@ -7,6 +7,7 @@
         <result column="C_ID" property="cId" jdbcType="BIGINT"/>
         <result column="PM_ID" property="pmId" jdbcType="BIGINT"/>
         <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR"/>
         <result column="LOGIN_TIME" property="loginTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
@@ -17,6 +18,7 @@
         <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
         <if test="(cId != null and cId != '') or cId == 0">and t.C_ID = #{cId}</if>
         <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
         <if test="(userId != null and userId != '') or userId == 0">and t.USER_ID = #{userId}</if>
         <if test="loginTime != null ">and t.LOGIN_TIME = #{loginTime}</if>
     </sql>
@@ -56,6 +58,7 @@
             <if test="(id != null and id != '') or id == 0">ID,</if>
             <if test="(cId != null and cId != '') or cId == 0">C_ID,</if>
             <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID,</if>
+            <if test="serialNo != null and serialNo != ''">SERIAL_NO,</if>
             <if test="(userId != null and userId != '') or userId == 0">USER_ID,</if>
             <if test="loginTime != null ">LOGIN_TIME,</if>
         </trim>
@@ -64,6 +67,7 @@
             <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
             <if test="(cId != null and cId != '') or cId == 0">#{cId, jdbcType=BIGINT},</if>
             <if test="(pmId != null and pmId != '') or pmId == 0">#{pmId, jdbcType=BIGINT},</if>
+            <if test="serialNo != null and serialNo != ''">#{serialNo, jdbcType=VARCHAR},</if>
             <if test="(userId != null and userId != '') or userId == 0">#{userId, jdbcType=BIGINT},</if>
             <if test="loginTime != null ">#{loginTime, jdbcType=TIMESTAMP},</if>
         </trim>
@@ -76,6 +80,7 @@
                 <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
                 <if test="(cId != null and cId != '') or cId == 0">C_ID = #{cId, jdbcType=BIGINT},</if>
                 <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID = #{pmId, jdbcType=BIGINT},</if>
+                <if test="serialNo != null and serialNo != ''">SERIAL_NO = #{serialNo, jdbcType=VARCHAR},</if>
                 <if test="(userId != null and userId != '') or userId == 0">USER_ID = #{userId, jdbcType=BIGINT},</if>
                 <if test="loginTime != null ">LOGIN_TIME = #{loginTime, jdbcType=TIMESTAMP},</if>
             </trim>

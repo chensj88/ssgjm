@@ -30,6 +30,10 @@ public interface EtContractTaskService {
 
 	List<EtContractTask> getEtContractTaskPageMergeList(EtContractTask t);
 
-
-
+	/**
+	 * 生成Excel文档
+	 * @param task 产品任务单
+	 * @param path 路径
+	 */
+    void generateEtContractTask(EtContractTask task, String path);
 }
