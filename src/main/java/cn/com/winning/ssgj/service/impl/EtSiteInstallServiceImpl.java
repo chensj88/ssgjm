@@ -57,4 +57,9 @@ public class EtSiteInstallServiceImpl implements EtSiteInstallService {
         return this.etSiteInstallDao.selectEntityPaginatedList(t);
     }
 
+    @Override
+    public List<EtSiteInstall> getEtSiteInstallNameList(EtSiteInstall t) {
+        return this.etSiteInstallDao.selectEtSiteInstallNameList(t);
+    }
+
 }

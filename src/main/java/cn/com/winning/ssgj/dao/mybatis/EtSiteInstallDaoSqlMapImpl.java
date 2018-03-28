@@ -6,6 +6,8 @@ import cn.com.winning.ssgj.dao.EtSiteInstallDao;
 import cn.com.winning.ssgj.domain.EtSiteInstall;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.List;
+
 /**
  *
  *
@@ -15,4 +17,8 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 @Service
 public class EtSiteInstallDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtSiteInstall> implements EtSiteInstallDao {
 
+    @Override
+    public List<EtSiteInstall> selectEtSiteInstallNameList(EtSiteInstall t) {
+        return this.getSqlSession().selectList("selectEtSiteInstallNameList",t);
+    }
 }

@@ -56,10 +56,7 @@
 						<c:if test="${siteQuestionInfo.productName == null}" >
 							<a href="#"><span>--请选择--</span><i class="arrow"></i></a>
 						</c:if>
-		                <ul>
-							<c:forEach var="vwr" items="${contractProductInfos}">
-								<li data-val="${vwr.id}">${vwr.cpmc}</li>
-							</c:forEach>
+		                <ul id="ul2">
 		                </ul>
 					</div>
 				</div>
@@ -75,9 +72,8 @@
 						<c:if test="${siteQuestionInfo.menuName == null}" >
 							<a href="#"><span>--请选择--</span><i class="arrow"></i></a>
 						</c:if>
-		                <ul>
-							<li data-val="护理文书">护理文书</li>
-							<li data-val="电子处方">电子处方</li>
+		                <ul id="ul3">
+
 							<%--<c:forEach var="vwr" items="${contractProductInfos}">--%>
 								<%--<li data-val="${vwr.map.get("meunName")}">${vwr.map.get("meunName")}</li>--%>
 							<%--</c:forEach>--%>
@@ -161,12 +157,16 @@
 		<script src="<%=basePath%>resources/mobile/js/mui.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
+            var str_html="";
+            var str_html3="";
 			$(function(){
 				//IMS.dropDown();
 				enterprise.init();
                 var userId = $("#userId").val();
                 var serialNo = $("#serialNo").val();
-                $("input:radio[name='radio1'][value='${siteQuestionInfo.isOperation}']").attr("checked",'checked');
+                $("input:radio[name='radio'][value='${siteQuestionInfo.isOperation}']").attr("checked",'checked');
+
+                //三级联动方法
                 $(".select").on("click","a",function(){
                     $(this).find("i").toggleClass("reverse");
                     $(this).next("ul").slideToggle();
@@ -184,16 +184,18 @@
 						if(_val==siteName){
 						    return false;
 						}
-						$("#productName").val(" ");
-                        $("#productId a").find("span").text("") ;
-                        $("#menuName").val(" ");
-                        $("#menuId a").find("span").text("") ;
+						$("#productName").val("");
+                        $("#productId a").find("span").text("--请选择--") ;
+                        $("#menuName").val("");
+                        $("#menuId a").find("span").text("--请选择--") ;
+                        $("#ul2").html("");
+
 
                         //加载菜单数据
                         $.ajax({
                             type: "POST",
                             url:"<%=basePath%>/mobile/siteQuestionInfo/loadData.do",
-                            data:{type:1,userId:userId,serialNo:serialNo},
+                            data:{type:1,name:siteName,serialNo:serialNo},
                             dataType:"json",
                             cache : false,
                             error: function(request) {
@@ -201,22 +203,23 @@
                                 console.log(request);
                             },
                             success: function(data) {
-                                if(data.result=='1') {
-                                    mui.toast('保存成功',{ duration:'long(3500ms)', type:'div' });
+                                console.log(data);
+                                var json=eval(data.xtJsons);
 
-                                } else {
-                                    mui.toast('保存失败',{ duration:'long(3500ms)', type:'div' })
-                                }
+                                $.each(json,function(i,item){
+                                    str_html=str_html+"<li data-val='"+json[i].map['zxtmc']+"'>"+json[i].map['zxtmc']+"</li>";
+
+                                });
+                                $("#ul2").html(str_html);
                             }
                         });
-
 
                     }
                 });
 
                 //系统信息
                 $("#productId").on("click","ul>li",function(){
-                    alert("111");
+
                     var _this=$(this),_dropd=_this.parent("ul"), _val=_this.data("val"),_txt=_this.text();
                     _dropd.slideToggle();
                     _dropd.siblings("[type='hidden']").val(_val);
@@ -224,13 +227,34 @@
                     _dropd.siblings("a").find("i").toggleClass("reverse");
 
                     //联动方法 切换二级菜单的值
-                    var productName='${siteQuestionInfo.productName}';
+                    var productName=_val;
                     if(productName != null || productName != ''){  //不为空时 比较值是否真的改变
-                        if(_val==productName){
-                            return false;
-                        }
-                        $("#menuName").val(" ");
-                        $("#menuId a").find("span").text("") ;
+
+                        $("#menuName").val("");
+                        $("#menuId a").find("span").text("--请选择--") ;
+                        $("#ul3").html("");
+
+                        //加载菜单数据
+                        $.ajax({
+                            type: "POST",
+                            url:"<%=basePath%>/mobile/siteQuestionInfo/loadData.do",
+                            data:{type:2,name:productName,serialNo:serialNo},
+                            dataType:"json",
+                            cache : false,
+                            error: function(request) {
+                                mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                                console.log(request);
+                            },
+                            success: function(data) {
+                                console.log(data);
+                                var json=eval(data.xtJsons);
+                                $.each(json,function(i,item){
+                                    str_html3=str_html3+"<li data-val='"+json[i].cpmc+"'>"+json[i].cpmc+"</li>";
+
+                                });
+                                $("#ul3").html(str_html3);
+                            }
+                        });
                     }
                 });
 
