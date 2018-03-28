@@ -8,6 +8,8 @@ import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -82,30 +84,30 @@ public class EtDataCheckController extends BaseController {
 
         etDataCheck.setSerialNo(customerId.toString());
         //获取基础数据校验
-        List<EtDataCheck> pmisProductInfos =
+        List<EtDataCheck> etDataCheckList =
                 getFacade().getEtDataCheckService().getEtDataCheckPaginatedList(etDataCheck);
-        PmisProductInfo pmisProductInfo=new PmisProductInfo();
-        SysDataCheckScript sysDataCheckScript=new SysDataCheckScript();
+        PmisProductInfo pmisProductInfo = new PmisProductInfo();
+        SysDataCheckScript sysDataCheckScript = new SysDataCheckScript();
         //封装外参数
-        for (EtDataCheck e : pmisProductInfos) {
+        for (EtDataCheck e : etDataCheckList) {
             pmisProductInfo.setId(e.getPdId());
             sysDataCheckScript.setAppId(e.getPlId());
-            pmisProductInfo=getFacade().getPmisProductInfoService().getPmisProductInfo(pmisProductInfo);
-            sysDataCheckScript=getFacade().getSysDataCheckScriptService().getSysDataCheckScript(sysDataCheckScript);
-            Map<String,Object> map=new HashMap();
-            map.put("subSystem",pmisProductInfo.getName());
-            map.put("type",sysDataCheckScript.getAppName());
+            pmisProductInfo = getFacade().getPmisProductInfoService().getPmisProductInfo(pmisProductInfo);
+            sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(sysDataCheckScript);
+            Map<String, Object> map = new HashMap();
+            map.put("subSystem", pmisProductInfo.getName());
+            map.put("type", sysDataCheckScript.getAppName());
             String checkResult = e.getCheckResult();
-            if(checkResult==null||"没问题".equals(checkResult)||"".equals(checkResult)){
-                map.put("state",0);
-            }else {
-                map.put("state",1);
+            if (checkResult == null || "没问题".equals(checkResult) || "校验正常".equals(checkResult) || "".equals(checkResult)) {
+                map.put("state", 0);
+            } else {
+                map.put("state", 1);
             }
             e.setMap(map);
         }
         int total = getFacade().getEtDataCheckService().getEtDataCheckCount(etDataCheck);
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("rows", pmisProductInfos);
+        map.put("rows", etDataCheckList);
         map.put("total", total);
         map.put("status", Constants.SUCCESS);
         return map;
@@ -126,13 +128,20 @@ public class EtDataCheckController extends BaseController {
         EtDataCheck etDataCheck = getFacade().getEtDataCheckService().getEtDataCheck(t);
         //获取content
         String content = etDataCheck.getContent();
-
         if (StringUtil.isEmptyOrNull(content)) {
             return null;
         }
-        JSONArray jsonArray = JSONArray.parseArray(content);
+        List<List<Object>> parse = (List<List<Object>>) JSONArray.parse(content);
+        //封装content
+        List<JSONObject> detailList = new ArrayList<>();
+        for (List<Object> objList : parse) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("question", objList.get(1).toString());
+            jsonObject.put("everyTime", objList.get(2).toString());
+            detailList.add(jsonObject);
+        }
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("data", jsonArray);
+        map.put("data", detailList);
         map.put("status", Constants.SUCCESS);
         return map;
     }
@@ -170,13 +179,28 @@ public class EtDataCheckController extends BaseController {
             }
             file.transferTo(newFile);
             JSONArray jsonArray = new JSONArray();
+            //错误计数
+            Integer failNum = 0;
+            //检测结果
+            String checkResult = "";
             try {
                 List<List<Object>> etDataCheckList = ExcelUtil.importExcel(newFile.getPath());
                 for (List<Object> e : etDataCheckList) {
+                    for (int i = 0; i < e.size(); i++) {
+                        if ("F".equalsIgnoreCase(e.get(i).toString())) {
+                            failNum++;
+                        }
+                    }
                     jsonArray.add(e);
                 }
                 System.out.println(jsonArray.toJSONString());
                 etDataCheck.setContent(jsonArray.toJSONString());
+                if (failNum == null || failNum == 0) {
+                    checkResult = "校验正常";
+                } else {
+                    checkResult = "校验出" + failNum + "个问题";
+                }
+                etDataCheck.setCheckResult(checkResult);
                 getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheck);
                 newFile.delete();
                 result.put("status", "success");
@@ -192,97 +216,6 @@ public class EtDataCheckController extends BaseController {
         return result;
     }
 
-
-    /**
-     * @param response
-     * @description Excel文件导出
-     */
-    @RequestMapping(value = "/exportExcel.do")
-    @ILog
-    public void wiriteExcel(HttpServletResponse response, String proStr, String dataType) {
-        Long proId = Long.parseLong(proStr);
-        if (proId == null) {
-            return;
-        }
-        //根据项目id获取产品
-        List<PmisProductInfo> pmisProductInfos =
-                getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(proId, 1);
-        //产品id集合
-        List pidList = new ArrayList();
-        for (int i = 0; i < pmisProductInfos.size(); i++) {
-            pidList.add(pmisProductInfos.get(i).getId());
-        }
-        logger.info("idList:{}", pidList);
-        //创建map，封装其他属性
-        Map<String, Object> propMap = new HashMap<String, Object>();
-        //pks为mapping xml中设定的属性名
-        propMap.put("pidList", pidList);
-        SysDataInfo sysDataInfo = new SysDataInfo();
-        sysDataInfo.setDataType(Integer.parseInt(dataType));
-        sysDataInfo.setMap(propMap);
-        //根据产品id和dataType获取基础数据 dataType:0 国标数据;1 行标数据；2 共享数据；3 易用数据；
-        List<SysDataInfo> sysDataInfoList = getFacade().getSysDataInfoService().selectSysDataInfoListByPidAndDataType(sysDataInfo);
-        //参数集合
-        List<Map> dataList = new ArrayList<>();
-        for (int i = 0; i < sysDataInfoList.size(); i++) {
-            dataList.add(ConnectionUtil.objectToMap(sysDataInfoList.get(i)));
-        }
-        //属性数组
-        Field[] fields = SysDataInfo.class.getDeclaredFields();
-        //属性集合
-        List<String> attrNameList = new ArrayList<>();
-        for (int i = 0; i < fields.length; i++) {
-            attrNameList.add(fields[i].getName());
-        }
-        String filename = "DataInfo" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
-        //创建工作簿
-        Workbook workbook = new HSSFWorkbook();
-        ExcelUtil.exportExcelByStream(dataList, attrNameList, response, workbook, filename);
-    }
-
-    /**
-     * @param response
-     * @return
-     * @throws IOException
-     * @description 导出datainfo
-     */
-    @RequestMapping(value = "/exportDataInfo.do")
-    @ResponseBody
-    @ILog
-    public void exportDataInfo(HttpServletResponse response, SysDataInfo t) throws IOException {
-        //根据id获取表属性
-        SysDataInfo sysDataInfo = getFacade().getSysDataInfoService().getSysDataInfo(t);
-        //表名
-        String tableName = sysDataInfo.getTableName();
-        logger.info("tableName:{}", tableName);
-        //数据库
-        String dbName = sysDataInfo.getDbName();
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ").append(dbName).append(".dbo.").append(tableName);
-        String sql = sqlBuilder.toString();
-        logger.info("sql:{}", sql);
-        Connection connection = ConnectionUtil.getConnection();
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        JSONArray jsonArray = null;
-        //创建Excel工作簿 Excel 2003
-        Workbook wb = new HSSFWorkbook();
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            resultSet = preparedStatement.executeQuery();
-            //将表数据写入表格
-            ResultSetUtil.resultSetToExcel(resultSet, wb);
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        String filename = tableName + ".xls";
-        response.setContentType("application/msexcel;charset=UTF-8");
-        response.addHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode(filename, "UTF-8"))));
-        OutputStream toClient = response.getOutputStream();
-        wb.write(toClient);
-        toClient.flush();
-    }
 
     /**
      * @param response
