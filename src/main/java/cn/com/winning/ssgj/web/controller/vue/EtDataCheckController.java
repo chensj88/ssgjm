@@ -269,6 +269,48 @@ public class EtDataCheckController extends BaseController {
             }
         }
     }
+
+
+    @RequestMapping(value = "/confirm.do")
+    @ResponseBody
+    @ILog
+    public Map<String, Object> confirm(String proStr) {
+
+        //项目id
+        Long proId = Long.parseLong(proStr);
+        if (proId == null) {
+            return null;
+        }
+        //根据项目id获取项目基本信息
+        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(proId);
+        //获取合同id
+        Long contractId = pmisProjectBasicInfo.getHtxx();
+        //获取单据号即客户
+        Long customerId = pmisProjectBasicInfo.getKhxx();
+
+        EtDataCheck etDataCheck = new EtDataCheck();
+
+        etDataCheck.setPmId(proId);
+
+        etDataCheck.setCId(contractId);
+
+        etDataCheck.setSerialNo(customerId.toString());
+        int total = getFacade().getEtDataCheckService().getEtDataCheckCount(etDataCheck);
+
+        EtProcessManager etProcessManager = new EtProcessManager();
+        etProcessManager.setPmId(proId);
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (total > 0) {
+            etProcessManager.setIsBasicDataCheck(1);
+            getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(etProcessManager);
+            map.put("type", Constants.SUCCESS);
+            map.put("msg", "确认成功！");
+        } else {
+            map.put("type", "info");
+            map.put("msg", "无数据，确认失败！");
+        }
+        return map;
+    }
 }
 
 
