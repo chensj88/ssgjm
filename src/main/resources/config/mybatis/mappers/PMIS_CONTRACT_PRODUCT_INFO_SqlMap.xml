@@ -85,8 +85,8 @@
     <!--  合同/任务单 获取模块信息  Chen,Kuai 2018年3月19日16:01:42  -->
     <select id="selectPmisContractProductInfoMkList"  resultMap="pmisContractProductInfoResult"
             parameterType="pmisContractProductInfo">
-        SELECT t.ID,t.KHXX,t.CPMC,t.HTMK,i.NAME,i.GNMS FROM PMIS_CONTRACT_PRODUCT_INFO t
-        LEFT JOIN PMIS_PRODUCT_INFO i ON t.HTMK=i.ID   where 1 = 1
+        SELECT t.ID,t.ZHTXX,t.ZXTMC,t.CPXX,t.CPMC FROM PMIS_CONTRACT_PRODUCT_INFO t
+        WHERE 1 = 1 AND t.HTCPLB = 1 AND t.ZT = 1
         <include refid="sf-pmisContractProductInfo"/>
     </select>
 

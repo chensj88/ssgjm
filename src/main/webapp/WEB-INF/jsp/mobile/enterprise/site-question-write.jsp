@@ -11,6 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css" />
 		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_o710wavlb78n0zfr.css"/>
+		<script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 	<body>
 		<div class="mui-content datum gray site-question-write">
@@ -28,8 +29,8 @@
 			<div class="datum-report padding-btm-20 padding-top-15">
 				<div class="datum-report-item">
 					<span>站点名称</span>
-					<div class="select">
-						<input id="siteName" name="siteName" value="${siteQuestionInfo.siteName}" type="hidden"/>
+					<div id="siteId" class="select">
+						<input id="siteName" name="siteName" value="${siteQuestionInfo.siteName}" type="hidden" />
 						<c:if test="${siteQuestionInfo.siteName != null}" >
 							<a href="#"><span>${siteQuestionInfo.siteName}</span><i class="arrow"></i></a>
 						</c:if>
@@ -37,11 +38,9 @@
 							<a href="#"><span>--请选择--</span><i class="arrow"></i></a>
 						</c:if>
 						<ul>
-							<li data-val="胸外科病区住院护士站">胸外科病区住院护士站</li>
-							<li data-val="消化内科站">消化内科站</li>
-							<%--<c:forEach var="vwr" items="${installList}">--%>
-								<%--<li data-val="${vwr.deptName}">${vwr.deptName}</li>--%>
-							<%--</c:forEach> --%>
+							<c:forEach var="vwr" items="${installList}">
+								<li data-val="${vwr.deptName}">${vwr.deptName}</li>
+							</c:forEach>
 		                </ul>
 					</div>
 				</div>
@@ -49,7 +48,7 @@
 			<div class="datum-report padding-btm-20">
 				<div class="datum-report-item">
 					<span>系统名称</span>
-					<div class="select">
+					<div id="productId" class="select">
 						<input id="productName" name="productName" value="${siteQuestionInfo.productName}" type="hidden"/>
 						<c:if test="${siteQuestionInfo.productName != null}" >
 							<a href="#"><span>${siteQuestionInfo.productName}</span><i class="arrow"></i></a>
@@ -58,12 +57,9 @@
 							<a href="#"><span>--请选择--</span><i class="arrow"></i></a>
 						</c:if>
 		                <ul>
-							<li data-val="住院护士站">住院护士站</li>
-							<li data-val="电子处方站">电子处方站</li>
-
-							<%--<c:forEach var="vwr" items="${contractProductInfos}">--%>
-								<%--<li data-val="${vwr.id}">${vwr.cpmc}</li>--%>
-							<%--</c:forEach>--%>
+							<c:forEach var="vwr" items="${contractProductInfos}">
+								<li data-val="${vwr.id}">${vwr.cpmc}</li>
+							</c:forEach>
 		                </ul>
 					</div>
 				</div>
@@ -71,7 +67,7 @@
 			<div class="datum-report padding-btm-20">
 				<div class="datum-report-item">
 					<span>菜单名称</span>
-					<div class="select">
+					<div id="menuId" class="select">
                         <input id="menuName" name="menuName" value="${siteQuestionInfo.menuName}" type="hidden"/>
                         <c:if test="${siteQuestionInfo.menuName != null}" >
 							<a href="#"><span>${siteQuestionInfo.menuName}</span><i class="arrow"></i></a>
@@ -161,18 +157,89 @@
 			<img src="../images/video.png"/>
 			<span class="iconfont icon-close"></span>
 		</div>
-		<script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript" charset="utf-8"></script>
 		<script src="<%=basePath%>resources/mobile/js/mui.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
 			$(function(){
-				IMS.dropDown();
+				//IMS.dropDown();
 				enterprise.init();
+                var userId = $("#userId").val();
+                var serialNo = $("#serialNo").val();
                 $("input:radio[name='radio1'][value='${siteQuestionInfo.isOperation}']").attr("checked",'checked');
+                $(".select").on("click","a",function(){
+                    $(this).find("i").toggleClass("reverse");
+                    $(this).next("ul").slideToggle();
+                });
+                $("#siteId").on("click","ul>li",function(){
+                    var _this=$(this),_dropd=_this.parent("ul"), _val=_this.data("val"),_txt=_this.text();
+                    _dropd.slideToggle();
+                    _dropd.siblings("[type='hidden']").val(_val);
+                    _dropd.siblings("a").find("span").text(_txt);
+                    _dropd.siblings("a").find("i").toggleClass("reverse");
+
+                    //联动方法 切换二级菜单的值
+					var siteName='${siteQuestionInfo.siteName}';
+					if(siteName != null || siteName != ''){  //不为空时 比较值是否真的改变
+						if(_val==siteName){
+						    return false;
+						}
+						$("#productName").val(" ");
+                        $("#productId a").find("span").text("") ;
+                        $("#menuName").val(" ");
+                        $("#menuId a").find("span").text("") ;
+
+                        //加载菜单数据
+                        $.ajax({
+                            type: "POST",
+                            url:"<%=basePath%>/mobile/siteQuestionInfo/loadData.do",
+                            data:{type:1,userId:userId,serialNo:serialNo},
+                            dataType:"json",
+                            cache : false,
+                            error: function(request) {
+                                mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                                console.log(request);
+                            },
+                            success: function(data) {
+                                if(data.result=='1') {
+                                    mui.toast('保存成功',{ duration:'long(3500ms)', type:'div' });
+
+                                } else {
+                                    mui.toast('保存失败',{ duration:'long(3500ms)', type:'div' })
+                                }
+                            }
+                        });
+
+
+                    }
+                });
+
+                //系统信息
+                $("#productId").on("click","ul>li",function(){
+                    alert("111");
+                    var _this=$(this),_dropd=_this.parent("ul"), _val=_this.data("val"),_txt=_this.text();
+                    _dropd.slideToggle();
+                    _dropd.siblings("[type='hidden']").val(_val);
+                    _dropd.siblings("a").find("span").text(_txt);
+                    _dropd.siblings("a").find("i").toggleClass("reverse");
+
+                    //联动方法 切换二级菜单的值
+                    var productName='${siteQuestionInfo.productName}';
+                    if(productName != null || productName != ''){  //不为空时 比较值是否真的改变
+                        if(_val==productName){
+                            return false;
+                        }
+                        $("#menuName").val(" ");
+                        $("#menuId a").find("span").text("") ;
+                    }
+                });
+
+
 
 
             });
+
+
 
 			function save(){
 			    //判断是否为空
