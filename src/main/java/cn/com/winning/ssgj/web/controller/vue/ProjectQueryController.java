@@ -30,13 +30,10 @@ public class ProjectQueryController extends BaseController {
      * 查询用户的客户列表和项目列表
      * @return
      */
-    @RequestMapping(value = "/common/queryCMenu.do")
+    @RequestMapping(value = "/common/queryCustomerMenu.do")
     @ResponseBody
-    public Map<String,Object> queryUserCustomerAndProjectInfo(){
-
-        /*SysUserInfo loginUser = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
-        Long userid = loginUser.getId();*/
-        Long userid = 225L;
+    public Map<String,Object> queryUserCustomerAndProjectInfo(long userid){
+        userid = 225L;
         List<NodeTree> nodeTreeList = super.getFacade().getCommonQueryService().queryUserCustomerProjectTreeInfo(userid);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
