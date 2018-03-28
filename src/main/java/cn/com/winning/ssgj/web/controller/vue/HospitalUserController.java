@@ -40,6 +40,12 @@ public class HospitalUserController extends BaseController {
     @Autowired
     private SSGJHelper ssgjHelper;
 
+    /**
+     * 查询项目下医院用户信息
+     * @param queryUser
+     * @param row
+     * @return
+     */
     @RequestMapping(value = "/list.do")
     @ResponseBody
     public Map<String, Object> queryHospitalUserInfo(SysUserInfo queryUser,Row row) {
@@ -59,6 +65,11 @@ public class HospitalUserController extends BaseController {
 
     }
 
+    /**
+     * 添加或者修改用户信息
+     * @param userInfo
+     * @return
+     */
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
     @ILog
@@ -77,6 +88,13 @@ public class HospitalUserController extends BaseController {
         return result;
     }
 
+    /**
+     * 导出医院用户信息
+     * @param queryUser
+     * @param response
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/exportExcel.do")
     @ILog
     public HttpServletResponse wiriteExcel(SysUserInfo queryUser, HttpServletResponse response) throws IOException {
@@ -115,6 +133,14 @@ public class HospitalUserController extends BaseController {
         return response;
     }
 
+    /**
+     * 上传医院用户信息Excel
+     * @param request
+     * @param userInfo
+     * @param file
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/upload.do")
     @ResponseBody
     @ILog
@@ -156,7 +182,11 @@ public class HospitalUserController extends BaseController {
         return result;
     }
 
-
+    /**
+     * 删除医院用户信息
+     * @param userInfo
+     * @return
+     */
     @RequestMapping(value = "/delete.do")
     @ResponseBody
     @ILog
@@ -166,14 +196,5 @@ public class HospitalUserController extends BaseController {
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         return result;
-    }
-
-    @RequestMapping(value = "/confirm.do")
-    @ResponseBody
-    public Map<String,Object> confirmHospitalUser(EtProcessManager processManager){
-        Map<String,Object> result = new HashMap<String,Object>();
-        result.put("status", Constants.SUCCESS);
-        return result;
-
     }
 }

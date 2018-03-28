@@ -36,6 +36,12 @@ public class EtContractProjectController extends BaseController {
     @Autowired
     private SSGJHelper ssgjHelper;
 
+    /**
+     * 查询项目产品信息
+     * @param productInfo
+     * @param row
+     * @return
+     */
     @RequestMapping(value = "/initData.do")
     @ResponseBody
     public Map<String,Object> listProductOfProject(PmisContractProductInfo productInfo, Row row){
@@ -51,6 +57,11 @@ public class EtContractProjectController extends BaseController {
         return result;
     }
 
+    /**
+     * 查询产品信息
+     * @param productInfo
+     * @return
+     */
     @RequestMapping(value = "/queryProduct.do")
     @ResponseBody
     public Map<String,Object> queryProduct(PmisProductInfo productInfo){
@@ -65,8 +76,14 @@ public class EtContractProjectController extends BaseController {
         return result;
     }
 
+    /**
+     * 添加或者修改项目产品信息
+     * @param task
+     * @return
+     */
     @RequestMapping(value = "/addOrModifyProduct.do")
     @ResponseBody
+    @ILog
     public Map<String,Object> addOrModifyProduct(EtContractTask task){
         EtContractTask oldTask = new EtContractTask();
         oldTask.setId(task.getId());
@@ -91,8 +108,14 @@ public class EtContractProjectController extends BaseController {
 
     }
 
+    /**
+     * 删除项目产品信息
+     * @param task
+     * @return
+     */
     @RequestMapping(value = "/deleteProduct.do")
     @ResponseBody
+    @ILog
     public Map<String,Object> deleteProduct(EtContractTask task){
         super.getFacade().getEtContractTaskService().removeEtContractTask(task);
         Map<String,Object> result = new HashMap<String,Object>();
@@ -100,7 +123,13 @@ public class EtContractProjectController extends BaseController {
         return result;
     }
 
-
+    /**
+     * 导出Excel
+     * @param task
+     * @param response
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/exportExcel.do")
     @ILog
     public HttpServletResponse wiriteExcel(EtContractTask task, HttpServletResponse response) throws IOException {

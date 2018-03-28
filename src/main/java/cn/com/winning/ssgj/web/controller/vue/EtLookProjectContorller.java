@@ -34,6 +34,13 @@ public class EtLookProjectContorller extends BaseController {
 
     @Autowired
     private SSGJHelper ssgjHelper;
+
+    /**
+     * 添加新的项目记录信息
+     * @param projectId 项目ID
+     * @param userid 用户ID
+     * @return
+     */
     @RequestMapping(value = "/add.do")
     @ResponseBody
     public Map<String,Object> addLookProject(Long projectId,long userid){
@@ -59,6 +66,10 @@ public class EtLookProjectContorller extends BaseController {
         return result;
     }
 
+    /**
+     * 创建新的项目流程信息
+     * @param project
+     */
     private void createProcessManager(EtUserLookProject project){
         EtProcessManager processManager = new EtProcessManager();
         processManager.setPmId(project.getPmId());
