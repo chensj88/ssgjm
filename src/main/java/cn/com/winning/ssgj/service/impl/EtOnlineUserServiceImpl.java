@@ -60,10 +60,8 @@ public class EtOnlineUserServiceImpl implements EtOnlineUserService {
 
 	@Override
 	public void generateEtOnlineUser(EtOnlineUser etOnlineUser, String path) {
-		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	@Override
 	public void createEtOnlineUserList(List<List<Object>> userList) {

@@ -217,7 +217,6 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
-
     <!--报表类信息ID-->
     <bean id="sysParamsIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
