@@ -57,4 +57,18 @@ public class EtUserInfoServiceImpl implements EtUserInfoService {
         return this.etUserInfoDao.selectEntityPaginatedList(t);
     }
 
+
+	@Override
+	public void generateEtUserInfo(EtUserInfo etUserInfo, String path) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void createEtUserInfoList(List<List<Object>> etUserList) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

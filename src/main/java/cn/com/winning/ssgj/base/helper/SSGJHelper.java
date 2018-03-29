@@ -171,6 +171,21 @@ public class SSGJHelper {
     @Qualifier(value = "etProcessManagerIdService")
     private StepSequenceFactory etProcessManagerIdService;
 
+    @Autowired
+    @Qualifier(value = "createEtOnlineInfoIdService")
+    private StepSequenceFactory createEtOnlineInfoIdService;
+
+    @Autowired
+    @Qualifier(value = "createEtUserInfoIdService")
+    private StepSequenceFactory createEtUserInfoIdService;
+    
+    public long createEtOnlineInfoIdService(){
+        return (long) createEtOnlineInfoIdService.create();
+    }
+    public long createEtUserInfoIdService(){
+        return (long) createEtUserInfoIdService.create();
+    }
+    
     public long createEtProcessManagerIdService(){
         return (long) etProcessManagerIdService.create();
     }

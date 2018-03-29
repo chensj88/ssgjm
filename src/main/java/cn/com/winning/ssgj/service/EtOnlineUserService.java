@@ -25,5 +25,8 @@ public interface EtOnlineUserService {
     Integer getEtOnlineUserCount(EtOnlineUser t);
 
     List<EtOnlineUser> getEtOnlineUserPaginatedList(EtOnlineUser t);
+    
+    void generateEtOnlineUser(EtOnlineUser etOnlineUser,String path);
 
+    void createEtOnlineUserList(List<List<Object>> userList);
 }

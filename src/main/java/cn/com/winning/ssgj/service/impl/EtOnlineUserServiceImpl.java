@@ -57,4 +57,18 @@ public class EtOnlineUserServiceImpl implements EtOnlineUserService {
         return this.etOnlineUserDao.selectEntityPaginatedList(t);
     }
 
+
+	@Override
+	public void generateEtOnlineUser(EtOnlineUser etOnlineUser, String path) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void createEtOnlineUserList(List<List<Object>> userList) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

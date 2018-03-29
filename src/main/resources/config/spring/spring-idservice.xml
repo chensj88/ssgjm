@@ -357,4 +357,18 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
+        <!--人员信息信息ID-->
+    <bean id="createEtUserInfoIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="EtUser_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+        <!--上线人员信息ID-->
+    <bean id="createEtOnlineInfoIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="EtOnline_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
 </beans>
