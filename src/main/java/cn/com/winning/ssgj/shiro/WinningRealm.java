@@ -87,7 +87,7 @@ public class WinningRealm extends AuthorizingRealm {
 			String password = new String((char[]) token.getCredentials());
 			if (userInfo.getPassword().equals(password)) {
 				EtUserLookProject etUserLookProject = etUserLookProjectDao.selectLastUserLookProject(userInfo.getId());
-				SysOrgExt orgExt = sysOrgExtDao.selectUserOrgExtByUserOrgId(userInfo.getSsgs());
+				SysOrgExt orgExt = sysOrgExtDao.selectUserOrgExtByUserOrgId(userInfo.getOrgid());
 				if(etUserLookProject != null){
 					userInfo.getMap().put("C_ID",etUserLookProject.getCId());
 					userInfo.getMap().put("CU_ID",etUserLookProject.getSerialNo());
