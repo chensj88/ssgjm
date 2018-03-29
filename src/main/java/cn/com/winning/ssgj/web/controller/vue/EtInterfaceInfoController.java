@@ -3,10 +3,7 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
-import cn.com.winning.ssgj.domain.EtContractTask;
-import cn.com.winning.ssgj.domain.PmisContractProductInfo;
-import cn.com.winning.ssgj.domain.PmisProductInfo;
-import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
+import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,110 +23,91 @@ import java.util.Map;
 
 /**
  * @author chenfeng
- * @deprecated 接口信息controller
+ * @Description 接口信息controller
  * @Date 2018年3月29日09:59:48
  */
 @CrossOrigin
 @Controller
-@RequestMapping(value = "/vue/interface")
+@RequestMapping(value = "/vue/interfaceInfo")
 public class EtInterfaceInfoController extends BaseController {
 
     @Autowired
     private SSGJHelper ssgjHelper;
 
     /**
-     * 查询项目产品信息
-     * @param productInfo
+     * 获取接口信息集合
+     * @param etInterfaceInfo
      * @param row
      * @return
      */
     @RequestMapping(value = "/initData.do")
     @ResponseBody
-    public Map<String,Object> list(PmisContractProductInfo productInfo, Row row){
-        //接口数据type：9
-        int type=Constants.PMIS.CPLB_9;
-        //根据pmid和数据type获取所有接口数据
-
-        EtContractTask task = new EtContractTask();
-        task.setPmId(productInfo.getXmlcb());
-        task.setRow(row);
-        List<EtContractTask> productInfoList = super.getFacade().getEtContractTaskService().getEtContractTaskPageMergeList(task);
-        int total = super.getFacade().getEtContractTaskService().getEtContractTaskMergeCount(task);
-        Map<String,Object> result = new HashMap<String,Object>();
+    public Map<String, Object> list(EtInterfaceInfo etInterfaceInfo, Row row) {
+        etInterfaceInfo.setRow(row);
+        //根据pmid获取所有接口数据
+        List<EtInterfaceInfo> etInterfaceInfos = getFacade().getEtInterfaceInfoService().selectEtInterfaceInfoMergePageList(etInterfaceInfo);
+        //根据pmid获取接口数
+        Integer total = getFacade().getEtInterfaceInfoService().selectEtInterfaceInfoMergeCount(etInterfaceInfo);
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
-        result.put("rows", productInfoList);
-        return result;
-    }
-
-    /**
-     * 查询产品信息
-     * @param productInfo
-     * @return
-     */
-    @RequestMapping(value = "/queryProduct.do")
-    @ResponseBody
-    public Map<String,Object> queryProduct(PmisProductInfo productInfo){
-        Row row = new Row(0,10);
-        productInfo.setRow(row);
-        productInfo.setZt(Constants.PMIS_STATUS_USE);
-        productInfo.setCplb("1");
-        List<PmisProductInfo> productInfos = super.getFacade().getPmisProductInfoService().getPmisProductInfoPaginatedListByCodeAndName(productInfo);
-        Map<String,Object> result = new HashMap<String,Object>();
-        result.put("status", Constants.SUCCESS);
-        result.put("data",productInfos);
+        result.put("rows", etInterfaceInfos);
         return result;
     }
 
     /**
      * 添加或者修改项目产品信息
-     * @param task
+     *
+     * @param etInterfaceInfo
      * @return
      */
-    @RequestMapping(value = "/addOrModifyProduct.do")
+    @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
     @ILog
-    public Map<String,Object> addOrModifyProduct(EtContractTask task){
-        EtContractTask oldTask = new EtContractTask();
-        oldTask.setId(task.getId());
-        oldTask = super.getFacade().getEtContractTaskService().getEtContractTask(oldTask);
+    public Map<String, Object> addOrModify(EtInterfaceInfo etInterfaceInfo) {
+        //创建临时变量
+        EtInterfaceInfo etInterfaceInfoTemp = new EtInterfaceInfo();
+        etInterfaceInfoTemp.setId(etInterfaceInfo.getId());
+        etInterfaceInfoTemp = super.getFacade().getEtInterfaceInfoService().getEtInterfaceInfo(etInterfaceInfoTemp);
         PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
-        basicInfo.setId(task.getPmId());
+        basicInfo.setId(etInterfaceInfo.getPmId());
         basicInfo = super.getFacade().getPmisProjectBasicInfoService().getPmisProjectBasicInfo(basicInfo);
-        task.setSerialNo(basicInfo.getKhxx()+"");
-        if(oldTask != null){
-            task.setOperatorTime(new Timestamp(new Date().getTime()));
-            super.getFacade().getEtContractTaskService().modifyEtContractTask(task);
-        }else{
-            task.setId(ssgjHelper.createEtContractTaskIdService());
-            task.setCreator(task.getOperator());
-            task.setCreateTime(new Timestamp(new Date().getTime()));
-            task.setOperatorTime(new Timestamp(new Date().getTime()));
-            super.getFacade().getEtContractTaskService().createEtContractTask(task);
+        etInterfaceInfo.setSerialNo(basicInfo.getKhxx() + "");
+        if (etInterfaceInfoTemp != null) {
+            etInterfaceInfo.setOperatorTime(new Timestamp(new Date().getTime()));
+            super.getFacade().getEtInterfaceInfoService().modifyEtInterfaceInfo(etInterfaceInfo);
+        } else {
+            etInterfaceInfo.setId(ssgjHelper.createInterfaceInfoId());
+            etInterfaceInfo.setCreator(etInterfaceInfo.getOperator());
+            etInterfaceInfo.setCreateTime(new Timestamp(new Date().getTime()));
+            etInterfaceInfo.setOperatorTime(new Timestamp(new Date().getTime()));
+            super.getFacade().getEtInterfaceInfoService().createEtInterfaceInfo(etInterfaceInfo);
         }
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
 
     }
 
     /**
-     * 删除项目产品信息
-     * @param task
+     * 删除接口信息
+     *
+     * @param etInterfaceInfo
      * @return
      */
-    @RequestMapping(value = "/deleteProduct.do")
+    @RequestMapping(value = "/delete.do")
     @ResponseBody
     @ILog
-    public Map<String,Object> deleteProduct(EtContractTask task){
-        super.getFacade().getEtContractTaskService().removeEtContractTask(task);
-        Map<String,Object> result = new HashMap<String,Object>();
+    public Map<String, Object> delete(EtInterfaceInfo etInterfaceInfo) {
+        super.getFacade().getEtInterfaceInfoService().removeEtInterfaceInfo(etInterfaceInfo);
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }
 
     /**
      * 导出Excel
+     *
      * @param task
      * @param response
      * @return
@@ -156,7 +134,7 @@ public class EtInterfaceInfoController extends BaseController {
             // 清空response
             response.reset();
             // 设置response的Header
-            response.addHeader("Content-Disposition", "attachment;filename=" +  URLEncoder.encode("合同产品清单.xls","UTF-8"));
+            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("合同产品清单.xls", "UTF-8"));
             response.addHeader("Content-Length", "" + file.length());
             OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/octet-stream");

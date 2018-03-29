@@ -25,5 +25,16 @@ public interface EtInterfaceInfoService {
     Integer getEtInterfaceInfoCount(EtInterfaceInfo t);
 
     List<EtInterfaceInfo> getEtInterfaceInfoPaginatedList(EtInterfaceInfo t);
+    /**
+     * 根据pmid获取接口信息
+     * @return
+     */
+    List<EtInterfaceInfo> selectEtInterfaceInfoMergePageList(EtInterfaceInfo etInterfaceInfo);
+
+    /**
+     * 根据pmid获取接口信息数
+     * @return
+     */
+    Integer selectEtInterfaceInfoMergeCount(EtInterfaceInfo etInterfaceInfo);
 
 }

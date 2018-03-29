@@ -171,6 +171,10 @@ public class SSGJHelper {
     @Qualifier(value = "etProcessManagerIdService")
     private StepSequenceFactory etProcessManagerIdService;
 
+    @Autowired
+    @Qualifier(value = "etInterfaceInfoIdService")
+    private StepSequenceFactory etInterfaceInfoIdService;
+
     public long createEtProcessManagerIdService(){
         return (long) etProcessManagerIdService.create();
     }
@@ -428,6 +432,14 @@ public class SSGJHelper {
      */
     public Long createSysFlowAnswerId(){
         return (Long) sysFlowAnswerIdService.create();
+    }
+
+    /**
+     * 接口信息ID
+     * @return
+     */
+    public Long createInterfaceInfoId(){
+        return (Long) etInterfaceInfoIdService.create();
     }
 
 

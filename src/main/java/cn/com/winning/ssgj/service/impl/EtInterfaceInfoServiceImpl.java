@@ -57,4 +57,14 @@ public class EtInterfaceInfoServiceImpl implements EtInterfaceInfoService {
         return this.etInterfaceInfoDao.selectEntityPaginatedList(t);
     }
 
+    @Override
+    public List<EtInterfaceInfo> selectEtInterfaceInfoMergePageList(EtInterfaceInfo etInterfaceInfo) {
+        return this.etInterfaceInfoDao.selectEtInterfaceInfoMergePageList(etInterfaceInfo);
+    }
+
+    @Override
+    public Integer selectEtInterfaceInfoMergeCount(EtInterfaceInfo etInterfaceInfo) {
+        return this.etInterfaceInfoDao.selectEtInterfaceInfoMergeCount(etInterfaceInfo);
+    }
+
 }
