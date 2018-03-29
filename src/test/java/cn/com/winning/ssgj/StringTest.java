@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj;
 
+import cn.com.winning.ssgj.base.util.MD5;
 import org.junit.Test;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -48,5 +49,12 @@ public class StringTest {
         String password = "admin";
         final BASE64Encoder encoder = new BASE64Encoder();
         System.out.println(new String(encoder.encodeBuffer(password.getBytes("UTF-8"))));
+    }
+
+    @Test
+    public void enecodeMD5() throws IOException {
+        String password = "123456";
+        String decryptP = MD5.stringMD5(password);
+        System.out.println(decryptP);
     }
 }

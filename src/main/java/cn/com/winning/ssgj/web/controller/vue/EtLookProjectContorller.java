@@ -2,10 +2,7 @@ package cn.com.winning.ssgj.web.controller.vue;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
-import cn.com.winning.ssgj.domain.EtProcessManager;
-import cn.com.winning.ssgj.domain.EtUserLookProject;
-import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
-import cn.com.winning.ssgj.domain.SysUserInfo;
+import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,9 +54,13 @@ public class EtLookProjectContorller extends BaseController {
         project.setLoginTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtUserLookProjectService().createEtUserLookProject(project);
         createProcessManager(project);
+        SysOrgExt orgExt = new SysOrgExt();
+        orgExt.setOrgId(userInfo.getOrgid());
+        orgExt = super.getFacade().getSysOrgExtService().getSysOrgExt(orgExt);
         userInfo.getMap().put("C_ID",basicInfo.getHtxx()); //合同ID
         userInfo.getMap().put("CU_ID",basicInfo.getKhxx()); //客户ID
         userInfo.getMap().put("PM_ID",projectId); //项目ID
+        userInfo.getMap().put("orgExt",orgExt.getOrgNameExt());
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         result.put("user", userInfo);
