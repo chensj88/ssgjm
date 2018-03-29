@@ -174,11 +174,10 @@ public class SSGJHelper {
     private StepSequenceFactory etProcessManagerIdService;
 
     @Autowired
-<<<<<<< HEAD
     @Qualifier(value = "etInterfaceInfoIdService")
     private StepSequenceFactory etInterfaceInfoIdService;
 
-=======
+    @Autowired
     @Qualifier(value = "createEtOnlineInfoIdService")
     private StepSequenceFactory createEtOnlineInfoIdService;
 
@@ -193,8 +192,8 @@ public class SSGJHelper {
     public long createEtUserInfoIdService(){
         return (long) createEtUserInfoIdService.create();
     }
-    
->>>>>>> f6f9614397c8964c418ff483df3729590caa4dea
+
+
     public long createEtProcessManagerIdService(){
         return (long) etProcessManagerIdService.create();
     }
