@@ -111,7 +111,18 @@ public class EtSiteInstall extends BaseDomain implements Serializable {
 	 * @val 使用系统（合同主系统）
 	 */
 	private String cpzxt;
-	
+
+	/**
+	 * @val 软件名称
+	 */
+	private String pdName;
+
+	/**
+	 * @val 硬件名称
+	 */
+	private String hdName;
+
+
 	public EtSiteInstall() {
 
 	}
@@ -369,5 +380,22 @@ public class EtSiteInstall extends BaseDomain implements Serializable {
 	public void setCpzxt(String cpzxt) {
 		this.cpzxt = cpzxt;
 	}
-	
+
+	public String getPdName() {
+		return pdName;
+	}
+
+	public void setPdName(String pdName) {
+		this.pdName = pdName;
+	}
+
+	public String getHdName() {
+		return hdName;
+	}
+
+	public void setHdName(String hdName) {
+		this.hdName = hdName;
+	}
+
+
 }

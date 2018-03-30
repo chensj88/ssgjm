@@ -22,10 +22,14 @@
         <result column="REMARK" property="remark" jdbcType="LONGVARCHAR"/>
         <result column="DEPT_CODE" property="deptCode" jdbcType="VARCHAR" />
         <result column="CPZXT" property="cpzxt" jdbcType="VARCHAR" />
+        <result column="PD_NAME" property="pdName" jdbcType="VARCHAR" />
+        <result column="HD_NAME" property="hdName" jdbcType="VARCHAR" />
     </resultMap>
 
     <resultMap id="etSiteInstallResult" type="etSiteInstall" extends="etSiteInstallResultForList">
         <result column="ZXTMC" property="map.zxtmc" jdbcType="VARCHAR" />
+        <result column="YHMC" property="map.yhmc" jdbcType="VARCHAR" />
+
     </resultMap>
 
     <sql id="sf-etSiteInstall">
@@ -48,17 +52,19 @@
         <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
         <if test="deptCode != null and deptCode != ''"> and t.DEPT_CODE = #{deptCode} </if>
         <if test="cpzxt != null and cpzxt != ''"> and t.CPZXT = #{cpzxt} </if>
+        <if test="pdName != null and pdName != ''"> and t.PD_NAME = #{pdName} </if>
+        <if test="hdName != null and hdName != ''"> and t.HD_NAME = #{hdName} </if>
     </sql>
 
     <select id="selectEtSiteInstall" resultMap="etSiteInstallResult" parameterType="etSiteInstall">
-        select * from ET_SITE_INSTALL t where 1 = 1
+        select t.*,i.YHMC from ET_SITE_INSTALL t LEFT JOIN SYS_USER_INFO i ON t.CREATOR = i.ID where 1 = 1
         <include refid="sf-etSiteInstall"/>
     </select>
 
-    <select id="selectEtSiteInstallList" resultMap="etSiteInstallResultForList" parameterType="etSiteInstall">
+    <select id="selectEtSiteInstallList" resultMap="etSiteInstallResult" parameterType="etSiteInstall">
         select
         <if test="row.count != null and row.count != ''">top ${row.count}</if>
-        * from ET_SITE_INSTALL t where 1 = 1
+        *,i.YHMC from ET_SITE_INSTALL t LEFT JOIN SYS_USER_INFO i ON t.CREATOR = i.ID where 1 = 1
         <include refid="sf-etSiteInstall"/>
         <!-- order by ID asc -->
     </select>
@@ -110,6 +116,8 @@
             <if test="remark != null and remark != ''">REMARK,</if>
             <if test="deptCode != null and deptCode != ''"> DEPT_CODE, </if>
             <if test="cpzxt != null and cpzxt != ''"> CPZXT, </if>
+            <if test="pdName != null and pdName != ''"> PD_NAME, </if>
+            <if test="hdName != null and hdName != ''"> HD_NAME, </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -132,6 +140,8 @@
             <if test="remark != null and remark != ''">#{remark, jdbcType=LONGVARCHAR},</if>
             <if test="deptCode != null and deptCode != ''"> #{deptCode, jdbcType=VARCHAR}, </if>
             <if test="cpzxt != null and cpzxt != ''"> #{cpzxt, jdbcType=VARCHAR}, </if>
+            <if test="pdName != null and pdName != ''"> #{pdName, jdbcType=VARCHAR}, </if>
+            <if test="hdName != null and hdName != ''"> #{hdName, jdbcType=VARCHAR}, </if>
         </trim>
     </insert>
 
@@ -167,6 +177,8 @@
                 <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
                 <if test="deptCode != null and deptCode != ''"> DEPT_CODE = #{deptCode, jdbcType=VARCHAR}, </if>
                 <if test="cpzxt != null and cpzxt != ''"> CPZXT = #{cpzxt, jdbcType=VARCHAR}, </if>
+                <if test="pdName != null and pdName != ''"> PD_NAME = #{pdName, jdbcType=VARCHAR}, </if>
+                <if test="hdName != null and hdName != ''"> HD_NAME = #{hdName, jdbcType=VARCHAR}, </if>
             </trim>
         </set>
         <where>

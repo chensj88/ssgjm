@@ -220,8 +220,25 @@ span.align-self{
 	background: #9eb8ff;
 }
 .site-register{
+	position: relative;
 	padding: 0px 12px;
+	margin-bottom: 10px;
 	background: #fff;
+}
+.site-register>span.icon-close{
+	position:absolute;
+	top: -5px;
+	right:5px;
+	color: red;
+	font-size: 22px;
+	visibility: hidden;
+}
+.site-register.delete>span.icon-close{
+	visibility: visible;
+}
+.delete .register-one>div:last-child{
+	padding-right: 15px;
+	transition: padding ease-in .3s;
 }
 .register-button{
 	display: flex;
@@ -244,7 +261,7 @@ span.align-self{
 .register-one i{
 	display: inline-block;
 	color: #BEBEBE;
-	font-size: 12px;
+	font-size: 10px;
 	transition: all ease .5s;
 }
 .register-one i.up{

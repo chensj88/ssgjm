@@ -184,16 +184,18 @@ public class SSGJHelper {
     @Autowired
     @Qualifier(value = "createEtUserInfoIdService")
     private StepSequenceFactory createEtUserInfoIdService;
+
+    @Autowired
+    @Qualifier(value = "siteInstallIdService")
+    private StepSequenceFactory  siteInstallIdService;
+
     public long createEtOnlineInfoIdService(){
         return (long) createEtOnlineInfoIdService.create();
     }
-
-
     public long createEtUserInfoIdService(){
         return (long) createEtUserInfoIdService.create();
     }
-
-
+    public long createSiteInstallIdService(){ return (long) siteInstallIdService.create(); }
     public long createEtProcessManagerIdService(){
         return (long) etProcessManagerIdService.create();
     }

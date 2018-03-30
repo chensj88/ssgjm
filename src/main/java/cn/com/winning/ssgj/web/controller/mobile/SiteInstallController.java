@@ -2,13 +2,11 @@ package cn.com.winning.ssgj.web.controller.mobile;
 
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.util.Base64Utils;
-import cn.com.winning.ssgj.domain.EtOnlineFile;
-import cn.com.winning.ssgj.domain.EtSiteInstall;
-import cn.com.winning.ssgj.domain.PmisContractProductInfo;
-import cn.com.winning.ssgj.domain.SysUserInfo;
+import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.bytedeco.javacpp.presets.opencv_core;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,7 +35,7 @@ public class SiteInstallController extends BaseController {
     @RequestMapping(value = "/list.do")
     @ILog
     public String siteInstall(Model model, String parameter) {
-        PmisContractProductInfo entity = new PmisContractProductInfo();
+        EtSiteInstall entity = new EtSiteInstall();
         //String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9"; //工号
         //String hospcode="11980";  //客户号
         parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
@@ -45,21 +44,23 @@ public class SiteInstallController extends BaseController {
             ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
             String work_num=(String) userList.get(0).get("WORKNUM");
             String hospcode=(String) userList.get(0).get("HOSPCODE ");
+
             SysUserInfo info = new SysUserInfo();
             info.setUserid(work_num);
             info.setStatus(1);
             info.setUserType("1");  //0医院1公司员工
             info = super.getFacade().getSysUserInfoService().getSysUserInfo(info);
+            List<EtSiteInstall> installList = new ArrayList<EtSiteInstall>();
             if(info !=null){
                 //根据客户编号 找出对应的全部
-                entity.setKhxx(Long.parseLong(hospcode));
-                //List<PmisContractProductInfo> infoList = super.getFacade().getpmiscon
+                entity.setSerialNo(hospcode);
+                installList = super.getFacade().getEtSiteInstallService().getEtSiteInstallList(entity);
 
 
-                //model.addAttribute("siteInstalls",siteInstalls);
             }else{
 
             }
+            model.addAttribute("installList",installList);
             model.addAttribute("userId",work_num);
             model.addAttribute("serialNo",hospcode);
         }catch (Exception e){
@@ -67,6 +68,42 @@ public class SiteInstallController extends BaseController {
         }
 
         return "/mobile/enterprise/site-install";
+    }
+
+    /**
+     * @author: Chen,Kuai
+     * @Description: 新增站点问题
+     */
+    @RequestMapping(value = "/addAndUpdate.do")
+    @ILog
+    public String addAndUpdate(Model model, String userId,String serialNo,Long id) {
+        EtSiteInstall siteInstall = new EtSiteInstall();
+
+        //根据客户编号 找出对应的全部
+        siteInstall.setSerialNo(serialNo);
+        siteInstall.setId(id);
+        siteInstall = super.getFacade().getEtSiteInstallService().getEtSiteInstall(siteInstall);
+        EtSiteInstallDetail installDetail = new EtSiteInstallDetail();
+        //特殊处理
+        EtSiteInstall install = new EtSiteInstall();
+        install.setId(id);
+        install = super.getFacade().getEtSiteInstallService().getEtSiteInstall(install);
+        //获取安装站点的信息
+        installDetail.setSourceId(siteInstall.getId());
+        List<EtSiteInstallDetail> siteInstallDetails = super.getFacade().getEtSiteInstallDetailService()
+                .getEtSiteInstallDetailList(installDetail);
+        if(siteInstallDetails.size()==0 || siteInstallDetails==null){
+
+
+
+        }
+
+
+        model.addAttribute("siteInstallDetails",siteInstallDetails);
+        model.addAttribute("siteInstall",siteInstall);
+        model.addAttribute("userId",userId);
+        model.addAttribute("serialNo",serialNo);
+        return "/mobile/enterprise/site-add";
     }
 
 

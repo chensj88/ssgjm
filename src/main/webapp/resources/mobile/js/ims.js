@@ -135,5 +135,22 @@ const enterprise = {
 			allots(_this.prev('input').val(),_key);
 			$('.icon-close').trigger('click');
 		});
+	},
+	//站点安装删除
+	siteDelIetm:function(){
+		$('.register-one').click(function(){
+			let _this= $(this);
+			_this.find('i').toggleClass('up');
+			$(this).next('.register-cnt').slideToggle();
+		});
+		//删除当前条目
+		$('.del-item').click(function(){
+			$(this).parent('.site-register').remove();
+			$('.site-register').removeClass('delete');
+		});
+		//显示删除
+		$('.register-button .icon-reduce').click(function(){
+			$('.site-register').addClass('delete');
+		});
 	}
 };
