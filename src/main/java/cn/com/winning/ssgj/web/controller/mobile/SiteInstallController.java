@@ -13,10 +13,7 @@ import org.bytedeco.javacpp.presets.opencv_core;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -30,7 +27,7 @@ import java.util.List;
  * @create 2018-03-16 上午 9:36
  **/
 @Controller
-@RequestMapping("mobile/siteInstall")
+    @RequestMapping("mobile/siteInstall")
 public class SiteInstallController extends BaseController {
 
     @Autowired
@@ -126,8 +123,9 @@ public class SiteInstallController extends BaseController {
      */
     @RequestMapping(value = "/save.do", method ={RequestMethod.POST})
     @ResponseBody
-    public void save( EtSiteInstallDetailForm siteInstallDetails) throws Exception{
-        System.out.println(siteInstallDetails);
+    public void save(EtSiteInstallDetailForm siteInstallDetails) throws Exception{
+        List<EtSiteInstallDetail> etSiteInstallDetailList = siteInstallDetails.getEtSiteInstallDetails();
+        System.out.println(etSiteInstallDetailList);
 
     }
 

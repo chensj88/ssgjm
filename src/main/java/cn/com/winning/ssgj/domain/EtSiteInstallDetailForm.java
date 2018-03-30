@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,24 +10,70 @@ import java.util.List;
  **/
 public class EtSiteInstallDetailForm implements Serializable {
 
-    private List<EtSiteInstallDetail> etSiteInstallDetails;
+   private ArrayList<String> siteName;
+    private ArrayList<String> ip;
+    private ArrayList<String> building;
+    private ArrayList<String> floorNum;
+    private ArrayList<String> pcModel;
 
-    public EtSiteInstallDetailForm(List<EtSiteInstallDetail> etSiteInstallDetails) {
-        super();
+    private ArrayList<EtSiteInstallDetail> etSiteInstallDetails;
+
+    public ArrayList<String> getSiteName() {
+        return siteName;
+    }
+
+    public void setSiteName(ArrayList<String> siteName) {
+        this.siteName = siteName;
+    }
+
+    public ArrayList<String> getIp() {
+        return ip;
+    }
+
+    public void setIp(ArrayList<String> ip) {
+        this.ip = ip;
+    }
+
+    public ArrayList<String> getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(ArrayList<String> building) {
+        this.building = building;
+    }
+
+    public ArrayList<String> getFloorNum() {
+        return floorNum;
+    }
+
+    public void setFloorNum(ArrayList<String> floorNum) {
+        this.floorNum = floorNum;
+    }
+
+    public ArrayList<String> getPcModel() {
+        return pcModel;
+    }
+
+    public void setPcModel(ArrayList<String> pcModel) {
+        this.pcModel = pcModel;
+    }
+
+    public ArrayList<EtSiteInstallDetail> getEtSiteInstallDetails() {
+        int size = pcModel.size();
+        ArrayList<EtSiteInstallDetail> etSiteInstallDetailList = new ArrayList<EtSiteInstallDetail>();
+        for(int i=0;i<size;i++){
+            EtSiteInstallDetail detail = new EtSiteInstallDetail();
+            detail.setIp(ip.get(i));
+            detail.setSiteName(siteName.get(i));
+            detail.setBuilding(building.get(i));
+            detail.setFloorNum(Integer.parseInt(floorNum.get(i)));
+            detail.setPcModel(pcModel.get(i));
+            etSiteInstallDetailList.add(detail);
+        }
+        return etSiteInstallDetailList;
+    }
+
+    public void setEtSiteInstallDetails(ArrayList<EtSiteInstallDetail> etSiteInstallDetails) {
         this.etSiteInstallDetails = etSiteInstallDetails;
     }
-
-    public EtSiteInstallDetailForm() {
-        super();
-    }
-
-    public List<EtSiteInstallDetail> getEtSiteInstallDetails() {
-        return etSiteInstallDetails;
-    }
-
-    public void setEtSiteInstallDetails(List<EtSiteInstallDetail> etSiteInstallDetails) {
-        this.etSiteInstallDetails = etSiteInstallDetails;
-    }
-
-
 }
