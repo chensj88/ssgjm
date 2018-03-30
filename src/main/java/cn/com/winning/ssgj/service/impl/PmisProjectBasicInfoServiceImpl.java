@@ -83,4 +83,13 @@ public class PmisProjectBasicInfoServiceImpl implements PmisProjectBasicInfoServ
         return this.pmisProjectBasicInfoDao.queryPmisProjectBasicInfoByProjectId(pmId);
     }
 
+    @Override
+    public List<Long> getPmisProjectBasicInfoIdListByCustomerID(long customerId) {
+        PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
+        basicInfo.setKhxx(customerId);
+        basicInfo.setJhzt(Constants.PMIS.JHZXZT_RUNING);
+        basicInfo.setFwlx(Constants.PMIS.FWLX_SSXM);
+        return this.pmisProjectBasicInfoDao.selectPmisProjectBasicInfoIdListByCustomerID(basicInfo);
+    }
+
 }

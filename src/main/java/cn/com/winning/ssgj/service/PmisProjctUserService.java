@@ -26,4 +26,10 @@ public interface PmisProjctUserService {
 
     List<PmisProjctUser> getPmisProjctUserPaginatedList(PmisProjctUser t);
 
+    /**
+     * 根据项目ID信息获取人员信息
+     * @param pmidList
+     * @return
+     */
+    List<Long> getPmisProjctUserIdListByProjectIdList(List<Long> pmidList);
 }

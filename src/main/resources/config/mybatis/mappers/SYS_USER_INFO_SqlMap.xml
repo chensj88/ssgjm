@@ -205,4 +205,16 @@
         WHERE STATUS = '1'
         GROUP  BY  DICT_LABEL
     </select>
+
+    <select id="selectSysUserInfoListByUserIdList" parameterType="sysUserInfo" resultMap="sysUserInfoResult">
+        SELECT  * FROM SYS_USER_INFO t
+        <where>
+            <if test="(status != null )"> AND t.STATUS = ${status} </if>
+            <if test="userType != null and userType != ''"> AND t.USER_TYPE = ${userType} </if>
+            <if test="(id == null) and (map.pks != null and map.pks.size >0)">
+                AND  t.ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
+    </select>
 </mapper>

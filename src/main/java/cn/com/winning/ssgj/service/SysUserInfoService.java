@@ -39,4 +39,11 @@ public interface SysUserInfoService {
     void createHospitalUserInfo(List<List<Object>> userList,SysUserInfo userInfo);
 
     SysUserInfo getSysUserInfoById(long userid);
+
+    /**
+     * 根据用户id获取用户信息
+     * @param userIdList
+     * @return
+     */
+    List<SysUserInfo> getSysUserInfoListByUserIdList(List<Long> userIdList);
 }

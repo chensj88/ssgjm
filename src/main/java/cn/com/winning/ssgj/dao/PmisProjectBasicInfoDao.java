@@ -18,4 +18,6 @@ public interface PmisProjectBasicInfoDao extends EntityDao<PmisProjectBasicInfo>
     List<PmisProjectBasicInfo> selectPmisProjectBasicByKHXXAndIds(PmisProjectBasicInfo project);
 
     PmisProjectBasicInfo queryPmisProjectBasicInfoByProjectId(long pmId);
+
+    List<Long> selectPmisProjectBasicInfoIdListByCustomerID(PmisProjectBasicInfo basicInfo);
 }

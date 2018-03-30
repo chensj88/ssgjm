@@ -31,4 +31,9 @@ public class PmisProjectBasicInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<PmisP
     public PmisProjectBasicInfo queryPmisProjectBasicInfoByProjectId(long pmId) {
         return super.getSqlSession().selectOne("queryPmisProjectBasicInfoByProjectId",pmId);
     }
+
+    @Override
+    public List<Long> selectPmisProjectBasicInfoIdListByCustomerID(PmisProjectBasicInfo basicInfo) {
+        return super.getSqlSession().selectList("selectPmisProjectBasicInfoIdListByCustomerID",basicInfo);
+    }
 }

@@ -1,9 +1,6 @@
 package cn.com.winning.ssgj.service;
 
-import cn.com.winning.ssgj.domain.EtContractTask;
-import cn.com.winning.ssgj.domain.PmisCustomerInformation;
-import cn.com.winning.ssgj.domain.PmisProductInfo;
-import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
+import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 import sun.rmi.runtime.Log;
 
@@ -17,7 +14,11 @@ import java.util.List;
  * @date 2018-03-20 10:29
  */
 public interface CommonQueryService {
-
+    /**
+     * 查询用户客户项目树信息
+     * @param userId
+     * @return
+     */
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId);
 
     /**
@@ -28,6 +29,17 @@ public interface CommonQueryService {
      */
     public List<PmisProductInfo> queryProductOfProjectByProjectIdAndType(long pmId,int type);
 
-
+    /**
+     * 根据项目ID查询项目信息
+     * @param pmId
+     * @return
+     */
     PmisProjectBasicInfo queryPmisProjectBasicInfoByProjectId(long pmId);
+
+    /**
+     * 根据客户ID查询出人员信息
+     * @param customerId
+     * @return
+     */
+    public List<SysUserInfo> queryProjectUserByCustomerId(Long customerId);
 }

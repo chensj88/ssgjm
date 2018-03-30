@@ -26,8 +26,6 @@ public interface EtUserInfoService {
     Integer getEtUserInfoCount(EtUserInfo t);
 
     List<EtUserInfo> getEtUserInfoPaginatedList(EtUserInfo t);
-
-
     
     void createEtUserInfoList(List<List<Object>> etUserList);
 

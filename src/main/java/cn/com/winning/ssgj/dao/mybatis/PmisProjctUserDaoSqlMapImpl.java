@@ -6,6 +6,8 @@ import cn.com.winning.ssgj.dao.PmisProjctUserDao;
 import cn.com.winning.ssgj.domain.PmisProjctUser;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.List;
+
 /**
  *
  *
@@ -15,4 +17,8 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 @Service
 public class PmisProjctUserDaoSqlMapImpl extends EntityDaoSqlMapImpl<PmisProjctUser> implements PmisProjctUserDao {
 
+    @Override
+    public List<Long> selectPmisProjctUserIdListByProjectIdList(PmisProjctUser projctUser) {
+        return super.getSqlSession().selectList("selectPmisProjctUserIdListByProjectIdList",projctUser);
+    }
 }

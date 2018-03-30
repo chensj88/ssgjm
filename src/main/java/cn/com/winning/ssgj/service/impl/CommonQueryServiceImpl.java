@@ -2,12 +2,10 @@ package cn.com.winning.ssgj.service.impl;
 
 import cn.com.winning.ssgj.dao.PmisContractProductInfoDao;
 import cn.com.winning.ssgj.dao.PmisProductInfoDao;
+import cn.com.winning.ssgj.dao.SysUserInfoDao;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
-import cn.com.winning.ssgj.service.CommonQueryService;
-import cn.com.winning.ssgj.service.PmisCustomerInformationService;
-import cn.com.winning.ssgj.service.PmisProjctUserService;
-import cn.com.winning.ssgj.service.PmisProjectBasicInfoService;
+import cn.com.winning.ssgj.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +33,8 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     private PmisContractProductInfoDao pmisContractProductInfoDao;
     @Autowired
     private PmisProductInfoDao pmisProductInfoDao;
+    @Autowired
+    private SysUserInfoService sysUserInfoService;
     @Override
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId) {
         PmisProjctUser projctUser = new PmisProjctUser();
@@ -82,6 +82,13 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     @Override
     public PmisProjectBasicInfo queryPmisProjectBasicInfoByProjectId(long pmId) {
         return pmisProjectBasicInfoService.queryPmisProjectBasicInfoByProjectId(pmId);
+    }
+
+    @Override
+    public List<SysUserInfo> queryProjectUserByCustomerId(Long customerId) {
+        List<Long> pmidList = pmisProjectBasicInfoService.getPmisProjectBasicInfoIdListByCustomerID(customerId);
+        List<Long> userIdList = pmisProjctUserService.getPmisProjctUserIdListByProjectIdList(pmidList);
+        return sysUserInfoService.getSysUserInfoListByUserIdList(userIdList);
     }
 
     /**

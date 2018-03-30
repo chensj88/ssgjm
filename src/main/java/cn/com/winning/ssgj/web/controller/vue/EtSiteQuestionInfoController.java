@@ -2,6 +2,9 @@ package cn.com.winning.ssgj.web.controller.vue;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
+import cn.com.winning.ssgj.domain.EtUserInfo;
+import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
+import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.stereotype.Controller;
@@ -31,11 +34,16 @@ public class EtSiteQuestionInfoController extends BaseController {
         info.setRow(row);
         List<EtSiteQuestionInfo> questionInfoList = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoPaginatedList(info);
         int total = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoCount(info);
+        EtUserInfo userInfo = new EtUserInfo();
+        userInfo.setPositionName("主力工程师");
+        userInfo.setUserType(1);
+        List<EtUserInfo> infos = super.getFacade().getEtUserInfoService().getEtUserInfoList(userInfo);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows",questionInfoList);
+        result.put("data",infos);
         return result;
-
     }
+
 }

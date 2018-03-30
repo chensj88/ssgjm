@@ -32,4 +32,11 @@ public interface PmisProjectBasicInfoService {
     List<PmisProjectBasicInfo> getPmisProjectBasicByKHXXAndIds(PmisProjectBasicInfo project);
 
     PmisProjectBasicInfo queryPmisProjectBasicInfoByProjectId(long pmId);
+
+    /**
+     * 根据客户ID获取所有的项目ID
+     * @param customerId 客户信息
+     * @return list
+     */
+    List<Long> getPmisProjectBasicInfoIdListByCustomerID(long customerId);
 }

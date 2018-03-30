@@ -20,4 +20,6 @@ public interface SysUserInfoDao extends EntityDao<SysUserInfo> {
    public List<SysUserInfo> selectSysUserInfoQueryPaginatedList(SysUserInfo t);
 
    public List<FlotDataInfo> countUserInfoByType();
+
+    List<SysUserInfo> selectSysUserInfoListByUserIdList(SysUserInfo userInfo);
 }

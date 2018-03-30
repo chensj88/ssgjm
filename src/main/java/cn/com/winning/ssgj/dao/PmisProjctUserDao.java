@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.dao;
 import cn.com.winning.ssgj.domain.PmisProjctUser;
 import cn.com.winning.ssgj.dao.EntityDao;
 
+import java.util.List;
+
 /**
  *
  *
@@ -11,4 +13,5 @@ import cn.com.winning.ssgj.dao.EntityDao;
  */
 public interface PmisProjctUserDao extends EntityDao<PmisProjctUser> {
 
+    List<Long> selectPmisProjctUserIdListByProjectIdList(PmisProjctUser projctUser);
 }

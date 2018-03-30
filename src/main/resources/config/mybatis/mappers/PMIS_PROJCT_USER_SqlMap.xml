@@ -94,4 +94,15 @@
         </where>
     </delete>
 
+    <select id="selectPmisProjctUserIdListByProjectIdList" parameterType="pmisProjctUser" resultType="java.lang.Long">
+        SELECT
+        DISTINCT t.RY
+        FROM PMIS_PROJCT_USER t
+        <where>
+            <if test="(id == null ) and (map.pks != null and map.pks.size >0)">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
+    </select>
 </mapper>

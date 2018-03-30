@@ -180,4 +180,13 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
         return sysUserInfoDao.selectEntity(userInfo);
     }
 
+    @Override
+    public List<SysUserInfo> getSysUserInfoListByUserIdList(List<Long> userIdList) {
+        SysUserInfo userInfo = new SysUserInfo();
+        userInfo.setStatus(Constants.PMIS_STATUS_USE);
+        userInfo.setUserType(Constants.User.USER_STATUS_NORMAL);
+        userInfo.getMap().put("pks",userIdList);
+        return sysUserInfoDao.selectSysUserInfoListByUserIdList(userInfo);
+    }
+
 }

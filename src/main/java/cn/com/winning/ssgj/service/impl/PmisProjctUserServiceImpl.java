@@ -57,4 +57,11 @@ public class PmisProjctUserServiceImpl implements PmisProjctUserService {
         return this.pmisProjctUserDao.selectEntityPaginatedList(t);
     }
 
+    @Override
+    public List<Long> getPmisProjctUserIdListByProjectIdList(List<Long> pmidList) {
+        PmisProjctUser projctUser = new PmisProjctUser();
+        projctUser.getMap().put("pks",pmidList);
+        return this.pmisProjctUserDao.selectPmisProjctUserIdListByProjectIdList(projctUser);
+    }
+
 }

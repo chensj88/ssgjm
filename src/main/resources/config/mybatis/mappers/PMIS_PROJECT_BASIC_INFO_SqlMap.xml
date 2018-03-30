@@ -303,5 +303,11 @@
         ID = #{pmId}
     </select>
 
-
+    <select id="selectPmisProjectBasicInfoIdListByCustomerID" resultType="java.lang.Long" parameterType="pmisProjectBasicInfo">
+        select
+        DISTINCT t.ID
+        from PMIS_PROJECT_BASIC_INFO t where 1 = 1
+        <include refid="sf-pmisProjectBasicInfo"/>
+        <!-- order by ID asc -->
+    </select>
 </mapper>

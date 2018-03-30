@@ -36,4 +36,9 @@ public class SysUserInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysUserInfo> i
         String statement = "countUserInfoByType";
         return super.getSqlSession().selectList(statement);
     }
+
+    @Override
+    public List<SysUserInfo> selectSysUserInfoListByUserIdList(SysUserInfo userInfo) {
+        return super.getSqlSession().selectList("selectSysUserInfoListByUserIdList",userInfo);
+    }
 }
