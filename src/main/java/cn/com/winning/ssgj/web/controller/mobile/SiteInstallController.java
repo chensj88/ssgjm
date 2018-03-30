@@ -1,18 +1,24 @@
 package cn.com.winning.ssgj.web.controller.mobile;
 
 import cn.com.winning.ssgj.base.annoation.ILog;
+import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.Base64Utils;
+import cn.com.winning.ssgj.base.util.FtpPropertiesLoader;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.bytedeco.javacpp.presets.opencv_core;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,9 +30,13 @@ import java.util.List;
  * @create 2018-03-16 上午 9:36
  **/
 @Controller
-@CrossOrigin
 @RequestMapping("mobile/siteInstall")
 public class SiteInstallController extends BaseController {
+
+    @Autowired
+    private SSGJHelper ssgjHelper;
+
+    private static int port = Integer.valueOf(FtpPropertiesLoader.getProperty("ftp.port")).intValue();
 
     /**
      * @author: Chen,Kuai
@@ -90,14 +100,18 @@ public class SiteInstallController extends BaseController {
         install = super.getFacade().getEtSiteInstallService().getEtSiteInstall(install);
         //获取安装站点的信息
         installDetail.setSourceId(siteInstall.getId());
-        List<EtSiteInstallDetail> siteInstallDetails = super.getFacade().getEtSiteInstallDetailService()
-                .getEtSiteInstallDetailList(installDetail);
-        if(siteInstallDetails.size()==0 || siteInstallDetails==null){
-
-
-
+        List<EtSiteInstallDetail> siteInstallDetails=new ArrayList<EtSiteInstallDetail>();
+        siteInstallDetails = super.getFacade().getEtSiteInstallDetailService().getEtSiteInstallDetailList(installDetail);
+        if((siteInstallDetails.size()==0 || siteInstallDetails==null) && siteInstall.getNum() > 0){
+           for(int i =0 ;i<siteInstall.getNum();i++){
+                EtSiteInstallDetail detail = new EtSiteInstallDetail();
+                detail.setId(ssgjHelper.createSiteInstallIdService());
+                detail.setSourceId(id);
+                super.getFacade().getEtSiteInstallDetailService().createEtSiteInstallDetail(detail);
+           }
+           //当为空的时候重新获取 初始化的安装明细信息
+            siteInstallDetails=super.getFacade().getEtSiteInstallDetailService().getEtSiteInstallDetailList(installDetail);
         }
-
 
         model.addAttribute("siteInstallDetails",siteInstallDetails);
         model.addAttribute("siteInstall",siteInstall);
@@ -105,6 +119,18 @@ public class SiteInstallController extends BaseController {
         model.addAttribute("serialNo",serialNo);
         return "/mobile/enterprise/site-add";
     }
+
+    /**
+     * @author: Chen,Kuai
+     * @Description: 新增站点问题
+     */
+    @RequestMapping(value = "/save.do", method ={RequestMethod.POST})
+    @ResponseBody
+    public void save( EtSiteInstallDetailForm siteInstallDetails) throws Exception{
+        System.out.println(siteInstallDetails);
+
+    }
+
 
 
 

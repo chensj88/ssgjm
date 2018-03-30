@@ -2,6 +2,8 @@ package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
 import org.apache.ibatis.type.Alias;
+
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -78,6 +80,21 @@ public class EtSiteInstallDetail extends BaseDomain implements Serializable {
 	
 	public EtSiteInstallDetail() {
 
+	}
+
+	public EtSiteInstallDetail(Long id, Long sourceId, String siteName, String ip, String building, Integer floorNum, String pcModel, Integer install, String imgPath, Long operator, Timestamp operatorTime, List imgs) {
+		this.id = id;
+		this.sourceId = sourceId;
+		this.siteName = siteName;
+		this.ip = ip;
+		this.building = building;
+		this.floorNum = floorNum;
+		this.pcModel = pcModel;
+		this.install = install;
+		this.imgPath = imgPath;
+		this.operator = operator;
+		this.operatorTime = operatorTime;
+		this.imgs = imgs;
 	}
 
 	/**
