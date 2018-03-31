@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.SysLog;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.expand.LoginUserInfo;
@@ -143,8 +144,12 @@ public class LogAspect {
             // *========数据库日志=========*//
             SysLog log = new SysLog();
             log.setId(ssgjHelper.createLogId());
-            log.setCId(Long.valueOf(operator.getMap().get("C_ID").toString()));
-            log.setPmId(Long.valueOf(operator.getMap().get("PM_ID").toString()));
+            if(!StringUtil.isEmptyOrNull(operator.getMap().get("C_ID").toString())){
+                log.setCId(Long.valueOf(operator.getMap().get("C_ID").toString()));
+            }
+            if(!StringUtil.isEmptyOrNull(operator.getMap().get("PM_ID").toString())){
+                log.setPmId(Long.valueOf(operator.getMap().get("PM_ID").toString()));
+            }
             //暂时放空
             log.setSerialNo(null);
             log.setOperator(operator.getId());

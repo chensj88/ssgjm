@@ -8,6 +8,12 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 
+import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.dao.PmisProjectBasicInfoDao;
+import cn.com.winning.ssgj.dao.SysDictInfoDao;
+import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
+import cn.com.winning.ssgj.domain.SysDictInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.base.Constants;
@@ -27,7 +33,13 @@ public class EtUserInfoServiceImpl implements EtUserInfoService {
 
     @Resource
     private EtUserInfoDao etUserInfoDao;
+    @Autowired
+    private PmisProjectBasicInfoDao pmisProjectBasicInfoDao;
+    @Autowired
+    private SysDictInfoDao sysDictInfoDao;
 
+    @Autowired
+    private SSGJHelper ssgjHelper;
 
 
     public Integer createEtUserInfo(EtUserInfo t) {
@@ -82,11 +94,11 @@ public class EtUserInfoServiceImpl implements EtUserInfoService {
 
         for (EtUserInfo et : etUserInfoList) {
             Map<String, String> userMap = new HashMap<>();
-            userMap.put("userType", et.getUserType().toString());
+            userMap.put("userType", et.getMap().get("userType").toString());
             userMap.put("userCard", et.getUserCard());
             userMap.put("cName", et.getCName());
             userMap.put("orgName", et.getOrgName());
-            userMap.put("positionName", et.getPositionName());
+            userMap.put("positionName", et.getMap().get("positionName").toString());
             userMap.put("telephone", et.getTelephone());
             userMap.put("email", et.getEmail());
             dataList.add(userMap);
@@ -95,52 +107,64 @@ public class EtUserInfoServiceImpl implements EtUserInfoService {
         dataMap.put("colSize", colList.size());
         dataMap.put("data", dataList);
         ExcelUtil.writeExcel(dataList, colList, colList.size(), path);
-		
 	}
 
 
-	public void createEtUserInfoList(List<List<Object>> userList) {
-//		   long c_id = 9879L;
-//	        for (List<Object> params : userList) {
-//	            String userid = params.get(0).toString();
-//	            String yhmc = params.get(1).toString();
-//	            String clo1 = params.get(2).toString();
-//	            String clo2 = params.get(3).toString();
-//	            String mobile = params.get(4).toString();
-//	            String email = params.get(5).toString();
-//	            EtUserInfo user = new EtUserInfo();
-//	            user.setIsDel(Constants.STATUS_UNUSE);
-//	            user.setUserType(Constants.User.USER_TYPE_HOSPITAL);
-//	            user.setUserid(userid);
-//	            user.setSsgs(c_id);
-//	            user = this.getSysUserInfo(user);
-//	            if(user != null){
-//	                user.setYhmc(yhmc);
-//	                user.setName(user.getYhmc() + "(" + user.getUserid() + ")");
-//	                user.setClo1(clo1);
-//	                user.setClo2(clo2);
-//	                user.setEmail(email);
-//	                user.setMobile(mobile);
-//	                user.setPassword(MD5.stringMD5(user.getUserid()));
-//	                this.sysUserInfoDao.updateEntity(user);
-//	            }else{
-//	                user = new SysUserInfo();
-//	                user.setId(ssgjHelper.createUserId());
-//	                user.setStatus(1);
-//	                user.setUserType(Constants.User.USER_TYPE_HOSPITAL);
-//	                user.setUserid(userid);
-//	                user.setSsgs(c_id);
-//	                user.setYhmc(yhmc);
-//	                user.setName(user.getYhmc() + "(" + user.getUserid() + ")");
-//	                user.setClo1(clo1);
-//	                user.setClo2(clo2);
-//	                user.setEmail(email);
-//	                user.setMobile(mobile);
-//	                user.setPassword(MD5.stringMD5(user.getUserid()));
-//	                this.sysUserInfoDao.insertEntity(user);
-//	            }
-//	        }
-//		
+	public void createEtUserInfoList(List<List<Object>> userList,EtUserInfo userInfo) {
+        PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
+        basicInfo.setId(userInfo.getPmId());
+        basicInfo = pmisProjectBasicInfoDao.selectEntity(basicInfo);
+        for (List<Object> params : userList) {
+            EtUserInfo user = new EtUserInfo();
+            user.setUserType(Integer.parseInt( resolveDictType(params.get(0).toString(),"userType")));
+            user.setCId(basicInfo.getHtxx());
+            user.setPmId(basicInfo.getId());
+            user.setUserCard(params.get(1).toString().trim());
+            user = etUserInfoDao.selectEntity(user);
+            if(user != null){
+                user.setCName(params.get(2).toString());
+                user.setOrgName(params.get(3).toString());
+                user.setPositionName((String) resolveDictType(params.get(4).toString(),"positionName"));
+                user.setTelephone(params.get(5).toString());
+                user.setEmail(params.get(6).toString());
+                user.setIsDel(Constants.STATUS_USE);
+                etUserInfoDao.updateEntity(user);
+            }else{
+                user = new EtUserInfo();
+                user.setId(ssgjHelper.createEtUserInfoIdService());
+                user.setUserType(Integer.parseInt( resolveDictType(params.get(0).toString(),"userType")));
+                user.setCId(basicInfo.getHtxx());
+                user.setPmId(basicInfo.getId());
+                user.setUserCard(params.get(1).toString().trim());
+                user.setCName(params.get(2).toString());
+                user.setOrgName(params.get(3).toString());
+                user.setPositionName((String) resolveDictType(params.get(4).toString(),"positionName"));
+                user.setTelephone(params.get(5).toString());
+                user.setEmail(params.get(6).toString());
+                user.setIsDel(Constants.STATUS_USE);
+                etUserInfoDao.insertEntity(user);
+            }
+        }
+
+
 	}
+
+    /**
+     * 字典值转换
+     * @param dictLabel
+     * @param dictType
+     * @return
+     */
+    private String resolveDictType(String dictLabel,String dictType) {
+        SysDictInfo dictInfo = new SysDictInfo();
+        dictInfo.setDictLabel(dictLabel.trim());
+        dictInfo.setDictCode(dictType);
+        dictInfo = this.sysDictInfoDao.selectEntity(dictInfo);
+        if(dictInfo == null){
+            return  dictLabel;
+        }else{
+            return dictInfo.getDictValue();
+        }
+    }
 
 }

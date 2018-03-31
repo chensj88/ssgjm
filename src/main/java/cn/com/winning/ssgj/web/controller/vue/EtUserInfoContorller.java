@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,10 +46,9 @@ public class EtUserInfoContorller extends BaseController{
 
 	    @RequestMapping(value = "/list.do")
 	    @ResponseBody
-	    public Map<String, Object> rtOnlineUserList(Row row) {
-	    	System.err.println("项目组信息。。。。。。。。。。。。。。。。。。。。。");
-	    	EtUserInfo etUserInfo = new EtUserInfo();
+	    public Map<String, Object> rtOnlineUserList(EtUserInfo etUserInfo,Row row) {
 	    	etUserInfo.setRow(row);
+	    	etUserInfo.setIsDel(Constants.STATUS_USE);
 	        List<EtUserInfo> etUserInfoList = super.getFacade().getEtUserInfoService().getEtUserInfoPaginatedList(etUserInfo);
 	        int total = super.getFacade().getEtUserInfoService().getEtUserInfoCount(etUserInfo);
 	        Map<String, Object> result = new HashMap<String, Object>();
@@ -61,9 +62,11 @@ public class EtUserInfoContorller extends BaseController{
 	    @RequestMapping(value = "/addOrModify.do")
 	    @ResponseBody
 	    @ILog
+		@Transactional
 	    public Map<String, Object> addOrModifyHospitalUserInfo(EtUserInfo etUserInfo) {
 	        if (etUserInfo.getId() == 0L) {
 	        	etUserInfo.setId(ssgjHelper.createEtUserInfoIdService());
+	        	etUserInfo.setIsDel(Constants.STATUS_USE);
 	            super.getFacade().getEtUserInfoService().createEtUserInfo(etUserInfo);
 	        } else {
 	            super.getFacade().getEtUserInfoService().modifyEtUserInfo(etUserInfo);
@@ -75,13 +78,9 @@ public class EtUserInfoContorller extends BaseController{
 
 	    @RequestMapping(value = "/exportExcel.do")
 	    @ILog
-	    public HttpServletResponse wiriteExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
-	       // long c_id = 9879L;
-	        EtUserInfo etUserInfo = new EtUserInfo();
-	       // etUserInfo.setSsgs(c_id);
-	        etUserInfo.setIsDel(Constants.STATUS_UNUSE);
-	        //etUserInfo.setUserType(Constants.User.USER_TYPE_HOSPITAL);
-	        String fileName = "etuserinfo.xls";
+	    public HttpServletResponse wiriteExcel(EtUserInfo etUserInfo, HttpServletResponse response) throws IOException {
+	        etUserInfo.setIsDel(Constants.STATUS_USE);
+	        String fileName = "EtUserInfo.xls";
 	        String path = getClass().getClassLoader().getResource("/template").getPath() + fileName;
 	        super.getFacade().getEtUserInfoService().generateEtUserInfo(etUserInfo, path);
 	        try {
@@ -91,7 +90,6 @@ public class EtUserInfoContorller extends BaseController{
 	            String filename = file.getName();
 	            // 取得文件的后缀名。
 	            String ext = filename.substring(filename.lastIndexOf(".") + 1).toUpperCase();
-
 	            // 以流的形式下载文件。
 	            InputStream fis = new BufferedInputStream(new FileInputStream(path));
 	            byte[] buffer = new byte[fis.available()];
@@ -100,7 +98,7 @@ public class EtUserInfoContorller extends BaseController{
 	            // 清空response
 	            response.reset();
 	            // 设置response的Header
-	            response.addHeader("Content-Disposition", "attachment;filename=" + new String("HospitalUserInfo.xls".getBytes()));
+	            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("项目组成员信息.xls","UTF-8"));
 	            response.addHeader("Content-Length", "" + file.length());
 	            OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
 	            response.setContentType("application/octet-stream");
@@ -117,7 +115,8 @@ public class EtUserInfoContorller extends BaseController{
 	    @RequestMapping(value = "/upload.do")
 	    @ResponseBody
 	    @ILog
-	    public Map<String, Object> uploadHospitalUserTemplate(HttpServletRequest request,
+		@Transactional
+	    public Map<String, Object> uploadHospitalUserTemplate(EtUserInfo userInfo,HttpServletRequest request,
 	                                                          MultipartFile file) throws IOException {
 	        Map<String, Object> result = new HashMap<String, Object>();
 	        //如果文件不为空，写入上传路径
@@ -140,7 +139,7 @@ public class EtUserInfoContorller extends BaseController{
 
 	            try {
 	                List<List<Object>> etUserList = ExcelUtil.importExcel(newFile.getPath());
-	                super.getFacade().getEtUserInfoService().createEtUserInfoList(etUserList);
+	                super.getFacade().getEtUserInfoService().createEtUserInfoList(etUserList,userInfo);
 	                newFile.delete();
 	                result.put("status", "success");
 	            } catch (Exception e) {
@@ -159,8 +158,9 @@ public class EtUserInfoContorller extends BaseController{
 	    @RequestMapping(value = "/delete.do")
 	    @ResponseBody
 	    @ILog
+		@Transactional
 	    public Map<String, Object> deleteHospitalUser(EtUserInfo userInfo){
-	        userInfo.setIsDel(Constants.STATUS_USE);
+	        userInfo.setIsDel(Constants.STATUS_UNUSE);
 	        super.getFacade().getEtUserInfoService().modifyEtUserInfo(userInfo);
 	        Map<String,Object> result = new HashMap<String,Object>();
 	        result.put("status", Constants.SUCCESS);

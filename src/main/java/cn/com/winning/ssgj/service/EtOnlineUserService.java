@@ -31,5 +31,5 @@ public interface EtOnlineUserService {
     void generateEtOnlineUser(EtOnlineUser etOnlineUser,String path);
 
 
-    void createEtOnlineUserList(List<List<Object>> userList);
+    void createEtOnlineUserList(List<List<Object>> userList,EtOnlineUser etOnlineUser);
 }

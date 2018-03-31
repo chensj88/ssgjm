@@ -82,7 +82,10 @@ public class ExcelUtil {
             System.out.println("原始数据总行数，除属性列：" + rowNumber);
             for (int i = 1; i <= rowNumber; i++) {
                 Row row = sheet.getRow(i);
-                sheet.removeRow(row);
+                if(row != null){
+                    sheet.removeRow(row);
+                }
+
             }
             // 创建文件输出流，输出电子表格：这个必须有，否则你在sheet上做的任何操作都不会有效
             out =  new FileOutputStream(finalXlsxPath);

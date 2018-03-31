@@ -31,6 +31,8 @@ public interface EtInterfaceInfoService {
      */
     List<EtInterfaceInfo> selectEtInterfaceInfoMergePageList(EtInterfaceInfo etInterfaceInfo);
 
+    List<EtInterfaceInfo>selectEtInterfaceInfoMergeList(EtInterfaceInfo etInterfaceInfo);
+
     /**
      * 根据pmid获取接口信息数
      * @return

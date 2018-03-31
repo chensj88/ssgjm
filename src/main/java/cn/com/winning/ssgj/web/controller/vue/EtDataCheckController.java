@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -157,6 +158,7 @@ public class EtDataCheckController extends BaseController {
     @RequestMapping(value = "/upload.do")
     @ResponseBody
     @ILog
+    @Transactional
     public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtDataCheck t) throws IOException {
         //根据id获取表属性
         EtDataCheck etDataCheck = getFacade().getEtDataCheckService().getEtDataCheck(t);
@@ -274,6 +276,7 @@ public class EtDataCheckController extends BaseController {
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
     @ILog
+    @Transactional
     public Map<String, Object> confirm(String proStr) {
 
         //项目id

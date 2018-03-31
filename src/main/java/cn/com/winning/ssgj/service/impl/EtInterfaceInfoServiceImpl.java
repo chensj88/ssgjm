@@ -63,6 +63,11 @@ public class EtInterfaceInfoServiceImpl implements EtInterfaceInfoService {
     }
 
     @Override
+    public List<EtInterfaceInfo> selectEtInterfaceInfoMergeList(EtInterfaceInfo etInterfaceInfo) {
+        return this.etInterfaceInfoDao.selectEtInterfaceInfoMergeList(etInterfaceInfo);
+    }
+
+    @Override
     public Integer selectEtInterfaceInfoMergeCount(EtInterfaceInfo etInterfaceInfo) {
         return this.etInterfaceInfoDao.selectEtInterfaceInfoMergeCount(etInterfaceInfo);
     }

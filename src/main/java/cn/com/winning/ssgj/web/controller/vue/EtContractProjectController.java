@@ -9,6 +9,7 @@ import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -163,5 +164,18 @@ public class EtContractProjectController extends BaseController {
             throw ex;
         }
         return response;
+    }
+
+    @RequestMapping(value = "/confirm.do")
+    @ResponseBody
+    @ILog
+    public Map<String,Object> confirmTask(EtProcessManager processManager){
+        processManager.setIsPmScope(Constants.STATUS_USE);
+        processManager.setOperatorTime(new Timestamp(new Date().getTime()));
+        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(processManager);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+
     }
 }

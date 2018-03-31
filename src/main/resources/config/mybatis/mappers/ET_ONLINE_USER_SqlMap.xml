@@ -19,6 +19,7 @@
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="OPERATOR" property="operator" jdbcType="BIGINT"/>
         <result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="etOnlineUserResult" type="etOnlineUser" extends="etOnlineUserResultForList">
@@ -41,6 +42,7 @@
         <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
         <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
         <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
+        <if test="(status != null )">and t.STATUS = #{status}</if>
     </sql>
 
     <select id="selectEtOnlineUser" resultMap="etOnlineUserResult" parameterType="etOnlineUser">
@@ -90,6 +92,7 @@
             <if test="createTime != null ">CREATE_TIME,</if>
             <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
             <if test="operatorTime != null ">OPERATOR_TIME,</if>
+            <if test="(status != null )">STATUS,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -109,6 +112,7 @@
             <if test="createTime != null ">#{createTime, jdbcType=TIMESTAMP},</if>
             <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
             <if test="operatorTime != null ">#{operatorTime, jdbcType=TIMESTAMP},</if>
+            <if test="(status != null )">#{status, jdbcType=INTEGER},</if>
         </trim>
     </insert>
 
@@ -141,6 +145,7 @@
                 <if test="operatorTime != null ">OPERATOR_TIME =
                     #{operatorTime, jdbcType=TIMESTAMP},
                 </if>
+                <if test="(status != null )">STATUS = #{status, jdbcType=INTEGER},</if>
             </trim>
         </set>
         <where>

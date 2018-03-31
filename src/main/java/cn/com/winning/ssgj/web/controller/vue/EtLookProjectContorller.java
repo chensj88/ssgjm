@@ -1,12 +1,14 @@
 package cn.com.winning.ssgj.web.controller.vue;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,6 +42,8 @@ public class EtLookProjectContorller extends BaseController {
      */
     @RequestMapping(value = "/add.do")
     @ResponseBody
+    @Transactional
+    @ILog
     public Map<String,Object> addLookProject(Long projectId,long userid){
         SysUserInfo userInfo = super.getFacade().getSysUserInfoService().getSysUserInfoById(userid);
         PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
