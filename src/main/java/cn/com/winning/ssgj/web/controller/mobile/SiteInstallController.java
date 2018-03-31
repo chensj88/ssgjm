@@ -133,12 +133,13 @@ public class SiteInstallController extends BaseController {
      */
     @RequestMapping(value = "/save.do", method ={RequestMethod.POST})
     @ResponseBody
-    public ModelAndView save(EtSiteInstallDetailForm siteInstallDetails,Long parentId) throws Exception{
+    public ModelAndView save(EtSiteInstallDetailForm siteInstallDetails,Long parentId,String[] install_array) throws Exception{
         List<EtSiteInstallDetail> etSiteInstallDetailList = siteInstallDetails.getEtSiteInstallDetails();
-        System.out.println(etSiteInstallDetailList);
         if(etSiteInstallDetailList.size() > 0 && etSiteInstallDetailList != null){
-            for (EtSiteInstallDetail details:etSiteInstallDetailList) {
-                super.getFacade().getEtSiteInstallDetailService().modifyEtSiteInstallDetail(details);
+            for(int i=0; i < etSiteInstallDetailList.size();i++){
+                etSiteInstallDetailList.get(i).setInstall(Integer.parseInt(install_array[i]));
+                super.getFacade().getEtSiteInstallDetailService().modifyEtSiteInstallDetail(etSiteInstallDetailList.get(i));
+
             }
         }
         EtSiteInstall install = new EtSiteInstall();
@@ -255,6 +256,27 @@ public class SiteInstallController extends BaseController {
             super.getFacade().getEtSiteInstallDetailService().modifyEtSiteInstallDetail(info);
             map.put("status",true);
         }catch (Exception e){
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    /**
+     * @author: Chen,Kuai
+     * @Description: 删除节点
+     */
+    @RequestMapping("/deleteItem.do")
+    @ResponseBody
+    @ILog
+    public Map<String,Boolean> deleteItem(Long id){
+        Map<String,Boolean> map = new HashMap<String,Boolean>();
+        EtSiteInstallDetail info = new EtSiteInstallDetail();
+        info.setId(id);
+        try{
+            super.getFacade().getEtSiteInstallDetailService().removeEtSiteInstallDetail(info);
+            map.put("status",true);
+        }catch (Exception e){
+            e.printStackTrace();
             map.put("status",false);
         }
         return map;

@@ -50,10 +50,10 @@
 				<input type="hidden" name="parentId" value="${siteInstall.id}">
 				<input type="hidden" id="userId" name="userId" value="${userId}">
 				<input type="hidden" id="serialNo" name="serialNo" value="${serialNo}">
+				<input type="hidden" id="install_array" name="install_array" value="">
 				<c:forEach var="vwr"  items="${siteInstallDetails}" varStatus="status">
-					<input type="hidden" name="id" value="${vwr.id}">
 					<div class="site-register">
-						<span class="iconfont icon-close del-item"></span>
+						<span class="iconfont icon-close del-item"><input type="hidden" name="id" value="${vwr.id}"></span>
 						<div class="register-one">
 							<div><span>站点</span></div>
 							<div>
@@ -140,18 +140,17 @@
 		<form id="installId" action="<%=basePath%>mobile/siteInstall/save.do" method="post" >
 
 		</form>
+			<div class="register-button">
+				<i class="iconfont icon-increase" style="color: #81B3FF;"></i>
+				<i class="iconfont icon-reduce"></i>
+			</div>
+
 			<div class="fix-hole"></div>
 		    <div class="check-distribuion-btn">
 		    	<input type="button" onclick="save();" value="保存" />
 		    	<input type="button" value="取消" />
 		    </div>
 		</div>
-
-
-        <div class="register-button">
-            <i class="iconfont icon-increase" style="color: #81B3FF;"></i>
-            <i class="iconfont icon-reduce"></i>
-        </div>
 
         <script type="text/javascript" src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" ></script>
 		<script type="text/javascript" src="<%=basePath%>resources/mobile/js/ims.js" ></script>
@@ -242,10 +241,44 @@
 
             }
 
-
             //保存数据
 			function save(){
+			    var num = ${siteInstall.num};
+                var install_array=new Array();
+                for (var i = 0;i < num;i++) {
+                    var install ="install"+i+''
+                    var ii = $("input[name='"+install+"']:checked").val();
+                    if("undefined" != typeof(ii)&& ii != null && ii != ""){
+                        install_array.push(ii);
+					}
+                }
+				$("#install_array").val(install_array);
 				$("#installId").submit();
+			}
+
+			//删除站点信息
+			function delItem(itemId){
+                $.ajax({
+                    type: "POST",
+                    url:"<%=basePath%>mobile/siteInstall/deleteItem.do",
+                    data:{id:itemId},
+                    cache : false,
+                    dataType:"json",
+                    async: false,
+                    error: function(request) {
+                        mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                    },
+                    success: function(data) {
+                        if(data.status) {
+                            mui.toast('删除成功',{ duration:'long(3500ms)', type:'div' });
+                        } else {
+                            mui.toast('删除失败',{ duration:'long(3500ms)', type:'div' });
+
+                        }
+                    }
+                });
+
+
 			}
 
 

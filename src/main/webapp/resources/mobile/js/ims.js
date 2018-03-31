@@ -145,8 +145,18 @@ const enterprise = {
 		});
 		//删除当前条目
 		$('.del-item').click(function(){
-			$(this).parent('.site-register').remove();
-			$('.site-register').removeClass('delete');
+            var btnArray = ['否', '是'];
+            var id=$(this).find('input').val();
+            var isTrue = false;
+            // mui.confirm( '是否删除该站点', '消息框', btnArray, function(e) {
+             //    if(e.index == 1){
+             //
+             //    }
+			// });
+            delItem(id);
+            $(this).parent('.site-register').remove();
+            $('.site-register').removeClass('delete');
+
 		});
 		//显示删除
 		$('.register-button .icon-reduce').click(function(){
