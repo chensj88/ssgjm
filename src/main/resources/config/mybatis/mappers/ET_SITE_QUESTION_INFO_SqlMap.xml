@@ -189,7 +189,7 @@
                 <if test="questionDesc != null and questionDesc != ''">QUESTION_DESC =
                     #{questionDesc, jdbcType=LONGVARCHAR},
                 </if>
-                <if test="imgPath != null and imgPath != ''">IMG_PATH = #{imgPath, jdbcType=LONGVARCHAR},</if>
+                <if test="imgPath != null">IMG_PATH = #{imgPath, jdbcType=LONGVARCHAR},</if>
                 <if test="(operType != null and operType != '') or operType == 0">OPER_TYPE =
                     #{operType, jdbcType=INTEGER},
                 </if>

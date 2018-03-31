@@ -90,6 +90,19 @@ public class BaseController extends BaseSpringMvcMybatisController{
         return infoList.get(0).getId();
     }
 
+    /**
+     * @author: Chen,Kuai
+     * @Description: 将id获取userId
+     */
+    public String id_user(Long id,String userType){
+        SysUserInfo info = new SysUserInfo();
+        info.setId(id);
+        info.setStatus(1);
+        info.setUserType(userType);  //0医院1公司员工
+        List<SysUserInfo> infoList = this.getFacade().getSysUserInfoService().getSysUserInfoList(info);
+        return infoList.get(0).getUserid();
+    }
+
 
 
 }

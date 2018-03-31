@@ -1,5 +1,7 @@
 package cn.com.winning.ssgj.domain;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.List;
  * @create 2018-03-30 下午 3:34
  **/
 public class EtSiteInstallDetailForm implements Serializable {
-
+    private ArrayList<Long> id;
    private ArrayList<String> siteName;
     private ArrayList<String> ip;
     private ArrayList<String> building;
@@ -17,6 +19,10 @@ public class EtSiteInstallDetailForm implements Serializable {
     private ArrayList<String> pcModel;
 
     private ArrayList<EtSiteInstallDetail> etSiteInstallDetails;
+
+    public ArrayList<Long> getId() { return id; }
+
+    public void setId(ArrayList<Long> id) { this.id = id; }
 
     public ArrayList<String> getSiteName() {
         return siteName;
@@ -63,10 +69,15 @@ public class EtSiteInstallDetailForm implements Serializable {
         ArrayList<EtSiteInstallDetail> etSiteInstallDetailList = new ArrayList<EtSiteInstallDetail>();
         for(int i=0;i<size;i++){
             EtSiteInstallDetail detail = new EtSiteInstallDetail();
+            detail.setId(id.get(i));
             detail.setIp(ip.get(i));
             detail.setSiteName(siteName.get(i));
             detail.setBuilding(building.get(i));
-            detail.setFloorNum(Integer.parseInt(floorNum.get(i)));
+            if(StringUtils.isBlank(floorNum.get(i))) {
+                detail.setFloorNum(0);
+            }else{
+                detail.setFloorNum(Integer.parseInt(floorNum.get(i)));
+            }
             detail.setPcModel(pcModel.get(i));
             etSiteInstallDetailList.add(detail);
         }

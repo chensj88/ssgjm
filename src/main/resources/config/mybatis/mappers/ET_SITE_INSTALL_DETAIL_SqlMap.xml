@@ -111,7 +111,7 @@
                 <if test="pcModel != null and pcModel != ''">PC_MODEL = #{pcModel, jdbcType=VARCHAR},</if>
                 <if test="(install != null and install != '') or install == 0">INSTALL = #{install, jdbcType=INTEGER},
                 </if>
-                <if test="imgPath != null and imgPath != ''">IMG_PATH = #{imgPath, jdbcType=LONGVARCHAR},</if>
+                <if test="imgPath != null">IMG_PATH = #{imgPath, jdbcType=LONGVARCHAR},</if>
                 <if test="(operator != null and operator != '') or operator == 0">OPERATOR =
                     #{operator, jdbcType=BIGINT},
                 </if>
