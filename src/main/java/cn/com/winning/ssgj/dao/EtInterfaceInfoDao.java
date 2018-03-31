@@ -13,10 +13,17 @@ import java.util.List;
 public interface EtInterfaceInfoDao extends EntityDao<EtInterfaceInfo> {
 
     /**
-     * 根据pmid获取接口信息
+     * 根据pmid获取分页接口信息
      * @return
      */
     List<EtInterfaceInfo> selectEtInterfaceInfoMergePageList(EtInterfaceInfo etInterfaceInfo);
+
+    /**
+     *根据pmid获取所有接口信息
+     * @param etInterfaceInfo
+     * @return
+     */
+    List<EtInterfaceInfo>selectEtInterfaceInfoMergeList(EtInterfaceInfo etInterfaceInfo);
 
     /**
      * 根据pmid获取接口信息数

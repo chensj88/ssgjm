@@ -24,6 +24,12 @@ public class EtInterfaceInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtInterfac
     }
 
     @Override
+    public List<EtInterfaceInfo> selectEtInterfaceInfoMergeList(EtInterfaceInfo etInterfaceInfo) {
+        String statement = "selectEtInterfaceInfoMergeList";
+        return super.getSqlSession().selectList(statement,etInterfaceInfo);
+    }
+
+    @Override
     public Integer selectEtInterfaceInfoMergeCount(EtInterfaceInfo etInterfaceInfo) {
         String statement = "selectEtInterfaceInfoMergeCount";
         return super.getSqlSession().selectOne(statement,etInterfaceInfo);
