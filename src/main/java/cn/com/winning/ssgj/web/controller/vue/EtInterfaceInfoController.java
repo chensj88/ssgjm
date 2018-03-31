@@ -3,9 +3,14 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.ConnectionUtil;
+import cn.com.winning.ssgj.base.util.DateUtil;
+import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,12 +19,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author chenfeng
@@ -107,44 +110,30 @@ public class EtInterfaceInfoController extends BaseController {
 
     /**
      * 导出Excel
-     *
-     * @param task
      * @param response
-     * @return
+     * @param etInterfaceInfo
      * @throws IOException
      */
     @RequestMapping(value = "/exportExcel.do")
     @ILog
-    public HttpServletResponse wiriteExcel(EtContractTask task, HttpServletResponse response) throws IOException {
-        String fileName = "ContractTask.xls";
-        String path = getClass().getClassLoader().getResource("/template").getPath() + fileName;
-        super.getFacade().getEtContractTaskService().generateEtContractTask(task, path);
-        try {
-            // path是指欲下载的文件的路径。
-            File file = new File(path);
-            // 取得文件名。
-            String filename = file.getName();
-            // 取得文件的后缀名。
-            String ext = filename.substring(filename.lastIndexOf(".") + 1).toUpperCase();
-            // 以流的形式下载文件。
-            InputStream fis = new BufferedInputStream(new FileInputStream(path));
-            byte[] buffer = new byte[fis.available()];
-            fis.read(buffer);
-            fis.close();
-            // 清空response
-            response.reset();
-            // 设置response的Header
-            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("合同产品清单.xls", "UTF-8"));
-            response.addHeader("Content-Length", "" + file.length());
-            OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
-            response.setContentType("application/octet-stream");
-            toClient.write(buffer);
-            toClient.flush();
-            toClient.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            throw ex;
+    public void wiriteExcel(HttpServletResponse response, EtInterfaceInfo etInterfaceInfo) throws IOException {
+        //根据pmid获取所有接口数据
+        List<EtInterfaceInfo> etInterfaceInfos = getFacade().getEtInterfaceInfoService().selectEtInterfaceInfoMergeList(etInterfaceInfo);
+        //参数集合
+        List<Map> dataList = new ArrayList<>();
+        for (int i = 0; i < etInterfaceInfos.size(); i++) {
+            dataList.add(ConnectionUtil.objectToMap(etInterfaceInfos.get(i)));
         }
-        return response;
+        //属性数组
+        Field[] fields = EtInterfaceInfo.class.getDeclaredFields();
+        //属性集合
+        List<String> attrNameList = new ArrayList<>();
+        for (int i = 0; i < fields.length; i++) {
+            attrNameList.add(fields[i].getName());
+        }
+        String filename = "EtInterfaceInfo" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
+        //创建工作簿
+        Workbook workbook = new HSSFWorkbook();
+        ExcelUtil.exportExcelByStream(dataList, attrNameList, response, workbook, filename);
     }
 }
