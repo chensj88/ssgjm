@@ -13,11 +13,9 @@ import org.bytedeco.javacpp.presets.opencv_core;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -126,8 +124,11 @@ public class SiteInstallController extends BaseController {
      */
     @RequestMapping(value = "/save.do", method ={RequestMethod.POST})
     @ResponseBody
-    public void save( EtSiteInstallDetailForm siteInstallDetails) throws Exception{
-        System.out.println(siteInstallDetails);
+    public void save(@RequestBody List<EtSiteInstallDetail> details, HttpServletRequest request) throws Exception{
+        //System.out.println(details);
+
+        String[] ips = request.getParameterValues("ip");
+        System.out.println(ips);
 
     }
 
