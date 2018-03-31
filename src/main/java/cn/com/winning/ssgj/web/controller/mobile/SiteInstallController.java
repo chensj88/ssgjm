@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +27,7 @@ import java.util.List;
  * @create 2018-03-16 上午 9:36
  **/
 @Controller
-@RequestMapping("mobile/siteInstall")
+    @RequestMapping("mobile/siteInstall")
 public class SiteInstallController extends BaseController {
 
     @Autowired
@@ -124,11 +123,9 @@ public class SiteInstallController extends BaseController {
      */
     @RequestMapping(value = "/save.do", method ={RequestMethod.POST})
     @ResponseBody
-    public void save(@RequestBody List<EtSiteInstallDetail> details, HttpServletRequest request) throws Exception{
-        //System.out.println(details);
-
-        String[] ips = request.getParameterValues("ip");
-        System.out.println(ips);
+    public void save(EtSiteInstallDetailForm siteInstallDetails) throws Exception{
+        List<EtSiteInstallDetail> etSiteInstallDetailList = siteInstallDetails.getEtSiteInstallDetails();
+        System.out.println(etSiteInstallDetailList);
 
     }
 
