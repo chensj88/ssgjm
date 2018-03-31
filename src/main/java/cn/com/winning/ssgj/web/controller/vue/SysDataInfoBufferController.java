@@ -54,11 +54,6 @@ public class SysDataInfoBufferController extends BaseController {
     @Autowired
     private SSGJHelper ssgjHelper;
 
-    @RequestMapping(value = "/dataInfo.do")
-    @ILog
-    public String userinfo(HttpServletRequest request, Model model) {
-        return "auth/module/sysDataInfo";
-    }
 
     /**
      * 基础数据类型列表

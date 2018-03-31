@@ -8,6 +8,7 @@ import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -64,6 +65,7 @@ public class EtInterfaceInfoController extends BaseController {
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
     @ILog
+    @Transactional
     public Map<String, Object> addOrModify(EtInterfaceInfo etInterfaceInfo) {
         //创建临时变量
         EtInterfaceInfo etInterfaceInfoTemp = new EtInterfaceInfo();
@@ -98,6 +100,7 @@ public class EtInterfaceInfoController extends BaseController {
     @RequestMapping(value = "/delete.do")
     @ResponseBody
     @ILog
+    @Transactional
     public Map<String, Object> delete(EtInterfaceInfo etInterfaceInfo) {
         super.getFacade().getEtInterfaceInfoService().removeEtInterfaceInfo(etInterfaceInfo);
         Map<String, Object> result = new HashMap<String, Object>();

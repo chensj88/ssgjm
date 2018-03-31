@@ -7,6 +7,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +17,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.com.winning.ssgj.domain.EtProcessManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,10 +49,10 @@ public class EtOnlineUserContorller extends BaseController{
 
 	    @RequestMapping(value = "/list.do")
 	    @ResponseBody
-	    public Map<String, Object> rtOnlineUserList(Row row) {
+	    public Map<String, Object> rtOnlineUserList(EtOnlineUser etOnlineUser,Row row) {
 	    	System.err.println("上线人员信息。。。。。。。。。。。。。。。。。。。。。");
-	    	EtOnlineUser etOnlineUser = new EtOnlineUser();
 	    	etOnlineUser.setRow(row);
+	    	etOnlineUser.setStatus(Constants.PMIS_STATUS_USE);
 	        List<EtOnlineUser> etOnlineUserList = super.getFacade().getEtOnlineUserService().getEtOnlineUserPaginatedList(etOnlineUser);
 	        int total = super.getFacade().getEtOnlineUserService().getEtOnlineUserCount(etOnlineUser);
 	        Map<String, Object> result = new HashMap<String, Object>();
@@ -60,15 +65,17 @@ public class EtOnlineUserContorller extends BaseController{
 	    @RequestMapping(value = "/addOrModify.do")
 	    @ResponseBody
 	    @ILog
+		@Transactional
 	    public Map<String, Object> addOrModifyHospitalUserInfo(EtOnlineUser etOnlineUser) {
-	        //userInfo.setUserType(Constants.User.USER_TYPE_HOSPITAL);
-	        //userInfo.setPassword(MD5.stringMD5(userInfo.getUserid()));
-	       // userInfo.setSsgs(9879L);
 	    	etOnlineUser.setStatus(Constants.STATUS_USE);
 	        if (etOnlineUser.getId() == 0L) {
 	        	etOnlineUser.setId(ssgjHelper.createEtOnlineInfoIdService());
+	        	etOnlineUser.setCreator(etOnlineUser.getOperator());
+	        	etOnlineUser.setCreateTime(new Timestamp(new Date().getTime()));
+	        	etOnlineUser.setOperatorTime(new Timestamp(new Date().getTime()));
 	            super.getFacade().getEtOnlineUserService().createEtOnlineUser(etOnlineUser);
 	        } else {
+				etOnlineUser.setOperatorTime(new Timestamp(new Date().getTime()));
 	            super.getFacade().getEtOnlineUserService().modifyEtOnlineUser(etOnlineUser);
 	        }
 	        Map<String, Object> result = new HashMap<String, Object>();
@@ -78,10 +85,9 @@ public class EtOnlineUserContorller extends BaseController{
 
 	    @RequestMapping(value = "/exportExcel.do")
 	    @ILog
-	    public HttpServletResponse wiriteExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
-	        EtOnlineUser etOnlineUser = new EtOnlineUser();
+	    public HttpServletResponse wiriteExcel(EtOnlineUser etOnlineUser, HttpServletResponse response) throws IOException {
 	        etOnlineUser.setStatus(Constants.STATUS_USE);
-	        String fileName = "etonlineuser.xls";
+	        String fileName = "EtOnLineUserInfo.xls";
 	        String path = getClass().getClassLoader().getResource("/template").getPath() + fileName;
 	        super.getFacade().getEtOnlineUserService().generateEtOnlineUser(etOnlineUser, path);
 	        try {
@@ -100,7 +106,7 @@ public class EtOnlineUserContorller extends BaseController{
 	            // 清空response
 	            response.reset();
 	            // 设置response的Header
-	            response.addHeader("Content-Disposition", "attachment;filename=" + new String("HospitalUserInfo.xls".getBytes()));
+	            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("上线支持人员信息.xls","UTF-8"));
 	            response.addHeader("Content-Length", "" + file.length());
 	            OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
 	            response.setContentType("application/octet-stream");
@@ -117,7 +123,8 @@ public class EtOnlineUserContorller extends BaseController{
 	    @RequestMapping(value = "/upload.do")
 	    @ResponseBody
 	    @ILog
-	    public Map<String, Object> uploadHospitalUserTemplate(HttpServletRequest request,
+		@Transactional
+	    public Map<String, Object> uploadHospitalUserTemplate(EtOnlineUser etOnlineUser,HttpServletRequest request,
 	                                                          MultipartFile file) throws IOException {
 	        Map<String, Object> result = new HashMap<String, Object>();
 	        //如果文件不为空，写入上传路径
@@ -140,7 +147,7 @@ public class EtOnlineUserContorller extends BaseController{
 
 	            try {
 	                List<List<Object>> userList = ExcelUtil.importExcel(newFile.getPath());
-	                super.getFacade().getEtOnlineUserService().createEtOnlineUserList(userList);
+	                super.getFacade().getEtOnlineUserService().createEtOnlineUserList(userList,etOnlineUser);
 	                newFile.delete();
 	                result.put("status", "success");
 	            } catch (Exception e) {
@@ -159,6 +166,7 @@ public class EtOnlineUserContorller extends BaseController{
 	    @RequestMapping(value = "/delete.do")
 	    @ResponseBody
 	    @ILog
+		@Transactional
 	    public Map<String, Object> deleteEtOnlineUser(EtOnlineUser etOnlineUser){
 	    	etOnlineUser.setStatus(Constants.STATUS_UNUSE);
 	        super.getFacade().getEtOnlineUserService().modifyEtOnlineUser(etOnlineUser);
@@ -167,5 +175,21 @@ public class EtOnlineUserContorller extends BaseController{
 	        return result;
 
 	    }
+
+	@RequestMapping(value = "/confirm.do")
+	@ResponseBody
+	@ILog
+	@Transactional
+	public Map<String, Object> confirmEtOnlineUser(EtProcessManager  processManager){
+		processManager.setIsSupportStaff(Constants.STATUS_UNUSE);
+		processManager.setOperatorTime(new Timestamp(new Date().getTime()));
+		super.getFacade().getEtProcessManagerService().modifyEtProcessManager(processManager);
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("status", Constants.SUCCESS);
+		return result;
+
+	}
+
+
 
 }

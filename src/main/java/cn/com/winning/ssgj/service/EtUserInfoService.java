@@ -27,7 +27,7 @@ public interface EtUserInfoService {
 
     List<EtUserInfo> getEtUserInfoPaginatedList(EtUserInfo t);
     
-    void createEtUserInfoList(List<List<Object>> etUserList);
+    void createEtUserInfoList(List<List<Object>> etUserList,EtUserInfo userInfo);
 
     void generateEtUserInfo(EtUserInfo etUserInfo, String path);
     

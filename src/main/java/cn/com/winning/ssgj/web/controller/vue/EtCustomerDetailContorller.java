@@ -13,6 +13,7 @@ import cn.com.winning.ssgj.domain.EtProcessManager;
 import org.springframework.format.datetime.joda.MillisecondInstantPrinter;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,6 +43,7 @@ public class EtCustomerDetailContorller extends BaseController {
     @RequestMapping("/add")
     @ResponseBody
     @ILog
+    @Transactional
     public Map<String, Object> addEtCustomerDetail(EtCustomerDetail etCustomerDetail) {
         Map<String, Object> result = new HashMap<String, Object>();
         Integer isSucceed = super.getFacade().getEtCustomerDetailService().createEtCustomerDetail(etCustomerDetail);
@@ -57,6 +59,7 @@ public class EtCustomerDetailContorller extends BaseController {
     @RequestMapping("/etCustomerDetailUpdate")
     @ResponseBody
     @ILog
+    @Transactional
     public Map<String, Object> updateEtCustomerDetail(EtCustomerDetail etCustomerDetail) {
         Map<String, Object> result = new HashMap<String, Object>();
         EtCustomerDetail old = super.getFacade().getEtCustomerDetailService().getEtCustomerDetail(etCustomerDetail);

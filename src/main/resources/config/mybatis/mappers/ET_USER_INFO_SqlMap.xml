@@ -19,6 +19,8 @@
     </resultMap>
 
     <resultMap id="etUserInfoResult" type="etUserInfo" extends="etUserInfoResultForList">
+        <result column="USER_TYPE_LABEL" property="map.userType" jdbcType="VARCHAR"/>
+        <result column="POSITION_NAME_LABEL" property="map.positionName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="sf-etUserInfo">
@@ -42,10 +44,16 @@
         <include refid="sf-etUserInfo"/>
     </select>
 
-    <select id="selectEtUserInfoList" resultMap="etUserInfoResultForList" parameterType="etUserInfo">
+    <select id="selectEtUserInfoList" resultMap="etUserInfoResult" parameterType="etUserInfo">
         select
         <if test="row.count != null and row.count != ''">top ${row.count}</if>
-        * from ET_USER_INFO t where 1 = 1
+        t.*,
+        A.DICT_LABEL AS USER_TYPE_LABEL,
+        CASE WHEN B.DICT_LABEL IS NOT NULL THEN B.DICT_LABEL ELSE t.POSITION_NAME END AS POSITION_NAME_LABEL
+        from ET_USER_INFO t
+        LEFT JOIN SYS_DICT_INFO A ON A.DICT_VALUE = T.USER_TYPE AND A.DICT_CODE='userType'
+        LEFT JOIN SYS_DICT_INFO B ON t.POSITION_NAME = B.DICT_VALUE AND B.DICT_CODE='positionName'
+        where 1 = 1
         <include refid="sf-etUserInfo"/>
         <!-- order by ID asc -->
     </select>
@@ -57,9 +65,17 @@
 
     <select id="selectEtUserInfoPaginatedList" resultMap="etUserInfoResult" parameterType="etUserInfo">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
-        from ET_USER_INFO t where 1 = 1
-        <include refid="sf-etUserInfo"/>
+        select
+        t.*,
+        A.DICT_LABEL AS USER_TYPE_LABEL,
+        CASE WHEN B.DICT_LABEL IS NOT NULL THEN B.DICT_LABEL ELSE t.POSITION_NAME END AS POSITION_NAME_LABEL,
+        ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from ET_USER_INFO t
+        LEFT JOIN SYS_DICT_INFO A ON A.DICT_VALUE = T.USER_TYPE AND A.DICT_CODE='userType'
+        LEFT JOIN SYS_DICT_INFO B ON t.POSITION_NAME = B.DICT_VALUE AND B.DICT_CODE='positionName'
+        <where>
+            <include refid="sf-etUserInfo"/>
+        </where>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>

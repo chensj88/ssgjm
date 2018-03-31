@@ -12,6 +12,7 @@ import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -73,6 +74,7 @@ public class HospitalUserController extends BaseController {
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
     @ILog
+    @Transactional
     public Map<String, Object> addOrModifyHospitalUserInfo(SysUserInfo userInfo) {
         userInfo.setUserType(Constants.User.USER_TYPE_HOSPITAL);
         userInfo.setPassword(MD5.stringMD5(userInfo.getUserid()));
@@ -144,6 +146,7 @@ public class HospitalUserController extends BaseController {
     @RequestMapping(value = "/upload.do")
     @ResponseBody
     @ILog
+    @Transactional
     public Map<String, Object> uploadHospitalUserTemplate(HttpServletRequest request,SysUserInfo userInfo,
                                                           MultipartFile file) throws IOException {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -190,6 +193,7 @@ public class HospitalUserController extends BaseController {
     @RequestMapping(value = "/delete.do")
     @ResponseBody
     @ILog
+    @Transactional
     public Map<String, Object> deleteHospitalUser(SysUserInfo userInfo){
         userInfo.setStatus(Constants.PMIS_STATUS_UNUSE);
         super.getFacade().getSysUserInfoService().modifySysUserInfo(userInfo);
