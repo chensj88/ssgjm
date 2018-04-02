@@ -41,4 +41,9 @@ public class SysUserInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysUserInfo> i
     public List<SysUserInfo> selectSysUserInfoListByUserIdList(SysUserInfo userInfo) {
         return super.getSqlSession().selectList("selectSysUserInfoListByUserIdList",userInfo);
     }
+
+    @Override
+    public SysUserInfo selectSysUserInfoByUserCode(SysUserInfo user) {
+        return super.getSqlSession().selectOne("selectSysUserInfoByUserCode",user);
+    }
 }

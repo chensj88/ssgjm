@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.dao;
 import cn.com.winning.ssgj.domain.EtUserInfo;
 import cn.com.winning.ssgj.dao.EntityDao;
 
+import java.util.List;
+
 /**
  *
  *

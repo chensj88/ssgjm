@@ -22,4 +22,6 @@ public interface SysUserInfoDao extends EntityDao<SysUserInfo> {
    public List<FlotDataInfo> countUserInfoByType();
 
     List<SysUserInfo> selectSysUserInfoListByUserIdList(SysUserInfo userInfo);
+
+    SysUserInfo selectSysUserInfoByUserCode(SysUserInfo user);
 }
