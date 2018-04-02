@@ -61,4 +61,9 @@ public class EtDevEnvHardwareServiceImpl implements EtDevEnvHardwareService {
         return this.etDevEnvHardwareDao.selectEtDevEnvHardwareMergeList(etDevEnvHardware);
     }
 
+    @Override
+    public void insertEtDevEnvHardwareByList(List<EtDevEnvHardware> etDevEnvHardwares) {
+        this.etDevEnvHardwareDao.insertEtDevEnvHardwareByList(etDevEnvHardwares);
+    }
+
 }

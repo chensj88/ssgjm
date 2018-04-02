@@ -143,6 +143,7 @@ public class EtDevEnvHardwareController extends BaseController {
 
     /**
      * 导出Excel
+     *
      * @param response
      * @param etDevEnvHardware
      * @throws IOException
@@ -162,7 +163,7 @@ public class EtDevEnvHardwareController extends BaseController {
         //属性集合
         List<String> attrNameList = new ArrayList<>();
         for (int i = 0; i < fields.length; i++) {
-            if(!"serialVersionUID".equals(fields[i].getName())){
+            if (!"serialVersionUID".equals(fields[i].getName())) {
                 attrNameList.add(fields[i].getName());
             }
         }
@@ -182,14 +183,21 @@ public class EtDevEnvHardwareController extends BaseController {
     @RequestMapping(value = "/upload.do")
     @ResponseBody
     @ILog
-    public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtDataCheck t) throws IOException {
-        //根据id获取表属性
-        EtDataCheck etDataCheck = getFacade().getEtDataCheckService().getEtDataCheck(t);
+    public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtDevEnvHardware param) throws IOException {
+        //获取项目id
+        Long pmId = param.getPmId();
+        //根据项目id获取项目基本信息
+        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
+        //获取合同id
+        Long contractId = pmisProjectBasicInfo.getHtxx();
+        //获取单据号即客户
+        Long customerId = pmisProjectBasicInfo.getKhxx();
+
         Map<String, Object> result = new HashMap<String, Object>();
         //如果文件不为空，写入上传路径
         if (!file.isEmpty()) {
             //上传文件路径
-            String path = request.getServletContext().getRealPath("/script/");
+            String path = request.getServletContext().getRealPath("/hardware/");
             //上传文件名
             String filename = file.getOriginalFilename();
             File filepath = new File(path, filename);
@@ -203,30 +211,34 @@ public class EtDevEnvHardwareController extends BaseController {
                 newFile.delete();
             }
             file.transferTo(newFile);
-            JSONArray jsonArray = new JSONArray();
-            //错误计数
-            Integer failNum = 0;
-            //检测结果
-            String checkResult = "";
+            //导入的数据集合
+            List<EtDevEnvHardware> eList = new ArrayList<>();
             try {
-                List<List<Object>> etDataCheckList = ExcelUtil.importExcel(newFile.getPath());
-                for (List<Object> e : etDataCheckList) {
-                    for (int i = 0; i < e.size(); i++) {
-                        if ("F".equalsIgnoreCase(e.get(i).toString())) {
-                            failNum++;
-                        }
+                List<List<Object>> etDevEnvHardwareList = ExcelUtil.importExcel(newFile.getPath());
+                for (List<Object> temp : etDevEnvHardwareList) {
+                    EtDevEnvHardware etDevEnvHardware = new EtDevEnvHardware();
+                    etDevEnvHardware.setId(ssgjHelper.createEtDevEnvHardwareId());
+                    etDevEnvHardware.setPmId(pmId);
+                    etDevEnvHardware.setcId(contractId);
+                    etDevEnvHardware.setSerialNo(customerId.toString());
+                    etDevEnvHardware.setProductName(temp.get(0).toString());
+                    etDevEnvHardware.setHwName(temp.get(1).toString());
+                    etDevEnvHardware.setHwBrand(temp.get(2).toString());
+                    etDevEnvHardware.setHwBrandModel(temp.get(3).toString());
+                    if(!StringUtil.isEmptyOrNull(temp.get(4).toString())){
+                        etDevEnvHardware.setHwNum(Integer.parseInt(temp.get(4).toString()));
                     }
-                    jsonArray.add(e);
+                    etDevEnvHardware.setHwUse(temp.get(5).toString());
+                    if(!StringUtil.isEmptyOrNull(temp.get(6).toString())){
+                        etDevEnvHardware.setIsScope(Integer.parseInt(temp.get(6).toString()));
+                    }
+                    etDevEnvHardware.setCreateTime(new Timestamp(new Date().getTime()));
+                    etDevEnvHardware.setCreator(param.getOperator());
+                    etDevEnvHardware.setOperator(param.getOperator());
+                    etDevEnvHardware.setOperatorTime(new Timestamp(new Date().getTime()));
+                    eList.add(etDevEnvHardware);
                 }
-                System.out.println(jsonArray.toJSONString());
-                etDataCheck.setContent(jsonArray.toJSONString());
-                if (failNum == null || failNum == 0) {
-                    checkResult = "校验正常";
-                } else {
-                    checkResult = "校验出" + failNum + "个问题";
-                }
-                etDataCheck.setCheckResult(checkResult);
-                getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheck);
+                getFacade().getEtDevEnvHardwareService().insertEtDevEnvHardwareByList(eList);
                 newFile.delete();
                 result.put("status", "success");
             } catch (Exception e) {

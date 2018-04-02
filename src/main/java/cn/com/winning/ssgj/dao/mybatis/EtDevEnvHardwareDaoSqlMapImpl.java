@@ -21,4 +21,9 @@ public class EtDevEnvHardwareDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtDevEnvH
     public List<EtDevEnvHardware> selectEtDevEnvHardwareMergeList(EtDevEnvHardware etDevEnvHardware) {
         return super.getSqlSession().selectList("selectEtDevEnvHardwareMergeList",etDevEnvHardware);
     }
+
+    @Override
+    public void insertEtDevEnvHardwareByList(List<EtDevEnvHardware> etDevEnvHardwares) {
+        super.getSqlSession().insert("insertEtDevEnvHardwareByList",etDevEnvHardwares);
+    }
 }

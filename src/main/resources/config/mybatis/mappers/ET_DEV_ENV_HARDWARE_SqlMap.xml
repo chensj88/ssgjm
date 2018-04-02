@@ -168,4 +168,46 @@
         </where>
     </delete>
 
+    <insert id="insertEtDevEnvHardwareByList" parameterType="java.util.List">
+        insert into ET_DEV_ENV_HARDWARE
+        (
+        ID,
+        PM_ID,
+        C_ID,
+        SERIAL_NO,
+        PRODUCT_NAME,
+        HW_NAME,
+        HW_BRAND,
+        HW_BRAND_MODEL,
+        HW_NUM,
+        HW_USE,
+        IS_SCOPE,
+        CREATOR,
+        CREATE_TIME,
+        OPERATOR,
+        OPERATOR_TIME
+        )
+        values
+        <foreach collection="list" item="e" index="index" separator=",">
+            (
+            #{e.id, jdbcType=BIGINT},
+            #{e.pmId, jdbcType=BIGINT},
+            #{e.cId, jdbcType=BIGINT},
+            #{e.serialNo, jdbcType=VARCHAR},
+            #{e.productName, jdbcType=VARCHAR},
+            #{e.hwName, jdbcType=VARCHAR},
+            #{e.hwBrand, jdbcType=VARCHAR},
+            #{e.hwBrandModel, jdbcType=VARCHAR},
+            #{e.hwNum, jdbcType=INTEGER},
+            #{e.hwUse, jdbcType=LONGVARCHAR},
+            #{e.isScope, jdbcType=INTEGER},
+            #{e.creator, jdbcType=BIGINT},
+            #{e.createTime, jdbcType=TIMESTAMP},
+            #{e.operator, jdbcType=BIGINT},
+            #{e.operatorTime, jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+
 </mapper>

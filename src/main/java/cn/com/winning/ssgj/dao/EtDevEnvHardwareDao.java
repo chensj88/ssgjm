@@ -14,4 +14,6 @@ public interface EtDevEnvHardwareDao extends EntityDao<EtDevEnvHardware> {
 
     List<EtDevEnvHardware> selectEtDevEnvHardwareMergeList(EtDevEnvHardware etDevEnvHardware);
 
+    void insertEtDevEnvHardwareByList(List<EtDevEnvHardware> etDevEnvHardwares);
+
 }
