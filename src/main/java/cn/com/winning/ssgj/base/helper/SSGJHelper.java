@@ -189,6 +189,10 @@ public class SSGJHelper {
     @Qualifier(value = "siteInstallIdService")
     private StepSequenceFactory  siteInstallIdService;
 
+    @Autowired
+    @Qualifier(value = "etDevEnvHardwareIdService")
+    private StepSequenceFactory  etDevEnvHardwareIdService;
+
     public long createEtOnlineInfoIdService(){
         return (long) createEtOnlineInfoIdService.create();
     }
@@ -463,6 +467,15 @@ public class SSGJHelper {
     public Long createInterfaceInfoId(){
         return (Long) etInterfaceInfoIdService.create();
     }
+
+    /**
+     * 接口信息ID
+     * @return
+     */
+    public Long createEtDevEnvHardwareId(){
+        return (Long) etDevEnvHardwareIdService.create();
+    }
+
 
 
 
