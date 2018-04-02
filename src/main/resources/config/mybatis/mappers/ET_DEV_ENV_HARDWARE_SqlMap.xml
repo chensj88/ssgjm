@@ -69,6 +69,14 @@
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
 
+    <select id="selectEtDevEnvHardwareMergeList" resultMap="etDevEnvHardwareResult"
+            parameterType="etDevEnvHardware">
+        select * from
+        ET_DEV_ENV_HARDWARE t where 1 = 1
+        <include refid="sf-etDevEnvHardware"/>
+        <!-- order by ID asc -->
+    </select>
+
     <insert id="insertEtDevEnvHardware" parameterType="etDevEnvHardware">
 
         insert into ET_DEV_ENV_HARDWARE

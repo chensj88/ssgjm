@@ -26,4 +26,6 @@ public interface EtDevEnvHardwareService {
 
     List<EtDevEnvHardware> getEtDevEnvHardwarePaginatedList(EtDevEnvHardware t);
 
+    List<EtDevEnvHardware> selectEtDevEnvHardwareMergeList(EtDevEnvHardware etDevEnvHardware);
+
 }

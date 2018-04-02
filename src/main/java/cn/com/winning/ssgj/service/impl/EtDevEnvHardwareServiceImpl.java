@@ -56,4 +56,9 @@ public class EtDevEnvHardwareServiceImpl implements EtDevEnvHardwareService {
         return this.etDevEnvHardwareDao.selectEntityPaginatedList(t);
     }
 
+    @Override
+    public List<EtDevEnvHardware> selectEtDevEnvHardwareMergeList(EtDevEnvHardware etDevEnvHardware) {
+        return this.etDevEnvHardwareDao.selectEtDevEnvHardwareMergeList(etDevEnvHardware);
+    }
+
 }

@@ -3,15 +3,15 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
-import cn.com.winning.ssgj.base.util.ExcelUtil;
-import cn.com.winning.ssgj.base.util.SFtpUtils;
-import cn.com.winning.ssgj.base.util.StringUtil;
+import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jcraft.jsch.ChannelSftp;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +28,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.*;
@@ -73,7 +74,7 @@ public class EtDevEnvHardwareController extends BaseController {
 
         etDevEnvHardware.setPmId(pmId);
 
-        etDevEnvHardware.setCId(contractId);
+        etDevEnvHardware.setcId(contractId);
 
         etDevEnvHardware.setSerialNo(customerId.toString());
         //获取基础数据校验
@@ -107,7 +108,7 @@ public class EtDevEnvHardwareController extends BaseController {
         basicInfo.setId(etDevEnvHardware.getPmId());
         basicInfo = super.getFacade().getPmisProjectBasicInfoService().getPmisProjectBasicInfo(basicInfo);
         etDevEnvHardware.setSerialNo(basicInfo.getKhxx() + "");
-        etDevEnvHardware.setCId(basicInfo.getHtxx());
+        etDevEnvHardware.setcId(basicInfo.getHtxx());
         if (etDevEnvHardwareTemp != null) {
             etDevEnvHardware.setOperatorTime(new Timestamp(new Date().getTime()));
             super.getFacade().getEtDevEnvHardwareService().modifyEtDevEnvHardware(etDevEnvHardware);
@@ -138,6 +139,37 @@ public class EtDevEnvHardwareController extends BaseController {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
+    }
+
+    /**
+     * 导出Excel
+     * @param response
+     * @param etDevEnvHardware
+     * @throws IOException
+     */
+    @RequestMapping(value = "/exportExcel.do")
+    @ILog
+    public void wiriteExcel(HttpServletResponse response, EtDevEnvHardware etDevEnvHardware) throws IOException {
+        //根据pmid获取所有接口数据
+        List<EtDevEnvHardware> etDevEnvHardwares = getFacade().getEtDevEnvHardwareService().selectEtDevEnvHardwareMergeList(etDevEnvHardware);
+        //参数集合
+        List<Map> dataList = new ArrayList<>();
+        for (int i = 0; i < etDevEnvHardwares.size(); i++) {
+            dataList.add(ConnectionUtil.objectToMap(etDevEnvHardwares.get(i)));
+        }
+        //属性数组
+        Field[] fields = EtDevEnvHardware.class.getDeclaredFields();
+        //属性集合
+        List<String> attrNameList = new ArrayList<>();
+        for (int i = 0; i < fields.length; i++) {
+            if(!"serialVersionUID".equals(fields[i].getName())){
+                attrNameList.add(fields[i].getName());
+            }
+        }
+        String filename = "EtDevEnvHardwareInfo" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
+        //创建工作簿
+        Workbook workbook = new HSSFWorkbook();
+        ExcelUtil.exportExcelByStream(dataList, attrNameList, response, workbook, filename);
     }
 
     /**

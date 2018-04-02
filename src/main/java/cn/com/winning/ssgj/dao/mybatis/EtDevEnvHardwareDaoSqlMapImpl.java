@@ -6,6 +6,8 @@ import cn.com.winning.ssgj.dao.EtDevEnvHardwareDao;
 import cn.com.winning.ssgj.domain.EtDevEnvHardware;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.List;
+
 /**
  *
  *
@@ -15,4 +17,8 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 @Service
 public class EtDevEnvHardwareDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtDevEnvHardware> implements EtDevEnvHardwareDao {
 
+    @Override
+    public List<EtDevEnvHardware> selectEtDevEnvHardwareMergeList(EtDevEnvHardware etDevEnvHardware) {
+        return super.getSqlSession().selectList("selectEtDevEnvHardwareMergeList",etDevEnvHardware);
+    }
 }
