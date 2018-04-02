@@ -162,6 +162,9 @@ public class EtDataCheckController extends BaseController {
     public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtDataCheck t) throws IOException {
         //根据id获取表属性
         EtDataCheck etDataCheck = getFacade().getEtDataCheckService().getEtDataCheck(t);
+        SysDataCheckScript sysDataCheckScript = new SysDataCheckScript();
+        sysDataCheckScript.setAppId(etDataCheck.getPlId());
+        sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(sysDataCheckScript);
         Map<String, Object> result = new HashMap<String, Object>();
         //如果文件不为空，写入上传路径
         if (!file.isEmpty()) {
@@ -203,7 +206,14 @@ public class EtDataCheckController extends BaseController {
                     checkResult = "校验出" + failNum + "个问题";
                 }
                 etDataCheck.setCheckResult(checkResult);
+                //文件夹路径
+                String dir = "/check/" + sysDataCheckScript.getAppName()+"/";
+                String src = newFile.getAbsolutePath();
+                String fileName=newFile.getName();
+                etDataCheck.setScriptPath(dir+fileName);
                 getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheck);
+                //将文件上传到ftp服务器
+                SFtpUtils.uploadFile(src, dir, fileName);
                 newFile.delete();
                 result.put("status", "success");
             } catch (Exception e) {
@@ -231,8 +241,11 @@ public class EtDataCheckController extends BaseController {
     public void exportSql(HttpServletResponse response, EtDataCheck t) throws IOException {
         //获取数据校验信息
         EtDataCheck etDataCheck = getFacade().getEtDataCheckService().getEtDataCheck(t);
+        SysDataCheckScript temp = new SysDataCheckScript();
+        temp.setAppId(etDataCheck.getPlId());
+        SysDataCheckScript sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(temp);
         //获取脚本地址
-        String scriptPath = etDataCheck.getScriptPath();
+        String scriptPath = sysDataCheckScript.getRemotePath();
         //获取文件名
         String filename = scriptPath.substring(scriptPath.lastIndexOf("/") + 1);
         ChannelSftp sftpConnect = null;
