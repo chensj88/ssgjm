@@ -6,6 +6,8 @@ import cn.com.winning.ssgj.dao.EtUserInfoDao;
 import cn.com.winning.ssgj.domain.EtUserInfo;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.List;
+
 /**
  *
  *

@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.dao.PmisProjectBasicInfoDao;
 import cn.com.winning.ssgj.dao.SysDictInfoDao;
+import cn.com.winning.ssgj.dao.SysUserInfoDao;
 import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
 import cn.com.winning.ssgj.domain.SysDictInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +41,26 @@ public class EtUserInfoServiceImpl implements EtUserInfoService {
 
     @Autowired
     private SSGJHelper ssgjHelper;
+    @Autowired
+    private SysUserInfoDao sysUserInfoDao;
 
 
     public Integer createEtUserInfo(EtUserInfo t) {
+        initEtUserInfoForUserId(t);
         return this.etUserInfoDao.insertEntity(t);
+    }
+
+    private void initEtUserInfoForUserId(EtUserInfo t) {
+        if(t.getUserType() == 1 ){
+            SysUserInfo userInfo = new SysUserInfo();
+            userInfo.setUserid(t.getUserCard().trim());
+            userInfo = sysUserInfoDao.selectSysUserInfoByUserCode(userInfo);
+            if(userInfo!= null ){
+                t.setUserId(userInfo.getId());
+            }
+        }
+
+
     }
 
 
@@ -63,6 +80,7 @@ public class EtUserInfoServiceImpl implements EtUserInfoService {
 
 
     public int modifyEtUserInfo(EtUserInfo t) {
+        initEtUserInfoForUserId(t);
         return this.etUserInfoDao.updateEntity(t);
     }
 
@@ -109,8 +127,7 @@ public class EtUserInfoServiceImpl implements EtUserInfoService {
         ExcelUtil.writeExcel(dataList, colList, colList.size(), path);
 	}
 
-
-	public void createEtUserInfoList(List<List<Object>> userList,EtUserInfo userInfo) {
+    public void createEtUserInfoList(List<List<Object>> userList,EtUserInfo userInfo) {
         PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
         basicInfo.setId(userInfo.getPmId());
         basicInfo = pmisProjectBasicInfoDao.selectEntity(basicInfo);

@@ -217,4 +217,10 @@
             </if>
         </where>
     </select>
+
+    <select id="selectSysUserInfoByUserCode" parameterType="sysUserInfo" resultMap="sysUserInfoResult">
+        SELECT  * FROM SYS_USER_INFO t
+        WHERE  t.STATUS = 1 AND  t.USER_TYPE ='1'
+        <if test="userid != null and userid != ''"> AND  t.USERID = #{userid, jdbcType=VARCHAR} </if>
+    </select>
 </mapper>

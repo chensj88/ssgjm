@@ -24,11 +24,11 @@
     </resultMap>
 
     <sql id="sf-etUserInfo">
-        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
-        <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
-        <if test="(cId != null and cId != '') or cId == 0">and t.C_ID = #{cId}</if>
-        <if test="(userId != null and userId != '') or userId == 0">and t.USER_ID = #{userId}</if>
-        <if test="(userType != null and userType != '') or userType == 0">and t.USER_TYPE = #{userType}</if>
+        <if test="(id != null) or id == 0">and t.ID = #{id}</if>
+        <if test="(pmId != null ) or pmId == 0">and t.PM_ID = #{pmId}</if>
+        <if test="(cId != null ) or cId == 0">and t.C_ID = #{cId}</if>
+        <if test="(userId != null ) or userId == 0">and t.USER_ID = #{userId}</if>
+        <if test="(userType != null ) or userType == 0">and t.USER_TYPE = #{userType}</if>
         <if test="userCard != null and userCard != ''">and t.USER_CARD = #{userCard}</if>
         <if test="cName != null and cName != ''">and t.C_NAME = #{cName}</if>
         <if test="orgName != null and orgName != ''">and t.ORG_NAME = #{orgName}</if>
@@ -36,7 +36,7 @@
         <if test="telephone != null and telephone != ''">and t.TELEPHONE = #{telephone}</if>
         <if test="email != null and email != ''">and t.EMAIL = #{email}</if>
         <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
-        <if test="(isDel != null and isDel != '') or isDel == 0">and t.IS_DEL = #{isDel}</if>
+        <if test="(isDel != null ) or isDel == 0">and t.IS_DEL = #{isDel}</if>
     </sql>
 
     <select id="selectEtUserInfo" resultMap="etUserInfoResult" parameterType="etUserInfo">
@@ -55,8 +55,12 @@
         LEFT JOIN SYS_DICT_INFO B ON t.POSITION_NAME = B.DICT_VALUE AND B.DICT_CODE='positionName'
         where 1 = 1
         <include refid="sf-etUserInfo"/>
+        <if test="( map.position != null and map.position != '' )">
+            AND  t.POSITION_NAME IN  (${map.position})
+        </if>
         <!-- order by ID asc -->
     </select>
+
 
     <select id="selectEtUserInfoCount" resultType="int" parameterType="etUserInfo">
         select count(*) from ET_USER_INFO t where 1 = 1
@@ -96,7 +100,7 @@
             <if test="telephone != null and telephone != ''">TELEPHONE,</if>
             <if test="email != null and email != ''">EMAIL,</if>
             <if test="remark != null and remark != ''">REMARK,</if>
-            <if test="(isDel != null and isDel != '') or isDel == 0">IS_DEL,</if>
+            <if test="(isDel != null  or isDel == 0 )">IS_DEL,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -112,7 +116,7 @@
             <if test="telephone != null and telephone != ''">#{telephone, jdbcType=VARCHAR},</if>
             <if test="email != null and email != ''">#{email, jdbcType=VARCHAR},</if>
             <if test="remark != null and remark != ''">#{remark, jdbcType=LONGVARCHAR},</if>
-            <if test="(isDel != null and isDel != '') or isDel == 0">#{isDel, jdbcType=INTEGER},</if>
+            <if test="(isDel != null  or isDel == 0 )">#{isDel, jdbcType=INTEGER},</if>
         </trim>
     </insert>
 
@@ -136,7 +140,7 @@
                 <if test="telephone != null and telephone != ''">TELEPHONE = #{telephone, jdbcType=VARCHAR},</if>
                 <if test="email != null and email != ''">EMAIL = #{email, jdbcType=VARCHAR},</if>
                 <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
-                <if test="(isDel != null and isDel != '') or isDel == 0">IS_DEL = #{isDel, jdbcType=INTEGER},</if>
+                <if test="(isDel != null  or isDel == 0 )">IS_DEL = #{isDel, jdbcType=INTEGER},</if>
             </trim>
         </set>
         <where>

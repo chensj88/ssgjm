@@ -30,6 +30,5 @@ public interface EtUserInfoService {
     void createEtUserInfoList(List<List<Object>> etUserList,EtUserInfo userInfo);
 
     void generateEtUserInfo(EtUserInfo etUserInfo, String path);
-    
 
 }
