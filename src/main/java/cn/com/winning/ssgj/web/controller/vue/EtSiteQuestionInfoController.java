@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.vue;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
 import cn.com.winning.ssgj.domain.EtUserInfo;
 import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
@@ -9,6 +10,7 @@ import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -100,6 +102,8 @@ public class EtSiteQuestionInfoController extends BaseController {
      */
     @RequestMapping(value = "/updateOperate.do")
     @ResponseBody
+    @ILog
+    @Transactional
     public Map<String,Object> updateOperate(EtSiteQuestionInfo info){
         info.setOperatorTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
@@ -115,6 +119,8 @@ public class EtSiteQuestionInfoController extends BaseController {
      */
     @RequestMapping(value = "/updatePriority.do")
     @ResponseBody
+    @ILog
+    @Transactional
     public Map<String,Object> updatePriority(EtSiteQuestionInfo info){
         info.setOperatorTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
@@ -130,6 +136,8 @@ public class EtSiteQuestionInfoController extends BaseController {
      */
     @RequestMapping(value = "/updateAllocateUser.do")
     @ResponseBody
+    @ILog
+    @Transactional
     public Map<String,Object> updateAllocateUser(EtSiteQuestionInfo info){
         info.setOperatorTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);

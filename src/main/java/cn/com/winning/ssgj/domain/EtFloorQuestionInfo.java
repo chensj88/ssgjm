@@ -49,7 +49,7 @@ public class EtFloorQuestionInfo extends BaseDomain implements Serializable {
 	/**
 	 * @val 问题描述
 	 */
-	private String questionDesc;
+		private String questionDesc;
 	
 	/**
 	 * @val 问题照片路径

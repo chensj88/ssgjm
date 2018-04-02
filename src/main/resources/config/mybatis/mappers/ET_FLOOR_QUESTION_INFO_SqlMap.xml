@@ -28,6 +28,8 @@
         <result column="NAME" property="map.name" jdbcType="VARCHAR"/>
         <result column="DICT_LABEL" property="map.dict_label" jdbcType="VARCHAR" />
         <result column="operator_name" property="map.operator_name" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME_STR" property="map.createTime" jdbcType="VARCHAR"/>
+        <result column="OPERATOR_TIME_STR" property="map.operatorTime" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="sf-etFloorQuestionInfo">
@@ -77,8 +79,15 @@
     <select id="selectEtFloorQuestionInfoPaginatedList" resultMap="etFloorQuestionInfoResult"
             parameterType="etFloorQuestionInfo">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
-        from ET_FLOOR_QUESTION_INFO t where 1 = 1
+        select t.*, i.YHMC,ii.YHMC AS operator_name,d.DICT_LABEL,
+        CASE WHEN ( CREATE_TIME IS  NOT  NULL ) THEN CONVERT(VARCHAR(32),CREATE_TIME,120) ELSE '' END AS CREATE_TIME_STR,
+        CASE WHEN ( OPERATOR_TIME IS  NOT  NULL ) THEN CONVERT(VARCHAR(32),OPERATOR_TIME,120) ELSE '' END AS OPERATOR_TIME_STR,
+        ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from ET_FLOOR_QUESTION_INFO t
+        LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
+        LEFT JOIN SYS_USER_INFO ii ON  t.OPERATOR=ii.ID
+        LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
+        where 1 = 1
         <include refid="sf-etFloorQuestionInfo"/>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
