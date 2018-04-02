@@ -16,10 +16,11 @@ import cn.com.winning.ssgj.domain.BaseDomain;
  * @date 2018-02-24 10:57:34
  */
  
-@Alias("etSiteInstallDetail")
+
 public class EtSiteInstallDetail extends BaseDomain implements Serializable {
 
 	private static final long serialVersionUID = -1L;
+
 
 	/**
 	 * @val ID

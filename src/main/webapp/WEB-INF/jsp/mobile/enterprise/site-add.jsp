@@ -47,9 +47,13 @@
 				</div>
 			</div>
 			<div id="siteDiv">
+				<input type="hidden" name="parentId" value="${siteInstall.id}">
+				<input type="hidden" id="userId" name="userId" value="${userId}">
+				<input type="hidden" id="serialNo" name="serialNo" value="${serialNo}">
+				<input type="hidden" id="install_array" name="install_array" value="">
 				<c:forEach var="vwr"  items="${siteInstallDetails}" varStatus="status">
 					<div class="site-register">
-						<span class="iconfont icon-close del-item"></span>
+						<span class="iconfont icon-close del-item"><input type="hidden" name="id" value="${vwr.id}"></span>
 						<div class="register-one">
 							<div><span>站点</span></div>
 							<div>
@@ -84,38 +88,43 @@
 									<c:if test="${vwr.install ==1}">
 										<div class="mui-input-row mui-radio mui-left">
 											<label>已安装</label>
-											<input name="install" type="radio" value="1" checked="checked">
+											<input name="install${status.index}" type="radio" value="1" checked="checked">
 										</div>
 										<div class="mui-input-row mui-radio mui-left">
 											<label>未安装</label>
-											<input name="install" type="radio" value="0">
+											<input name="install${status.index}" type="radio" value="0">
 										</div>
 									</c:if>
 									<c:if test="${vwr.install !=1}">
 										<div class="mui-input-row mui-radio mui-left">
 											<label>已安装</label>
-											<input name="install" type="radio" value="1" >
+											<input name="install${status.index}" type="radio" value="1" >
 										</div>
 										<div class="mui-input-row mui-radio mui-left">
 											<label>未安装</label>
-											<input name="install" type="radio" value="0" checked="checked">
+											<input name="install${status.index}" type="radio" value="0" checked="checked">
 										</div>
 									</c:if>
 								</div>
 							</div>
 
-							<form id="file" action="" method="post" enctype="multipart/form-data">
-								<div class="register-item">
-									<div class="register-item-title">上传图片</div>
-									<div class="datum-upload site-width">
-										<div>
+							<form id="file${status.index}" action="" method="post" enctype="multipart/form-data">
+								<div class="datum-report-item">
+									<span class="align-self">拍照上传</span>
+									<div class="datum-upload site-width${status.index}">
+										<div id="img_upload">
 											<i class="iconfont icon-plus"></i>
-											<input type="file" id="" value="" />
+											<input type="file" id="uploadFile${status.index}" name="uploadFile" onchange="fileSelected2(${vwr.id},${status.index});" />
 										</div>
-										<div>
-											<img src="../images/1.jpg"/>
-											<span class="iconfont icon-close"></span>
-										</div>
+										<c:if test="${vwr.imgPath !=null && vwr.imgPath !=''}">
+											<c:forEach var="img" items="${vwr.imgs}">
+												<div>
+													<img src="<%=basePathNuName%>shareFolder${img}" />
+													<span class="iconfont icon-close" onclick="closeImg('${vwr.id}','${img}');"></span>
+													<input type="hidden" />
+												</div>
+											</c:forEach>
+										</c:if>
 									</div>
 								</div>
 							</form>
@@ -131,18 +140,17 @@
 		<form id="installId" action="<%=basePath%>mobile/siteInstall/save.do" method="post" >
 
 		</form>
+			<div class="register-button">
+				<i class="iconfont icon-increase" style="color: #81B3FF;"></i>
+				<i class="iconfont icon-reduce"></i>
+			</div>
+
 			<div class="fix-hole"></div>
 		    <div class="check-distribuion-btn">
 		    	<input type="button" onclick="save();" value="保存" />
 		    	<input type="button" value="取消" />
 		    </div>
 		</div>
-
-
-        <div class="register-button">
-            <i class="iconfont icon-increase" style="color: #81B3FF;"></i>
-            <i class="iconfont icon-reduce"></i>
-        </div>
 
         <script type="text/javascript" src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" ></script>
 		<script type="text/javascript" src="<%=basePath%>resources/mobile/js/ims.js" ></script>
@@ -154,12 +162,122 @@
 				enterprise.siteDelIetm();
                 enterprise.init();
 				$('#installId').append($('#siteDiv')[0]);
-            })
+            });
 
-			//保存数据
+			//图片添加
+            function fileSelected2(imgId,i){
+                //获取文件的内容
+                var userId = $("#userId").val();
+                var serialNo = $("#serialNo").val();
+                var uploadFile = new FormData($("#file"+i)[0]);
+                //判断上传的只能是图片
+                var f=document.getElementById("uploadFile"+i).value;
+                if(f=="") { alert("请上传图片");return false;}
+                else {
+                    if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(f)) {
+                        mui.toast('图片类型必须是.gif,jpeg,jpg,png中的一种',{ duration:'long(3500ms)', type:'div' });
+                        return false;
+                    }
+                }
+
+                if("undefined" != typeof(uploadFile) && uploadFile != null && uploadFile != ""){
+                    $.ajax({
+                        type: "POST",
+                        url:"<%=basePath%>mobile/siteInstall/saveAndUpdate.do?userId="+userId+"&serialNo="+serialNo+"&old_id="+imgId,
+                        data:uploadFile,
+                        cache : false,
+                        async: false,
+                        contentType: false, //不设置内容类型
+                        processData: false, //不处理数据
+                        error: function(request) {
+                            mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                            console.log(request);
+                        },
+                        success: function(data) {
+                            var obj = JSON.parse(data);
+                            if(obj.status == "1") {
+                                mui.toast('上传成功',{ duration:'long(3500ms)', type:'div' });
+                                //追加图片预览
+                                var imgs = "<div><img src='<%=basePathNuName%>shareFolder"+obj.path+"'></img><span class=\"iconfont icon-close\" onclick=\"closeImg('"+obj.id+"','"+obj.path+"');\"></span>\n</div>";
+                                $(".datum-upload.site-width"+i).append(imgs);
+                            } else {
+                                mui.toast('上传失败',{ duration:'long(3500ms)', type:'div' });
+                                //追加图片预览
+                            }
+                        }
+                    });
+
+
+                }else{
+                    alert("选择的文件无效！请重新选择");
+                }
+
+            }
+
+            //删除图片
+            function closeImg(e,imgPath){
+                if(e==null || e ==''){
+                    return false;
+                }
+                $.ajax({
+                    type: "POST",
+                    url:"<%=basePath%>mobile/siteInstall/deleteImg.do",
+                    data:{id:e,imgPath:imgPath},
+                    cache : false,
+                    dataType:"json",
+                    async: false,
+                    error: function(request) {
+                        mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                    },
+                    success: function(data) {
+                        if(data.status) {
+                            mui.toast('删除成功',{ duration:'long(3500ms)', type:'div' });
+                        } else {
+                            mui.toast('删除失败',{ duration:'long(3500ms)', type:'div' });
+
+                        }
+                    }
+                });
+
+            }
+
+            //保存数据
 			function save(){
-
+			    var num = ${siteInstall.num};
+                var install_array=new Array();
+                for (var i = 0;i < num;i++) {
+                    var install ="install"+i+''
+                    var ii = $("input[name='"+install+"']:checked").val();
+                    if("undefined" != typeof(ii)&& ii != null && ii != ""){
+                        install_array.push(ii);
+					}
+                }
+				$("#install_array").val(install_array);
 				$("#installId").submit();
+			}
+
+			//删除站点信息
+			function delItem(itemId){
+                $.ajax({
+                    type: "POST",
+                    url:"<%=basePath%>mobile/siteInstall/deleteItem.do",
+                    data:{id:itemId},
+                    cache : false,
+                    dataType:"json",
+                    async: false,
+                    error: function(request) {
+                        mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                    },
+                    success: function(data) {
+                        if(data.status) {
+                            mui.toast('删除成功',{ duration:'long(3500ms)', type:'div' });
+                        } else {
+                            mui.toast('删除失败',{ duration:'long(3500ms)', type:'div' });
+
+                        }
+                    }
+                });
+
 
 			}
 
