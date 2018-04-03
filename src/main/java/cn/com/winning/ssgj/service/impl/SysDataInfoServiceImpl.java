@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.MD5;
+import cn.com.winning.ssgj.base.util.NumberParseUtil;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,29 +93,36 @@ public class SysDataInfoServiceImpl implements SysDataInfoService {
     public void createSysDataInfoByList(List<List<Object>> sysDataInfoList) {
         for (List<Object> params : sysDataInfoList) {
             //循环获取sysDataInfo
-            String tableName = params.get(0).toString();
-            String tableCnName = params.get(1).toString();
-            String dataType = params.get(2).toString();
+            String tableCode = params.get(0) == null ? null : params.get(0).toString();
+            String dbName = params.get(1) == null ? null : params.get(1).toString();
+            String tableName = params.get(2) == null ? null : params.get(2).toString();
+            String tableCnName = params.get(3) == null ? null : params.get(3).toString();
+            String standardCode = params.get(4) == null ? null : params.get(4).toString();
+            String standardCnName = params.get(5) == null ? null : params.get(5).toString();
+            Integer dataType = params.get(6) == null ? null : NumberParseUtil.parseInt(params.get(6).toString());
+            Integer isEasy = params.get(7) == null ? null : NumberParseUtil.parseInt(params.get(7).toString());
+            String tableAttention = params.get(8) == null ? null : params.get(8).toString();
+            Integer tableCount = params.get(9) == null ? null : NumberParseUtil.parseInt(params.get(9).toString());
+            Integer status = params.get(10) == null ? null : NumberParseUtil.parseInt(params.get(10).toString());
+//            Long lastUpdator = params.get(11) == null ? null : Long.parseLong(params.get(11).toString());
+//            String lastUpdateName = params.get(12) == null ? null : params.get(12).toString();
+
             SysDataInfo sysDataInfo = new SysDataInfo();
+            sysDataInfo.setId(ssgjHelper.createDataId());
+            sysDataInfo.setTableCode(tableCode);
+            sysDataInfo.setDbName(dbName);
             sysDataInfo.setTableName(tableName);
             sysDataInfo.setTableCnName(tableCnName);
-            if (!StringUtil.isEmptyOrNull(dataType)) {
-                sysDataInfo.setDataType(Integer.parseInt(dataType));
-            }
-            //根据导入数据查找datainfo
-            SysDataInfo curSysDataInfo = this.getSysDataInfo(sysDataInfo);
-            if (curSysDataInfo != null) {
-                //数据已存在，则更新
-                curSysDataInfo.setTableName(sysDataInfo.getTableName());
-                curSysDataInfo.setTableCnName(sysDataInfo.getTableCnName());
-                curSysDataInfo.setDataType(sysDataInfo.getDataType());
-                this.sysDataInfoDao.updateEntity(curSysDataInfo);
-            } else {
-                //数据不存在
-                curSysDataInfo = sysDataInfo;
-                curSysDataInfo.setId(ssgjHelper.createDataId());
-                this.sysDataInfoDao.insertEntity(curSysDataInfo);
-            }
+            sysDataInfo.setStandardCode(standardCode);
+            sysDataInfo.setStandardCnName(standardCnName);
+            sysDataInfo.setDataType(dataType);
+            sysDataInfo.setIsEasy(isEasy);
+            sysDataInfo.setTableAttention(tableAttention);
+            sysDataInfo.setTableCount(tableCount);
+            sysDataInfo.setStatus(status);
+//            sysDataInfo.setLastUpdator(lastUpdator);
+//            sysDataInfo.setLastUpdateName(lastUpdateName);
+            this.sysDataInfoDao.insertEntity(sysDataInfo);
         }
     }
 

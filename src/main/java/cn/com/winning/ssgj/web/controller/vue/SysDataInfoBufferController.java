@@ -244,6 +244,8 @@ public class SysDataInfoBufferController extends BaseController {
         //属性集合
         List<String> attrNameList = new ArrayList<>();
         for (int i = 0; i < fields.length; i++) {
+            //过滤无用属性值并保存
+            if(!"serialVersionUID".equals(fields[i].getName())&&!"nodeTree".equals(fields[i].getName()))
             attrNameList.add(fields[i].getName());
         }
         String filename = "DataInfo" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
