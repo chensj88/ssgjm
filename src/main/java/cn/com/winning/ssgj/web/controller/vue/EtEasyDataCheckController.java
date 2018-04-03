@@ -3,23 +3,20 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
-import cn.com.winning.ssgj.base.util.*;
+import cn.com.winning.ssgj.base.util.ExcelUtil;
+import cn.com.winning.ssgj.base.util.SFtpUtils;
+import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.JSchException;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,10 +24,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.lang.reflect.Field;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,89 +42,47 @@ import java.util.Map;
  */
 @CrossOrigin
 @Controller
-@RequestMapping("/vue/dataCheck")
-public class EtDataCheckController extends BaseController {
+@RequestMapping("/vue/easyDataCheck")
+public class EtEasyDataCheckController extends BaseController {
 
-    private static final Logger logger = LoggerFactory.getLogger(EtDataCheckController.class);
+    private static final Logger logger = LoggerFactory.getLogger(EtEasyDataCheckController.class);
     @Autowired
     private SSGJHelper ssgjHelper;
 
     /**
-     * 根据项目id初始化数据源
-     * @param pmId
-     */
-    private void dataInit(Long pmId){
-        //根据pmId获取项目基础信息
-        PmisProjectBasicInfo pmisProjectBasicInfo = this.getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
-        //cId
-        Long cId=pmisProjectBasicInfo.getHtxx();
-        //serialNo
-        Long serialNo=pmisProjectBasicInfo.getKhxx();
-//        pmId 项目id type 合同产品类型 @see cn.com.winning.ssgj.base.Constants.PMIS.CPLB_* 1 标准产品 9 接口
-//        dataType 数据类别 0 国标数据;1 行标数据；2 共享数据；3 易用数据；
-        List<PmisProductInfo> pmisProductInfos = this.getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndTypeAndDataType(pmId,1,0);
-
-
-    }
-
-    /**
-     * 基础数据类型列表
+     * 易用数据数据校验表
      *
      * @param row
-     * @param proStr 项目id
+     * @param etEasyDataCheck
      * @return
-     * @description 根据项目id获取基础数据
      */
     @RequestMapping("/list.do")
     @ResponseBody
     @ILog(operationName = "基础数据校验表", operationType = "list")
-    public Map<String, Object> list(Row row, String proStr) {
+    public Map<String, Object> list(Row row, EtEasyDataCheck etEasyDataCheck) {
         //项目id
-        Long proId = Long.parseLong(proStr);
-        if (proId == null) {
+        Long pmId = etEasyDataCheck.getPmId();
+        if (pmId == null) {
             return null;
         }
         //根据项目id获取项目基本信息
-        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(proId);
+        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
         //获取合同id
         Long contractId = pmisProjectBasicInfo.getHtxx();
         //获取单据号即客户
         Long customerId = pmisProjectBasicInfo.getKhxx();
 
-        EtDataCheck etDataCheck = new EtDataCheck();
+        etEasyDataCheck.setRow(row);
 
-        etDataCheck.setRow(row);
+        etEasyDataCheck.setcId(contractId);
 
-        etDataCheck.setPmId(proId);
-
-        etDataCheck.setCId(contractId);
-
-        etDataCheck.setSerialNo(customerId.toString());
+        etEasyDataCheck.setSerialNo(customerId.toString());
         //获取基础数据校验
-        List<EtDataCheck> etDataCheckList =
-                getFacade().getEtDataCheckService().getEtDataCheckPaginatedList(etDataCheck);
-        PmisProductInfo pmisProductInfo = new PmisProductInfo();
-        SysDataCheckScript sysDataCheckScript = new SysDataCheckScript();
-        //封装外参数
-        for (EtDataCheck e : etDataCheckList) {
-            pmisProductInfo.setId(e.getPdId());
-            sysDataCheckScript.setAppId(e.getPlId());
-            pmisProductInfo = getFacade().getPmisProductInfoService().getPmisProductInfo(pmisProductInfo);
-            sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(sysDataCheckScript);
-            Map<String, Object> map = new HashMap();
-            map.put("subSystem", pmisProductInfo.getName());
-            map.put("type", sysDataCheckScript.getAppName());
-            String checkResult = e.getCheckResult();
-            if (checkResult == null || "没问题".equals(checkResult) || "校验正常".equals(checkResult) || "".equals(checkResult)) {
-                map.put("state", 0);
-            } else {
-                map.put("state", 1);
-            }
-            e.setMap(map);
-        }
-        int total = getFacade().getEtDataCheckService().getEtDataCheckCount(etDataCheck);
+        List<EtEasyDataCheck> etEasyDataChecks =
+                getFacade().getEtEasyDataCheckService().getEtEasyDataCheckPaginatedList(etEasyDataCheck);
+        int total = getFacade().getEtEasyDataCheckService().getEtEasyDataCheckCount(etEasyDataCheck);
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("rows", etDataCheckList);
+        map.put("rows", etEasyDataChecks);
         map.put("total", total);
         map.put("status", Constants.SUCCESS);
         return map;
@@ -225,10 +181,10 @@ public class EtDataCheckController extends BaseController {
                 }
                 etDataCheck.setCheckResult(checkResult);
                 //文件夹路径
-                String dir = "/check/" + sysDataCheckScript.getAppName()+"/";
+                String dir = "/check/" + sysDataCheckScript.getAppName() + "/";
                 String src = newFile.getAbsolutePath();
-                String fileName=newFile.getName();
-                etDataCheck.setScriptPath(dir+fileName);
+                String fileName = newFile.getName();
+                etDataCheck.setScriptPath(dir + fileName);
                 getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheck);
                 //将文件上传到ftp服务器
                 SFtpUtils.uploadFile(src, dir, fileName);

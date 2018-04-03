@@ -278,6 +278,9 @@
         SELECT * FROM PMIS_PROJECT_BASIC_INFO
         <where>
             <if test="(jhzt != null)">AND JHZT = #{jhzt, jdbcType=INTEGER}</if>
+            <if test="(fwlx != null)">AND FWLX = #{fwlx, jdbcType=INTEGER}</if>
+            <if test="(zjzt != null)">AND ZJZt = #{zjzt, jdbcType=INTEGER}</if>
+            <if test="(zjzt != null)">AND CAST(KHJDLJ AS NUMERIC(10,2)) &lt; 90 </if>
             <if test="(id == null ) and (map.pks != null and map.pks.size >0)">
                 AND ID in
                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>

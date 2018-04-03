@@ -16,4 +16,15 @@ public interface PmisProductInfoDao extends EntityDao<PmisProductInfo> {
     Integer selectPmisProductInfoCountByCodeAndName(PmisProductInfo t);
 
     List<PmisProductInfo> selectPmisProductInfoPaginatedListByCodeAndName(PmisProductInfo t);
+
+    /**
+     * 根据产品ID获取产品信息
+     * @param productInfo
+     * @return
+     */
+    List<PmisProductInfo> selectPmisProductInfoListByIdList(PmisProductInfo productInfo);
+
+    List<PmisProductInfo> selectEasyDataPmisProductInfoList(PmisProductInfo t);
+
+    List<PmisProductInfo> selectBasicDataPmisProductInfoList(PmisProductInfo t);
 }

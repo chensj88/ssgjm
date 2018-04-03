@@ -134,9 +134,9 @@ public class SysTrainVideoRepoServiceImpl implements SysTrainVideoRepoService {
         }
         System.out.println(msg);
         System.out.println(ftpStatus);
-        if (ftpStatus) {
+        /*if (ftpStatus) {*/
             this.sysTrainVideoRepoDao.deleteEntity(repo);
-        }
+       /* }*/
         return ftpStatus;
     }
 

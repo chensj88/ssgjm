@@ -64,6 +64,7 @@ public class PmisProjectBasicInfoServiceImpl implements PmisProjectBasicInfoServ
         PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
         basicInfo.setJhzt(Constants.PMIS.JHZXZT_RUNING);
         basicInfo.setFwlx(Constants.PMIS.FWLX_SSXM);
+        basicInfo.setZjzt(Constants.STATUS_USE); //选择项目在建状态为在建。
         List<String> idString = new ArrayList<String>();
         for (PmisProjctUser projctUser : userList) {
             idString.add(projctUser.getXmlcb()+"");
