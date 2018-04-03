@@ -23,11 +23,9 @@ public interface PmisProductInfoDao extends EntityDao<PmisProductInfo> {
      * @return
      */
     List<PmisProductInfo> selectPmisProductInfoListByIdList(PmisProductInfo productInfo);
-<<<<<<< HEAD
 
     List<PmisProductInfo> selectEasyDataPmisProductInfoList(PmisProductInfo t);
 
     List<PmisProductInfo> selectBasicDataPmisProductInfoList(PmisProductInfo t);
-=======
->>>>>>> 237e489d166a693f8c4dbfefeb298d88a286c683
+
 }
