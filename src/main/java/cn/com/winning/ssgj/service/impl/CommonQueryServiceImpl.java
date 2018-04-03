@@ -37,14 +37,17 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     private SysUserInfoService sysUserInfoService;
     @Override
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId) {
+        //获取用户可以查看的项目信息
         PmisProjctUser projctUser = new PmisProjctUser();
         projctUser.setRy(userId);
         List<PmisProjctUser> userList = pmisProjctUserService.getPmisProjctUserList(projctUser);
         List<PmisProjectBasicInfo> basicInfoList = pmisProjectBasicInfoService.getUserProcjectBasicInfo(userList);
+        //项目ID的集合
         List<String> pidList = new ArrayList<String>();
         for (PmisProjectBasicInfo basicInfo : basicInfoList) {
             pidList.add(basicInfo.getId()+"");
         }
+
         PmisCustomerInformation custinfo = new PmisCustomerInformation();
         custinfo.getMap().put("idList",pidList);
         List<PmisCustomerInformation> custInfoList = pmisCustomerInformationService.getCustomerInfoListByProjectList(custinfo);
@@ -69,7 +72,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         }
         PmisProductInfo productInfo = new PmisProductInfo();
         productInfo.getMap().put("pks",pIds);
-        return pmisProductInfoDao.selectEntityList(productInfo);
+        return pmisProductInfoDao.selectPmisProductInfoListByIdList(productInfo);
     }
 
 

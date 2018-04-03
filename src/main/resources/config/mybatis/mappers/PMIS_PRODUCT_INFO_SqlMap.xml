@@ -210,4 +210,15 @@
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
+
+    <select id="selectPmisProductInfoListByIdList" resultMap="pmisProductInfoResult" parameterType="pmisProductInfo">
+        select t.*,l.NAME cptxName, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from PMIS_PRODUCT_INFO t left join PMIS_PRODUCT_LINE_INFO l on CAST(t.CPTX AS DECIMAL) = l.ID
+        <where>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
+                t.ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
+    </select>
 </mapper>
