@@ -45,7 +45,7 @@ public class FloorQuestionUploadController extends BaseController {
     @RequestMapping(value = "/list.do")
     @ILog
     public String SiteQuestionList(Model model, String parameter) {
-        parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
+        //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
         EtFloorQuestionInfo info = new EtFloorQuestionInfo();
         try {
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
