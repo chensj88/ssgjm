@@ -30,6 +30,8 @@
         <result column="operator_name" property="map.operator_name" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME_STR" property="map.createTime" jdbcType="VARCHAR"/>
         <result column="OPERATOR_TIME_STR" property="map.operatorTime" jdbcType="VARCHAR"/>
+        <result column="f_name" property="map.f_name" jdbcType="VARCHAR"/>
+        <result column="code" property="map.code" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="sf-etFloorQuestionInfo">
@@ -52,8 +54,9 @@
     </sql>
 
     <select id="selectEtFloorQuestionInfo" resultMap="etFloorQuestionInfoResult" parameterType="etFloorQuestionInfo">
-        select t.*,d.DICT_LABEL from ET_FLOOR_QUESTION_INFO t
+        select t.*,d.DICT_LABEL,f.FLOOR_NAME as f_name from ET_FLOOR_QUESTION_INFO t
         LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
+        LEFT JOIN SYS_FLOORS f ON  t.FLOOR_NAME = f.FLOOR_CODE AND f.IS_DEL=1
         where 1 = 1
         <include refid="sf-etFloorQuestionInfo"/>
     </select>
@@ -62,12 +65,13 @@
             parameterType="etFloorQuestionInfo">
         select
         <if test="row.count != null and row.count != ''">top ${row.count}</if>
-        t.*,i.YHMC,ii.YHMC AS operator_name,d.DICT_LABEL from ET_FLOOR_QUESTION_INFO t
+        t.*,i.YHMC,ii.YHMC AS operator_name,d.DICT_LABEL,f.FLOOR_NAME as f_name from ET_FLOOR_QUESTION_INFO t
         LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
         LEFT JOIN SYS_USER_INFO ii ON  t.OPERATOR=ii.ID
         LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
+        LEFT JOIN SYS_FLOORS f ON f.FLOOR_CODE=t.FLOOR_NAME AND f.IS_DEL = 1
         where 1 = 1
-        <include refid="sf-etFloorQuestionInfo"/>
+        <include refid="sf-etFloorQuestionInfo"/> order by t.OPERATOR_TIME DESC
         <!-- order by ID asc -->
     </select>
 
@@ -103,42 +107,31 @@
     <!--  Chen,Kuai 2018年3月7日13:24:39 楼层具体信息 -->
     <select id="selectEtFloorQuestionInfoWithHospitalList" resultMap="etFloorQuestionInfoResult"
             parameterType="etFloorQuestionInfo">
-         SELECT f.*,tt.NAME,d.DICT_LABEL from ET_FLOOR_QUESTION_INFO f LEFT JOIN
-        (SELECT t.USERID,t.NAME,c.CODE,t.ID,i.HTYHF,i.ZHTXX,
-                     m.IS_END ,m.C_ID,m.PM_ID FROM SYS_USER_INFO t
-            LEFT JOIN PMIS_CUSTOMER_INFORMATION c ON t.SSGS = c.ID
-            LEFT JOIN PMIS_CONTRACT_INFO i ON i.HTYHF = c.CODE
-            LEFT JOIN PMIS_PROJECT_BASIC_INFO p ON p.HTXX = i.ID
-            LEFT JOIN ET_PROCESS_MANAGER m ON m.C_ID =i.ID AND m.PM_ID = p.ID
-        WHERE 1=1
-        <if test="map.user_id != null and map.user_id != ''">and t.USERID = #{map.user_id}</if>
-        AND c.ZT='1'
-        AND m.ID IS NOT NULL
-        AND m.IS_END =0) as tt ON tt.C_ID = f.C_ID AND tt.PM_ID = f.PM_ID
-        LEFT JOIN SYS_DICT_INFO d ON f.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
-
-        WHERE 1=1
-        <if test="floorName != null and floorName != ''"> AND f.FLOOR_NAME = #{floorName}</if>
-
+        SELECT t.*,i.YHMC as NAME,d.DICT_LABEL from ET_FLOOR_QUESTION_INFO t
+        LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
+        LEFT JOIN SYS_USER_INFO i ON i.ID = t.OPERATOR
+        where 1 = 1
+        <include refid="sf-etFloorQuestionInfo"/>
 
     </select>
 
     <!--  Chen,Kuai 2018年3月7日13:24:39 楼层问题汇总 -->
     <select id="selectEtFloorQuestionInfoSummaryList" resultMap="etFloorQuestionInfoResult"
             parameterType="etFloorQuestionInfo">
-        SELECT at.FLOOR_NAME,at.num,ISNULL(bt.num_no, 0) as num_no,at.num-ISNULL(bt.num_no,0) as num_use from
+        SELECT at.FLOOR_NAME as f_name,at.code,at.num,ISNULL(bt.num_no, 0) as num_no,at.num-ISNULL(bt.num_no,0) as num_use from
         (SELECT
-        t.FLOOR_NAME,
+        f.FLOOR_NAME,
+				t.FLOOR_NAME as code,
         COUNT(*) AS num
         FROM ET_FLOOR_QUESTION_INFO t
-        LEFT JOIN PMIS_CONTRACT_INFO i ON t.C_ID =i.ID  AND i.HTYHF =#{map.Ssgs}
-        GROUP BY t.FLOOR_NAME) at
+				LEFT JOIN SYS_FLOORS f ON f.FLOOR_CODE = t.FLOOR_NAME WHERE t.SERIAL_NO =#{serialNo}
+        GROUP BY f.FLOOR_NAME,t.FLOOR_NAME) at
         LEFT JOIN  (
-        SELECT t.FLOOR_NAME,
+        SELECT f.FLOOR_NAME,
+				t.FLOOR_NAME as code,
         COUNT(*) AS num_no
-        FROM ET_FLOOR_QUESTION_INFO t
-        LEFT JOIN PMIS_CONTRACT_INFO i ON t.C_ID =i.ID  AND i.HTYHF =#{map.Ssgs} WHERE t.IS_OPERATION ='0'
-        GROUP BY t.FLOOR_NAME   ) bt ON at.FLOOR_NAME =bt.FLOOR_NAME
+        FROM ET_FLOOR_QUESTION_INFO t LEFT JOIN SYS_FLOORS f ON f.FLOOR_CODE = t.FLOOR_NAME WHERE t.SERIAL_NO =#{serialNo} AND t.IS_OPERATION ='0'
+        GROUP BY f.FLOOR_NAME,t.FLOOR_NAME ) bt ON at.FLOOR_NAME =bt.FLOOR_NAME
 
     </select>
 

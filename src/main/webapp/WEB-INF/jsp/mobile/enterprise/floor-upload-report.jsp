@@ -31,7 +31,7 @@
 					<div class="select">
 						<c:if test="${floorQuestionInfo.questionType != null}" >
 							<input id="floorName" name="floorName" value="${floorQuestionInfo.floorName}" type="hidden"/>
-							<a href="#"><span>${floorQuestionInfo.floorName}</span><i class="arrow"></i></a>
+							<a href="#"><span>${floorQuestionInfo.map.get("f_name")}</span><i class="arrow"></i></a>
 						</c:if>
 						<c:if test="${floorQuestionInfo.floorName == null}" >
 							<input id="floorName" name="floorName" type="hidden"/>
@@ -39,7 +39,7 @@
 						</c:if>
 						<ul>
 							<c:forEach var="vwr" items="${floorsList}">
-								<li data-val="${vwr.floorName}">${vwr.floorName}</li>
+								<li data-val="${vwr.floorCode}">${vwr.floorName}</li>
 							</c:forEach>
 						</ul>
 					</div>
@@ -104,14 +104,13 @@
 				<div class="datum-report-item site-radio">
 					<span>处理情况</span>
 					<div>
-
-						<div class="mui-input-row mui-radio mui-left">
-							<label>未解决</label>
-							<input name="radio" type="radio" value="0">
-						</div>
 						<div class="mui-input-row mui-radio mui-left">
 							<label>已解决</label>
 							<input name="radio" type="radio" value="1" >
+						</div>
+						<div class="mui-input-row mui-radio mui-left">
+							<label>未解决</label>
+							<input name="radio" type="radio" value="0">
 						</div>
 
 					</div>
@@ -133,7 +132,8 @@
 			$(function(){
 				IMS.dropDown();
 				enterprise.init();
-                $('input:radio[name="radio"]').eq(${floorQuestionInfo.isOperation}).attr("checked",true);
+                $("input:radio[name='radio'][value='${floorQuestionInfo.isOperation}']").attr("checked",'checked');
+
             });
 
 

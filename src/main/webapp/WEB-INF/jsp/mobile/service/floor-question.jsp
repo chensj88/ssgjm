@@ -44,7 +44,7 @@
 					<c:forEach var="vwr" items="${infoList}" >
 
 						<tr>
-							<td><a style="text-decoration:underline" href="<%=basePath%>/mobile/floorQuestion/floorQuestionReport.do?userId=${userId}&floorName=${vwr.floorName}">${vwr.floorName}</a></td>
+							<td><a style="text-decoration:underline" href="<%=basePath%>/mobile/floorQuestion/floorQuestionReport.do?serialNo=${serialNo}&userId=${userId}&floorName=${vwr.map.get("code")}">${vwr.map.get("f_name")}</a></td>
 							<td><span class="td1">${vwr.map.get("num")}</span></td>
 							<td><span class="td2">${vwr.map.get("num_no")}</span></td>
 							<td><span class="td3">${vwr.map.get("num_use")}</span></td>

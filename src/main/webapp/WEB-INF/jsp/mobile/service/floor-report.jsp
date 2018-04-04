@@ -30,7 +30,7 @@
 				<c:forEach var="vwr" items="${infoList}">
 				<div class="floor-item">
 					<div class="title">
-						<h1>${vwr.floorName}</h1>
+						<h1>${vwr.map.get("f_name")}</h1>
 						<div class="select-down">
 							<span class="solve">${vwr.isOperation=='1'?'已解决':'未解决'}</span>
 							<i class="mui-icon mui-icon-arrowdown">
@@ -146,6 +146,7 @@
                     var reason = $("#reason").val();
                     var id = $("#current_id").val();
                     var user_id = $("#user_id").val();
+                    alert(user_id);
                     $.ajax({
                         type: "POST",
                         url:"<%=basePath%>/mobile/floorQuestion/causeFloor.do",

@@ -37,7 +37,7 @@ public class FloorQuestionController extends BaseController {
     @ILog
     public String floorQuestionList(Model model, String parameter) {
         //进行中的项目
-        //parameter = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
+        parameter = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
         try {
             byte[] byteArray = Base64Utils.decryptBASE64(parameter);
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
@@ -65,11 +65,14 @@ public class FloorQuestionController extends BaseController {
                 }
             }
             EtFloorQuestionInfo questionInfo = new EtFloorQuestionInfo();
-            questionInfo.getMap().put("Ssgs", info.getSsgs());
+            //questionInfo.getMap().put("Ssgs", info.getSsgs());
+            questionInfo.setSerialNo(String.valueOf(info.getSsgs()));
             List<EtFloorQuestionInfo> infoList = super.getFacade().getEtFloorQuestionInfoService()
                     .getEtFloorQuestionInfoSummaryList(questionInfo);
             model.addAttribute("infoList", infoList);
             model.addAttribute("userId", info.getUserid());
+            model.addAttribute("serialNo", questionInfo.getSerialNo());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -79,9 +82,9 @@ public class FloorQuestionController extends BaseController {
 
     @RequestMapping("/floorQuestionReport.do")
     @ILog
-    public String floorQuestionReport(Model model, String floorName, String userId) {
+    public String floorQuestionReport(Model model, String floorName, String serialNo,String userId) {
         EtFloorQuestionInfo questionInfo = new EtFloorQuestionInfo();
-        questionInfo.getMap().put("user_id", userId);
+        questionInfo.setSerialNo(serialNo);
         questionInfo.setFloorName(floorName);
         List<EtFloorQuestionInfo> infoList = super.getFacade().getEtFloorQuestionInfoService()
                 .getEtFloorQuestionInfoWithHospitalList(questionInfo);

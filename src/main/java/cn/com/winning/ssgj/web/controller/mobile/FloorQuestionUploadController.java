@@ -45,7 +45,7 @@ public class FloorQuestionUploadController extends BaseController {
     @RequestMapping(value = "/list.do")
     @ILog
     public String SiteQuestionList(Model model, String parameter) {
-        //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
+        parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
         EtFloorQuestionInfo info = new EtFloorQuestionInfo();
         try {
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
@@ -125,7 +125,7 @@ public class FloorQuestionUploadController extends BaseController {
             super.getFacade().getEtFloorQuestionInfoService().modifyEtFloorQuestionInfo(info);
             map.put("result","1");
         }else{ //新增
-            info.setId(ssgjHelper.createSiteQuestionIdService()); //站点问题ID
+            info.setId(ssgjHelper.createFloorQuestionIdService()); //站点问题ID
             info.setCId((long)-2); //11980游客
             info.setPmId((long)-2);//11980游客
             info.setOperator(super.user_id(userId,"1"));

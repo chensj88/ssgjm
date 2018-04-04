@@ -37,7 +37,7 @@
 				<div class="site-item" onclick="detail(${vwr.id})">
 					<div class="top">
 						<div class="top-left" >
-							<div>${vwr.floorName}</div>
+							<div>${vwr.map.get("f_name")}</div>
 							<span>${vwr.map.get("dict_label")}</span>
 						</div>
 						<div class="top-right">
