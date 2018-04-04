@@ -279,7 +279,7 @@
         <where>
             <if test="(jhzt != null)">AND JHZT = #{jhzt, jdbcType=INTEGER}</if>
             <if test="(fwlx != null)">AND FWLX = #{fwlx, jdbcType=INTEGER}</if>
-            <if test="(zjzt != null)">AND ZJZt = #{zjzt, jdbcType=INTEGER}</if>
+            <if test="(zjzt != null)">AND ZJZT = #{zjzt, jdbcType=INTEGER}</if>
             <if test="(zjzt != null)">AND CAST(KHJDLJ AS NUMERIC(10,2)) &lt; 90 </if>
             <if test="(id == null ) and (map.pks != null and map.pks.size >0)">
                 AND ID in

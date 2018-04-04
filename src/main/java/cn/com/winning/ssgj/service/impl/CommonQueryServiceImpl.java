@@ -100,6 +100,9 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         cpInfo.setHtcplb(type);
         cpInfo.setXmlcb(pmId);
         List<PmisContractProductInfo> cpInfoList = pmisContractProductInfoDao.selectEntityList(cpInfo);
+        if(cpInfoList==null||cpInfoList.size()<1){
+            return new ArrayList<>();
+        }
         List<Long> pIds = new ArrayList<Long>();
         for (PmisContractProductInfo info : cpInfoList) {
             pIds.add(info.getCpxx());

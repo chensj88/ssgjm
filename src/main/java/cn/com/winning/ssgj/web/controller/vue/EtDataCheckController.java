@@ -32,6 +32,7 @@ import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,20 +54,42 @@ public class EtDataCheckController extends BaseController {
 
     /**
      * 根据项目id初始化数据源
+     *
      * @param pmId
+     * @param operator
      */
-    private void dataInit(Long pmId){
+    private void dataInit(Long pmId, Long operator) {
+        if (pmId == null) {
+            return;
+        }
         //根据pmId获取项目基础信息
         PmisProjectBasicInfo pmisProjectBasicInfo = this.getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
         //cId
-        Long cId=pmisProjectBasicInfo.getHtxx();
+        Long cId = pmisProjectBasicInfo.getHtxx();
         //serialNo
-        Long serialNo=pmisProjectBasicInfo.getKhxx();
+        Long serialNo = pmisProjectBasicInfo.getKhxx();
 //        pmId 项目id type 合同产品类型 @see cn.com.winning.ssgj.base.Constants.PMIS.CPLB_* 1 标准产品 9 接口
 //        dataType 数据类别 0 国标数据;1 行标数据；2 共享数据；3 易用数据；
-        List<PmisProductInfo> pmisProductInfos = this.getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndTypeAndDataType(pmId,1,0);
-
-
+        List<PmisProductInfo> pmisProductInfos = this.getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndTypeAndDataType(pmId, 1, 0);
+        for (int i = 0; i < pmisProductInfos.size(); i++) {
+            EtDataCheck etDataCheck = new EtDataCheck();
+            etDataCheck.setCId(cId);
+            etDataCheck.setPmId(pmId);
+            etDataCheck.setSerialNo(serialNo.toString());
+            etDataCheck.setPdId(pmisProductInfos.get(i).getId());
+            etDataCheck.setPlId(NumberParseUtil.parseLong(pmisProductInfos.get(i).getCptx()));
+            //按条件查询数据是否存在
+            EtDataCheck etDataCheckTemp = getFacade().getEtDataCheckService().getEtDataCheck(etDataCheck);
+            if (etDataCheckTemp == null) {
+                //当数据不存在时增加数据
+                etDataCheck.setId(ssgjHelper.createDataId());
+                etDataCheck.setOperator(operator);
+                etDataCheck.setCreator(operator);
+                etDataCheck.setCreateTime(new Timestamp(new java.util.Date().getTime()));
+                etDataCheck.setOperatorTime(new Timestamp(new Date().getTime()));
+                getFacade().getEtDataCheckService().createEtDataCheck(etDataCheck);
+            }
+        }
     }
 
     /**
@@ -80,12 +103,14 @@ public class EtDataCheckController extends BaseController {
     @RequestMapping("/list.do")
     @ResponseBody
     @ILog(operationName = "基础数据校验表", operationType = "list")
-    public Map<String, Object> list(Row row, String proStr) {
+    public Map<String, Object> list(Row row, String proStr,String operator) {
         //项目id
         Long proId = Long.parseLong(proStr);
         if (proId == null) {
             return null;
         }
+        //数据初始化
+        dataInit(proId,NumberParseUtil.parseLong(operator));
         //根据项目id获取项目基本信息
         PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(proId);
         //获取合同id
@@ -106,16 +131,16 @@ public class EtDataCheckController extends BaseController {
         List<EtDataCheck> etDataCheckList =
                 getFacade().getEtDataCheckService().getEtDataCheckPaginatedList(etDataCheck);
         PmisProductInfo pmisProductInfo = new PmisProductInfo();
-        SysDataCheckScript sysDataCheckScript = new SysDataCheckScript();
+        PmisProductLineInfo pmisProductLineInfo=new PmisProductLineInfo();
         //封装外参数
         for (EtDataCheck e : etDataCheckList) {
             pmisProductInfo.setId(e.getPdId());
-            sysDataCheckScript.setAppId(e.getPlId());
             pmisProductInfo = getFacade().getPmisProductInfoService().getPmisProductInfo(pmisProductInfo);
-            sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(sysDataCheckScript);
+            pmisProductLineInfo.setId(e.getPlId());
+            pmisProductLineInfo=getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
             Map<String, Object> map = new HashMap();
             map.put("subSystem", pmisProductInfo.getName());
-            map.put("type", sysDataCheckScript.getAppName());
+            map.put("type", pmisProductLineInfo.getName());
             String checkResult = e.getCheckResult();
             if (checkResult == null || "没问题".equals(checkResult) || "校验正常".equals(checkResult) || "".equals(checkResult)) {
                 map.put("state", 0);
@@ -225,10 +250,11 @@ public class EtDataCheckController extends BaseController {
                 }
                 etDataCheck.setCheckResult(checkResult);
                 //文件夹路径
-                String dir = "/check/" + sysDataCheckScript.getAppName()+"/";
+                String dir = "/check/" + sysDataCheckScript.getAppName() + "/";
                 String src = newFile.getAbsolutePath();
-                String fileName=newFile.getName();
-                etDataCheck.setScriptPath(dir+fileName);
+                String fileName = newFile.getName();
+                etDataCheck.setScriptPath(dir + fileName);
+                etDataCheck.setOperatorTime(new Timestamp(new Date().getTime()));
                 getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheck);
                 //将文件上传到ftp服务器
                 SFtpUtils.uploadFile(src, dir, fileName);
@@ -263,6 +289,9 @@ public class EtDataCheckController extends BaseController {
         temp.setAppId(etDataCheck.getPlId());
         SysDataCheckScript sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(temp);
         //获取脚本地址
+        if(sysDataCheckScript==null){
+            return;
+        }
         String scriptPath = sysDataCheckScript.getRemotePath();
         //获取文件名
         String filename = scriptPath.substring(scriptPath.lastIndexOf("/") + 1);
