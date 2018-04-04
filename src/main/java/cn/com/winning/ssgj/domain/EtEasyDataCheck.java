@@ -84,6 +84,19 @@ public class EtEasyDataCheck extends BaseDomain implements Serializable {
      */
     private java.sql.Timestamp operatorTime;
 
+    /**
+     * @val 产品线ID
+     */
+    private Long plId;
+
+    public Long getPlId() {
+        return plId;
+    }
+
+    public void setPlId(Long plId) {
+        this.plId = plId;
+    }
+
     public EtEasyDataCheck() {
 
     }
@@ -278,5 +291,7 @@ public class EtEasyDataCheck extends BaseDomain implements Serializable {
     public void setOperatorTime(java.sql.Timestamp operatorTime) {
         this.operatorTime = operatorTime;
     }
+
+
 
 }

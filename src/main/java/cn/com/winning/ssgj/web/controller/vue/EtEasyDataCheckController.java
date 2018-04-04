@@ -4,6 +4,7 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
+import cn.com.winning.ssgj.base.util.NumberParseUtil;
 import cn.com.winning.ssgj.base.util.SFtpUtils;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.*;
@@ -12,6 +13,9 @@ import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jcraft.jsch.ChannelSftp;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +33,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  * 基础数据类型处理Controller
@@ -46,8 +48,82 @@ import java.util.Map;
 public class EtEasyDataCheckController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(EtEasyDataCheckController.class);
+
+    private static final String DOCTOR_MAINTAIN_LIST = "doctorMaintainList";
+    private static final String DOCTOR_NOT_MAINTAIN_LIST = "doctorNotMaintainList";
+    private static final String DEPT_MAINTAIN_LIST = "deptMaintainList";
+    private static final String DEPT_NOT_MAINTAIN_LIST = "deptNotMaintainList";
     @Autowired
     private SSGJHelper ssgjHelper;
+
+
+    /**
+     * 数据初始化
+     *
+     * @param pmId
+     * @param operator
+     * @param dataType
+     */
+    private void dataInit(Long pmId, Long operator, Integer dataType) {
+        if (pmId == null) {
+            return;
+        }
+        //根据pmId获取项目基础信息
+        PmisProjectBasicInfo pmisProjectBasicInfo = this.getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
+        //cId
+        Long cId = pmisProjectBasicInfo.getHtxx();
+        //serialNo
+        Long serialNo = pmisProjectBasicInfo.getKhxx();
+        //根据项目id获取产品
+        List<PmisProductInfo> pmisProductInfos =
+                getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId, 1);
+        //产品id集合
+        List pidList = new ArrayList();
+        for (int i = 0; i < pmisProductInfos.size(); i++) {
+            pidList.add(pmisProductInfos.get(i).getId());
+        }
+        logger.info("idList:{}", pidList);
+        //创建map，封装其他属性
+        Map<String, Object> propMap = new HashMap<String, Object>();
+        //pks为mapping xml中设定的属性名
+        propMap.put("pidList", pidList);
+
+        SysDataInfo sysDataInfo = new SysDataInfo();
+        sysDataInfo.setDataType(dataType);
+        sysDataInfo.setMap(propMap);
+        SysProductDataInfo sysProductDataInfo = new SysProductDataInfo();
+        PmisProductInfo pmisProductInfo = new PmisProductInfo();
+        //根据产品id和dataType获取基础数据 dataType:0 国标数据;1 行标数据；2 共享数据；3 易用数据；
+        List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().selectSysDataInfoListByPidAndDataType(sysDataInfo);
+        for (int i = 0; i < sysDataInfos.size(); i++) {
+            //根据bdId查找sysProductDataInfo
+            sysProductDataInfo.setBdId(sysDataInfos.get(i).getId());
+            sysProductDataInfo = getFacade().getSysProductDataInfoService().getSysProductDataInfo(sysProductDataInfo);
+            //根据pdid查找ProductInfo
+            pmisProductInfo.setId(sysProductDataInfo.getPdId());
+            pmisProductInfo = getFacade().getPmisProductInfoService().getPmisProductInfo(pmisProductInfo);
+
+            EtEasyDataCheck etEasyDataCheck = new EtEasyDataCheck();
+            etEasyDataCheck.setcId(cId);
+            etEasyDataCheck.setPmId(pmId);
+            etEasyDataCheck.setSerialNo(serialNo.toString());
+            etEasyDataCheck.setDatabaseName(sysDataInfos.get(i).getDbName());
+            etEasyDataCheck.setTableName(sysDataInfos.get(i).getTableName());
+            etEasyDataCheck.setPlId(NumberParseUtil.parseLong(pmisProductInfo.getCptx()));
+            //按条件查询数据是否存在
+            EtEasyDataCheck etEasyDataCheckTemp = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(etEasyDataCheck);
+            if (etEasyDataCheckTemp == null) {
+                //当数据不存在时增加数据
+                etEasyDataCheck.setId(ssgjHelper.createEtEasyDataCheckId());
+                etEasyDataCheck.setMeaning(sysDataInfos.get(i).getTableCnName());
+                etEasyDataCheck.setOperator(operator);
+                etEasyDataCheck.setCreator(operator);
+                etEasyDataCheck.setCreateTime(new Timestamp(new java.util.Date().getTime()));
+                etEasyDataCheck.setOperatorTime(new Timestamp(new Date().getTime()));
+                getFacade().getEtEasyDataCheckService().createEtEasyDataCheck(etEasyDataCheck);
+            }
+        }
+    }
 
     /**
      * 易用数据数据校验表
@@ -65,6 +141,8 @@ public class EtEasyDataCheckController extends BaseController {
         if (pmId == null) {
             return null;
         }
+        //初始化数据
+        dataInit(pmId, etEasyDataCheck.getOperator(), 3);
         //根据项目id获取项目基本信息
         PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
         //获取合同id
@@ -133,17 +211,18 @@ public class EtEasyDataCheckController extends BaseController {
     @ResponseBody
     @ILog
     @Transactional
-    public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtDataCheck t) throws IOException {
-        //根据id获取表属性
-        EtDataCheck etDataCheck = getFacade().getEtDataCheckService().getEtDataCheck(t);
-        SysDataCheckScript sysDataCheckScript = new SysDataCheckScript();
-        sysDataCheckScript.setAppId(etDataCheck.getPlId());
-        sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(sysDataCheckScript);
+    public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtEasyDataCheck t) throws IOException {
         Map<String, Object> result = new HashMap<String, Object>();
+        //根据id获取表属性
+        EtEasyDataCheck etEasyDataCheck = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(t);
+        //获取产品条线名称
+        PmisProductLineInfo pmisProductLineInfo = new PmisProductLineInfo();
+        pmisProductLineInfo.setId(etEasyDataCheck.getPlId());
+        pmisProductLineInfo = getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
         //如果文件不为空，写入上传路径
         if (!file.isEmpty()) {
             //上传文件路径
-            String path = request.getServletContext().getRealPath("/script/");
+            String path = request.getServletContext().getRealPath("/check/");
             //上传文件名
             String filename = file.getOriginalFilename();
             File filepath = new File(path, filename);
@@ -157,37 +236,47 @@ public class EtEasyDataCheckController extends BaseController {
                 newFile.delete();
             }
             file.transferTo(newFile);
-            JSONArray jsonArray = new JSONArray();
-            //错误计数
-            Integer failNum = 0;
-            //检测结果
-            String checkResult = "";
+            Map<String, List<EtEasyDataCheckDetail>> map = null;
+            //解析Excel文件
             try {
-                List<List<Object>> etDataCheckList = ExcelUtil.importExcel(newFile.getPath());
-                for (List<Object> e : etDataCheckList) {
-                    for (int i = 0; i < e.size(); i++) {
-                        if ("F".equalsIgnoreCase(e.get(i).toString())) {
-                            failNum++;
-                        }
-                    }
-                    jsonArray.add(e);
+                map = parseExcel(newFile.getPath(), etEasyDataCheck.getId());
+
+                if (map == null) {
+                    result.put("status", "error");
+                    result.put("msg", "文件解析出错！");
+                    return result;
                 }
-                System.out.println(jsonArray.toJSONString());
-                etDataCheck.setContent(jsonArray.toJSONString());
-                if (failNum == null || failNum == 0) {
-                    checkResult = "校验正常";
-                } else {
-                    checkResult = "校验出" + failNum + "个问题";
-                }
-                etDataCheck.setCheckResult(checkResult);
+
+                //获取解析集合
+                List<EtEasyDataCheckDetail> doctorMaintainList = map.get(DOCTOR_MAINTAIN_LIST);
+                List<EtEasyDataCheckDetail> doctorNotMaintainList = map.get(DOCTOR_NOT_MAINTAIN_LIST);
+                List<EtEasyDataCheckDetail> deptMaintainList = map.get(DEPT_MAINTAIN_LIST);
+                List<EtEasyDataCheckDetail> deptNotMaintainList = map.get(DEPT_NOT_MAINTAIN_LIST);
+
+                //数据入库
+                getFacade().getEtEasyDataCheckDetailService().insertEtEasyDataCheckDetailByList(doctorMaintainList);
+                getFacade().getEtEasyDataCheckDetailService().insertEtEasyDataCheckDetailByList(doctorNotMaintainList);
+                getFacade().getEtEasyDataCheckDetailService().insertEtEasyDataCheckDetailByList(deptMaintainList);
+                getFacade().getEtEasyDataCheckDetailService().insertEtEasyDataCheckDetailByList(deptNotMaintainList);
+
+//
+//                etDataCheck.setContent(jsonArray.toJSONString());
+//                if (failNum == null || failNum == 0) {
+//                    checkResult = "校验正常";
+//                } else {
+//                    checkResult = "校验出" + failNum + "个问题";
+//                }
+//                etDataCheck.setCheckResult(checkResult);
                 //文件夹路径
-                String dir = "/check/" + sysDataCheckScript.getAppName() + "/";
+                String dir = "/check/" + pmisProductLineInfo.getName() + "/";
                 String src = newFile.getAbsolutePath();
                 String fileName = newFile.getName();
-                etDataCheck.setScriptPath(dir + fileName);
-                getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheck);
+//                etDataCheck.setScriptPath(dir + fileName);
+//                getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheck);
                 //将文件上传到ftp服务器
+
                 SFtpUtils.uploadFile(src, dir, fileName);
+
                 newFile.delete();
                 result.put("status", "success");
             } catch (Exception e) {
@@ -202,6 +291,92 @@ public class EtEasyDataCheckController extends BaseController {
         return result;
     }
 
+    private Map<String, List<EtEasyDataCheckDetail>> parseExcel(String filePath, Long sourceId) throws Exception {
+        Map<String, List<EtEasyDataCheckDetail>> map = new HashMap<>();
+        //创建Excel工作薄
+        File finalXlsxFile = new File(filePath);
+        Workbook work = null;
+        try {
+            work = ExcelUtil.getWorkbook(finalXlsxFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (null == work) {
+            throw new Exception("创建Excel工作薄为空！");
+        }
+        Sheet sheet = null;
+        org.apache.poi.ss.usermodel.Row row = null;
+        Cell cell = null;
+        //已经维护的个人协定数据
+        List<EtEasyDataCheckDetail> doctorMaintainList = new ArrayList<>();
+        //已经维护的科室协定数据
+        List<EtEasyDataCheckDetail> deptMaintainList = new ArrayList<>();
+        //未维护的个人协定数据
+        List<EtEasyDataCheckDetail> doctorNotMaintainList = new ArrayList<>();
+        //未维护的科室协定数据
+        List<EtEasyDataCheckDetail> deptNotMaintainList = new ArrayList<>();
+        //标识
+        String flag = "";
+        //获取第一页
+        sheet = work.getSheetAt(0);
+        //遍历当前sheet中的所有行
+        for (int j = sheet.getFirstRowNum(); j <= sheet.getLastRowNum(); j++) {
+            row = sheet.getRow(j);
+            if (row == null) {
+                continue;
+            }
+            if ("已经维护的个人协定方信息统计:".equals(row.getCell(0).getStringCellValue())) {
+                flag = DOCTOR_MAINTAIN_LIST;
+                continue;
+            } else if ("工号".equals(row.getCell(0).getStringCellValue())) {
+                flag = DOCTOR_NOT_MAINTAIN_LIST;
+                continue;
+            } else if ("已经维护的科室协定方信息统计:".equals(row.getCell(0).getStringCellValue())) {
+                flag = DEPT_MAINTAIN_LIST;
+                continue;
+            } else if ("科室代码".equals(row.getCell(0).getStringCellValue())) {
+                flag = DEPT_NOT_MAINTAIN_LIST;
+                continue;
+            }
+            if (DOCTOR_MAINTAIN_LIST.equals(flag)) {
+                //已经维护的个人协定数据封装
+                EtEasyDataCheckDetail etEasyDataCheckDetail = new EtEasyDataCheckDetail();
+                etEasyDataCheckDetail.setSourceId(sourceId);
+                etEasyDataCheckDetail.setDeptDoctorName(row.getCell(0).getStringCellValue());
+                etEasyDataCheckDetail.setNum(NumberParseUtil.parseInt(row.getCell(1).getStringCellValue()));
+                doctorMaintainList.add(etEasyDataCheckDetail);
+            } else if (DOCTOR_NOT_MAINTAIN_LIST.equals(flag)) {
+                //未维护的个人协定数据封装
+                EtEasyDataCheckDetail etEasyDataCheckDetail = new EtEasyDataCheckDetail();
+                etEasyDataCheckDetail.setSourceId(sourceId);
+                etEasyDataCheckDetail.setDeptDoctorCode(row.getCell(0).getStringCellValue());
+                etEasyDataCheckDetail.setDeptDoctorName(row.getCell(1).getStringCellValue());
+                doctorNotMaintainList.add(etEasyDataCheckDetail);
+
+            } else if (DEPT_MAINTAIN_LIST.equals(flag)) {
+                //已经维护的科室协定数据封装
+                EtEasyDataCheckDetail etEasyDataCheckDetail = new EtEasyDataCheckDetail();
+                etEasyDataCheckDetail.setSourceId(sourceId);
+                etEasyDataCheckDetail.setDeptDoctorName(row.getCell(0).getStringCellValue());
+                etEasyDataCheckDetail.setNum(NumberParseUtil.parseInt(row.getCell(1).getStringCellValue()));
+                deptMaintainList.add(etEasyDataCheckDetail);
+
+            } else if (DEPT_NOT_MAINTAIN_LIST.equals(flag)) {
+                //未维护的科室协定数据封装
+                EtEasyDataCheckDetail etEasyDataCheckDetail = new EtEasyDataCheckDetail();
+                etEasyDataCheckDetail.setSourceId(sourceId);
+                etEasyDataCheckDetail.setDeptDoctorCode(row.getCell(0).getStringCellValue());
+                etEasyDataCheckDetail.setDeptDoctorName(row.getCell(1).getStringCellValue());
+                deptNotMaintainList.add(etEasyDataCheckDetail);
+            }
+        }
+        map.put(DOCTOR_MAINTAIN_LIST, doctorMaintainList);
+        map.put(DOCTOR_NOT_MAINTAIN_LIST, doctorNotMaintainList);
+        map.put(DEPT_MAINTAIN_LIST, deptMaintainList);
+        map.put(DEPT_NOT_MAINTAIN_LIST, deptNotMaintainList);
+        return map;
+    }
+
 
     /**
      * @param response
@@ -212,11 +387,15 @@ public class EtEasyDataCheckController extends BaseController {
     @RequestMapping(value = "/exportSql.do")
     @ResponseBody
     @ILog
-    public void exportSql(HttpServletResponse response, EtDataCheck t) throws IOException {
+    public void exportSql(HttpServletResponse response, EtEasyDataCheck t) throws IOException {
         //获取数据校验信息
-        EtDataCheck etDataCheck = getFacade().getEtDataCheckService().getEtDataCheck(t);
+        EtEasyDataCheck etEasyDataCheck = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(t);
         SysDataCheckScript temp = new SysDataCheckScript();
-        temp.setAppId(etDataCheck.getPlId());
+        Long plId = etEasyDataCheck.getPlId();
+        if (plId == null) {
+            return;
+        }
+        temp.setAppId(etEasyDataCheck.getPlId());
         SysDataCheckScript sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(temp);
         //获取脚本地址
         String scriptPath = sysDataCheckScript.getRemotePath();

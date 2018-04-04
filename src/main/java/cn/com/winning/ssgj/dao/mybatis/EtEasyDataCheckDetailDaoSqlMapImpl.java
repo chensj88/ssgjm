@@ -6,6 +6,8 @@ import cn.com.winning.ssgj.dao.EtEasyDataCheckDetailDao;
 import cn.com.winning.ssgj.domain.EtEasyDataCheckDetail;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.List;
+
 /**
  *
  *
@@ -15,4 +17,9 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 @Service
 public class EtEasyDataCheckDetailDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtEasyDataCheckDetail> implements EtEasyDataCheckDetailDao {
 
+    @Override
+    public void insertEtEasyDataCheckDetailByList(List<EtEasyDataCheckDetail> etEasyDataCheckDetails) {
+        String state="insertEtEasyDataCheckDetailByList";
+        this.getSqlSession().insert(state,etEasyDataCheckDetails);
+    }
 }
