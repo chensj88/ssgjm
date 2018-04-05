@@ -221,4 +221,46 @@
             </if>
         </where>
     </select>
+<<<<<<< HEAD
+=======
+
+    <select id="selectBasicDataPmisProductInfoList" resultMap="pmisProductInfoResult" parameterType="pmisProductInfo">
+        SELECT
+        * FROM PMIS_PRODUCT_INFO t WHERE 1 = 1
+        AND t.ID IN
+        <foreach collection="map.pids" item="pid" open="(" separator="," close=")">
+            #{pid}
+        </foreach>
+        AND t.ID NOT IN
+        (SELECT DISTINCT
+        t.PD_ID
+        FROM
+        SYS_PRODUCT_DATA_INFO t
+        LEFT JOIN SYS_DATA_INFO s ON t.BD_ID = s.ID
+        WHERE
+        GETDATE() BETWEEN t.EFFECTIVE_DATE
+        AND t.EXPIRE_DATE
+        AND s.DATA_TYPE = 3)
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectEasyDataPmisProductInfoList" resultMap="pmisProductInfoResult" parameterType="pmisProductInfo">
+        SELECT
+        * FROM PMIS_PRODUCT_INFO t WHERE 1 = 1
+        AND t.ID IN
+        <foreach collection="map.pids" item="pid" open="(" separator="," close=")">
+            #{pid}
+        </foreach>
+        AND t.ID IN
+        (SELECT DISTINCT
+        t.PD_ID
+        FROM
+        SYS_PRODUCT_DATA_INFO t
+        LEFT JOIN SYS_DATA_INFO s ON t.BD_ID = s.ID
+        WHERE
+        GETDATE() BETWEEN t.EFFECTIVE_DATE
+        AND t.EXPIRE_DATE
+        AND s.DATA_TYPE = 3)
+    </select>
+>>>>>>> a340590b36085a7325c63510bc48d0535149fc66
 </mapper>

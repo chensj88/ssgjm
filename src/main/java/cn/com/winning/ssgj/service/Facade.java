@@ -1,8 +1,11 @@
 package cn.com.winning.ssgj.service;
 
+<<<<<<< HEAD
 import cn.com.winning.ssgj.domain.EtProjectImplPath;
 import cn.com.winning.ssgj.domain.SysLoginUser;
 
+=======
+>>>>>>> a340590b36085a7325c63510bc48d0535149fc66
 /**
  *
  *
@@ -131,8 +134,11 @@ public interface Facade {
 
     EtContractTaskService getEtContractTaskService();
 
+<<<<<<< HEAD
     EtProjectImplPathService getEtProjectImplPathService();
 
     SysLoginUserService getSysLoginUserService();
 
+=======
+>>>>>>> a340590b36085a7325c63510bc48d0535149fc66
 }

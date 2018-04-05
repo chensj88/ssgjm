@@ -77,6 +77,10 @@ public class TrainVideoListController extends BaseController {
                 if (info.getSsgs() != 11980) {
                     //真实用户
                     if (userIfonList.size() == 0 || userIfonList == null) {
+<<<<<<< HEAD
+=======
+                        info.setYhmc(info.getName());
+>>>>>>> a340590b36085a7325c63510bc48d0535149fc66
                         super.getFacade().getSysUserInfoService().createSysUserInfo(info);
                         return "/mobile/bridge-null";
                     } else {

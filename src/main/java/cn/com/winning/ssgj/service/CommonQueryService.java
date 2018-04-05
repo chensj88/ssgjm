@@ -42,4 +42,15 @@ public interface CommonQueryService {
      * @return
      */
     public List<SysUserInfo> queryProjectUserByCustomerId(Long customerId);
+<<<<<<< HEAD
+=======
+    /**
+     *
+     * @param pmId 项目id
+     * @param type 合同产品类型 @see cn.com.winning.ssgj.base.Constants.PMIS.CPLB_* 1 标准产品 9 接口
+     * @param dataType 数据类别 0 国标数据;1 行标数据；2 共享数据；3 易用数据；
+     * @return
+     */
+    public List<PmisProductInfo> queryProductOfProjectByProjectIdAndTypeAndDataType(long pmId, int type, int dataType);
+>>>>>>> a340590b36085a7325c63510bc48d0535149fc66
 }

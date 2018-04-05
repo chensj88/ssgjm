@@ -56,4 +56,12 @@ public class EtEasyDataCheckDetailServiceImpl implements EtEasyDataCheckDetailSe
         return this.etEasyDataCheckDetailDao.selectEntityPaginatedList(t);
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    public void insertEtEasyDataCheckDetailByList(List<EtEasyDataCheckDetail> etEasyDataCheckDetails) {
+        this.etEasyDataCheckDetailDao.insertEtEasyDataCheckDetailByList(etEasyDataCheckDetails);
+    }
+
+>>>>>>> a340590b36085a7325c63510bc48d0535149fc66
 }

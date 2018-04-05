@@ -353,6 +353,7 @@ public class SysUserInfo extends BaseDomain implements Serializable {
 	public void setClo5(String clo5) {
 		this.clo5 = clo5;
 	}
+<<<<<<< HEAD
 
 
 	@Override
@@ -380,4 +381,6 @@ public class SysUserInfo extends BaseDomain implements Serializable {
 				", clo5='" + clo5 + '\'' +
 				'}';
 	}
+=======
+>>>>>>> a340590b36085a7325c63510bc48d0535149fc66
 }

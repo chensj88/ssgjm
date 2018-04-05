@@ -1,7 +1,10 @@
 package cn.com.winning.ssgj.web.controller;
 
+<<<<<<< HEAD
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.auth.Token;
+=======
+>>>>>>> a340590b36085a7325c63510bc48d0535149fc66
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.base.util.PasswordUtils;
@@ -68,11 +71,15 @@ public class LoginController extends BaseController {
             map.put("status", false);
             map.put("message", error);
         } else {
+<<<<<<< HEAD
             String token = Token.generateTokenString();
             SysUserInfo user = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
             super.getFacade().getSysLoginUserService().createSysLoginUserBySelectiveKey(token,user.getId());
             map.put("token", token);
             map.put("user",user);
+=======
+            map.put("user",(SysUserInfo)SecurityUtils.getSubject().getPrincipal());
+>>>>>>> a340590b36085a7325c63510bc48d0535149fc66
             map.put("status", true);
         }
         return map;
@@ -100,12 +107,16 @@ public class LoginController extends BaseController {
             } catch (AuthenticationException e) {
                 error = "其他错误：" + e.getMessage();
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> a340590b36085a7325c63510bc48d0535149fc66
         }
 
         return error;
     }
 
+<<<<<<< HEAD
 
     @RequestMapping(value = "/vue/logout.do")
     @ResponseBody
@@ -116,4 +127,6 @@ public class LoginController extends BaseController {
         return result;
 
     }
+=======
+>>>>>>> a340590b36085a7325c63510bc48d0535149fc66
 }

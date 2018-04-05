@@ -61,6 +61,7 @@
     </bean>
 
     <bean id="globalHandlerExceptionResolver" class="cn.com.winning.ssgj.base.exception.GlobalExceptionResolver"/>
+<<<<<<< HEAD
 
     <!--Vue登录拦截器-->
     <mvc:interceptors>
@@ -72,4 +73,6 @@
             <bean class="cn.com.winning.ssgj.base.interceptor.LoginHandlerInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
+=======
+>>>>>>> a340590b36085a7325c63510bc48d0535149fc66
 </beans>

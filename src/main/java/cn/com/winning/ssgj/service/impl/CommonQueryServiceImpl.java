@@ -94,6 +94,30 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         return sysUserInfoService.getSysUserInfoListByUserIdList(userIdList);
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    public List<PmisProductInfo> queryProductOfProjectByProjectIdAndTypeAndDataType(long pmId, int type, int dataType) {
+        PmisContractProductInfo cpInfo = new PmisContractProductInfo();
+        cpInfo.setHtcplb(type);
+        cpInfo.setXmlcb(pmId);
+        List<PmisContractProductInfo> cpInfoList = pmisContractProductInfoDao.selectEntityList(cpInfo);
+        if(cpInfoList==null||cpInfoList.size()<1){
+            return new ArrayList<>();
+        }
+        List<Long> pIds = new ArrayList<Long>();
+        for (PmisContractProductInfo info : cpInfoList) {
+            pIds.add(info.getCpxx());
+        }
+        PmisProductInfo productInfo = new PmisProductInfo();
+        productInfo.getMap().put("pids",pIds);
+        if(dataType==3){
+            return pmisProductInfoDao.selectEasyDataPmisProductInfoList(productInfo);
+        }
+        return pmisProductInfoDao.selectBasicDataPmisProductInfoList(productInfo);
+    }
+
+>>>>>>> a340590b36085a7325c63510bc48d0535149fc66
     /**
      * 查询项目信息
      * @param pidList 项目IDList
