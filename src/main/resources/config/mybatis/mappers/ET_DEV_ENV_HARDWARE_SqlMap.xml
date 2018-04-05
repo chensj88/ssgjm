@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.EtDevEnvHardwareDao">
+
+    <resultMap id="etDevEnvHardwareResultForList" type="etDevEnvHardware">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="PM_ID" property="pmId" jdbcType="BIGINT"/>
+        <result column="C_ID" property="cId" jdbcType="BIGINT"/>
+        <result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR"/>
+        <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR"/>
+        <result column="HW_NAME" property="hwName" jdbcType="VARCHAR"/>
+        <result column="HW_BRAND" property="hwBrand" jdbcType="VARCHAR"/>
+        <result column="HW_BRAND_MODEL" property="hwBrandModel" jdbcType="VARCHAR"/>
+        <result column="HW_NUM" property="hwNum" jdbcType="INTEGER"/>
+        <result column="HW_USE" property="hwUse" jdbcType="LONGVARCHAR"/>
+        <result column="IS_SCOPE" property="isScope" jdbcType="INTEGER"/>
+        <result column="CREATOR" property="creator" jdbcType="BIGINT"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="OPERATOR" property="operator" jdbcType="BIGINT"/>
+        <result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="etDevEnvHardwareResult" type="etDevEnvHardware" extends="etDevEnvHardwareResultForList">
+    </resultMap>
+
+    <sql id="sf-etDevEnvHardware">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
+        <if test="(cId != null and cId != '') or cId == 0">and t.C_ID = #{cId}</if>
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="productName != null and productName != ''">and t.PRODUCT_NAME = #{productName}</if>
+        <if test="hwName != null and hwName != ''">and t.HW_NAME = #{hwName}</if>
+        <if test="hwBrand != null and hwBrand != ''">and t.HW_BRAND = #{hwBrand}</if>
+        <if test="hwBrandModel != null and hwBrandModel != ''">and t.HW_BRAND_MODEL = #{hwBrandModel}</if>
+        <if test="(hwNum != null and hwNum != '') or hwNum == 0">and t.HW_NUM = #{hwNum}</if>
+        <if test="hwUse != null and hwUse != ''">and t.HW_USE = #{hwUse}</if>
+        <if test="(isScope != null and isScope != '') or isScope == 0">and t.IS_SCOPE = #{isScope}</if>
+        <if test="(creator != null and creator != '') or creator == 0">and t.CREATOR = #{creator}</if>
+        <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
+        <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
+        <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
+    </sql>
+
+    <select id="selectEtDevEnvHardware" resultMap="etDevEnvHardwareResult" parameterType="etDevEnvHardware">
+        select * from ET_DEV_ENV_HARDWARE t where 1 = 1
+        <include refid="sf-etDevEnvHardware"/>
+    </select>
+
+    <select id="selectEtDevEnvHardwareList" resultMap="etDevEnvHardwareResultForList" parameterType="etDevEnvHardware">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from ET_DEV_ENV_HARDWARE t where 1 = 1
+        <include refid="sf-etDevEnvHardware"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectEtDevEnvHardwareCount" resultType="int" parameterType="etDevEnvHardware">
+        select count(*) from ET_DEV_ENV_HARDWARE t where 1 = 1
+        <include refid="sf-etDevEnvHardware"/>
+    </select>
+
+    <select id="selectEtDevEnvHardwarePaginatedList" resultMap="etDevEnvHardwareResult"
+            parameterType="etDevEnvHardware">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from ET_DEV_ENV_HARDWARE t where 1 = 1
+        <include refid="sf-etDevEnvHardware"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <select id="selectEtDevEnvHardwareMergeList" resultMap="etDevEnvHardwareResult"
+            parameterType="etDevEnvHardware">
+        select * from
+        ET_DEV_ENV_HARDWARE t where 1 = 1
+        <include refid="sf-etDevEnvHardware"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <insert id="insertEtDevEnvHardware" parameterType="etDevEnvHardware">
+
+        insert into ET_DEV_ENV_HARDWARE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID,</if>
+            <if test="(cId != null and cId != '') or cId == 0">C_ID,</if>
+            <if test="serialNo != null and serialNo != ''">SERIAL_NO,</if>
+            <if test="productName != null and productName != ''">PRODUCT_NAME,</if>
+            <if test="hwName != null and hwName != ''">HW_NAME,</if>
+            <if test="hwBrand != null and hwBrand != ''">HW_BRAND,</if>
+            <if test="hwBrandModel != null and hwBrandModel != ''">HW_BRAND_MODEL,</if>
+            <if test="(hwNum != null and hwNum != '') or hwNum == 0">HW_NUM,</if>
+            <if test="hwUse != null and hwUse != ''">HW_USE,</if>
+            <if test="(isScope != null and isScope != '') or isScope == 0">IS_SCOPE,</if>
+            <if test="(creator != null and creator != '') or creator == 0">CREATOR,</if>
+            <if test="createTime != null ">CREATE_TIME,</if>
+            <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
+            <if test="operatorTime != null ">OPERATOR_TIME,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="(pmId != null and pmId != '') or pmId == 0">#{pmId, jdbcType=BIGINT},</if>
+            <if test="(cId != null and cId != '') or cId == 0">#{cId, jdbcType=BIGINT},</if>
+            <if test="serialNo != null and serialNo != ''">#{serialNo, jdbcType=VARCHAR},</if>
+            <if test="productName != null and productName != ''">#{productName, jdbcType=VARCHAR},</if>
+            <if test="hwName != null and hwName != ''">#{hwName, jdbcType=VARCHAR},</if>
+            <if test="hwBrand != null and hwBrand != ''">#{hwBrand, jdbcType=VARCHAR},</if>
+            <if test="hwBrandModel != null and hwBrandModel != ''">#{hwBrandModel, jdbcType=VARCHAR},</if>
+            <if test="(hwNum != null and hwNum != '') or hwNum == 0">#{hwNum, jdbcType=INTEGER},</if>
+            <if test="hwUse != null and hwUse != ''">#{hwUse, jdbcType=LONGVARCHAR},</if>
+            <if test="(isScope != null and isScope != '') or isScope == 0">#{isScope, jdbcType=INTEGER},</if>
+            <if test="(creator != null and creator != '') or creator == 0">#{creator, jdbcType=BIGINT},</if>
+            <if test="createTime != null ">#{createTime, jdbcType=TIMESTAMP},</if>
+            <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
+            <if test="operatorTime != null ">#{operatorTime, jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+
+    <update id="updateEtDevEnvHardware" parameterType="EtDevEnvHardware">
+        update ET_DEV_ENV_HARDWARE
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID = #{pmId, jdbcType=BIGINT},</if>
+                <if test="(cId != null and cId != '') or cId == 0">C_ID = #{cId, jdbcType=BIGINT},</if>
+                <if test="serialNo != null and serialNo != ''">SERIAL_NO = #{serialNo, jdbcType=VARCHAR},</if>
+                <if test="productName != null and productName != ''">PRODUCT_NAME = #{productName, jdbcType=VARCHAR},
+                </if>
+                <if test="hwName != null and hwName != ''">HW_NAME = #{hwName, jdbcType=VARCHAR},</if>
+                <if test="hwBrand != null and hwBrand != ''">HW_BRAND = #{hwBrand, jdbcType=VARCHAR},</if>
+                <if test="hwBrandModel != null and hwBrandModel != ''">HW_BRAND_MODEL =
+                    #{hwBrandModel, jdbcType=VARCHAR},
+                </if>
+                <if test="(hwNum != null and hwNum != '') or hwNum == 0">HW_NUM = #{hwNum, jdbcType=INTEGER},</if>
+                <if test="hwUse != null and hwUse != ''">HW_USE = #{hwUse, jdbcType=LONGVARCHAR},</if>
+                <if test="(isScope != null and isScope != '') or isScope == 0">IS_SCOPE =
+                    #{isScope, jdbcType=INTEGER},
+                </if>
+                <if test="(creator != null and creator != '') or creator == 0">CREATOR = #{creator, jdbcType=BIGINT},
+                </if>
+                <if test="createTime != null ">CREATE_TIME = #{createTime, jdbcType=TIMESTAMP},</if>
+                <if test="(operator != null and operator != '') or operator == 0">OPERATOR =
+                    #{operator, jdbcType=BIGINT},
+                </if>
+                <if test="operatorTime != null ">OPERATOR_TIME =
+                    #{operatorTime, jdbcType=TIMESTAMP},
+                </if>
+            </trim>
+        </set>
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </update>
+
+    <delete id="deleteEtDevEnvHardware" parameterType="EtDevEnvHardware">
+        delete from ET_DEV_ENV_HARDWARE
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </delete>
+
+    <insert id="insertEtDevEnvHardwareByList" parameterType="java.util.List">
+        insert into ET_DEV_ENV_HARDWARE
+        (
+        ID,
+        PM_ID,
+        C_ID,
+        SERIAL_NO,
+        PRODUCT_NAME,
+        HW_NAME,
+        HW_BRAND,
+        HW_BRAND_MODEL,
+        HW_NUM,
+        HW_USE,
+        IS_SCOPE,
+        CREATOR,
+        CREATE_TIME,
+        OPERATOR,
+        OPERATOR_TIME
+        )
+        values
+        <foreach collection="list" item="e" index="index" separator=",">
+            (
+            #{e.id, jdbcType=BIGINT},
+            #{e.pmId, jdbcType=BIGINT},
+            #{e.cId, jdbcType=BIGINT},
+            #{e.serialNo, jdbcType=VARCHAR},
+            #{e.productName, jdbcType=VARCHAR},
+            #{e.hwName, jdbcType=VARCHAR},
+            #{e.hwBrand, jdbcType=VARCHAR},
+            #{e.hwBrandModel, jdbcType=VARCHAR},
+            #{e.hwNum, jdbcType=INTEGER},
+            #{e.hwUse, jdbcType=LONGVARCHAR},
+            #{e.isScope, jdbcType=INTEGER},
+            #{e.creator, jdbcType=BIGINT},
+            #{e.createTime, jdbcType=TIMESTAMP},
+            #{e.operator, jdbcType=BIGINT},
+            #{e.operatorTime, jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+
+</mapper>

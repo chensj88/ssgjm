@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.EtEasyDataCheckDetailDao">
+
+    <resultMap id="etEasyDataCheckDetailResultForList" type="etEasyDataCheckDetail">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="SOURCE_ID" property="sourceId" jdbcType="BIGINT"/>
+        <result column="DEPT_DOCTOR_CODE" property="deptDoctorCode" jdbcType="VARCHAR"/>
+        <result column="DEPT_DOCTOR_NAME" property="deptDoctorName" jdbcType="VARCHAR"/>
+        <result column="NUM" property="num" jdbcType="INTEGER"/>
+        <result column="REMARK" property="remark" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+
+    <resultMap id="etEasyDataCheckDetailResult" type="etEasyDataCheckDetail"
+               extends="etEasyDataCheckDetailResultForList">
+    </resultMap>
+
+    <sql id="sf-etEasyDataCheckDetail">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(sourceId != null and sourceId != '') or sourceId == 0">and t.SOURCE_ID = #{sourceId}</if>
+        <if test="deptDoctorCode != null and deptDoctorCode != ''">and t.DEPT_DOCTOR_CODE = #{deptDoctorCode}</if>
+        <if test="deptDoctorName != null and deptDoctorName != ''">and t.DEPT_DOCTOR_NAME = #{deptDoctorName}</if>
+        <if test="(num != null and num != '') or num == 0">and t.NUM = #{num}</if>
+        <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
+    </sql>
+
+    <select id="selectEtEasyDataCheckDetail" resultMap="etEasyDataCheckDetailResult"
+            parameterType="etEasyDataCheckDetail">
+        select * from ET_EASY_DATA_CHECK_DETAIL t where 1 = 1
+        <include refid="sf-etEasyDataCheckDetail"/>
+    </select>
+
+    <select id="selectEtEasyDataCheckDetailList" resultMap="etEasyDataCheckDetailResultForList"
+            parameterType="etEasyDataCheckDetail">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from ET_EASY_DATA_CHECK_DETAIL t where 1 = 1
+        <include refid="sf-etEasyDataCheckDetail"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectEtEasyDataCheckDetailCount" resultType="int" parameterType="etEasyDataCheckDetail">
+        select count(*) from ET_EASY_DATA_CHECK_DETAIL t where 1 = 1
+        <include refid="sf-etEasyDataCheckDetail"/>
+    </select>
+
+    <select id="selectEtEasyDataCheckDetailPaginatedList" resultMap="etEasyDataCheckDetailResult"
+            parameterType="etEasyDataCheckDetail">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from ET_EASY_DATA_CHECK_DETAIL t where 1 = 1
+        <include refid="sf-etEasyDataCheckDetail"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertEtEasyDataCheckDetail" parameterType="etEasyDataCheckDetail">
+
+        insert into ET_EASY_DATA_CHECK_DETAIL
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="(sourceId != null and sourceId != '') or sourceId == 0">SOURCE_ID,</if>
+            <if test="deptDoctorCode != null and deptDoctorCode != ''">DEPT_DOCTOR_CODE,</if>
+            <if test="deptDoctorName != null and deptDoctorName != ''">DEPT_DOCTOR_NAME,</if>
+            <if test="(num != null and num != '') or num == 0">NUM,</if>
+            <if test="remark != null and remark != ''">REMARK,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="(sourceId != null and sourceId != '') or sourceId == 0">#{sourceId, jdbcType=BIGINT},</if>
+            <if test="deptDoctorCode != null and deptDoctorCode != ''">#{deptDoctorCode, jdbcType=VARCHAR},</if>
+            <if test="deptDoctorName != null and deptDoctorName != ''">#{deptDoctorName, jdbcType=VARCHAR},</if>
+            <if test="(num != null and num != '') or num == 0">#{num, jdbcType=INTEGER},</if>
+            <if test="remark != null and remark != ''">#{remark, jdbcType=LONGVARCHAR},</if>
+        </trim>
+    </insert>
+
+    <update id="updateEtEasyDataCheckDetail" parameterType="EtEasyDataCheckDetail">
+        update ET_EASY_DATA_CHECK_DETAIL
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(sourceId != null and sourceId != '') or sourceId == 0">SOURCE_ID =
+                    #{sourceId, jdbcType=BIGINT},
+                </if>
+                <if test="deptDoctorCode != null and deptDoctorCode != ''">DEPT_DOCTOR_CODE =
+                    #{deptDoctorCode, jdbcType=VARCHAR},
+                </if>
+                <if test="deptDoctorName != null and deptDoctorName != ''">DEPT_DOCTOR_NAME =
+                    #{deptDoctorName, jdbcType=VARCHAR},
+                </if>
+                <if test="(num != null and num != '') or num == 0">NUM = #{num, jdbcType=INTEGER},</if>
+                <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
+            </trim>
+        </set>
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </update>
+
+    <delete id="deleteEtEasyDataCheckDetail" parameterType="EtEasyDataCheckDetail">
+        delete from ET_EASY_DATA_CHECK_DETAIL
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </delete>
+
+</mapper>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysProductShInfoDao">
+
+	<resultMap id="sysProductShInfoResultForList" type="sysProductShInfo">
+		<result column="PD_ID" property="pdId" jdbcType="BIGINT" />
+		<result column="SH_ID" property="shId" jdbcType="BIGINT" />
+		<result column="EFFECTIVE_DATE" property="effectiveDate" jdbcType="TIMESTAMP" />
+		<result column="EXPIRE_DATE" property="expireDate" jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT" />
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+		<result column="PD_NAME" property="pdName" jdbcType="VARCHAR"/>
+		<result column="PD_CODE" property="pdCode" jdbcType="VARCHAR"/>
+		<result column="SH_NAME" property="shName" jdbcType="VARCHAR"/>
+		<result column="SH_CODE" property="shCode" jdbcType="VARCHAR"/>
+		<result column="SH_DESC" property="shDesc" jdbcType="VARCHAR"/>
+		<result column="LAST_UPDATE" property="lastUpdate" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<resultMap id="sysProductShInfoResult" type="sysProductShInfo" extends="sysProductShInfoResultForList">
+	</resultMap>
+
+	<sql id="sf-sysProductShInfo">
+	   <if test="(pdId != null and pdId != '') or pdId == 0"> and t.PD_ID = #{pdId} </if>
+	   <if test="(shId != null and shId != '') or shId == 0"> and t.SH_ID = #{shId} </if>
+	   <if test="effectiveDate != null "> and t.EFFECTIVE_DATE = #{effectiveDate} </if>
+	   <if test="expireDate != null "> and t.EXPIRE_DATE = #{expireDate} </if>
+	   <if test="(lastUpdator != null and lastUpdator != '')"> and t.LAST_UPDATOR = #{lastUpdator} </if>
+	   <if test="lastUpdateTime != null "> and t.LAST_UPDATE_TIME = #{lastUpdateTime} </if>
+	</sql>
+
+	<select id="selectSysProductShInfo" resultMap="sysProductShInfoResult" parameterType="sysProductShInfo">
+		select * from SYS_PRODUCT_SH_INFO t where 1 = 1
+		AND  (CURRENT_TIMESTAMP  BETWEEN t.EFFECTIVE_DATE AND t.EXPIRE_DATE )
+		<include refid="sf-sysProductShInfo" />
+	</select>
+
+	<select id="selectSysProductShInfoList" resultMap="sysProductShInfoResultForList" parameterType="sysProductShInfo">
+		select
+		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
+		 * from SYS_PRODUCT_SH_INFO t where 1 = 1
+		AND  (CURRENT_TIMESTAMP  BETWEEN t.EFFECTIVE_DATE AND t.EXPIRE_DATE )
+		<include refid="sf-sysProductShInfo" />
+		<!-- order by ID asc -->
+	</select>
+
+	<select id="selectSysProductShInfoCount" resultType="int" parameterType="sysProductShInfo">
+		select count(*) from SYS_PRODUCT_SH_INFO t where 1 = 1
+		AND  (CURRENT_TIMESTAMP  BETWEEN t.EFFECTIVE_DATE AND t.EXPIRE_DATE )
+		<include refid="sf-sysProductShInfo" />
+	</select>
+
+	<select id="selectSysProductShInfoPaginatedList" resultMap="sysProductShInfoResult" parameterType="sysProductShInfo">
+		select * from (
+			select *, ROW_NUMBER() OVER ( order by id desc ) as _rn 
+				from SYS_PRODUCT_SH_INFO t where 1 = 1
+		        AND  (CURRENT_TIMESTAMP  BETWEEN t.EFFECTIVE_DATE AND t.EXPIRE_DATE )
+			<include refid="sf-sysProductShInfo" />
+			<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
+
+	<insert id="insertSysProductShInfo" parameterType="sysProductShInfo">
+		insert into SYS_PRODUCT_SH_INFO 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(pdId != null and pdId != '') or pdId == 0"> PD_ID, </if>
+	       <if test="(shId != null and shId != '') or shId == 0"> SH_ID, </if>
+		   <if test="effectiveDate != null "> EFFECTIVE_DATE, </if>
+		   <if test="expireDate != null "> EXPIRE_DATE, </if>
+	       <if test="(lastUpdator != null and lastUpdator != '')"> LAST_UPDATOR, </if>
+		   <if test="lastUpdateTime != null "> LAST_UPDATE_TIME, </if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(pdId != null and pdId != '') or pdId == 0"> #{pdId, jdbcType=BIGINT}, </if>
+	       <if test="(shId != null and shId != '') or shId == 0"> #{shId, jdbcType=BIGINT}, </if>
+		   <if test="effectiveDate != null "> #{effectiveDate, jdbcType=TIMESTAMP}, </if>
+		   <if test="expireDate != null "> #{expireDate, jdbcType=TIMESTAMP}, </if>
+	       <if test="(lastUpdator != null and lastUpdator != '')"> #{lastUpdator, jdbcType=BIGINT}, </if>
+		   <if test="lastUpdateTime != null "> #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
+		</trim>
+	</insert>
+
+	<update id="updateSysProductShInfo" parameterType="sysProductShInfo">
+		update SYS_PRODUCT_SH_INFO
+		<set>
+			<trim suffixOverrides=",">
+			   <if test="(pdId != null and pdId != '') or pdId == 0"> PD_ID = #{pdId, jdbcType=BIGINT}, </if>
+			   <if test="(shId != null and shId != '') or shId == 0"> SH_ID = #{shId, jdbcType=BIGINT}, </if>
+			   <if test="effectiveDate != null "> EFFECTIVE_DATE = #{effectiveDate, jdbcType=TIMESTAMP}, </if>
+			   <if test="expireDate != null "> EXPIRE_DATE = #{expireDate, jdbcType=TIMESTAMP}, </if>
+			   <if test="(lastUpdator != null and lastUpdator != '')"> LAST_UPDATOR = #{lastUpdator, jdbcType=BIGINT}, </if>
+			   <if test="lastUpdateTime != null "> LAST_UPDATE_TIME = #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
+			</trim>
+		</set>
+		<where>
+			<if test="(pdId != null and pdId != '') ">
+				AND t.PD_ID = #{pdId}
+			</if>
+			<if test="(shId != null and shId != '') ">
+				AND t.SH_ID = #{shId}
+			</if>
+		</where>
+	</update>
+
+	<delete id="deleteSysProductShInfo" parameterType="sysProductShInfo">
+		delete from SYS_PRODUCT_SH_INFO where
+		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</delete>
+
+	<select id="selectSysProductShInfoByIds" parameterType="java.util.Map" resultMap="sysProductShInfoResult">
+		SELECT
+		A.*,
+		B.CODE AS PD_CODE,
+		B.NAME AS PD_NAME,
+		C.SH_NAME AS SH_NAME,
+		C.SH_CODE AS SH_CODE,
+		C.SH_DESC AS SH_DESC,
+		D.YHMC AS LAST_UPDATE
+		FROM SYS_PRODUCT_SH_INFO A
+		LEFT JOIN PMIS_PRODUCT_INFO B ON A.PD_ID = B.ID
+		LEFT JOIN SYS_SOFT_HARDWARE_INFO C ON A.SH_ID = C.ID
+		LEFT JOIN SYS_USER_INFO D ON A.LAST_UPDATOR = D.ID
+		<where>
+			<if test="pdId != null and pdId != 0">
+				AND A.PD_ID = ${pdId}
+			</if>
+			<if test="shIds !=null and shIds !='' ">
+				AND A.SH_ID IN ( ${shIds} )
+			</if>
+			AND (CURRENT_TIMESTAMP  BETWEEN A.EFFECTIVE_DATE AND A.EXPIRE_DATE )
+		</where>
+	</select>
+
+	<update id="removeSysProductShInfoMapping" parameterType="java.util.Map">
+		update SYS_PRODUCT_SH_INFO
+		<set>
+			<trim suffixOverrides=",">
+				<if test="user != null and user != ''">
+					LAST_UPDATOR =${user},
+				</if>
+				<if test="user != null and user != ''">
+					EXPIRE_DATE = CURRENT_TIMESTAMP,
+				</if>
+			</trim>
+		</set>
+		<where>
+			<if test=" ids != null and ids != ''">
+				${ids}
+			</if>
+		</where>
+	</update>
+	<select id="selectSysProductSHInfoByIdMap" parameterType="java.util.Map" resultMap="sysProductShInfoResult">
+		SELECT
+		A.*
+		FROM SYS_PRODUCT_SH_INFO A
+		<where>
+			<if test=" ids != null and ids != ''">
+				${ids}
+			</if>
+		</where>
+	</select>
+</mapper>

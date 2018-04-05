@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysLoginTokenDao">
+
+	<resultMap id="sysLoginTokenResultForList" type="sysLoginToken">
+
+		<result column="TOKEN" property="token" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="sysLoginTokenResult" type="sysLoginToken" extends="sysLoginTokenResultForList">
+	</resultMap>
+
+	<sql id="sf-sysLoginToken">
+
+	</sql>
+
+	<select id="selectSysLoginToken" resultMap="sysLoginTokenResult" parameterType="sysLoginToken">
+		select * from ET_CONTRACT_TASK t where 1 = 1
+		<include refid="sf-sysLoginToken" />
+	</select>
+
+	<select id="selectSysLoginTokenList" resultMap="sysLoginTokenResultForList" parameterType="sysLoginToken">
+		select
+		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
+		 * from ET_CONTRACT_TASK t where 1 = 1
+		<include refid="sf-sysLoginToken" />
+		<!-- order by ID asc -->
+	</select>
+
+	<select id="selectSysLoginTokenCount" resultType="int" parameterType="sysLoginToken">
+		select count(*) from ET_CONTRACT_TASK t where 1 = 1
+		<include refid="sf-sysLoginToken" />
+	</select>
+
+	<select id="selectSysLoginTokenPaginatedList" resultMap="sysLoginTokenResult" parameterType="sysLoginToken">
+		select * from (
+			select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+				from ET_CONTRACT_TASK t where 1 = 1
+			<include refid="sf-sysLoginToken" />
+			<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
+
+	<insert id="insertSysLoginToken" parameterType="sysLoginToken">
+		insert into ET_CONTRACT_TASK 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		   <if test="token != null and token != ''"> TOKEN, </if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		   <if test="token != null and token != ''"> #{token, jdbcType=VARCHAR}, </if>
+		</trim>
+	</insert>
+
+	<update id="updateSysLoginToken" parameterType="sysLoginToken">
+		update ET_CONTRACT_TASK
+		<set>
+			<trim suffixOverrides=",">
+			   <if test="serialNo != null and serialNo != ''"> SERIAL_NO = #{serialNo, jdbcType=VARCHAR}, </if>
+			</trim>
+		</set>
+		where
+		<if test="id != null and id != ''"> ID = #{id} </if>
+	</update>
+
+	<delete id="deleteSysLoginToken" parameterType="sysLoginToken">
+		delete from ET_CONTRACT_TASK where
+		<if test="token != null and token != ''"> TOKEN = #{token, jdbcType=VARCHAR} </if>
+	</delete>
+</mapper>

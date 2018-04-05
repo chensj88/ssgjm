@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysProductPaperInfoDao">
+
+	<resultMap id="sysProductPaperInfoResultForList" type="sysProductPaperInfo">
+		<result column="PD_ID" property="pdId" jdbcType="BIGINT" />
+		<result column="R_ID" property="rId" jdbcType="BIGINT" />
+		<result column="EFFECTIVE_DATE" property="effectiveDate" jdbcType="TIMESTAMP" />
+		<result column="EXPIRE_DATE" property="expireDate" jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT" />
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+		<result column="PD_NAME" property="pdName" jdbcType="VARCHAR"/>
+		<result column="PD_CODE" property="pdCode" jdbcType="VARCHAR"/>
+		<result column="REPORT_NAME" property="reportName" jdbcType="VARCHAR"/>
+		<result column="REPORT_CODE" property="reportCode" jdbcType="VARCHAR"/>
+		<result column="REPORT_DESC" property="reportDesc" jdbcType="VARCHAR"/>
+		<result column="LAST_UPDATE" property="lastUpdate" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<resultMap id="sysProductPaperInfoResult" type="sysProductPaperInfo" extends="sysProductPaperInfoResultForList">
+	</resultMap>
+
+	<sql id="sf-sysProductPaperInfo">
+	   <if test="(pdId != null and pdId != '') or pdId == 0"> and t.PD_ID = #{pdId} </if>
+	   <if test="(rId != null and rId != '') or rId == 0"> and t.R_ID = #{rId} </if>
+	   <if test="effectiveDate != null "> and t.EFFECTIVE_DATE = #{effectiveDate} </if>
+	   <if test="expireDate != null "> and t.EXPIRE_DATE = #{expireDate} </if>
+	   <if test="(lastUpdator != null and lastUpdator != '')"> and t.LAST_UPDATOR = #{lastUpdator} </if>
+	   <if test="lastUpdateTime != null "> and t.LAST_UPDATE_TIME = #{lastUpdateTime} </if>
+	</sql>
+
+	<select id="selectSysProductPaperInfo" resultMap="sysProductPaperInfoResult" parameterType="sysProductPaperInfo">
+		select * from SYS_PRODUCT_PAPER_INFO t where 1 = 1
+		AND  (CURRENT_TIMESTAMP  BETWEEN t.EFFECTIVE_DATE AND t.EXPIRE_DATE )
+		<include refid="sf-sysProductPaperInfo" />
+	</select>
+
+	<select id="selectSysProductPaperInfoList" resultMap="sysProductPaperInfoResultForList" parameterType="sysProductPaperInfo">
+		select
+		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
+		 * from SYS_PRODUCT_PAPER_INFO t where 1 = 1
+		AND  (CURRENT_TIMESTAMP  BETWEEN t.EFFECTIVE_DATE AND t.EXPIRE_DATE )
+		<include refid="sf-sysProductPaperInfo" />
+		<!-- order by ID asc -->
+	</select>
+
+	<select id="selectSysProductPaperInfoCount" resultType="int" parameterType="sysProductPaperInfo">
+		select count(*) from SYS_PRODUCT_PAPER_INFO t where 1 = 1
+		<include refid="sf-sysProductPaperInfo" />
+	</select>
+
+	<select id="selectSysProductPaperInfoPaginatedList" resultMap="sysProductPaperInfoResult" parameterType="sysProductPaperInfo">
+		select * from (
+			select *, ROW_NUMBER() OVER ( order by id desc ) as _rn 
+				from SYS_PRODUCT_PAPER_INFO t where 1 = 1
+		    AND  (CURRENT_TIMESTAMP  BETWEEN t.EFFECTIVE_DATE AND t.EXPIRE_DATE )
+			<include refid="sf-sysProductPaperInfo" />
+			<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
+
+	<insert id="insertSysProductPaperInfo" parameterType="sysProductPaperInfo">
+		insert into SYS_PRODUCT_PAPER_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(pdId != null and pdId != '') or pdId == 0"> PD_ID, </if>
+	       <if test="(rId != null and rId != '') or rId == 0"> R_ID, </if>
+		   <if test="effectiveDate != null "> EFFECTIVE_DATE, </if>
+		   <if test="expireDate != null "> EXPIRE_DATE, </if>
+	       <if test="(lastUpdator != null and lastUpdator != '')"> LAST_UPDATOR, </if>
+		   <if test="lastUpdateTime != null "> LAST_UPDATE_TIME, </if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(pdId != null and pdId != '') or pdId == 0"> #{pdId, jdbcType=BIGINT}, </if>
+	       <if test="(rId != null and rId != '') or rId == 0"> #{rId, jdbcType=BIGINT}, </if>
+		   <if test="effectiveDate != null "> #{effectiveDate, jdbcType=TIMESTAMP}, </if>
+		   <if test="expireDate != null "> #{expireDate, jdbcType=TIMESTAMP}, </if>
+	       <if test="(lastUpdator != null and lastUpdator != '')"> #{lastUpdator, jdbcType=BIGINT}, </if>
+		   <if test="lastUpdateTime != null "> #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
+		</trim>
+	</insert>
+
+	<update id="updateSysProductPaperInfo" parameterType="sysProductPaperInfo">
+		update SYS_PRODUCT_PAPER_INFO
+		<set>
+			<trim suffixOverrides=",">
+			   <if test="(pdId != null and pdId != '') or pdId == 0"> PD_ID = #{pdId, jdbcType=BIGINT}, </if>
+			   <if test="(rId != null and rId != '') or rId == 0"> R_ID = #{rId, jdbcType=BIGINT}, </if>
+			   <if test="effectiveDate != null "> EFFECTIVE_DATE = #{effectiveDate, jdbcType=TIMESTAMP}, </if>
+			   <if test="expireDate != null "> EXPIRE_DATE = #{expireDate, jdbcType=TIMESTAMP}, </if>
+			   <if test="(lastUpdator != null and lastUpdator != '')"> LAST_UPDATOR = #{lastUpdator, jdbcType=BIGINT}, </if>
+			   <if test="lastUpdateTime != null "> LAST_UPDATE_TIME = #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
+			</trim>
+		</set>
+		<where>
+			<if test="(pdId != null and pdId != '') ">
+				AND PD_ID = #{pdId}
+			</if>
+			<if test="(rId != null and rId != '') ">
+				AND R_ID = #{rId}
+			</if>
+		</where>
+	</update>
+
+	<delete id="deleteSysProductPaperInfo" parameterType="sysProductPaperInfo">
+		delete from SYS_PRODUCT_PAPER_INFO where
+		<if test="id != null and id != ''"> ID = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</delete>
+
+	<select id="selectSysProductPaperInfoByIds" parameterType="java.util.Map" resultMap="sysProductPaperInfoResult">
+		SELECT
+		A.*,
+		B.CODE AS PD_CODE,
+		B.NAME AS PD_NAME,
+		C.REPORT_NAME AS REPORT_NAME,
+		C.REPORT_CODE AS REPORT_CODE,
+		C.REPORT_DESC AS REPORT_DESC,
+		D.YHMC AS LAST_UPDATE
+		FROM SYS_PRODUCT_PAPER_INFO A
+		LEFT JOIN PMIS_PRODUCT_INFO B ON A.PD_ID = B.ID
+		LEFT JOIN SYS_REPORT_INFO C ON A.R_ID = C.ID
+		LEFT JOIN SYS_USER_INFO D ON A.LAST_UPDATOR = D.ID
+		<where>
+			<if test="pdId != null and pdId != 0">
+				AND A.PD_ID = ${pdId}
+			</if>
+			<if test="reportIds !=null and reportIds !='' ">
+				AND A.R_ID IN ( ${reportIds} )
+			</if>
+			AND (CURRENT_TIMESTAMP  BETWEEN A.EFFECTIVE_DATE AND A.EXPIRE_DATE )
+		</where>
+	</select>
+
+	<update id="removeSysProductPaperInfoMapping" parameterType="java.util.Map">
+		update SYS_PRODUCT_PAPER_INFO
+		<set>
+			<trim suffixOverrides=",">
+				<if test="user != null and user != ''">
+					LAST_UPDATOR =${user},
+				</if>
+				<if test="user != null and user != ''">
+					EXPIRE_DATE = CURRENT_TIMESTAMP,
+				</if>
+			</trim>
+		</set>
+		<where>
+			<if test=" ids != null and ids != ''">
+				${ids}
+			</if>
+		</where>
+	</update>
+
+	<select id="selectSysProductPaperInfoByIdMap" parameterType="java.util.Map" resultMap="sysProductPaperInfoResult">
+		SELECT
+		A.*
+		FROM SYS_PRODUCT_PAPER_INFO A
+		<where>
+			<if test=" ids != null and ids != ''">
+				${ids}
+			</if>
+		</where>
+	</select>
+
+</mapper>

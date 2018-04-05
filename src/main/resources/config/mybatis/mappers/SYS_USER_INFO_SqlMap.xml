@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysUserInfoDao">
+
+    <resultMap id="sysUserInfoResultForList" type="sysUserInfo">
+        <result column="ID" property="id" jdbcType="BIGINT" />
+        <result column="STATUS" property="status" jdbcType="INTEGER" />
+        <result column="USERID" property="userid" jdbcType="VARCHAR" />
+        <result column="YHMC" property="yhmc" jdbcType="VARCHAR" />
+        <result column="NAME" property="name" jdbcType="VARCHAR" />
+        <result column="Email" property="email" jdbcType="VARCHAR" />
+        <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+        <result column="TELEPHONE" property="telephone" jdbcType="VARCHAR" />
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+        <result column="ORGID" property="orgid" jdbcType="BIGINT" />
+        <result column="SSGS" property="ssgs" jdbcType="BIGINT" />
+        <result column="USER_TYPE" property="userType" jdbcType="VARCHAR" />
+        <result column="LINK_ID" property="linkId" jdbcType="BIGINT" />
+        <result column="OPEN_ID" property="openId" jdbcType="VARCHAR" />
+        <result column="VIDEO_DROIT" property="videoDroit" jdbcType="VARCHAR" />
+        <result column="COL1" property="clo1" jdbcType="VARCHAR" />
+        <result column="COL2" property="clo2" jdbcType="VARCHAR" />
+        <result column="COL3" property="clo3" jdbcType="VARCHAR" />
+        <result column="COL4" property="clo4" jdbcType="VARCHAR" />
+        <result column="COL5" property="clo5" jdbcType="VARCHAR" />
+
+    </resultMap>
+
+    <resultMap id="sysUserInfoResult" type="sysUserInfo" extends="sysUserInfoResultForList">
+    </resultMap>
+
+    <sql id="sf-sysUserInfo">
+        <if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
+        <if test="(status != null )"> and t.STATUS = #{status} </if>
+        <if test="userid != null and userid != ''"> and t.USERID = #{userid} </if>
+        <if test="yhmc != null and yhmc != ''"> and t.YHMC = #{yhmc} </if>
+        <if test="name != null and name != ''"> and t.NAME = #{name} </if>
+        <if test="email != null and email != ''"> and t.Email = #{email} </if>
+        <if test="mobile != null and mobile != ''"> and t.MOBILE = #{mobile} </if>
+        <if test="telephone != null and telephone != ''"> and t.TELEPHONE = #{telephone} </if>
+        <if test="password != null and password != ''"> and t.PASSWORD = #{password} </if>
+        <if test="orgid != null and orgid != ''"> and t.ORGID = #{orgid} </if>
+        <if test="ssgs != null and ssgs != ''"> and t.SSGS = #{ssgs} </if>
+        <if test="(linkId != null and linkId != '') or linkId == 0"> and t.LINK_ID = #{linkId} </if>
+        <if test="userType != null and userType != ''"> and t.USER_TYPE = #{userType} </if>
+        <if test="openId != null and openId != ''"> and t.OPEN_ID = #{openId} </if>
+        <if test="videoDroit != null and videoDroit != ''"> and t.VIDEO_DROIT = #{videoDroit} </if>
+        <if test="clo1 != null and clo1 != ''"> and t.CLO1 = #{clo1} </if>
+        <if test="clo2 != null and clo2 != ''"> and t.CLO2 = #{clo2} </if>
+        <if test="clo3 != null and clo3 != ''"> and t.CLO3 = #{clo3} </if>
+        <if test="clo4 != null and clo4 != ''"> and t.CLO4 = #{clo4} </if>
+        <if test="clo5 != null and clo5 != ''"> and t.CLO5 = #{clo5} </if>
+
+    </sql>
+
+    <sql id="query-sysUserInfo">
+        <if test="userid != null and userid != ''">AND t.USERID LIKE '%${userid}%'</if>
+        <if test="yhmc != null and yhmc != ''">AND t.YHMC LIKE '%${yhmc}%'</if>
+        <if test="mobile != null and mobile != ''">AND t.MOBILE LIKE '%${mobile}%'</if>
+        <if test="status != null ">AND t.STATUS LIKE ${status}</if>
+    </sql>
+
+    <select id="selectSysUserInfo" resultMap="sysUserInfoResult" parameterType="sysUserInfo">
+        select * from SYS_USER_INFO t where 1 = 1
+        <include refid="sf-sysUserInfo"/>
+    </select>
+
+    <select id="selectSysUserInfoList" resultMap="sysUserInfoResultForList" parameterType="sysUserInfo">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from SYS_USER_INFO t where 1 = 1
+        <include refid="sf-sysUserInfo"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectSysUserInfoCount" resultType="int" parameterType="sysUserInfo">
+        select count(*) from SYS_USER_INFO t where 1 = 1
+        <include refid="sf-sysUserInfo"/>
+    </select>
+
+    <select id="selectSysUserInfoPaginatedList" resultMap="sysUserInfoResult" parameterType="sysUserInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_USER_INFO t where 1 = 1
+        <include refid="sf-sysUserInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertSysUserInfo" parameterType="sysUserInfo">
+
+        insert into SYS_USER_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0"> ID, </if>
+            <if test="(status != null )"> STATUS, </if>
+            <if test="userid != null and userid != ''"> USERID, </if>
+            <if test="yhmc != null and yhmc != ''"> YHMC, </if>
+            <if test="name != null and name != ''"> NAME, </if>
+            <if test="email != null and email != ''"> Email, </if>
+            <if test="mobile != null and mobile != ''"> MOBILE, </if>
+            <if test="telephone != null and telephone != ''"> TELEPHONE, </if>
+            <if test="password != null and password != ''"> PASSWORD, </if>
+            <if test="orgid != null and orgid != ''"> ORGID, </if>
+            <if test="ssgs != null and ssgs != ''"> SSGS, </if>
+            <if test="(linkId != null and linkId != '') "> LINK_ID, </if>
+            <if test="userType != null and userType != ''"> USER_TYPE, </if>
+            <if test="openId != null and openId != ''"> OPEN_ID, </if>
+            <if test="videoDroit != null and videoDroit != ''"> VIDEO_DROIT, </if>
+            <if test="clo1 != null and clo1 != ''"> CLO1, </if>
+            <if test="clo2 != null and clo2 != ''"> CLO2, </if>
+            <if test="clo3 != null and clo3 != ''"> CLO3, </if>
+            <if test="clo4 != null and clo4 != ''"> CLO4, </if>
+            <if test="clo5 != null and clo5 != ''"> CLO5, </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0"> #{id, jdbcType=BIGINT}, </if>
+            <if test="(status != null )"> #{status, jdbcType=INTEGER}, </if>
+            <if test="userid != null and userid != ''"> #{userid, jdbcType=VARCHAR}, </if>
+            <if test="yhmc != null and yhmc != ''"> #{yhmc, jdbcType=VARCHAR}, </if>
+            <if test="name != null and name != ''"> #{name, jdbcType=VARCHAR}, </if>
+            <if test="email != null and email != ''"> #{email, jdbcType=VARCHAR}, </if>
+            <if test="mobile != null and mobile != ''"> #{mobile, jdbcType=VARCHAR}, </if>
+            <if test="telephone != null and telephone != ''"> #{telephone, jdbcType=VARCHAR}, </if>
+            <if test="password != null and password != ''"> #{password, jdbcType=VARCHAR}, </if>
+            <if test="orgid != null and orgid != ''"> #{orgid, jdbcType=BIGINT}, </if>
+            <if test="ssgs != null and ssgs != ''"> #{ssgs, jdbcType=BIGINT}, </if>
+            <if test="(linkId != null and linkId != '') "> #{linkId, jdbcType=BIGINT}, </if>
+            <if test="userType != null and userType != ''"> #{userType, jdbcType=VARCHAR}, </if>
+            <if test="openId != null and openId != ''"> #{openId, jdbcType=VARCHAR}, </if>
+
+            <if test="videoDroit != null and videoDroit != ''"> #{videoDroit, jdbcType=VARCHAR}, </if>
+            <if test="clo1 != null and clo1 != ''"> #{clo1, jdbcType=VARCHAR}, </if>
+            <if test="clo2 != null and clo2 != ''"> #{clo2, jdbcType=VARCHAR}, </if>
+            <if test="clo3 != null and clo3 != ''"> #{clo3, jdbcType=VARCHAR}, </if>
+            <if test="clo4 != null and clo4 != ''"> #{clo4, jdbcType=VARCHAR}, </if>
+            <if test="clo5 != null and clo5 != ''"> #{clo5, jdbcType=VARCHAR}, </if>
+
+        </trim>
+    </insert>
+
+    <update id="updateSysUserInfo" parameterType="SysUserInfo">
+        update SYS_USER_INFO
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>
+                <if test="(status != null )"> STATUS = #{status, jdbcType=INTEGER}, </if>
+                <if test="userid != null and userid != ''"> USERID = #{userid, jdbcType=VARCHAR}, </if>
+                <if test="yhmc != null and yhmc != ''"> YHMC = #{yhmc, jdbcType=VARCHAR}, </if>
+                <if test="name != null and name != ''"> NAME = #{name, jdbcType=VARCHAR}, </if>
+                <if test="email != null and email != ''"> Email = #{email, jdbcType=VARCHAR}, </if>
+                <if test="mobile != null and mobile != ''"> MOBILE = #{mobile, jdbcType=VARCHAR}, </if>
+                <if test="telephone != null and telephone != ''"> TELEPHONE = #{telephone, jdbcType=VARCHAR}, </if>
+                <if test="password != null and password != ''"> PASSWORD = #{password, jdbcType=VARCHAR}, </if>
+                <if test="orgid != null and orgid != ''"> ORGID = #{orgid, jdbcType=BIGINT}, </if>
+                <if test="ssgs != null and ssgs != ''"> SSGS = #{ssgs, jdbcType=BIGINT}, </if>
+                <if test="(linkId != null and linkId != '')"> LINK_ID = #{linkId, jdbcType=BIGINT}, </if>
+                <if test="userType != null and userType != ''"> USER_TYPE = #{userType, jdbcType=VARCHAR}, </if>
+                <if test="openId != null and openId != ''"> OPEN_ID = #{openId, jdbcType=VARCHAR}, </if>
+                <if test="videoDroit != null and videoDroit != ''"> VIDEO_DROIT = #{videoDroit, jdbcType=VARCHAR}, </if>
+                <if test="clo1 != null and clo1 != ''"> CLO1 = #{clo1, jdbcType=VARCHAR}, </if>
+                <if test="clo2 != null and clo2 != ''"> CLO2 = #{clo2, jdbcType=VARCHAR}, </if>
+                <if test="clo3 != null and clo3 != ''"> CLO3 = #{clo3, jdbcType=VARCHAR}, </if>
+                <if test="clo4 != null and clo4 != ''"> CLO4 = #{clo4, jdbcType=VARCHAR}, </if>
+                <if test="clo5 != null and clo5 != ''"> CLO5 = #{clo5, jdbcType=VARCHAR}, </if>
+
+            </trim>
+        </set>
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
+                ID in
+                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+              </if>
+        </where>
+    </update>
+
+    <delete id="deleteSysUserInfo" parameterType="SysUserInfo">
+        delete from SYS_USER_INFO
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
+                ID in
+                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
+    </delete>
+
+    <select id="selectSysUserInfoQueryCount" resultType="int" parameterType="sysUserInfo">
+        select count(*) from SYS_USER_INFO t where 1 = 1
+        <include refid="query-sysUserInfo"/>
+    </select>
+    <select id="selectSysUserInfoQueryPaginatedList" resultMap="sysUserInfoResult" parameterType="sysUserInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_USER_INFO t where 1 = 1
+        <include refid="query-sysUserInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <select id="countUserInfoByType" resultType="cn.com.winning.ssgj.domain.expand.FlotDataInfo">
+        SELECT  DICT_LABEL label,COUNT(1) data  FROM  SYS_USER_INFO
+        LEFT JOIN SYS_DICT_INFO ON USER_TYPE = DICT_VALUE AND DICT_CODE ='userType'
+        WHERE STATUS = '1'
+        GROUP  BY  DICT_LABEL
+    </select>
+
+    <select id="selectSysUserInfoListByUserIdList" parameterType="sysUserInfo" resultMap="sysUserInfoResult">
+        SELECT  * FROM SYS_USER_INFO t
+        <where>
+            <if test="(status != null )"> AND t.STATUS = ${status} </if>
+            <if test="userType != null and userType != ''"> AND t.USER_TYPE = ${userType} </if>
+            <if test="(id == null) and (map.pks != null and map.pks.size >0)">
+                AND  t.ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectSysUserInfoByUserCode" parameterType="sysUserInfo" resultMap="sysUserInfoResult">
+        SELECT  * FROM SYS_USER_INFO t
+        WHERE  t.STATUS = 1 AND  t.USER_TYPE ='1'
+        <if test="userid != null and userid != ''"> AND  t.USERID = #{userid, jdbcType=VARCHAR} </if>
+    </select>
+</mapper>

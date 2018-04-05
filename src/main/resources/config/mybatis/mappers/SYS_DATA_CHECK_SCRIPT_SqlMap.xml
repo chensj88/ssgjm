@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysDataCheckScriptDao">
+
+	<resultMap id="sysDataCheckScriptResultForList" type="sysDataCheckScript">
+		<result column="ID" property="id" jdbcType="BIGINT" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="S_DESC" property="sDesc" jdbcType="LONGVARCHAR" />
+		<result column="REMOTE_PATH" property="remotePath" jdbcType="VARCHAR" />
+		<result column="APP_ID" property="appId" jdbcType="BIGINT" />
+		<result column="APP_NAME" property="appName" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="INTEGER" />
+		<result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT" />
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<resultMap id="sysDataCheckScriptResult" type="sysDataCheckScript" extends="sysDataCheckScriptResultForList">
+	</resultMap>
+
+	<sql id="sf-sysDataCheckScript">
+	   <if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
+	   <if test="name != null and name != ''"> and t.NAME = #{name} </if>
+	   <if test="sDesc != null and sDesc != ''"> and t.S_DESC = #{sDesc} </if>
+		<if test="appId != null "> and t.APP_ID = #{appId} </if>
+		<if test="appName != null and appName != ''"> and t.APP_NAME = #{appName} </if>
+	   <if test="remotePath != null and remotePath != ''"> and t.REMOTE_PATH = #{remotePath} </if>
+	   <if test="(status != null and status != '') or status == 0"> and t.STATUS = #{status} </if>
+	   <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> and t.LAST_UPDATOR = #{lastUpdator} </if>
+	   <if test="lastUpdateTime != null"> and t.LAST_UPDATE_TIME = #{lastUpdateTime} </if>
+	</sql>
+
+	<sql id="fuzzy">
+		<if test="name != null and name != ''"> and t.NAME LIKE '%${name}%' </if>
+	</sql>
+
+	<select id="selectSysDataCheckScript" resultMap="sysDataCheckScriptResult" parameterType="sysDataCheckScript">
+		select * from SYS_DATA_CHECK_SCRIPT t where 1 = 1
+		<include refid="sf-sysDataCheckScript" />
+	</select>
+
+	<select id="selectSysDataCheckScriptList" resultMap="sysDataCheckScriptResultForList" parameterType="sysDataCheckScript">
+		select
+		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
+		 * from SYS_DATA_CHECK_SCRIPT t where 1 = 1
+		<include refid="sf-sysDataCheckScript" />
+		<!-- order by ID asc -->
+	</select>
+
+	<select id="selectSysDataCheckScriptCountFuzzy" resultType="int" parameterType="sysDataCheckScript">
+		select count(*) from SYS_DATA_CHECK_SCRIPT t where 1 = 1
+		<include refid="fuzzy" />
+	</select>
+
+	<select id="selectSysDataCheckScriptPageListFuzzy" resultMap="sysDataCheckScriptResult" parameterType="sysDataCheckScript">
+		select * from (
+		select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+		from SYS_DATA_CHECK_SCRIPT t where 1 = 1
+		<include refid="fuzzy" />
+		<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
+
+	<select id="selectSysDataCheckScriptCount" resultType="int" parameterType="sysDataCheckScript">
+		select count(*) from SYS_DATA_CHECK_SCRIPT t where 1 = 1
+		<include refid="sf-sysDataCheckScript" />
+	</select>
+
+	<select id="selectSysDataCheckScriptPaginatedList" resultMap="sysDataCheckScriptResult" parameterType="sysDataCheckScript">
+		select * from (
+			select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+				from SYS_DATA_CHECK_SCRIPT t where 1 = 1
+			<include refid="sf-sysDataCheckScript" />
+			<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
+
+	<insert id="insertSysDataCheckScript" parameterType="sysDataCheckScript">
+		insert into SYS_DATA_CHECK_SCRIPT 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> ID, </if>
+		   <if test="name != null and name != ''"> NAME, </if>
+		   <if test="sDesc != null and sDesc != ''"> S_DESC, </if>
+			<if test="appId != null ">  APP_ID, </if>
+			<if test="appName != null and appName != ''"> APP_NAME,</if>
+		   <if test="remotePath != null and remotePath != ''"> REMOTE_PATH, </if>
+	       <if test="(status != null and status != '') or status == 0"> STATUS, </if>
+	       <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> LAST_UPDATOR, </if>
+		   <if test="lastUpdateTime != null"> LAST_UPDATE_TIME, </if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> #{id, jdbcType=BIGINT}, </if>
+		   <if test="name != null and name != ''"> #{name, jdbcType=VARCHAR}, </if>
+		   <if test="sDesc != null and sDesc != ''"> #{sDesc, jdbcType=LONGVARCHAR}, </if>
+			<if test="appId != null "> #{appId,jdbcType=BIGINT}, </if>
+			<if test="appName != null and appName != ''"> #{appName, jdbcType=VARCHAR}, </if>
+		   <if test="remotePath != null and remotePath != ''"> #{remotePath, jdbcType=VARCHAR}, </if>
+	       <if test="(status != null and status != '') or status == 0"> #{status, jdbcType=INTEGER}, </if>
+	       <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> #{lastUpdator, jdbcType=BIGINT}, </if>
+		   <if test="lastUpdateTime != null"> #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
+		</trim>
+	</insert>
+
+	<update id="updateSysDataCheckScript" parameterType="SysDataCheckScript">
+		update SYS_DATA_CHECK_SCRIPT
+		<set>
+			<trim suffixOverrides=",">
+			   <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>
+			   <if test="name != null and name != ''"> NAME = #{name, jdbcType=VARCHAR}, </if>
+			   <if test="sDesc != null and sDesc != ''"> S_DESC = #{sDesc, jdbcType=LONGVARCHAR}, </if>
+				<if test="appId != null ">  APP_ID = #{appId,jdbcType=BIGINT}, </if>
+				<if test="appName != null and appName != ''"> APP_NAME = #{appName, jdbcType=VARCHAR},</if>
+			   <if test="remotePath != null and remotePath != ''"> REMOTE_PATH = #{remotePath, jdbcType=VARCHAR}, </if>
+			   <if test="(status != null and status != '') or status == 0"> STATUS = #{status, jdbcType=INTEGER}, </if>
+			   <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> LAST_UPDATOR = #{lastUpdator, jdbcType=BIGINT}, </if>
+			   <if test="lastUpdateTime != null"> LAST_UPDATE_TIME = #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
+			</trim>
+		</set>
+		where
+		<if test="id != null and id != ''"> ID = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</update>
+
+	<delete id="deleteSysDataCheckScript" parameterType="SysDataCheckScript">
+		delete from SYS_DATA_CHECK_SCRIPT where
+		<if test="id != null and id != ''"> ID = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</delete>
+	<select id="selectExistDataCheckScriptName" resultType="int" parameterType="sysDataCheckScript">
+		select count(1) from SYS_DATA_CHECK_SCRIPT t
+		WHERE t.NAME = #{name,jdbcType=VARCHAR}
+	</select>
+</mapper>

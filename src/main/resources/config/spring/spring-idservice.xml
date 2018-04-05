@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!-- 主键生成器记录表 -->
+    <bean id="sequenceTable" class="cn.com.winning.ssgj.base.id.SequenceTable" init-method="init">
+        <property name="tableName" value="SSGJ_SEQNO"/><!--表名  -->
+        <property name="idColume" value="seqno"/><!-- id列  -->
+        <property name="typeColume" value="tabletype"/><!--主键类型  -->
+        <property name="dataSource" ref="dataSource"/><!-- 数据源 -->
+    </bean>
+
+    <!--   说明：
+            1、如果需要适用字符串格式作为主键，则需要制定format
+            2、如果使用数字作为主键，则不需要指定format
+            3、dateCutOff 为主键类型按照天切换的时候使用
+    <bean id="userCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+          <property name="table" ref="sequenceTable" />
+          <property name="type" value="USER_ID" />
+          <property name="step" value="1" />
+          <property name="format" value="{########}" />
+          <property name="dateCutOff" value="false" />
+      </bean>     -->
+    <!--用户ID 主键生成器
+     起步数据为 100 0000
+    -->
+    <bean id="userIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="USER_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--角色ID 主键生成器
+    起步数据为 200 0000
+    -->
+    <bean id="roleIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="ROLE_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--角色代码生成器-->
+    <bean id="roleCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="ROLE_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="ROLE{######}"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--功能ID 主键生成器
+    起步数据为 300 0000
+    -->
+    <bean id="funcIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="FUNC_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+    <!--功能代码 生成器 -->
+    <bean id="funcCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="FUNC_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="FUNC{######}"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--菜单主键生成器-->
+    <bean id="meunIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="MENU_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+    <!---菜单代码 生成器 -->
+    <bean id="menuCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="MENU_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="MENU{######}"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--业务单据编码
+     日期+五位顺序号
+    -->
+    <bean id="serialCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="SERIAL_NO"/>
+        <property name="step" value="1"/>
+        <property name="format" value="{YYYYMMDD}{#####}" />
+        <property name="dateCutOff" value="true"/>
+    </bean>
+    <!--业务单据ID
+      ID 起始值为900 0000
+    -->
+    <bean id="serialIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="SERIAL_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+    <bean id="logIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="LOG_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    
+     <!--产品ID 主键生成器
+     起步数据为 100 0000
+    -->
+    <bean id="productIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="PRODUCT_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--产品条线ID 主键生成器
+    起步数据为 100 0000
+   -->
+    <bean id="productLineInfoService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="PL_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--产品编码-->
+    <bean id="productCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="PRODUCT_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="WN-PD-{######}" />
+    </bean>
+    <!--
+    业务流程序号
+    WN-YWLC-
+    -->
+    <bean id="flowCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="FLOW_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="WN-YWLC-{####}" />
+        <property name="dateCutOff" value="true"/>
+    </bean>
+    <!--
+    业务流程ID
+    -->
+    <bean id="flowIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="FLOW_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--基础数据编码-->
+    <bean id="dataCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="DATA_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="WN-TABLE-{######}" />
+    </bean>
+    <!--基础数据ID-->
+    <bean id="dataIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="DATA_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--第三方接口编码-->
+    <bean id="thirdInterfaceCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="THIRD_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="WN-THIRD-{######}" />
+    </bean>
+    <!--第三方接口ID-->
+    <bean id="thirdInterfaceIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="THIRD_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+    <!--软硬件信息编码-->
+    <bean id="shCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="SH_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="WN-SH-{######}" />
+    </bean>
+    <!--软硬件信息ID-->
+    <bean id="shIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="SH_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--报表类信息表编码-->
+    <bean id="sysReportInfoCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="REPORT_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="WN-RP-{######}" />
+    </bean>
+    <!--报表类信息ID-->
+    <bean id="sysReportInfoIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="REPORT_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--报表类信息ID-->
+    <bean id="sysParamsIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="PARAM_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+    <!--流程问题编码-->
+    <bean id="sysFlowQuestionCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="QUESTION_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="WN-QS-{######}" />
+    </bean>
+    <!--流程问题ID-->
+    <bean id="sysFlowQuestionIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="QUESTION_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--流程问题答案编码-->
+    <bean id="sysFlowAnswerCodeService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="ANSWER_CODE"/>
+        <property name="step" value="1"/>
+        <property name="format" value="WN-AS-{########}" />
+    </bean>
+    <!--流程问题答案ID-->
+    <bean id="sysFlowAnswerIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="ANSWER_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+    <!--用户角色ID-->
+    <bean id="sysRoleUserIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="UR_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--系统模块ID-->
+    <bean id="sysModIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="MOD_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--角色模块ID-->
+    <bean id="sysRoleModIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="ROLEMOD_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--角色模块ID-->
+    <bean id="videoIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="VIDEO_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+    <!--培训视频ID-->
+    <bean id="sysTrainVideoRepoIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="TV_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+   <!--数据校验脚本ID-->
+    <bean id="dataCheckScriptIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="DSC_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+    <!--文件上传文本ID-->
+    <bean id="onlineFileIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="OF_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+    <!--站点问题ID-->
+    <bean id="siteQuestionIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="SQ_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+    <!--楼层问题ID-->
+    <bean id="floorQuestionIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="FQ_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--最后查看项目ID-->
+    <bean id="etLookProjectIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="ETLP_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--客户楼层信息-->
+    <bean id="sysFloorsIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="SF_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--客户科室信息-->
+    <bean id="sysHospitalDeptIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="SHD_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--合同任务单ID-->
+    <bean id="etContractTaskIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="TASK_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+    <!--项目流程信息ID-->
+    <bean id="etProcessManagerIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="PM_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+    <!--项目流程信息ID-->
+    <bean id="etInterfaceInfoIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="INTER"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+        <!--人员信息信息ID-->
+    <bean id="createEtUserInfoIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="EtUser_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+        <!--上线人员信息ID-->
+    <bean id="createEtOnlineInfoIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="EtOnline_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+    <!--站点安装登记ID-->
+    <bean id="siteInstallIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="SI_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+    <!--测试环境硬件信息ID-->
+    <bean id="etDevEnvHardwareIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="HW_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+</beans>

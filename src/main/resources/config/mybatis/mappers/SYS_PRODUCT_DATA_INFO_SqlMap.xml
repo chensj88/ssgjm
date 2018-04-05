@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysProductDataInfoDao">
+
+    <resultMap id="sysProductDataInfoResultForList" type="sysProductDataInfo">
+        <result column="PD_ID" property="pdId" jdbcType="BIGINT"/>
+        <result column="BD_ID" property="bdId" jdbcType="BIGINT"/>
+        <result column="EFFECTIVE_DATE" property="effectiveDate" jdbcType="TIMESTAMP" />
+        <result column="EXPIRE_DATE" property="expireDate" jdbcType="TIMESTAMP" />
+        <result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT"/>
+        <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP"/>
+        <result column="PD_NAME" property="pdName" jdbcType="VARCHAR"/>
+        <result column="PD_CODE" property="pdCode" jdbcType="VARCHAR"/>
+        <result column="DB_NAME" property="dbName" jdbcType="VARCHAR"/>
+        <result column="BD_CnNAME" property="bdCnName" jdbcType="VARCHAR"/>
+        <result column="BD_NAME" property="bdName" jdbcType="VARCHAR"/>
+        <result column="LAST_UPDATE" property="lastUpdate" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="sysProductDataInfoResult" type="sysProductDataInfo" extends="sysProductDataInfoResultForList">
+    </resultMap>
+
+    <sql id="sf-sysProductDataInfo">
+        <if test="(pdId != null and pdId != '') or pdId == 0">and t.PD_ID = #{pdId}</if>
+        <if test="(bdId != null and bdId != '') or bdId == 0">and t.BD_ID = #{bdId}</if>
+        <if test="effectiveDate != null "> and t.EFFECTIVE_DATE = #{effectiveDate} </if>
+        <if test="expireDate != null "> and t.EXPIRE_DATE = #{expireDate} </if>
+        <if test="(lastUpdator != null and lastUpdator != '')">and t.LAST_UPDATOR = #{lastUpdator}</if>
+        <if test="lastUpdateTime != null ">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
+    </sql>
+
+    <select id="selectSysProductDataInfo" resultMap="sysProductDataInfoResult" parameterType="sysProductDataInfo">
+        select * from SYS_PRODUCT_DATA_INFO t where 1 = 1
+        <include refid="sf-sysProductDataInfo"/>
+        AND  (CURRENT_TIMESTAMP  BETWEEN t.EFFECTIVE_DATE AND t.EXPIRE_DATE )
+    </select>
+
+    <select id="selectSysProductDataInfoList" resultMap="sysProductDataInfoResultForList"
+            parameterType="sysProductDataInfo">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from SYS_PRODUCT_DATA_INFO t where 1 = 1
+        AND  (CURRENT_TIMESTAMP  BETWEEN t.EFFECTIVE_DATE AND t.EXPIRE_DATE )
+        <include refid="sf-sysProductDataInfo"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectSysProductDataInfoCount" resultType="int" parameterType="sysProductDataInfo">
+        select count(*) from SYS_PRODUCT_DATA_INFO t where 1 = 1
+        AND  (CURRENT_TIMESTAMP  BETWEEN t.EFFECTIVE_DATE AND t.EXPIRE_DATE )
+        <include refid="sf-sysProductDataInfo"/>
+    </select>
+
+    <select id="selectSysProductDataInfoPaginatedList" resultMap="sysProductDataInfoResult"
+            parameterType="sysProductDataInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from SYS_PRODUCT_DATA_INFO t where 1 = 1
+        AND  (CURRENT_TIMESTAMP  BETWEEN t.EFFECTIVE_DATE AND t.EXPIRE_DATE )
+        <include refid="sf-sysProductDataInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertSysProductDataInfo" parameterType="sysProductDataInfo">
+
+        insert into SYS_PRODUCT_DATA_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(pdId != null and pdId != '') or pdId == 0">PD_ID,</if>
+            <if test="(bdId != null and bdId != '') or bdId == 0">BD_ID,</if>
+            <if test="effectiveDate != null "> EFFECTIVE_DATE, </if>
+            <if test="expireDate != null "> EXPIRE_DATE, </if>
+            <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR,</if>
+            <if test="lastUpdateTime != null ">LAST_UPDATE_TIME,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(pdId != null and pdId != '') or pdId == 0">#{pdId, jdbcType=BIGINT},</if>
+            <if test="(bdId != null and bdId != '') or bdId == 0">#{bdId, jdbcType=BIGINT},</if>
+            <if test="effectiveDate != null "> #{effectiveDate, jdbcType=TIMESTAMP}, </if>
+		    <if test="expireDate != null "> #{expireDate, jdbcType=TIMESTAMP}, </if>
+            <if test="(lastUpdator != null and lastUpdator != '')">#{lastUpdator, jdbcType=BIGINT},</if>
+            <if test="lastUpdateTime != null ">#{lastUpdateTime, jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysProductDataInfo" parameterType="SysProductDataInfo">
+        update SYS_PRODUCT_DATA_INFO
+        <set>
+            <trim suffixOverrides=",">
+                <if test="effectiveDate != null "> EFFECTIVE_DATE = #{effectiveDate, jdbcType=TIMESTAMP}, </if>
+			    <if test="expireDate != null "> EXPIRE_DATE = #{expireDate, jdbcType=TIMESTAMP}, </if>
+                <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR =#{lastUpdator, jdbcType=BIGINT},</if>
+                <if test="lastUpdateTime != null ">LAST_UPDATE_TIME =#{lastUpdateTime, jdbcType=TIMESTAMP},</if>
+            </trim>
+        </set>
+        <where>
+            <if test="(pdId != null and pdId != '') or pdId == 0">
+                AND PD_ID = #{pdId, jdbcType=BIGINT}
+            </if>
+            <if test="(bdId != null and bdId != '') or bdId == 0">
+                AND BD_ID = #{bdId, jdbcType=BIGINT}
+            </if>
+        </where>
+    </update>
+
+    <delete id="deleteSysProductDataInfo" parameterType="SysProductDataInfo">
+        delete from SYS_PRODUCT_DATA_INFO
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </delete>
+
+    <select id="selectSysProductDataInfoByIds" resultMap="sysProductDataInfoResultForList" parameterType="java.util.Map">
+      SELECT
+      A.*,
+      B.CODE AS PD_CODE,
+      B.NAME AS PD_NAME,
+      C.DB_NAME AS DB_NAME,
+      C.TABLE_NAME AS BD_NAME,
+      C.TABLE_CN_NAME AS BD_CNNAME,
+      D.YHMC AS LAST_UPDATE
+      FROM SYS_PRODUCT_DATA_INFO A
+      LEFT JOIN PMIS_PRODUCT_INFO B ON A.PD_ID = B.ID
+      LEFT JOIN SYS_DATA_INFO C ON A.BD_ID = C.ID
+      LEFT JOIN SYS_USER_INFO D ON A.LAST_UPDATOR = D.ID
+      <where>
+          <if test="pdId != null and pdId != 0">
+              AND A.PD_ID = ${pdId}
+          </if>
+          <if test="bdIds !=null and bdIds !='' ">
+              AND A.BD_ID IN ( ${bdIds} )
+          </if>
+          AND (CURRENT_TIMESTAMP  BETWEEN A.EFFECTIVE_DATE AND A.EXPIRE_DATE )
+      </where>
+    </select>
+
+
+    <update id="removeSysProductDataInfoByIds" parameterType="java.util.Map">
+        update SYS_PRODUCT_DATA_INFO
+        <set>
+            <trim suffixOverrides=",">
+                <if test="user != null and user != ''">
+                    LAST_UPDATOR =${user},
+                </if>
+                <if test="user != null and user != ''">
+                    EXPIRE_DATE = CURRENT_TIMESTAMP
+                </if>
+            </trim>
+
+        </set>
+        <where>
+           <if test=" ids != null and ids != ''">
+               ${ids}
+           </if>
+        </where>
+    </update>
+    <select id="selectSysProductDataInfoForIds" resultMap="sysProductDataInfoResultForList" parameterType="java.util.Map">
+        SELECT
+        A.*
+        FROM SYS_PRODUCT_DATA_INFO A
+        <where>
+            <if test=" ids != null and ids != ''">
+                ${ids}
+            </if>
+        </where>
+    </select>
+
+</mapper>

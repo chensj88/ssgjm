@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysDataInfoDao">
+
+    <resultMap id="sysDataInfoResultForList" type="sysDataInfo">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="TABLE_CODE" property="tableCode" jdbcType="VARCHAR"/>
+        <result column="DB_NAME" property="dbName" jdbcType="VARCHAR"/>
+        <result column="TABLE_NAME" property="tableName" jdbcType="VARCHAR"/>
+        <result column="TABLE_CN_NAME" property="tableCnName" jdbcType="VARCHAR"/>
+        <result column="STANDARD_CODE" property="standardCode" jdbcType="VARCHAR"/>
+        <result column="STANDARD_CN_NAME" property="standardCnName" jdbcType="VARCHAR"/>
+        <result column="DATA_TYPE" property="dataType" jdbcType="INTEGER"/>
+        <result column="IS_EASY" property="isEasy" jdbcType="INTEGER"/>
+        <result column="TABLE_ATTENTION" property="tableAttention" jdbcType="VARCHAR"/>
+        <result column="TABLE_COUNT" property="tableCount" jdbcType="INTEGER"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT"/>
+        <result column="LAST_UPDATE_NAME" property="lastUpdateName" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="sysDataInfoResult" type="sysDataInfo" extends="sysDataInfoResultForList">
+    </resultMap>
+
+    <sql id="sf-sysDataInfo">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="tableCode != null and tableCode != ''">and t.TABLE_CODE = #{tableCode}</if>
+        <if test="dbName != null and dbName != ''">and t.DB_NAME = #{dbName}</if>
+        <if test="tableName != null and tableName != ''">and t.TABLE_NAME = #{tableName}</if>
+        <if test="tableCnName != null and tableCnName != ''">and t.TABLE_CN_NAME = #{tableCnName}</if>
+        <if test="standardCode != null and standardCode != ''">and t.STANDARD_CODE = #{standardCode}</if>
+        <if test="standardCnName != null and standardCnName != ''">and t.STANDARD_CN_NAME = #{standardCnName}</if>
+        <if test="(dataType != null and dataType != '') or dataType == 0">and t.DATA_TYPE = #{dataType}</if>
+        <if test="(isEasy != null and isEasy != '') or isEasy == 0">and t.IS_EASY = #{isEasy}</if>
+        <if test="tableAttention != null and tableAttention != ''">and t.TABLE_ATTENTION = #{tableAttention}</if>
+        <if test="(tableCount != null and tableCount != '') or tableCount == 0">and t.TABLE_COUNT = #{tableCount}</if>
+        <if test="(status != null )">and t.STATUS = #{status}</if>
+        <if test="(lastUpdator != null and lastUpdator != '')">and t.LAST_UPDATOR = #{lastUpdator}
+        </if>
+        <if test="lastUpdateName != null ">and t.LAST_UPDATE_NAME = #{lastUpdateName}</if>
+    </sql>
+
+    <sql id="query-sysDataInfo">
+        <if test="dbName != null and dbName != ''">and t.DB_NAME LIKE '%${dbName}%'</if>
+        <if test="tableName != null and tableName != ''">and t.TABLE_NAME LIKE '%${tableName}%'</if>
+        <if test="tableCnName != null and tableCnName != ''">and t.TABLE_CN_NAME LIKE '%${tableCnName}%'</if>
+        <if test="status != null ">and t.STATUS = ${status}</if>
+    </sql>
+
+
+
+
+    <select id="selectSysDataInfo" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
+        select * from SYS_DATA_INFO t where 1 = 1
+        <include refid="sf-sysDataInfo"/>
+    </select>
+
+    <select id="selectSysDataInfoList" resultMap="sysDataInfoResultForList" parameterType="sysDataInfo">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from SYS_DATA_INFO t where 1 = 1
+        <include refid="sf-sysDataInfo"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectSysDataInfoCount" resultType="int" parameterType="sysDataInfo">
+        select count(*) from SYS_DATA_INFO t where 1 = 1
+        <include refid="sf-sysDataInfo"/>
+    </select>
+
+    <select id="selectSysDataInfoPaginatedList" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_DATA_INFO t where 1 = 1
+        <include refid="sf-sysDataInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertSysDataInfo" parameterType="sysDataInfo">
+
+        insert into SYS_DATA_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="tableCode != null and tableCode != ''">TABLE_CODE,</if>
+            <if test="dbName != null and dbName != ''">DB_NAME,</if>
+            <if test="tableName != null and tableName != ''">TABLE_NAME,</if>
+            <if test="tableCnName != null and tableCnName != ''">TABLE_CN_NAME,</if>
+            <if test="standardCode != null and standardCode != ''">STANDARD_CODE,</if>
+            <if test="standardCnName != null and standardCnName != ''">STANDARD_CN_NAME,</if>
+            <if test="(dataType != null and dataType != '') or dataType == 0">DATA_TYPE,</if>
+            <if test="(isEasy != null and isEasy != '') or isEasy == 0">IS_EASY,</if>
+            <if test="tableAttention != null and tableAttention != ''">TABLE_ATTENTION,</if>
+            <if test="(tableCount != null and tableCount != '') or tableCount == 0">TABLE_COUNT,</if>
+            <if test="(status != null )">STATUS,</if>
+            <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR,</if>
+            <if test="lastUpdateName != null ">LAST_UPDATE_NAME,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="tableCode != null and tableCode != ''">#{tableCode, jdbcType=VARCHAR},</if>
+            <if test="dbName != null and dbName != ''">#{dbName, jdbcType=VARCHAR},</if>
+            <if test="tableName != null and tableName != ''">#{tableName, jdbcType=VARCHAR},</if>
+            <if test="tableCnName != null and tableCnName != ''">#{tableCnName, jdbcType=VARCHAR},</if>
+            <if test="standardCode != null and standardCode != ''">#{standardCode, jdbcType=VARCHAR},</if>
+            <if test="standardCnName != null and standardCnName != ''">#{standardCnName, jdbcType=VARCHAR},</if>
+            <if test="(dataType != null and dataType != '') or dataType == 0">#{dataType, jdbcType=INTEGER},</if>
+            <if test="(isEasy != null and isEasy != '') or isEasy == 0">#{isEasy, jdbcType=INTEGER},</if>
+            <if test="tableAttention != null and tableAttention != ''">#{tableAttention, jdbcType=VARCHAR},</if>
+            <if test="(tableCount != null and tableCount != '') or tableCount == 0">#{tableCount, jdbcType=INTEGER},
+            </if>
+            <if test="(status != null )">#{status, jdbcType=INTEGER},</if>
+            <if test="(lastUpdator != null and lastUpdator != '')">
+                #{lastUpdator, jdbcType=BIGINT},
+            </if>
+            <if test="lastUpdateName != null ">#{lastUpdateName, jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysDataInfo" parameterType="SysDataInfo">
+        update SYS_DATA_INFO
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="tableCode != null and tableCode != ''">TABLE_CODE = #{tableCode, jdbcType=VARCHAR},</if>
+                <if test="dbName != null and dbName != ''">DB_NAME = #{dbName, jdbcType=VARCHAR},</if>
+                <if test="tableName != null and tableName != ''">TABLE_NAME = #{tableName, jdbcType=VARCHAR},</if>
+                <if test="tableCnName != null and tableCnName != ''">TABLE_CN_NAME = #{tableCnName, jdbcType=VARCHAR},
+                </if>
+                <if test="standardCode != null and standardCode != ''">STANDARD_CODE =
+                    #{standardCode, jdbcType=VARCHAR},
+                </if>
+                <if test="standardCnName != null and standardCnName != ''">STANDARD_CN_NAME =
+                    #{standardCnName, jdbcType=VARCHAR},
+                </if>
+                <if test="(dataType != null and dataType != '') or dataType == 0">DATA_TYPE =
+                    #{dataType, jdbcType=INTEGER},
+                </if>
+                <if test="(isEasy != null and isEasy != '') or isEasy == 0">IS_EASY = #{isEasy, jdbcType=INTEGER},</if>
+                <if test="tableAttention != null and tableAttention != ''">TABLE_ATTENTION =
+                    #{tableAttention, jdbcType=VARCHAR},
+                </if>
+                <if test="(tableCount != null and tableCount != '') or tableCount == 0">TABLE_COUNT =
+                    #{tableCount, jdbcType=INTEGER},
+                </if>
+                <if test="(status != null )">STATUS = #{status, jdbcType=INTEGER},</if>
+                <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR =
+                    #{lastUpdator, jdbcType=BIGINT},
+                </if>
+                <if test="lastUpdateName != null ">LAST_UPDATE_NAME =
+                    #{lastUpdateName, jdbcType=TIMESTAMP},
+                </if>
+            </trim>
+        </set>
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </update>
+
+    <delete id="deleteSysDataInfo" parameterType="SysDataInfo">
+        delete from SYS_DATA_INFO
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </delete>
+
+    <select id="selectSysDataInfoPaginatedListForSelectiveKey" resultMap="sysDataInfoResult"
+            parameterType="sysDataInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_DATA_INFO t
+        <where>
+            <include refid="query-sysDataInfo"/>
+        </where>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <select id="selectSysDataInfoCountForSelectiveKey" resultType="java.lang.Integer" parameterType="sysDataInfo">
+        select count(*) from SYS_DATA_INFO t
+        <where>
+            <include refid="query-sysDataInfo"/>
+        </where>
+    </select>
+
+    <sql id="queryOrSysDataInfo">
+        <if test="status != null ">and  t.STATUS = ${status} </if>
+        <if test="tableName != null and tableName != ''">and ( t.TABLE_NAME LIKE '%${tableName}%'</if>
+        <if test="tableCnName != null and tableCnName != ''">OR t.TABLE_CN_NAME LIKE '%${tableCnName}%' )</if>
+    </sql>
+
+    <select id="selectSysDataInfoListForORKey" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
+        select *
+        from SYS_DATA_INFO t
+        <where>
+            <include refid="queryOrSysDataInfo"/>
+        </where>
+    </select>
+
+    <select id="selectSysDataInfoListByIds" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
+        select *
+        from SYS_DATA_INFO t
+        <where>
+            <if test="status != null ">and  t.STATUS = ${status} </if>
+            <if test="tableName != null and tableName != ''">and ( t.TABLE_NAME LIKE '%${tableName}%'</if>
+            <if test="tableCnName != null and tableCnName != ''">OR t.TABLE_CN_NAME LIKE '%${tableCnName}%' )</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0 )">
+                AND t.ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </select>
+
+    <sql id="idsCondition">
+        <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0 )">
+            and ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </sql>
+
+    <!--根据id集合获取数据信息-->
+    <select id="selectSysDataInfoPaginatedListByIds" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_DATA_INFO t where 1 = 1
+        <include refid="idsCondition"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <!--根据id集合获取所有数据数-->
+    <select id="selectSysDataInfoCountByIds" resultType="int" parameterType="sysDataInfo">
+        select count(*) from SYS_DATA_INFO t where 1 = 1
+        <include refid="idsCondition"/>
+    </select>
+
+
+    <sql id="dataCondition">
+        <if test="(map.pidList != null and map.pidList.size)>0 ">
+            AND ID IN
+            (SELECT t.BD_ID FROM SYS_PRODUCT_DATA_INFO t WHERE
+            GETDATE() BETWEEN t.EFFECTIVE_DATE AND t.EXPIRE_DATE
+            AND
+            t.PD_ID IN <foreach item="item" collection="map.pidList" open="(" separator="," close=")">#{item}</foreach>)
+            AND
+            DATA_TYPE=#{dataType}
+        </if>
+    </sql>
+
+    <!--根据产品ids和dataType获取基础数据 分页-->
+    <select id="selectSysDataInfoPaginatedListByPidAndDataType" resultMap="sysDataInfoResult"
+            parameterType="sysDataInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_DATA_INFO t where 1 = 1
+        <include refid="dataCondition"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <!--根据产品ids和dataType获取基础数据总数 分页-->
+    <select id="countSysDataInfoPaginatedListByPidAndDataType" resultType="int" parameterType="sysDataInfo">
+        select count(*) from SYS_DATA_INFO t where 1 = 1
+        <include refid="dataCondition"/>
+    </select>
+
+    <!--根据产品ids和dataType获取所有基础数据-->
+    <select id="selectSysDataInfoListByPidAndDataType" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
+        SELECT * FROM SYS_DATA_INFO WHERE 1=1
+        <include refid="dataCondition"/>
+    </select>
+
+</mapper>

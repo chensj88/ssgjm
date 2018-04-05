@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.PmisContractProductInfoDao">
+
+    <resultMap id="pmisContractProductInfoResultForList" type="pmisContractProductInfo">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="KHXX" property="khxx" jdbcType="BIGINT"/>
+        <result column="HTCPLB" property="htcplb" jdbcType="INTEGER"/>
+        <result column="FBJELX" property="fbjelx" jdbcType="BIGINT"/>
+        <result column="CPDLMC" property="cpdlmc" jdbcType="VARCHAR"/>
+        <result column="ZXTMC" property="zxtmc" jdbcType="VARCHAR"/>
+        <result column="CPMC" property="cpmc" jdbcType="LONGVARCHAR"/>
+        <result column="ZHTXX" property="zhtxx" jdbcType="BIGINT"/>
+        <result column="HTXX" property="htxx" jdbcType="BIGINT"/>
+        <result column="XMLCB" property="xmlcb" jdbcType="BIGINT"/>
+        <result column="XMFQJH" property="xmfqjh" jdbcType="BIGINT"/>
+        <result column="HTMK" property="htmk" jdbcType="BIGINT"/>
+        <result column="HTYHF" property="htyhf" jdbcType="BIGINT"/>
+        <result column="CPXX" property="cpxx" jdbcType="BIGINT"/>
+        <result column="CPZXT" property="cpzxt" jdbcType="VARCHAR"/>
+        <result column="SJCP" property="sjcp" jdbcType="VARCHAR"/>
+        <result column="CPJZJ" property="cpjzj" jdbcType="VARCHAR"/>
+        <result column="BJXS" property="bjxs" jdbcType="VARCHAR"/>
+        <result column="ZT" property="zt" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="pmisContractProductInfoResult" type="pmisContractProductInfo"
+               extends="pmisContractProductInfoResultForList">
+        <result column="NAME" property="map.meunName" jdbcType="VARCHAR" />
+        <result column="GNMS" property="map.gnms" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="sf-pmisContractProductInfo">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(khxx != null and khxx != '') or khxx == 0">and t.KHXX = #{khxx}</if>
+        <if test="(htcplb != null and htcplb != '') or htcplb == 0">and t.HTCPLB = #{htcplb}</if>
+        <if test="(fbjelx != null and fbjelx != '') or fbjelx == 0">and t.FBJELX = #{fbjelx}</if>
+        <if test="cpdlmc != null and cpdlmc != ''">and t.CPDLMC = #{cpdlmc}</if>
+        <if test="zxtmc != null and zxtmc != ''">and t.ZXTMC = #{zxtmc}</if>
+        <if test="cpmc != null and cpmc != ''">and t.CPMC = #{cpmc}</if>
+        <if test="(zhtxx != null and zhtxx != '') or zhtxx == 0">and t.ZHTXX = #{zhtxx}</if>
+        <if test="(htxx != null and htxx != '') or htxx == 0">and t.HTXX = #{htxx}</if>
+        <if test="(xmlcb != null and xmlcb != '') or xmlcb == 0">and t.XMLCB = #{xmlcb}</if>
+        <if test="(xmfqjh != null and xmfqjh != '') or xmfqjh == 0">and t.XMFQJH = #{xmfqjh}</if>
+        <if test="(htmk != null and htmk != '') or htmk == 0">and t.HTMK = #{htmk}</if>
+        <if test="(htyhf != null and htyhf != '') or htyhf == 0">and t.HTYHF = #{htyhf}</if>
+        <if test="(cpxx != null and cpxx != '') or cpxx == 0">and t.CPXX = #{cpxx}</if>
+        <if test="(cpzxt != null and cpzxt != '') ">and t.CPZXT = #{cpzxt}</if>
+        <if test="(sjcp != null and sjcp != '') ">and t.SJCP = #{sjcp}</if>
+        <if test="(cpjzj != null and cpjzj != '') ">and t.CPJZJ = #{cpjzj}</if>
+        <if test="(bjxs != null and bjxs != '') ">and t.BJXS = #{bjxs}</if>
+        <if test="(zt != null and zt != '') or zt == 0">and t.ZT = #{zt}</if>
+    </sql>
+
+    <select id="selectPmisContractProductInfo" resultMap="pmisContractProductInfoResult"
+            parameterType="pmisContractProductInfo">
+        select * from PMIS_CONTRACT_PRODUCT_INFO t where 1 = 1
+        <include refid="sf-pmisContractProductInfo"/>
+    </select>
+
+    <select id="selectPmisContractProductInfoList" resultMap="pmisContractProductInfoResultForList"
+            parameterType="pmisContractProductInfo">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from PMIS_CONTRACT_PRODUCT_INFO t where 1 = 1
+        <include refid="sf-pmisContractProductInfo"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectPmisContractProductInfoCount" resultType="int" parameterType="pmisContractProductInfo">
+        select count(*) from PMIS_CONTRACT_PRODUCT_INFO t where 1 = 1
+        <include refid="sf-pmisContractProductInfo"/>
+    </select>
+
+    <select id="selectPmisContractProductInfoPaginatedList" resultMap="pmisContractProductInfoResult"
+            parameterType="pmisContractProductInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from PMIS_CONTRACT_PRODUCT_INFO t where 1 = 1
+        <include refid="sf-pmisContractProductInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <!--  合同/任务单 获取模块信息  Chen,Kuai 2018年3月19日16:01:42  -->
+    <select id="selectPmisContractProductInfoMkList"  resultMap="pmisContractProductInfoResult"
+            parameterType="pmisContractProductInfo">
+        SELECT 0 AS ID,
+        t.HTXX AS  C_ID,
+        t.XMLCB AS  PM_ID,
+        t.KHXX  AS  SERIAL_NO,
+        t.ZXTMC AS  ZXTMC,
+        t.CPZXT AS  CPZXT,
+        t.CPMC AS  CPMC,
+        t.CPXX AS  CPXX,
+        '' AS  MX,
+        '' AS  BZ,
+        0 AS  CREATOR,
+        NULL AS  CREATE_TIME,
+        0 AS  OPERATOR,
+        NULL  AS  OPERATOR_TIME
+        FROM PMIS_CONTRACT_PRODUCT_INFO t WHERE 1 = 1 AND t.HTCPLB = 1 AND t.ZT = 1
+        <include refid="sf-pmisContractProductInfo"/>
+        UNION ALL
+        SELECT tt.* from ET_CONTRACT_TASK tt  WHERE 1=1
+        <if test="(khxx != null and khxx != '') or khxx == 0"> AND tt.SERIAL_NO = #{khxx}</if>
+    </select>
+
+
+    <insert id="insertPmisContractProductInfo" parameterType="pmisContractProductInfo">
+
+        insert into PMIS_CONTRACT_PRODUCT_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="(khxx != null and khxx != '') or khxx == 0">KHXX,</if>
+            <if test="(htcplb != null and htcplb != '') or htcplb == 0">HTCPLB,</if>
+            <if test="(fbjelx != null and fbjelx != '') or fbjelx == 0">FBJELX,</if>
+            <if test="cpdlmc != null and cpdlmc != ''">CPDLMC,</if>
+            <if test="zxtmc != null and zxtmc != ''">ZXTMC,</if>
+            <if test="cpmc != null and cpmc != ''">CPMC,</if>
+            <if test="(zhtxx != null and zhtxx != '') or zhtxx == 0">ZHTXX,</if>
+            <if test="(htxx != null and htxx != '') or htxx == 0">HTXX,</if>
+            <if test="(xmlcb != null and xmlcb != '') or xmlcb == 0">XMLCB,</if>
+            <if test="(xmfqjh != null and xmfqjh != '') or xmfqjh == 0">XMFQJH,</if>
+            <if test="(htmk != null and htmk != '') or htmk == 0">HTMK,</if>
+            <if test="(htyhf != null and htyhf != '') or htyhf == 0">HTYHF,</if>
+            <if test="(cpxx != null and cpxx != '') or cpxx == 0">CPXX,</if>
+            <if test="(cpzxt != null and cpzxt != '') ">CPZXT,</if>
+            <if test="(sjcp != null and sjcp != '')">SJCP,</if>
+            <if test="(cpjzj != null and cpjzj != '') ">CPJZJ,</if>
+            <if test="(bjxs != null and bjxs != '') ">BJXS,</if>
+            <if test="(zt != null and zt != '') or zt == 0">ZT,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="(khxx != null and khxx != '') or khxx == 0">#{khxx, jdbcType=BIGINT},</if>
+            <if test="(htcplb != null and htcplb != '') or htcplb == 0">#{htcplb, jdbcType=INTEGER},</if>
+            <if test="(fbjelx != null and fbjelx != '') or fbjelx == 0">#{fbjelx, jdbcType=BIGINT},</if>
+            <if test="cpdlmc != null and cpdlmc != ''">#{cpdlmc, jdbcType=VARCHAR},</if>
+            <if test="zxtmc != null and zxtmc != ''">#{zxtmc, jdbcType=VARCHAR},</if>
+            <if test="cpmc != null and cpmc != ''">#{cpmc, jdbcType=LONGVARCHAR},</if>
+            <if test="(zhtxx != null and zhtxx != '') or zhtxx == 0">#{zhtxx, jdbcType=BIGINT},</if>
+            <if test="(htxx != null and htxx != '') or htxx == 0">#{htxx, jdbcType=BIGINT},</if>
+            <if test="(xmlcb != null and xmlcb != '') or xmlcb == 0">#{xmlcb, jdbcType=BIGINT},</if>
+            <if test="(xmfqjh != null and xmfqjh != '') or xmfqjh == 0">#{xmfqjh, jdbcType=BIGINT},</if>
+            <if test="(htmk != null and htmk != '') or htmk == 0">#{htmk, jdbcType=BIGINT},</if>
+            <if test="(htyhf != null and htyhf != '') or htyhf == 0">#{htyhf, jdbcType=BIGINT},</if>
+            <if test="(cpxx != null and cpxx != '') or cpxx == 0">#{cpxx, jdbcType=BIGINT},</if>
+            <if test="(cpzxt != null and cpzxt != '') ">#{cpzxt, jdbcType=VARCHAR},</if>
+            <if test="(sjcp != null and sjcp != '') or sjcp == 0">#{sjcp, jdbcType=VARCHAR},</if>
+            <if test="(cpjzj != null and cpjzj != '') ">#{cpjzj, jdbcType=VARCHAR},</if>
+            <if test="(bjxs != null and bjxs != '') ">#{bjxs, jdbcType=VARCHAR},</if>
+            <if test="(zt != null and zt != '') or zt == 0">#{zt, jdbcType=INTEGER},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePmisContractProductInfo" parameterType="PmisContractProductInfo">
+        update PMIS_CONTRACT_PRODUCT_INFO
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(khxx != null and khxx != '') or khxx == 0">KHXX = #{khxx, jdbcType=BIGINT},</if>
+                <if test="(htcplb != null and htcplb != '') or htcplb == 0">HTCPLB = #{htcplb, jdbcType=INTEGER},</if>
+                <if test="(fbjelx != null and fbjelx != '') or fbjelx == 0">FBJELX = #{fbjelx, jdbcType=BIGINT},</if>
+                <if test="cpdlmc != null and cpdlmc != ''">CPDLMC = #{cpdlmc, jdbcType=VARCHAR},</if>
+                <if test="zxtmc != null and zxtmc != ''">ZXTMC = #{zxtmc, jdbcType=VARCHAR},</if>
+                <if test="cpmc != null and cpmc != ''">CPMC = #{cpmc, jdbcType=LONGVARCHAR},</if>
+                <if test="(zhtxx != null and zhtxx != '') or zhtxx == 0">ZHTXX = #{zhtxx, jdbcType=BIGINT},</if>
+                <if test="(htxx != null and htxx != '') or htxx == 0">HTXX = #{htxx, jdbcType=BIGINT},</if>
+                <if test="(xmlcb != null and xmlcb != '') or xmlcb == 0">XMLCB = #{xmlcb, jdbcType=BIGINT},</if>
+                <if test="(xmfqjh != null and xmfqjh != '') or xmfqjh == 0">XMFQJH = #{xmfqjh, jdbcType=BIGINT},</if>
+                <if test="(htmk != null and htmk != '') or htmk == 0">HTMK = #{htmk, jdbcType=BIGINT},</if>
+                <if test="(htyhf != null and htyhf != '') or htyhf == 0">HTYHF = #{htyhf, jdbcType=BIGINT},</if>
+                <if test="(cpxx != null and cpxx != '') or cpxx == 0">CPXX = #{cpxx, jdbcType=BIGINT},</if>
+                <if test="(cpzxt != null and cpzxt != '') ">CPZXT = #{cpzxt, jdbcType=VARCHAR},</if>
+                <if test="(sjcp != null and sjcp != '') ">SJCP = #{sjcp, jdbcType=VARCHAR},</if>
+                <if test="(cpjzj != null and cpjzj != '') ">CPJZJ = #{cpjzj, jdbcType=VARCHAR},</if>
+                <if test="(bjxs != null and bjxs != '') ">BJXS = #{bjxs, jdbcType=VARCHAR},</if>
+                <if test="(zt != null and zt != '') or zt == 0">ZT = #{zt, jdbcType=INTEGER},</if>
+            </trim>
+        </set>
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
+                ID in
+                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
+    </update>
+
+    <delete id="deletePmisContractProductInfo" parameterType="PmisContractProductInfo">
+        delete from PMIS_CONTRACT_PRODUCT_INFO
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
+                ID in
+                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
+    </delete>
+
+</mapper>

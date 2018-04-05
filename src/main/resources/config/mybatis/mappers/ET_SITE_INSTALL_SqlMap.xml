@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.EtSiteInstallDao">
+
+    <resultMap id="etSiteInstallResultForList" type="etSiteInstall">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="C_ID" property="cId" jdbcType="BIGINT"/>
+        <result column="PM_ID" property="pmId" jdbcType="BIGINT"/>
+        <result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR"/>
+        <result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR"/>
+        <result column="PD_ID" property="pdId" jdbcType="VARCHAR"/>
+        <result column="HW_ID" property="hwId" jdbcType="LONGVARCHAR"/>
+        <result column="IS_SCOPE" property="isScope" jdbcType="INTEGER"/>
+        <result column="NO_SCOPE_CODE" property="noScopeCode" jdbcType="VARCHAR"/>
+        <result column="PUSER_ID" property="puserId" jdbcType="BIGINT"/>
+        <result column="NUM" property="num" jdbcType="INTEGER"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="CREATOR" property="creator" jdbcType="BIGINT"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="OPERATOR" property="operator" jdbcType="BIGINT"/>
+        <result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP"/>
+        <result column="REMARK" property="remark" jdbcType="LONGVARCHAR"/>
+        <result column="DEPT_CODE" property="deptCode" jdbcType="VARCHAR" />
+        <result column="CPZXT" property="cpzxt" jdbcType="VARCHAR" />
+        <result column="PD_NAME" property="pdName" jdbcType="VARCHAR" />
+        <result column="HD_NAME" property="hdName" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="etSiteInstallResult" type="etSiteInstall" extends="etSiteInstallResultForList">
+        <result column="ZXTMC" property="map.zxtmc" jdbcType="VARCHAR" />
+        <result column="YHMC" property="map.yhmc" jdbcType="VARCHAR" />
+
+    </resultMap>
+
+    <sql id="sf-etSiteInstall">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(cId != null and cId != '') or cId == 0">and t.C_ID = #{cId}</if>
+        <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="deptName != null and deptName != ''">and t.DEPT_NAME = #{deptName}</if>
+        <if test="pdId != null and pdId != ''">and t.PD_ID = #{pdId}</if>
+        <if test="hwId != null and hwId != ''">and t.HW_ID = #{hwId}</if>
+        <if test="(isScope != null and isScope != '') or isScope == 0">and t.IS_SCOPE = #{isScope}</if>
+        <if test="noScopeCode != null and noScopeCode != ''">and t.NO_SCOPE_CODE = #{noScopeCode}</if>
+        <if test="(puserId != null and puserId != '') or puserId == 0">and t.PUSER_ID = #{puserId}</if>
+        <if test="(num != null and num != '') or num == 0">and t.NUM = #{num}</if>
+        <if test="(status != null )">and t.STATUS = #{status}</if>
+        <if test="(creator != null and creator != '') or creator == 0">and t.CREATOR = #{creator}</if>
+        <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
+        <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
+        <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
+        <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
+        <if test="deptCode != null and deptCode != ''"> and t.DEPT_CODE = #{deptCode} </if>
+        <if test="cpzxt != null and cpzxt != ''"> and t.CPZXT = #{cpzxt} </if>
+        <if test="pdName != null and pdName != ''"> and t.PD_NAME = #{pdName} </if>
+        <if test="hdName != null and hdName != ''"> and t.HD_NAME = #{hdName} </if>
+    </sql>
+
+    <select id="selectEtSiteInstall" resultMap="etSiteInstallResult" parameterType="etSiteInstall">
+        select t.*,i.YHMC from ET_SITE_INSTALL t LEFT JOIN SYS_USER_INFO i ON t.CREATOR = i.ID where 1 = 1
+        <include refid="sf-etSiteInstall"/>
+    </select>
+
+    <select id="selectEtSiteInstallList" resultMap="etSiteInstallResult" parameterType="etSiteInstall">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        *,i.YHMC from ET_SITE_INSTALL t LEFT JOIN SYS_USER_INFO i ON t.CREATOR = i.ID where 1 = 1
+        <include refid="sf-etSiteInstall"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectEtSiteInstallCount" resultType="int" parameterType="etSiteInstall">
+        select count(*) from ET_SITE_INSTALL t where 1 = 1
+        <include refid="sf-etSiteInstall"/>
+    </select>
+
+    <select id="selectEtSiteInstallPaginatedList" resultMap="etSiteInstallResult" parameterType="etSiteInstall">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from ET_SITE_INSTALL t where 1 = 1
+        <include refid="sf-etSiteInstall"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+
+    <!-- Chen,Kuai  获取站点使用的系统 -->
+    <select id="selectEtSiteInstallNameList" resultMap="etSiteInstallResult" parameterType="etSiteInstall">
+        select t.CPZXT,i.ZXTMC from ET_SITE_INSTALL t LEFT JOIN PMIS_CONTRACT_PRODUCT_INFO i
+        ON i.CPZXT = t.CPZXT where 1 = 1
+        <include refid="sf-etSiteInstall"/>  GROUP BY t.CPZXT,i.ZXTMC
+        <!-- order by ID asc -->
+    </select>
+
+
+    <insert id="insertEtSiteInstall" parameterType="etSiteInstall">
+
+        insert into ET_SITE_INSTALL
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="(cId != null and cId != '') or cId == 0">C_ID,</if>
+            <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID,</if>
+            <if test="serialNo != null and serialNo != ''">SERIAL_NO,</if>
+            <if test="deptName != null and deptName != ''">DEPT_NAME,</if>
+            <if test="pdId != null and pdId != ''">PD_ID,</if>
+            <if test="hwId != null and hwId != ''">HW_ID,</if>
+            <if test="(isScope != null and isScope != '') or isScope == 0">IS_SCOPE,</if>
+            <if test="noScopeCode != null and noScopeCode != ''">NO_SCOPE_CODE,</if>
+            <if test="(puserId != null and puserId != '') or puserId == 0">PUSER_ID,</if>
+            <if test="(num != null and num != '') or num == 0">NUM,</if>
+            <if test="(status != null )">STATUS,</if>
+            <if test="(creator != null and creator != '') or creator == 0">CREATOR,</if>
+            <if test="createTime != null ">CREATE_TIME,</if>
+            <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
+            <if test="operatorTime != null ">OPERATOR_TIME,</if>
+            <if test="remark != null and remark != ''">REMARK,</if>
+            <if test="deptCode != null and deptCode != ''"> DEPT_CODE, </if>
+            <if test="cpzxt != null and cpzxt != ''"> CPZXT, </if>
+            <if test="pdName != null and pdName != ''"> PD_NAME, </if>
+            <if test="hdName != null and hdName != ''"> HD_NAME, </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="(cId != null and cId != '') or cId == 0">#{cId, jdbcType=BIGINT},</if>
+            <if test="(pmId != null and pmId != '') or pmId == 0">#{pmId, jdbcType=BIGINT},</if>
+            <if test="serialNo != null and serialNo != ''">#{serialNo, jdbcType=VARCHAR},</if>
+            <if test="deptName != null and deptName != ''">#{deptName, jdbcType=VARCHAR},</if>
+            <if test="pdId != null and pdId != ''">#{pdId, jdbcType=VARCHAR},</if>
+            <if test="hwId != null and hwId != ''">#{hwId, jdbcType=LONGVARCHAR},</if>
+            <if test="(isScope != null and isScope != '') or isScope == 0">#{isScope, jdbcType=INTEGER},</if>
+            <if test="noScopeCode != null and noScopeCode != ''">#{noScopeCode, jdbcType=VARCHAR},</if>
+            <if test="(puserId != null and puserId != '') or puserId == 0">#{puserId, jdbcType=BIGINT},</if>
+            <if test="(num != null and num != '') or num == 0">#{num, jdbcType=INTEGER},</if>
+            <if test="(status != null )">#{status, jdbcType=INTEGER},</if>
+            <if test="(creator != null and creator != '') or creator == 0">#{creator, jdbcType=BIGINT},</if>
+            <if test="createTime != null ">#{createTime, jdbcType=TIMESTAMP},</if>
+            <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
+            <if test="operatorTime != null ">#{operatorTime, jdbcType=TIMESTAMP},</if>
+            <if test="remark != null and remark != ''">#{remark, jdbcType=LONGVARCHAR},</if>
+            <if test="deptCode != null and deptCode != ''"> #{deptCode, jdbcType=VARCHAR}, </if>
+            <if test="cpzxt != null and cpzxt != ''"> #{cpzxt, jdbcType=VARCHAR}, </if>
+            <if test="pdName != null and pdName != ''"> #{pdName, jdbcType=VARCHAR}, </if>
+            <if test="hdName != null and hdName != ''"> #{hdName, jdbcType=VARCHAR}, </if>
+        </trim>
+    </insert>
+
+    <update id="updateEtSiteInstall" parameterType="EtSiteInstall">
+        update ET_SITE_INSTALL
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(cId != null and cId != '') or cId == 0">C_ID = #{cId, jdbcType=BIGINT},</if>
+                <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID = #{pmId, jdbcType=BIGINT},</if>
+                <if test="serialNo != null and serialNo != ''">SERIAL_NO = #{serialNo, jdbcType=VARCHAR},</if>
+                <if test="deptName != null and deptName != ''">DEPT_NAME = #{deptName, jdbcType=VARCHAR},</if>
+                <if test="pdId != null and pdId != ''">PD_ID = #{pdId, jdbcType=VARCHAR},</if>
+                <if test="hwId != null and hwId != ''">HW_ID = #{hwId, jdbcType=LONGVARCHAR},</if>
+                <if test="(isScope != null and isScope != '') or isScope == 0">IS_SCOPE =
+                    #{isScope, jdbcType=INTEGER},
+                </if>
+                <if test="noScopeCode != null and noScopeCode != ''">NO_SCOPE_CODE = #{noScopeCode, jdbcType=VARCHAR},
+                </if>
+                <if test="(puserId != null and puserId != '') or puserId == 0">PUSER_ID = #{puserId, jdbcType=BIGINT},
+                </if>
+                <if test="(num != null and num != '') or num == 0">NUM = #{num, jdbcType=INTEGER},</if>
+                <if test="(status != null )">STATUS = #{status, jdbcType=INTEGER},</if>
+                <if test="(creator != null and creator != '') or creator == 0">CREATOR = #{creator, jdbcType=BIGINT},
+                </if>
+                <if test="createTime != null ">CREATE_TIME = #{createTime, jdbcType=TIMESTAMP},</if>
+                <if test="(operator != null and operator != '') or operator == 0">OPERATOR =
+                    #{operator, jdbcType=BIGINT},
+                </if>
+                <if test="operatorTime != null ">OPERATOR_TIME =
+                    #{operatorTime, jdbcType=TIMESTAMP},
+                </if>
+                <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
+                <if test="deptCode != null and deptCode != ''"> DEPT_CODE = #{deptCode, jdbcType=VARCHAR}, </if>
+                <if test="cpzxt != null and cpzxt != ''"> CPZXT = #{cpzxt, jdbcType=VARCHAR}, </if>
+                <if test="pdName != null and pdName != ''"> PD_NAME = #{pdName, jdbcType=VARCHAR}, </if>
+                <if test="hdName != null and hdName != ''"> HD_NAME = #{hdName, jdbcType=VARCHAR}, </if>
+            </trim>
+        </set>
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </update>
+
+    <delete id="deleteEtSiteInstall" parameterType="EtSiteInstall">
+        delete from ET_SITE_INSTALL
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </delete>
+
+</mapper>
