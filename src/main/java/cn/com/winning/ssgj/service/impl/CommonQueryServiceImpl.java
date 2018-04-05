@@ -94,8 +94,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         return sysUserInfoService.getSysUserInfoListByUserIdList(userIdList);
     }
 
-<<<<<<< HEAD
-=======
+
     @Override
     public List<PmisProductInfo> queryProductOfProjectByProjectIdAndTypeAndDataType(long pmId, int type, int dataType) {
         PmisContractProductInfo cpInfo = new PmisContractProductInfo();
@@ -117,7 +116,6 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         return pmisProductInfoDao.selectBasicDataPmisProductInfoList(productInfo);
     }
 
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
     /**
      * 查询项目信息
      * @param pidList 项目IDList

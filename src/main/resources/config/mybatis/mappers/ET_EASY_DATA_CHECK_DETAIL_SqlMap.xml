@@ -114,8 +114,6 @@
         </where>
     </delete>
 
-<<<<<<< HEAD
-=======
     <!--批量插入-->
     <insert id="insertEtEasyDataCheckDetailByList" parameterType="java.util.List">
         insert into ET_EASY_DATA_CHECK_DETAIL
@@ -137,5 +135,4 @@
         </foreach>
     </insert>
 
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
 </mapper>

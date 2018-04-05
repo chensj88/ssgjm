@@ -37,11 +37,7 @@
 				<div class="site-item" onclick="detail(${vwr.id})">
 					<div class="top">
 						<div class="top-left" >
-<<<<<<< HEAD
-							<div>${vwr.floorName}</div>
-=======
 							<div>${vwr.map.get("f_name")}</div>
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
 							<span>${vwr.map.get("dict_label")}</span>
 						</div>
 						<div class="top-right">

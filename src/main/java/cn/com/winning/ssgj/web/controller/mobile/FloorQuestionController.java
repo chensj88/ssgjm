@@ -65,21 +65,13 @@ public class FloorQuestionController extends BaseController {
                 }
             }
             EtFloorQuestionInfo questionInfo = new EtFloorQuestionInfo();
-<<<<<<< HEAD
-            questionInfo.getMap().put("Ssgs", info.getSsgs());
-=======
             //questionInfo.getMap().put("Ssgs", info.getSsgs());
             questionInfo.setSerialNo(String.valueOf(info.getSsgs()));
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
             List<EtFloorQuestionInfo> infoList = super.getFacade().getEtFloorQuestionInfoService()
                     .getEtFloorQuestionInfoSummaryList(questionInfo);
             model.addAttribute("infoList", infoList);
             model.addAttribute("userId", info.getUserid());
-<<<<<<< HEAD
-=======
             model.addAttribute("serialNo", questionInfo.getSerialNo());
-
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -89,15 +81,9 @@ public class FloorQuestionController extends BaseController {
 
     @RequestMapping("/floorQuestionReport.do")
     @ILog
-<<<<<<< HEAD
-    public String floorQuestionReport(Model model, String floorName, String userId) {
-        EtFloorQuestionInfo questionInfo = new EtFloorQuestionInfo();
-        questionInfo.getMap().put("user_id", userId);
-=======
     public String floorQuestionReport(Model model, String floorName, String serialNo,String userId) {
         EtFloorQuestionInfo questionInfo = new EtFloorQuestionInfo();
         questionInfo.setSerialNo(serialNo);
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
         questionInfo.setFloorName(floorName);
         List<EtFloorQuestionInfo> infoList = super.getFacade().getEtFloorQuestionInfoService()
                 .getEtFloorQuestionInfoWithHospitalList(questionInfo);

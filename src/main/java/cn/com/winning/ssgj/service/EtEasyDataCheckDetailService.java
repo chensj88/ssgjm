@@ -26,9 +26,8 @@ public interface EtEasyDataCheckDetailService {
 
     List<EtEasyDataCheckDetail> getEtEasyDataCheckDetailPaginatedList(EtEasyDataCheckDetail t);
 
-<<<<<<< HEAD
-=======
+
     void insertEtEasyDataCheckDetailByList(List<EtEasyDataCheckDetail> etEasyDataCheckDetails);
 
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
+
 }

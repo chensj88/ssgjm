@@ -17,10 +17,7 @@
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="OPERATOR" property="operator" jdbcType="BIGINT"/>
         <result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP"/>
-<<<<<<< HEAD
-=======
         <result column="PL_ID" property="plId" jdbcType="BIGINT"/>
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
     </resultMap>
 
     <resultMap id="etEasyDataCheckResult" type="etEasyDataCheck" extends="etEasyDataCheckResultForList">
@@ -41,10 +38,7 @@
         <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
         <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
         <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
-<<<<<<< HEAD
-=======
         <if test="(plId != null and plId != '') or plId == 0">and t.PL_ID = #{plId}</if>
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
     </sql>
 
     <select id="selectEtEasyDataCheck" resultMap="etEasyDataCheckResult" parameterType="etEasyDataCheck">
@@ -92,10 +86,7 @@
             <if test="createTime != null ">CREATE_TIME,</if>
             <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
             <if test="operatorTime != null ">OPERATOR_TIME,</if>
-<<<<<<< HEAD
-=======
             <if test="(plId != null and plId != '') or plId == 0">PL_ID,</if>
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -113,10 +104,7 @@
             <if test="createTime != null ">#{createTime, jdbcType=TIMESTAMP},</if>
             <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
             <if test="operatorTime != null ">#{operatorTime, jdbcType=TIMESTAMP},</if>
-<<<<<<< HEAD
-=======
             <if test="(plId != null and plId != '') or plId == 0">#{plId,jdbcType=BIGINT},</if>
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
         </trim>
     </insert>
 
@@ -145,10 +133,7 @@
                 <if test="operatorTime != null ">OPERATOR_TIME =
                     #{operatorTime, jdbcType=TIMESTAMP},
                 </if>
-<<<<<<< HEAD
-=======
                 <if test="(plId != null and plId != '') or plId == 0">PL_ID=#{plId,jdbcType=BIGINT}</if>
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
             </trim>
         </set>
         <where>

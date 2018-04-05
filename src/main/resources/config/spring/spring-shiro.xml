@@ -4,10 +4,7 @@
 	xmlns:aop="http://www.springframework.org/schema/aop" 
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
-<<<<<<< HEAD
 	xmlns:p="http://www.springframework.org/schema/p"
-=======
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/aop 
@@ -21,8 +18,6 @@
 		<!--<bean id="logoutFilter" class="com.scwn.asoftr.interceptor.shiro.SystemLogoutFilter">
 	      <property name="redirectUrl" value="/toIndexPage"/>  
 	    </bean>  -->
-<<<<<<< HEAD
-
 	<!-- 会话Session ID生成器 -->
 	<bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"/>
 		<bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
@@ -44,13 +39,6 @@
 			 <property name="sessionManager" ref="sessionManager"/>
   		</bean>
 
-=======
-	    <!-- 安全管理器 -->
-		<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-			<property name="realm" ref="shiroRealm" />
-		</bean>
-		
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
 		<!-- 項目自定义的Realm -->
 	    <bean id="shiroRealm" class="cn.com.winning.ssgj.shiro.WinningRealm" ></bean>
 		

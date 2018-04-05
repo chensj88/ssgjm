@@ -93,10 +93,7 @@ public class SysFloorsController extends BaseController {
     public Map<String,Object> add(SysFloors floors){
        floors.setIsDel(Constants.STATUS_USE);
        floors.setId(ssgjHelper.createSysFloorsIdService());
-<<<<<<< HEAD
-=======
         floors.setFloorCode(String.valueOf(floors.getId()));
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
         super.getFacade().getSysFloorsService().createSysFloors(floors);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);

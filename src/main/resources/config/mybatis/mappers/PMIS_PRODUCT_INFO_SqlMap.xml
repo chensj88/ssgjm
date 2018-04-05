@@ -221,8 +221,6 @@
             </if>
         </where>
     </select>
-<<<<<<< HEAD
-=======
 
     <select id="selectBasicDataPmisProductInfoList" resultMap="pmisProductInfoResult" parameterType="pmisProductInfo">
         SELECT
@@ -262,5 +260,4 @@
         AND t.EXPIRE_DATE
         AND s.DATA_TYPE = 3)
     </select>
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
 </mapper>

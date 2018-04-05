@@ -193,13 +193,10 @@ public class SSGJHelper {
     @Qualifier(value = "etDevEnvHardwareIdService")
     private StepSequenceFactory  etDevEnvHardwareIdService;
 
-<<<<<<< HEAD
-=======
     @Autowired
     @Qualifier(value = "etEasyDataCheckIdService")
     private StepSequenceFactory  etEasyDataCheckIdService;
 
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
     public long createEtOnlineInfoIdService(){
         return (long) createEtOnlineInfoIdService.create();
     }
@@ -483,8 +480,6 @@ public class SSGJHelper {
         return (Long) etDevEnvHardwareIdService.create();
     }
 
-<<<<<<< HEAD
-=======
     /**
      * 易用数据校验数据ID
      * @return
@@ -492,10 +487,6 @@ public class SSGJHelper {
     public Long createEtEasyDataCheckId(){
         return (Long) etEasyDataCheckIdService.create();
     }
-
-
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
-
 
 
 

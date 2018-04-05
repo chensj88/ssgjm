@@ -32,10 +32,7 @@ import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.sql.*;
 import java.util.ArrayList;
-<<<<<<< HEAD
-=======
 import java.util.Date;
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +53,6 @@ public class EtDataCheckController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     /**
-<<<<<<< HEAD
-=======
      * 根据项目id初始化数据源
      *
      * @param pmId
@@ -98,7 +93,6 @@ public class EtDataCheckController extends BaseController {
     }
 
     /**
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
      * 基础数据类型列表
      *
      * @param row
@@ -109,21 +103,14 @@ public class EtDataCheckController extends BaseController {
     @RequestMapping("/list.do")
     @ResponseBody
     @ILog(operationName = "基础数据校验表", operationType = "list")
-<<<<<<< HEAD
-    public Map<String, Object> list(Row row, String proStr) {
-=======
     public Map<String, Object> list(Row row, String proStr,String operator) {
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
         //项目id
         Long proId = Long.parseLong(proStr);
         if (proId == null) {
             return null;
         }
-<<<<<<< HEAD
-=======
         //数据初始化
         dataInit(proId,NumberParseUtil.parseLong(operator));
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
         //根据项目id获取项目基本信息
         PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(proId);
         //获取合同id
@@ -144,18 +131,8 @@ public class EtDataCheckController extends BaseController {
         List<EtDataCheck> etDataCheckList =
                 getFacade().getEtDataCheckService().getEtDataCheckPaginatedList(etDataCheck);
         PmisProductInfo pmisProductInfo = new PmisProductInfo();
-<<<<<<< HEAD
         SysDataCheckScript sysDataCheckScript = new SysDataCheckScript();
         //封装外参数
-        for (EtDataCheck e : etDataCheckList) {
-            pmisProductInfo.setId(e.getPdId());
-            sysDataCheckScript.setAppId(e.getPlId());
-            pmisProductInfo = getFacade().getPmisProductInfoService().getPmisProductInfo(pmisProductInfo);
-            sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(sysDataCheckScript);
-            Map<String, Object> map = new HashMap();
-            map.put("subSystem", pmisProductInfo.getName());
-            map.put("type", sysDataCheckScript.getAppName());
-=======
         PmisProductLineInfo pmisProductLineInfo=new PmisProductLineInfo();
         //封装外参数
         for (EtDataCheck e : etDataCheckList) {
@@ -166,7 +143,6 @@ public class EtDataCheckController extends BaseController {
             Map<String, Object> map = new HashMap();
             map.put("subSystem", pmisProductInfo.getName());
             map.put("type", pmisProductLineInfo.getName());
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
             String checkResult = e.getCheckResult();
             if (checkResult == null || "没问题".equals(checkResult) || "校验正常".equals(checkResult) || "".equals(checkResult)) {
                 map.put("state", 0);
@@ -258,7 +234,7 @@ public class EtDataCheckController extends BaseController {
             //检测结果
             String checkResult = "";
             try {
-                List<List<Object>> etDataCheckList = ExcelUtil.importExcel(newFile.getPath());
+                List<List<Object>> etDataCheckList = ExcelUtil.importExcel(newFile.getPath() )  ;
                 for (List<Object> e : etDataCheckList) {
                     for (int i = 0; i < e.size(); i++) {
                         if ("F".equalsIgnoreCase(e.get(i).toString())) {
@@ -276,18 +252,11 @@ public class EtDataCheckController extends BaseController {
                 }
                 etDataCheck.setCheckResult(checkResult);
                 //文件夹路径
-<<<<<<< HEAD
-                String dir = "/check/" + sysDataCheckScript.getAppName()+"/";
-                String src = newFile.getAbsolutePath();
-                String fileName=newFile.getName();
-                etDataCheck.setScriptPath(dir+fileName);
-=======
                 String dir = "/check/" + sysDataCheckScript.getAppName() + "/";
                 String src = newFile.getAbsolutePath();
                 String fileName = newFile.getName();
                 etDataCheck.setScriptPath(dir + fileName);
                 etDataCheck.setOperatorTime(new Timestamp(new Date().getTime()));
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
                 getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheck);
                 //将文件上传到ftp服务器
                 SFtpUtils.uploadFile(src, dir, fileName);
@@ -322,12 +291,9 @@ public class EtDataCheckController extends BaseController {
         temp.setAppId(etDataCheck.getPlId());
         SysDataCheckScript sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(temp);
         //获取脚本地址
-<<<<<<< HEAD
-=======
         if(sysDataCheckScript==null){
             return;
         }
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
         String scriptPath = sysDataCheckScript.getRemotePath();
         //获取文件名
         String filename = scriptPath.substring(scriptPath.lastIndexOf("/") + 1);

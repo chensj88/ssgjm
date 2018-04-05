@@ -33,8 +33,7 @@ public class PmisProductInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<PmisProduc
     public List<PmisProductInfo> selectPmisProductInfoListByIdList(PmisProductInfo productInfo) {
         return super.getSqlSession().selectList("selectPmisProductInfoListByIdList",productInfo);
     }
-<<<<<<< HEAD
-=======
+
     @Override
     public List<PmisProductInfo> selectEasyDataPmisProductInfoList(PmisProductInfo t) {
         String statement = "selectEasyDataPmisProductInfoList";
@@ -46,5 +45,4 @@ public class PmisProductInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<PmisProduc
         String statement = "selectBasicDataPmisProductInfoList";
         return super.getSqlSession().selectList(statement, t);
     }
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
 }

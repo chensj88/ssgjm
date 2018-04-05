@@ -42,8 +42,6 @@ public interface CommonQueryService {
      * @return
      */
     public List<SysUserInfo> queryProjectUserByCustomerId(Long customerId);
-<<<<<<< HEAD
-=======
     /**
      *
      * @param pmId 项目id
@@ -52,5 +50,5 @@ public interface CommonQueryService {
      * @return
      */
     public List<PmisProductInfo> queryProductOfProjectByProjectIdAndTypeAndDataType(long pmId, int type, int dataType);
->>>>>>> a340590b36085a7325c63510bc48d0535149fc66
+
 }
