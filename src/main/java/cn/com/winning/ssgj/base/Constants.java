@@ -378,7 +378,7 @@ public class Constants implements Serializable {
     }
 
     public class Vue {
-        public static  final  String VUE_LOGIN_URL = "/vue/login.do";
-        public static  final  String VUE_LOGOUT_URL = "/vue/logout.do";
+        public static  final  String VUE_LOGIN_URL = "/ssgjm/vue/login.do";
+        public static  final  String VUE_LOGOUT_URL = "/ssgjm/vue/logout.do";
     }
 }
