@@ -44,11 +44,6 @@
 						</ul>
 					</div>
 				</div>
-
-				<%--<div class="datum-report-item">--%>
-					<%--<span>楼层名称</span>--%>
-						<%--<input id="floorName" name="floorName" type="text" value="${floorQuestionInfo.floorName}" autocomplete="off" />--%>
-				<%--</div>--%>
 			</div>
 
 			<div class="datum-report padding-btm-20">
