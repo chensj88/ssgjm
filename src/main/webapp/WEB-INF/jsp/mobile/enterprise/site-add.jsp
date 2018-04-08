@@ -25,9 +25,12 @@
 				<div class="part-one">
 					<div class="left">
 						<span>${siteInstall.deptName}</span>
+						<input type="hidden" name="pId" value="${siteInstall.id}">
+						<input type="hidden" name="countNum" value="${countNum}">
+
 					</div>
 					<div class="right">
-						<p>完成站点数：<span><i>0</i>/<i>${siteInstall.num}</i></span></p>
+						<p>完成站点数：<span><i>${siteInstall.map.get('installed')}</i>/<i>${siteInstall.num}</i></span></p>
 						<p>安装人：<span>${siteInstall.map.get("yhmc")}</span></p>
 					</div>
 				</div>
@@ -57,7 +60,7 @@
 						<div class="register-one">
 							<div><span>站点</span></div>
 							<div>
-								<span class="install">已安装</span>
+								<span class="install">${vwr.install ==1?'已安装':'未安装'}</span>
 								<i class="iconfont icon-arrow-down"></i>
 							</div>
 						</div>
@@ -160,6 +163,7 @@
 		<script type="text/javascript">
 			$(function(){
 				enterprise.siteDelIetm();
+                enterprise.siteAddItetm();
                 enterprise.init();
 				$('#installId').append($('#siteDiv')[0]);
             });
@@ -241,9 +245,31 @@
 
             }
 
+            function addItem() {
+				var pId = $("input[name=pId]").val();
+
+
+                $.ajax({
+                    type: "POST",
+                    url:"<%=basePath%>mobile/siteInstall/addItem.do",
+                    data:{pId:pId},
+                    cache : false,
+                    dataType:"json",
+                    async: false,
+                    error: function(request) {
+                        mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                    },
+                    success: function(data) {
+                        setTimeout("location.reload()",50);
+                        //location.href="<%=basePath%>mobile/siteQuestionInfo/addAndUpdate.do?id="+id+"&serialNo=${hospcode}&userId=${work_num}";
+                    }
+                });
+            }
+
+
             //保存数据
 			function save(){
-			    var num = ${siteInstall.num};
+			    var num = $("input[name='countNum']").val();
                 var install_array=new Array();
                 for (var i = 0;i < num;i++) {
                     var install ="install"+i+''

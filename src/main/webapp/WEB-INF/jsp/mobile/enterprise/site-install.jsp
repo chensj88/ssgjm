@@ -33,7 +33,7 @@
 						<span>${vwr.deptName}</span>
 					</div>
 					<div class="right">
-						<p>完成站点数：<span><i>0</i>/<i>${vwr.num}</i></span></p>
+						<p>完成站点数：<span><i>${vwr.map.get('installed')}</i>/<i>${vwr.num}</i></span></p>
 						<p>安装人：<span>${vwr.map.get("yhmc")}</span></p>
 					</div>
 				</div>
