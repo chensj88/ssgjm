@@ -42,12 +42,11 @@ public class SiteInstallController extends BaseController {
      * @Description: 站点安装登记
      */
     @RequestMapping(value = "/list.do")
-    @ILog
     public String siteInstall(Model model, String parameter) {
         EtSiteInstall entity = new EtSiteInstall();
         //String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9"; //工号
         //String hospcode="11980";  //客户号
-        //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
+        parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
         try{
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
             ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
@@ -63,8 +62,7 @@ public class SiteInstallController extends BaseController {
             if(info !=null){
                 //根据客户编号 找出对应的全部
                 entity.setSerialNo(hospcode);
-                installList = super.getFacade().getEtSiteInstallService().getEtSiteInstallList(entity);
-
+                installList = super.getFacade().getEtSiteInstallService().getEtSiteInstallListWithSum(entity);
 
             }else{
 
@@ -106,6 +104,7 @@ public class SiteInstallController extends BaseController {
                 EtSiteInstallDetail detail = new EtSiteInstallDetail();
                 detail.setId(ssgjHelper.createSiteInstallIdService());
                 detail.setSourceId(id);
+                detail.setInstall(0);
                 super.getFacade().getEtSiteInstallDetailService().createEtSiteInstallDetail(detail);
            }
            //当为空的时候重新获取 初始化的安装明细信息
@@ -120,6 +119,12 @@ public class SiteInstallController extends BaseController {
                 }
             }
         }
+        //获取实际的数量
+        EtSiteInstallDetail detailCount = new EtSiteInstallDetail();
+        detailCount.setSourceId(siteInstall.getId());
+        int countNum= super.getFacade().getEtSiteInstallDetailService().getEtSiteInstallDetailCount(detailCount);
+
+        model.addAttribute("countNum",countNum);
         model.addAttribute("siteInstallDetails",siteInstallDetails);
         model.addAttribute("siteInstall",siteInstall);
         model.addAttribute("userId",userId);
@@ -137,9 +142,10 @@ public class SiteInstallController extends BaseController {
         List<EtSiteInstallDetail> etSiteInstallDetailList = siteInstallDetails.getEtSiteInstallDetails();
         if(etSiteInstallDetailList.size() > 0 && etSiteInstallDetailList != null){
             for(int i=0; i < etSiteInstallDetailList.size();i++){
-                etSiteInstallDetailList.get(i).setInstall(Integer.parseInt(install_array[i]));
-                super.getFacade().getEtSiteInstallDetailService().modifyEtSiteInstallDetail(etSiteInstallDetailList.get(i));
-
+                if(StringUtils.isNotBlank(install_array[i])){
+                    etSiteInstallDetailList.get(i).setInstall(Integer.parseInt(install_array[i]));
+                    super.getFacade().getEtSiteInstallDetailService().modifyEtSiteInstallDetail(etSiteInstallDetailList.get(i));
+                }
             }
         }
         EtSiteInstall install = new EtSiteInstall();
@@ -281,5 +287,29 @@ public class SiteInstallController extends BaseController {
         }
         return map;
     }
+
+    /**
+     * @author: Chen,Kuai
+     * @Description: 增加节点
+     */
+    @RequestMapping("/addItem.do")
+    @ResponseBody
+    @ILog
+    public Map<String,Object> addItem(Long pId){
+        Map<String,Object> map = new HashMap<String,Object>();
+        try{
+            EtSiteInstallDetail detail = new EtSiteInstallDetail();
+            detail.setId(ssgjHelper.createSiteInstallIdService());
+            detail.setSourceId(pId);
+            detail.setInstall(0);
+            super.getFacade().getEtSiteInstallDetailService().createEtSiteInstallDetail(detail);
+            map.put("detail",detail);
+        }catch (Exception e){
+            e.printStackTrace();
+            map.put("status",false);
+        }
+        return map;
+    }
+
 
 }

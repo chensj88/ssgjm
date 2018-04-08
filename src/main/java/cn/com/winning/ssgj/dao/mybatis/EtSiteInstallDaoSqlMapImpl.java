@@ -21,4 +21,9 @@ public class EtSiteInstallDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtSiteInstal
     public List<EtSiteInstall> selectEtSiteInstallNameList(EtSiteInstall t) {
         return this.getSqlSession().selectList("selectEtSiteInstallNameList",t);
     }
+
+    @Override
+    public List<EtSiteInstall> selectEtSiteInstallListWithSum(EtSiteInstall t) {
+        return this.getSqlSession().selectList("selectEtSiteInstallListWithSum",t);
+    }
 }

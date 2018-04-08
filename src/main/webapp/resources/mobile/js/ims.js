@@ -162,5 +162,15 @@ const enterprise = {
 		$('.register-button .icon-reduce').click(function(){
 			$('.site-register').addClass('delete');
 		});
-	}
+	},
+
+    siteAddItetm:function () {
+        $('.icon-increase').click(function () {
+            addItem();
+
+        });
+    }
+
+
+
 };

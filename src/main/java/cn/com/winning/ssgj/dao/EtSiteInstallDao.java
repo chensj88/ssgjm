@@ -15,5 +15,6 @@ public interface EtSiteInstallDao extends EntityDao<EtSiteInstall> {
 
     List<EtSiteInstall> selectEtSiteInstallNameList(EtSiteInstall t);
 
+    List<EtSiteInstall> selectEtSiteInstallListWithSum(EtSiteInstall t);
 
 }

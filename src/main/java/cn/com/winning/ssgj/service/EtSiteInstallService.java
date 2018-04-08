@@ -27,4 +27,6 @@ public interface EtSiteInstallService {
     List<EtSiteInstall> getEtSiteInstallPaginatedList(EtSiteInstall t);
 
     List<EtSiteInstall> getEtSiteInstallNameList(EtSiteInstall info);
+
+    List<EtSiteInstall> getEtSiteInstallListWithSum(EtSiteInstall entity);
 }

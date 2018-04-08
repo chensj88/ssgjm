@@ -29,6 +29,7 @@
     <resultMap id="etSiteInstallResult" type="etSiteInstall" extends="etSiteInstallResultForList">
         <result column="ZXTMC" property="map.zxtmc" jdbcType="VARCHAR" />
         <result column="YHMC" property="map.yhmc" jdbcType="VARCHAR" />
+        <result column="installed" property="map.installed" jdbcType="VARCHAR" />
 
     </resultMap>
 
@@ -57,7 +58,11 @@
     </sql>
 
     <select id="selectEtSiteInstall" resultMap="etSiteInstallResult" parameterType="etSiteInstall">
-        select t.*,i.YHMC from ET_SITE_INSTALL t LEFT JOIN SYS_USER_INFO i ON t.CREATOR = i.ID where 1 = 1
+        select t.*,i.YHMC,ISNULL(tt.install_num,0) as installed from ET_SITE_INSTALL t
+        LEFT JOIN SYS_USER_INFO i ON t.CREATOR = i.ID
+        LEFT JOIN (SELECT ISNULL(SUM(d.INSTALL), 0) as install_num,SOURCE_ID from ET_SITE_INSTALL_DETAIL d WHERE d.INSTALL=1 GROUP BY INSTALL,SOURCE_ID ) tt
+        ON t.ID =tt.SOURCE_ID
+        where 1 = 1
         <include refid="sf-etSiteInstall"/>
     </select>
 
@@ -68,6 +73,18 @@
         <include refid="sf-etSiteInstall"/>
         <!-- order by ID asc -->
     </select>
+
+    <!-- Chen,Kuai  获取已安装的信息 -->
+    <select id="selectEtSiteInstallListWithSum" resultMap="etSiteInstallResult" parameterType="etSiteInstall">
+        select t.*,i.YHMC,ISNULL(tt.install_num,0) as installed from ET_SITE_INSTALL t
+        LEFT JOIN SYS_USER_INFO i ON t.CREATOR = i.ID
+        LEFT JOIN (SELECT ISNULL(SUM(d.INSTALL), 0) as install_num,SOURCE_ID from ET_SITE_INSTALL_DETAIL d WHERE d.INSTALL=1 GROUP BY INSTALL,SOURCE_ID ) tt
+        ON t.ID =tt.SOURCE_ID
+        where 1 = 1
+        <include refid="sf-etSiteInstall"/>
+        <!-- order by ID asc -->
+    </select>
+
 
     <select id="selectEtSiteInstallCount" resultType="int" parameterType="etSiteInstall">
         select count(*) from ET_SITE_INSTALL t where 1 = 1
