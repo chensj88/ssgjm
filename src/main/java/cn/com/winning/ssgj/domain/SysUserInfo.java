@@ -353,4 +353,30 @@ public class SysUserInfo extends BaseDomain implements Serializable {
 	public void setClo5(String clo5) {
 		this.clo5 = clo5;
 	}
+
+	@Override
+	public String toString() {
+		return "SysUserInfo{" +
+				"id=" + id +
+				", status=" + status +
+				", userid='" + userid + '\'' +
+				", yhmc='" + yhmc + '\'' +
+				", name='" + name + '\'' +
+				", email='" + email + '\'' +
+				", mobile='" + mobile + '\'' +
+				", telephone='" + telephone + '\'' +
+				", password='" + password + '\'' +
+				", orgid=" + orgid +
+				", ssgs=" + ssgs +
+				", userType='" + userType + '\'' +
+				", linkId=" + linkId +
+				", openId='" + openId + '\'' +
+				", videoDroit='" + videoDroit + '\'' +
+				", clo1='" + clo1 + '\'' +
+				", clo2='" + clo2 + '\'' +
+				", clo3='" + clo3 + '\'' +
+				", clo4='" + clo4 + '\'' +
+				", clo5='" + clo5 + '\'' +
+				'}';
+	}
 }

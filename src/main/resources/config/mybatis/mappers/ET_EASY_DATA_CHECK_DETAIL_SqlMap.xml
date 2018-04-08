@@ -114,4 +114,25 @@
         </where>
     </delete>
 
+    <!--批量插入-->
+    <insert id="insertEtEasyDataCheckDetailByList" parameterType="java.util.List">
+        insert into ET_EASY_DATA_CHECK_DETAIL
+        (ID,
+        SOURCE_ID,
+        DEPT_DOCTOR_CODE,
+        DEPT_DOCTOR_NAME,
+        NUM,
+        REMARK
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id, jdbcType=BIGINT},
+            #{item.sourceId, jdbcType=BIGINT},s
+            #{item.deptDoctorCode, jdbcType=VARCHAR},
+            #{item.deptDoctorName, jdbcType=VARCHAR},
+            #{item.num, jdbcType=INTEGER},
+            #{item.remark, jdbcType=LONGVARCHAR},
+        </foreach>
+    </insert>
+
 </mapper>

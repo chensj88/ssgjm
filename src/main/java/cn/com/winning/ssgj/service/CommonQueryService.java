@@ -50,4 +50,5 @@ public interface CommonQueryService {
      * @return
      */
     public List<PmisProductInfo> queryProductOfProjectByProjectIdAndTypeAndDataType(long pmId, int type, int dataType);
+
 }

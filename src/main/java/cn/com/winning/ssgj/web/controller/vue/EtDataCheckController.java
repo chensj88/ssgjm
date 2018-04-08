@@ -131,6 +131,8 @@ public class EtDataCheckController extends BaseController {
         List<EtDataCheck> etDataCheckList =
                 getFacade().getEtDataCheckService().getEtDataCheckPaginatedList(etDataCheck);
         PmisProductInfo pmisProductInfo = new PmisProductInfo();
+        SysDataCheckScript sysDataCheckScript = new SysDataCheckScript();
+        //封装外参数
         PmisProductLineInfo pmisProductLineInfo=new PmisProductLineInfo();
         //封装外参数
         for (EtDataCheck e : etDataCheckList) {
@@ -232,7 +234,7 @@ public class EtDataCheckController extends BaseController {
             //检测结果
             String checkResult = "";
             try {
-                List<List<Object>> etDataCheckList = ExcelUtil.importExcel(newFile.getPath());
+                List<List<Object>> etDataCheckList = ExcelUtil.importExcel(newFile.getPath() )  ;
                 for (List<Object> e : etDataCheckList) {
                     for (int i = 0; i < e.size(); i++) {
                         if ("F".equalsIgnoreCase(e.get(i).toString())) {

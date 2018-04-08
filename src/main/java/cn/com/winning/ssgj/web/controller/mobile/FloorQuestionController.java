@@ -72,7 +72,6 @@ public class FloorQuestionController extends BaseController {
             model.addAttribute("infoList", infoList);
             model.addAttribute("userId", info.getUserid());
             model.addAttribute("serialNo", questionInfo.getSerialNo());
-
         } catch (Exception e) {
             e.printStackTrace();
         }

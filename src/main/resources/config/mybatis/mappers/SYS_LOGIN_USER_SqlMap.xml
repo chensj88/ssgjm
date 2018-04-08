@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysLoginUserDao">
+
+    <resultMap id="sysLoginUserResultForList" type="sysLoginUser">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT" />
+        <result column="TOKEN" property="token" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="sysLoginUserResult" type="sysLoginUser" extends="sysLoginUserResultForList">
+    </resultMap>
+
+    <sql id="sf-sysLoginUser">
+        <if test="(userId != null )  "> and t.USER_ID = #{userId} </if>
+        <if test="token != null and token != ''"> and t.TOKEN = #{token} </if>
+    </sql>
+
+    <select id="selectSysLoginUser" resultMap="sysLoginUserResult" parameterType="sysLoginUser">
+        select * from SYS_LOGIN_USER t where 1 = 1
+        <include refid="sf-sysLoginUser"/>
+    </select>
+
+    <select id="selectSysLoginUserList" resultMap="sysLoginUserResultForList" parameterType="sysLoginUser">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from SYS_LOGIN_USER t where 1 = 1
+        <include refid="sf-sysLoginUser"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectSysLoginUserCount" resultType="int" parameterType="sysLoginUser">
+        select count(*) from SYS_LOGIN_USER t where 1 = 1
+        <include refid="sf-sysLoginUser"/>
+    </select>
+
+    <select id="selectSysLoginUserPaginatedList" resultMap="sysLoginUserResult" parameterType="sysLoginUser">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_LOGIN_USER t where 1 = 1
+        <include refid="sf-sysLoginUser"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertSysLoginUser" parameterType="sysLoginUser">
+
+        insert into SYS_LOGIN_USER
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(userId != null )  ">  USER_ID,</if>
+            <if test="token != null and token != ''"> TOKEN,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(userId != null )  ">  #{userId, jdbcType=BIGINT},</if>
+            <if test="token != null and token != ''"> #{token, jdbcType=VARCHAR}, </if>
+        </trim>
+    </insert>
+
+    <update id="updateSysLoginUser" parameterType="sysLoginUser">
+        update SYS_LOGIN_USER
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(userId != null )  ">  USER_ID = #{userId, jdbcType=BIGINT},</if>
+                <if test="token != null and token != ''"> TOKEN = #{token, jdbcType=VARCHAR}, </if>
+            </trim>
+        </set>
+        <where>
+            <if test="(userId != null )  ">AND USER_ID = #{userId, jdbcType=BIGINT},</if>
+            <if test="token != null and token != ''">AND TOKEN = #{token, jdbcType=VARCHAR}, </if>
+            <if test="(userId == null ) and (map.pks != null and map.pks.size >0)">
+                AND USER_ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
+    </update>
+
+    <delete id="deleteSysLoginUser" parameterType="sysLoginUser">
+        delete from SYS_LOGIN_USER
+        <where>
+            <if test="(userId != null )  ">AND USER_ID = #{userId, jdbcType=BIGINT}</if>
+            <if test="token != null and token != ''">AND TOKEN = #{token, jdbcType=VARCHAR} </if>
+            <if test="(userId == null ) and (map.pks != null and map.pks.size >0)">
+                AND USER_ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+            </if>
+        </where>
+    </delete>
+
+</mapper>

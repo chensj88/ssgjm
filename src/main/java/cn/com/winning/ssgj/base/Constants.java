@@ -376,4 +376,9 @@ public class Constants implements Serializable {
         public static final String USER_ROLE_TYPE_ZC_NAME = "支持人员";
 
     }
+
+    public class Vue {
+        public static  final  String VUE_LOGIN_URL = "/ssgjm/vue/login.do";
+        public static  final  String VUE_LOGOUT_URL = "/ssgjm/vue/logout.do";
+    }
 }

@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.service;
 
+
 /**
  *
  *
@@ -127,5 +128,9 @@ public interface Facade {
     SysHospitalDeptService getSysHospitalDeptService();
 
     EtContractTaskService getEtContractTaskService();
+
+    EtProjectImplPathService getEtProjectImplPathService();
+
+    SysLoginUserService getSysLoginUserService();
 
 }

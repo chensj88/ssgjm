@@ -61,4 +61,15 @@
     </bean>
 
     <bean id="globalHandlerExceptionResolver" class="cn.com.winning.ssgj.base.exception.GlobalExceptionResolver"/>
+    <!--Vue登录拦截器-->
+    <mvc:interceptors>
+        <!-- 国际化信息定义本地化变更拦截器，直接配置bean则处理所有请求路径  -->
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+
+        <mvc:interceptor>
+            <mvc:mapping path="/vue/**"/>
+            <bean class="cn.com.winning.ssgj.base.interceptor.LoginHandlerInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 </beans>

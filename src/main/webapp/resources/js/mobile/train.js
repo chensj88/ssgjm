@@ -112,13 +112,7 @@ $(function () {
         var vid = $(this).attr('aid');
         var data = queryInfoByDataId(vid);
         var videoName = data.videoName;
-        var status = data.status;
-        var alterName = '';
-        if(status == '0'){
-            alterName = '确认要启用视频['+videoName+']吗？';
-        }else{
-            alterName = '确认要停用视频['+videoName+']吗？';
-        }
+        var  alterName = '确认要删除视频['+videoName+']吗？';
         Ewin.confirm({message: alterName }).on(function (e) {
             if (!e) {
                 return;
