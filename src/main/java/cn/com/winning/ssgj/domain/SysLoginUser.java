@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.domain;
 import org.apache.ibatis.type.Alias;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * @author chenshijie
@@ -19,6 +20,10 @@ public class SysLoginUser  extends BaseDomain implements Serializable {
     private  String token;
 
     private Long userId;
+
+    private java.sql.Timestamp loginTime;
+
+    private java.sql.Timestamp logoutTime;
 
     public SysLoginUser() {
     }
@@ -37,5 +42,21 @@ public class SysLoginUser  extends BaseDomain implements Serializable {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Timestamp getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(Timestamp loginTime) {
+        this.loginTime = loginTime;
+    }
+
+    public Timestamp getLogoutTime() {
+        return logoutTime;
+    }
+
+    public void setLogoutTime(Timestamp logoutTime) {
+        this.logoutTime = logoutTime;
     }
 }

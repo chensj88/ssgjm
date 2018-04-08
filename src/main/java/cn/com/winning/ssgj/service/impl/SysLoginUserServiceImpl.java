@@ -6,6 +6,8 @@ import cn.com.winning.ssgj.service.SysLoginUserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -62,6 +64,7 @@ public class SysLoginUserServiceImpl implements SysLoginUserService {
         SysLoginUser user = new SysLoginUser();
         user.setToken(token);
         user.setUserId(userId);
+        user.setLoginTime(new Timestamp(new Date().getTime()));
         return this.sysLoginUserDao.insertEntity(user);
     }
 

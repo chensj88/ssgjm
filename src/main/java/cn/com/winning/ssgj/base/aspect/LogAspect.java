@@ -110,6 +110,8 @@ public class LogAspect {
         String remoteHost = request.getRemoteHost();
         //登录人员
         SysUserInfo operator = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
+        SysUserInfo sessionUser = (SysUserInfo) session.getAttribute(Constants.USER_INFO);
+        operator = operator != null ? operator :sessionUser;
         try {
             String targetName = joinPoint.getTarget().getClass().getName();
             String methodName = joinPoint.getSignature().getName();
