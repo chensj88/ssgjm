@@ -1,5 +1,7 @@
 package cn.com.winning.ssgj.base.util;
 
+import java.text.NumberFormat;
+
 public class NumberParseUtil {
 
     /**
@@ -30,5 +32,20 @@ public class NumberParseUtil {
         }
     }
 
+
+    /**
+     * 计算百分率，精确到小数点后两位
+     *
+     * @param num1
+     * @param num2
+     * @return
+     */
+    public static String parsePercent(Integer num1, Integer num2) {
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        // 设置精确到小数点后2位
+        numberFormat.setMaximumFractionDigits(2);
+        String result = numberFormat.format((float) num1 / (float) num2 * 100);
+        return result + "%";
+    }
 
 }
