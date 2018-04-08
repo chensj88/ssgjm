@@ -4,6 +4,7 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.service.Facade;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.shiro.SecurityUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -103,6 +104,15 @@ public class BaseController extends BaseSpringMvcMybatisController{
         return infoList.get(0).getUserid();
     }
 
-
+    /**
+     * 获取当前的用户信息
+     * @param request
+     * @return
+     */
+    public SysUserInfo getCurrentUserInfo(HttpServletRequest request){
+        SysUserInfo shiroUser = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
+        SysUserInfo sessionUser = (SysUserInfo) request.getSession().getAttribute(Constants.USER_INFO);
+        return  shiroUser != null ? shiroUser : sessionUser;
+    }
 
 }

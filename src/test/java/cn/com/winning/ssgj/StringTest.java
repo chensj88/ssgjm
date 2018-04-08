@@ -1,11 +1,14 @@
 package cn.com.winning.ssgj;
 
+import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.util.MD5;
 import org.junit.Test;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author chenshijie
@@ -56,5 +59,34 @@ public class StringTest {
         String password = "123456";
         String decryptP = MD5.stringMD5(password);
         System.out.println(decryptP);
+    }
+
+    @Test
+    public void uriResolive(){
+        String uri = "/vue/dataCheck/aaa.do";
+        System.out.println(uri.substring(uri.lastIndexOf("/")+1));
+        System.out.println(uri.substring(uri.lastIndexOf("/")+1,uri.lastIndexOf(".do")));
+        String lastUri = uri.substring(uri.lastIndexOf("/")+1,uri.lastIndexOf(".do"));
+        String uploadRegex= Constants.Vue.COMMON_UPLOAD_TAG;
+        Pattern uploadPattern =Pattern.compile(uploadRegex);
+        Matcher uploadm=uploadPattern.matcher(lastUri);
+        boolean result1=uploadm.find();
+        String exportRegex= Constants.Vue.COMMON_EXPORT_TAG;
+        Pattern exportPattern =Pattern.compile(exportRegex);
+        Matcher exportm=exportPattern.matcher(lastUri);
+        boolean result2=exportm.find();
+        String downRegex= Constants.Vue.COMMON_EXPORT_TAG;
+        Pattern downPattern =Pattern.compile(downRegex);
+        Matcher downm=downPattern.matcher(lastUri);
+        boolean result3=downm.find();
+        System.out.println(result1);
+        System.out.println(result2);
+        System.out.println(result3);
+        if(result1 || result2 || result3){
+            System.out.println(true);
+        }else{
+            System.out.println(false);
+        }
+
     }
 }
