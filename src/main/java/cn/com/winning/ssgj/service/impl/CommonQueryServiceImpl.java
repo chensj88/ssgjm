@@ -94,6 +94,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         return sysUserInfoService.getSysUserInfoListByUserIdList(userIdList);
     }
 
+
     @Override
     public List<PmisProductInfo> queryProductOfProjectByProjectIdAndTypeAndDataType(long pmId, int type, int dataType) {
         PmisContractProductInfo cpInfo = new PmisContractProductInfo();

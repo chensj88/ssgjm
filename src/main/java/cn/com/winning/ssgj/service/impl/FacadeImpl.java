@@ -193,6 +193,13 @@ public class FacadeImpl implements Facade {
     @Resource
     EtContractTaskService etContractTaskService;
 
+    @Resource
+    EtProjectImplPathService etProjectImplPathService;
+
+    @Resource
+    SysLoginUserService sysLoginUserService;
+
+
     public EtUserLookProjectService getEtUserLookProjectService() {
         return etUserLookProjectService;
     }
@@ -437,4 +444,15 @@ public class FacadeImpl implements Facade {
     public EtContractTaskService getEtContractTaskService() {
         return etContractTaskService;
     }
+
+    @Override
+    public EtProjectImplPathService getEtProjectImplPathService() {
+        return etProjectImplPathService;
+    }
+
+    @Override
+    public SysLoginUserService getSysLoginUserService() {
+        return sysLoginUserService;
+    }
+
 }

@@ -107,6 +107,7 @@
     <!--  Chen,Kuai 2018年3月7日13:24:39 楼层具体信息 -->
     <select id="selectEtFloorQuestionInfoWithHospitalList" resultMap="etFloorQuestionInfoResult"
             parameterType="etFloorQuestionInfo">
+
         SELECT t.*,i.YHMC as NAME,d.DICT_LABEL from ET_FLOOR_QUESTION_INFO t
         LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
         LEFT JOIN SYS_USER_INFO i ON i.ID = t.OPERATOR

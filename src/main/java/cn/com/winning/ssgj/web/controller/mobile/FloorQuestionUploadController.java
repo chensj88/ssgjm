@@ -125,6 +125,7 @@ public class FloorQuestionUploadController extends BaseController {
             super.getFacade().getEtFloorQuestionInfoService().modifyEtFloorQuestionInfo(info);
             map.put("result","1");
         }else{ //新增
+
             info.setId(ssgjHelper.createFloorQuestionIdService()); //站点问题ID
             info.setCId((long)-2); //11980游客
             info.setPmId((long)-2);//11980游客

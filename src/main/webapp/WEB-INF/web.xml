@@ -29,6 +29,14 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+    <filter>
+        <filter-name>responseHeaderFilter</filter-name>
+        <filter-class>cn.com.winning.ssgj.base.filter.CommonResponseFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>responseHeaderFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 	<!-- shiro监听器 -->
 	<filter>
 		<filter-name>shiroFilter</filter-name>

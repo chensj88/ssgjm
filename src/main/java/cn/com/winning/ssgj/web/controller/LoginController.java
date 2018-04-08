@@ -1,5 +1,7 @@
 package cn.com.winning.ssgj.web.controller;
 
+import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.auth.Token;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.base.util.PasswordUtils;
@@ -66,6 +68,11 @@ public class LoginController extends BaseController {
             map.put("status", false);
             map.put("message", error);
         } else {
+            String token = Token.generateTokenString();
+            SysUserInfo user = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
+            super.getFacade().getSysLoginUserService().createSysLoginUserBySelectiveKey(token,user.getId());
+            map.put("token", token);
+            map.put("user",user);
             map.put("user",(SysUserInfo)SecurityUtils.getSubject().getPrincipal());
             map.put("status", true);
         }
@@ -97,6 +104,15 @@ public class LoginController extends BaseController {
         }
 
         return error;
+    }
+
+    @RequestMapping(value = "/vue/logout.do")
+    @ResponseBody
+    public Map<String,Object> userLogout(){
+
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
     }
 
 }

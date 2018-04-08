@@ -107,7 +107,6 @@
 							<label>未解决</label>
 							<input name="radio" type="radio" value="0">
 						</div>
-
 					</div>
 				</div>
 			</div>
@@ -128,7 +127,6 @@
 				IMS.dropDown();
 				enterprise.init();
                 $("input:radio[name='radio'][value='${floorQuestionInfo.isOperation}']").attr("checked",'checked');
-
             });
 
 

@@ -62,7 +62,9 @@ public class EtCustomerDetailContorller extends BaseController {
     @Transactional
     public Map<String, Object> updateEtCustomerDetail(EtCustomerDetail etCustomerDetail) {
         Map<String, Object> result = new HashMap<String, Object>();
-        EtCustomerDetail old = super.getFacade().getEtCustomerDetailService().getEtCustomerDetail(etCustomerDetail);
+        EtCustomerDetail old = new EtCustomerDetail();
+        old.setId(etCustomerDetail.getId());
+        old = super.getFacade().getEtCustomerDetailService().getEtCustomerDetail(old);
         int isSucceed = -1;
         System.out.println(old);
         if(old != null){
