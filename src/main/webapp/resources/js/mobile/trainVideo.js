@@ -7,6 +7,7 @@ $(function () {
     var videoCType = [];
     var objMap = {};
     var selectedFlie = false;
+    var uploadComplete = false;
     $('#customer').hide();
     $('#isModifyDiv').hide();
     function queryParams(params) {
@@ -115,7 +116,6 @@ $(function () {
                 $('#videoNameDiv').show();
                 selectedFlie = true;
             }
-
         }).on('filepreupload', function(event, data, previewId, index) {     //上传中
         }).on('fileuploaded',function(event, data, previewId, index){    //一个文件上传成功
             var _data = data.response;
@@ -241,6 +241,7 @@ $(function () {
         $('#trainForm').bootstrapValidator("destroy");
         validateForm();
         initFileInput($('#uploadFile'));
+        // $("#uploadFile").fileinput('reset');
         $('#uploadFileDiv').show();
         $('#trainModal').modal('show');
     });
@@ -325,7 +326,6 @@ $(function () {
         if (bootstrapValidator) {
             bootstrapValidator.validate();
         }
-        debugger
         var url = '';
         if ($('#id').val().length == 0) {
             url = Common.getRootPath() + '/admin/train/add.do';
@@ -345,7 +345,7 @@ $(function () {
                     if (_result.status == Common.SUCCESS) {
                         $('#vid').val(_result.data);
                         if(selectedFlie){
-                            Ewin.alert('文件正在后台上传，请稍候！')
+                            Ewin.alert('文件正在后台上传，请稍候，页面中表格中字段【<span style="color:red;">远程地址</span>】刷新后，上传完成！')
                             $("#uploadFile").fileinput("upload");
                         }
                         $('#trainModal').modal('hide');
