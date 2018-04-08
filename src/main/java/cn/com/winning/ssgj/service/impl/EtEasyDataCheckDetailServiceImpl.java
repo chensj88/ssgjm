@@ -58,7 +58,11 @@ public class EtEasyDataCheckDetailServiceImpl implements EtEasyDataCheckDetailSe
 
     @Override
     public void insertEtEasyDataCheckDetailByList(List<EtEasyDataCheckDetail> etEasyDataCheckDetails) {
-        this.etEasyDataCheckDetailDao.insertEtEasyDataCheckDetailByList(etEasyDataCheckDetails);
+        for (EtEasyDataCheckDetail etEasyDataCheckDetail : etEasyDataCheckDetails) {
+            this.etEasyDataCheckDetailDao.insertEntity(etEasyDataCheckDetail);
+        }
+
+
     }
 
 }

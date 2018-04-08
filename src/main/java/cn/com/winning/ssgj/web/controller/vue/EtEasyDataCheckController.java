@@ -176,25 +176,11 @@ public class EtEasyDataCheckController extends BaseController {
     @RequestMapping("/detail.do")
     @ResponseBody
     @ILog
-    public Map<String, Object> detail(EtDataCheck t) {
-        //根据id获取表属性
-        EtDataCheck etDataCheck = getFacade().getEtDataCheckService().getEtDataCheck(t);
-        //获取content
-        String content = etDataCheck.getContent();
-        if (StringUtil.isEmptyOrNull(content)) {
-            return null;
-        }
-        List<List<Object>> parse = (List<List<Object>>) JSONArray.parse(content);
-        //封装content
-        List<JSONObject> detailList = new ArrayList<>();
-        for (List<Object> objList : parse) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("question", objList.get(1).toString());
-            jsonObject.put("everyTime", objList.get(2).toString());
-            detailList.add(jsonObject);
-        }
+    public Map<String, Object> detail(EtEasyDataCheckDetail t) {
+        //根据sourceId获取表属性
+        List<EtEasyDataCheckDetail> etEasyDataCheckDetails= getFacade().getEtEasyDataCheckDetailService().getEtEasyDataCheckDetailList(t);
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("data", detailList);
+        map.put("data", etEasyDataCheckDetails);
         map.put("status", Constants.SUCCESS);
         return map;
     }
@@ -209,7 +195,6 @@ public class EtEasyDataCheckController extends BaseController {
      */
     @RequestMapping(value = "/upload.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtEasyDataCheck t) throws IOException {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -253,30 +238,36 @@ public class EtEasyDataCheckController extends BaseController {
                 List<EtEasyDataCheckDetail> deptMaintainList = map.get(DEPT_MAINTAIN_LIST);
                 List<EtEasyDataCheckDetail> deptNotMaintainList = map.get(DEPT_NOT_MAINTAIN_LIST);
 
-                //数据入库
-                getFacade().getEtEasyDataCheckDetailService().insertEtEasyDataCheckDetailByList(doctorMaintainList);
+                //将未维护数据入库EtEasyDataCheckDetail
                 getFacade().getEtEasyDataCheckDetailService().insertEtEasyDataCheckDetailByList(doctorNotMaintainList);
-                getFacade().getEtEasyDataCheckDetailService().insertEtEasyDataCheckDetailByList(deptMaintainList);
                 getFacade().getEtEasyDataCheckDetailService().insertEtEasyDataCheckDetailByList(deptNotMaintainList);
 
-//
-//                etDataCheck.setContent(jsonArray.toJSONString());
-//                if (failNum == null || failNum == 0) {
-//                    checkResult = "校验正常";
-//                } else {
-//                    checkResult = "校验出" + failNum + "个问题";
-//                }
-//                etDataCheck.setCheckResult(checkResult);
+                String content = "";
+                //当无未维护数据时，校验正常
+                if (doctorNotMaintainList.size() == 0 && deptNotMaintainList.size() == 0) {
+                    content = "校验正常";
+                } else {
+                    //计算医生维护率
+                    Integer num1 = doctorMaintainList.size();
+                    Integer num2 = doctorNotMaintainList.size() + num1;
+                    String docStr = NumberParseUtil.parsePercent(num1, num2);
+                    //计算科室维护率
+                    Integer num3 = deptMaintainList.size();
+                    Integer num4 = deptNotMaintainList.size() + num3;
+                    String deptStr = NumberParseUtil.parsePercent(num3, num4);
+                    content = docStr + "的医生维护；" + deptStr + "的科室维护。";
+                }
+                //更新易用校验数据content
+                etEasyDataCheck.setContent(content);
+
                 //文件夹路径
-                String dir = "/check/" + pmisProductLineInfo.getName() + "/";
+                String dir = "/easyCheck/" + pmisProductLineInfo.getName() + "/";
                 String src = newFile.getAbsolutePath();
                 String fileName = newFile.getName();
-//                etDataCheck.setScriptPath(dir + fileName);
-//                getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheck);
+                etEasyDataCheck.setScriptPath(dir + fileName);
+                getFacade().getEtEasyDataCheckService().modifyEtEasyDataCheck(etEasyDataCheck);
                 //将文件上传到ftp服务器
-
                 SFtpUtils.uploadFile(src, dir, fileName);
-
                 newFile.delete();
                 result.put("status", "success");
             } catch (Exception e) {
@@ -291,6 +282,13 @@ public class EtEasyDataCheckController extends BaseController {
         return result;
     }
 
+    /**
+     * excel文件解析
+     * @param filePath
+     * @param sourceId
+     * @return
+     * @throws Exception
+     */
     private Map<String, List<EtEasyDataCheckDetail>> parseExcel(String filePath, Long sourceId) throws Exception {
         Map<String, List<EtEasyDataCheckDetail>> map = new HashMap<>();
         //创建Excel工作薄
@@ -325,16 +323,16 @@ public class EtEasyDataCheckController extends BaseController {
             if (row == null) {
                 continue;
             }
-            if ("已经维护的个人协定方信息统计:".equals(row.getCell(0).getStringCellValue())) {
+            if ("已经维护的个人协定方信息统计:".equals(ExcelUtil.getCellValue(row.getCell(0))+"")) {
                 flag = DOCTOR_MAINTAIN_LIST;
                 continue;
-            } else if ("工号".equals(row.getCell(0).getStringCellValue())) {
+            } else if ("工号".equals(ExcelUtil.getCellValue(row.getCell(0))+"")) {
                 flag = DOCTOR_NOT_MAINTAIN_LIST;
                 continue;
-            } else if ("已经维护的科室协定方信息统计:".equals(row.getCell(0).getStringCellValue())) {
+            } else if ("已经维护的科室协定方信息统计:".equals(ExcelUtil.getCellValue(row.getCell(0))+"")) {
                 flag = DEPT_MAINTAIN_LIST;
                 continue;
-            } else if ("科室代码".equals(row.getCell(0).getStringCellValue())) {
+            } else if ("科室代码".equals(ExcelUtil.getCellValue(row.getCell(0))+"")) {
                 flag = DEPT_NOT_MAINTAIN_LIST;
                 continue;
             }
@@ -342,31 +340,33 @@ public class EtEasyDataCheckController extends BaseController {
                 //已经维护的个人协定数据封装
                 EtEasyDataCheckDetail etEasyDataCheckDetail = new EtEasyDataCheckDetail();
                 etEasyDataCheckDetail.setSourceId(sourceId);
-                etEasyDataCheckDetail.setDeptDoctorName(row.getCell(0).getStringCellValue());
-                etEasyDataCheckDetail.setNum(NumberParseUtil.parseInt(row.getCell(1).getStringCellValue()));
+                etEasyDataCheckDetail.setDeptDoctorName(ExcelUtil.getCellValue(row.getCell(0)).toString());
+                etEasyDataCheckDetail.setNum(NumberParseUtil.parseInt(ExcelUtil.getCellValue(row.getCell(1))==null?null:ExcelUtil.getCellValue(row.getCell(1)).toString()));
                 doctorMaintainList.add(etEasyDataCheckDetail);
             } else if (DOCTOR_NOT_MAINTAIN_LIST.equals(flag)) {
                 //未维护的个人协定数据封装
                 EtEasyDataCheckDetail etEasyDataCheckDetail = new EtEasyDataCheckDetail();
+                etEasyDataCheckDetail.setId(ssgjHelper.createEtEasyDataCheckDetailId());
                 etEasyDataCheckDetail.setSourceId(sourceId);
-                etEasyDataCheckDetail.setDeptDoctorCode(row.getCell(0).getStringCellValue());
-                etEasyDataCheckDetail.setDeptDoctorName(row.getCell(1).getStringCellValue());
+                etEasyDataCheckDetail.setDeptDoctorCode(ExcelUtil.getCellValue(row.getCell(0))==null?null:ExcelUtil.getCellValue(row.getCell(0)).toString());
+                etEasyDataCheckDetail.setDeptDoctorName(ExcelUtil.getCellValue(row.getCell(1))==null?null:ExcelUtil.getCellValue(row.getCell(1)).toString());
                 doctorNotMaintainList.add(etEasyDataCheckDetail);
 
             } else if (DEPT_MAINTAIN_LIST.equals(flag)) {
                 //已经维护的科室协定数据封装
                 EtEasyDataCheckDetail etEasyDataCheckDetail = new EtEasyDataCheckDetail();
                 etEasyDataCheckDetail.setSourceId(sourceId);
-                etEasyDataCheckDetail.setDeptDoctorName(row.getCell(0).getStringCellValue());
-                etEasyDataCheckDetail.setNum(NumberParseUtil.parseInt(row.getCell(1).getStringCellValue()));
+                etEasyDataCheckDetail.setDeptDoctorName(ExcelUtil.getCellValue(row.getCell(0))==null?null:ExcelUtil.getCellValue(row.getCell(0)).toString());
+                etEasyDataCheckDetail.setNum(NumberParseUtil.parseInt(ExcelUtil.getCellValue(row.getCell(1))==null?null:ExcelUtil.getCellValue(row.getCell(1)).toString()));
                 deptMaintainList.add(etEasyDataCheckDetail);
 
             } else if (DEPT_NOT_MAINTAIN_LIST.equals(flag)) {
                 //未维护的科室协定数据封装
                 EtEasyDataCheckDetail etEasyDataCheckDetail = new EtEasyDataCheckDetail();
+                etEasyDataCheckDetail.setId(ssgjHelper.createEtEasyDataCheckDetailId());
                 etEasyDataCheckDetail.setSourceId(sourceId);
-                etEasyDataCheckDetail.setDeptDoctorCode(row.getCell(0).getStringCellValue());
-                etEasyDataCheckDetail.setDeptDoctorName(row.getCell(1).getStringCellValue());
+                etEasyDataCheckDetail.setDeptDoctorCode(ExcelUtil.getCellValue(row.getCell(0))==null?null:ExcelUtil.getCellValue(row.getCell(0)).toString());
+                etEasyDataCheckDetail.setDeptDoctorName(ExcelUtil.getCellValue(row.getCell(1))==null?null:ExcelUtil.getCellValue(row.getCell(1)).toString());
                 deptNotMaintainList.add(etEasyDataCheckDetail);
             }
         }
@@ -386,7 +386,6 @@ public class EtEasyDataCheckController extends BaseController {
      */
     @RequestMapping(value = "/exportSql.do")
     @ResponseBody
-    @ILog
     public void exportSql(HttpServletResponse response, EtEasyDataCheck t) throws IOException {
         //获取数据校验信息
         EtEasyDataCheck etEasyDataCheck = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(t);

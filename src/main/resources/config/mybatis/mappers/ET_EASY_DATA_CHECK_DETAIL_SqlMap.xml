@@ -127,11 +127,12 @@
         values
         <foreach collection="list" item="item" separator=",">
             (#{item.id, jdbcType=BIGINT},
-            #{item.sourceId, jdbcType=BIGINT},s
+            #{item.sourceId, jdbcType=BIGINT},
             #{item.deptDoctorCode, jdbcType=VARCHAR},
             #{item.deptDoctorName, jdbcType=VARCHAR},
             #{item.num, jdbcType=INTEGER},
-            #{item.remark, jdbcType=LONGVARCHAR},
+            #{item.remark, jdbcType=LONGVARCHAR}
+            )
         </foreach>
     </insert>
 

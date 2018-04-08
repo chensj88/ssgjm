@@ -149,7 +149,6 @@ public class EtDevEnvHardwareController extends BaseController {
      * @throws IOException
      */
     @RequestMapping(value = "/exportExcel.do")
-    @ILog
     public void wiriteExcel(HttpServletResponse response, EtDevEnvHardware etDevEnvHardware) throws IOException {
         //根据pmid获取所有接口数据
         List<EtDevEnvHardware> etDevEnvHardwares = getFacade().getEtDevEnvHardwareService().selectEtDevEnvHardwareMergeList(etDevEnvHardware);
@@ -182,7 +181,6 @@ public class EtDevEnvHardwareController extends BaseController {
      */
     @RequestMapping(value = "/upload.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtDevEnvHardware param) throws IOException {
         //获取项目id
         Long pmId = param.getPmId();
