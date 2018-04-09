@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.EtProjectImplPathDao">
+
+	<resultMap id="etProjectImplPathResultForList" type="etProjectImplPath">
+		<result column="ID" property="id" jdbcType="BIGINT" />
+		<result column="MILEPOST" property="milepost" jdbcType="VARCHAR" />
+		<result column="MAIN_STEP" property="mainStep" jdbcType="VARCHAR" />
+		<result column="STEP_TYPE" property="stepType" jdbcType="VARCHAR" />
+		<result column="STEP_CONTENT" property="stepContent" jdbcType="VARCHAR" />
+		<result column="STEP_DESC" property="stepDesc" jdbcType="VARCHAR" />
+		<result column="STEP_OUTPUT" property="stepOutput" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="LONGVARCHAR" />
+	</resultMap>
+
+	<resultMap id="etProjectImplPathResult" type="etProjectImplPath" extends="etProjectImplPathResultForList">
+	</resultMap>
+
+	<sql id="sf-etProjectImplPath">
+	   <if test="(id != null )"> and t.ID = #{id} </if>
+	   <if test="milepost != null and milepost != ''"> and t.MILEPOST = #{milepost} </if>
+	   <if test="mainStep != null and mainStep != ''"> and t.MAIN_STEP = #{mainStep} </if>
+	   <if test="stepType != null and stepType != ''"> and t.STEP_TYPE = #{stepType} </if>
+	   <if test="stepContent != null and stepContent != ''"> and t.STEP_CONTENT = #{stepContent} </if>
+	   <if test="stepDesc != null and stepDesc != ''"> and t.STEP_DESC = #{stepDesc} </if>
+	   <if test="stepOutput != null and stepOutput != ''"> and t.STEP_OUTPUT = #{stepOutput} </if>
+	   <if test="remark != null and remark != ''"> and t.REMARK = #{remark} </if>
+	</sql>
+
+	<select id="selectEtProjectImplPath" resultMap="etProjectImplPathResult" parameterType="etProjectImplPath">
+		select * from ET_PROJECT_IMPL_PATH t where 1 = 1
+		<include refid="sf-etProjectImplPath" />
+	</select>
+
+	<select id="selectEtProjectImplPathList" resultMap="etProjectImplPathResultForList" parameterType="etProjectImplPath">
+		select
+		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
+		 * from ET_PROJECT_IMPL_PATH t where 1 = 1
+		<include refid="sf-etProjectImplPath" />
+		<!-- order by ID asc -->
+	</select>
+
+	<select id="selectEtProjectImplPathCount" resultType="int" parameterType="etProjectImplPath">
+		select count(*) from ET_PROJECT_IMPL_PATH t where 1 = 1
+		<include refid="sf-etProjectImplPath" />
+	</select>
+
+	<select id="selectEtProjectImplPathPaginatedList" resultMap="etProjectImplPathResult" parameterType="etProjectImplPath">
+		select * from (
+			select *, ROW_NUMBER() OVER ( order by ID asc ) as _rn
+				from ET_PROJECT_IMPL_PATH t where 1 = 1
+			<include refid="sf-etProjectImplPath" />
+			<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
+
+	<insert id="insertEtProjectImplPath" parameterType="etProjectImplPath">
+		insert into ET_PROJECT_IMPL_PATH 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null )"> ID, </if>
+		   <if test="milepost != null and milepost != ''"> MILEPOST, </if>
+		   <if test="mainStep != null and mainStep != ''"> MAIN_STEP, </if>
+		   <if test="stepType != null and stepType != ''"> STEP_TYPE, </if>
+		   <if test="stepContent != null and stepContent != ''"> STEP_CONTENT, </if>
+		   <if test="stepDesc != null and stepDesc != ''"> STEP_DESC, </if>
+		   <if test="stepOutput != null and stepOutput != ''"> STEP_OUTPUT, </if>
+		   <if test="remark != null and remark != ''"> REMARK, </if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null )"> #{id, jdbcType=BIGINT}, </if>
+		   <if test="milepost != null and milepost != ''"> #{milepost, jdbcType=VARCHAR}, </if>
+		   <if test="mainStep != null and mainStep != ''"> #{mainStep, jdbcType=VARCHAR}, </if>
+		   <if test="stepType != null and stepType != ''"> #{stepType, jdbcType=VARCHAR}, </if>
+		   <if test="stepContent != null and stepContent != ''"> #{stepContent, jdbcType=VARCHAR}, </if>
+		   <if test="stepDesc != null and stepDesc != ''"> #{stepDesc, jdbcType=VARCHAR}, </if>
+		   <if test="stepOutput != null and stepOutput != ''"> #{stepOutput, jdbcType=VARCHAR}, </if>
+		   <if test="remark != null and remark != ''"> #{remark, jdbcType=LONGVARCHAR}, </if>
+		</trim>
+	</insert>
+
+	<update id="updateEtProjectImplPath" parameterType="EtProjectImplPath">
+		update ET_PROJECT_IMPL_PATH
+		<set>
+			<trim suffixOverrides=",">
+			   <if test="(id != null )"> ID = #{id, jdbcType=BIGINT}, </if>
+			   <if test="milepost != null and milepost != ''"> MILEPOST = #{milepost, jdbcType=VARCHAR}, </if>
+			   <if test="mainStep != null and mainStep != ''"> MAIN_STEP = #{mainStep, jdbcType=VARCHAR}, </if>
+			   <if test="stepType != null and stepType != ''"> STEP_TYPE = #{stepType, jdbcType=VARCHAR}, </if>
+			   <if test="stepContent != null and stepContent != ''"> STEP_CONTENT = #{stepContent, jdbcType=VARCHAR}, </if>
+			   <if test="stepDesc != null and stepDesc != ''"> STEP_DESC = #{stepDesc, jdbcType=VARCHAR}, </if>
+			   <if test="stepOutput != null and stepOutput != ''"> STEP_OUTPUT = #{stepOutput, jdbcType=VARCHAR}, </if>
+			   <if test="remark != null and remark != ''"> REMARK = #{remark, jdbcType=LONGVARCHAR}, </if>
+			</trim>
+		</set>
+		where
+		<if test="id != null and id != ''"> ID = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</update>
+
+	<delete id="deleteEtProjectImplPath" parameterType="EtProjectImplPath">
+		delete from ET_PROJECT_IMPL_PATH where
+		<if test="id != null and id != ''"> ID = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</delete>
+
+</mapper>
