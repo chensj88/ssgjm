@@ -62,4 +62,9 @@ public class EtSiteInstallServiceImpl implements EtSiteInstallService {
         return this.etSiteInstallDao.selectEtSiteInstallNameList(t);
     }
 
+    @Override
+    public List<EtSiteInstall> getEtSiteInstallListWithSum(EtSiteInstall t) {
+        return this.etSiteInstallDao.selectEtSiteInstallListWithSum(t);
+    }
+
 }

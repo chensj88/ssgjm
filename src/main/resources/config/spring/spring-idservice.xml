@@ -410,5 +410,12 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
+    <!--易用数据校验数据详情ID-->
+    <bean id="etEtEasyDataCheckDetailIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="EASY_CHECK_DETAIL"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
 
 </beans>

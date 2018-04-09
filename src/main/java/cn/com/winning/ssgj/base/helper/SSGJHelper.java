@@ -200,6 +200,10 @@ public class SSGJHelper {
     @Autowired
     @Qualifier(value = "etSimulateRecordIdService")
     private StepSequenceFactory etSimulateRecordIdService;
+    @Autowired
+    @Qualifier(value = "etEtEasyDataCheckDetailIdService")
+    private StepSequenceFactory  etEtEasyDataCheckDetailIdService;
+
 
     public long createEtSimulateRecordIdService(){return (long)etSimulateRecordIdService.create();}
     public long createEtOnlineInfoIdService(){
@@ -491,6 +495,14 @@ public class SSGJHelper {
      */
     public Long createEtEasyDataCheckId(){
         return (Long) etEasyDataCheckIdService.create();
+    }
+
+    /**
+     * 易用数据校验数据详情ID
+     * @return
+     */
+    public Long createEtEasyDataCheckDetailId(){
+        return (Long) etEtEasyDataCheckDetailIdService.create();
     }
 
 
