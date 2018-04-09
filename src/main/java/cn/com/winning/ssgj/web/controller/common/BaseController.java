@@ -5,9 +5,12 @@ import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.service.Facade;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
@@ -106,10 +109,10 @@ public class BaseController extends BaseSpringMvcMybatisController{
 
     /**
      * 获取当前的用户信息
-     * @param request
      * @return
      */
-    public SysUserInfo getCurrentUserInfo(HttpServletRequest request){
+    public SysUserInfo getCurrentUserInfo(){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         SysUserInfo shiroUser = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         SysUserInfo sessionUser = (SysUserInfo) request.getSession().getAttribute(Constants.USER_INFO);
         return  shiroUser != null ? shiroUser : sessionUser;
