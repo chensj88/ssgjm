@@ -13,6 +13,7 @@
         <result column="QUESTION" property="question" jdbcType="LONGVARCHAR"/>
         <result column="REMARK" property="remark" jdbcType="LONGVARCHAR"/>
         <result column="FILE_PATH" property="filePath" jdbcType="LONGVARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
         <result column="CREATOR" property="creator" jdbcType="BIGINT"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="OPERATOR" property="operator" jdbcType="BIGINT"/>
@@ -33,6 +34,7 @@
         <if test="question != null and question != ''">and t.QUESTION = #{question}</if>
         <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
         <if test="filePath != null and filePath != ''">and t.FILE_PATH = #{filePath}</if>
+        <if test="status != null"> and t.STATUS = #{status}</if>
         <if test="(creator != null and creator != '') or creator == 0">and t.CREATOR = #{creator}</if>
         <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
         <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
@@ -81,6 +83,7 @@
             <if test="question != null and question != ''">QUESTION,</if>
             <if test="remark != null and remark != ''">REMARK,</if>
             <if test="filePath != null and filePath != ''">FILE_PATH,</if>
+            <if test="status != null">  STATUS,</if>
             <if test="(creator != null and creator != '') or creator == 0">CREATOR,</if>
             <if test="createTime != null ">CREATE_TIME,</if>
             <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
@@ -98,6 +101,7 @@
             <if test="question != null and question != ''">#{question, jdbcType=LONGVARCHAR},</if>
             <if test="remark != null and remark != ''">#{remark, jdbcType=LONGVARCHAR},</if>
             <if test="filePath != null and filePath != ''">#{filePath, jdbcType=LONGVARCHAR},</if>
+            <if test="status != null"> #{status, jdbcType=INTEGER} ,</if>
             <if test="(creator != null and creator != '') or creator == 0">#{creator, jdbcType=BIGINT},</if>
             <if test="createTime != null ">#{createTime, jdbcType=TIMESTAMP},</if>
             <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
@@ -125,6 +129,7 @@
                 <if test="question != null and question != ''">QUESTION = #{question, jdbcType=LONGVARCHAR},</if>
                 <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
                 <if test="filePath != null and filePath != ''">FILE_PATH = #{filePath, jdbcType=LONGVARCHAR},</if>
+                <if test="status != null"> STATUS = #{status, jdbcType=INTEGER} ,</if>
                 <if test="(creator != null and creator != '') or creator == 0">CREATOR = #{creator, jdbcType=BIGINT},
                 </if>
                 <if test="createTime != null ">CREATE_TIME = #{createTime, jdbcType=TIMESTAMP},</if>

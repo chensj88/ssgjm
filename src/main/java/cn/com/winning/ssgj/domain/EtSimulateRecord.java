@@ -63,6 +63,10 @@ public class EtSimulateRecord extends BaseDomain implements Serializable {
 	 * @val 文件路径
 	 */
 	private String filePath;
+	/**
+	 * @val 状态
+	 */
+	private Integer status;
 	
 	/**
 	 * @val 创建人
@@ -95,21 +99,21 @@ public class EtSimulateRecord extends BaseDomain implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * @val 合同ID
 	 */
-	public Long getCId() {
+	public Long getcId() {
 		return cId;
 	}
-	
+
 	/**
 	 * @val 合同ID
 	 */
-	public void setCId(Long cId) {
+	public void setcId(Long cId) {
 		this.cId = cId;
 	}
-	
+
 	/**
 	 * @val 项目ID
 	 */
@@ -221,7 +225,21 @@ public class EtSimulateRecord extends BaseDomain implements Serializable {
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
-	
+
+	/**
+	 * @val 状态
+	 * @return
+	 */
+	public Integer getStatus() {
+		return status;
+	}
+	/**
+	 * @val 状态
+	 */
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
 	/**
 	 * @val 创建人
 	 */
