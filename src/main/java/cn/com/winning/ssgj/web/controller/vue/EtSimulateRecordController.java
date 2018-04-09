@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.domain.EtProcessManager;
 import cn.com.winning.ssgj.domain.EtSimulateRecord;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,6 +95,26 @@ public class EtSimulateRecordController extends BaseController {
         record.setStatus(Constants.STATUS_UNUSE);
         record.setOperatorTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtSimulateRecordService().modifyEtSimulateRecord(record);
+        Map<String,Object> result = new HashMap<>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
+
+    /**
+     * 模拟运行任务完成
+     * @param record
+     * @return
+     */
+    @RequestMapping(value = "/confirm.do")
+    @ResponseBody
+    @Transactional
+    @ILog
+    public Map<String,Object> confirmEtSimulateRecord(EtSimulateRecord record){
+        EtProcessManager processManager = new EtProcessManager();
+        processManager.setPmId(record.getPmId());
+        processManager = super.getFacade().getEtProcessManagerService().getEtProcessManager(processManager);
+        processManager.setIsSimulation(Constants.STATUS_USE);
+        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(processManager);
         Map<String,Object> result = new HashMap<>();
         result.put("status", Constants.SUCCESS);
         return result;
