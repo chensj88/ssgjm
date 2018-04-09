@@ -93,32 +93,31 @@ public class EtEasyDataCheck extends BaseDomain implements Serializable {
     private Long plId;
 
     /**
-     * @val 不维护原因
+     * @val 是否本期实施范围
      */
-    private Integer reason;
+    private Integer isScope;
 
     /**
-     * @val 原因含义
+     * @val 不在实施范围原因
      */
-    private Long reasonMeaning;
+    private String noScopeCode;
 
 
-    public Integer getReason() {
-        return reason;
+    public Integer getIsScope() {
+        return isScope;
     }
 
-    public void setReason(Integer reason) {
-        this.reason = reason;
+    public void setIsScope(Integer isScope) {
+        this.isScope = isScope;
     }
 
-    public Long getReasonMeaning() {
-        return reasonMeaning;
+    public String getNoScopeCode() {
+        return noScopeCode;
     }
 
-    public void setReasonMeaning(Long reasonMeaning) {
-        this.reasonMeaning = reasonMeaning;
+    public void setNoScopeCode(String noScopeCode) {
+        this.noScopeCode = noScopeCode;
     }
-
 
     public Long getPlId() {
         return plId;
