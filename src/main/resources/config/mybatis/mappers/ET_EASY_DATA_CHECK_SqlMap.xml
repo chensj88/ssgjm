@@ -18,6 +18,8 @@
         <result column="OPERATOR" property="operator" jdbcType="BIGINT"/>
         <result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP"/>
         <result column="PL_ID" property="plId" jdbcType="BIGINT"/>
+        <result column="REASON" property="reason" jdbcType="INTEGER"/>
+        <result column="REASON_MEANING" property="reasonMeaning" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="etEasyDataCheckResult" type="etEasyDataCheck" extends="etEasyDataCheckResultForList">
@@ -39,6 +41,11 @@
         <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
         <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
         <if test="(plId != null and plId != '') or plId == 0">and t.PL_ID = #{plId}</if>
+        <if test="(map.ids != null and (id == null or id == 0))">and t.ID IN
+            <foreach collection="map.ids" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
     </sql>
 
     <select id="selectEtEasyDataCheck" resultMap="etEasyDataCheckResult" parameterType="etEasyDataCheck">
@@ -133,7 +140,11 @@
                 <if test="operatorTime != null ">OPERATOR_TIME =
                     #{operatorTime, jdbcType=TIMESTAMP},
                 </if>
-                <if test="(plId != null and plId != '') or plId == 0">PL_ID=#{plId,jdbcType=BIGINT}</if>
+                <if test="(plId != null and plId != '') or plId == 0">PL_ID=#{plId,jdbcType=BIGINT},</if>
+                <if test="(reason != null and reason != '') or reason == 0">REASON = #{reason, jdbcType=INTEGER},</if>
+                <if test="resonMeaning != null and resonMeaning != ''">REASON_MEANING =
+                    #{resonMeaning, jdbcType=VARCHAR}
+                </if>
             </trim>
         </set>
         <where>
@@ -155,5 +166,4 @@
             </if>
         </where>
     </delete>
-
 </mapper>

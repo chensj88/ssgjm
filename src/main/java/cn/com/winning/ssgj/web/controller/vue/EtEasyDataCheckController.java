@@ -10,8 +10,6 @@ import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.jcraft.jsch.ChannelSftp;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -28,13 +26,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * 基础数据类型处理Controller
@@ -453,7 +451,6 @@ public class EtEasyDataCheckController extends BaseController {
 
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> confirm(String proStr) {
 
@@ -469,20 +466,20 @@ public class EtEasyDataCheckController extends BaseController {
         //获取单据号即客户
         Long customerId = pmisProjectBasicInfo.getKhxx();
 
-        EtDataCheck etDataCheck = new EtDataCheck();
+        EtEasyDataCheck etEasyDataCheck = new EtEasyDataCheck();
 
-        etDataCheck.setPmId(proId);
+        etEasyDataCheck.setPmId(proId);
 
-        etDataCheck.setCId(contractId);
+        etEasyDataCheck.setcId(contractId);
 
-        etDataCheck.setSerialNo(customerId.toString());
-        int total = getFacade().getEtDataCheckService().getEtDataCheckCount(etDataCheck);
+        etEasyDataCheck.setSerialNo(customerId.toString());
+        int total = getFacade().getEtEasyDataCheckService().getEtEasyDataCheckCount(etEasyDataCheck);
 
         EtProcessManager etProcessManager = new EtProcessManager();
         etProcessManager.setPmId(proId);
         Map<String, Object> map = new HashMap<String, Object>();
         if (total > 0) {
-            etProcessManager.setIsBasicDataCheck(1);
+            etProcessManager.setIsEasyDataCheck(1);
             getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(etProcessManager);
             map.put("type", Constants.SUCCESS);
             map.put("msg", "确认成功！");
@@ -491,6 +488,113 @@ public class EtEasyDataCheckController extends BaseController {
             map.put("msg", "无数据，确认失败！");
         }
         return map;
+    }
+
+
+    /**
+     * 维护状态改变
+     *
+     * @param t
+     * @return
+     */
+    @RequestMapping(value = "/changeUse.do")
+    @ResponseBody
+    public void changeUse(EtEasyDataCheck t) {
+        EtEasyDataCheck etEasyDataCheck = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(t);
+        //null校验
+        if (etEasyDataCheck == null) {
+            return;
+        }
+        //更新维护状态
+        getFacade().getEtEasyDataCheckService().modifyEtEasyDataCheck(t);
+
+    }
+
+
+    /**
+     * 批量导出sql压缩包
+     *
+     * @param response
+     * @param idsStr
+     * @throws IOException
+     */
+    @RequestMapping(value = "/batchExport.do")
+    @ResponseBody
+    public void batchExport(HttpServletResponse response, String idsStr) throws IOException {
+        if (StringUtil.isEmptyOrNull(idsStr)) {
+            return;
+        }
+        String[] split = idsStr.split(",");
+        List<String> ids = Arrays.asList(split);
+        EtEasyDataCheck easyDataCheck = new EtEasyDataCheck();
+        HashMap map = new HashMap();
+        map.put("ids", ids);
+        easyDataCheck.setMap(map);
+        List<File> fileList = new ArrayList();
+        //获取数据校验信息
+        List<EtEasyDataCheck> etEasyDataChecks = getFacade().getEtEasyDataCheckService().getEtEasyDataCheckList(easyDataCheck);
+        for (int i = 0; i <etEasyDataChecks.size() ; i++) {
+            EtEasyDataCheck etEasyDataCheck=etEasyDataChecks.get(i);
+            //获取
+            SysDataCheckScript temp = new SysDataCheckScript();
+            Long plId = etEasyDataCheck.getPlId();
+            if (plId == null) {
+                return;
+            }
+            temp.setAppId(etEasyDataCheck.getPlId());
+            SysDataCheckScript sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(temp);
+            //获取脚本地址
+            String scriptPath = sysDataCheckScript.getRemotePath();
+            //获取文件名
+            String filename = scriptPath.substring(scriptPath.lastIndexOf("/") + 1);
+            String saveFile = "/sql/" + filename.substring(0,filename.indexOf(".") )+"_"+i+"."+filename.substring(filename.indexOf(".")+1);
+            ChannelSftp sftpConnect = null;
+            File file = null;
+            try {
+                sftpConnect = SFtpUtils.getSftpConnect();
+                //sftpConnect.setFilenameEncoding("GBK");
+                file = SFtpUtils.download(scriptPath, saveFile, sftpConnect);
+                fileList.add(file);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        //压缩输出流
+        response.setContentType("application/zip");
+        response.setCharacterEncoding("utf-8");
+        //这里需要针对打出的压缩包名称的编码格式进行乱码处理：new String(("压缩包名称").getBytes("GBK"), "iso8859-1")
+        response.setHeader("Content-Disposition", "attachment; filename=\""
+                + new String((new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".zip").getBytes("GBK"), "iso8859-1") + "\"");
+        BufferedOutputStream buff = null;
+        OutputStream outStr = null;
+        outStr = response.getOutputStream();
+        ZipOutputStream zipOutputStream = new ZipOutputStream(new BufferedOutputStream(outStr));
+        int len = 0;
+        FileInputStream fileInputStream = null;
+        String fileName = null;
+        //循环打包到输出流
+        for (File currentFile : fileList) {
+            fileName = currentFile.getName();
+            fileInputStream = new FileInputStream(currentFile);
+            byte[] buf = new byte[fileInputStream.available()];
+            //放入压缩zip包中;
+            zipOutputStream.putNextEntry(new ZipEntry(fileName));
+
+            //读取文件;
+            while ((len = fileInputStream.read(buf)) > 0) {
+                zipOutputStream.write(buf, 0, len);
+            }
+            //关闭;
+            zipOutputStream.closeEntry();
+            if (fileInputStream != null) {
+                fileInputStream.close();
+
+            }
+            currentFile.delete();
+        }
+        zipOutputStream.flush();
+        zipOutputStream.close();
     }
 }
 

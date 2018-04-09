@@ -1,8 +1,11 @@
 package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
+
 import org.apache.ibatis.type.Alias;
+
 import java.util.Date;
+
 import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
@@ -88,6 +91,34 @@ public class EtEasyDataCheck extends BaseDomain implements Serializable {
      * @val 产品线ID
      */
     private Long plId;
+
+    /**
+     * @val 不维护原因
+     */
+    private Integer reason;
+
+    /**
+     * @val 原因含义
+     */
+    private Long reasonMeaning;
+
+
+    public Integer getReason() {
+        return reason;
+    }
+
+    public void setReason(Integer reason) {
+        this.reason = reason;
+    }
+
+    public Long getReasonMeaning() {
+        return reasonMeaning;
+    }
+
+    public void setReasonMeaning(Long reasonMeaning) {
+        this.reasonMeaning = reasonMeaning;
+    }
+
 
     public Long getPlId() {
         return plId;
