@@ -7,6 +7,7 @@
         <result column="C_ID" property="cId" jdbcType="BIGINT"/>
         <result column="PM_ID" property="pmId" jdbcType="BIGINT"/>
         <result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR"/>
+        <result column="SIMULATE_NAME" property="simulateName" jdbcType="VARCHAR"/>
         <result column="SIMULATE_CODE" property="simulateCode" jdbcType="VARCHAR"/>
         <result column="SIMULATE_RESULT" property="simulateResult" jdbcType="VARCHAR"/>
         <result column="IS_ONLINE" property="isOnline" jdbcType="INTEGER"/>
@@ -21,6 +22,8 @@
     </resultMap>
 
     <resultMap id="etSimulateRecordResult" type="etSimulateRecord" extends="etSimulateRecordResultForList">
+        <!--创建时间 由时间戳转换过来-->
+        <result column="CREATE_DATE" property="map.createDate" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="sf-etSimulateRecord">
@@ -28,6 +31,7 @@
         <if test="(cId != null and cId != '') or cId == 0">and t.C_ID = #{cId}</if>
         <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="simulateName != null and simulateName != ''">and t.SIMULATE_NAME = #{simulateName}</if>
         <if test="simulateCode != null and simulateCode != ''">and t.SIMULATE_CODE = #{simulateCode}</if>
         <if test="simulateResult != null and simulateResult != ''">and t.SIMULATE_RESULT = #{simulateResult}</if>
         <if test="(isOnline != null and isOnline != '') or isOnline == 0">and t.IS_ONLINE = #{isOnline}</if>
@@ -46,10 +50,10 @@
         <include refid="sf-etSimulateRecord"/>
     </select>
 
-    <select id="selectEtSimulateRecordList" resultMap="etSimulateRecordResultForList" parameterType="etSimulateRecord">
+    <select id="selectEtSimulateRecordList" resultMap="etSimulateRecordResult" parameterType="etSimulateRecord">
         select
-        <if test="row.count != null and row.count != ''">top ${row.count}</if>
-        * from ET_SIMULATE_RECORD t where 1 = 1
+        t.*,REPLACE(CONVERT(VARCHAR(32),t.CREATE_TIME,111),'/','-') as  CREATE_DATE
+        from ET_SIMULATE_RECORD t where 1 = 1
         <include refid="sf-etSimulateRecord"/>
         <!-- order by ID asc -->
     </select>
@@ -62,7 +66,9 @@
     <select id="selectEtSimulateRecordPaginatedList" resultMap="etSimulateRecordResult"
             parameterType="etSimulateRecord">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        select *,
+        REPLACE(CONVERT(VARCHAR(32),t.CREATE_TIME,111),'/','-') as  CREATE_DATE,
+        ROW_NUMBER() OVER ( order by ID desc ) as _rn
         from ET_SIMULATE_RECORD t where 1 = 1
         <include refid="sf-etSimulateRecord"/>
         <!-- order by ID asc -->
@@ -77,6 +83,7 @@
             <if test="(cId != null and cId != '') or cId == 0">C_ID,</if>
             <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID,</if>
             <if test="serialNo != null and serialNo != ''">SERIAL_NO,</if>
+            <if test="simulateName != null and simulateName != ''">SIMULATE_NAME,</if>
             <if test="simulateCode != null and simulateCode != ''">SIMULATE_CODE,</if>
             <if test="simulateResult != null and simulateResult != ''">SIMULATE_RESULT,</if>
             <if test="(isOnline != null and isOnline != '') or isOnline == 0">IS_ONLINE,</if>
@@ -95,6 +102,7 @@
             <if test="(cId != null and cId != '') or cId == 0">#{cId, jdbcType=BIGINT},</if>
             <if test="(pmId != null and pmId != '') or pmId == 0">#{pmId, jdbcType=BIGINT},</if>
             <if test="serialNo != null and serialNo != ''">#{serialNo, jdbcType=VARCHAR},</if>
+            <if test="simulateName != null and simulateName != ''">#{simulateName,jdbcType=VARCHAR},</if>
             <if test="simulateCode != null and simulateCode != ''">#{simulateCode, jdbcType=VARCHAR},</if>
             <if test="simulateResult != null and simulateResult != ''">#{simulateResult, jdbcType=VARCHAR},</if>
             <if test="(isOnline != null and isOnline != '') or isOnline == 0">#{isOnline, jdbcType=INTEGER},</if>
@@ -117,6 +125,7 @@
                 <if test="(cId != null and cId != '') or cId == 0">C_ID = #{cId, jdbcType=BIGINT},</if>
                 <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID = #{pmId, jdbcType=BIGINT},</if>
                 <if test="serialNo != null and serialNo != ''">SERIAL_NO = #{serialNo, jdbcType=VARCHAR},</if>
+                <if test="simulateName != null and simulateName != ''">SIMULATE_NAME = #{simulateName,jdbcType=VARCHAR},</if>
                 <if test="simulateCode != null and simulateCode != ''">SIMULATE_CODE =
                     #{simulateCode, jdbcType=VARCHAR},
                 </if>

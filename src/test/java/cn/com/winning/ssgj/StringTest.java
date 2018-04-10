@@ -89,4 +89,18 @@ public class StringTest {
         }
 
     }
+
+    @Test
+    public void substringTest(){
+        String remotePath = "/simulate/" + "aaa" + "/" + "aaa.xls";
+        System.out.println(remotePath.substring(remotePath.lastIndexOf("/")));
+        System.out.println(remotePath.substring(remotePath.lastIndexOf("/")+1));
+        System.out.println(remotePath.substring(0,remotePath.lastIndexOf("/")+1));
+    }
+
+    @Test
+    public  void  substringTest2(){
+        String url = "http://47.97.170.21:8081/shareFolder/simulate/simulate_1523367948633/Bootstrap.docx";
+        System.out.println(url.substring(Constants.FTP_SHARE_FLODER.length()));
+    }
 }

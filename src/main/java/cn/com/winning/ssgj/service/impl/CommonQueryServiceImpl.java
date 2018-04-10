@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author chenshijie
@@ -35,6 +36,8 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     private PmisProductInfoDao pmisProductInfoDao;
     @Autowired
     private SysUserInfoService sysUserInfoService;
+    @Autowired
+    private EtDataCheckService etDataCheckService;
     @Override
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId) {
         //获取用户可以查看的项目信息
@@ -114,6 +117,15 @@ public class CommonQueryServiceImpl implements CommonQueryService {
             return pmisProductInfoDao.selectEasyDataPmisProductInfoList(productInfo);
         }
         return pmisProductInfoDao.selectBasicDataPmisProductInfoList(productInfo);
+    }
+
+    @Override
+    public Map<String, Integer> queryCompletionOfProject(long pmId) {
+        EtDataCheck dataCheck = new EtDataCheck();
+        dataCheck.setPmId(pmId);
+        List<EtDataCheck> dataCheckList = this.etDataCheckService.getEtDataCheckList(dataCheck);
+
+        return null;
     }
 
     /**

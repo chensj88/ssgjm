@@ -5,6 +5,7 @@ import cn.com.winning.ssgj.domain.expand.NodeTree;
 import sun.rmi.runtime.Log;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author chenshijie
@@ -50,5 +51,12 @@ public interface CommonQueryService {
      * @return
      */
     public List<PmisProductInfo> queryProductOfProjectByProjectIdAndTypeAndDataType(long pmId, int type, int dataType);
+
+    /**
+     * 查询项目各项工作完成情况
+     * @param pmId
+     * @return resultMap
+     */
+    public Map<String,Integer> queryCompletionOfProject(long pmId);
 
 }

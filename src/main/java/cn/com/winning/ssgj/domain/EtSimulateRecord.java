@@ -33,7 +33,11 @@ public class EtSimulateRecord extends BaseDomain implements Serializable {
 	 * @val 单据号
 	 */
 	private String serialNo;
-	
+
+	/**
+	 * @val 模拟名称
+	 */
+	private String simulateName;
 	/**
 	 * @val 模拟范围
 	 */
@@ -141,7 +145,19 @@ public class EtSimulateRecord extends BaseDomain implements Serializable {
 	public void setSerialNo(String serialNo) {
 		this.serialNo = serialNo;
 	}
-	
+	/**
+	 * @val 模拟名称
+	 */
+	public String getSimulateName() {
+		return simulateName;
+	}
+	/**
+	 * @val 模拟名称
+	 */
+	public void setSimulateName(String simulateName) {
+		this.simulateName = simulateName;
+	}
+
 	/**
 	 * @val 模拟范围
 	 */

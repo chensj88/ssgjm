@@ -1,5 +1,7 @@
 package cn.com.winning.ssgj.base;
 
+import cn.com.winning.ssgj.base.util.FtpPropertiesLoader;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +9,10 @@ import java.util.Map;
 public class Constants implements Serializable {
 
     private static final long serialVersionUID = -1L;
+
+    public static int FTP_PORT = Integer.valueOf(FtpPropertiesLoader.getProperty("ftp.port")).intValue();
+    public static String FTP_SERVER =  FtpPropertiesLoader.getProperty("ftp.server");
+    public static String FTP_SHARE_FLODER = "http://"+FTP_SERVER +":8081/shareFolder";
 
     /**
      * 是否成功
