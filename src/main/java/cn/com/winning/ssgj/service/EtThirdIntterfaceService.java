@@ -26,4 +26,11 @@ public interface EtThirdIntterfaceService {
 
     List<EtThirdIntterface> getEtThirdIntterfacePaginatedList(EtThirdIntterface t);
 
+    List<EtThirdIntterface> selectEtThirdIntterfaceMergePageList(EtThirdIntterface etThirdIntterface);
+
+    Integer selectEtThirdIntterfaceMergeCount(EtThirdIntterface etThirdIntterface);
+
+    List<EtThirdIntterface> selectEtThirdIntterfaceMergeList(EtThirdIntterface etThirdIntterface);
+
+
 }

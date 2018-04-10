@@ -42,11 +42,9 @@ public class EtThirdIntterfaceServiceImpl implements EtThirdIntterfaceService {
     }
 
 
-
     public int modifyEtThirdIntterface(EtThirdIntterface t) {
         return this.etThirdIntterfaceDao.updateEntity(t);
     }
-
 
 
     public int removeEtThirdIntterface(EtThirdIntterface t) {
@@ -54,9 +52,41 @@ public class EtThirdIntterfaceServiceImpl implements EtThirdIntterfaceService {
     }
 
 
-
     public List<EtThirdIntterface> getEtThirdIntterfacePaginatedList(EtThirdIntterface t) {
         return this.etThirdIntterfaceDao.selectEntityPaginatedList(t);
+    }
+
+    /**
+     * 根据pmid获取接口分页信息
+     *
+     * @param etThirdIntterface
+     * @return
+     */
+    @Override
+    public List<EtThirdIntterface> selectEtThirdIntterfaceMergePageList(EtThirdIntterface etThirdIntterface) {
+        return this.etThirdIntterfaceDao.selectEtThirdIntterfaceMergePageList(etThirdIntterface);
+    }
+
+    /**
+     * 获取分页total
+     *
+     * @param etThirdIntterface
+     * @return
+     */
+    @Override
+    public Integer selectEtThirdIntterfaceMergeCount(EtThirdIntterface etThirdIntterface) {
+        return this.etThirdIntterfaceDao.selectEtThirdIntterfaceMergeCount(etThirdIntterface);
+    }
+
+    /**
+     * 根据pmid获取所有接口信息
+     *
+     * @param etThirdIntterface
+     * @return
+     */
+    @Override
+    public List<EtThirdIntterface> selectEtThirdIntterfaceMergeList(EtThirdIntterface etThirdIntterface) {
+        return this.etThirdIntterfaceDao.selectEtThirdIntterfaceMergeList(etThirdIntterface);
     }
 
 }

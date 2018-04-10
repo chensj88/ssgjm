@@ -10,7 +10,6 @@
         <result column="DATABASE_NAME" property="databaseName" jdbcType="VARCHAR"/>
         <result column="TABLE_NAME" property="tableName" jdbcType="VARCHAR"/>
         <result column="MEANING" property="meaning" jdbcType="LONGVARCHAR"/>
-        <result column="IS_USE" property="isUse" jdbcType="INTEGER"/>
         <result column="CONTENT" property="content" jdbcType="LONGVARCHAR"/>
         <result column="SCRIPT_PATH" property="scriptPath" jdbcType="VARCHAR"/>
         <result column="CREATOR" property="creator" jdbcType="BIGINT"/>
@@ -87,7 +86,6 @@
             <if test="databaseName != null and databaseName != ''">DATABASE_NAME,</if>
             <if test="tableName != null and tableName != ''">TABLE_NAME,</if>
             <if test="meaning != null and meaning != ''">MEANING,</if>
-            <if test="(isUse != null and isUse != '') or isUse == 0">IS_USE,</if>
             <if test="content != null and content != ''">CONTENT,</if>
             <if test="scriptPath != null and scriptPath != ''">SCRIPT_PATH,</if>
             <if test="(creator != null and creator != '') or creator == 0">CREATOR,</if>
@@ -107,7 +105,6 @@
             <if test="databaseName != null and databaseName != ''">#{databaseName, jdbcType=VARCHAR},</if>
             <if test="tableName != null and tableName != ''">#{tableName, jdbcType=VARCHAR},</if>
             <if test="meaning != null and meaning != ''">#{meaning, jdbcType=LONGVARCHAR},</if>
-            <if test="(isUse != null and isUse != '') or isUse == 0">#{isUse, jdbcType=INTEGER},</if>
             <if test="content != null and content != ''">#{content, jdbcType=LONGVARCHAR},</if>
             <if test="scriptPath != null and scriptPath != ''">#{scriptPath, jdbcType=VARCHAR},</if>
             <if test="(creator != null and creator != '') or creator == 0">#{creator, jdbcType=BIGINT},</if>
@@ -133,7 +130,6 @@
                 </if>
                 <if test="tableName != null and tableName != ''">TABLE_NAME = #{tableName, jdbcType=VARCHAR},</if>
                 <if test="meaning != null and meaning != ''">MEANING = #{meaning, jdbcType=LONGVARCHAR},</if>
-                <if test="(isUse != null and isUse != '') or isUse == 0">IS_USE = #{isUse, jdbcType=INTEGER},</if>
                 <if test="content != null and content != ''">CONTENT = #{content, jdbcType=LONGVARCHAR},</if>
                 <if test="scriptPath != null and scriptPath != ''">SCRIPT_PATH = #{scriptPath, jdbcType=VARCHAR},</if>
                 <if test="(creator != null and creator != '') or creator == 0">CREATOR = #{creator, jdbcType=BIGINT},

@@ -154,7 +154,7 @@
             <if test="id != null and id != ''">ID = #{id}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
-                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
             </if>
         </where>
     </update>
@@ -165,9 +165,116 @@
             <if test="id != null and id != ''">ID = #{id}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
-                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
             </if>
         </where>
     </delete>
+
+    <!--根据pmid查询接口信息 分页-->
+    <select id="selectEtThirdIntterfaceMergePageList" resultMap="etThirdIntterfaceResultForList"
+            parameterType="EtInterfaceInfo">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by T.ID desc ) as _rn
+        from (
+        select *
+        from ET_THIRD_INTTERFACE t
+        <where>
+            <if test="(pmId != null ) or pmId == 0">t.PM_ID = #{pmId, jdbcType=BIGINT}</if>
+        </where>
+        UNION ALL
+        SELECT
+        0 AS ID,
+        t.HTXX AS C_ID,
+        t.XMLCB AS PM_ID,
+        t.KHXX AS SERIAL_NO,
+        (
+        SELECT
+        p.CPTX
+        FROM
+        PMIS_PRODUCT_INFO p
+        WHERE
+        p.ID = t.CPXX
+        ) AS PL_ID,
+        t.CPMC AS INTERFACE_NAME,
+        0 AS IS_SCOPE,
+        NULL AS NO_SCOPE_CODE,
+        NULL AS CONTENT_TYPE,
+        NULL AS STATUS,
+        NULL AS MESSAGE,
+        0 AS SOURCE_TYPE,
+        0 AS CREATOR,
+        GETDATE() AS CREATE_TIME,
+        0 AS OPERATOR,
+        NULL AS OPERATOR_TIME
+        FROM
+        PMIS_CONTRACT_PRODUCT_INFO t
+        <where>
+            <if test="(pmId != null ) or pmId == 0">and t.XMLCB = #{pmId,jdbcType=BIGINT}</if>
+            <if test="(pmId != null ) or pmId == 0">and t.HTCPLB = 9</if>
+            <if test="(pmId != null ) or pmId == 0">and t.ZT = 1</if>
+        </where>
+        ) T
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <select id="selectEtThirdIntterfaceMergeCount" resultType="int" parameterType="EtThirdIntterface">
+        SELECT A.NUM + B.NUM FROM
+        (select count(*) NUM from ET_THIRD_INTTERFACE t
+        <where>
+            <if test="(pmId != null ) or pmId == 0">t.PM_ID = #{pmId, jdbcType=BIGINT}</if>
+        </where>
+        ) A,
+        (
+        select count(*) NUM from PMIS_CONTRACT_PRODUCT_INFO t
+        <where>
+            <if test="(pmId != null ) or pmId == 0">and t.XMLCB = #{pmId,jdbcType=BIGINT}</if>
+            <if test="(pmId != null ) or pmId == 0">and t.HTCPLB = 9</if>
+            <if test="(pmId != null ) or pmId == 0">and t.ZT = 1</if>
+        </where>
+        ) B
+    </select>
+
+    <!--根据pmId获取所有接口信息-->
+    <select id="selectEtThirdIntterfaceMergeList" resultMap="etThirdIntterfaceResultForList"
+            parameterType="EtInterfaceInfo">
+        select *
+        from ET_INTERFACE_INFO t
+        <where>
+            <if test="(pmId != null ) or pmId == 0">t.PM_ID = #{pmId, jdbcType=BIGINT}</if>
+        </where>
+        UNION ALL
+        SELECT
+        0 AS ID,
+        t.HTXX AS C_ID,
+        t.XMLCB AS PM_ID,
+        t.KHXX AS SERIAL_NO,
+        (
+        SELECT
+        p.CPTX
+        FROM
+        PMIS_PRODUCT_INFO p
+        WHERE
+        p.ID = t.CPXX
+        ) AS PL_ID,
+        t.CPMC AS INTERFACE_NAME,
+        0 AS IS_SCOPE,
+        NULL AS NO_SCOPE_CODE,
+        NULL AS CONTENT_TYPE,
+        NULL AS STATUS,
+        NULL AS MESSAGE,
+        0 AS SOURCE_TYPE,
+        0 AS CREATOR,
+        GETDATE() AS CREATE_TIME,
+        0 AS OPERATOR,
+        NULL AS OPERATOR_TIME
+        FROM
+        PMIS_CONTRACT_PRODUCT_INFO t
+        <where>
+            <if test="(pmId != null ) or pmId == 0">and t.XMLCB = #{pmId,jdbcType=BIGINT}</if>
+            <if test="(pmId != null ) or pmId == 0">and t.HTCPLB = 9</if>
+            <if test="(pmId != null ) or pmId == 0">and t.ZT = 1</if>
+        </where>
+    </select>
 
 </mapper>

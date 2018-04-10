@@ -53,11 +53,6 @@ public class EtEasyDataCheck extends BaseDomain implements Serializable {
     private String meaning;
 
     /**
-     * @val 是否维护:0 否 1是
-     */
-    private Integer isUse;
-
-    /**
      * @val 完成情况
      */
     private String content;
@@ -222,20 +217,6 @@ public class EtEasyDataCheck extends BaseDomain implements Serializable {
      */
     public void setMeaning(String meaning) {
         this.meaning = meaning;
-    }
-
-    /**
-     * @val 是否维护:0 否 1是
-     */
-    public Integer getIsUse() {
-        return isUse;
-    }
-
-    /**
-     * @val 是否维护:0 否 1是
-     */
-    public void setIsUse(Integer isUse) {
-        this.isUse = isUse;
     }
 
     /**
