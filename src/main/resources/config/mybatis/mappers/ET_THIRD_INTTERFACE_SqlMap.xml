@@ -196,7 +196,7 @@
         p.ID = t.CPXX
         ) AS PL_ID,
         t.CPMC AS INTERFACE_NAME,
-        0 AS IS_SCOPE,
+        1 AS IS_SCOPE,
         NULL AS NO_SCOPE_CODE,
         NULL AS CONTENT_TYPE,
         NULL AS STATUS,
@@ -258,7 +258,7 @@
         p.ID = t.CPXX
         ) AS PL_ID,
         t.CPMC AS INTERFACE_NAME,
-        0 AS IS_SCOPE,
+        1 AS IS_SCOPE,
         NULL AS NO_SCOPE_CODE,
         NULL AS CONTENT_TYPE,
         NULL AS STATUS,
