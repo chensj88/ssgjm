@@ -94,10 +94,10 @@ public class EtThirdIntterfaceController extends BaseController {
     public Map<String, Object> addOrModify(EtThirdIntterface etThirdIntterface) {
         //创建临时变量
         EtThirdIntterface etThirdIntterfaceTemp = new EtThirdIntterface();
-        String noScopeCode=etThirdIntterface.getNoScopeCode();
-        if(StringUtil.isEmptyOrNull(noScopeCode)){
+        String noScopeCode = etThirdIntterface.getNoScopeCode();
+        if (StringUtil.isEmptyOrNull(noScopeCode)) {
             etThirdIntterface.setIsScope(1);
-        }else{
+        } else {
             etThirdIntterface.setIsScope(0);
         }
         etThirdIntterfaceTemp.setId(etThirdIntterface.getId());
@@ -140,7 +140,12 @@ public class EtThirdIntterfaceController extends BaseController {
         return result;
     }
 
-
+    /**
+     * 确认完成
+     *
+     * @param pmId
+     * @return
+     */
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
     @ILog
@@ -182,6 +187,12 @@ public class EtThirdIntterfaceController extends BaseController {
     }
 
 
+    /**
+     * 更改范围
+     *
+     * @param etThirdIntterface
+     * @return
+     */
     @RequestMapping(value = "/changeScope.do")
     @ResponseBody
     @ILog

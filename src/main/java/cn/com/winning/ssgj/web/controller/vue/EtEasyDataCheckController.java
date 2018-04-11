@@ -449,6 +449,12 @@ public class EtEasyDataCheckController extends BaseController {
     }
 
 
+    /**
+     * 确认完成
+     *
+     * @param proStr
+     * @return
+     */
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
     @Transactional
@@ -533,8 +539,8 @@ public class EtEasyDataCheckController extends BaseController {
         List<File> fileList = new ArrayList();
         //获取数据校验信息
         List<EtEasyDataCheck> etEasyDataChecks = getFacade().getEtEasyDataCheckService().getEtEasyDataCheckList(easyDataCheck);
-        for (int i = 0; i <etEasyDataChecks.size() ; i++) {
-            EtEasyDataCheck etEasyDataCheck=etEasyDataChecks.get(i);
+        for (int i = 0; i < etEasyDataChecks.size(); i++) {
+            EtEasyDataCheck etEasyDataCheck = etEasyDataChecks.get(i);
             //获取
             SysDataCheckScript temp = new SysDataCheckScript();
             Long plId = etEasyDataCheck.getPlId();
@@ -547,7 +553,7 @@ public class EtEasyDataCheckController extends BaseController {
             String scriptPath = sysDataCheckScript.getRemotePath();
             //获取文件名
             String filename = scriptPath.substring(scriptPath.lastIndexOf("/") + 1);
-            String saveFile = "/sql/" + filename.substring(0,filename.indexOf(".") )+"_"+i+"."+filename.substring(filename.indexOf(".")+1);
+            String saveFile = "/sql/" + filename.substring(0, filename.indexOf(".")) + "_" + i + "." + filename.substring(filename.indexOf(".") + 1);
             ChannelSftp sftpConnect = null;
             File file = null;
             try {
@@ -595,6 +601,31 @@ public class EtEasyDataCheckController extends BaseController {
         }
         zipOutputStream.flush();
         zipOutputStream.close();
+    }
+
+
+    /**
+     * 更改范围
+     *
+     * @param etEasyDataCheck
+     * @return
+     */
+    @RequestMapping(value = "/changeScope.do")
+    @ResponseBody
+    @ILog
+    @Transactional
+    public Map<String, Object> changeScope(EtEasyDataCheck etEasyDataCheck) {
+        String noScopeCode = etEasyDataCheck.getNoScopeCode();
+        if (StringUtil.isEmptyOrNull(noScopeCode)) {
+            etEasyDataCheck.setIsScope(1);
+        } else {
+            etEasyDataCheck.setIsScope(0);
+        }
+        Map map = new HashMap();
+        getFacade().getEtEasyDataCheckService().modifyEtEasyDataCheck(etEasyDataCheck);
+        map.put("type", Constants.SUCCESS);
+        map.put("msg", "范围修改成功！");
+        return map;
     }
 }
 
