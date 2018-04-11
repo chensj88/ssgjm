@@ -100,6 +100,21 @@ public class EtThirdIntterface extends BaseDomain implements Serializable {
      */
     private java.sql.Timestamp operatorTime;
 
+    /**
+     * @val 产品名称
+     */
+    private String productName;
+
+    /**
+     * @val 模块明细
+     */
+    private String moduleDetail;
+
+    /**
+     * @val 备注信息
+     */
+    private String remark;
+
     public EtThirdIntterface() {
 
     }
@@ -331,4 +346,27 @@ public class EtThirdIntterface extends BaseDomain implements Serializable {
         this.operatorTime = operatorTime;
     }
 
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getModuleDetail() {
+        return moduleDetail;
+    }
+
+    public void setModuleDetail(String moduleDetail) {
+        this.moduleDetail = moduleDetail;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 }
