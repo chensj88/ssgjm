@@ -40,6 +40,27 @@ public class EtThirdIntterfaceController extends BaseController {
 
     /**
      * 获取接口信息集合
+     * @param etThirdIntterface
+     * @param row
+     * @return
+     */
+    @RequestMapping(value = "/initData.do")
+    @ResponseBody
+    public Map<String, Object> initData(EtThirdIntterface etThirdIntterface, Row row) {
+        etThirdIntterface.setRow(row);
+        //根据pmid获取所有接口数据
+        List<EtThirdIntterface> etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().selectEtThirdIntterfaceMergePageList(etThirdIntterface);
+        //根据pmid获取接口数
+        Integer total = etThirdIntterfaces==null?0:etThirdIntterfaces.size();
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("total", total);
+        result.put("status", Constants.SUCCESS);
+        result.put("rows", etThirdIntterfaces);
+        return result;
+    }
+
+    /**
+     * 获取接口信息集合
      *
      * @param etThirdIntterface
      * @param row
@@ -121,6 +142,35 @@ public class EtThirdIntterfaceController extends BaseController {
         result.put("status", Constants.SUCCESS);
         return result;
 
+    }
+
+    /**
+     * 导出Excel
+     * @param response
+     * @param etThirdIntterface
+     * @throws IOException
+     */
+    @RequestMapping(value = "/exportExcel.do")
+    @ILog
+    public void wiriteExcel(HttpServletResponse response, EtThirdIntterface etThirdIntterface) throws IOException {
+        //根据pmid获取所有接口数据
+        List<EtThirdIntterface> etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().selectEtThirdIntterfaceMergeList(etThirdIntterface);
+        //参数集合
+        List<Map> dataList = new ArrayList<>();
+        for (int i = 0; i < etThirdIntterfaces.size(); i++) {
+            dataList.add(ConnectionUtil.objectToMap(etThirdIntterfaces.get(i)));
+        }
+        //属性数组
+        Field[] fields = EtInterfaceInfo.class.getDeclaredFields();
+        //属性集合
+        List<String> attrNameList = new ArrayList<>();
+        for (int i = 0; i < fields.length; i++) {
+            attrNameList.add(fields[i].getName());
+        }
+        String filename = "InterfaceInfo" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
+        //创建工作簿
+        Workbook workbook = new HSSFWorkbook();
+        ExcelUtil.exportExcelByStream(dataList, attrNameList, response, workbook, filename);
     }
 
     /**

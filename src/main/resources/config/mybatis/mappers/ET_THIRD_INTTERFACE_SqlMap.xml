@@ -19,6 +19,9 @@
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="OPERATOR" property="operator" jdbcType="BIGINT"/>
         <result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP"/>
+        <result column="PRODUCT_NAME" property="interName" jdbcType="VARCHAR"/>
+        <result column="MODULE_DETAIL" property="moduleDetail" jdbcType="VARCHAR"/>
+        <result column="REMARK" property="remark" jdbcType="LONGVARCHAR"/>
     </resultMap>
 
     <resultMap id="etThirdIntterfaceResult" type="etThirdIntterface" extends="etThirdIntterfaceResultForList">
@@ -41,6 +44,9 @@
         <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
         <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
         <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
+        <if test="productName != null and productName != ''">and t.PRODUCT_NAME = #{productName}</if>
+        <if test="moduleDetail != null and moduleDetail != ''">and t.MODULE_DETAIL = #{moduleDetail}</if>
+        <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
     </sql>
 
     <select id="selectEtThirdIntterface" resultMap="etThirdIntterfaceResult" parameterType="etThirdIntterface">
@@ -92,6 +98,9 @@
             <if test="createTime != null ">CREATE_TIME,</if>
             <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
             <if test="operatorTime != null ">OPERATOR_TIME,</if>
+            <if test="productName != null and productName != ''">PRODUCT_NAME,</if>
+            <if test="moduleDetail != null and moduleDetail != ''">MODULE_DETAIL,</if>
+            <if test="remark != null and remark != ''">REMARK,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -112,6 +121,9 @@
             <if test="createTime != null ">#{createTime, jdbcType=TIMESTAMP},</if>
             <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
             <if test="operatorTime != null ">#{operatorTime, jdbcType=TIMESTAMP},</if>
+            <if test="productName != null and productName != ''">#{productName, jdbcType=VARCHAR},</if>
+            <if test="moduleDetail != null and moduleDetail != ''">#{moduleDetail, jdbcType=VARCHAR},</if>
+            <if test="remark != null and remark != ''">#{remark, jdbcType=LONGVARCHAR},</if>
         </trim>
     </insert>
 
@@ -148,6 +160,11 @@
                 <if test="operatorTime != null ">OPERATOR_TIME =
                     #{operatorTime, jdbcType=TIMESTAMP},
                 </if>
+                <if test="productName != null and productName != ''">PRODUCT_NAME = #{productName, jdbcType=VARCHAR},</if>
+                <if test="moduleDetail != null and moduleDetail != ''">MODULE_DETAIL =
+                    #{moduleDetail, jdbcType=VARCHAR},
+                </if>
+                <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
             </trim>
         </set>
         <where>
@@ -205,7 +222,10 @@
         0 AS CREATOR,
         GETDATE() AS CREATE_TIME,
         0 AS OPERATOR,
-        NULL AS OPERATOR_TIME
+        NULL AS OPERATOR_TIME,
+        PRODUCT_NAME,
+        MODULE_DETAIL,
+        REMARK
         FROM
         PMIS_CONTRACT_PRODUCT_INFO t
         <where>
@@ -267,7 +287,17 @@
         0 AS CREATOR,
         GETDATE() AS CREATE_TIME,
         0 AS OPERATOR,
-        NULL AS OPERATOR_TIME
+        NULL AS OPERATOR_TIME,
+        (
+        SELECT
+        p.NAME
+        FROM
+        PMIS_PRODUCT_INFO p
+        WHERE
+        p.ID = t.CPXX
+        ) AS PRODUCT_NAME,
+        NULL AS MODULE_DETAIL,
+        NULL REMARK
         FROM
         PMIS_CONTRACT_PRODUCT_INFO t
         <where>
