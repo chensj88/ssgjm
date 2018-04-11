@@ -6,6 +6,7 @@ import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.ConnectionUtil;
 import cn.com.winning.ssgj.base.util.DateUtil;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
+import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -64,9 +65,8 @@ public class EtThirdIntterfaceController extends BaseController {
             intterface.setMap(map);
         }
         //获取所有生效产品条线
-        PmisProductLineInfo productLineInfo = new PmisProductLineInfo();
-        productLineInfo.setZt(1);
-        List<PmisProductLineInfo> pmisProductLineInfoList = getFacade().getPmisProductLineInfoService().getPmisProductLineInfoList(productLineInfo);
+
+        List<PmisProductLineInfo> pmisProductLineInfoList = this.getProductLineList(1);
         //获取所有不在本期范围原因
         SysDictInfo sysDictInfo = new SysDictInfo();
         sysDictInfo.setDictCode("NotInScope");
@@ -94,17 +94,24 @@ public class EtThirdIntterfaceController extends BaseController {
     public Map<String, Object> addOrModify(EtThirdIntterface etThirdIntterface) {
         //创建临时变量
         EtThirdIntterface etThirdIntterfaceTemp = new EtThirdIntterface();
+        String noScopeCode=etThirdIntterface.getNoScopeCode();
+        if(StringUtil.isEmptyOrNull(noScopeCode)){
+            etThirdIntterface.setIsScope(1);
+        }else{
+            etThirdIntterface.setIsScope(0);
+        }
         etThirdIntterfaceTemp.setId(etThirdIntterface.getId());
         etThirdIntterfaceTemp = super.getFacade().getEtThirdIntterfaceService().getEtThirdIntterface(etThirdIntterfaceTemp);
         PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
         basicInfo.setId(etThirdIntterface.getPmId());
         basicInfo = super.getFacade().getPmisProjectBasicInfoService().getPmisProjectBasicInfo(basicInfo);
         etThirdIntterface.setSerialNo(basicInfo.getKhxx() + "");
+        etThirdIntterface.setcId(basicInfo.getHtxx());
         if (etThirdIntterfaceTemp != null) {
             etThirdIntterface.setOperatorTime(new Timestamp(new Date().getTime()));
             super.getFacade().getEtThirdIntterfaceService().modifyEtThirdIntterface(etThirdIntterface);
         } else {
-            etThirdIntterface.setId(ssgjHelper.createInterfaceInfoId());
+            etThirdIntterface.setId(ssgjHelper.createThirdInterfaceId());
             etThirdIntterface.setCreator(etThirdIntterface.getOperator());
             etThirdIntterface.setCreateTime(new Timestamp(new Date().getTime()));
             etThirdIntterface.setOperatorTime(new Timestamp(new Date().getTime()));
@@ -173,4 +180,24 @@ public class EtThirdIntterfaceController extends BaseController {
         }
         return map;
     }
+
+
+    @RequestMapping(value = "/changeScope.do")
+    @ResponseBody
+    @ILog
+    @Transactional
+    public Map<String, Object> changeScope(EtThirdIntterface etThirdIntterface) {
+        String noScopeCode = etThirdIntterface.getNoScopeCode();
+        if (StringUtil.isEmptyOrNull(noScopeCode)) {
+            etThirdIntterface.setIsScope(1);
+        } else {
+            etThirdIntterface.setIsScope(0);
+        }
+        Map map = new HashMap();
+        getFacade().getEtThirdIntterfaceService().modifyEtThirdIntterface(etThirdIntterface);
+        map.put("type", Constants.SUCCESS);
+        map.put("msg", "范围修改成功！");
+        return map;
+    }
+
 }
