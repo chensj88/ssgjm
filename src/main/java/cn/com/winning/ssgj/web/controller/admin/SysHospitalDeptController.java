@@ -93,6 +93,7 @@ public class SysHospitalDeptController extends BaseController {
     public Map<String,Object> add(SysHospitalDept dept){
         dept.setIsDel(Constants.STATUS_USE);
         dept.setId(ssgjHelper.createSysHospitalDeptIdService());
+        dept.setDeptCode(String.valueOf(dept.getId()));
         super.getFacade().getSysHospitalDeptService().createSysHospitalDept(dept);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
