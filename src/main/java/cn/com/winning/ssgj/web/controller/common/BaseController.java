@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.common;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.domain.PmisProductLineInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.service.Facade;
 import org.apache.commons.beanutils.BeanUtils;
@@ -117,5 +118,17 @@ public class BaseController extends BaseSpringMvcMybatisController{
         SysUserInfo sessionUser = (SysUserInfo) request.getSession().getAttribute(Constants.USER_INFO);
         return  shiroUser != null ? shiroUser : sessionUser;
     }
+
+    /**
+     * 获取产品条线的系统集合
+     * @return
+     */
+    public List<PmisProductLineInfo> getProductLineList(){
+        PmisProductLineInfo productLineInfo = new PmisProductLineInfo();
+        productLineInfo.setZt(1);
+        productLineInfo.setLx(1);
+        return   this.getFacade().getPmisProductLineInfoService().getPmisProductLineInfoList(productLineInfo);
+    }
+
 
 }
