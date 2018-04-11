@@ -9,7 +9,7 @@
         <result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR"/>
         <result column="SIMULATE_NAME" property="simulateName" jdbcType="VARCHAR"/>
         <result column="SIMULATE_CODE" property="simulateCode" jdbcType="VARCHAR"/>
-        <result column="SIMULATE_RESULT" property="simulateResult" jdbcType="VARCHAR"/>
+        <result column="SIMULATE_RESULT" property="simulateResult" jdbcType="INTEGER"/>
         <result column="IS_ONLINE" property="isOnline" jdbcType="INTEGER"/>
         <result column="QUESTION" property="question" jdbcType="LONGVARCHAR"/>
         <result column="REMARK" property="remark" jdbcType="LONGVARCHAR"/>
@@ -33,7 +33,7 @@
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
         <if test="simulateName != null and simulateName != ''">and t.SIMULATE_NAME = #{simulateName}</if>
         <if test="simulateCode != null and simulateCode != ''">and t.SIMULATE_CODE = #{simulateCode}</if>
-        <if test="simulateResult != null and simulateResult != ''">and t.SIMULATE_RESULT = #{simulateResult}</if>
+        <if test="simulateResult != null ">and t.SIMULATE_RESULT = #{simulateResult}</if>
         <if test="(isOnline != null and isOnline != '') or isOnline == 0">and t.IS_ONLINE = #{isOnline}</if>
         <if test="question != null and question != ''">and t.QUESTION = #{question}</if>
         <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
@@ -85,7 +85,7 @@
             <if test="serialNo != null and serialNo != ''">SERIAL_NO,</if>
             <if test="simulateName != null and simulateName != ''">SIMULATE_NAME,</if>
             <if test="simulateCode != null and simulateCode != ''">SIMULATE_CODE,</if>
-            <if test="simulateResult != null and simulateResult != ''">SIMULATE_RESULT,</if>
+            <if test="simulateResult != null ">SIMULATE_RESULT,</if>
             <if test="(isOnline != null and isOnline != '') or isOnline == 0">IS_ONLINE,</if>
             <if test="question != null and question != ''">QUESTION,</if>
             <if test="remark != null and remark != ''">REMARK,</if>
@@ -104,7 +104,7 @@
             <if test="serialNo != null and serialNo != ''">#{serialNo, jdbcType=VARCHAR},</if>
             <if test="simulateName != null and simulateName != ''">#{simulateName,jdbcType=VARCHAR},</if>
             <if test="simulateCode != null and simulateCode != ''">#{simulateCode, jdbcType=VARCHAR},</if>
-            <if test="simulateResult != null and simulateResult != ''">#{simulateResult, jdbcType=VARCHAR},</if>
+            <if test="simulateResult != null ">#{simulateResult, jdbcType=INTEGER},</if>
             <if test="(isOnline != null and isOnline != '') or isOnline == 0">#{isOnline, jdbcType=INTEGER},</if>
             <if test="question != null and question != ''">#{question, jdbcType=LONGVARCHAR},</if>
             <if test="remark != null and remark != ''">#{remark, jdbcType=LONGVARCHAR},</if>
@@ -129,8 +129,8 @@
                 <if test="simulateCode != null and simulateCode != ''">SIMULATE_CODE =
                     #{simulateCode, jdbcType=VARCHAR},
                 </if>
-                <if test="simulateResult != null and simulateResult != ''">SIMULATE_RESULT =
-                    #{simulateResult, jdbcType=VARCHAR},
+                <if test="simulateResult != null ">SIMULATE_RESULT =
+                    #{simulateResult, jdbcType=INTEGER},
                 </if>
                 <if test="(isOnline != null and isOnline != '') or isOnline == 0">IS_ONLINE =
                     #{isOnline, jdbcType=INTEGER},
