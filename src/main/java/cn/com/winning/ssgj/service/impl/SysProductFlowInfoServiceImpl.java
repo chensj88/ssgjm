@@ -112,4 +112,11 @@ public class SysProductFlowInfoServiceImpl implements SysProductFlowInfoService 
         return this.sysProductFlowInfoDao.removeSysProductFlowInfoMappingByIds(param);
     }
 
+    @Override
+    public List<Long> getSysProductFlowInfoByPdId(List<Long> pdIds) {
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("pdId", pdIds);
+        return this.sysProductFlowInfoDao.selectSysFlowInfoIdsoByPdId(param);
+    }
+
 }

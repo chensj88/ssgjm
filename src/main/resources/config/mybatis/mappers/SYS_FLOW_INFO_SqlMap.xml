@@ -201,7 +201,7 @@
         <include refid="queryOrsysFlowInfo"/>
     </select>
 
-    <select id="selectSysFlowInfoListById" resultMap="sysFlowInfoResult" parameterType="sysDataInfo">
+    <select id="selectSysFlowInfoListById" resultMap="sysFlowInfoResult" parameterType="sysFlowInfo">
         select *
         from SYS_FLOW_INFO t
         <where>

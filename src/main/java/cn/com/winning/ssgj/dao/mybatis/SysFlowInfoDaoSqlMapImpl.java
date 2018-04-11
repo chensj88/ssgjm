@@ -64,4 +64,5 @@ public class SysFlowInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysFlowInfo> i
         String statement = "selectSysFlowInfoListForName";
         return super.getSqlSession().selectList(statement,flowInfo);
     }
+
 }

@@ -64,6 +64,6 @@ public interface CommonQueryService {
      * @param flowSurvey
      * @return
      */
-    public List<EtFlowSurvey> queryFlowInfoByProject(EtFlowSurvey flowSurvey);
+    public List<SysFlowInfo> queryFlowInfoByProject(EtFlowSurvey flowSurvey);
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 
+import cn.com.winning.ssgj.domain.SysFlowInfo;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.EtFlowSurveyDao;
@@ -58,8 +59,9 @@ public class EtFlowSurveyServiceImpl implements EtFlowSurveyService {
     }
 
     @Override
-    public void generateEtFlowSurveyData(EtFlowSurvey flowSurvey) {
+    public List<EtFlowSurvey> generateEtFlowSurveyData(List<SysFlowInfo> flowInfos) {
 
+        return null;
     }
 
 }

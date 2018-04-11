@@ -33,4 +33,6 @@ public interface SysProductFlowInfoService {
     void addSysProductFlowInfoMapping(String idList, SysUserInfo user) throws ParseException;
 
     Integer removeSysProductFlowInfoMappingByIds(String idList, SysUserInfo userInfo);
+
+    List<Long> getSysProductFlowInfoByPdId(List<Long> pdIds);
 }

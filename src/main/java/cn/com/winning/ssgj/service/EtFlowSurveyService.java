@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.service;
 import java.util.List;
 
 import cn.com.winning.ssgj.domain.EtFlowSurvey;
+import cn.com.winning.ssgj.domain.SysFlowInfo;
 
 /**
  *
@@ -26,5 +27,5 @@ public interface EtFlowSurveyService {
 
     List<EtFlowSurvey> getEtFlowSurveyPaginatedList(EtFlowSurvey t);
 
-    void generateEtFlowSurveyData(EtFlowSurvey flowSurvey);
+    List<EtFlowSurvey> generateEtFlowSurveyData(List<SysFlowInfo> flowInfos);
 }

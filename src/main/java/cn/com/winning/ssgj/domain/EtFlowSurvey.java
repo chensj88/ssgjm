@@ -123,17 +123,16 @@ public class EtFlowSurvey extends BaseDomain implements Serializable {
 	/**
 	 * @val 合同ID
 	 */
-	public Long getCId() {
+	public Long getcId() {
 		return cId;
 	}
-	
 	/**
 	 * @val 合同ID
 	 */
-	public void setCId(Long cId) {
+	public void setcId(Long cId) {
 		this.cId = cId;
 	}
-	
+
 	/**
 	 * @val 项目ID
 	 */

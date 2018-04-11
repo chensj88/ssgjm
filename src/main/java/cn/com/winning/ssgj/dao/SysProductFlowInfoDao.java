@@ -33,4 +33,11 @@ public interface SysProductFlowInfoDao extends EntityDao<SysProductFlowInfo> {
      * @return
      */
     Integer removeSysProductFlowInfoMappingByIds(Map<String, Object> param);
+
+    /**
+     * 根据产品ID的List获取Flow的ID
+     * @param param
+     * @return
+     */
+    List<Long> selectSysFlowInfoIdsoByPdId(Map<String, Object> param);
 }

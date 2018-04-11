@@ -6,6 +6,8 @@ import cn.com.winning.ssgj.dao.EtFlowSurveyDao;
 import cn.com.winning.ssgj.domain.EtFlowSurvey;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.List;
+
 /**
  *
  *
@@ -14,5 +16,6 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
  */
 @Service
 public class EtFlowSurveyDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtFlowSurvey> implements EtFlowSurveyDao {
+
 
 }

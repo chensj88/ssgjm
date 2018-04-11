@@ -48,6 +48,10 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     private EtEasyDataCheckService etEasyDataCheckService;
     @Autowired
     private EtFlowSurveyService etFlowSurveyService;
+    @Autowired
+    private SysFlowInfoService sysFlowInfoService;
+    @Autowired
+    private  SysProductFlowInfoService sysProductFlowInfoService;
     @Override
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId) {
         //获取用户可以查看的项目信息
@@ -201,11 +205,24 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     }
 
     @Override
-    public List<EtFlowSurvey> queryFlowInfoByProject(EtFlowSurvey flowSurvey) {
+    public List<SysFlowInfo> queryFlowInfoByProject(EtFlowSurvey flowSurvey) {
         List<Long> pdIds = this.queryProductIdByProjectIdAndType(flowSurvey.getPmId(),Constants.PMIS.CPLB_1);
-        flowSurvey.getMap().put("pdIds",pdIds);
-        etFlowSurveyService.generateEtFlowSurveyData(flowSurvey);
-        return null;
+        List<Long> flowIds = null;
+        List<SysFlowInfo> flowInfoList = null ;
+        if (pdIds != null && pdIds.size() > 0){
+            SysProductFlowInfo sysProductFlowInfo = new SysProductFlowInfo();
+            sysProductFlowInfo.getMap().put("pdId",pdIds);
+            flowIds = sysProductFlowInfoService.getSysProductFlowInfoByPdId(pdIds);
+        }
+        if( flowIds != null && flowIds.size() > 0){
+            SysFlowInfo flowInfo = new SysFlowInfo();
+            flowInfo.getMap().put("pks",flowIds);
+            flowInfoList = this.sysFlowInfoService.getSysFlowInfoListById(flowInfo);
+        }
+
+        
+
+        return flowInfoList;
     }
 
     /**

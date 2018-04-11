@@ -1,6 +1,8 @@
 package cn.com.winning.ssgj.web.controller;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.domain.EtFlowSurvey;
+import cn.com.winning.ssgj.domain.SysFlowInfo;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +42,21 @@ public class TestController extends BaseController{
         result.put("success",(List<Integer>)data.get("success"));
         result.put("handle",(List<Integer>)data.get("handle"));
         result.put("item",(List<String>)data.get("item"));
+        return result;
+
+    }
+
+    @RequestMapping(value = "/flow.do")
+    @ResponseBody
+    public Map<String,Object> testflowINfo(){
+        EtFlowSurvey flowSurvey = new EtFlowSurvey();
+        flowSurvey.setPmId(24661L);
+        flowSurvey.setcId(21269L);
+        flowSurvey.setSerialNo("20781");
+        List<SysFlowInfo> data = super.getFacade().getCommonQueryService().queryFlowInfoByProject(flowSurvey);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data",data);
         return result;
 
     }

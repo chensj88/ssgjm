@@ -166,5 +166,16 @@
 			</if>
 		</where>
 	</update>
-
+	
+	<select id="selectSysFlowInfoIdsoByPdId" parameterType="java.util.Map" resultType="long">
+		SELECT  DISTINCT A.FLOW_ID  FROM
+		SYS_PRODUCT_FLOW_INFO A
+		<where>
+			<if test="(pdId != null and pdId.size > 0 )">
+				AND A.PD_ID  in
+				<foreach item="item" collection="pdId" open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			AND (CURRENT_TIMESTAMP  BETWEEN A.EFFECTIVE_DATE AND A.EXPIRE_DATE )
+		</where>
+	</select>
 </mapper>
