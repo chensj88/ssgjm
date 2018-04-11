@@ -26,4 +26,5 @@ public interface EtFlowSurveyService {
 
     List<EtFlowSurvey> getEtFlowSurveyPaginatedList(EtFlowSurvey t);
 
+    void generateEtFlowSurveyData(EtFlowSurvey flowSurvey);
 }

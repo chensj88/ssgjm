@@ -59,4 +59,11 @@ public interface CommonQueryService {
      */
     public Map<String,List> queryCompletionOfProject(long pmId);
 
+    /**
+     * 根据项目ID获取流程信息
+     * @param flowSurvey
+     * @return
+     */
+    public List<EtFlowSurvey> queryFlowInfoByProject(EtFlowSurvey flowSurvey);
+
 }

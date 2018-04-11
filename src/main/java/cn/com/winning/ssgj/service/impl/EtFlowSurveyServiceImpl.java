@@ -57,4 +57,9 @@ public class EtFlowSurveyServiceImpl implements EtFlowSurveyService {
         return this.etFlowSurveyDao.selectEntityPaginatedList(t);
     }
 
+    @Override
+    public void generateEtFlowSurveyData(EtFlowSurvey flowSurvey) {
+
+    }
+
 }

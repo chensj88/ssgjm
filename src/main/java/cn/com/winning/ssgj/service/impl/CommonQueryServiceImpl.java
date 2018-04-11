@@ -46,6 +46,8 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     private EtDataCheckService etDataCheckService;
     @Autowired
     private EtEasyDataCheckService etEasyDataCheckService;
+    @Autowired
+    private EtFlowSurveyService etFlowSurveyService;
     @Override
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId) {
         //获取用户可以查看的项目信息
@@ -73,6 +75,18 @@ public class CommonQueryServiceImpl implements CommonQueryService {
 
     @Override
     public List<PmisProductInfo> queryProductOfProjectByProjectIdAndType(long pmId, int type) {
+        PmisProductInfo productInfo = new PmisProductInfo();
+        productInfo.getMap().put("pks", queryProductIdByProjectIdAndType(pmId,type));
+        return pmisProductInfoDao.selectPmisProductInfoListByIdList(productInfo);
+    }
+
+    /**
+     * 根据项目ID和合同产品类型来获得List<Long> pdIds
+     * @param pmId
+     * @param type
+     * @return pdIds
+     */
+    private List<Long> queryProductIdByProjectIdAndType(long pmId, int type){
         PmisContractProductInfo cpInfo = new PmisContractProductInfo();
         cpInfo.setHtcplb(type);
         cpInfo.setXmlcb(pmId);
@@ -81,11 +95,8 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         for (PmisContractProductInfo info : cpInfoList) {
             pIds.add(info.getCpxx());
         }
-        PmisProductInfo productInfo = new PmisProductInfo();
-        productInfo.getMap().put("pks",pIds);
-        return pmisProductInfoDao.selectPmisProductInfoListByIdList(productInfo);
+        return pIds;
     }
-
 
     /**
      * 根据项目id获取项目基本信息
@@ -187,6 +198,14 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         result.put("handle",projectHandle);
         result.put("item",projectItem);
         return result;
+    }
+
+    @Override
+    public List<EtFlowSurvey> queryFlowInfoByProject(EtFlowSurvey flowSurvey) {
+        List<Long> pdIds = this.queryProductIdByProjectIdAndType(flowSurvey.getPmId(),Constants.PMIS.CPLB_1);
+        flowSurvey.getMap().put("pdIds",pdIds);
+        etFlowSurveyService.generateEtFlowSurveyData(flowSurvey);
+        return null;
     }
 
     /**
