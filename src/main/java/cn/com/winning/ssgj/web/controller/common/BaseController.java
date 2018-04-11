@@ -123,10 +123,10 @@ public class BaseController extends BaseSpringMvcMybatisController{
      * 获取产品条线的系统集合
      * @return
      */
-    public List<PmisProductLineInfo> getProductLineList(){
+    public List<PmisProductLineInfo> getProductLineList(int lx){
         PmisProductLineInfo productLineInfo = new PmisProductLineInfo();
         productLineInfo.setZt(1);
-        productLineInfo.setLx(1);
+        productLineInfo.setLx(lx);
         return   this.getFacade().getPmisProductLineInfoService().getPmisProductLineInfoList(productLineInfo);
     }
 
