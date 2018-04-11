@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,6 +27,19 @@ public class TestController extends BaseController{
         super.getFacade().getSysOrgExtService().callProcedure();
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
+        return result;
+
+    }
+
+    @RequestMapping(value = "/test.do")
+    @ResponseBody
+    public Map<String,Object> testJsonArray(){
+        Map<String,List> data = super.getFacade().getCommonQueryService().queryCompletionOfProject(24661L);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("success",(List<Integer>)data.get("success"));
+        result.put("handle",(List<Integer>)data.get("handle"));
+        result.put("item",(List<String>)data.get("item"));
         return result;
 
     }

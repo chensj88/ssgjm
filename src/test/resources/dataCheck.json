@@ -1,0 +1,52 @@
+[
+  [
+    "F",
+    "系统不存在可调参数,请检查数据！",
+    "select * from YY_CONFIG"
+  ],
+  [
+    "F",
+    "系统不存在区县代码,请检查数据！",
+    "select * from YY_QXDMK"
+  ],
+  [
+    "F",
+    "系统不存在医院基本信息库,请检查数据！",
+    "select * from YY_JBCONFIG"
+  ],
+  [
+    "F",
+    "系统不存在一级科室,请检查数据！",
+    "select * from YY_YJKSK"
+  ],
+  [
+    "F",
+    "系统不存在二级科室,请检查数据！",
+    "select * from YY_EJKSK"
+  ],
+  [
+    "F",
+    "系统存在二级科室无对应的一级科室,请检查数据！",
+    "select yjks_id,* from YY_EJKSK (nolock) where yjks_id not in (select id from YY_YJKSK)"
+  ],
+  [
+    "F",
+    "系统不存在医院基本信息库,请检查数据！",
+    "select * from YY_JBCONFIG"
+  ],
+  [
+    "F",
+    "系统不存在一级科室,请检查数据！",
+    "select * from YY_YJKSK"
+  ],
+  [
+    "F",
+    "系统不存在二级科室,请检查数据！",
+    "select * from YY_EJKSK"
+  ],
+  [
+    "F",
+    "系统存在二级科室无对应的一级科室,请检查数据！",
+    "select yjks_id,* from YY_EJKSK (nolock) where yjks_id not in (select id from YY_YJKSK)"
+  ]
+]

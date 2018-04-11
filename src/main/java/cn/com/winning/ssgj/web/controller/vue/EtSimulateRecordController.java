@@ -223,4 +223,5 @@ public class EtSimulateRecordController extends BaseController {
         result.put("status", Constants.SUCCESS);
         return result;
     }
+
 }

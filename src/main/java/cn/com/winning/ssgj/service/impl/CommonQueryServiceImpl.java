@@ -1,15 +1,21 @@
 package cn.com.winning.ssgj.service.impl;
 
+import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.dao.PmisContractProductInfoDao;
 import cn.com.winning.ssgj.dao.PmisProductInfoDao;
 import cn.com.winning.ssgj.dao.SysUserInfoDao;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 import cn.com.winning.ssgj.service.*;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +44,8 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     private SysUserInfoService sysUserInfoService;
     @Autowired
     private EtDataCheckService etDataCheckService;
+    @Autowired
+    private EtEasyDataCheckService etEasyDataCheckService;
     @Override
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId) {
         //获取用户可以查看的项目信息
@@ -120,12 +128,65 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     }
 
     @Override
-    public Map<String, Integer> queryCompletionOfProject(long pmId) {
+    public Map<String,List> queryCompletionOfProject(long pmId) {
+        List<Integer> projectCompele = new ArrayList<>();
+        List<Integer> projectHandle = new ArrayList<>();
+        List<String> projectItem = new ArrayList<>();
         EtDataCheck dataCheck = new EtDataCheck();
         dataCheck.setPmId(pmId);
         List<EtDataCheck> dataCheckList = this.etDataCheckService.getEtDataCheckList(dataCheck);
+        int dataFialNum = 0; //校验失败总数
+        int dataSuccNum = 0; //校验成功总数
+        if((dataCheckList != null) &&(dataCheckList.size() > 0)){
+            for (EtDataCheck check : dataCheckList) {
+                if(!StringUtil.isEmptyOrNull(check.getContent())){
+                     JSONArray array = (JSONArray) JSONArray.parse(check.getContent());
+                    for (int i = 0; i < array.size(); i++) {
+                        Object json = array.get(i);
+                        System.out.println(json);
+                        if(json.toString().contains("\"F\"")){
+                            dataFialNum++;
+                        }else{
+                            dataSuccNum++;
+                        }
 
-        return null;
+                    }
+                }else{
+                    dataFialNum++;
+                }
+            }
+        }
+        projectCompele.add(dataSuccNum);
+        projectHandle.add(dataFialNum);
+        projectItem.add("基础数据("+(dataFialNum+dataSuccNum)+")");
+        //=============校验易用数据=================//
+        EtEasyDataCheck easyCheck = new EtEasyDataCheck();
+        easyCheck.setPmId(pmId);
+        easyCheck.setIsScope(Constants.STATUS_USE);
+        List<EtEasyDataCheck> easyDataCheckList = this.etEasyDataCheckService.getEtEasyDataCheckList(easyCheck);
+        int easyFailNum = 0; //校验失败总数
+        int easySuccNum = 0; //校验成功总数
+        if((easyDataCheckList != null) &&(easyDataCheckList.size() > 0)){
+            for (EtEasyDataCheck check : easyDataCheckList) {
+                if(!StringUtil.isEmptyOrNull(check.getContent())){
+                    if ("校验正常".equals(check.getContent())){
+                        easySuccNum++;
+                    }else {
+                        easyFailNum++;
+                    }
+                }else{
+                    easyFailNum++;
+                }
+            }
+        }
+        projectCompele.add(easySuccNum);
+        projectHandle.add(easyFailNum);
+        projectItem.add("易用数据("+(easySuccNum+easyFailNum)+")");
+        Map<String,List> result = new HashMap<String,List>();
+        result.put("success",projectCompele);
+        result.put("handle",projectHandle);
+        result.put("item",projectItem);
+        return result;
     }
 
     /**

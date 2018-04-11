@@ -57,6 +57,6 @@ public interface CommonQueryService {
      * @param pmId
      * @return resultMap
      */
-    public Map<String,Integer> queryCompletionOfProject(long pmId);
+    public Map<String,List> queryCompletionOfProject(long pmId);
 
 }
