@@ -46,7 +46,7 @@ public class EtSimulateRecord extends BaseDomain implements Serializable {
 	/**
 	 * @val 模拟效果: 0：很不好  1：不好 2：良好3：达到上线要求
 	 */
-	private String simulateResult;
+	private Integer simulateResult;
 	
 	/**
 	 * @val 是否达到上线要求: 0：否 1：是
@@ -175,14 +175,14 @@ public class EtSimulateRecord extends BaseDomain implements Serializable {
 	/**
 	 * @val 模拟效果: 0：很不好  1：不好 2：良好3：达到上线要求
 	 */
-	public String getSimulateResult() {
+	public Integer getSimulateResult() {
 		return simulateResult;
 	}
 	
 	/**
 	 * @val 模拟效果: 0：很不好  1：不好 2：良好3：达到上线要求
 	 */
-	public void setSimulateResult(String simulateResult) {
+	public void setSimulateResult(Integer simulateResult) {
 		this.simulateResult = simulateResult;
 	}
 	
