@@ -223,14 +223,7 @@
         GETDATE() AS CREATE_TIME,
         0 AS OPERATOR,
         NULL AS OPERATOR_TIME,
-        (
-        SELECT
-        p.NAME
-        FROM
-        PMIS_PRODUCT_INFO p
-        WHERE
-        p.ID = t.CPXX
-        ) AS PRODUCT_NAME,
+        t.ZXTMC AS PRODUCT_NAME,
         NULL AS MODULE_DETAIL,
         NULL REMARK
         FROM
@@ -266,7 +259,7 @@
     <select id="selectEtThirdIntterfaceMergeList" resultMap="etThirdIntterfaceResultForList"
             parameterType="EtThirdIntterface">
         select *
-        from ET_INTERFACE_INFO e
+        from ET_THIRD_INTTERFACE e
         <where>
             <if test="(pmId != null ) or pmId == 0">e.PM_ID = #{pmId, jdbcType=BIGINT}</if>
         </where>

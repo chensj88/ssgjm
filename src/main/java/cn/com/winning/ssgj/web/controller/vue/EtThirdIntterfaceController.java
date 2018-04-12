@@ -172,7 +172,7 @@ public class EtThirdIntterfaceController extends BaseController {
             dataList.add(ConnectionUtil.objectToMap(etThirdIntterfaces.get(i)));
         }
         //属性数组
-        Field[] fields = EtInterfaceInfo.class.getDeclaredFields();
+        Field[] fields = EtThirdIntterface.class.getDeclaredFields();
         //属性集合
         List<String> attrNameList = new ArrayList<>();
         for (int i = 0; i < fields.length; i++) {
