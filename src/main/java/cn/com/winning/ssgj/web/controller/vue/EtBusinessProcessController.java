@@ -2,7 +2,6 @@ package cn.com.winning.ssgj.web.controller.vue;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.domain.EtBusinessProcess;
-import cn.com.winning.ssgj.domain.EtFlowSurvey;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,9 +31,7 @@ public class EtBusinessProcessController extends BaseController {
 
 
         Map<String,Object> result = new HashMap<String,Object>();
-        /*result.put("total", total);*/
         result.put("status", Constants.SUCCESS);
-        /*result.put("rows", );*/
         return result;
 
     }
