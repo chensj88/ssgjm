@@ -1,7 +1,9 @@
 package cn.com.winning.ssgj.web.controller.common;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.domain.PmisProductInfo;
 import cn.com.winning.ssgj.domain.PmisProductLineInfo;
+import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.service.Facade;
 import org.apache.commons.beanutils.BeanUtils;
@@ -18,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
-public class BaseController extends BaseSpringMvcMybatisController{
+public class BaseController extends BaseSpringMvcMybatisController {
     @Resource
     private Facade facade;
 
@@ -83,10 +85,10 @@ public class BaseController extends BaseSpringMvcMybatisController{
     }
 
     /**
-     * @author: Chen,Kuai
+     * @author: Chen, Kuai
      * @Description: 将userId获取id
      */
-    public Long user_id(String userId,String userType){
+    public Long user_id(String userId, String userType) {
         SysUserInfo info = new SysUserInfo();
         info.setUserid(userId);
         info.setStatus(1);
@@ -96,10 +98,10 @@ public class BaseController extends BaseSpringMvcMybatisController{
     }
 
     /**
-     * @author: Chen,Kuai
+     * @author: Chen, Kuai
      * @Description: 将id获取userId
      */
-    public String id_user(Long id,String userType){
+    public String id_user(Long id, String userType) {
         SysUserInfo info = new SysUserInfo();
         info.setId(id);
         info.setStatus(1);
@@ -110,24 +112,28 @@ public class BaseController extends BaseSpringMvcMybatisController{
 
     /**
      * 获取当前的用户信息
+     *
      * @return
      */
-    public SysUserInfo getCurrentUserInfo(){
+    public SysUserInfo getCurrentUserInfo() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         SysUserInfo shiroUser = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         SysUserInfo sessionUser = (SysUserInfo) request.getSession().getAttribute(Constants.USER_INFO);
-        return  shiroUser != null ? shiroUser : sessionUser;
+        return shiroUser != null ? shiroUser : sessionUser;
     }
 
+
     /**
-     * 获取产品条线的系统集合
+     * 根据项目获取产品条线的系统集合
+     * @param pmId
      * @return
      */
-    public List<PmisProductLineInfo> getProductLineList(int lx){
-        PmisProductLineInfo productLineInfo = new PmisProductLineInfo();
-        productLineInfo.setZt(1);
-        productLineInfo.setLx(lx);
-        return   this.getFacade().getPmisProductLineInfoService().getPmisProductLineInfoList(productLineInfo);
+    public List<PmisProductLineInfo> getProductLineList(Long pmId) {
+        //根据项目id获取产品
+        List<PmisProductInfo> pmisProductInfos = getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId, 1);
+        //根据产品获取产品条线
+        List<PmisProductLineInfo> pmisProductLineInfos = getFacade().getCommonQueryService().selectPmisProductLineInfoByProductInfo(pmisProductInfos);
+        return pmisProductLineInfos;
     }
 
 

@@ -115,7 +115,7 @@
             <if test="id != null and id != ''">ID = #{id}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
-                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
             </if>
         </where>
     </update>
@@ -126,26 +126,35 @@
             <if test="id != null and id != ''">ID = #{id}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
-                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
             </if>
         </where>
     </delete>
 
-    <select id="selectPmisProductLineInfoByNameForList" resultMap="pmisProductLineInfoResult"  parameterType="pmisProductLineInfo">
+
+    <select id="selectPmisProductLineInfoByProductInfo" parameterType="pmisProductInfo" resultMap="pmisProductLineInfoResult">
+        SELECT DISTINCT * FROM PMIS_PRODUCT_LINE_INFO
+        WHERE
+        ID in
+        <foreach item="item" collection="list" open="(" separator="," close=")">#{item.cptx}</foreach>
+    </select>
+
+    <select id="selectPmisProductLineInfoByNameForList" resultMap="pmisProductLineInfoResult"
+            parameterType="pmisProductLineInfo">
         select * from (
         select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
         from PMIS_PRODUCT_LINE_INFO t
         <where>
-            <if test="name != null and name != ''"> and t.NAME LIKE '%${name}%'</if>
+            <if test="name != null and name != ''">and t.NAME LIKE '%${name}%'</if>
         </where>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
 
-    <select id="selectPmisProductLineInfoByNameForCount" resultType="int"  parameterType="pmisProductLineInfo">
+    <select id="selectPmisProductLineInfoByNameForCount" resultType="int" parameterType="pmisProductLineInfo">
         select count(*) from PMIS_PRODUCT_LINE_INFO t
         <where>
-            <if test="name != null and name != ''"> and t.NAME LIKE '%${name}%'</if>
+            <if test="name != null and name != ''">and t.NAME LIKE '%${name}%'</if>
         </where>
     </select>
 </mapper>
