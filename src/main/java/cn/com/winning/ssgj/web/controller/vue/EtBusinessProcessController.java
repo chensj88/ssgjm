@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.web.controller.vue;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.domain.EtBusinessProcess;
+import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,17 +22,19 @@ import java.util.Map;
  */
 @Controller
 @CrossOrigin
-@RequestMapping(value = "/vue/flow/")
+@RequestMapping(value = "/vue/businessProcess/")
 public class EtBusinessProcessController extends BaseController {
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String,Object> queryFlowInfoByPmId(EtBusinessProcess process){
-
-
-
+    public Map<String,Object> queryFlowInfoByPmId(EtBusinessProcess process, Row row){
+        super.getFacade().getCommonQueryService().generateEtBusinessProcessByProject(process);
+        process.setRow(row);
+        List<EtBusinessProcess> processList = super.getFacade().getEtBusinessProcessService().getEtBusinessProcessPaginatedList(process);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
+        result.put("rows", processList);
+        result.put("total", processList.size());
         return result;
 
     }

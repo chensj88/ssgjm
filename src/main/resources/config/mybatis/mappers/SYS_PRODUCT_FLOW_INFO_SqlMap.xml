@@ -171,11 +171,13 @@
 		SELECT  DISTINCT A.FLOW_ID  FROM
 		SYS_PRODUCT_FLOW_INFO A
 		<where>
-			<if test="(pdId != null and pdId.size > 0 )">
-				AND A.PD_ID  in
-				<foreach item="item" collection="pdId" open="(" separator="," close=")">#{item}</foreach>
+			<if test="(pdId != null and pdId != '')">
+				AND A.PD_ID  in ${pdId}
+
 			</if>
-			AND (CURRENT_TIMESTAMP  BETWEEN A.EFFECTIVE_DATE AND A.EXPIRE_DATE )
+			<if test="(pdId != null and pdId != '')">
+				AND (CURRENT_TIMESTAMP  BETWEEN A.EFFECTIVE_DATE AND A.EXPIRE_DATE )
+			</if>
 		</where>
 	</select>
 </mapper>

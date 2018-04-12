@@ -259,6 +259,20 @@ public class StringUtil {
     }
 
 
+    public static String generateStringSql(List<Long> idLists){
+        StringBuilder sb = new StringBuilder();
+        sb.append(" (");
+        for (int i = 0; i < idLists.size(); i++) {
+            if( i == idLists.size() -1){
+                sb.append( idLists.get(i) + "");
+            }else{
+                sb.append( idLists.get(i) + ",");
+            }
+        }
+        sb.append(" )");
+        return sb.toString();
+    }
+
     public static void main(String[] args){
        String idList = "156,1;156,2";
        List<String> idsList = new ArrayList<String>();
