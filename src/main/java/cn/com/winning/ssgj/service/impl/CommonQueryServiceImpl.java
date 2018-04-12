@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.service.impl;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.dao.PmisContractProductInfoDao;
 import cn.com.winning.ssgj.dao.PmisProductInfoDao;
@@ -14,10 +15,8 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  * @author chenshijie
@@ -47,11 +46,13 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     @Autowired
     private EtEasyDataCheckService etEasyDataCheckService;
     @Autowired
-    private EtFlowSurveyService etFlowSurveyService;
+    private EtBusinessProcessService etBusinessProcessService;
     @Autowired
     private SysFlowInfoService sysFlowInfoService;
     @Autowired
     private  SysProductFlowInfoService sysProductFlowInfoService;
+    @Autowired
+    private SSGJHelper ssgjHelper;
     @Override
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId) {
         //获取用户可以查看的项目信息
@@ -205,10 +206,14 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     }
 
     @Override
-    public List<SysFlowInfo> queryFlowInfoByProject(EtFlowSurvey flowSurvey) {
-        List<Long> pdIds = this.queryProductIdByProjectIdAndType(flowSurvey.getPmId(),Constants.PMIS.CPLB_1);
+    public void  generateEtBusinessProcessByProject(EtBusinessProcess process) {
+        List<Long> pdIds = this.queryProductIdByProjectIdAndType(process.getPmId(),Constants.PMIS.CPLB_1);
         List<Long> flowIds = null;
         List<SysFlowInfo> flowInfoList = null ;
+        long pmId = process.getPmId();
+        long cId = process.getcId();
+        String serialNo = process.getSerialNo();
+
         if (pdIds != null && pdIds.size() > 0){
             SysProductFlowInfo sysProductFlowInfo = new SysProductFlowInfo();
             sysProductFlowInfo.getMap().put("pdId",pdIds);
@@ -219,10 +224,26 @@ public class CommonQueryServiceImpl implements CommonQueryService {
             flowInfo.getMap().put("pks",flowIds);
             flowInfoList = this.sysFlowInfoService.getSysFlowInfoListById(flowInfo);
         }
-
-        
-
-        return flowInfoList;
+        if( flowInfoList != null && flowInfoList.size() > 0){
+            for (SysFlowInfo info : flowInfoList) {
+                process.setFlowId(info.getId());
+                process = this.etBusinessProcessService.getEtBusinessProcess(process);
+                if(process == null ){
+                    process = new EtBusinessProcess();
+                    process.setId(ssgjHelper.createEtFlowSurveyIdService());
+                    process.setPmId(pmId);
+                    process.setcId(cId);
+                    process.setSerialNo(serialNo);
+                    process.setFlowId(info.getId());
+                    process.setFlowCode(info.getFlowCode());
+                    process.setFlowName(info.getFlowName());
+                    process.setStatus(Constants.STATUS_UNUSE);
+                    process.setCreator(10001L);
+                    process.setCreateTime(new Timestamp(new Date().getTime()));
+                    etBusinessProcessService.createEtBusinessProcess(process);
+                }
+            }
+        }
     }
 
     /**

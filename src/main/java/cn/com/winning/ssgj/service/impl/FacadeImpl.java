@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.service.impl;
 
 import javax.annotation.Resource;
 
+import cn.com.winning.ssgj.domain.EtBusinessProcess;
 import cn.com.winning.ssgj.service.*;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class FacadeImpl implements Facade {
     EtFloorQuestionInfoService etFloorQuestionInfoService;
 
     @Resource
-    EtFlowSurveyService etFlowSurveyService;
+    EtBusinessProcessService etBusinessProcessService;
 
     @Resource
     EtInterfaceInfoService etInterfaceInfoService;
@@ -228,8 +229,9 @@ public class FacadeImpl implements Facade {
         return etFloorQuestionInfoService;
     }
 
-    public EtFlowSurveyService getEtFlowSurveyService() {
-        return etFlowSurveyService;
+    @Override
+    public EtBusinessProcessService getEtBusinessProcessService() {
+        return etBusinessProcessService;
     }
 
     public EtInterfaceInfoService getEtInterfaceInfoService() {

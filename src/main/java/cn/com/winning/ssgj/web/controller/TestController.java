@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.domain.EtBusinessProcess;
 import cn.com.winning.ssgj.domain.EtFlowSurvey;
 import cn.com.winning.ssgj.domain.SysFlowInfo;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -49,14 +50,13 @@ public class TestController extends BaseController{
     @RequestMapping(value = "/flow.do")
     @ResponseBody
     public Map<String,Object> testflowINfo(){
-        EtFlowSurvey flowSurvey = new EtFlowSurvey();
+        EtBusinessProcess flowSurvey = new EtBusinessProcess();
         flowSurvey.setPmId(24661L);
         flowSurvey.setcId(21269L);
         flowSurvey.setSerialNo("20781");
-        List<SysFlowInfo> data = super.getFacade().getCommonQueryService().queryFlowInfoByProject(flowSurvey);
+        super.getFacade().getCommonQueryService().generateEtBusinessProcessByProject(flowSurvey);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
-        result.put("data",data);
         return result;
 
     }

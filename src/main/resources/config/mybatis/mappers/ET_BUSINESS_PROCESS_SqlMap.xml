@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.EtBusinessProcessDao">
+
+	<resultMap id="etBusinessProcessResultForList" type="etBusinessProcess">
+		<result column="ID" property="id" jdbcType="BIGINT" />
+		<result column="C_ID" property="cId" jdbcType="BIGINT" />
+		<result column="PM_ID" property="pmId" jdbcType="BIGINT" />
+		<result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR" />
+		<result column="FLOW_ID" property="flowId" jdbcType="BIGINT" />
+		<result column="FLOW_CODE" property="flowCode" jdbcType="VARCHAR" />
+		<result column="FLOW_NAME" property="flowName" jdbcType="VARCHAR" />
+		<result column="IS_SCOPE" property="isScope" jdbcType="INTEGER" />
+		<result column="NO_SCOPE_CODE" property="noScopeCode" jdbcType="VARCHAR" />
+		<result column="MESSAGE" property="message" jdbcType="LONGVARCHAR" />
+		<result column="STATUS" property="status" jdbcType="INTEGER" />
+		<result column="SOURCE_TYPE" property="sourceType" jdbcType="INTEGER" />
+		<result column="UPLOAD_PATH" property="uploadPath" jdbcType="VARCHAR" />
+		<result column="DOWNLOAD_PATH" property="downloadPath" jdbcType="VARCHAR" />
+		<result column="CREATOR" property="creator" jdbcType="BIGINT" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="OPERATOR" property="operator" jdbcType="BIGINT" />
+		<result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<resultMap id="etBusinessProcessResult" type="etBusinessProcess" extends="etBusinessProcessResultForList">
+	</resultMap>
+
+	<sql id="sf-etBusinessProcess">
+	   <if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
+	   <if test="(cId != null and cId != '') or cId == 0"> and t.C_ID = #{cId} </if>
+	   <if test="(pmId != null and pmId != '') or pmId == 0"> and t.PM_ID = #{pmId} </if>
+	   <if test="serialNo != null and serialNo != ''"> and t.SERIAL_NO = #{serialNo} </if>
+	   <if test="(flowId != null and flowId != '') or flowId == 0"> and t.FLOW_ID = #{flowId} </if>
+	   <if test="flowCode != null and flowCode != ''"> and t.FLOW_CODE = #{flowCode} </if>
+	   <if test="flowName != null and flowName != ''"> and t.FLOW_NAME = #{flowName} </if>
+	   <if test="(isScope != null )"> and t.IS_SCOPE = #{isScope} </if>
+	   <if test="noScopeCode != null and noScopeCode != ''"> and t.NO_SCOPE_CODE = #{noScopeCode} </if>
+	   <if test="message != null and message != ''"> and t.MESSAGE = #{message} </if>
+	   <if test="(status != null )"> and t.STATUS = #{status} </if>
+	   <if test="(sourceType != null and sourceType != '') or sourceType == 0"> and t.SOURCE_TYPE = #{sourceType} </if>
+	   <if test="uploadPath != null and uploadPath != ''"> and t.UPLOAD_PATH = #{uploadPath} </if>
+	   <if test="downloadPath != null and downloadPath != ''"> and t.DOWNLOAD_PATH = #{downloadPath} </if>
+	   <if test="(creator != null and creator != '') or creator == 0"> and t.CREATOR = #{creator} </if>
+	   <if test="createTime != null and createTime != ''"> and t.CREATE_TIME = #{createTime} </if>
+	   <if test="(operator != null and operator != '') or operator == 0"> and t.OPERATOR = #{operator} </if>
+	   <if test="operatorTime != null and operatorTime != ''"> and t.OPERATOR_TIME = #{operatorTime} </if>
+	</sql>
+
+	<select id="selectEtBusinessProcess" resultMap="etBusinessProcessResult" parameterType="etBusinessProcess">
+		select * from ET_BUSINESS_PROCESS t where 1 = 1
+		<include refid="sf-etBusinessProcess" />
+	</select>
+
+	<select id="selectEtBusinessProcessList" resultMap="etBusinessProcessResultForList" parameterType="etBusinessProcess">
+		select
+		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
+		 * from ET_BUSINESS_PROCESS t where 1 = 1
+		<include refid="sf-etBusinessProcess" />
+		<!-- order by ID asc -->
+	</select>
+
+	<select id="selectEtBusinessProcessCount" resultType="int" parameterType="etBusinessProcess">
+		select count(*) from ET_BUSINESS_PROCESS t where 1 = 1
+		<include refid="sf-etBusinessProcess" />
+	</select>
+
+	<select id="selectEtBusinessProcessPaginatedList" resultMap="etBusinessProcessResult" parameterType="etBusinessProcess">
+		select * from (
+			select *, ROW_NUMBER() OVER ( order by id desc ) as _rn 
+				from ET_BUSINESS_PROCESS t where 1 = 1
+			<include refid="sf-etBusinessProcess" />
+			<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
+
+	<insert id="insertEtBusinessProcess" parameterType="etBusinessProcess">
+	<selectKey resultType="String"  order="BEFORE"  keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID</selectKey>
+		insert into ET_BUSINESS_PROCESS 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> ID, </if>
+	       <if test="(cId != null and cId != '') or cId == 0"> C_ID, </if>
+	       <if test="(pmId != null and pmId != '') or pmId == 0"> PM_ID, </if>
+		   <if test="serialNo != null and serialNo != ''"> SERIAL_NO, </if>
+	       <if test="(flowId != null and flowId != '') or flowId == 0"> FLOW_ID, </if>
+		   <if test="flowCode != null and flowCode != ''"> FLOW_CODE, </if>
+		   <if test="flowName != null and flowName != ''"> FLOW_NAME, </if>
+	       <if test="(isScope != null )"> IS_SCOPE, </if>
+		   <if test="noScopeCode != null and noScopeCode != ''"> NO_SCOPE_CODE, </if>
+		   <if test="message != null and message != ''"> MESSAGE, </if>
+	       <if test="(status != null )"> STATUS, </if>
+	       <if test="(sourceType != null and sourceType != '') or sourceType == 0"> SOURCE_TYPE, </if>
+		   <if test="uploadPath != null and uploadPath != ''"> UPLOAD_PATH, </if>
+		   <if test="downloadPath != null and downloadPath != ''"> DOWNLOAD_PATH, </if>
+	       <if test="(creator != null and creator != '') or creator == 0"> CREATOR, </if>
+		   <if test="createTime != null and createTime != ''"> CREATE_TIME, </if>
+	       <if test="(operator != null and operator != '') or operator == 0"> OPERATOR, </if>
+		   <if test="operatorTime != null and operatorTime != ''"> OPERATOR_TIME, </if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> #{id, jdbcType=BIGINT}, </if>
+	       <if test="(cId != null and cId != '') or cId == 0"> #{cId, jdbcType=BIGINT}, </if>
+	       <if test="(pmId != null and pmId != '') or pmId == 0"> #{pmId, jdbcType=BIGINT}, </if>
+		   <if test="serialNo != null and serialNo != ''"> #{serialNo, jdbcType=VARCHAR}, </if>
+	       <if test="(flowId != null and flowId != '') or flowId == 0"> #{flowId, jdbcType=BIGINT}, </if>
+		   <if test="flowCode != null and flowCode != ''"> #{flowCode, jdbcType=VARCHAR}, </if>
+		   <if test="flowName != null and flowName != ''"> #{flowName, jdbcType=VARCHAR}, </if>
+	       <if test="(isScope != null )"> #{isScope, jdbcType=INTEGER}, </if>
+		   <if test="noScopeCode != null and noScopeCode != ''"> #{noScopeCode, jdbcType=VARCHAR}, </if>
+		   <if test="message != null and message != ''"> #{message, jdbcType=LONGVARCHAR}, </if>
+	       <if test="(status != null )"> #{status, jdbcType=INTEGER}, </if>
+	       <if test="(sourceType != null and sourceType != '') or sourceType == 0"> #{sourceType, jdbcType=INTEGER}, </if>
+		   <if test="uploadPath != null and uploadPath != ''"> #{uploadPath, jdbcType=VARCHAR}, </if>
+		   <if test="downloadPath != null and downloadPath != ''"> #{downloadPath, jdbcType=VARCHAR}, </if>
+	       <if test="(creator != null and creator != '') or creator == 0"> #{creator, jdbcType=BIGINT}, </if>
+		   <if test="createTime != null and createTime != ''"> #{createTime, jdbcType=TIMESTAMP}, </if>
+	       <if test="(operator != null and operator != '') or operator == 0"> #{operator, jdbcType=BIGINT}, </if>
+		   <if test="operatorTime != null and operatorTime != ''"> #{operatorTime, jdbcType=TIMESTAMP}, </if>
+		</trim>
+	</insert>
+
+	<update id="updateEtBusinessProcess" parameterType="EtBusinessProcess">
+		update ET_BUSINESS_PROCESS
+		<set>
+			<trim suffixOverrides=",">
+			   <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>
+			   <if test="(cId != null and cId != '') or cId == 0"> C_ID = #{cId, jdbcType=BIGINT}, </if>
+			   <if test="(pmId != null and pmId != '') or pmId == 0"> PM_ID = #{pmId, jdbcType=BIGINT}, </if>
+			   <if test="serialNo != null and serialNo != ''"> SERIAL_NO = #{serialNo, jdbcType=VARCHAR}, </if>
+			   <if test="(flowId != null and flowId != '') or flowId == 0"> FLOW_ID = #{flowId, jdbcType=BIGINT}, </if>
+			   <if test="flowCode != null and flowCode != ''"> FLOW_CODE = #{flowCode, jdbcType=VARCHAR}, </if>
+			   <if test="flowName != null and flowName != ''"> FLOW_NAME = #{flowName, jdbcType=VARCHAR}, </if>
+			   <if test="(isScope != null )"> IS_SCOPE = #{isScope, jdbcType=INTEGER}, </if>
+			   <if test="noScopeCode != null and noScopeCode != ''"> NO_SCOPE_CODE = #{noScopeCode, jdbcType=VARCHAR}, </if>
+			   <if test="message != null and message != ''"> MESSAGE = #{message, jdbcType=LONGVARCHAR}, </if>
+			   <if test="(status != null )"> STATUS = #{status, jdbcType=INTEGER}, </if>
+			   <if test="(sourceType != null and sourceType != '') or sourceType == 0"> SOURCE_TYPE = #{sourceType, jdbcType=INTEGER}, </if>
+			   <if test="uploadPath != null and uploadPath != ''"> UPLOAD_PATH = #{uploadPath, jdbcType=VARCHAR}, </if>
+			   <if test="downloadPath != null and downloadPath != ''"> DOWNLOAD_PATH = #{downloadPath, jdbcType=VARCHAR}, </if>
+			   <if test="(creator != null and creator != '') or creator == 0"> CREATOR = #{creator, jdbcType=BIGINT}, </if>
+			   <if test="createTime != null and createTime != ''"> CREATE_TIME = #{createTime, jdbcType=TIMESTAMP}, </if>
+			   <if test="(operator != null and operator != '') or operator == 0"> OPERATOR = #{operator, jdbcType=BIGINT}, </if>
+			   <if test="operatorTime != null and operatorTime != ''"> OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP}, </if>
+			</trim>
+		</set>
+		where
+		<if test="id != null and id != ''"> ID = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</update>
+
+	<delete id="deleteEtBusinessProcess" parameterType="EtBusinessProcess">
+		delete from ET_BUSINESS_PROCESS where
+		<if test="id != null and id != ''"> ID = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</delete>
+
+</mapper>
