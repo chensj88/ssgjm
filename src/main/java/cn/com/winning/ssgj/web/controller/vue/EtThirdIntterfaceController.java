@@ -98,7 +98,7 @@ public class EtThirdIntterfaceController extends BaseController {
         }
         //获取所有生效产品条线
 
-        List<PmisProductLineInfo> pmisProductLineInfoList = this.getProductLineList(1);
+        List<PmisProductLineInfo> pmisProductLineInfoList = this.getProductLineList(etThirdIntterface.getPmId());
         //获取所有不在本期范围原因
         SysDictInfo sysDictInfo = new SysDictInfo();
         sysDictInfo.setDictCode("NotInScope");

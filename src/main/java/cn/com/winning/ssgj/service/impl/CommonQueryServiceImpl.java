@@ -5,6 +5,7 @@ import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.dao.PmisContractProductInfoDao;
 import cn.com.winning.ssgj.dao.PmisProductInfoDao;
+import cn.com.winning.ssgj.dao.PmisProductLineInfoDao;
 import cn.com.winning.ssgj.dao.SysUserInfoDao;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
@@ -50,9 +51,12 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     @Autowired
     private SysFlowInfoService sysFlowInfoService;
     @Autowired
-    private  SysProductFlowInfoService sysProductFlowInfoService;
+    private SysProductFlowInfoService sysProductFlowInfoService;
+    @Autowired
+    private PmisProductLineInfoDao pmisProductLineInfoDao;
     @Autowired
     private SSGJHelper ssgjHelper;
+
     @Override
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId) {
         //获取用户可以查看的项目信息
@@ -63,17 +67,17 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         //项目ID的集合
         List<String> pidList = new ArrayList<String>();
         for (PmisProjectBasicInfo basicInfo : basicInfoList) {
-            pidList.add(basicInfo.getId()+"");
+            pidList.add(basicInfo.getId() + "");
         }
 
         PmisCustomerInformation custinfo = new PmisCustomerInformation();
-        custinfo.getMap().put("idList",pidList);
+        custinfo.getMap().put("idList", pidList);
         List<PmisCustomerInformation> custInfoList = pmisCustomerInformationService.getCustomerInfoListByProjectList(custinfo);
         List<NodeTree> treeList = new ArrayList<NodeTree>();
         for (PmisCustomerInformation info : custInfoList) {
-             NodeTree node = info.getNodeTree();
-             node.setNodes(queryCustomerProjectNode(pidList,info.getId()));
-             treeList.add(node);
+            NodeTree node = info.getNodeTree();
+            node.setNodes(queryCustomerProjectNode(pidList, info.getId()));
+            treeList.add(node);
         }
         return treeList;
     }
@@ -81,17 +85,18 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     @Override
     public List<PmisProductInfo> queryProductOfProjectByProjectIdAndType(long pmId, int type) {
         PmisProductInfo productInfo = new PmisProductInfo();
-        productInfo.getMap().put("pks", queryProductIdByProjectIdAndType(pmId,type));
+        productInfo.getMap().put("pks", queryProductIdByProjectIdAndType(pmId, type));
         return pmisProductInfoDao.selectPmisProductInfoListByIdList(productInfo);
     }
 
     /**
      * 根据项目ID和合同产品类型来获得List<Long> pdIds
+     *
      * @param pmId
      * @param type
      * @return pdIds
      */
-    private List<Long> queryProductIdByProjectIdAndType(long pmId, int type){
+    private List<Long> queryProductIdByProjectIdAndType(long pmId, int type) {
         PmisContractProductInfo cpInfo = new PmisContractProductInfo();
         cpInfo.setHtcplb(type);
         cpInfo.setXmlcb(pmId);
@@ -105,6 +110,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
 
     /**
      * 根据项目id获取项目基本信息
+     *
      * @param pmId
      * @return
      */
@@ -128,7 +134,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         cpInfo.setHtcplb(type);
         cpInfo.setXmlcb(pmId);
         List<PmisContractProductInfo> cpInfoList = pmisContractProductInfoDao.selectEntityList(cpInfo);
-        if(cpInfoList==null||cpInfoList.size()<1){
+        if (cpInfoList == null || cpInfoList.size() < 1) {
             return new ArrayList<>();
         }
         List<Long> pIds = new ArrayList<Long>();
@@ -136,15 +142,15 @@ public class CommonQueryServiceImpl implements CommonQueryService {
             pIds.add(info.getCpxx());
         }
         PmisProductInfo productInfo = new PmisProductInfo();
-        productInfo.getMap().put("pids",pIds);
-        if(dataType==3){
+        productInfo.getMap().put("pids", pIds);
+        if (dataType == 3) {
             return pmisProductInfoDao.selectEasyDataPmisProductInfoList(productInfo);
         }
         return pmisProductInfoDao.selectBasicDataPmisProductInfoList(productInfo);
     }
 
     @Override
-    public Map<String,List> queryCompletionOfProject(long pmId) {
+    public Map<String, List> queryCompletionOfProject(long pmId) {
         List<Integer> projectCompele = new ArrayList<>();
         List<Integer> projectHandle = new ArrayList<>();
         List<String> projectItem = new ArrayList<>();
@@ -153,28 +159,28 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         List<EtDataCheck> dataCheckList = this.etDataCheckService.getEtDataCheckList(dataCheck);
         int dataFialNum = 0; //校验失败总数
         int dataSuccNum = 0; //校验成功总数
-        if((dataCheckList != null) &&(dataCheckList.size() > 0)){
+        if ((dataCheckList != null) && (dataCheckList.size() > 0)) {
             for (EtDataCheck check : dataCheckList) {
-                if(!StringUtil.isEmptyOrNull(check.getContent())){
-                     JSONArray array = (JSONArray) JSONArray.parse(check.getContent());
+                if (!StringUtil.isEmptyOrNull(check.getContent())) {
+                    JSONArray array = (JSONArray) JSONArray.parse(check.getContent());
                     for (int i = 0; i < array.size(); i++) {
                         Object json = array.get(i);
                         System.out.println(json);
-                        if(json.toString().contains("\"F\"")){
+                        if (json.toString().contains("\"F\"")) {
                             dataFialNum++;
-                        }else{
+                        } else {
                             dataSuccNum++;
                         }
 
                     }
-                }else{
+                } else {
                     dataFialNum++;
                 }
             }
         }
         projectCompele.add(dataSuccNum);
         projectHandle.add(dataFialNum);
-        projectItem.add("基础数据("+(dataFialNum+dataSuccNum)+")");
+        projectItem.add("基础数据(" + (dataFialNum + dataSuccNum) + ")");
         //=============校验易用数据=================//
         EtEasyDataCheck easyCheck = new EtEasyDataCheck();
         easyCheck.setPmId(pmId);
@@ -182,53 +188,53 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         List<EtEasyDataCheck> easyDataCheckList = this.etEasyDataCheckService.getEtEasyDataCheckList(easyCheck);
         int easyFailNum = 0; //校验失败总数
         int easySuccNum = 0; //校验成功总数
-        if((easyDataCheckList != null) &&(easyDataCheckList.size() > 0)){
+        if ((easyDataCheckList != null) && (easyDataCheckList.size() > 0)) {
             for (EtEasyDataCheck check : easyDataCheckList) {
-                if(!StringUtil.isEmptyOrNull(check.getContent())){
-                    if ("校验正常".equals(check.getContent())){
+                if (!StringUtil.isEmptyOrNull(check.getContent())) {
+                    if ("校验正常".equals(check.getContent())) {
                         easySuccNum++;
-                    }else {
+                    } else {
                         easyFailNum++;
                     }
-                }else{
+                } else {
                     easyFailNum++;
                 }
             }
         }
         projectCompele.add(easySuccNum);
         projectHandle.add(easyFailNum);
-        projectItem.add("易用数据("+(easySuccNum+easyFailNum)+")");
-        Map<String,List> result = new HashMap<String,List>();
-        result.put("success",projectCompele);
-        result.put("handle",projectHandle);
-        result.put("item",projectItem);
+        projectItem.add("易用数据(" + (easySuccNum + easyFailNum) + ")");
+        Map<String, List> result = new HashMap<String, List>();
+        result.put("success", projectCompele);
+        result.put("handle", projectHandle);
+        result.put("item", projectItem);
         return result;
     }
 
     @Override
-    public void  generateEtBusinessProcessByProject(EtBusinessProcess process) {
-        List<Long> pdIds = this.queryProductIdByProjectIdAndType(process.getPmId(),Constants.PMIS.CPLB_1);
+    public void generateEtBusinessProcessByProject(EtBusinessProcess process) {
+        List<Long> pdIds = this.queryProductIdByProjectIdAndType(process.getPmId(), Constants.PMIS.CPLB_1);
         List<Long> flowIds = null;
-        List<SysFlowInfo> flowInfoList = null ;
+        List<SysFlowInfo> flowInfoList = null;
         long pmId = process.getPmId();
         long cId = process.getcId();
         String serialNo = process.getSerialNo();
 
-        if (pdIds != null && pdIds.size() > 0){
+        if (pdIds != null && pdIds.size() > 0) {
             SysProductFlowInfo sysProductFlowInfo = new SysProductFlowInfo();
-            sysProductFlowInfo.getMap().put("pdId",pdIds);
+            sysProductFlowInfo.getMap().put("pdId", pdIds);
             flowIds = sysProductFlowInfoService.getSysProductFlowInfoByPdId(pdIds);
         }
-        if( flowIds != null && flowIds.size() > 0){
+        if (flowIds != null && flowIds.size() > 0) {
             SysFlowInfo flowInfo = new SysFlowInfo();
-            flowInfo.getMap().put("pks",flowIds);
+            flowInfo.getMap().put("pks", flowIds);
             flowInfoList = this.sysFlowInfoService.getSysFlowInfoListById(flowInfo);
         }
-        if( flowInfoList != null && flowInfoList.size() > 0){
+        if (flowInfoList != null && flowInfoList.size() > 0) {
             for (SysFlowInfo info : flowInfoList) {
                 process.setFlowId(info.getId());
                 process = this.etBusinessProcessService.getEtBusinessProcess(process);
-                if(process == null ){
+                if (process == null) {
                     process = new EtBusinessProcess();
                     process.setId(ssgjHelper.createEtFlowSurveyIdService());
                     process.setPmId(pmId);
@@ -248,13 +254,14 @@ public class CommonQueryServiceImpl implements CommonQueryService {
 
     /**
      * 查询项目信息
+     *
      * @param pidList 项目IDList
-     * @param custId 客户ID
+     * @param custId  客户ID
      * @return
      */
     private List<NodeTree> queryCustomerProjectNode(List<String> pidList, Long custId) {
-        PmisProjectBasicInfo project  = new PmisProjectBasicInfo();
-        project.getMap().put("idList",pidList);
+        PmisProjectBasicInfo project = new PmisProjectBasicInfo();
+        project.getMap().put("idList", pidList);
         project.setKhxx(custId);
         List<PmisProjectBasicInfo> basicInfoList = pmisProjectBasicInfoService
                 .getPmisProjectBasicByKHXXAndIds(project);
@@ -262,6 +269,17 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         for (PmisProjectBasicInfo info : basicInfoList) {
             treeList.add(info.getNodeTree());
         }
-        return  treeList;
+        return treeList;
     }
+
+    /**
+     * 根据产品获取产品条线
+     *
+     * @param pmisProductInfos
+     * @return
+     */
+    public List<PmisProductLineInfo> selectPmisProductLineInfoByProductInfo(List<PmisProductInfo> pmisProductInfos) {
+        return pmisProductLineInfoDao.selectPmisProductLineInfoByProductInfo(pmisProductInfos);
+    }
+
 }
