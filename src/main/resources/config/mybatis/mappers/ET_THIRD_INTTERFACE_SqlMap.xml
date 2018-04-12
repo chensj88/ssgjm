@@ -295,14 +295,7 @@
         GETDATE() AS CREATE_TIME,
         0 AS OPERATOR,
         NULL AS OPERATOR_TIME,
-        (
-        SELECT
-        p.NAME
-        FROM
-        PMIS_PRODUCT_INFO p
-        WHERE
-        p.ID = t.CPXX
-        ) AS PRODUCT_NAME,
+        t.ZXTMC AS PRODUCT_NAME,
         NULL AS MODULE_DETAIL,
         NULL REMARK
         FROM

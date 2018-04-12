@@ -52,6 +52,17 @@ public class EtThirdIntterfaceController extends BaseController {
         List<EtThirdIntterface> etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().selectEtThirdIntterfaceMergePageList(etThirdIntterface);
         //根据pmid获取接口数
         Integer total = etThirdIntterfaces==null?0:etThirdIntterfaces.size();
+        PmisProductLineInfo pmisProductLineInfo = null;
+        Map map = null;
+        //封装产品条线名(即产品名称)
+        for (EtThirdIntterface intterface : etThirdIntterfaces) {
+            if(StringUtil.isEmptyOrNull(intterface.getProductName())){
+            pmisProductLineInfo = new PmisProductLineInfo();
+            pmisProductLineInfo.setId(intterface.getPlId());
+            pmisProductLineInfo = getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
+            intterface.setProductName(pmisProductLineInfo == null ? null : pmisProductLineInfo.getName());
+            }
+        }
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
