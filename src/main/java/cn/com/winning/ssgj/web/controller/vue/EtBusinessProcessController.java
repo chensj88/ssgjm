@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.vue;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.domain.EtBusinessProcess;
 import cn.com.winning.ssgj.domain.EtFlowSurvey;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.stereotype.Controller;
@@ -22,14 +23,14 @@ import java.util.Map;
 @Controller
 @CrossOrigin
 @RequestMapping(value = "/vue/flow/")
-public class EtFlowSurveyController extends BaseController {
+public class EtBusinessProcessController extends BaseController {
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String,Object> queryFlowInfoByPmId(EtFlowSurvey flowSurvey){
+    public Map<String,Object> queryFlowInfoByPmId(EtBusinessProcess process){
 
 
-        super.getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(flowSurvey.getPmId(),Constants.PMIS.CPLB_1);
+
         Map<String,Object> result = new HashMap<String,Object>();
         /*result.put("total", total);*/
         result.put("status", Constants.SUCCESS);

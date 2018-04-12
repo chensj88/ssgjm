@@ -77,6 +77,64 @@ public class VideoUtil {
         output.delete();
     }
 
+    /**
+     * 根据文件路径获取时间长度
+     * @param path
+     * @return
+     */
+    public static Long getVideoTimeByFilepath(String path) {
+        File file = new File(path);
+        Encoder encoder = new Encoder();
+        MultimediaInfo m = null;
+        try {
+            m = encoder.getInfo(file);
+        } catch (EncoderException e) {
+            e.printStackTrace();
+        }
+        return m.getDuration();
+    }
+
+    /**
+     * 生成视频第一帧
+     * @param filePath  文件路径
+     * @param targerFilePath 保存路径
+     * @param targetFileName  文件名称
+     * @throws FrameGrabber.Exception
+     */
+    public static void grabberFFmpegImageWithoutUpload(String filePath, String targerFilePath, String targetFileName) throws FrameGrabber.Exception {
+        FFmpegFrameGrabber ff = FFmpegFrameGrabber.createDefault(filePath);
+        ff.start();
+        int ffLength = ff.getLengthInFrames();
+        Frame f;
+        int i = 0;
+        while (i < ffLength) {
+            f = ff.grabImage();
+            if( i == 1){
+                doExecuteFrameWithoutUpload(f,targerFilePath, targetFileName);
+                break;
+            }
+            i++;
+        }
+        ff.stop();
+    }
+
+    public static void doExecuteFrameWithoutUpload(Frame f, String targerFilePath, String targetFileName) {
+        if (null == f || null == f.image) {
+            return;
+        }
+        Java2DFrameConverter converter = new Java2DFrameConverter();
+        String imageMat = "jpg";
+        String FileName = targerFilePath + File.separator + targetFileName + "." + imageMat;
+        BufferedImage bi = converter.getBufferedImage(f);
+        File output = new File(FileName);
+        try {
+            ImageIO.write(bi, imageMat, output);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     private static void uploadImage(String remotePath,File newFile){
 

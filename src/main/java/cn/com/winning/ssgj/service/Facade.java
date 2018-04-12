@@ -1,6 +1,8 @@
 package cn.com.winning.ssgj.service;
 
 
+import cn.com.winning.ssgj.domain.EtBusinessProcess;
+
 /**
  *
  *
@@ -23,7 +25,7 @@ public interface Facade {
 
     EtFloorQuestionInfoService getEtFloorQuestionInfoService();
 
-    EtFlowSurveyService getEtFlowSurveyService();
+    EtBusinessProcessService getEtBusinessProcessService();
 
     EtInterfaceInfoService getEtInterfaceInfoService();
 

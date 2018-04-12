@@ -61,9 +61,9 @@ public interface CommonQueryService {
 
     /**
      * 根据项目ID获取流程信息
-     * @param flowSurvey
+     * @param process
      * @return
      */
-    public List<SysFlowInfo> queryFlowInfoByProject(EtFlowSurvey flowSurvey);
+    public void generateEtBusinessProcessByProject(EtBusinessProcess process);
 
 }
