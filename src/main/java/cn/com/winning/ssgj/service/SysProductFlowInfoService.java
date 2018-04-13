@@ -34,5 +34,5 @@ public interface SysProductFlowInfoService {
 
     Integer removeSysProductFlowInfoMappingByIds(String idList, SysUserInfo userInfo);
 
-    List<Long> getSysProductFlowInfoByPdId(List<Long> pdIds);
+    List<Long> getSysProductFlowInfoByPdId(String pdIdStr);
 }

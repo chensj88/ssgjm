@@ -113,9 +113,9 @@ public class SysProductFlowInfoServiceImpl implements SysProductFlowInfoService 
     }
 
     @Override
-    public List<Long> getSysProductFlowInfoByPdId(List<Long> pdIds) {
+    public List<Long> getSysProductFlowInfoByPdId(String pdIdStr) {
         Map<String, Object> param = new HashMap<String, Object>();
-        param.put("pdId", pdIds);
+        param.put("pdId", pdIdStr);
         return this.sysProductFlowInfoDao.selectSysFlowInfoIdsoByPdId(param);
     }
 

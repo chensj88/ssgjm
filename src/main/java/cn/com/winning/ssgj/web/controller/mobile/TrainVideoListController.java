@@ -51,7 +51,7 @@ public class TrainVideoListController extends BaseController {
         //{"OPENID":"oyDyLxBcj0rTd9rVWyV5vTOD_Np4","HOSPCODE":"11980","WORKNUM":"1420","USERNAME":"张克福","USERPHONE":"13312345678"}
         byte[] bt = null;
         try {
-            //parameter = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
+            parameter = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
             byte[] byteArray = Base64Utils.decryptBASE64(parameter);
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
             ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
@@ -140,7 +140,7 @@ public class TrainVideoListController extends BaseController {
         model.addAttribute("sysTrainVideoStudied", SysTrainVideoStudied);
         model.addAttribute("sysTrainVideoUnStudy", SysTrainVideoUnStudy);
         model.addAttribute("OPENID", OPENID);
-        model.addAttribute("timeNum", df.format((float) timeNum / 3600000));
+        model.addAttribute("timeNum", timeNum);
         model.addAttribute("size", SysTrainVideoWithRecord.size());
         model.addAttribute("study_num", study_num);
         return "mobile/service/course-study";
@@ -169,6 +169,7 @@ public class TrainVideoListController extends BaseController {
             trainVideo_new.setUserId("yk0001");
             trainVideo_new.setOpenId(OPENID);           //微信登陆唯一标识
             trainVideo_new.setVideoId(id);
+            trainVideo_new.setNum(1);
             //trainVideo.setVideoTime(new Date());
             super.getFacade().getEtTrainVideoListService().createEtTrainVideoList(trainVideo_new);
         } else {

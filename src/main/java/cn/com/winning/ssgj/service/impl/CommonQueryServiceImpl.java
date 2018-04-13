@@ -219,11 +219,9 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         long pmId = process.getPmId();
         long cId = process.getcId();
         String serialNo = process.getSerialNo();
-
+        String pdIdStr = StringUtil.generateStringSql(pdIds);
         if (pdIds != null && pdIds.size() > 0) {
-            SysProductFlowInfo sysProductFlowInfo = new SysProductFlowInfo();
-            sysProductFlowInfo.getMap().put("pdId", pdIds);
-            flowIds = sysProductFlowInfoService.getSysProductFlowInfoByPdId(pdIds);
+            flowIds = sysProductFlowInfoService.getSysProductFlowInfoByPdId(pdIdStr);
         }
         if (flowIds != null && flowIds.size() > 0) {
             SysFlowInfo flowInfo = new SysFlowInfo();
@@ -232,21 +230,25 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         }
         if (flowInfoList != null && flowInfoList.size() > 0) {
             for (SysFlowInfo info : flowInfoList) {
-                process.setFlowId(info.getId());
-                process = this.etBusinessProcessService.getEtBusinessProcess(process);
-                if (process == null) {
-                    process = new EtBusinessProcess();
-                    process.setId(ssgjHelper.createEtFlowSurveyIdService());
-                    process.setPmId(pmId);
-                    process.setcId(cId);
-                    process.setSerialNo(serialNo);
-                    process.setFlowId(info.getId());
-                    process.setFlowCode(info.getFlowCode());
-                    process.setFlowName(info.getFlowName());
-                    process.setStatus(Constants.STATUS_UNUSE);
-                    process.setCreator(10001L);
-                    process.setCreateTime(new Timestamp(new Date().getTime()));
-                    etBusinessProcessService.createEtBusinessProcess(process);
+                EtBusinessProcess queryProcess = new EtBusinessProcess();
+                queryProcess.setFlowId(info.getId());
+                queryProcess.setcId(cId);
+                queryProcess.setPmId(pmId);
+                queryProcess.setSerialNo(serialNo);
+                queryProcess = this.etBusinessProcessService.getEtBusinessProcess(queryProcess);
+                if (queryProcess == null) {
+                    queryProcess = new EtBusinessProcess();
+                    queryProcess.setId(ssgjHelper.createEtFlowSurveyIdService());
+                    queryProcess.setPmId(pmId);
+                    queryProcess.setcId(cId);
+                    queryProcess.setSerialNo(serialNo);
+                    queryProcess.setFlowId(info.getId());
+                    queryProcess.setFlowCode(info.getFlowCode());
+                    queryProcess.setFlowName(info.getFlowName());
+                    queryProcess.setStatus(Constants.STATUS_UNUSE);
+                    queryProcess.setCreator(10001L);
+                    queryProcess.setCreateTime(new Timestamp(new Date().getTime()));
+                    etBusinessProcessService.createEtBusinessProcess(queryProcess);
                 }
             }
         }
