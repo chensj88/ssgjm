@@ -102,7 +102,7 @@ public class SiteInstallController extends BaseController {
         if((siteInstallDetails.size()==0 || siteInstallDetails==null) && siteInstall.getNum() > 0){
            for(int i =0 ;i<siteInstall.getNum();i++){
                 EtSiteInstallDetail detail = new EtSiteInstallDetail();
-                detail.setId(ssgjHelper.createSiteInstallIdService());
+                detail.setId(ssgjHelper.createSiteInstallDetailIdService());
                 detail.setSourceId(id);
                 detail.setInstall(0);
                 super.getFacade().getEtSiteInstallDetailService().createEtSiteInstallDetail(detail);
@@ -299,7 +299,7 @@ public class SiteInstallController extends BaseController {
         Map<String,Object> map = new HashMap<String,Object>();
         try{
             EtSiteInstallDetail detail = new EtSiteInstallDetail();
-            detail.setId(ssgjHelper.createSiteInstallIdService());
+            detail.setId(ssgjHelper.createSiteInstallDetailIdService());
             detail.setSourceId(pId);
             detail.setInstall(0);
             super.getFacade().getEtSiteInstallDetailService().createEtSiteInstallDetail(detail);

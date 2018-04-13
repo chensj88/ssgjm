@@ -27,7 +27,9 @@
 			<div class="course-study">
 				<div class="left">
 					<p>学习耗时(小时) </p>
-					<strong>${timeNum}</strong>
+					<strong><script>
+                        document.write(Common.getHHMMSSDate(${timeNum}));
+					</script></strong>
 				</div>
 				<div class="right">
 					<p>学习视频数</p>

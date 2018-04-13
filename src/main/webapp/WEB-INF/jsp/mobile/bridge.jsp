@@ -12,7 +12,7 @@
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/fonts/iconfont.css"/>
-
+		<link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_575705_8lu91m9ovgcwstt9.css"/>
 	</head>
 
 	<body>
