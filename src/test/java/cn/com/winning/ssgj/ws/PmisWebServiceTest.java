@@ -52,7 +52,7 @@ public class PmisWebServiceTest {
     /**
      * 测试登录
      */
-    @Test
+    //@Test
     public void testLogin() {
         JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
         factory.setServiceClass(LBEBusinessService.class);
@@ -66,7 +66,7 @@ public class PmisWebServiceTest {
         System.out.println(loginResult.getMessage());
     }
 
-    @Test
+    //@Test
     public void testQueryAreaInfoData() {
         //10  areaCode
         //11  hospitalType
@@ -157,7 +157,7 @@ public class PmisWebServiceTest {
     /**
      * 测试获取用户信息数据
      */
-    @Test
+    //@Test
     public void testQueryUserInfoData() {
         LbParameter parameter = new LbParameter();
         parameter.setName("Ptype");
@@ -203,7 +203,7 @@ public class PmisWebServiceTest {
     /**
      * 测试用户数据不同类型的ValueOption
      */
-    @Test
+    //@Test
     public void tesGetUserInfoData() {
         LbParameter parameter = new LbParameter();
         parameter.setName("Ptype");
@@ -261,7 +261,7 @@ public class PmisWebServiceTest {
         pmisInfoData.put("PMIS_PRODUCT_LINE_INFO", "9"); //产品条线信息
     }
 
-    @Test
+    //@Test
     public void insertData() {
         for (String key : pmisInfoData.keySet()) {
             String value = pmisInfoData.get(key);
@@ -269,7 +269,7 @@ public class PmisWebServiceTest {
         }
     }
 
-    @Test
+    //@Test
     public void  insertUserInfoData(){
         generateDymaicSql("SYS_USER_INFO", "1");
     }
@@ -320,7 +320,7 @@ public class PmisWebServiceTest {
         }
     }
 
-    @Test
+    //@Test
     public void queryDataCount() {
         String tableName = "PMIS_CONTRACT_PRODUCT_INFO";
         String dataType = "7";
@@ -340,7 +340,7 @@ public class PmisWebServiceTest {
         }
     }
 
-    @Test
+    //@Test
     public void getDatainfoSql() {
         String tableName = "PMIS_PRODUCT_LINE_INFO";
         String dataType = "9";
