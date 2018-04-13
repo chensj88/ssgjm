@@ -29,4 +29,7 @@ public interface EtDevEnvHardwareService {
     //    批量插入数据
     void insertEtDevEnvHardwareByList(List<EtDevEnvHardware> etDevEnvHardwares);
 
+
+    List<EtDevEnvHardware> selectPmisEtDevEnvHardwareByProductInfo(EtDevEnvHardware etDevEnvHardware);
+
 }

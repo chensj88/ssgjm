@@ -209,5 +209,43 @@
         </foreach>
     </insert>
 
-
+    <select id="selectEtDevEnvHardwareByProductInfo" parameterType="EtDevEnvHardware"
+            resultMap="etDevEnvHardwareResult">
+        select tb.* from (
+        select temp_table.*, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from (SELECT * FROM
+        ET_DEV_ENV_HARDWARE e where 1 = 1
+        AND
+        e.PM_ID=#{pmId}
+        UNION ALL
+        SELECT
+        0 AS ID,
+        NULL AS PM_ID,
+        NULL AS C_ID,
+        NULL AS SERIAL_NO,
+        (SELECT o.NAME FROM
+        PMIS_PRODUCT_LINE_INFO o
+        WHERE o.ID=m.CPTX
+        )AS PRODUCT_NAME,
+        p.SH_NAME AS HW_NAME,
+        p.SH_BRAND AS HW_BRAND,
+        p.SH_BRAND_TYPE AS HW_BRAND_MODEL,
+        1 AS HW_NUM,
+        p.SH_DESC AS HW_USE,
+        1 AS IS_SCOPE,
+        0 AS CREATOR,
+        GETDATE() AS CREATE_TIME,
+        NULL AS OPERATOR,
+        NULL AS OPERATOR_TIME
+        FROM SYS_SOFT_HARDWARE_INFO p INNER JOIN SYS_PRODUCT_SH_INFO s
+        ON p.ID =s.SH_ID INNER JOIN PMIS_PRODUCT_INFO m ON m.ID = s.PD_ID
+        WHERE
+        p.SH_TYPE=1
+        AND
+        m.ID in
+        <foreach collection="map.productList" item="item" open="(" separator="," close=")">
+            <if test="item.id!=null and item.id!=0">#{item.id}</if>
+        </foreach>
+        ) temp_table ) tb where tb._rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
 </mapper>
