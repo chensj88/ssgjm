@@ -6,6 +6,7 @@ import cn.com.winning.ssgj.domain.EtFloorQuestionInfo;
 import cn.com.winning.ssgj.domain.EtSiteInstall;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import com.sun.xml.internal.xsom.impl.scd.Iterators;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +47,18 @@ public class EtSiteInstallController extends BaseController {
             Map<String,Object> result = new HashMap<String,Object>();
             info.setRow(row);
             List<EtSiteInstall> installList = super.getFacade().getEtSiteInstallService().getEtSiteInstallListWithSum(info);
-            //所需硬件
-            
-
+            if(installList.size() > 0){
+                for (int i=0;i<installList.size();i++){
+                    String str[]=installList.get(i).getPdId().split(",");
+                    int[] pppId=new int[str.length];
+                    for(int j=0;j<str.length;j++){
+                        String jj =str[j];
+                        int jjj = Integer.parseInt(jj);
+                        pppId[j]=jjj;
+                    }
+                    installList.get(i).setPppId(pppId);
+                }
+            }
             //所需要的 软件
             result.put("productLineList", super.getProductLineList(info.getPmId()));
             result.put("total", installList.size());

@@ -17,6 +17,8 @@ public class EtSiteInstall extends BaseDomain implements Serializable {
 
 	private static final long serialVersionUID = -1L;
 
+	private int[] pppId;
+
 	/**
 	 * @val ID
 	 */
@@ -395,6 +397,15 @@ public class EtSiteInstall extends BaseDomain implements Serializable {
 
 	public void setHdName(String hdName) {
 		this.hdName = hdName;
+	}
+
+
+	public int[] getPppId() {
+		return pppId;
+	}
+
+	public void setPppId(int[] pppId) {
+		this.pppId = pppId;
 	}
 
 

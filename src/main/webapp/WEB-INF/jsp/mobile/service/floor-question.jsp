@@ -12,6 +12,8 @@
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
 		<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
+		<link rel="stylesheet" href="//at.alicdn.com/t/font_575705_0j8jn55q5hc6usor.css" />
+
 		<script type="text/javascript">
             $(document).ready(function(){
                 $("button").click(function(){
@@ -57,7 +59,7 @@
 
 				<table>
 					<tr class="floor-count">
-						<th><strong>合计</strong></th>
+						<th><i class="iconfont icon-total"></i><strong>合计</strong></th>
 						<th><span id="t1"></span></th>
 						<th><span id="t2"></span></th>
 						<th><span id="t3"></span></th>
