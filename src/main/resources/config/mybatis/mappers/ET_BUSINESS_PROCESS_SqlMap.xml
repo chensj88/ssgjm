@@ -42,7 +42,7 @@
 	   <if test="uploadPath != null and uploadPath != ''"> and t.UPLOAD_PATH = #{uploadPath} </if>
 	   <if test="downloadPath != null and downloadPath != ''"> and t.DOWNLOAD_PATH = #{downloadPath} </if>
 	   <if test="(creator != null and creator != '') or creator == 0"> and t.CREATOR = #{creator} </if>
-	   <if test="createTime != null and createTime != ''"> and t.CREATE_TIME = #{createTime} </if>
+	   <if test="createTime != null "> and t.CREATE_TIME = #{createTime} </if>
 	   <if test="(operator != null and operator != '') or operator == 0"> and t.OPERATOR = #{operator} </if>
 	   <if test="operatorTime != null and operatorTime != ''"> and t.OPERATOR_TIME = #{operatorTime} </if>
 	</sql>
@@ -67,7 +67,7 @@
 
 	<select id="selectEtBusinessProcessPaginatedList" resultMap="etBusinessProcessResult" parameterType="etBusinessProcess">
 		select * from (
-			select *, ROW_NUMBER() OVER ( order by id desc ) as _rn 
+			select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
 				from ET_BUSINESS_PROCESS t where 1 = 1
 			<include refid="sf-etBusinessProcess" />
 			<!-- order by ID asc -->
@@ -75,7 +75,6 @@
 	</select>
 
 	<insert id="insertEtBusinessProcess" parameterType="etBusinessProcess">
-	<selectKey resultType="String"  order="BEFORE"  keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID</selectKey>
 		insert into ET_BUSINESS_PROCESS 
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 	       <if test="(id != null and id != '') or id == 0"> ID, </if>
@@ -93,7 +92,7 @@
 		   <if test="uploadPath != null and uploadPath != ''"> UPLOAD_PATH, </if>
 		   <if test="downloadPath != null and downloadPath != ''"> DOWNLOAD_PATH, </if>
 	       <if test="(creator != null and creator != '') or creator == 0"> CREATOR, </if>
-		   <if test="createTime != null and createTime != ''"> CREATE_TIME, </if>
+		   <if test="createTime != null "> CREATE_TIME, </if>
 	       <if test="(operator != null and operator != '') or operator == 0"> OPERATOR, </if>
 		   <if test="operatorTime != null and operatorTime != ''"> OPERATOR_TIME, </if>
 		</trim>
@@ -114,7 +113,7 @@
 		   <if test="uploadPath != null and uploadPath != ''"> #{uploadPath, jdbcType=VARCHAR}, </if>
 		   <if test="downloadPath != null and downloadPath != ''"> #{downloadPath, jdbcType=VARCHAR}, </if>
 	       <if test="(creator != null and creator != '') or creator == 0"> #{creator, jdbcType=BIGINT}, </if>
-		   <if test="createTime != null and createTime != ''"> #{createTime, jdbcType=TIMESTAMP}, </if>
+		   <if test="createTime != null "> #{createTime, jdbcType=TIMESTAMP}, </if>
 	       <if test="(operator != null and operator != '') or operator == 0"> #{operator, jdbcType=BIGINT}, </if>
 		   <if test="operatorTime != null and operatorTime != ''"> #{operatorTime, jdbcType=TIMESTAMP}, </if>
 		</trim>
@@ -139,7 +138,7 @@
 			   <if test="uploadPath != null and uploadPath != ''"> UPLOAD_PATH = #{uploadPath, jdbcType=VARCHAR}, </if>
 			   <if test="downloadPath != null and downloadPath != ''"> DOWNLOAD_PATH = #{downloadPath, jdbcType=VARCHAR}, </if>
 			   <if test="(creator != null and creator != '') or creator == 0"> CREATOR = #{creator, jdbcType=BIGINT}, </if>
-			   <if test="createTime != null and createTime != ''"> CREATE_TIME = #{createTime, jdbcType=TIMESTAMP}, </if>
+			   <if test="createTime != null "> CREATE_TIME = #{createTime, jdbcType=TIMESTAMP}, </if>
 			   <if test="(operator != null and operator != '') or operator == 0"> OPERATOR = #{operator, jdbcType=BIGINT}, </if>
 			   <if test="operatorTime != null and operatorTime != ''"> OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP}, </if>
 			</trim>
