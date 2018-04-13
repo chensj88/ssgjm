@@ -62,30 +62,28 @@ public class EtDevEnvHardwareController extends BaseController {
             return null;
         }
         //根据项目id获取项目基本信息
-        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
-        //获取合同id
-        Long contractId = pmisProjectBasicInfo.getHtxx();
-        //获取单据号即客户
-        Long customerId = pmisProjectBasicInfo.getKhxx();
-
+////        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
+////        //获取合同id
+////        Long contractId = pmisProjectBasicInfo.getHtxx();
+////        //获取单据号即客户
+////        Long customerId = pmisProjectBasicInfo.getKhxx();
         EtDevEnvHardware etDevEnvHardware = new EtDevEnvHardware();
-
-        etDevEnvHardware.setRow(row);
-
         etDevEnvHardware.setPmId(pmId);
-
-        etDevEnvHardware.setcId(contractId);
-
-        etDevEnvHardware.setSerialNo(customerId.toString());
-        //获取基础数据校验
         List<EtDevEnvHardware> etDevEnvHardwarePaginatedList =
-                getFacade().getEtDevEnvHardwareService().getEtDevEnvHardwarePaginatedList(etDevEnvHardware);
-        int total = getFacade().getEtDevEnvHardwareService().getEtDevEnvHardwareCount(etDevEnvHardware);
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("rows", etDevEnvHardwarePaginatedList);
-        map.put("total", total);
-        map.put("status", Constants.SUCCESS);
-        return map;
+                getFacade().getEtDevEnvHardwareService().getEtDevEnvHardwareList(etDevEnvHardware);
+        //根据项目id获取产品信息
+        List<PmisProductInfo> pmisProductInfos = getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId, 1);
+        Map map=new HashMap();
+        map.put("productList",pmisProductInfos);
+        etDevEnvHardware.setMap(map);
+        etDevEnvHardware.setRow(row);
+        List<EtDevEnvHardware> etDevEnvHardwares = getFacade().getEtDevEnvHardwareService().selectPmisEtDevEnvHardwareByProductInfo(etDevEnvHardware);
+        int total = etDevEnvHardwares.size();
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("rows", etDevEnvHardwares);
+        result.put("total", total);
+        result.put("status", Constants.SUCCESS);
+        return result;
     }
 
 
@@ -223,11 +221,11 @@ public class EtDevEnvHardwareController extends BaseController {
                     etDevEnvHardware.setHwName(temp.get(1).toString());
                     etDevEnvHardware.setHwBrand(temp.get(2).toString());
                     etDevEnvHardware.setHwBrandModel(temp.get(3).toString());
-                    if(!StringUtil.isEmptyOrNull(temp.get(4).toString())){
+                    if (!StringUtil.isEmptyOrNull(temp.get(4).toString())) {
                         etDevEnvHardware.setHwNum(Integer.parseInt(temp.get(4).toString()));
                     }
                     etDevEnvHardware.setHwUse(temp.get(5).toString());
-                    if(!StringUtil.isEmptyOrNull(temp.get(6).toString())){
+                    if (!StringUtil.isEmptyOrNull(temp.get(6).toString())) {
                         etDevEnvHardware.setIsScope(Integer.parseInt(temp.get(6).toString()));
                     }
                     etDevEnvHardware.setCreateTime(new Timestamp(new Date().getTime()));

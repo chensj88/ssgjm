@@ -208,12 +208,12 @@ public class SSGJHelper {
     @Qualifier(value = "etEtEasyDataCheckDetailIdService")
     private StepSequenceFactory  etEtEasyDataCheckDetailIdService;
     @Autowired
-    @Qualifier(value = "etFlowSurveyIdService")
-    private StepSequenceFactory  etFlowSurveyIdService;
+    @Qualifier(value = "etBusinessProcessIdService")
+    private StepSequenceFactory  etBusinessProcessIdService;
 
 
-    public long createEtFlowSurveyIdService(){
-        return (long)etFlowSurveyIdService.create();
+    public long createEtBusinessProcessIdService(){
+        return (long)etBusinessProcessIdService.create();
     }
     public long createEtSimulateRecordIdService(){return (long)etSimulateRecordIdService.create();}
     public long createEtOnlineInfoIdService(){

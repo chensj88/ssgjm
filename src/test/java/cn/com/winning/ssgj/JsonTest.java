@@ -37,4 +37,12 @@ public class JsonTest {
         String cont = array.toJSONString();
         System.out.println(cont);
     }
+
+    @Test
+    public void testJsonArray(){
+        String[] arr = new String[2];
+        arr[0] = "基础HIS";
+        arr[1] = "基础LIS";
+        System.out.println(JSONArray.toJSONString(arr));
+    }
 }

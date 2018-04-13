@@ -426,9 +426,9 @@
         <property name="dateCutOff" value="false"/>
     </bean>
     <!--业务流程调研ID-->
-    <bean id="etFlowSurveyIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+    <bean id="etBusinessProcessIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
-        <property name="type" value="FLOW_SURVEY"/>
+        <property name="type" value="BUSINESS_PROCESS"/>
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>

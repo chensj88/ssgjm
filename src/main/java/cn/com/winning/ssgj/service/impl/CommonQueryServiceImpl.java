@@ -238,13 +238,14 @@ public class CommonQueryServiceImpl implements CommonQueryService {
                 queryProcess = this.etBusinessProcessService.getEtBusinessProcess(queryProcess);
                 if (queryProcess == null) {
                     queryProcess = new EtBusinessProcess();
-                    queryProcess.setId(ssgjHelper.createEtFlowSurveyIdService());
+                    queryProcess.setId(ssgjHelper.createEtBusinessProcessIdService());
                     queryProcess.setPmId(pmId);
                     queryProcess.setcId(cId);
                     queryProcess.setSerialNo(serialNo);
                     queryProcess.setFlowId(info.getId());
                     queryProcess.setFlowCode(info.getFlowCode());
                     queryProcess.setFlowName(info.getFlowName());
+                    queryProcess.setIsScope(Constants.STATUS_USE);
                     queryProcess.setStatus(Constants.STATUS_UNUSE);
                     queryProcess.setCreator(10001L);
                     queryProcess.setCreateTime(new Timestamp(new Date().getTime()));
