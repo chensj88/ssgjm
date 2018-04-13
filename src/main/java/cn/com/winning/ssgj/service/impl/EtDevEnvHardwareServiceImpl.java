@@ -66,4 +66,9 @@ public class EtDevEnvHardwareServiceImpl implements EtDevEnvHardwareService {
         this.etDevEnvHardwareDao.insertEtDevEnvHardwareByList(etDevEnvHardwares);
     }
 
+    @Override
+    public List<EtDevEnvHardware> selectPmisEtDevEnvHardwareByProductInfo(EtDevEnvHardware etDevEnvHardware) {
+        return this.etDevEnvHardwareDao.selectEtDevEnvHardwareByProductInfo(etDevEnvHardware);
+    }
+
 }

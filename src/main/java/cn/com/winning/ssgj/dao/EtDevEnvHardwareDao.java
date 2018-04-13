@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.dao;
 
 import cn.com.winning.ssgj.domain.EtDevEnvHardware;
 import cn.com.winning.ssgj.dao.EntityDao;
+import cn.com.winning.ssgj.domain.PmisProductInfo;
 
 import java.util.List;
 
@@ -15,5 +16,7 @@ public interface EtDevEnvHardwareDao extends EntityDao<EtDevEnvHardware> {
     List<EtDevEnvHardware> selectEtDevEnvHardwareMergeList(EtDevEnvHardware etDevEnvHardware);
 
     void insertEtDevEnvHardwareByList(List<EtDevEnvHardware> etDevEnvHardwares);
+
+    List<EtDevEnvHardware> selectEtDevEnvHardwareByProductInfo(EtDevEnvHardware etDevEnvHardware);
 
 }
