@@ -167,7 +167,7 @@ public class PmisWebServiceClient {
                     sb.append("(" + resolveValue(values.get(j))+",");
 //              开始数据为字符或者时间
                 }else if ( j== 0 && (colInfos.get(j).getType() == 0 || colInfos.get(j).getType() == 3)){
-                    sb.append("(\'" + values.get(j)+"\',");
+                    sb.append("(\'" + resolveStringValue(values.get(j))+"\',");
 //              全部结束数据为数字
                 }else  if ((j== values.size() -1) && (colInfos.get(j).getType() == 1) &&
                         (i == recordList.size()-1)){
@@ -175,24 +175,34 @@ public class PmisWebServiceClient {
 //              全部结束数据为字符或者时间
                 }else  if ((j== values.size() -1) && (colInfos.get(j).getType() == 0 || colInfos.get(j).getType() == 3) &&
                         (i == recordList.size()-1)){
-                    sb.append("\'" +values.get(j)+"\' );  \n");
+                    sb.append("\'" +resolveStringValue(values.get(j))+"\' );  \n");
 //              单行结束为数字
                 }else  if ((j== values.size() -1) && (colInfos.get(j).getType() == 1)){
                     sb.append( resolveValue(values.get(j))+"  ),  \n");
 //              单行结束为字符或者时间
                 }else  if ((j== values.size() -1) && (colInfos.get(j).getType() == 0 || colInfos.get(j).getType() == 3)){
-                    sb.append( "\'" + values.get(j)+" \' ),");
+                    sb.append( "\'" + resolveStringValue(values.get(j))+" \' ),");
 //              字段处理 数字
                 }else if(colInfos.get(j).getType() == 1){
                     sb.append(resolveValue(values.get(j))+",");
                 }else if(colInfos.get(j).getType() == 0 || colInfos.get(j).getType() == 3){
 //              字段处理 字符或者时间
-                    sb.append("\'" + values.get(j)+"\',");
+                    sb.append("\'" + resolveStringValue(values.get(j))+"\',");
                 }
             }
         }
         executeSqlInfo(sb.toString());
     }
+
+    /**
+     * 处理字符串中存在的单引号问题
+     * @param o
+     * @return
+     */
+    private static String resolveStringValue(Object o) {
+        return  o.toString().replace("'","‘");
+    }
+
     /**
      * 生成用户信息SQL
      * @param result

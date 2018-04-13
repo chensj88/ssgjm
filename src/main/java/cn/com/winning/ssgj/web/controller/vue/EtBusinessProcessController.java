@@ -28,13 +28,23 @@ public class EtBusinessProcessController extends BaseController {
     @RequestMapping(value = "/list.do")
     @ResponseBody
     public Map<String,Object> queryFlowInfoByPmId(EtBusinessProcess process, Row row){
+        //生成业务流程信息
         super.getFacade().getCommonQueryService().generateEtBusinessProcessByProject(process);
         process.setRow(row);
+        //查询流程信息
         List<EtBusinessProcess> processList = super.getFacade().getEtBusinessProcessService().getEtBusinessProcessPaginatedList(process);
+        //查询流程总的数量
+        process.setIsScope(Constants.STATUS_USE);
+        int sumBussinessProcessNum  = super.getFacade().getEtBusinessProcessService().getEtBusinessProcessCount(process);
+        //查询完成的流程数量
+        process.setStatus(Constants.APPROVAL_STATUS_END);
+        int completeBPNum = super.getFacade().getEtBusinessProcessService().getEtBusinessProcessCount(process);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         result.put("rows", processList);
         result.put("total", processList.size());
+        result.put("sumNum", sumBussinessProcessNum);
+        result.put("comNum", completeBPNum);
         return result;
 
     }

@@ -50,7 +50,23 @@ public class Constants implements Serializable {
      * 状态码  1 使用/生效 是
      */
     public static final Integer STATUS_USE = 1;
+    /**
+     * 审批状态码  开始/新增
+     */
+    public static  final  Integer APPROVAL_STATUS_START = 0;
+    /**
+     * 审批状态码  待审核/提交
+     */
+    public static  final  Integer APPROVAL_STATUS_SUMMIT = 1;
+    /**
+     * 审批状态码  审核不通过
+     */
+    public static  final  Integer APPROVAL_STATUS_REJECT = 2;
 
+    /**
+     * 审批状态码  审核（完结）
+     */
+    public static  final  Integer APPROVAL_STATUS_END = 9;
     /**
      * PMIS状态码  2|作废
      */
