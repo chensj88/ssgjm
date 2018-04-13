@@ -49,7 +49,7 @@ public class EtSiteInstallController extends BaseController {
             //所需硬件
             
 
-            //所需要的软件
+            //所需要的 软件
             result.put("productLineList", super.getProductLineList(info.getPmId()));
             result.put("total", installList.size());
             result.put("status", Constants.SUCCESS);
