@@ -115,6 +115,11 @@ public class EtThirdIntterface extends BaseDomain implements Serializable {
      */
     private String remark;
 
+    /**
+     * @val 来源id
+     */
+    private Long sourceId;
+
     public EtThirdIntterface() {
 
     }
@@ -368,5 +373,13 @@ public class EtThirdIntterface extends BaseDomain implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Long getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(Long sourceId) {
+        this.sourceId = sourceId;
     }
 }

@@ -34,4 +34,10 @@ public class EtThirdIntterfaceDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtThirdI
         String statement="selectEtThirdIntterfaceMergeList";
         return this.getSqlSession().selectList(statement,etThirdIntterface);
     }
+
+    @Override
+    public List<EtThirdIntterface> selectPmisInterfaceList(EtThirdIntterface etThirdIntterface) {
+        String statement="selectPmisInterfaceList";
+        return this.getSqlSession().selectList(statement,etThirdIntterface);
+    }
 }

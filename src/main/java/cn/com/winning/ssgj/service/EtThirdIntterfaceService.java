@@ -32,5 +32,7 @@ public interface EtThirdIntterfaceService {
 
     List<EtThirdIntterface> selectEtThirdIntterfaceMergeList(EtThirdIntterface etThirdIntterface);
 
+    List<EtThirdIntterface> selectPmisInterfaceList(EtThirdIntterface etThirdIntterface);
+
 
 }
