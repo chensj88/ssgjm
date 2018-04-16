@@ -58,9 +58,12 @@ public class EtDataCheckController extends BaseController {
      * @param pmId
      * @param operator
      */
-    private void dataInit(Long pmId, Long operator) {
+    @RequestMapping("/initSourceData.do")
+    @ResponseBody
+    private Map<String, Object> initSourceData(Long pmId, Long operator, Integer dataType) {
+        Map map = new HashMap();
         if (pmId == null) {
-            return;
+            return null;
         }
         //根据pmId获取项目基础信息
         PmisProjectBasicInfo pmisProjectBasicInfo = this.getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
@@ -70,7 +73,7 @@ public class EtDataCheckController extends BaseController {
         Long serialNo = pmisProjectBasicInfo.getKhxx();
 //        pmId 项目id type 合同产品类型 @see cn.com.winning.ssgj.base.Constants.PMIS.CPLB_* 1 标准产品 9 接口
 //        dataType 数据类别 0 国标数据;1 行标数据；2 共享数据；3 易用数据；
-        List<PmisProductInfo> pmisProductInfos = this.getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndTypeAndDataType(pmId, 1, 0);
+        List<PmisProductInfo> pmisProductInfos = this.getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndTypeAndDataType(pmId, 1, dataType);
         for (int i = 0; i < pmisProductInfos.size(); i++) {
             EtDataCheck etDataCheck = new EtDataCheck();
             etDataCheck.setCId(cId);
@@ -90,6 +93,9 @@ public class EtDataCheckController extends BaseController {
                 getFacade().getEtDataCheckService().createEtDataCheck(etDataCheck);
             }
         }
+        map.put("status", Constants.SUCCESS);
+        map.put("msg", "初始化数据成功！");
+        return map;
     }
 
     /**
@@ -103,14 +109,12 @@ public class EtDataCheckController extends BaseController {
     @RequestMapping("/list.do")
     @ResponseBody
     @ILog(operationName = "基础数据校验表", operationType = "list")
-    public Map<String, Object> list(Row row, String proStr,String operator) {
+    public Map<String, Object> list(Row row, String proStr, String operator) {
         //项目id
         Long proId = Long.parseLong(proStr);
         if (proId == null) {
             return null;
         }
-        //数据初始化
-        dataInit(proId,NumberParseUtil.parseLong(operator));
         //根据项目id获取项目基本信息
         PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(proId);
         //获取合同id
@@ -133,13 +137,13 @@ public class EtDataCheckController extends BaseController {
         PmisProductInfo pmisProductInfo = new PmisProductInfo();
         SysDataCheckScript sysDataCheckScript = new SysDataCheckScript();
         //封装外参数
-        PmisProductLineInfo pmisProductLineInfo=new PmisProductLineInfo();
+        PmisProductLineInfo pmisProductLineInfo = new PmisProductLineInfo();
         //封装外参数
         for (EtDataCheck e : etDataCheckList) {
             pmisProductInfo.setId(e.getPdId());
             pmisProductInfo = getFacade().getPmisProductInfoService().getPmisProductInfo(pmisProductInfo);
             pmisProductLineInfo.setId(e.getPlId());
-            pmisProductLineInfo=getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
+            pmisProductLineInfo = getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
             Map<String, Object> map = new HashMap();
             map.put("subSystem", pmisProductInfo.getName());
             map.put("type", pmisProductLineInfo.getName());
@@ -234,7 +238,7 @@ public class EtDataCheckController extends BaseController {
             //检测结果
             String checkResult = "";
             try {
-                List<List<Object>> etDataCheckList = ExcelUtil.importExcel(newFile.getPath() )  ;
+                List<List<Object>> etDataCheckList = ExcelUtil.importExcel(newFile.getPath());
                 for (List<Object> e : etDataCheckList) {
                     for (int i = 0; i < e.size(); i++) {
                         if ("F".equalsIgnoreCase(e.get(i).toString())) {
@@ -291,7 +295,7 @@ public class EtDataCheckController extends BaseController {
         temp.setAppId(etDataCheck.getPlId());
         SysDataCheckScript sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(temp);
         //获取脚本地址
-        if(sysDataCheckScript==null){
+        if (sysDataCheckScript == null) {
             return;
         }
         String scriptPath = sysDataCheckScript.getRemotePath();
