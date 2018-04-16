@@ -62,9 +62,12 @@ public class EtEasyDataCheckController extends BaseController {
      * @param operator
      * @param dataType
      */
-    private void dataInit(Long pmId, Long operator, Integer dataType) {
+    @RequestMapping("/initSourceData.do")
+    @ResponseBody
+    private  Map<String, Object> initSourceData(Long pmId, Long operator, Integer dataType) {
+        Map map=new HashMap();
         if (pmId == null) {
-            return;
+            return null;
         }
         //根据pmId获取项目基础信息
         PmisProjectBasicInfo pmisProjectBasicInfo = this.getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
@@ -121,6 +124,9 @@ public class EtEasyDataCheckController extends BaseController {
                 getFacade().getEtEasyDataCheckService().createEtEasyDataCheck(etEasyDataCheck);
             }
         }
+        map.put("status", Constants.SUCCESS);
+        map.put("msg", "初始化数据成功！");
+        return map;
     }
 
     /**
@@ -139,8 +145,6 @@ public class EtEasyDataCheckController extends BaseController {
         if (pmId == null) {
             return null;
         }
-        //初始化数据
-        dataInit(pmId, etEasyDataCheck.getOperator(), 3);
         //根据项目id获取项目基本信息
         PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
         //获取合同id
