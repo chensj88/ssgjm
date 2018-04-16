@@ -157,7 +157,10 @@ public class EtBusinessProcessController extends BaseController {
     @Transactional
     @ILog
     public Map<String,Object> comfirmBusinessProcess(EtProcessManager manager){
-        manager.setIsFlowAffirm(Constants.STATUS_USE);
+        int status = manager.getIsFlowAffirm();
+        manager.setIsFlowAffirm(null);
+        manager = super.getFacade().getEtProcessManagerService().getEtProcessManager(manager);
+        manager.setIsFlowAffirm(status);
         super.getFacade().getEtProcessManagerService().modifyEtProcessManager(manager);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
@@ -174,6 +177,7 @@ public class EtBusinessProcessController extends BaseController {
     @Transactional
     @ILog
     public Map<String,Object> confirmFlowConfig(EtProcessManager manager){
+        manager = super.getFacade().getEtProcessManagerService().getEtProcessManager(manager);
         manager.setIsFlowConfig(Constants.STATUS_USE);
         super.getFacade().getEtProcessManagerService().modifyEtProcessManager(manager);
         Map<String,Object> result = new HashMap<String,Object>();
