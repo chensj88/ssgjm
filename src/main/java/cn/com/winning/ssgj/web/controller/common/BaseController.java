@@ -145,5 +145,16 @@ public class BaseController extends BaseSpringMvcMybatisController {
         return hardwareList;
     }
 
-
+    /**
+     * 根据项目ID获取可以分配的公司人员信息
+     * @param pmId
+     * @return
+     */
+    public List<EtUserInfo> getEtUserInfo(long pmId){
+        EtUserInfo userInfo = new EtUserInfo();
+        userInfo.getMap().put("position","'0','1','2'");
+        userInfo.setUserType(1);
+        userInfo.setPmId(pmId);
+        return getFacade().getEtUserInfoService().getEtUserInfoList(userInfo);
+    }
 }
