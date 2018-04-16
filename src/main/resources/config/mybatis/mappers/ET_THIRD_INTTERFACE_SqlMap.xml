@@ -48,7 +48,7 @@
         <if test="productName != null and productName != ''">and t.PRODUCT_NAME = #{productName}</if>
         <if test="moduleDetail != null and moduleDetail != ''">and t.MODULE_DETAIL = #{moduleDetail}</if>
         <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
-        <if test="(id != null and id != '') or id == 0">and t.SOURCE_ID = #{sourceId}</if>
+        <if test="(sourceId != null and sourceId != '') or sourceId == 0">and t.SOURCE_ID = #{sourceId}</if>
     </sql>
 
     <select id="selectEtThirdIntterface" resultMap="etThirdIntterfaceResult" parameterType="etThirdIntterface">
@@ -92,7 +92,7 @@
             <if test="interfaceName != null and interfaceName != ''">INTERFACE_NAME,</if>
             <if test="(isScope != null and isScope != '') or isScope == 0">IS_SCOPE,</if>
             <if test="noScopeCode != null and noScopeCode != ''">NO_SCOPE_CODE,</if>
-            <if test="contentType != null and contentType != ''">CONTENT_TYPE,</if>
+            <if test="contentType != null">CONTENT_TYPE,</if>
             <if test="(status != null )">STATUS,</if>
             <if test="message != null and message != ''">MESSAGE,</if>
             <if test="(sourceType != null and sourceType != '') or sourceType == 0">SOURCE_TYPE,</if>
@@ -103,7 +103,7 @@
             <if test="productName != null and productName != ''">PRODUCT_NAME,</if>
             <if test="moduleDetail != null and moduleDetail != ''">MODULE_DETAIL,</if>
             <if test="remark != null and remark != ''">REMARK,</if>
-            <if test="(id != null and id != '') or id == 0">SOURCE_ID,</if>
+            <if test="(sourceId != null and sourceId != '') or sourceId == 0">SOURCE_ID,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -115,7 +115,7 @@
             <if test="interfaceName != null and interfaceName != ''">#{interfaceName, jdbcType=VARCHAR},</if>
             <if test="(isScope != null and isScope != '') or isScope == 0">#{isScope, jdbcType=INTEGER},</if>
             <if test="noScopeCode != null and noScopeCode != ''">#{noScopeCode, jdbcType=VARCHAR},</if>
-            <if test="contentType != null and contentType != ''">#{contentType, jdbcType=VARCHAR},</if>
+            <if test="contentType != null">#{contentType, jdbcType=VARCHAR},</if>
             <if test="(status != null )">#{status, jdbcType=INTEGER},</if>
             <if test="message != null and message != ''">#{message, jdbcType=LONGVARCHAR},</if>
             <if test="(sourceType != null and sourceType != '') or sourceType == 0">#{sourceType, jdbcType=INTEGER},
@@ -148,7 +148,7 @@
                 </if>
                 <if test="noScopeCode != null">NO_SCOPE_CODE = #{noScopeCode, jdbcType=VARCHAR},
                 </if>
-                <if test="contentType != null and contentType != ''">CONTENT_TYPE = #{contentType, jdbcType=VARCHAR},
+                <if test="contentType != null">CONTENT_TYPE = #{contentType, jdbcType=VARCHAR},
                 </if>
                 <if test="(status != null )">STATUS = #{status, jdbcType=INTEGER},</if>
                 <if test="message != null and message != ''">MESSAGE = #{message, jdbcType=LONGVARCHAR},</if>

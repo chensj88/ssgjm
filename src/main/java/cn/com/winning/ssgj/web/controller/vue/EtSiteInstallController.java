@@ -5,6 +5,7 @@ import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.EtFloorQuestionInfo;
 import cn.com.winning.ssgj.domain.EtSiteInstall;
+import cn.com.winning.ssgj.domain.EtSoftHardware;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.sun.xml.internal.xsom.impl.scd.Iterators;
@@ -72,15 +73,13 @@ public class EtSiteInstallController extends BaseController {
                         }
                         installList.get(i).setHhhId(hhhId);
                     }
-                    //人员
-
-
                 }
             }
             //所需要的 软件
             result.put("productLineList", super.getProductLineList(info.getPmId()));
             //所需要的 硬件
             result.put("hardList",super.getHardWareList(info.getPmId()));
+            result.put("userList",super.getEtUserInfo(info.getPmId()));
             result.put("total", installList.size());
             result.put("status", Constants.SUCCESS);
             result.put("rows", installList);
@@ -128,7 +127,6 @@ public class EtSiteInstallController extends BaseController {
         }
         return result;
     }
-
     /**
      * 状态变化
      * @return
@@ -146,6 +144,79 @@ public class EtSiteInstallController extends BaseController {
         super.getFacade().getEtSiteInstallService().modifyEtSiteInstall(info);
         map.put("type", Constants.SUCCESS);
         map.put("msg", "范围修改成功！");
+        return map;
+    }
+
+
+    /**
+     * 硬件变化
+     * @return
+     */
+    @RequestMapping(value = "/changeHardWare.do")
+    @ResponseBody
+    public synchronized Map<String,Object> changeHardWare (EtSiteInstall info) {
+        Map map = new HashMap();
+        String hwName="";
+        if(StringUtils.isNotBlank(info.getHwId())){
+            //所需要的 硬件
+            List<EtSoftHardware> softHardwareList = super.getHardWareNameList(info.getPmId(),info.getHwId());
+            for (EtSoftHardware s:softHardwareList){
+                hwName +=s.getHwName()+";";
+            }
+            hwName=hwName.substring(0,hwName.length()-1);
+            info.setHdName(hwName);
+            super.getFacade().getEtSiteInstallService().modifyEtSiteInstall(info);
+        }
+        map.put("type", Constants.SUCCESS);
+        map.put("msg", "硬件修改成功！");
+        return map;
+    }
+
+    /**
+     * 软件变化
+     * @return
+     */
+    @RequestMapping(value = "/changeSoftWare.do")
+    @ResponseBody
+    public synchronized Map<String,Object> changeSoftWare (EtSiteInstall info) {
+        Map map = new HashMap();
+        if(StringUtils.isNotBlank(info.getPdId())){
+            super.getFacade().getEtSiteInstallService().modifyEtSiteInstall(info);
+        }
+        map.put("type", Constants.SUCCESS);
+        map.put("msg", "硬件修改成功！");
+        return map;
+    }
+
+    /**
+     * 分配人变化
+     * @return
+     */
+    @RequestMapping(value = "/changeUser.do")
+    @ResponseBody
+    public synchronized Map<String,Object> changeUser (EtSiteInstall info) {
+        Map map = new HashMap();
+        if(info.getPuserId() != 0 && info.getPuserId() != null){
+            super.getFacade().getEtSiteInstallService().modifyEtSiteInstall(info);
+        }
+        map.put("type", Constants.SUCCESS);
+        map.put("msg", "硬件修改成功！");
+        return map;
+    }
+
+    /**
+     * 站点数
+     * @return
+     */
+    @RequestMapping(value = "/changeSite.do")
+    @ResponseBody
+    public synchronized Map<String,Object> changeSite (EtSiteInstall info) {
+        Map map = new HashMap();
+        if(info.getNum() != 0 && info.getNum() != null){
+            super.getFacade().getEtSiteInstallService().modifyEtSiteInstall(info);
+        }
+        map.put("type", Constants.SUCCESS);
+        map.put("msg", "硬件修改成功！");
         return map;
     }
 

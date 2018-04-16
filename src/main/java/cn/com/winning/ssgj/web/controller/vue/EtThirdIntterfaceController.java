@@ -41,13 +41,14 @@ public class EtThirdIntterfaceController extends BaseController {
 
     /**
      * 初始化数据
+     *
      * @param pmId
      * @param operator
      */
     @RequestMapping(value = "/initSourceData.do")
     @ResponseBody
     public Map<String, Object> initSourceData(Long pmId, Long operator) {
-        Map map=new HashMap();
+        Map map = new HashMap();
         EtThirdIntterface etThirdIntterface = new EtThirdIntterface();
         etThirdIntterface.setPmId(pmId);
         //根据pmid获取所有接口信息
@@ -58,10 +59,6 @@ public class EtThirdIntterfaceController extends BaseController {
             if (temp == null) {
                 //不存在则将数据插入
                 intterface.setId(ssgjHelper.createThirdInterfaceId());
-                intterface.setOperator(operator);
-                intterface.setCreator(operator);
-                intterface.setCreateTime(new Timestamp(new java.util.Date().getTime()));
-                intterface.setOperatorTime(new Timestamp(new Date().getTime()));
                 getFacade().getEtThirdIntterfaceService().createEtThirdIntterface(intterface);
             }
         }
@@ -122,6 +119,7 @@ public class EtThirdIntterfaceController extends BaseController {
         Map map = null;
         String contentType = null;
         String[] contentArr = null;
+        Integer completeNum = 0;
         //封装产品条线名、完成情况
         for (EtThirdIntterface intterface : etThirdIntterfaces) {
             map = new HashMap();
@@ -131,16 +129,17 @@ public class EtThirdIntterfaceController extends BaseController {
             pmisProductLineInfo = getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
             //完成情况
             contentType = intterface.getContentType();
-            if (StringUtil.isEmptyOrNull(contentType)) {
-                map.put("data", 0);
-                map.put("performance", 0);
-                map.put("process", 0);
-            } else {
-                contentArr = contentType.split(",");
-                map.put("data", contentArr[0]);
-                map.put("performance", contentArr[1]);
-                map.put("process", contentArr[2]);
+            if (contentType != null && contentType.contains("1") && contentType.contains("2") && contentType.contains("3")) {
+                ++completeNum;
             }
+            contentArr = contentType == null ? null : contentType.split(",");
+            map.put("contentList", contentArr);
+            if (intterface.getStatus() == null || intterface.getStatus() == 0) {
+                map.put("status", false);
+            } else {
+                map.put("status", true);
+            }
+
             map.put("plName", pmisProductLineInfo == null ? null : pmisProductLineInfo.getName());
             intterface.setMap(map);
         }
@@ -153,6 +152,7 @@ public class EtThirdIntterfaceController extends BaseController {
         List<SysDictInfo> sysDictInfoList = getFacade().getSysDictInfoService().getSysDictInfoList(sysDictInfo);
 
         Map<String, Object> result = new HashMap<String, Object>();
+        result.put("completeNum", completeNum);
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows", etThirdIntterfaces);
@@ -324,21 +324,41 @@ public class EtThirdIntterfaceController extends BaseController {
     /**
      * 更改完成情况
      *
-     * @param data
-     * @param performance
-     * @param process
+     * @param etThirdIntterface
      * @return
      */
     @RequestMapping(value = "/changeContent.do")
     @ResponseBody
     @ILog
     @Transactional
-    public Map<String, Object> changeContent(String data, String performance, String process) {
-        String content = data + "," + performance + "," + process;
-        EtThirdIntterface etThirdIntterface = new EtThirdIntterface();
-        etThirdIntterface.setContentType(content);
+    public Map<String, Object> changeContent(EtThirdIntterface etThirdIntterface) {
         getFacade().getEtThirdIntterfaceService().modifyEtThirdIntterface(etThirdIntterface);
         Map map = new HashMap();
+        map.put("type", Constants.SUCCESS);
+        map.put("msg", "完成情况修改成功！");
+        return map;
+    }
+
+    /**
+     * 更改审核状态
+     *
+     * @param status
+     * @return
+     */
+    @RequestMapping(value = "/changeStatus.do")
+    @ResponseBody
+    @ILog
+    @Transactional
+    public Map<String, Object> changeStatus(Boolean status, Long id) {
+        Map map = new HashMap();
+        EtThirdIntterface etThirdIntterface = new EtThirdIntterface();
+        etThirdIntterface.setId(id);
+        if (status) {
+            etThirdIntterface.setStatus(1);
+        } else {
+            etThirdIntterface.setStatus(0);
+        }
+        getFacade().getEtThirdIntterfaceService().modifyEtThirdIntterface(etThirdIntterface);
         map.put("type", Constants.SUCCESS);
         map.put("msg", "完成情况修改成功！");
         return map;
