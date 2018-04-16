@@ -59,6 +59,7 @@
         <if test="row.count != null and row.count != ''">top ${row.count}</if>
         * from ET_SOFT_HARDWARE t where 1 = 1
         <include refid="sf-etSoftHardware"/>
+        <if test="map.hardNameList != null ">and t.ID in (${map.hardNameList}) </if>
         <!-- order by ID asc -->
     </select>
 

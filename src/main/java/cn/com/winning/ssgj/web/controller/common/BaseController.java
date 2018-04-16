@@ -141,7 +141,20 @@ public class BaseController extends BaseSpringMvcMybatisController {
     public List<EtSoftHardware> getHardWareList(Long pmId) {
         EtSoftHardware info = new EtSoftHardware();
         info.setPmId(pmId);
-        List<EtSoftHardware> hardwareList = getFacade().getEtSoftHardwareService().getEtSoftHardwarePaginatedList(info);
+        List<EtSoftHardware> hardwareList = getFacade().getEtSoftHardwareService().getEtSoftHardwareList(info);
+        return hardwareList;
+    }
+
+    /**
+     * 根据项目获取实施范围的硬件名称
+     * @param pmId
+     * @return
+     */
+    public List<EtSoftHardware> getHardWareNameList(Long pmId,String hwId) {
+        EtSoftHardware info = new EtSoftHardware();
+        info.setPmId(pmId);
+        info.getMap().put("hardNameList",hwId);
+        List<EtSoftHardware> hardwareList = getFacade().getEtSoftHardwareService().getEtSoftHardwareList(info);
         return hardwareList;
     }
 
@@ -152,7 +165,7 @@ public class BaseController extends BaseSpringMvcMybatisController {
      */
     public List<EtUserInfo> getEtUserInfo(long pmId){
         EtUserInfo userInfo = new EtUserInfo();
-        userInfo.getMap().put("position","'0','1','2'");
+        userInfo.getMap().put("position","'1'");
         userInfo.setUserType(1);
         userInfo.setPmId(pmId);
         return getFacade().getEtUserInfoService().getEtUserInfoList(userInfo);
