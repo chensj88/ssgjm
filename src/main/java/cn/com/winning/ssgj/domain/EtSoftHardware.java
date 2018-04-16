@@ -88,9 +88,9 @@ public class EtSoftHardware extends BaseDomain implements Serializable {
 	private String content;
 	
 	/**
-	 * @val 数据来源 0 PMIS;1 自定义
+	 * @val 来源id
 	 */
-	private Integer sourceType;
+	private Long sourceType;
 	
 	/**
 	 * @val 创建人
@@ -129,20 +129,7 @@ public class EtSoftHardware extends BaseDomain implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	/**
-	 * @val 合同ID
-	 */
-	public Long getCId() {
-		return cId;
-	}
-	
-	/**
-	 * @val 合同ID
-	 */
-	public void setCId(Long cId) {
-		this.cId = cId;
-	}
+
 	
 	/**
 	 * @val 项目ID
@@ -311,21 +298,24 @@ public class EtSoftHardware extends BaseDomain implements Serializable {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	
-	/**
-	 * @val 数据来源 0 PMIS;1 自定义
-	 */
-	public Integer getSourceType() {
+
+
+	public Long getcId() {
+		return cId;
+	}
+
+	public void setcId(Long cId) {
+		this.cId = cId;
+	}
+
+	public Long getSourceType() {
 		return sourceType;
 	}
-	
-	/**
-	 * @val 数据来源 0 PMIS;1 自定义
-	 */
-	public void setSourceType(Integer sourceType) {
+
+	public void setSourceType(Long sourceType) {
 		this.sourceType = sourceType;
 	}
-	
+
 	/**
 	 * @val 创建人
 	 */
