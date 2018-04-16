@@ -2,11 +2,13 @@ package cn.com.winning.ssgj.web.controller.vue;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.EtFloorQuestionInfo;
 import cn.com.winning.ssgj.domain.EtSiteInstall;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.sun.xml.internal.xsom.impl.scd.Iterators;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,21 +48,39 @@ public class EtSiteInstallController extends BaseController {
         public Map<String,Object> siteInstallList(EtSiteInstall info, Long userId,Row row) {
             Map<String,Object> result = new HashMap<String,Object>();
             info.setRow(row);
-            List<EtSiteInstall> installList = super.getFacade().getEtSiteInstallService().getEtSiteInstallListWithSum(info);
+            List<EtSiteInstall> installList = super.getFacade().getEtSiteInstallService().getEtSiteInstallList(info);
             if(installList.size() > 0){
                 for (int i=0;i<installList.size();i++){
-                    String str[]=installList.get(i).getPdId().split(",");
-                    int[] pppId=new int[str.length];
-                    for(int j=0;j<str.length;j++){
-                        String jj =str[j];
-                        int jjj = Integer.parseInt(jj);
-                        pppId[j]=jjj;
+                    if(StringUtils.isNotBlank(installList.get(i).getPdId())){
+                        String str[]=installList.get(i).getPdId().split(",");
+                        int[] pppId=new int[str.length];
+                        for(int j=0;j<str.length;j++){
+                            String jj =str[j];
+                            int jjj = Integer.parseInt(jj);
+                            pppId[j]=jjj;
+                        }
+                        installList.get(i).setPppId(pppId);
                     }
-                    installList.get(i).setPppId(pppId);
+                    //硬件
+                    if(StringUtils.isNotBlank(installList.get(i).getHwId())){
+                        String str[]=installList.get(i).getHwId().split(",");
+                        int[] hhhId=new int[str.length];
+                        for(int j=0;j<str.length;j++){
+                            String jj =str[j];
+                            int jjj = Integer.parseInt(jj);
+                            hhhId[j]=jjj;
+                        }
+                        installList.get(i).setHhhId(hhhId);
+                    }
+                    //人员
+
+
                 }
             }
             //所需要的 软件
             result.put("productLineList", super.getProductLineList(info.getPmId()));
+            //所需要的 硬件
+            result.put("hardList",super.getHardWareList(info.getPmId()));
             result.put("total", installList.size());
             result.put("status", Constants.SUCCESS);
             result.put("rows", installList);
@@ -80,7 +100,7 @@ public class EtSiteInstallController extends BaseController {
         }
 
     /**
-     * 查询产品条线系统
+     * 新增/修改科室
      * @return
      */
     @RequestMapping(value = "/updateSite.do")
@@ -107,6 +127,26 @@ public class EtSiteInstallController extends BaseController {
             result.put("status",0);
         }
         return result;
+    }
+
+    /**
+     * 状态变化
+     * @return
+     */
+    @RequestMapping(value = "/changeScope.do")
+    @ResponseBody
+    public synchronized Map<String,Object> changeScope (EtSiteInstall info) {
+        String noScopeCode = info.getNoScopeCode();
+        if (StringUtil.isEmptyOrNull(noScopeCode)) {
+            info.setIsScope(1);
+        } else {
+            info.setIsScope(0);
+        }
+        Map map = new HashMap();
+        super.getFacade().getEtSiteInstallService().modifyEtSiteInstall(info);
+        map.put("type", Constants.SUCCESS);
+        map.put("msg", "范围修改成功！");
+        return map;
     }
 
 

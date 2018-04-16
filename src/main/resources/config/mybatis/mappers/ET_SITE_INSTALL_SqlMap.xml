@@ -30,7 +30,7 @@
         <result column="ZXTMC" property="map.zxtmc" jdbcType="VARCHAR" />
         <result column="YHMC" property="map.yhmc" jdbcType="VARCHAR" />
         <result column="installed" property="map.installed" jdbcType="VARCHAR" />
-
+        <result column="PUSERNAME" property="map.puserName" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="sf-etSiteInstall">
@@ -69,7 +69,9 @@
     <select id="selectEtSiteInstallList" resultMap="etSiteInstallResult" parameterType="etSiteInstall">
         select
         <if test="row.count != null and row.count != ''">top ${row.count}</if>
-        *,i.YHMC from ET_SITE_INSTALL t LEFT JOIN SYS_USER_INFO i ON t.CREATOR = i.ID where 1 = 1
+        t.*,i.YHMC,,ii.YHMC as PUSERNAME from ET_SITE_INSTALL t LEFT JOIN SYS_USER_INFO i ON t.CREATOR = i.ID
+        LEFT JOIN SYS_USER_INFO ii ON t.PUSER_ID = ii.ID
+        where 1 = 1
         <include refid="sf-etSiteInstall"/>
         <!-- order by ID asc -->
     </select>
