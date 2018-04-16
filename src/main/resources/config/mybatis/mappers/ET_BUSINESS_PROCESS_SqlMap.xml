@@ -24,6 +24,8 @@
 	</resultMap>
 
 	<resultMap id="etBusinessProcessResult" type="etBusinessProcess" extends="etBusinessProcessResultForList">
+		<result column="stateClass" property="map.stateClass" jdbcType="VARCHAR"/>
+		<result column="stateTxt" property="map.stateTxt" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<sql id="sf-etBusinessProcess">
@@ -64,11 +66,20 @@
 		select count(*) from ET_BUSINESS_PROCESS t where 1 = 1
 		<include refid="sf-etBusinessProcess" />
 	</select>
-
+	<!--
+	  补充状态信息对应的class
+	-->
 	<select id="selectEtBusinessProcessPaginatedList" resultMap="etBusinessProcessResult" parameterType="etBusinessProcess">
 		select * from (
-			select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
-				from ET_BUSINESS_PROCESS t where 1 = 1
+			select * ,
+            CASE WHEN t.STATUS = 2 THEN 'disaudit'
+		         WHEN t.STATUS = 9 THEN 'audited'
+		         ELSE 'audit' END  AS stateClass,
+			 t1.DICT_LABEL AS stateTxt,
+		     ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+			 from ET_BUSINESS_PROCESS t
+             LEFT JOIN SYS_DICT_INFO t1 ON t.STATUS = CAST(t1.DICT_VALUE AS INT) AND t1.DICT_CODE ='audiType'
+		    where 1 = 1
 			<include refid="sf-etBusinessProcess" />
 			<!-- order by ID asc -->
 		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}

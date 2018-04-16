@@ -19,6 +19,8 @@ public class EtSiteInstall extends BaseDomain implements Serializable {
 
 	private int[] pppId;
 
+	private int[] hhhId;
+
 	/**
 	 * @val ID
 	 */
@@ -409,5 +411,12 @@ public class EtSiteInstall extends BaseDomain implements Serializable {
 		this.pppId = pppId;
 	}
 
+	public int[] getHhhId() {
+		return hhhId;
+	}
+
+	public void setHhhId(int[] hhhId) {
+		this.hhhId = hhhId;
+	}
 
 }

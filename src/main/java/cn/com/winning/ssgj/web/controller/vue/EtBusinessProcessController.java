@@ -4,6 +4,7 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.domain.EtBusinessProcess;
+import cn.com.winning.ssgj.domain.EtProcessManager;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,13 @@ public class EtBusinessProcessController extends BaseController {
 
     @Autowired
     private SSGJHelper ssgjHelper;
+
+    /**
+     * 主页面数据展示
+     * @param process
+     * @param row
+     * @return
+     */
     @RequestMapping(value = "/list.do")
     @ResponseBody
     @Transactional
@@ -58,6 +66,11 @@ public class EtBusinessProcessController extends BaseController {
         return result;
     }
 
+    /**
+     * 实施范围的修改
+     * @param process
+     * @return
+     */
     @RequestMapping(value = "/changeScope.do")
     @ResponseBody
     @Transactional
@@ -69,6 +82,12 @@ public class EtBusinessProcessController extends BaseController {
         result.put("status", Constants.SUCCESS);
         return result;
     }
+
+    /**
+     * 统计完成和未完成数量
+     * @param process
+     * @return
+     */
     @RequestMapping(value = "/countInfo.do")
     @ResponseBody
     public Map<String,Object> countProcessInfo(EtBusinessProcess process){
@@ -85,6 +104,11 @@ public class EtBusinessProcessController extends BaseController {
         return result;
     }
 
+    /**
+     * 添加流程信息
+     * @param process
+     * @return
+     */
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
     @Transactional
@@ -105,6 +129,88 @@ public class EtBusinessProcessController extends BaseController {
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         return result;
+    }
+
+    /**
+     * 删除流程调研信息
+     * @param process
+     * @return
+     */
+    @RequestMapping(value = "/delete.do")
+    @ResponseBody
+    @Transactional
+    @ILog
+    public Map<String,Object> deleteBusinessProcess(EtBusinessProcess process){
+        super.getFacade().getEtBusinessProcessService().removeEtBusinessProcess(process);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
+
+    /**
+     * 流程数量确认
+     * @param manager
+     * @return
+     */
+    @RequestMapping(value = "/confirmFlowNum.do")
+    @ResponseBody
+    @Transactional
+    @ILog
+    public Map<String,Object> comfirmBusinessProcess(EtProcessManager manager){
+        manager.setIsFlowAffirm(Constants.STATUS_USE);
+        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(manager);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
+
+    /**
+     *  流程调研与配置
+     * @param manager
+     * @return
+     */
+    @RequestMapping(value = "/confirmFlowConfig.do")
+    @ResponseBody
+    @Transactional
+    @ILog
+    public Map<String,Object> confirmFlowConfig(EtProcessManager manager){
+        manager.setIsFlowConfig(Constants.STATUS_USE);
+        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(manager);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
+
+    /**
+     * 查看是否确认完成确认数量
+     * @param manager
+     * @return
+     */
+    @RequestMapping(value = "/checkAffirm.do")
+    @ResponseBody
+    public Map<String,Object> checkBusinessProcessAffirm(EtProcessManager manager){
+        manager = super.getFacade().getEtProcessManagerService().getEtProcessManager(manager);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", manager.getIsFlowAffirm());
+        return result;
 
     }
+
+    /**
+     * 查看是否完成流程配置工作
+     * @param manager
+     * @return
+     */
+    @RequestMapping(value = "/checkConfig.do")
+    @ResponseBody
+    public Map<String,Object> checkBusinessProcessConfig(EtProcessManager manager){
+        manager = super.getFacade().getEtProcessManagerService().getEtProcessManager(manager);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", manager.getIsFlowConfig());
+        return result;
+
+    }
+
 }

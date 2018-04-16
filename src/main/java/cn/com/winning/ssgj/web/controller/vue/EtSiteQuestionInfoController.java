@@ -55,16 +55,11 @@ public class EtSiteQuestionInfoController extends BaseController {
             }
         }
         //可分配人员信息
-        EtUserInfo userInfo = new EtUserInfo();
-        userInfo.getMap().put("position","'0','1','2'");
-        userInfo.setUserType(1);
-        userInfo.setPmId(pmid);
-        List<EtUserInfo> infos = super.getFacade().getEtUserInfoService().getEtUserInfoList(userInfo);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows",questionInfoList);
-        result.put("data",infos);
+        result.put("data",this.getEtUserInfo(pmid));
         result.put("nameList",nameList);
         result.put("numList",numList);
         return result;

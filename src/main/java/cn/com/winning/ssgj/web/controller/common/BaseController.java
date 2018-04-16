@@ -1,10 +1,7 @@
 package cn.com.winning.ssgj.web.controller.common;
 
 import cn.com.winning.ssgj.base.Constants;
-import cn.com.winning.ssgj.domain.PmisProductInfo;
-import cn.com.winning.ssgj.domain.PmisProductLineInfo;
-import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
-import cn.com.winning.ssgj.domain.SysUserInfo;
+import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.service.Facade;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.SecurityUtils;
@@ -136,5 +133,28 @@ public class BaseController extends BaseSpringMvcMybatisController {
         return pmisProductLineInfos;
     }
 
+    /**
+     * 根据项目获取实施范围的硬件
+     * @param pmId
+     * @return
+     */
+    public List<EtSoftHardware> getHardWareList(Long pmId) {
+        EtSoftHardware info = new EtSoftHardware();
+        info.setPmId(pmId);
+        List<EtSoftHardware> hardwareList = getFacade().getEtSoftHardwareService().getEtSoftHardwarePaginatedList(info);
+        return hardwareList;
+    }
 
+    /**
+     * 根据项目ID获取可以分配的公司人员信息
+     * @param pmId
+     * @return
+     */
+    public List<EtUserInfo> getEtUserInfo(long pmId){
+        EtUserInfo userInfo = new EtUserInfo();
+        userInfo.getMap().put("position","'0','1','2'");
+        userInfo.setUserType(1);
+        userInfo.setPmId(pmId);
+        return getFacade().getEtUserInfoService().getEtUserInfoList(userInfo);
+    }
 }
