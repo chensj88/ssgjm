@@ -17,5 +17,8 @@ public interface EtThirdIntterfaceDao extends EntityDao<EtThirdIntterface> {
 
     List<EtThirdIntterface> selectEtThirdIntterfaceMergeList(EtThirdIntterface etThirdIntterface);
 
+    List<EtThirdIntterface> selectPmisInterfaceList(EtThirdIntterface etThirdIntterface);
+
+
 
 }

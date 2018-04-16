@@ -89,4 +89,9 @@ public class EtThirdIntterfaceServiceImpl implements EtThirdIntterfaceService {
         return this.etThirdIntterfaceDao.selectEtThirdIntterfaceMergeList(etThirdIntterface);
     }
 
+    @Override
+    public List<EtThirdIntterface> selectPmisInterfaceList(EtThirdIntterface etThirdIntterface) {
+        return this.etThirdIntterfaceDao.selectPmisInterfaceList(etThirdIntterface);
+    }
+
 }
