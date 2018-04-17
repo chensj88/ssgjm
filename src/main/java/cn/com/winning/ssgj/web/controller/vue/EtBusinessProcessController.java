@@ -3,8 +3,11 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.CommonFtpUtils;
+import cn.com.winning.ssgj.base.util.DateUtil;
 import cn.com.winning.ssgj.domain.EtBusinessProcess;
 import cn.com.winning.ssgj.domain.EtProcessManager;
+import cn.com.winning.ssgj.domain.PmisProjctUser;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
@@ -117,7 +124,7 @@ public class EtBusinessProcessController extends BaseController {
         if (process.getId() == 0L) {
             process.setId(ssgjHelper.createEtBusinessProcessIdService());
             process.setSourceType(Constants.STATUS_USE);
-            process.setStatus(Constants.STATUS_UNUSE);
+            process.setStatus(Constants.STATUS_USE);
             process.setCreator(process.getOperator());
             process.setCreateTime(new Timestamp(new Date().getTime()));
             process.setOperatorTime(new Timestamp(new Date().getTime()));
@@ -177,8 +184,10 @@ public class EtBusinessProcessController extends BaseController {
     @Transactional
     @ILog
     public Map<String,Object> confirmFlowConfig(EtProcessManager manager){
+        int status = manager.getIsFlowConfig();
+        manager.setIsFlowConfig(null);
         manager = super.getFacade().getEtProcessManagerService().getEtProcessManager(manager);
-        manager.setIsFlowConfig(Constants.STATUS_USE);
+        manager.setIsFlowConfig(status);
         super.getFacade().getEtProcessManagerService().modifyEtProcessManager(manager);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
@@ -214,7 +223,79 @@ public class EtBusinessProcessController extends BaseController {
         result.put("status", Constants.SUCCESS);
         result.put("data", manager.getIsFlowConfig());
         return result;
-
     }
 
+    /**
+     * 查看是否完成流程配置工作
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/checkAuth.do")
+    @ResponseBody
+    public Map<String,Object> checkUserAuth(PmisProjctUser user){
+        if(user.getRy() == 100001L){
+            user.setRyfl(0);
+        }else {
+            user = super.getFacade().getPmisProjctUserService().getPmisProjctUser(user);
+        }
+
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", user.getRyfl());
+        return result;
+    }
+
+    /**
+     * 上传文件
+     * @param process
+     * @param request
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/upload.do")
+    @ResponseBody
+    @ILog
+    @Transactional
+    public Map<String,Object> uploadFile(EtBusinessProcess process, HttpServletRequest request, MultipartFile file) throws IOException {
+        Map<String,Object> result = new HashMap<String,Object>();
+        process = super.getFacade().getEtBusinessProcessService().getEtBusinessProcess(process);
+        boolean ftpStatus = false;
+        if(!file.isEmpty()){
+            //上传文件路径
+            String path = request.getServletContext().getRealPath("/temp/");
+            //上传文件名
+            String filename = file.getOriginalFilename();
+            File filepath = new File(path, filename);
+            //判断路径是否存在，如果不存在就创建一个
+            if (!filepath.getParentFile().exists()) {
+                filepath.getParentFile().mkdirs();
+            }
+            //将上传文件保存到一个目标文件当中
+            File newFile = new File(path + File.separator + filename);
+            if (newFile.exists()) {
+                newFile.delete();
+            }
+            file.transferTo(newFile);
+            ;
+            String remotePath = "/process/"+DateUtil.getCurrentDay()+"/"+filename;
+            try {
+                CommonFtpUtils.uploadFile(remotePath,newFile);
+                process.setStatus(1);
+                process.setUploadPath(Constants.FTP_SHARE_FLODER+remotePath);
+                super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
+                newFile.delete();
+                result.put("status", "success");
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.put("status", "error");
+                result.put("msg", "上传文件失败,原因是："+e.getMessage());
+            }
+        }else {
+            result.put("status", "error");
+            result.put("msg", "上传文件失败,原因是：上传文件为空");
+        }
+        return result;
+
+    }
 }

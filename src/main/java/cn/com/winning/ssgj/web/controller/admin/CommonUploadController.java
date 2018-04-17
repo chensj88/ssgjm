@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
+import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.SysDataCheckScript;
@@ -182,7 +183,7 @@ public class CommonUploadController extends BaseController {
             if (ftpStatus) {
                 newFile.delete();
                 result.put("status", "success");
-                flowInfo.setRemotePath(remotePath);
+                flowInfo.setRemotePath(Constants.FTP_SHARE_FLODER+remotePath);
                 super.getFacade().getSysFlowInfoService().modifySysFlowInfo(flowInfo);
             } else if (!StringUtil.isEmptyOrNull(msg)) {
                 newFile.delete();

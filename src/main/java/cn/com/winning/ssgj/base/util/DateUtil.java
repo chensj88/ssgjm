@@ -174,4 +174,12 @@ public final class DateUtil {
         return  new Timestamp(new Date().getTime());
     }
 
+    /**
+     * 获取系统日期20180101
+     * @return
+     */
+    public static String getCurrentDay(){
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+        return df.format(new Date());
+    }
 }
