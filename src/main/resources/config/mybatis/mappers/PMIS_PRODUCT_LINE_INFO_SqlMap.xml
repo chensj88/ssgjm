@@ -185,6 +185,8 @@
                         AND t.ZT = 1
                     )
             )
+        <if test="map.softNameList != null and map.softNameList != ''"> AND m.ID IN (${map.softNameList})</if>
+
     </select>
 
 

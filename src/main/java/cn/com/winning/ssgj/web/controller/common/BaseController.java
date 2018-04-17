@@ -135,6 +135,23 @@ public class BaseController extends BaseSpringMvcMybatisController {
     }
 
     /**
+     * 根据项目获取产品条线的系统集合
+     * @param pmId
+     * @return
+     */
+    public List<PmisProductLineInfo> getPdNameList(Long pmId,String pdId) {
+        PmisContractProductInfo pmisContractProductInfo = new PmisContractProductInfo();
+        pmisContractProductInfo.setHtcplb(1);
+        pmisContractProductInfo.setXmlcb(pmId);
+        pmisContractProductInfo.getMap().put("softNameList",pdId);
+        //根据产品获取产品条线
+        List<PmisProductLineInfo> pmisProductLineInfos = getFacade().getPmisProductLineInfoService().selectPmisProductLineInfoByPmidAndType(pmisContractProductInfo);
+        return pmisProductLineInfos;
+    }
+
+
+
+    /**
      * 根据项目获取实施范围的硬件
      * @param pmId
      * @return

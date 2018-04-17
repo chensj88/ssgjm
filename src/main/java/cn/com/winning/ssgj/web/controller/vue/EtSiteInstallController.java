@@ -6,6 +6,7 @@ import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.EtFloorQuestionInfo;
 import cn.com.winning.ssgj.domain.EtSiteInstall;
 import cn.com.winning.ssgj.domain.EtSoftHardware;
+import cn.com.winning.ssgj.domain.PmisProductLineInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.sun.xml.internal.xsom.impl.scd.Iterators;
@@ -92,9 +93,9 @@ public class EtSiteInstallController extends BaseController {
          */
         @RequestMapping(value = "/addDept.do")
         @ResponseBody
-        public Map<String,Object> siteInstallAddDept() {
+        public Map<String,Object> siteInstallAddDept(EtSoftHardware info) {
             Map<String,Object> result = new HashMap<String,Object>();
-            //result.put("productLineList", super.getProductLineList(info.getPmId()));
+            result.put("productLineList", super.getProductLineList(info.getPmId()));
             return result;
         }
 
@@ -180,7 +181,15 @@ public class EtSiteInstallController extends BaseController {
     @ResponseBody
     public synchronized Map<String,Object> changeSoftWare (EtSiteInstall info) {
         Map map = new HashMap();
+        String sfName="";
         if(StringUtils.isNotBlank(info.getPdId())){
+            //所需要的 软件
+            List<PmisProductLineInfo> softHardwareList = super.getPdNameList(info.getPmId(),info.getHwId());
+            for (PmisProductLineInfo s:softHardwareList){
+                sfName +=s.getName()+";";
+            }
+            sfName=sfName.substring(0,sfName.length()-1);
+            info.setPdName(sfName);
             super.getFacade().getEtSiteInstallService().modifyEtSiteInstall(info);
         }
         map.put("type", Constants.SUCCESS);
