@@ -3,14 +3,8 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
-import cn.com.winning.ssgj.base.util.ConnectionUtil;
-import cn.com.winning.ssgj.base.util.DateUtil;
-import cn.com.winning.ssgj.base.util.ExcelUtil;
-import cn.com.winning.ssgj.base.util.StringUtil;
-import cn.com.winning.ssgj.domain.EtDevEnvHardware;
-import cn.com.winning.ssgj.domain.EtSoftHardware;
-import cn.com.winning.ssgj.domain.PmisProductInfo;
-import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
+import cn.com.winning.ssgj.base.util.*;
+import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -37,7 +31,7 @@ import java.util.*;
  * 基础数据类型处理Controller
  *
  * @author FengChen
- * @date 2018年3月18日10:37:18
+ * @date 2018年4月17日13:43:51
  */
 @CrossOrigin
 @Controller
@@ -49,71 +43,119 @@ public class EtSoftHardwareController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     /**
-     * 根据项目id获取测试及硬件信息
+     * 数据初始化
+     *
+     * @param etSoftHardware
+     * @return
+     */
+    @RequestMapping("/initSourceData.do")
+    @ResponseBody
+    private Map<String, Object> initSourceData(EtSoftHardware etSoftHardware) {
+        Long pmId = etSoftHardware.getPmId();
+        if (pmId == null) {
+            return null;
+        }
+        //根据pmId获取项目基础信息
+        PmisProjectBasicInfo pmisProjectBasicInfo = this.getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
+        //cId
+        Long cId = pmisProjectBasicInfo.getHtxx();
+        //serialNo
+        Long serialNo = pmisProjectBasicInfo.getKhxx();
+        //根据项目id获取产品
+        List<PmisProductInfo> pmisProductInfos = getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId, 1);
+        Map map = new HashMap();
+        map.put("productList", pmisProductInfos);
+        etSoftHardware.setcId(cId);
+        etSoftHardware.setSerialNo(serialNo.toString());
+        etSoftHardware.setMap(map);
+        //根据产品集合获取硬件集合
+        List<EtSoftHardware> etSoftHardwares = getFacade().getEtSoftHardwareService().selectEtSoftHardwareByProductInfo(etSoftHardware);
+        //添加id
+        for (EtSoftHardware softHardware : etSoftHardwares) {
+            softHardware.setId(ssgjHelper.createEtSoftHardwareIdService());
+        }
+        //批量插入数据
+        getFacade().getEtSoftHardwareService().insertEtSoftHardwareByList(etSoftHardwares);
+        HashMap result = new HashMap();
+        result.put("status", Constants.SUCCESS);
+        result.put("msg", "初始化数据成功！");
+        return result;
+    }
+
+    /**
+     * 根据项目id获取硬件信息
      *
      * @param row
-     * @param pmId
+     * @param etSoftHardware
      * @return
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String, Object> list(Row row, Long pmId) {
-        if (pmId == null || pmId == 0) {
+    public Map<String, Object> list(Row row, EtSoftHardware etSoftHardware) {
+        Long pmId = etSoftHardware.getPmId();
+        if (pmId == null) {
             return null;
         }
-        //根据项目id获取项目基本信息
-//////        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
-//////        //获取合同id
-//////        Long contractId = pmisProjectBasicInfo.getHtxx();
-//////        //获取单据号即客户
-//////        Long customerId = pmisProjectBasicInfo.getKhxx();
-        EtSoftHardware etSoftHardware = new EtSoftHardware();
-        etSoftHardware.setPmId(pmId);
-        //根据项目id获取产品信息
-        List<PmisProductInfo> pmisProductInfos = getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId, 1);
-        Map map=new HashMap();
-        map.put("productList",pmisProductInfos);
-        etSoftHardware.setMap(map);
         etSoftHardware.setRow(row);
-       // List<EtSoftHardware> etSoftHardwares = getFacade().getEtSoftHardwareService().selectPmisEtSoftHardwareByProductInfo(etSoftHardware);
-//        int total = etSoftHardwares.size();
+        List<EtSoftHardware> etSoftHardwarePaginatedList = getFacade().getEtSoftHardwareService().getEtSoftHardwarePaginatedList(etSoftHardware);
+        int total = etSoftHardwarePaginatedList.size();
+        PmisProductLineInfo pmisProductLineInfo = null;
+        //封装系统名称
+        for (EtSoftHardware softHardware : etSoftHardwarePaginatedList) {
+            pmisProductLineInfo = new PmisProductLineInfo();
+            pmisProductLineInfo.setId(softHardware.getPlId());
+            pmisProductLineInfo = getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
+            Map nameMap = new HashMap();
+            nameMap.put("plName", pmisProductLineInfo.getName());
+            softHardware.setMap(nameMap);
+        }
+        //根据项目Id
+        List<PmisProductLineInfo> pmisProductLineInfoList = this.getProductLineList(pmId);
         Map<String, Object> result = new HashMap<String, Object>();
-//        result.put("rows", etSoftHardwares);
-//        result.put("total", total);
+        result.put("rows", etSoftHardwarePaginatedList);
+        result.put("total", total);
+        result.put("plList", pmisProductLineInfoList);
         result.put("status", Constants.SUCCESS);
         return result;
     }
 
 
     /**
-     * 添加或者修改测试环境硬件信息
+     * 添加或者修改硬件信息
      *
-     * @param etDevEnvHardware
+     * @param etSoftHardware
      * @return
      */
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
     @ILog
     @Transactional
-    public Map<String, Object> addOrModify(EtDevEnvHardware etDevEnvHardware) {
-        //创建临时变量
-        EtDevEnvHardware etDevEnvHardwareTemp = new EtDevEnvHardware();
-        etDevEnvHardwareTemp.setId(etDevEnvHardware.getId());
-        etDevEnvHardwareTemp = super.getFacade().getEtDevEnvHardwareService().getEtDevEnvHardware(etDevEnvHardwareTemp);
-        PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
-        basicInfo.setId(etDevEnvHardware.getPmId());
-        basicInfo = super.getFacade().getPmisProjectBasicInfoService().getPmisProjectBasicInfo(basicInfo);
-        etDevEnvHardware.setSerialNo(basicInfo.getKhxx() + "");
-        etDevEnvHardware.setcId(basicInfo.getHtxx());
-        if (etDevEnvHardwareTemp != null) {
-            etDevEnvHardware.setOperatorTime(new Timestamp(new Date().getTime()));
-            super.getFacade().getEtDevEnvHardwareService().modifyEtDevEnvHardware(etDevEnvHardware);
+    public Map<String, Object> addOrModify(EtSoftHardware etSoftHardware) {
+        String noScopeCode = etSoftHardware.getNoScopeCode();
+        if (StringUtil.isEmptyOrNull(noScopeCode)) {
+            etSoftHardware.setIsScope(1);
         } else {
-            etDevEnvHardware.setId(ssgjHelper.createEtDevEnvHardwareId());
-            etDevEnvHardware.setCreator(etDevEnvHardware.getOperator());
-            etDevEnvHardware.setCreateTime(new Timestamp(new Date().getTime()));
-            etDevEnvHardware.setOperatorTime(new Timestamp(new Date().getTime()));
-            super.getFacade().getEtDevEnvHardwareService().createEtDevEnvHardware(etDevEnvHardware);
+            etSoftHardware.setIsScope(0);
+        }
+        //创建临时变量
+        EtSoftHardware etSoftHardwareTemp = new EtSoftHardware();
+        etSoftHardwareTemp.setId(etSoftHardware.getId());
+        etSoftHardwareTemp = super.getFacade().getEtSoftHardwareService().getEtSoftHardware(etSoftHardwareTemp);
+        PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
+        basicInfo.setId(etSoftHardware.getPmId());
+        basicInfo = super.getFacade().getPmisProjectBasicInfoService().getPmisProjectBasicInfo(basicInfo);
+        etSoftHardware.setSerialNo(basicInfo.getKhxx() + "");
+        etSoftHardware.setcId(basicInfo.getHtxx());
+        if (etSoftHardwareTemp != null) {
+            etSoftHardware.setOperatorTime(new Timestamp(new Date().getTime()));
+            super.getFacade().getEtSoftHardwareService().modifyEtSoftHardware(etSoftHardware);
+        } else {
+            etSoftHardware.setId(ssgjHelper.createEtSoftHardwareIdService());
+            etSoftHardware.setSourceId(0L);
+            etSoftHardware.setCreator(etSoftHardware.getOperator());
+            etSoftHardware.setCreateTime(new Timestamp(new Date().getTime()));
+            etSoftHardware.setOperatorTime(new Timestamp(new Date().getTime()));
+            super.getFacade().getEtSoftHardwareService().createEtSoftHardware(etSoftHardware);
         }
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
@@ -122,16 +164,16 @@ public class EtSoftHardwareController extends BaseController {
     }
 
     /**
-     * 删除测试环境硬件信息
+     * 删除硬件信息
      *
-     * @param etDevEnvHardware
+     * @param etSoftHardware
      * @return
      */
     @RequestMapping(value = "/delete.do")
     @ResponseBody
     @ILog
-    public Map<String, Object> delete(EtDevEnvHardware etDevEnvHardware) {
-        super.getFacade().getEtDevEnvHardwareService().removeEtDevEnvHardware(etDevEnvHardware);
+    public Map<String, Object> delete(EtSoftHardware etSoftHardware) {
+        super.getFacade().getEtSoftHardwareService().removeEtSoftHardware(etSoftHardware);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
@@ -141,20 +183,20 @@ public class EtSoftHardwareController extends BaseController {
      * 导出Excel
      *
      * @param response
-     * @param etDevEnvHardware
+     * @param etSoftHardware
      * @throws IOException
      */
     @RequestMapping(value = "/exportExcel.do")
-    public void wiriteExcel(HttpServletResponse response, EtDevEnvHardware etDevEnvHardware) throws IOException {
-        //根据pmid获取所有接口数据
-        List<EtDevEnvHardware> etDevEnvHardwares = getFacade().getEtDevEnvHardwareService().selectEtDevEnvHardwareMergeList(etDevEnvHardware);
+    public void wiriteExcel(HttpServletResponse response, EtSoftHardware etSoftHardware) throws IOException {
+        //根据pmid获取所有硬件数据
+        List<EtSoftHardware> etSoftHardwares = getFacade().getEtSoftHardwareService().getEtSoftHardwareList(etSoftHardware);
         //参数集合
         List<Map> dataList = new ArrayList<>();
-        for (int i = 0; i < etDevEnvHardwares.size(); i++) {
-            dataList.add(ConnectionUtil.objectToMap(etDevEnvHardwares.get(i)));
+        for (int i = 0; i < etSoftHardwares.size(); i++) {
+            dataList.add(ConnectionUtil.objectToMap(etSoftHardwares.get(i)));
         }
         //属性数组
-        Field[] fields = EtDevEnvHardware.class.getDeclaredFields();
+        Field[] fields = EtSoftHardware.class.getDeclaredFields();
         //属性集合
         List<String> attrNameList = new ArrayList<>();
         for (int i = 0; i < fields.length; i++) {
@@ -162,7 +204,7 @@ public class EtSoftHardwareController extends BaseController {
                 attrNameList.add(fields[i].getName());
             }
         }
-        String filename = "EtDevEnvHardwareInfo" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
+        String filename = "EtSoftHardware" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
         //创建工作簿
         Workbook workbook = new HSSFWorkbook();
         ExcelUtil.exportExcelByStream(dataList, attrNameList, response, workbook, filename);
@@ -206,33 +248,38 @@ public class EtSoftHardwareController extends BaseController {
             }
             file.transferTo(newFile);
             //导入的数据集合
-            List<EtDevEnvHardware> eList = new ArrayList<>();
+            List<EtSoftHardware> eList = new ArrayList<>();
             try {
-                List<List<Object>> etDevEnvHardwareList = ExcelUtil.importExcel(newFile.getPath());
-                for (List<Object> temp : etDevEnvHardwareList) {
-                    EtDevEnvHardware etDevEnvHardware = new EtDevEnvHardware();
-                    etDevEnvHardware.setId(ssgjHelper.createEtDevEnvHardwareId());
-                    etDevEnvHardware.setPmId(pmId);
-                    etDevEnvHardware.setcId(contractId);
-                    etDevEnvHardware.setSerialNo(customerId.toString());
-                    etDevEnvHardware.setProductName(temp.get(0).toString());
-                    etDevEnvHardware.setHwName(temp.get(1).toString());
-                    etDevEnvHardware.setHwBrand(temp.get(2).toString());
-                    etDevEnvHardware.setHwBrandModel(temp.get(3).toString());
-                    if (!StringUtil.isEmptyOrNull(temp.get(4).toString())) {
-                        etDevEnvHardware.setHwNum(Integer.parseInt(temp.get(4).toString()));
+                List<List<Object>> etSoftHardwareList = ExcelUtil.importExcel(newFile.getPath());
+                for (List<Object> temp : etSoftHardwareList) {
+                    EtSoftHardware etSoftHardware = new EtSoftHardware();
+                    etSoftHardware.setId(ssgjHelper.createEtDevEnvHardwareId());
+                    etSoftHardware.setPmId(pmId);
+                    etSoftHardware.setcId(contractId);
+                    etSoftHardware.setSerialNo(customerId.toString());
+                    etSoftHardware.setSourceId(0L);
+                    etSoftHardware.setPlId(NumberParseUtil.parseLong(temp.get(0).toString()));
+                    etSoftHardware.setHwName(temp.get(1).toString());
+                    etSoftHardware.setHwCode(temp.get(2).toString());
+                    etSoftHardware.setBrand(temp.get(3).toString());
+                    etSoftHardware.setModel(temp.get(4).toString());
+                    if (!StringUtil.isEmptyOrNull(temp.get(5).toString())) {
+                        etSoftHardware.setNum(Integer.parseInt(temp.get(5).toString()));
+                    }else{
+                        etSoftHardware.setNum(1);
                     }
-                    etDevEnvHardware.setHwUse(temp.get(5).toString());
-                    if (!StringUtil.isEmptyOrNull(temp.get(6).toString())) {
-                        etDevEnvHardware.setIsScope(Integer.parseInt(temp.get(6).toString()));
+                    etSoftHardware.setUseContent(temp.get(6).toString());
+                    if (!StringUtil.isEmptyOrNull(temp.get(7).toString())) {
+                        etSoftHardware.setIsScope(Integer.parseInt(temp.get(6).toString()));
                     }
-                    etDevEnvHardware.setCreateTime(new Timestamp(new Date().getTime()));
-                    etDevEnvHardware.setCreator(param.getOperator());
-                    etDevEnvHardware.setOperator(param.getOperator());
-                    etDevEnvHardware.setOperatorTime(new Timestamp(new Date().getTime()));
-                    eList.add(etDevEnvHardware);
+                    etSoftHardware.setNoScopeCode(temp.get(7).toString());
+                    etSoftHardware.setCreateTime(new Timestamp(new Date().getTime()));
+                    etSoftHardware.setCreator(param.getOperator());
+                    etSoftHardware.setOperator(param.getOperator());
+                    etSoftHardware.setOperatorTime(new Timestamp(new Date().getTime()));
+                    eList.add(etSoftHardware);
                 }
-                getFacade().getEtDevEnvHardwareService().insertEtDevEnvHardwareByList(eList);
+                getFacade().getEtSoftHardwareService().insertEtSoftHardwareByList(eList);
                 newFile.delete();
                 result.put("status", "success");
             } catch (Exception e) {

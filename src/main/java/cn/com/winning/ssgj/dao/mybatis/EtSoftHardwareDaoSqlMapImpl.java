@@ -6,6 +6,8 @@ import cn.com.winning.ssgj.dao.EtSoftHardwareDao;
 import cn.com.winning.ssgj.domain.EtSoftHardware;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.List;
+
 /**
  *
  *
@@ -15,4 +17,13 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 @Service
 public class EtSoftHardwareDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtSoftHardware> implements EtSoftHardwareDao {
 
+    @Override
+    public void insertEtSoftHardwareByList(List<EtSoftHardware> etSoftHardwares) {
+        this.getSqlSession().insert("insertEtSoftHardwareByList",etSoftHardwares);
+    }
+
+    @Override
+    public List<EtSoftHardware> selectEtSoftHardwareByProductInfo(EtSoftHardware etSoftHardware) {
+        return this.getSqlSession().selectList("selectEtSoftHardwareByProductInfo",etSoftHardware);
+    }
 }

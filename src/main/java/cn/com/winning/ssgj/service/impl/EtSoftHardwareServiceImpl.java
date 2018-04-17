@@ -57,4 +57,14 @@ public class EtSoftHardwareServiceImpl implements EtSoftHardwareService {
         return this.etSoftHardwareDao.selectEntityPaginatedList(t);
     }
 
+    @Override
+    public void insertEtSoftHardwareByList(List<EtSoftHardware> etSoftHardwares) {
+        this.etSoftHardwareDao.insertEtSoftHardwareByList(etSoftHardwares);
+    }
+
+    @Override
+    public List<EtSoftHardware> selectEtSoftHardwareByProductInfo(EtSoftHardware etSoftHardware) {
+        return this.etSoftHardwareDao.selectEtSoftHardwareByProductInfo(etSoftHardware);
+    }
+
 }

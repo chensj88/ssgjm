@@ -121,7 +121,7 @@ public class BaseController extends BaseSpringMvcMybatisController {
 
 
     /**
-     * 根据项目获取产品条线的系统集合
+     * 根据项目获取软硬件产品条线的系统集合
      * @param pmId
      * @return
      */

@@ -26,4 +26,9 @@ public interface EtSoftHardwareService {
 
     List<EtSoftHardware> getEtSoftHardwarePaginatedList(EtSoftHardware t);
 
+    void insertEtSoftHardwareByList(List<EtSoftHardware> etSoftHardwares);
+
+    List<EtSoftHardware> selectEtSoftHardwareByProductInfo(EtSoftHardware etSoftHardware);
+
+
 }

@@ -143,9 +143,10 @@ public class EtThirdIntterfaceController extends BaseController {
             map.put("plName", pmisProductLineInfo == null ? null : pmisProductLineInfo.getName());
             intterface.setMap(map);
         }
-        //获取所有生效产品条线
-
-        List<PmisProductLineInfo> pmisProductLineInfoList = this.getProductLineList(etThirdIntterface.getPmId());
+        //根据项目Id和项目类型查询产品信息
+        List<PmisProductInfo> pmisProductInfos = getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(etThirdIntterface.getPmId(), 9);
+        //根据产品信息获取产品条线
+        List<PmisProductLineInfo> pmisProductLineInfoList =getFacade().getCommonQueryService().selectPmisProductLineInfoByProductInfo(pmisProductInfos);
         //获取所有不在本期范围原因
         SysDictInfo sysDictInfo = new SysDictInfo();
         sysDictInfo.setDictCode("NotInScope");

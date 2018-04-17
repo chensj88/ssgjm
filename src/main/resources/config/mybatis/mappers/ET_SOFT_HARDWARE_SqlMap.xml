@@ -59,7 +59,7 @@
         <if test="row.count != null and row.count != ''">top ${row.count}</if>
         * from ET_SOFT_HARDWARE t where 1 = 1
         <include refid="sf-etSoftHardware"/>
-        <if test="map.hardNameList != null ">and t.ID in (${map.hardNameList}) </if>
+        <if test="map.hardNameList != null ">and t.ID in (${map.hardNameList})</if>
         <!-- order by ID asc -->
     </select>
 
@@ -165,7 +165,7 @@
             <if test="id != null and id != ''">ID = #{id}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
-                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
             </if>
         </where>
     </update>
@@ -176,8 +176,95 @@
             <if test="id != null and id != ''">ID = #{id}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
-                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
             </if>
         </where>
     </delete>
+
+    <!--批量插入-->
+    <insert id="insertEtSoftHardwareByList" parameterType="java.util.List">
+        insert into ET_SOFT_HARDWARE
+        (
+        ID,
+        C_ID,
+        PM_ID,
+        SERIAL_NO,
+        PL_ID,
+        HW_NAME,
+        HW_CODE,
+        BRAND,
+        MODEL,
+        NUM,
+        USE_CONTENT,
+        IS_SCOPE,
+        NO_SCOPE_CODE,
+        CONTENT,
+        SOURCE_ID,
+        CREATOR,
+        CREATE_TIME,
+        OPERATOR,
+        OPERATOR_TIME
+        )
+        values
+        <foreach collection="list" item="e" index="index" separator=",">
+            (
+            #{e.id, jdbcType=BIGINT},
+            #{e.cId, jdbcType=BIGINT},
+            #{e.pmId, jdbcType=BIGINT},
+            #{e.serialNo, jdbcType=VARCHAR},
+            #{e.plId, jdbcType=BIGINT},
+            #{e.hwName, jdbcType=VARCHAR},
+            #{e.hwCode, jdbcType=VARCHAR},
+            #{e.brand, jdbcType=VARCHAR},
+            #{e.model, jdbcType=VARCHAR},
+            #{e.num, jdbcType=INTEGER},
+            #{e.useContent, jdbcType=VARCHAR},
+            #{e.isScope, jdbcType=INTEGER},
+            #{e.noScopeCode, jdbcType=VARCHAR},
+            #{e.content, jdbcType=VARCHAR},
+            #{e.sourceId, jdbcType=BIGINT},
+            #{e.creator, jdbcType=BIGINT},
+            #{e.createTime, jdbcType=TIMESTAMP},
+            #{e.operator, jdbcType=BIGINT},
+            #{e.operatorTime, jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+
+    <!--根据产品信息批量查找硬件信息-->
+    <select id="selectEtSoftHardwareByProductInfo" parameterType="EtSoftHardware"
+            resultMap="etSoftHardwareResult">
+        SELECT
+        0 AS ID,
+        #{cId} AS C_ID,
+        #{pmId} AS PM_ID,
+        #{serialNo} AS SERIAL_NO,
+        m.CPTX AS PL_ID,
+        p.SH_NAME AS HW_NAME,
+        p.SH_CODE AS HW_CODE,
+        p.SH_BRAND AS BRAND,
+        p.SH_BRAND_TYPE AS MODEL,
+        1 AS NUM,
+        p.SH_DESC AS USE_CONTENT,
+        1 AS IS_SCOPE,
+        NULL AS NO_SCOPE_CODE,
+        0 AS CONTENT,
+        1 AS SOURCE_ID,
+        0 AS CREATOR,
+        GETDATE() AS CREATE_TIME,
+        NULL AS OPERATOR,
+        NULL AS OPERATOR_TIME
+        FROM SYS_SOFT_HARDWARE_INFO p INNER JOIN SYS_PRODUCT_SH_INFO s
+        ON p.ID =s.SH_ID INNER JOIN PMIS_PRODUCT_INFO m ON m.ID = s.PD_ID
+        WHERE
+        GETDATE() BETWEEN s.EFFECTIVE_DATE AND s.EXPIRE_DATE
+        AND
+        p.SH_TYPE=1
+        AND
+        m.ID in
+        <foreach collection="map.productList" item="item" open="(" separator="," close=")">
+            <if test="item.id!=null and item.id!=0">#{item.id}</if>
+        </foreach>
+    </select>
 </mapper>
