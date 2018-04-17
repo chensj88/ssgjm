@@ -31,6 +31,8 @@
         <result column="YHMC" property="map.yhmc" jdbcType="VARCHAR" />
         <result column="installed" property="map.installed" jdbcType="VARCHAR" />
         <result column="PUSERNAME" property="map.puserName" jdbcType="VARCHAR" />
+        <result column="SITE_INFO" property="map.siteName" jdbcType="VARCHAR" />
+
     </resultMap>
 
     <sql id="sf-etSiteInstall">
@@ -72,6 +74,21 @@
         t.*,i.YHMC,ii.C_NAME as PUSERNAME from ET_SITE_INSTALL t LEFT JOIN SYS_USER_INFO i ON t.CREATOR = i.ID
         LEFT JOIN ET_USER_INFO ii ON t.PUSER_ID = ii.ID
         where 1 = 1
+        <include refid="sf-etSiteInstall"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <!-- Chen,Kuai  获取站点安装的主信息 -->
+    <select id="selectEtSiteInstallListWithInfo" resultMap="etSiteInstallResult" parameterType="etSiteInstall">
+        SELECT t.*,i.YHMC,ii.C_NAME as PUSERNAME,
+        case when ISNULL(dd.INSTALLS, 0) >=t.NUM THEN '已安装'
+        WHEN ISNULL(dd.INSTALLS, 0)<t.NUM AND ISNULL(dd.INSTALLS, 0) >0 THEN '安装中'
+        WHEN ISNULL(dd.INSTALLS, 0) =0 THEN '未安装' END  as SITE_INFO
+        FROM ET_SITE_INSTALL t
+        LEFT JOIN SYS_USER_INFO i ON t.CREATOR = i.ID
+        LEFT JOIN ET_USER_INFO ii ON t.PUSER_ID = ii.ID
+        LEFT JOIN (SELECT d.SOURCE_ID,SUM(d.INSTALL) AS INSTALLS FROM ET_SITE_INSTALL_DETAIL d GROUP BY d.SOURCE_ID) dd
+        ON t.ID =dd.SOURCE_ID
         <include refid="sf-etSiteInstall"/>
         <!-- order by ID asc -->
     </select>

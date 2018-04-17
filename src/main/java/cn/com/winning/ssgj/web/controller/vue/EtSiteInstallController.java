@@ -49,7 +49,7 @@ public class EtSiteInstallController extends BaseController {
         public Map<String,Object> siteInstallList(EtSiteInstall info, Long userId,Row row) {
             Map<String,Object> result = new HashMap<String,Object>();
             info.setRow(row);
-            List<EtSiteInstall> installList = super.getFacade().getEtSiteInstallService().getEtSiteInstallList(info);
+            List<EtSiteInstall> installList = super.getFacade().getEtSiteInstallService().getEtSiteInstallListWithInfo(info);
             if(installList.size() > 0){
                 for (int i=0;i<installList.size();i++){
                     if(StringUtils.isNotBlank(installList.get(i).getPdId())){
