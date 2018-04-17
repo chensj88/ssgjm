@@ -216,6 +216,13 @@ public class SSGJHelper {
     @Autowired
     @Qualifier(value = "etSoftHardwareIdService")
     private StepSequenceFactory  etSoftHardwareIdService;
+    @Autowired
+    @Qualifier(value = "etOnlineFileIdService")
+    private StepSequenceFactory  etOnlineFileIdService;
+
+    public long createEtOnlineFileIdService(){
+        return (long)etOnlineFileIdService.create();
+    }
 
     public long createUrlContentIdService(){
         return (long)urlContentIdService.create();

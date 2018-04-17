@@ -94,4 +94,16 @@ public class EtThirdIntterfaceServiceImpl implements EtThirdIntterfaceService {
         return this.etThirdIntterfaceDao.selectPmisInterfaceList(etThirdIntterface);
     }
 
+    @Override
+    public int getEtThirdIntterfaceSuccessCount(EtThirdIntterface thirdIntterface) {
+        int successNum = 0;
+        for (EtThirdIntterface info : this.selectEtThirdIntterfaceMergeList(thirdIntterface)) {
+            String contentType = info.getContentType();
+            if (contentType != null && contentType.contains("1") && contentType.contains("2") && contentType.contains("3")) {
+                ++successNum;
+            }
+        }
+        return successNum;
+    }
+
 }

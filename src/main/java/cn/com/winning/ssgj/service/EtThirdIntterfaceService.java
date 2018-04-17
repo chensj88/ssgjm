@@ -35,4 +35,5 @@ public interface EtThirdIntterfaceService {
     List<EtThirdIntterface> selectPmisInterfaceList(EtThirdIntterface etThirdIntterface);
 
 
+    int getEtThirdIntterfaceSuccessCount(EtThirdIntterface thirdIntterface);
 }

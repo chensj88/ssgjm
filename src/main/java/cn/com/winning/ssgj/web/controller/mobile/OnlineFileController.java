@@ -171,7 +171,7 @@ public class OnlineFileController extends BaseController {
                     //上传资料 1.生成一条记录
                     //2.修改原来图片路径
                     info.setId(ssgjHelper.createOnlineFileIdService());
-                    info.setCId((long)-2);    //移动端
+                    info.setcId((long)-2);    //移动端
                     info.setPmId((long)-2);
                     info.setSerialNo(serialNo);//客户编码
                     info.setImgPath(remotePath);//图片路径

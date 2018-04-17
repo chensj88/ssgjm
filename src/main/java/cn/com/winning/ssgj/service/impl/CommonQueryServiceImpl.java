@@ -56,7 +56,8 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     private PmisProductLineInfoDao pmisProductLineInfoDao;
     @Autowired
     private SSGJHelper ssgjHelper;
-
+    @Autowired
+    private EtThirdIntterfaceService etThirdIntterfaceService;
     @Override
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId) {
         //获取用户可以查看的项目信息
@@ -155,16 +156,31 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         List<Integer> projectCompele = new ArrayList<>();
         List<Integer> projectHandle = new ArrayList<>();
         List<String> projectItem = new ArrayList<>();
-
+        //基础数据准备
         dataCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);
+        //易用数据准备
         easyDataCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);
-        thirdInterfaceCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);
+        //接口准备
+       /* thirdInterfaceCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);*/
+        //业务流程调研
         businessProcessCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);
+        //报表单据
+        etReportCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);
         Map<String, List> result = new HashMap<String, List>();
         result.put("success", projectCompele);
         result.put("handle", projectHandle);
         result.put("item", projectItem);
         return result;
+    }
+
+    /**
+     * 报表单据准备
+     * @param pmId
+     * @param projectCompele
+     * @param projectHandle
+     * @param projectItem
+     */
+    private void etReportCheckByProjectId(long pmId, List<Integer> projectCompele, List<Integer> projectHandle, List<String> projectItem) {
     }
 
     /**
@@ -195,7 +211,15 @@ public class CommonQueryServiceImpl implements CommonQueryService {
      * @param projectItem
      */
     private void thirdInterfaceCheckByProjectId(long pmId, List<Integer> projectCompele, List<Integer> projectHandle, List<String> projectItem) {
-
+        EtThirdIntterface thirdIntterface = new EtThirdIntterface();
+        thirdIntterface.setPmId(pmId);
+        thirdIntterface.setIsScope(1);
+        int total = etThirdIntterfaceService.getEtThirdIntterfaceCount(thirdIntterface);
+        int succNum = etThirdIntterfaceService.getEtThirdIntterfaceSuccessCount(thirdIntterface);
+        int failNum = total - succNum;
+        projectCompele.add(succNum);
+        projectHandle.add(failNum);
+        projectItem.add("接口准备(" + total + ")");
     }
 
     /**

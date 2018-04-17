@@ -446,4 +446,11 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
+    <!--上线报告主键-->
+    <bean id="etOnlineFileIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="ONLINE_FILE"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
 </beans>
