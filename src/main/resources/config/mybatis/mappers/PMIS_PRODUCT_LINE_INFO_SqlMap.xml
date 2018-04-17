@@ -132,7 +132,8 @@
     </delete>
 
 
-    <select id="selectPmisProductLineInfoByProductInfo" parameterType="pmisProductInfo" resultMap="pmisProductLineInfoResult">
+    <select id="selectPmisProductLineInfoByProductInfo" parameterType="pmisProductInfo"
+            resultMap="pmisProductLineInfoResult">
         SELECT DISTINCT * FROM PMIS_PRODUCT_LINE_INFO
         WHERE
         ID in
@@ -157,4 +158,34 @@
             <if test="name != null and name != ''">and t.NAME LIKE '%${name}%'</if>
         </where>
     </select>
+
+
+    <select id="selectPmisProductLineInfoByPmidAndType" resultType="pmisProductLineInfo"
+            parameterType="pmisContractProductInfo">
+            SELECT DISTINCT
+                *
+            FROM
+                PMIS_PRODUCT_LINE_INFO m
+            WHERE
+                m.ZT = 1
+            AND m.ID IN (
+                SELECT DISTINCT
+                    p.CPTX
+                FROM
+                    PMIS_PRODUCT_INFO p
+                WHERE
+                    p.ID IN (
+                        SELECT DISTINCT
+                            CPXX
+                        FROM
+                            PMIS_CONTRACT_PRODUCT_INFO t
+                        WHERE
+                            t.XMLCB = #{xmlcb}
+                        AND t.HTCPLB = #{htcplb}
+                        AND t.ZT = 1
+                    )
+            )
+    </select>
+
+
 </mapper>

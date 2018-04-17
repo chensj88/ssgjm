@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.dao;
 
+import cn.com.winning.ssgj.domain.PmisContractProductInfo;
 import cn.com.winning.ssgj.domain.PmisProductInfo;
 import cn.com.winning.ssgj.domain.PmisProductLineInfo;
 import cn.com.winning.ssgj.dao.EntityDao;
@@ -21,5 +22,8 @@ public interface PmisProductLineInfoDao extends EntityDao<PmisProductLineInfo> {
      * 根据产品获取产品条线
      */
     List<PmisProductLineInfo> selectPmisProductLineInfoByProductInfo(List<PmisProductInfo> pmisProductInfos);
+
+
+    List<PmisProductLineInfo>selectPmisProductLineInfoByPmidAndType(PmisContractProductInfo pmisContractProductInfo);
 
 }

@@ -126,10 +126,11 @@ public class BaseController extends BaseSpringMvcMybatisController {
      * @return
      */
     public List<PmisProductLineInfo> getProductLineList(Long pmId) {
-        //根据项目id获取产品
-        List<PmisProductInfo> pmisProductInfos = getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId, 1);
+        PmisContractProductInfo pmisContractProductInfo = new PmisContractProductInfo();
+        pmisContractProductInfo.setXmlcb(pmId);
+        pmisContractProductInfo.setHtcplb(1);
         //根据产品获取产品条线
-        List<PmisProductLineInfo> pmisProductLineInfos = getFacade().getCommonQueryService().selectPmisProductLineInfoByProductInfo(pmisProductInfos);
+        List<PmisProductLineInfo> pmisProductLineInfos = getFacade().getPmisProductLineInfoService().selectPmisProductLineInfoByPmidAndType(pmisContractProductInfo);
         return pmisProductLineInfos;
     }
 

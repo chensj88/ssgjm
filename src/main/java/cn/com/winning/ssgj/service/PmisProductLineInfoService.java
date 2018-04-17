@@ -2,11 +2,10 @@ package cn.com.winning.ssgj.service;
 
 import java.util.List;
 
+import cn.com.winning.ssgj.domain.PmisContractProductInfo;
 import cn.com.winning.ssgj.domain.PmisProductLineInfo;
 
 /**
- *
- *
  * @author SSGJ
  * @date 2018-01-18 10:11:48
  */
@@ -29,4 +28,6 @@ public interface PmisProductLineInfoService {
     Integer getPmisProductLineInfoCountByName(PmisProductLineInfo t);
 
     List<PmisProductLineInfo> getPmisProductLineInfoPaginatedListByName(PmisProductLineInfo t);
+
+    List<PmisProductLineInfo> selectPmisProductLineInfoByPmidAndType(PmisContractProductInfo pmisContractProductInfo);
 }

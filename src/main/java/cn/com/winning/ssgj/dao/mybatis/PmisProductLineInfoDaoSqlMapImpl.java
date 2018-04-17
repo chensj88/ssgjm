@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.dao.mybatis;
 
+import cn.com.winning.ssgj.domain.PmisContractProductInfo;
 import cn.com.winning.ssgj.domain.PmisProductInfo;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +32,10 @@ public class PmisProductLineInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<PmisPr
     @Override
     public List<PmisProductLineInfo> selectPmisProductLineInfoByProductInfo(List<PmisProductInfo> pmisProductInfos) {
         return this.getSqlSession().selectList("selectPmisProductLineInfoByProductInfo", pmisProductInfos);
+    }
+
+    @Override
+    public List<PmisProductLineInfo> selectPmisProductLineInfoByPmidAndType(PmisContractProductInfo pmisContractProductInfo) {
+        return this.getSqlSession().selectList("selectPmisProductLineInfoByPmidAndType", pmisContractProductInfo);
     }
 }

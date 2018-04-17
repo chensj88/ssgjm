@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 
+import cn.com.winning.ssgj.domain.PmisContractProductInfo;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.PmisProductLineInfoDao;
@@ -67,6 +68,11 @@ public class PmisProductLineInfoServiceImpl implements PmisProductLineInfoServic
 
     public List<PmisProductLineInfo> getPmisProductLineInfoPaginatedListByName(PmisProductLineInfo t) {
         return this.pmisProductLineInfoDao.selectPmisProductLineInfoByNameForList(t);
+    }
+
+    @Override
+    public List<PmisProductLineInfo> selectPmisProductLineInfoByPmidAndType(PmisContractProductInfo pmisContractProductInfo) {
+        return this.pmisProductLineInfoDao.selectPmisProductLineInfoByPmidAndType(pmisContractProductInfo);
     }
 
 }
