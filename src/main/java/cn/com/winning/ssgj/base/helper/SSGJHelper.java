@@ -210,8 +210,13 @@ public class SSGJHelper {
     @Autowired
     @Qualifier(value = "etBusinessProcessIdService")
     private StepSequenceFactory  etBusinessProcessIdService;
+    @Autowired
+    @Qualifier(value = "urlContentIdService")
+    private StepSequenceFactory  urlContentIdService;
 
-
+    public long createUrlContentIdService(){
+        return (long)urlContentIdService.create();
+    }
     public long createEtBusinessProcessIdService(){
         return (long)etBusinessProcessIdService.create();
     }

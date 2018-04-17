@@ -6,6 +6,7 @@ import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.EtProcessManager;
 import cn.com.winning.ssgj.domain.EtSimulateRecord;
+import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.domain.support.UrlContent;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -66,11 +67,7 @@ public class EtSimulateRecordController extends BaseController {
     @Transactional
     @ILog
     public Map<String,Object> addEtSimulateRecord(EtSimulateRecord record){
-        EtSimulateRecord oldRecord = new EtSimulateRecord();
-        oldRecord.setId(record.getId());
-        oldRecord = super.getFacade().getEtSimulateRecordService().getEtSimulateRecord(oldRecord);
-
-        if(oldRecord != null){
+        if(record.getId() != null){
             record.setStatus(Constants.STATUS_USE);
             record.setOperatorTime(new Timestamp(new Date().getTime()));
             super.getFacade().getEtSimulateRecordService().modifyEtSimulateRecord(record);
@@ -156,7 +153,8 @@ public class EtSimulateRecordController extends BaseController {
             file.transferTo(newFile);
             String remotePath = "/simulate/" + parentFile + "/" + filename;
             String url = Constants.FTP_SHARE_FLODER + remotePath;
-            UrlContent urlContent = new UrlContent(record.getId(),filename,url);
+            SysUserInfo user = super.getFacade().getSysUserInfoService().getSysUserInfoById(record.getOperator());
+            UrlContent urlContent = new UrlContent(ssgjHelper.createUrlContentIdService(),record.getId(),filename,url,user.getName(),DateUtil.getCurrentDayByFormatter());
             boolean ftpStatus;
             String msg = "";
             try {
@@ -170,7 +168,7 @@ public class EtSimulateRecordController extends BaseController {
                 record = super.getFacade().getEtSimulateRecordService().getEtSimulateRecord(record);
                 String  filePath = record.getFilePath();
                 //判断是否已经传输了文件过来，如果传输了，就增加信息的，没有的话就添加
-                if(filePath == null ){
+                if(StringUtil.isEmptyOrNull(filePath) ){
                     jsonArray.add(urlContent);
                     record.setFilePath(jsonArray.toJSONString());
                 }else{
@@ -205,13 +203,12 @@ public class EtSimulateRecordController extends BaseController {
     @Transactional
     public Map<String,Object> deleteUploadFile(UrlContent content){
         EtSimulateRecord record = new EtSimulateRecord();
-        record.setId(content.getId());
+        record.setId(content.getRecordId());
         record = super.getFacade().getEtSimulateRecordService().getEtSimulateRecord(record);
         List<UrlContent> array = JSONArray.parseArray(record.getFilePath(),UrlContent.class);
         for (int i=0;i<array.size();i++) {
-            if(content.getId() == array.get(i).getId()
-               && content.getName().equals(array.get(i).getName())
-               && content.getUrl().equals(array.get(i).getUrl())){
+            if(content.getId() == array.get(i).getId()){
+                content = array.get(i);
                 array.remove(i);
             }
         }

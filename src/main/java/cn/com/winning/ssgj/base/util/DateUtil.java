@@ -182,4 +182,12 @@ public final class DateUtil {
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
         return df.format(new Date());
     }
+    /**
+     * 获取系统日期2018-01-01
+     * @return
+     */
+    public static String getCurrentDayByFormatter(){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        return df.format(new Date());
+    }
 }

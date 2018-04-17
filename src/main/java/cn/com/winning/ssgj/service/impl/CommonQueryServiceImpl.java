@@ -155,6 +155,91 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         List<Integer> projectCompele = new ArrayList<>();
         List<Integer> projectHandle = new ArrayList<>();
         List<String> projectItem = new ArrayList<>();
+
+        dataCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);
+        easyDataCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);
+        thirdInterfaceCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);
+        businessProcessCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);
+        Map<String, List> result = new HashMap<String, List>();
+        result.put("success", projectCompele);
+        result.put("handle", projectHandle);
+        result.put("item", projectItem);
+        return result;
+    }
+
+    /**
+     * 业务流程调研
+     * @param pmId
+     * @param projectCompele
+     * @param projectHandle
+     * @param projectItem
+     */
+    private void businessProcessCheckByProjectId(long pmId, List<Integer> projectCompele, List<Integer> projectHandle, List<String> projectItem) {
+        EtBusinessProcess process = new EtBusinessProcess();
+        process.setPmId(pmId);
+        process.setIsScope(Constants.STATUS_USE);
+        int total = etBusinessProcessService.getEtBusinessProcessCount(process);
+        process.setStatus(9);
+        int succ = etBusinessProcessService.getEtBusinessProcessCount(process);
+        int fail = total - succ;
+        projectCompele.add(succ);
+        projectHandle.add(fail);
+        projectItem.add("流程调研(" + (total) + ")");
+    }
+
+    /**
+     * 接口完成情况统计
+     * @param pmId
+     * @param projectCompele
+     * @param projectHandle
+     * @param projectItem
+     */
+    private void thirdInterfaceCheckByProjectId(long pmId, List<Integer> projectCompele, List<Integer> projectHandle, List<String> projectItem) {
+
+    }
+
+    /**
+     * 易用数据校验
+     * @param pmId
+     * @param projectCompele
+     * @param projectHandle
+     * @param projectItem
+     */
+    private void easyDataCheckByProjectId(long pmId, List<Integer> projectCompele, List<Integer> projectHandle, List<String> projectItem) {
+        //=============校验易用数据=================//
+        EtEasyDataCheck easyCheck = new EtEasyDataCheck();
+        easyCheck.setPmId(pmId);
+        easyCheck.setIsScope(Constants.STATUS_USE);
+        List<EtEasyDataCheck> easyDataCheckList = this.etEasyDataCheckService.getEtEasyDataCheckList(easyCheck);
+        int easyFailNum = 0; //校验失败总数
+        int easySuccNum = 0; //校验成功总数
+        if ((easyDataCheckList != null) && (easyDataCheckList.size() > 0)) {
+            for (EtEasyDataCheck check : easyDataCheckList) {
+                if (!StringUtil.isEmptyOrNull(check.getContent())) {
+                    if ("校验正常".equals(check.getContent())) {
+                        easySuccNum++;
+                    } else {
+                        easyFailNum++;
+                    }
+                } else {
+                    easyFailNum++;
+                }
+            }
+        }
+        projectCompele.add(easySuccNum);
+        projectHandle.add(easyFailNum);
+        projectItem.add("易用数据(" + (easySuccNum + easyFailNum) + ")");
+    }
+
+
+    /**
+     * 基础数据校验
+     * @param pmId
+     * @param projectCompele
+     * @param projectHandle
+     * @param projectItem
+     */
+    private void dataCheckByProjectId(long pmId, List<Integer> projectCompele, List<Integer> projectHandle, List<String> projectItem) {
         EtDataCheck dataCheck = new EtDataCheck();
         dataCheck.setPmId(pmId);
         List<EtDataCheck> dataCheckList = this.etDataCheckService.getEtDataCheckList(dataCheck);
@@ -182,34 +267,6 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         projectCompele.add(dataSuccNum);
         projectHandle.add(dataFialNum);
         projectItem.add("基础数据(" + (dataFialNum + dataSuccNum) + ")");
-        //=============校验易用数据=================//
-        EtEasyDataCheck easyCheck = new EtEasyDataCheck();
-        easyCheck.setPmId(pmId);
-        easyCheck.setIsScope(Constants.STATUS_USE);
-        List<EtEasyDataCheck> easyDataCheckList = this.etEasyDataCheckService.getEtEasyDataCheckList(easyCheck);
-        int easyFailNum = 0; //校验失败总数
-        int easySuccNum = 0; //校验成功总数
-        if ((easyDataCheckList != null) && (easyDataCheckList.size() > 0)) {
-            for (EtEasyDataCheck check : easyDataCheckList) {
-                if (!StringUtil.isEmptyOrNull(check.getContent())) {
-                    if ("校验正常".equals(check.getContent())) {
-                        easySuccNum++;
-                    } else {
-                        easyFailNum++;
-                    }
-                } else {
-                    easyFailNum++;
-                }
-            }
-        }
-        projectCompele.add(easySuccNum);
-        projectHandle.add(easyFailNum);
-        projectItem.add("易用数据(" + (easySuccNum + easyFailNum) + ")");
-        Map<String, List> result = new HashMap<String, List>();
-        result.put("success", projectCompele);
-        result.put("handle", projectHandle);
-        result.put("item", projectItem);
-        return result;
     }
 
     @Override

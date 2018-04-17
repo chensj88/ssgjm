@@ -55,7 +55,7 @@
         t.*,REPLACE(CONVERT(VARCHAR(32),t.CREATE_TIME,111),'/','-') as  CREATE_DATE
         from ET_SIMULATE_RECORD t where 1 = 1
         <include refid="sf-etSimulateRecord"/>
-        <!-- order by ID asc -->
+        order by t.ID DESC
     </select>
 
     <select id="selectEtSimulateRecordCount" resultType="int" parameterType="etSimulateRecord">
