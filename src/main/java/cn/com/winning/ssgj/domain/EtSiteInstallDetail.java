@@ -78,7 +78,9 @@ public class EtSiteInstallDetail extends BaseDomain implements Serializable {
 	private java.sql.Timestamp operatorTime;
 
 	private List imgs;
-	
+
+	private String[] imgsArray;
+
 	public EtSiteInstallDetail() {
 
 	}
@@ -96,6 +98,15 @@ public class EtSiteInstallDetail extends BaseDomain implements Serializable {
 		this.operator = operator;
 		this.operatorTime = operatorTime;
 		this.imgs = imgs;
+	}
+
+
+	public String[] getImgsArray() {
+		return imgsArray;
+	}
+
+	public void setImgsArray(String[] imgsArray) {
+		this.imgsArray = imgsArray;
 	}
 
 	/**
