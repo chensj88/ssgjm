@@ -151,7 +151,7 @@
                 <if test="dataName != null and dataName != ''"> DATA_NAME = #{dataName, jdbcType=VARCHAR}, </if>
                 <if test="dataType != null and dataType != ''"> DATA_TYPE = #{dataType, jdbcType=VARCHAR}, </if>
                 <if test="remark != null and remark != ''"> REMARK = #{remark, jdbcType=LONGVARCHAR}, </if>
-                <if test="status != null"> and STATUS = #{status,jdbcType=INTEGER}, </if>
+                <if test="status != null"> STATUS = #{status,jdbcType=INTEGER}, </if>
             </trim>
         </set>
         <where>

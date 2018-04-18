@@ -63,7 +63,7 @@ public class EtOnlineFileController extends BaseController {
         file.setcId(null);
         file.setFileType(Constants.REPORT_TYPE_ONLINE_FILE);
         file.setStatus(Constants.STATUS_USE);
-        List<EtOnlineFile> fileList = super.getFacade().getEtOnlineFileService().getEtOnlineFileList(file);
+        List<UrlContent> fileList = super.getFacade().getEtOnlineFileService().getUrlContentFromEtOnlineFileList(file);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         result.put("completeData",(List<Integer>)data.get("success"));
@@ -81,35 +81,31 @@ public class EtOnlineFileController extends BaseController {
     @RequestMapping(value = "/refreshFile.do")
     @ResponseBody
     public Map<String,Object> refreshUploadFile(EtOnlineFile file){
+        file.setPmId(null);
+        file.setcId(null);
+        file.setFileType(Constants.REPORT_TYPE_ONLINE_FILE);
+        file.setStatus(Constants.STATUS_USE);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
-        result.put("data",super.getFacade().getEtOnlineFileService().getEtOnlineFileList(file));
+        result.put("data",super.getFacade().getEtOnlineFileService().getUrlContentFromEtOnlineFileList(file));
         return result;
     }
 
 
     /**
      * 删除上线评估报告
-     * @param content
+     * @param file
      * @return
      */
-    @RequestMapping(value = "/deleteOnline.do")
+    @RequestMapping(value = "/delete.do")
     @ResponseBody
     @ILog
-    public Map<String,Object> deleteOnlineFile(UrlContent content){
-        EtOnlineFile file = new EtOnlineFile();
-        file.setId(content.getSourceId());
+    public Map<String,Object> deleteOnlineFile(EtOnlineFile file){
         file = super.getFacade().getEtOnlineFileService().getEtOnlineFile(file);
-        List<UrlContent> array = JSONArray.parseArray(file.getFileSuggestPath(),UrlContent.class);
-        for (int i=0;i<array.size();i++) {
-            if(content.getId() == array.get(i).getId()){
-                content = array.get(i);
-                array.remove(i);
-            }
-        }
-        String source = content.getUrl().substring(Constants.FTP_SHARE_FLODER.length());
+        String source = file.getImgPath();
         CommonFtpUtils.removeUploadFile(source);
-        file.setFileSuggestPath(JSON.toJSONString(array));
+        file.setImgPath(null);
+        file.setStatus(Constants.STATUS_UNUSE);
         super.getFacade().getEtOnlineFileService().modifyEtOnlineFile(file);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
@@ -117,59 +113,84 @@ public class EtOnlineFileController extends BaseController {
     }
 
     /**
-     * 删除切换报告
-     * @param content
+     * 上线评估报告
+     * @param request
+     * @param onlineFile
+     * @param file
      * @return
+     * @throws IOException
      */
-    @RequestMapping(value = "/deleteSwitch.do")
+    @RequestMapping(value = "/upload.do")
     @ResponseBody
-    @ILog
-    public Map<String,Object> deleteSwitchFile(UrlContent content){
-        EtOnlineFile file = new EtOnlineFile();
-        file.setId(content.getSourceId());
-        file = super.getFacade().getEtOnlineFileService().getEtOnlineFile(file);
-        List<UrlContent> array = JSONArray.parseArray(file.getFileChangePath(),UrlContent.class);
-        for (int i=0;i<array.size();i++) {
-            if(content.getId() == array.get(i).getId()){
-                content = array.get(i);
-                array.remove(i);
-            }
+    @Transactional
+    public Map<String,Object> uploadOnline(HttpServletRequest request, EtOnlineFile onlineFile, MultipartFile file) throws IOException {
+        long operator = onlineFile.getOperator();
+        String prefix = "";
+        if(Constants.REPORT_TYPE_ONLINE_FILE.equals(onlineFile.getFileType())){
+            prefix = "online";
+        }else if(Constants.REPORT_TYPE_ONLINE_SWITCH_IMG_FILE.equals(onlineFile.getFileType())){
+            prefix = "switch_image";
+        }else if(Constants.REPORT_TYPE_ONLINE_SWITCH_FILE.equals(onlineFile.getFileType())){
+            prefix = "switch";
+        }else{
+            prefix = "common";
         }
-        String source = content.getUrl().substring(Constants.FTP_SHARE_FLODER.length());
-        CommonFtpUtils.removeUploadFile(source);
-        file.setFileChangePath(JSON.toJSONString(array));
-        super.getFacade().getEtOnlineFileService().modifyEtOnlineFile(file);
-        Map<String,Object> result = new HashMap<String,Object>();
-        result.put("status", Constants.SUCCESS);
+        String parentFile = prefix+"_"+System.currentTimeMillis();
+        Map<String, Object> result = new HashMap<String, Object>();
+        if (!file.isEmpty()) {
+            String filename = file.getOriginalFilename();
+            String remotePath = "/"+prefix+"/" + parentFile + "/" + filename;
+            String msg = "";
+            boolean ftpStatus =commonUploadInfo(request,msg,remotePath,file);
+            if (ftpStatus) {
+                onlineFile.setId(ssgjHelper.createEtOnlineFileIdService());
+                onlineFile.setImgPath(remotePath);
+                onlineFile.setStatus(Constants.STATUS_USE);
+                onlineFile.setDataType("1");
+                onlineFile.setDataName(filename);
+                onlineFile.setCreator(operator);
+                onlineFile.setCreateTime(new Timestamp(new Date().getTime()));
+                onlineFile.setOperator(operator);
+                onlineFile.setOperatorTime(new Timestamp(new Date().getTime()));
+                super.getFacade().getEtOnlineFileService().createEtOnlineFile(onlineFile);
+                result.put("status", "success");
+            } else if (!StringUtil.isEmptyOrNull(msg)) {
+                result.put("status", "error");
+                result.put("msg", "上传文件失败,原因是：" + msg);
+            }
+        } else {
+            result.put("status", "error");
+            result.put("msg", "上传文件失败,原因是：上传文件为空");
+        }
         return result;
+
     }
 
-    /**
-     * 删除切换报告图片
-     * @param content
-     * @return
-     */
-    @RequestMapping(value = "/deleteSwitchImg.do")
-    @ResponseBody
-    @ILog
-    public Map<String,Object> deleteSwitchImgFile(UrlContent content){
-        EtOnlineFile file = new EtOnlineFile();
-        file.setId(content.getSourceId());
-        file = super.getFacade().getEtOnlineFileService().getEtOnlineFile(file);
-        List<UrlContent> array = JSONArray.parseArray(file.getImgPath(),UrlContent.class);
-        for (int i=0;i<array.size();i++) {
-            if(content.getId() == array.get(i).getId()){
-                content = array.get(i);
-                array.remove(i);
-            }
+    private boolean  commonUploadInfo(HttpServletRequest request,String msg,String remotePath,MultipartFile file) throws IOException {
+        boolean ftpStatus = false;
+        //上传文件路径
+        String path = request.getServletContext().getRealPath("/temp/");
+        //上传文件名
+        String filename = file.getOriginalFilename();
+        File filepath = new File(path, filename);
+        //判断路径是否存在，如果不存在就创建一个
+        if (!filepath.getParentFile().exists()) {
+            filepath.getParentFile().mkdirs();
         }
-        String source = content.getUrl().substring(Constants.FTP_SHARE_FLODER.length());
-        CommonFtpUtils.removeUploadFile(source);
-        file.setImgPath(JSON.toJSONString(array));
-        super.getFacade().getEtOnlineFileService().modifyEtOnlineFile(file);
-        Map<String,Object> result = new HashMap<String,Object>();
-        result.put("status", Constants.SUCCESS);
-        return result;
+        //将上传文件保存到一个目标文件当中
+        File newFile = new File(path + File.separator + filename);
+        if (newFile.exists()) {
+            newFile.delete();
+        }
+        file.transferTo(newFile);
+        try {
+            ftpStatus = CommonFtpUtils.uploadFile(remotePath,newFile);
+        }catch (IOException e){
+            msg = e.getMessage();
+            ftpStatus = false;
+        }
+        newFile.delete();
+        return ftpStatus;
     }
 
 }

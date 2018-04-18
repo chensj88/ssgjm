@@ -26,4 +26,6 @@ public interface EtOnlineFileService {
     Integer getEtOnlineFileCount(EtOnlineFile t);
 
     List<EtOnlineFile> getEtOnlineFilePaginatedList(EtOnlineFile t);
+
+    List<UrlContent> getUrlContentFromEtOnlineFileList(EtOnlineFile t);
 }

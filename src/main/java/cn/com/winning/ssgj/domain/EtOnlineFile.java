@@ -72,7 +72,7 @@ public class EtOnlineFile extends BaseDomain implements Serializable {
 	 */
 	private java.sql.Timestamp operatorTime;
 	/**
-	 *@val 文件类型  1 调研报告 2 单据 3上线联调 4 上线切换方案
+	 *@val 文件类型  1 调研报告 2 单据 3上线联调 4 上线切换方案图片 5 上线切换方案(PC端使用)
 	 */
 	private String fileType;
 

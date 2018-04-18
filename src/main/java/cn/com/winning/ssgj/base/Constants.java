@@ -112,9 +112,13 @@ public class Constants implements Serializable {
      */
     public  static final String REPORT_TYPE_ONLINE_FILE = "3";
     /**
-     * 上线切换
+     * 上线切换 图片
      */
-    public  static final String REPORT_TYPE_ONLINE_SWITCH_FILE = "4";
+    public  static final String REPORT_TYPE_ONLINE_SWITCH_IMG_FILE = "4";
+    /**
+     * 上线切换报告
+     */
+    public  static final String REPORT_TYPE_ONLINE_SWITCH_FILE = "5";
 
    public class PMIS {
         /**

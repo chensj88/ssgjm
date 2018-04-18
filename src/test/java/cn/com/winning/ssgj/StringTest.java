@@ -103,4 +103,6 @@ public class StringTest {
         String url = "http://47.97.170.21:8081/shareFolder/simulate/simulate_1523367948633/Bootstrap.docx";
         System.out.println(url.substring(Constants.FTP_SHARE_FLODER.length()));
     }
+
+
 }
