@@ -147,7 +147,7 @@ public class EtOnlineFileController extends BaseController {
                 onlineFile.setImgPath(remotePath);
                 onlineFile.setStatus(Constants.STATUS_USE);
                 onlineFile.setDataType("1");
-                onlineFile.setDataName(filename);
+                onlineFile.setDataName(filename.substring(0,filename.lastIndexOf(".")));
                 onlineFile.setCreator(operator);
                 onlineFile.setCreateTime(new Timestamp(new Date().getTime()));
                 onlineFile.setOperator(operator);
@@ -166,6 +166,23 @@ public class EtOnlineFileController extends BaseController {
 
     }
 
+    /**
+     * 切换报告和图片
+     * @param onlineFile
+     * @return
+     */
+    @RequestMapping(value = "/initSwitchData.do")
+    @ResponseBody
+    public Map<String,Object> initSwitchData(EtOnlineFile onlineFile){
+        onlineFile.setStatus(Constants.STATUS_USE);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        onlineFile.setFileType(Constants.REPORT_TYPE_ONLINE_SWITCH_IMG_FILE);
+        result.put("switchImgFile",super.getFacade().getEtOnlineFileService().getUrlContentFromEtOnlineFileList(onlineFile));
+        onlineFile.setFileType(Constants.REPORT_TYPE_ONLINE_SWITCH_FILE);
+        result.put("switchFile",super.getFacade().getEtOnlineFileService().getUrlContentFromEtOnlineFileList(onlineFile));
+        return result;
+    }
     private boolean  commonUploadInfo(HttpServletRequest request,String msg,String remotePath,MultipartFile file) throws IOException {
         boolean ftpStatus = false;
         //上传文件路径
