@@ -2,11 +2,11 @@ package cn.com.winning.ssgj.web.controller.vue;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.FtpPropertiesLoader;
+import cn.com.winning.ssgj.base.util.FtpUtils;
+import cn.com.winning.ssgj.base.util.SFtpUtils;
 import cn.com.winning.ssgj.base.util.StringUtil;
-import cn.com.winning.ssgj.domain.EtFloorQuestionInfo;
-import cn.com.winning.ssgj.domain.EtSiteInstall;
-import cn.com.winning.ssgj.domain.EtSoftHardware;
-import cn.com.winning.ssgj.domain.PmisProductLineInfo;
+import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.sun.xml.internal.xsom.impl.scd.Iterators;
@@ -17,13 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 工作站点安装信息
@@ -40,7 +41,9 @@ public class EtSiteInstallController extends BaseController {
     @Autowired
     private SSGJHelper ssgjHelper;
 
-        /**
+    private static int port = Integer.valueOf(FtpPropertiesLoader.getProperty("ftp.port")).intValue();
+
+    /**
          * 查询站点信息
          * @param row
          * @return
@@ -228,6 +231,127 @@ public class EtSiteInstallController extends BaseController {
         map.put("msg", "硬件修改成功！");
         return map;
     }
+
+
+    /**
+     * 编辑站点明细信息
+     * @return
+     */
+    @RequestMapping(value = "/addSiteInstallDetail.do")
+    @ResponseBody
+    public Map<String,Object> addSiteInstallDetail (EtSiteInstall info) {
+        Map<String,Object> result = new HashMap<String,Object>();
+        //生成明细站点信息
+        //根据客户编号 找出对应的全部
+        info.setPmId(info.getPmId());
+        info.setId(info.getId());
+        info = super.getFacade().getEtSiteInstallService().getEtSiteInstall(info);
+        EtSiteInstallDetail installDetail = new EtSiteInstallDetail();
+        //获取安装站点的信息
+        installDetail.setSourceId(info.getId());
+        List<EtSiteInstallDetail> siteInstallDetails=new ArrayList<EtSiteInstallDetail>();
+        siteInstallDetails = super.getFacade().getEtSiteInstallDetailService().getEtSiteInstallDetailList(installDetail);
+        if((siteInstallDetails.size()==0 || siteInstallDetails==null) && info.getNum() > 0){
+            for(int i =0 ; i<info.getNum(); i++){
+                EtSiteInstallDetail detail = new EtSiteInstallDetail();
+                detail.setId(ssgjHelper.createSiteInstallDetailIdService());
+                detail.setSourceId(info.getId());
+                detail.setInstall(0);
+                super.getFacade().getEtSiteInstallDetailService().createEtSiteInstallDetail(detail);
+            }
+            //当为空的时候重新获取 初始化的安装明细信息
+            siteInstallDetails=super.getFacade().getEtSiteInstallDetailService().getEtSiteInstallDetailList(installDetail);
+        }else{//存在集合 获取图片信息
+            for (EtSiteInstallDetail detail: siteInstallDetails) {
+                if(StringUtils.isNotBlank(detail.getImgPath())){
+                    String[] imgs=detail.getImgPath().split(";");
+                    //List<String> lists= Arrays.asList(imgs); detail.setImgs(lists);
+                    detail.setImgsArray(imgs);
+                }
+            }
+        }
+        result.put("siteInstallDetails", siteInstallDetails);
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
+
+    /**
+     * 站点数
+     * @return
+     */
+    @RequestMapping(value = "/uploadFileSite.do")
+    @ResponseBody
+    public Map<String,Object> uploadFileSite (HttpServletRequest request,EtSiteInstallDetail installDetail, MultipartFile file) {
+        Map map = new HashMap();
+        try{
+            if(!file.isEmpty()) {
+                String path = request.getServletContext().getRealPath("/onlineFile/");
+                //上传文件名
+                String filename = file.getOriginalFilename();
+                File filepath = new File(path,filename);
+                //判断路径是否存在，如果不存在就创建一个
+                if (!filepath.getParentFile().exists()) {
+                    filepath.getParentFile().mkdirs();
+                }
+                //将上传文件保存到一个目标文件当中
+                File newFile = new File(path + File.separator + filename);
+                if(newFile.exists()){
+                    newFile.delete();
+                }
+                file.transferTo(newFile);
+                String remotePath = "/onlineFile/"+ filename;
+                String remoteDir ="/onlineFile/" ;
+                boolean ftpStatus = false;
+                String msg = "";
+                if (port == 21){
+                    ftpStatus = FtpUtils.uploadFile(remotePath, newFile);
+                }else if(port == 22){
+                    try {
+                        SFtpUtils.uploadFile(newFile.getPath(),remoteDir,filename);
+                        ftpStatus = true;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        ftpStatus = false;
+                        msg = e.getMessage();
+                    }
+                }
+                EtSiteInstallDetail info = new EtSiteInstallDetail();
+                if(StringUtils.isNotBlank(String.valueOf(installDetail.getId()))){
+                    info.setId(installDetail.getId());
+                    info = super.getFacade().getEtSiteInstallDetailService().getEtSiteInstallDetail(info);
+                    if(StringUtils.isNotBlank(info.getImgPath())){
+                        info.setImgPath(info.getImgPath()+";"+ remotePath);//拼接图片路径
+                    }else{
+                        info.setImgPath(remotePath);
+                    }
+                    info.setOperator(installDetail.getOperator());
+                    info.setOperatorTime(new Timestamp(new Date().getTime()));
+                    super.getFacade().getEtSiteInstallDetailService().modifyEtSiteInstallDetail(info);
+                    map.put("id",String.valueOf(installDetail.getId()));
+                    map.put("status","1");
+                }
+
+                map.put("path",remotePath);
+            }else {
+                map.put("status","0");
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            map.put("status","0");
+        }
+
+
+
+
+        map.put("type", Constants.SUCCESS);
+        map.put("msg", "硬件修改成功！");
+        return map;
+    }
+
+
+
+
 
 
 }

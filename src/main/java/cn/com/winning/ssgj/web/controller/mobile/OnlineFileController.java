@@ -175,7 +175,7 @@ public class OnlineFileController extends BaseController {
                     info.setPmId((long)-2);
                     info.setSerialNo(serialNo);//客户编码
                     info.setImgPath(remotePath);//图片路径
-                    info.setCreator((long)100193);
+                    info.setCreator((long)super.user_id(userId,"1"));
                     info.setCreateTime(new Timestamp(new Date().getTime()));
                     info.setFileType(fileType);
                     info.setDataName(dataName);
@@ -220,7 +220,8 @@ public class OnlineFileController extends BaseController {
             } else if (port == 22) {
                     SFtpUtils.rmFile(info.getImgPath());
             }
-            super.getFacade().getEtOnlineFileService().removeEtOnlineFile(info);
+            info.setStatus(0);
+            super.getFacade().getEtOnlineFileService().modifyEtOnlineFile(info);
             map.put("status",true);
         }catch (Exception e){
             map.put("status",false);
