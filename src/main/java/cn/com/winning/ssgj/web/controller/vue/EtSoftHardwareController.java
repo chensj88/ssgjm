@@ -367,6 +367,48 @@ public class EtSoftHardwareController extends BaseController {
         return map;
     }
 
+    /**
+     * 确认完成
+     *
+     * @param etSoftHardware
+     * @return
+     */
+    @RequestMapping(value = "/confirm.do")
+    @ResponseBody
+    @Transactional
+    public Map<String, Object> confirm(EtSoftHardware etSoftHardware) {
+        //项目id
+        Long pmId =etSoftHardware.getPmId();
+        if (pmId == null) {
+            return null;
+        }
+        //根据项目id获取项目基本信息
+        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
+        //获取合同id
+        Long contractId = pmisProjectBasicInfo.getHtxx();
+        //获取单据号即客户
+        Long customerId = pmisProjectBasicInfo.getKhxx();
+
+        etSoftHardware.setcId(contractId);
+
+        etSoftHardware.setSerialNo(customerId.toString());
+        int total = getFacade().getEtSoftHardwareService().getEtSoftHardwareCount(etSoftHardware);
+        EtProcessManager etProcessManager = new EtProcessManager();
+        etProcessManager.setPmId(pmId);
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (total > 0) {
+            etProcessManager.setIsHardwareList(1);
+            getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(etProcessManager);
+            map.put("type", Constants.SUCCESS);
+            map.put("msg", "确认成功！");
+        } else {
+            map.put("type", "info");
+            map.put("msg", "无数据，确认失败！");
+        }
+        return map;
+    }
+
+
 }
 
 
