@@ -15,9 +15,9 @@ public class UrlContent implements Serializable {
      */
     private Long id;
     /**
-     * 对应记录ID
+     * 数据来源ID
      */
-    private Long recordId;
+    private Long sourceId;
     /**
      * 文件名
      */
@@ -39,9 +39,9 @@ public class UrlContent implements Serializable {
     public UrlContent() {
     }
 
-    public UrlContent(Long id,Long recordId,String name, String url,String userName,String operDate) {
+    public UrlContent(Long id,Long sourceId,String name, String url,String userName,String operDate) {
         this.id = id;
-        this.recordId = recordId;
+        this.sourceId = sourceId;
         this.name = name;
         this.url = url;
         this.userName = userName;
@@ -88,11 +88,11 @@ public class UrlContent implements Serializable {
         this.operDate = operDate;
     }
 
-    public Long getRecordId() {
-        return recordId;
+    public Long getSourceId() {
+        return sourceId;
     }
 
-    public void setRecordId(Long recordId) {
-        this.recordId = recordId;
+    public void setSourceId(Long sourceId) {
+        this.sourceId = sourceId;
     }
 }

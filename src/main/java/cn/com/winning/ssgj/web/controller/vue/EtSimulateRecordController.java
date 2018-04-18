@@ -203,7 +203,7 @@ public class EtSimulateRecordController extends BaseController {
     @Transactional
     public Map<String,Object> deleteUploadFile(UrlContent content){
         EtSimulateRecord record = new EtSimulateRecord();
-        record.setId(content.getRecordId());
+        record.setId(content.getSourceId());
         record = super.getFacade().getEtSimulateRecordService().getEtSimulateRecord(record);
         List<UrlContent> array = JSONArray.parseArray(record.getFilePath(),UrlContent.class);
         for (int i=0;i<array.size();i++) {

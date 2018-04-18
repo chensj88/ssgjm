@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.service;
 import java.util.List;
 
 import cn.com.winning.ssgj.domain.EtOnlineFile;
+import cn.com.winning.ssgj.domain.support.UrlContent;
 
 /**
  *
@@ -25,5 +26,4 @@ public interface EtOnlineFileService {
     Integer getEtOnlineFileCount(EtOnlineFile t);
 
     List<EtOnlineFile> getEtOnlineFilePaginatedList(EtOnlineFile t);
-
 }

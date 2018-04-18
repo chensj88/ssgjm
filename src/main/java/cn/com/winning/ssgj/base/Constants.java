@@ -99,8 +99,24 @@ public class Constants implements Serializable {
      * 文件服务器路径
      */
     public static final String FILE_SERVER_CONTEXT = "fctx";
+    /**
+     * 流程调研
+     */
+    public  static final String REPORT_TYPE_BUSINESS_PROCESS = "1";
+    /**
+     * 报表单据
+     */
+    public  static final String REPORT_TYPE_REPORT_AND_BILL = "2";
+    /**
+     * 上线评估和上线联调
+     */
+    public  static final String REPORT_TYPE_ONLINE_FILE = "3";
+    /**
+     * 上线切换
+     */
+    public  static final String REPORT_TYPE_ONLINE_SWITCH_FILE = "4";
 
-    public class PMIS {
+   public class PMIS {
         /**
          * 计划执行状态  暂停/搁置
          */

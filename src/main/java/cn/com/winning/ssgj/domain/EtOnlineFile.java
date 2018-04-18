@@ -71,14 +71,22 @@ public class EtOnlineFile extends BaseDomain implements Serializable {
 	 * @val 操作时间
 	 */
 	private java.sql.Timestamp operatorTime;
-
+	/**
+	 *@val 文件类型  1 调研报告 2 单据 3上线联调 4 上线切换方案
+	 */
 	private String fileType;
 
 	private String dataName;
-
+	/**
+	 *@val 数据类型  1 报告  2医疗 3确认单
+	 */
 	private String dataType;
 
 	private String remark;
+	/**
+	 * @val 状态 0 否 1 是
+	 */
+	private Integer status;
 	
 	public EtOnlineFile() {
 
@@ -271,5 +279,11 @@ public class EtOnlineFile extends BaseDomain implements Serializable {
 		this.remark = remark;
 	}
 
+	public Integer getStatus() {
+		return status;
+	}
 
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 }

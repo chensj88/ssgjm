@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 
+import cn.com.winning.ssgj.domain.support.UrlContent;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.EtOnlineFileDao;

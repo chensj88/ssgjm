@@ -161,7 +161,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         //易用数据准备
         easyDataCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);
         //接口准备
-       /* thirdInterfaceCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);*/
+        thirdInterfaceCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);
         //业务流程调研
         businessProcessCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);
         //报表单据
@@ -181,6 +181,12 @@ public class CommonQueryServiceImpl implements CommonQueryService {
      * @param projectItem
      */
     private void etReportCheckByProjectId(long pmId, List<Integer> projectCompele, List<Integer> projectHandle, List<String> projectItem) {
+        projectCompele.add(10);
+        projectHandle.add(5);
+        projectItem.add("单据准备(15)");
+        projectCompele.add(12);
+        projectHandle.add(2);
+        projectItem.add("报表准备(14)");
     }
 
     /**

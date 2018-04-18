@@ -18,10 +18,13 @@
         <result column="DATA_NAME" property="dataName" jdbcType="VARCHAR" />
         <result column="DATA_TYPE" property="dataType" jdbcType="VARCHAR" />
         <result column="REMARK" property="remark" jdbcType="LONGVARCHAR" />
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="etOnlineFileResult" type="etOnlineFile" extends="etOnlineFileResultForList">
         <result column="DICT_LABEL" property="map.dictLabel" jdbcType="VARCHAR" />
+        <result column="CREATE_DATE" property="map.createDate" jdbcType="VARCHAR" />
+        <result column="USER_NAME" property="map.userName" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="sf-etOnlineFile">
@@ -40,6 +43,7 @@
         <if test="dataName != null and dataName != ''"> and t.DATA_NAME = #{dataName} </if>
         <if test="dataType != null and dataType != ''"> and t.DATA_TYPE = #{dataType} </if>
         <if test="remark != null and remark != ''"> and t.REMARK = #{remark} </if>
+        <if test="status != null"> and t.STATUS = #{status} </if>
     </sql>
 
     <select id="selectEtOnlineFile" resultMap="etOnlineFileResult" parameterType="etOnlineFile">
@@ -50,7 +54,15 @@
     <select id="selectEtOnlineFileList" resultMap="etOnlineFileResult" parameterType="etOnlineFile">
         select
         <if test="row.count != null and row.count != ''">top ${row.count}</if>
-        t.*,i.DICT_LABEL from ET_ONLINE_FILE t  LEFT JOIN SYS_DICT_INFO i ON t.DATA_TYPE = i.DICT_VALUE  AND i.DICT_CODE='FileType' where 1 = 1
+        t.*,i.DICT_LABEL,
+        CASE  WHEN  t.OPERATOR_TIME IS  NOT  NULL
+          THEN REPLACE(CONVERT(VARCHAR(32),t.OPERATOR_TIME,111),'/','-')
+          ELSE REPLACE(CONVERT(VARCHAR(32),t.CREATE_TIME,111),'/','-') END as  CREATE_DATE,
+        u.YHMC AS USER_NAME
+        from ET_ONLINE_FILE t
+        LEFT JOIN SYS_DICT_INFO i ON t.DATA_TYPE = i.DICT_VALUE  AND i.DICT_CODE='FileType'
+        LEFT JOIN SYS_USER_INFO u ON t.CREATOR = u.ID
+        where 1 = 1
         <include refid="sf-etOnlineFile"/>
         <!-- order by ID asc -->
     </select>
@@ -88,6 +100,7 @@
             <if test="dataName != null and dataName != ''"> DATA_NAME, </if>
             <if test="dataType != null and dataType != ''"> DATA_TYPE, </if>
             <if test="remark != null and remark != ''"> REMARK, </if>
+            <if test="status != null"> STATUS,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -106,6 +119,7 @@
             <if test="dataName != null and dataName != ''"> #{dataName, jdbcType=VARCHAR}, </if>
             <if test="dataType != null and dataType != ''"> #{dataType, jdbcType=VARCHAR}, </if>
             <if test="remark != null and remark != ''"> #{remark, jdbcType=LONGVARCHAR}, </if>
+            <if test="status != null">  #{status,jdbcType=INTEGER}, </if>
         </trim>
     </insert>
 
@@ -137,6 +151,7 @@
                 <if test="dataName != null and dataName != ''"> DATA_NAME = #{dataName, jdbcType=VARCHAR}, </if>
                 <if test="dataType != null and dataType != ''"> DATA_TYPE = #{dataType, jdbcType=VARCHAR}, </if>
                 <if test="remark != null and remark != ''"> REMARK = #{remark, jdbcType=LONGVARCHAR}, </if>
+                <if test="status != null"> and STATUS = #{status,jdbcType=INTEGER}, </if>
             </trim>
         </set>
         <where>
