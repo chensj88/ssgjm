@@ -50,7 +50,7 @@ public class EtSoftHardwareController extends BaseController {
      */
     @RequestMapping("/initSourceData.do")
     @ResponseBody
-    private Map<String, Object> initSourceData(EtSoftHardware etSoftHardware) {
+    public Map<String, Object> initSourceData(EtSoftHardware etSoftHardware) {
         Long pmId = etSoftHardware.getPmId();
         if (pmId == null) {
             return null;
@@ -70,12 +70,17 @@ public class EtSoftHardwareController extends BaseController {
         etSoftHardware.setMap(map);
         //根据产品集合获取硬件集合
         List<EtSoftHardware> etSoftHardwares = getFacade().getEtSoftHardwareService().selectEtSoftHardwareByProductInfo(etSoftHardware);
-        //添加id
+        //循环查询是否数据师傅存在，不存在则插入
+        EtSoftHardware softHardwareTemp = null;
         for (EtSoftHardware softHardware : etSoftHardwares) {
-            softHardware.setId(ssgjHelper.createEtSoftHardwareIdService());
+            softHardwareTemp = new EtSoftHardware();
+            softHardwareTemp.setSourceId(softHardware.getSourceId());
+            softHardwareTemp = getFacade().getEtSoftHardwareService().getEtSoftHardware(softHardwareTemp);
+            if (softHardwareTemp == null) {
+                softHardware.setId(ssgjHelper.createEtSoftHardwareIdService());
+                getFacade().getEtSoftHardwareService().createEtSoftHardware(softHardware);
+            }
         }
-        //批量插入数据
-        getFacade().getEtSoftHardwareService().insertEtSoftHardwareByList(etSoftHardwares);
         HashMap result = new HashMap();
         result.put("status", Constants.SUCCESS);
         result.put("msg", "初始化数据成功！");
@@ -98,7 +103,7 @@ public class EtSoftHardwareController extends BaseController {
         }
         etSoftHardware.setRow(row);
         List<EtSoftHardware> etSoftHardwarePaginatedList = getFacade().getEtSoftHardwareService().getEtSoftHardwarePaginatedList(etSoftHardware);
-        int total = etSoftHardwarePaginatedList.size();
+        int total = getFacade().getEtSoftHardwareService().getEtSoftHardwareCount(etSoftHardware);
         PmisProductLineInfo pmisProductLineInfo = null;
         //封装系统名称
         for (EtSoftHardware softHardware : etSoftHardwarePaginatedList) {
@@ -258,21 +263,27 @@ public class EtSoftHardwareController extends BaseController {
                     etSoftHardware.setcId(contractId);
                     etSoftHardware.setSerialNo(customerId.toString());
                     etSoftHardware.setSourceId(0L);
-                    etSoftHardware.setPlId(NumberParseUtil.parseLong(temp.get(0).toString()));
-                    etSoftHardware.setHwName(temp.get(1).toString());
-                    etSoftHardware.setHwCode(temp.get(2).toString());
-                    etSoftHardware.setBrand(temp.get(3).toString());
-                    etSoftHardware.setModel(temp.get(4).toString());
-                    if (!StringUtil.isEmptyOrNull(temp.get(5).toString())) {
-                        etSoftHardware.setNum(Integer.parseInt(temp.get(5).toString()));
-                    }else{
+                    etSoftHardware.setPlId(NumberParseUtil.parseLong(temp.get(0) == null ? null : temp.get(0).toString()));
+                    etSoftHardware.setHwName(temp.get(1) == null ? null : temp.get(1).toString());
+                    etSoftHardware.setHwCode(temp.get(2) == null ? null : temp.get(2).toString());
+                    etSoftHardware.setBrand(temp.get(3) == null ? null : temp.get(3).toString());
+                    etSoftHardware.setModel(temp.get(4) == null ? null : temp.get(4).toString());
+                    if (!StringUtil.isEmptyOrNull(temp.get(5) == null ? null : temp.get(5).toString())) {
+                        etSoftHardware.setNum(NumberParseUtil.parseInt(temp.get(5) == null ? null : temp.get(5).toString()));
+                    } else {
                         etSoftHardware.setNum(1);
                     }
-                    etSoftHardware.setUseContent(temp.get(6).toString());
-                    if (!StringUtil.isEmptyOrNull(temp.get(7).toString())) {
-                        etSoftHardware.setIsScope(Integer.parseInt(temp.get(6).toString()));
+                    etSoftHardware.setUseContent(temp.get(6) == null ? null : temp.get(6).toString());
+                    if (!StringUtil.isEmptyOrNull(temp.get(7) == null ? null : temp.get(7).toString())) {
+                        etSoftHardware.setIsScope(NumberParseUtil.parseInt(temp.get(7) == null ? null : temp.get(7).toString()));
                     }
-                    etSoftHardware.setNoScopeCode(temp.get(7).toString());
+                    if (!StringUtil.isEmptyOrNull(temp.get(8) == null ? null : temp.get(8).toString())) {
+                        etSoftHardware.setNoScopeCode(temp.get(8) == null ? null : temp.get(8).toString());
+                        etSoftHardware.setIsScope(0);
+                    } else {
+                        etSoftHardware.setIsScope(1);
+                    }
+                    etSoftHardware.setContent(temp.get(9) == null ? null : temp.get(9).toString());
                     etSoftHardware.setCreateTime(new Timestamp(new Date().getTime()));
                     etSoftHardware.setCreator(param.getOperator());
                     etSoftHardware.setOperator(param.getOperator());

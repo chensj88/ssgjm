@@ -250,7 +250,7 @@
         1 AS IS_SCOPE,
         NULL AS NO_SCOPE_CODE,
         0 AS CONTENT,
-        1 AS SOURCE_ID,
+        p.ID AS SOURCE_ID,
         0 AS CREATOR,
         GETDATE() AS CREATE_TIME,
         NULL AS OPERATOR,
