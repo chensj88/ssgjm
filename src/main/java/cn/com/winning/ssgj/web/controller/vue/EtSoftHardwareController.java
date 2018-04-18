@@ -78,6 +78,7 @@ public class EtSoftHardwareController extends BaseController {
             softHardwareTemp = getFacade().getEtSoftHardwareService().getEtSoftHardware(softHardwareTemp);
             if (softHardwareTemp == null) {
                 softHardware.setId(ssgjHelper.createEtSoftHardwareIdService());
+                softHardware.setContent("0");
                 getFacade().getEtSoftHardwareService().createEtSoftHardware(softHardware);
             }
         }
@@ -157,6 +158,7 @@ public class EtSoftHardwareController extends BaseController {
         } else {
             etSoftHardware.setId(ssgjHelper.createEtSoftHardwareIdService());
             etSoftHardware.setSourceId(0L);
+            etSoftHardware.setContent("0");
             etSoftHardware.setCreator(etSoftHardware.getOperator());
             etSoftHardware.setCreateTime(new Timestamp(new Date().getTime()));
             etSoftHardware.setOperatorTime(new Timestamp(new Date().getTime()));
@@ -283,6 +285,7 @@ public class EtSoftHardwareController extends BaseController {
                     } else {
                         etSoftHardware.setIsScope(1);
                     }
+                    etSoftHardware.setContent("0");
                     etSoftHardware.setContent(temp.get(9) == null ? null : temp.get(9).toString());
                     etSoftHardware.setCreateTime(new Timestamp(new Date().getTime()));
                     etSoftHardware.setCreator(param.getOperator());
@@ -304,6 +307,66 @@ public class EtSoftHardwareController extends BaseController {
         }
         return result;
     }
+
+    /**
+     * 改变数量
+     *
+     * @param etSoftHardware
+     * @return
+     */
+    @RequestMapping(value = "/numChange.do")
+    @ResponseBody
+    @ILog
+    public Map<String, Object> numChange(EtSoftHardware etSoftHardware) {
+        super.getFacade().getEtSoftHardwareService().modifyEtSoftHardware(etSoftHardware);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("msg", "数量更改成功！");
+        return result;
+    }
+
+    /**
+     * 更改范围
+     *
+     * @param etSoftHardware
+     * @return
+     */
+    @RequestMapping(value = "/changeScope.do")
+    @ResponseBody
+    @ILog
+    @Transactional
+    public Map<String, Object> changeScope(EtSoftHardware etSoftHardware) {
+        String noScopeCode = etSoftHardware.getNoScopeCode();
+        if (StringUtil.isEmptyOrNull(noScopeCode)) {
+            etSoftHardware.setIsScope(1);
+        } else {
+            etSoftHardware.setIsScope(0);
+        }
+        Map map = new HashMap();
+        getFacade().getEtSoftHardwareService().modifyEtSoftHardware(etSoftHardware);
+        map.put("type", Constants.SUCCESS);
+        map.put("msg", "范围修改成功！");
+        return map;
+    }
+
+    /**
+     * 更改完成情况
+     *
+     * @param etSoftHardware
+     * @return
+     */
+    @RequestMapping(value = "/changeContent.do")
+    @ResponseBody
+    @ILog
+    @Transactional
+    public Map<String, Object> changeContent(EtSoftHardware etSoftHardware) {
+        getFacade().getEtSoftHardwareService().modifyEtSoftHardware(etSoftHardware);
+        Map map = new HashMap();
+        map.put("type", Constants.SUCCESS);
+        map.put("msg", "完成情况修改成功！");
+        return map;
+    }
+
 }
 
 
