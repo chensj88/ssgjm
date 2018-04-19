@@ -220,6 +220,12 @@ public class SSGJHelper {
     @Qualifier(value = "etOnlineFileIdService")
     private StepSequenceFactory  etOnlineFileIdService;
 
+
+    @Autowired
+    @Qualifier(value = "etReportIdService")
+    private StepSequenceFactory  etReportIdService;
+
+
     public long createEtOnlineFileIdService(){
         return (long)etOnlineFileIdService.create();
     }
@@ -278,6 +284,7 @@ public class SSGJHelper {
     public long createSiteQuestionIdService(){ return (long) siteQuestionIdService.create(); }
     public long createFloorQuestionIdService(){ return (long) floorQuestionIdService.create(); }
     public long createEtSoftHardwareIdService(){ return (long) etSoftHardwareIdService.create(); }
+    public long createEtReportIdService(){ return (long) etReportIdService.create(); }
 
 
 

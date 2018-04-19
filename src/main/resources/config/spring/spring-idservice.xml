@@ -95,7 +95,7 @@
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="SERIAL_NO"/>
         <property name="step" value="1"/>
-        <property name="format" value="{YYYYMMDD}{#####}" />
+        <property name="format" value="{YYYYMMDD}{#####}"/>
         <property name="dateCutOff" value="true"/>
     </bean>
     <!--业务单据ID
@@ -114,10 +114,10 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
-    
-     <!--产品ID 主键生成器
-     起步数据为 100 0000
-    -->
+
+    <!--产品ID 主键生成器
+    起步数据为 100 0000
+   -->
     <bean id="productIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="PRODUCT_ID"/>
@@ -138,7 +138,7 @@
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="PRODUCT_CODE"/>
         <property name="step" value="1"/>
-        <property name="format" value="WN-PD-{######}" />
+        <property name="format" value="WN-PD-{######}"/>
     </bean>
     <!--
     业务流程序号
@@ -148,7 +148,7 @@
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="FLOW_CODE"/>
         <property name="step" value="1"/>
-        <property name="format" value="WN-YWLC-{####}" />
+        <property name="format" value="WN-YWLC-{####}"/>
         <property name="dateCutOff" value="true"/>
     </bean>
     <!--
@@ -165,7 +165,7 @@
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="DATA_CODE"/>
         <property name="step" value="1"/>
-        <property name="format" value="WN-TABLE-{######}" />
+        <property name="format" value="WN-TABLE-{######}"/>
     </bean>
     <!--基础数据ID-->
     <bean id="dataIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
@@ -179,7 +179,7 @@
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="THIRD_CODE"/>
         <property name="step" value="1"/>
-        <property name="format" value="WN-THIRD-{######}" />
+        <property name="format" value="WN-THIRD-{######}"/>
     </bean>
     <!--第三方接口ID-->
     <bean id="thirdInterfaceIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
@@ -194,7 +194,7 @@
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="SH_CODE"/>
         <property name="step" value="1"/>
-        <property name="format" value="WN-SH-{######}" />
+        <property name="format" value="WN-SH-{######}"/>
     </bean>
     <!--软硬件信息ID-->
     <bean id="shIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
@@ -208,7 +208,7 @@
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="REPORT_CODE"/>
         <property name="step" value="1"/>
-        <property name="format" value="WN-RP-{######}" />
+        <property name="format" value="WN-RP-{######}"/>
     </bean>
     <!--报表类信息ID-->
     <bean id="sysReportInfoIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
@@ -230,7 +230,7 @@
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="QUESTION_CODE"/>
         <property name="step" value="1"/>
-        <property name="format" value="WN-QS-{######}" />
+        <property name="format" value="WN-QS-{######}"/>
     </bean>
     <!--流程问题ID-->
     <bean id="sysFlowQuestionIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
@@ -244,7 +244,7 @@
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="ANSWER_CODE"/>
         <property name="step" value="1"/>
-        <property name="format" value="WN-AS-{########}" />
+        <property name="format" value="WN-AS-{########}"/>
     </bean>
     <!--流程问题答案ID-->
     <bean id="sysFlowAnswerIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
@@ -290,7 +290,7 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
-   <!--数据校验脚本ID-->
+    <!--数据校验脚本ID-->
     <bean id="dataCheckScriptIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="DSC_ID"/>
@@ -364,14 +364,14 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
-        <!--人员信息信息ID-->
+    <!--人员信息信息ID-->
     <bean id="createEtUserInfoIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="EtUser_ID"/>
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
-        <!--上线人员信息ID-->
+    <!--上线人员信息ID-->
     <bean id="createEtOnlineInfoIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="EtOnline_ID"/>
@@ -450,6 +450,14 @@
     <bean id="etOnlineFileIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="ONLINE_FILE"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+    <!--报表主键-->
+    <bean id="etReportIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="ET_REPORT"/>
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>

@@ -57,4 +57,9 @@ public class EtReportServiceImpl implements EtReportService {
         return this.etReportDao.selectEntityPaginatedList(t);
     }
 
+    @Override
+    public List<EtReport> selectEtReportByProductInfo(EtReport etReport) {
+        return this.etReportDao.selectEtReportByProductInfo(etReport);
+    }
+
 }
