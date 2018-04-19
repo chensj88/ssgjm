@@ -59,6 +59,7 @@ public class EtSimulateRecordController extends BaseController {
 
     /**
      * 新增或者修改模拟运行记录
+     * 第一次添加模拟运行记录信息，默认该项工作完成
      * @param record
      * @return
      */
@@ -67,10 +68,17 @@ public class EtSimulateRecordController extends BaseController {
     @Transactional
     @ILog
     public Map<String,Object> addEtSimulateRecord(EtSimulateRecord record){
+        EtProcessManager manager = new EtProcessManager();
+        manager.setPmId(record.getPmId());
         if(record.getId() != null){
             record.setStatus(Constants.STATUS_USE);
             record.setOperatorTime(new Timestamp(new Date().getTime()));
             super.getFacade().getEtSimulateRecordService().modifyEtSimulateRecord(record);
+            manager = super.getFacade().getEtProcessManagerService().getEtProcessManager(manager);
+            manager.setIsSimulation(Constants.STATUS_USE);
+            manager.setCreator(record.getOperator());
+            manager.setOperatorTime(new Timestamp(new Date().getTime()));
+            super.getFacade().getEtProcessManagerService().modifyEtProcessManager(manager);
         }else{
             record.setId(ssgjHelper.createEtSimulateRecordIdService());
             record.setStatus(Constants.STATUS_USE);

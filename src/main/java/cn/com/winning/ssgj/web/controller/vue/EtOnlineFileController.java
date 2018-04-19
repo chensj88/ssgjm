@@ -7,6 +7,7 @@ import cn.com.winning.ssgj.base.util.CommonFtpUtils;
 import cn.com.winning.ssgj.base.util.DateUtil;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.EtOnlineFile;
+import cn.com.winning.ssgj.domain.EtProcessManager;
 import cn.com.winning.ssgj.domain.EtSimulateRecord;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.UrlContent;
@@ -74,6 +75,53 @@ public class EtOnlineFileController extends BaseController {
     }
 
     /**
+     * 工作完成状态判断
+     * @param onlineFile
+     * @return
+     */
+    @RequestMapping(value = "/checkWork.do")
+    @ResponseBody
+    public Map<String,Object> checkWorkStatusByFileType(EtOnlineFile onlineFile){
+        boolean workstatus = false;
+        int status = -1;
+        EtProcessManager manager = new EtProcessManager();
+        manager.setPmId(onlineFile.getPmId());
+        manager = super.getFacade().getEtProcessManagerService().getEtProcessManager(manager);
+        if(Constants.REPORT_TYPE_ONLINE_FILE.equals(onlineFile.getFileType())){
+            status = manager.getIsOnline();
+        }else{
+            status = manager.getIsSwitchPlan();
+        }
+        workstatus = status == 0 ? false :true;
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("workStatus",workstatus);
+        return result;
+    }
+
+    @RequestMapping(value = "/confirm.do")
+    @ResponseBody
+    public Map<String,Object> confirmWork(EtOnlineFile file){
+        EtProcessManager manager = new EtProcessManager();
+        manager.setPmId(file.getPmId());
+        manager = super.getFacade().getEtProcessManagerService().getEtProcessManager(manager);
+        if(Constants.REPORT_TYPE_ONLINE_FILE.equals(file.getFileType())){
+           manager.setIsOnline(file.getStatus());
+        }else{
+            manager.setIsSwitchPlan(file.getStatus());
+           /* manager.setIsEnd(file.getStatus());*/
+        }
+        manager.setOperator(file.getOperator());
+        manager.setOperatorTime(new Timestamp(new Date().getTime()));
+        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(manager);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+
+    }
+
+
+    /**
      * 重新查询数据
      * @param file
      * @return
@@ -111,6 +159,7 @@ public class EtOnlineFileController extends BaseController {
         result.put("status", Constants.SUCCESS);
         return result;
     }
+
 
     /**
      * 上线评估报告
@@ -183,6 +232,16 @@ public class EtOnlineFileController extends BaseController {
         result.put("switchFile",super.getFacade().getEtOnlineFileService().getUrlContentFromEtOnlineFileList(onlineFile));
         return result;
     }
+
+    /**
+     * 通用上传处理
+     * @param request 请求
+     * @param msg 错误信息
+     * @param remotePath 远程路径
+     * @param file 上传文件
+     * @return
+     * @throws IOException
+     */
     private boolean  commonUploadInfo(HttpServletRequest request,String msg,String remotePath,MultipartFile file) throws IOException {
         boolean ftpStatus = false;
         //上传文件路径

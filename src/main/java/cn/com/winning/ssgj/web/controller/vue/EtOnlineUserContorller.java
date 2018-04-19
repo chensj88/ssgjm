@@ -182,6 +182,7 @@ public class EtOnlineUserContorller extends BaseController{
 	@Transactional
 	public Map<String, Object> confirmEtOnlineUser(EtProcessManager  processManager){
 		processManager.setIsSupportStaff(Constants.STATUS_USE);
+		processManager.setIsEnd(Constants.STATUS_USE);
 		processManager.setOperatorTime(new Timestamp(new Date().getTime()));
 		super.getFacade().getEtProcessManagerService().modifyEtProcessManager(processManager);
 		Map<String,Object> result = new HashMap<String,Object>();
