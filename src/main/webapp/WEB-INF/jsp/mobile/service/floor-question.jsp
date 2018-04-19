@@ -12,7 +12,7 @@
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
 		<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
-		<link rel="stylesheet" href="//at.alicdn.com/t/font_575705_0j8jn55q5hc6usor.css" />
+		<link rel="stylesheet" href="//at.alicdn.com/t/font_575705_h902v86nybjoflxr.css" />
 
 		<script type="text/javascript">
             $(document).ready(function(){
@@ -32,13 +32,17 @@
 			<div class="header">
 				<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
 				<div>楼层问题汇报</div>
-				<span class="mui-icon mui-icon-more"></span>
+				<span class="iconfont icon-search"></span>
+			</div>
+			<div id="search">
+				<input type="text" placeholder="请输入关键字" />
+				<i class="iconfont icon-search"></i>
 			</div>
 			<div class="hole"></div>
 			<div class="floor-table">
 				<table>
 					<tr class="floor-head">
-						<th>楼层问题</th>
+						<th >楼层问题</th>
 						<th>全部</th>
 						<th>未解决</th>
 						<th>已解决</th>
@@ -46,7 +50,7 @@
 					<c:forEach var="vwr" items="${infoList}" >
 
 						<tr>
-							<td><a style="text-decoration:underline" href="<%=basePath%>/mobile/floorQuestion/floorQuestionReport.do?serialNo=${serialNo}&userId=${userId}&floorName=${vwr.map.get("code")}">${vwr.map.get("f_name")}</a></td>
+							<td ><a href="<%=basePath%>/mobile/floorQuestion/floorQuestionReport.do?serialNo=${serialNo}&userId=${userId}&floorName=${vwr.map.get("code")}">${vwr.map.get("f_name")}</a></td>
 							<td><span class="td1">${vwr.map.get("num")}</span></td>
 							<td><span class="td2">${vwr.map.get("num_no")}</span></td>
 							<td><span class="td3">${vwr.map.get("num_use")}</span></td>
@@ -59,7 +63,7 @@
 
 				<table>
 					<tr class="floor-count">
-						<th><i class="iconfont icon-total"></i><strong>合计</strong></th>
+						<th ><i class="iconfont icon-total"></i><strong>合计</strong></th>
 						<th><span id="t1"></span></th>
 						<th><span id="t2"></span></th>
 						<th><span id="t3"></span></th>
@@ -94,5 +98,26 @@
             $("#t2").html(total_2);
             $("#t3").html(total_3);
 		});
+
+
+            $(function(){
+                $('.header>span').click(function(){
+                    $('#search').addClass('show');
+                    $('#search>input').focus();
+                    return false;
+                });
+                $('#search>input').focusout(function(){
+                    $('#search').removeClass('show');
+                });
+
+                $('#search>i').click(function () {
+					var searchContext = $("#search>input").val();
+					console.log(searchContext);
+                    location.href="<%=basePath%>/mobile/floorQuestion/floorQuestionReportKnow.do?serialNo=${serialNo}&userId=${userId}&searchContext="+searchContext;
+
+                });
+
+            })
+
 	</script>
 </html>

@@ -207,16 +207,37 @@
 .floor-table th{
 	font-size: 13px;
 }
+.floor-table tr{
+	font-size: 14px;
+}
+.floor-table tr td:first-child{
+	padding-left: 3%;
+	text-align: left;
+}
 .floor-head{
 	border-bottom:1px solid #EBEBEB;
 }
 .floor-table table strong{
 	font-size: 16px;
 	font-weight: bold;
+	color: #666666;
 }
-
-.floor-table table span{
-	color: #679DF1;
+.floor-table table a{
+	display: block;
+	line-height:normal;
+    overflow: hidden;
+    white-space: nowrap;
+	color: #5897FB;
+	font-size: 13px;
+	text-decoration: underline;
+}
+.floor-table table .td2{
+	font-size: 16px;
+	color: #F43530;
+}
+.floor-table table #t2{
+	font-size: 16px;
+	color: #F43530;
 }
 .floor-line{
 	margin: 0 auto;
@@ -225,6 +246,10 @@
 }
 .floor-count{
 	border-top:1px solid #EBEBEB;
+}
+.floor-count i{
+	margin-right: 5px;
+	color:#D2D2D2!important;
 }
 .floor-report{
 }
