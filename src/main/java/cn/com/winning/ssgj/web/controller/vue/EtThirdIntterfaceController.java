@@ -132,7 +132,11 @@ public class EtThirdIntterfaceController extends BaseController {
             if (contentType != null && contentType.contains("1") && contentType.contains("2") && contentType.contains("3")) {
                 ++completeNum;
             }
-            contentArr = contentType == null ? null : contentType.split(",");
+            if(contentType == null){
+                contentArr="".split(",");
+            }else {
+                contentArr=contentType.split(",");
+            }
             map.put("contentList", contentArr);
             if (intterface.getStatus() == null || intterface.getStatus() == 0) {
                 map.put("status", false);
