@@ -133,7 +133,7 @@
                 <if test="(isScope != null and isScope != '') or isScope == 0">IS_SCOPE =
                     #{isScope, jdbcType=INTEGER},
                 </if>
-                <if test="noScopeCode != null and noScopeCode != ''">NO_SCOPE_CODE = #{noScopeCode, jdbcType=VARCHAR},
+                <if test="noScopeCode != null">NO_SCOPE_CODE = #{noScopeCode, jdbcType=VARCHAR},
                 </if>
                 <if test="require != null and require != ''">REQUIRE = #{require, jdbcType=VARCHAR},</if>
                 <if test="(status != null )">STATUS = #{status, jdbcType=INTEGER},</if>

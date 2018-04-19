@@ -5,6 +5,7 @@ import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.CommonFtpUtils;
 import cn.com.winning.ssgj.base.util.DateUtil;
+import cn.com.winning.ssgj.base.util.NumberParseUtil;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
@@ -105,17 +106,40 @@ public class EtReportController extends BaseController {
         int total = super.getFacade().getEtReportService().getEtReportCount(etReport);
         Integer completeNum = 0;
         String imgPath = null;
+        SysDictInfo sysDictInfoTemp = null;
         for (EtReport report : etReports) {
+            sysDictInfoTemp = new SysDictInfo();
+            sysDictInfoTemp.setDictCode("paperType");
+            sysDictInfoTemp.setDictValue(report.getReportType() == null ? null : report.getReportType().toString());
+            sysDictInfoTemp = getFacade().getSysDictInfoService().getSysDictInfo(sysDictInfoTemp);
+            Map map = new HashMap();
+            if (sysDictInfoTemp != null) {
+                map.put("type", sysDictInfoTemp.getDictLabel());
+            } else {
+                map.put("type", "");
+            }
+
+            //获取图片路径集合
             imgPath = report.getImgPath();
-            if (StringUtil.isEmptyOrNull(imgPath)) {
+            if (!StringUtil.isEmptyOrNull(imgPath)) {
                 //如果未上传图片，则为未完成
                 completeNum++;
+                String[] pathArr = imgPath.split(";");
+                map.put("imgPath", pathArr);
+            } else {
+                map.put("imgPath", null);
             }
+            report.setMap(map);
         }
+        //获取所有报表分类
+        SysDictInfo sysDictInfo = new SysDictInfo();
+        sysDictInfo.setDictCode("paperType");
+        List<SysDictInfo> sysDictInfoList = getFacade().getSysDictInfoService().getSysDictInfoList(sysDictInfo);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("rows", etReports);
         result.put("total", total);
+        result.put("typeList", sysDictInfoList);
         result.put("completeNum", completeNum);
         return result;
     }
@@ -131,6 +155,12 @@ public class EtReportController extends BaseController {
     @Transactional
     @ILog
     public Map<String, Object> changeScope(EtReport etReport) {
+        String noScopeCode = etReport.getNoScopeCode();
+        if (StringUtil.isEmptyOrNull(noScopeCode)) {
+            etReport.setIsScope(1);
+        } else {
+            etReport.setIsScope(0);
+        }
         etReport.setOperatorTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtReportService().modifyEtReport(etReport);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -160,151 +190,95 @@ public class EtReportController extends BaseController {
         return result;
     }
 
+
     /**
-     * 添加流程信息
+     * 添加或者修单据件信息
      *
-     * @param process
+     * @param etReport
      * @return
      */
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
-    @Transactional
     @ILog
-    public Map<String, Object> addOrModifyProcessInfo(EtBusinessProcess process) {
-        if (process.getId() == 0L) {
-            process.setId(ssgjHelper.createEtBusinessProcessIdService());
-            process.setSourceType(Constants.STATUS_USE);
-            process.setStatus(Constants.STATUS_USE);
-            process.setCreator(process.getOperator());
-            process.setCreateTime(new Timestamp(new Date().getTime()));
-            process.setOperatorTime(new Timestamp(new Date().getTime()));
-            super.getFacade().getEtBusinessProcessService().createEtBusinessProcess(process);
+    @Transactional
+    public Map<String, Object> addOrModify(EtReport etReport) {
+        String noScopeCode = etReport.getNoScopeCode();
+        if (StringUtil.isEmptyOrNull(noScopeCode)) {
+            etReport.setIsScope(1);
         } else {
-            process.setOperatorTime(new Timestamp(new Date().getTime()));
-            super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
+            etReport.setIsScope(0);
+        }
+        //创建临时变量
+        EtReport etReportTemp = new EtReport();
+        etReportTemp.setId(etReport.getId());
+        etReportTemp = super.getFacade().getEtReportService().getEtReport(etReportTemp);
+        PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
+        basicInfo.setId(etReport.getPmId());
+        basicInfo = super.getFacade().getPmisProjectBasicInfoService().getPmisProjectBasicInfo(basicInfo);
+        etReport.setSerialNo(basicInfo.getKhxx() + "");
+        etReport.setcId(basicInfo.getHtxx());
+        if (etReportTemp != null) {
+            etReport.setOperatorTime(new Timestamp(new Date().getTime()));
+            super.getFacade().getEtReportService().modifyEtReport(etReport);
+        } else {
+            etReport.setId(ssgjHelper.createEtReportIdService());
+            etReport.setSourceType(0);
+            etReport.setCreator(etReport.getOperator());
+            etReport.setCreateTime(new Timestamp(new Date().getTime()));
+            etReport.setOperatorTime(new Timestamp(new Date().getTime()));
+            super.getFacade().getEtReportService().createEtReport(etReport);
         }
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
+
     }
 
     /**
-     * 删除流程调研信息
+     * 确认完成
      *
-     * @param process
+     * @param etReport
      * @return
      */
-    @RequestMapping(value = "/delete.do")
+    @RequestMapping(value = "/confirm.do")
     @ResponseBody
     @Transactional
-    @ILog
-    public Map<String, Object> deleteBusinessProcess(EtBusinessProcess process) {
-        super.getFacade().getEtBusinessProcessService().removeEtBusinessProcess(process);
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("status", Constants.SUCCESS);
-        return result;
-    }
-
-    /**
-     * 流程数量确认
-     *
-     * @param manager
-     * @return
-     */
-    @RequestMapping(value = "/confirmFlowNum.do")
-    @ResponseBody
-    @Transactional
-    @ILog
-    public Map<String, Object> comfirmBusinessProcess(EtProcessManager manager) {
-        int status = manager.getIsFlowAffirm();
-        manager.setIsFlowAffirm(null);
-        manager = super.getFacade().getEtProcessManagerService().getEtProcessManager(manager);
-        manager.setIsFlowAffirm(status);
-        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(manager);
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("status", Constants.SUCCESS);
-        return result;
-    }
-
-    /**
-     * 流程调研与配置
-     *
-     * @param manager
-     * @return
-     */
-    @RequestMapping(value = "/confirmFlowConfig.do")
-    @ResponseBody
-    @Transactional
-    @ILog
-    public Map<String, Object> confirmFlowConfig(EtProcessManager manager) {
-        int status = manager.getIsFlowConfig();
-        manager.setIsFlowConfig(null);
-        manager = super.getFacade().getEtProcessManagerService().getEtProcessManager(manager);
-        manager.setIsFlowConfig(status);
-        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(manager);
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("status", Constants.SUCCESS);
-        return result;
-    }
-
-    /**
-     * 查看是否确认完成确认数量
-     *
-     * @param manager
-     * @return
-     */
-    @RequestMapping(value = "/checkAffirm.do")
-    @ResponseBody
-    public Map<String, Object> checkBusinessProcessAffirm(EtProcessManager manager) {
-        manager = super.getFacade().getEtProcessManagerService().getEtProcessManager(manager);
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("status", Constants.SUCCESS);
-        result.put("data", manager.getIsFlowAffirm());
-        return result;
-
-    }
-
-    /**
-     * 查看是否完成流程配置工作
-     *
-     * @param manager
-     * @return
-     */
-    @RequestMapping(value = "/checkConfig.do")
-    @ResponseBody
-    public Map<String, Object> checkBusinessProcessConfig(EtProcessManager manager) {
-        manager = super.getFacade().getEtProcessManagerService().getEtProcessManager(manager);
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("status", Constants.SUCCESS);
-        result.put("data", manager.getIsFlowConfig());
-        return result;
-    }
-
-    /**
-     * 查看是否完成流程配置工作
-     *
-     * @param user
-     * @return
-     */
-    @RequestMapping(value = "/checkAuth.do")
-    @ResponseBody
-    public Map<String, Object> checkUserAuth(PmisProjctUser user) {
-        if (user.getRy() == 100001L) {
-            user.setRyfl(0);
-        } else {
-            user = super.getFacade().getPmisProjctUserService().getPmisProjctUser(user);
+    public Map<String, Object> confirm(EtReport etReport) {
+        //项目id
+        Long pmId = etReport.getPmId();
+        if (pmId == null) {
+            return null;
         }
+        //根据项目id获取项目基本信息
+        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
+        //获取合同id
+        Long contractId = pmisProjectBasicInfo.getHtxx();
+        //获取单据号即客户
+        Long customerId = pmisProjectBasicInfo.getKhxx();
 
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("status", Constants.SUCCESS);
-        result.put("data", user.getRyfl());
-        return result;
+        etReport.setcId(contractId);
+
+        etReport.setSerialNo(customerId.toString());
+        int total = getFacade().getEtReportService().getEtReportCount(etReport);
+        EtProcessManager etProcessManager = new EtProcessManager();
+        etProcessManager.setPmId(pmId);
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (total > 0) {
+            etProcessManager.setIsPaperDev(1);
+            getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(etProcessManager);
+            map.put("type", Constants.SUCCESS);
+            map.put("msg", "确认成功！");
+        } else {
+            map.put("type", "info");
+            map.put("msg", "无数据，确认失败！");
+        }
+        return map;
     }
 
     /**
      * 上传文件
      *
-     * @param process
+     * @param report
      * @param request
      * @param file
      * @return
@@ -314,9 +288,11 @@ public class EtReportController extends BaseController {
     @ResponseBody
     @ILog
     @Transactional
-    public Map<String, Object> uploadFile(EtBusinessProcess process, HttpServletRequest request, MultipartFile file) throws IOException {
+    public Map<String, Object> upload(EtReport report, HttpServletRequest request, MultipartFile file) throws IOException {
         Map<String, Object> result = new HashMap<String, Object>();
-        process = super.getFacade().getEtBusinessProcessService().getEtBusinessProcess(process);
+        EtReport temp = new EtReport();
+        temp.setId(report.getId());
+        temp = getFacade().getEtReportService().getEtReport(temp);
         boolean ftpStatus = false;
         if (!file.isEmpty()) {
             //上传文件路径
@@ -334,13 +310,17 @@ public class EtReportController extends BaseController {
                 newFile.delete();
             }
             file.transferTo(newFile);
-            ;
-            String remotePath = "/process/" + DateUtil.getCurrentDay() + "/" + filename;
+            String remotePath = "/report/" + DateUtil.getCurrentDay() + "/" + filename;
             try {
                 CommonFtpUtils.uploadFile(remotePath, newFile);
-                process.setStatus(1);
-                process.setUploadPath(Constants.FTP_SHARE_FLODER + remotePath);
-                super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
+                report.setOperatorTime(new Timestamp(new Date().getTime()));
+                if (temp.getImgPath() != null && !"".equals(temp.getImgPath().trim())) {
+                    report.setImgPath(temp.getImgPath() + ";" + Constants.FTP_SHARE_FLODER + remotePath);
+                } else {
+                    report.setImgPath(Constants.FTP_SHARE_FLODER + remotePath);
+                }
+
+                super.getFacade().getEtReportService().modifyEtReport(report);
                 newFile.delete();
                 result.put("status", "success");
             } catch (Exception e) {

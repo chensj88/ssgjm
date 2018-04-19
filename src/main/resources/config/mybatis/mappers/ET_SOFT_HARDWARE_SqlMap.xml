@@ -144,7 +144,7 @@
                 <if test="(isScope != null and isScope != '') or isScope == 0">IS_SCOPE =
                     #{isScope, jdbcType=INTEGER},
                 </if>
-                <if test="noScopeCode != null and noScopeCode != ''">NO_SCOPE_CODE = #{noScopeCode, jdbcType=VARCHAR},
+                <if test="noScopeCode != null">NO_SCOPE_CODE = #{noScopeCode, jdbcType=VARCHAR},
                 </if>
                 <if test="content != null and content != ''">CONTENT = #{content, jdbcType=VARCHAR},</if>
                 <if test="(sourceId != null and sourceId != '') or sourceId == 0">SOURCE_ID =
