@@ -5,6 +5,7 @@ import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.CommonFtpUtils;
 import cn.com.winning.ssgj.base.util.DateUtil;
+import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.EtBusinessProcess;
 import cn.com.winning.ssgj.domain.EtProcessManager;
 import cn.com.winning.ssgj.domain.PmisProjctUser;
@@ -282,7 +283,13 @@ public class EtBusinessProcessController extends BaseController {
             try {
                 CommonFtpUtils.uploadFile(remotePath,newFile);
                 process.setStatus(1);
-                process.setUploadPath(Constants.FTP_SHARE_FLODER+remotePath);
+                if(StringUtil.isEmptyOrNull(process.getUploadPath())){
+                    process.setUploadPath(remotePath);
+                }else{
+                    String newPath = process.getUploadPath() + ";" +remotePath;
+                    process.setUploadPath(newPath);
+                }
+
                 super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
                 newFile.delete();
                 result.put("status", "success");
