@@ -173,4 +173,36 @@
         </where>
     </delete>
 
+    <select id="selectEtReportByProductInfo" resultMap="etReportResult" parameterType="etReport">
+        SELECT
+        0 AS ID,
+        #{cId} AS C_ID,
+        #{pmId} AS PM_ID,
+        #{serialNo} AS SERIAL_NO,
+        p.REPORT_TYPE AS REPORT_TYPE,
+        p.REPORT_NAME AS REPORT_NAME,
+        1 AS IS_SCOPE,
+        NULL AS NO_SCOPE_CODE,
+        NULL AS REQUIRE,
+        0 AS STATUS,
+        NULL AS IMG_PATH,
+        NULL AS REMARK,
+        p.ID AS SOURCE_TYPE,
+        0 AS CREATOR,
+        GETDATE() AS CREATE_TIME,
+        NULL AS OPERATOR,
+        NULL AS OPERATOR_TIME
+        FROM SYS_REPORT_INFO p INNER JOIN SYS_PRODUCT_PAPER_INFO s
+        ON p.ID =s.R_ID INNER JOIN PMIS_PRODUCT_INFO m ON m.ID = s.PD_ID
+        WHERE
+        p.STATUS=1
+        AND
+        GETDATE() BETWEEN s.EFFECTIVE_DATE AND s.EXPIRE_DATE
+        AND
+        m.ID in
+        <foreach collection="map.productList" item="item" open="(" separator="," close=")">
+            <if test="item.id!=null and item.id!=0">#{item.id}</if>
+        </foreach>
+    </select>
+
 </mapper>

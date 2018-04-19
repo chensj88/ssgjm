@@ -26,4 +26,6 @@ public interface EtReportService {
 
     List<EtReport> getEtReportPaginatedList(EtReport t);
 
+    List<EtReport> selectEtReportByProductInfo(EtReport etReport);
+
 }
