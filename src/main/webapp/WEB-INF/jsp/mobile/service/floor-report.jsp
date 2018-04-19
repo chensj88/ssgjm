@@ -146,7 +146,6 @@
                     var reason = $("#reason").val();
                     var id = $("#current_id").val();
                     var user_id = $("#user_id").val();
-                    alert(user_id);
                     $.ajax({
                         type: "POST",
                         url:"<%=basePath%>/mobile/floorQuestion/causeFloor.do",

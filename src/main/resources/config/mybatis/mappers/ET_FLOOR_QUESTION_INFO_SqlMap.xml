@@ -32,6 +32,7 @@
         <result column="OPERATOR_TIME_STR" property="map.operatorTime" jdbcType="VARCHAR"/>
         <result column="f_name" property="map.f_name" jdbcType="VARCHAR"/>
         <result column="code" property="map.code" jdbcType="VARCHAR"/>
+        <result column="F_NAME" property="map.f_name" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="sf-etFloorQuestionInfo">
@@ -41,7 +42,7 @@
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
         <if test="floorName != null and floorName != ''">and t.FLOOR_NAME = #{floorName}</if>
         <if test="questionType != null and questionType != ''">and t.QUESTION_TYPE = #{questionType}</if>
-        <if test="questionDesc != null and questionDesc != ''">and t.QUESTION_DESC = #{questionDesc}</if>
+        <!--<if test="questionDesc != null and questionDesc != ''">and t.QUESTION_DESC = #{questionDesc}</if>-->
         <if test="imgPath != null and imgPath != ''">and t.IMG_PATH = #{imgPath}</if>
         <if test="(isOperation != null and isOperation != '') or isOperation == 0">and t.IS_OPERATION = #{isOperation}
         </if>
@@ -108,11 +109,13 @@
     <select id="selectEtFloorQuestionInfoWithHospitalList" resultMap="etFloorQuestionInfoResult"
             parameterType="etFloorQuestionInfo">
 
-        SELECT t.*,i.YHMC as NAME,d.DICT_LABEL from ET_FLOOR_QUESTION_INFO t
+        SELECT t.*,i.YHMC as NAME,d.DICT_LABEL,f.FLOOR_NAME as F_NAME from ET_FLOOR_QUESTION_INFO t
         LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
         LEFT JOIN SYS_USER_INFO i ON i.ID = t.OPERATOR
+        LEFT JOIN SYS_FLOORS f ON f.ID = t.FLOOR_NAME
         where 1 = 1
         <include refid="sf-etFloorQuestionInfo"/>
+        <if test="questionDesc != null and questionDesc != ''">and t.QUESTION_DESC LIKE '%${questionDesc}%' </if>
 
     </select>
 

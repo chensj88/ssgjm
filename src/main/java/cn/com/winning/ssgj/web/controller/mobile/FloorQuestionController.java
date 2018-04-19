@@ -37,7 +37,7 @@ public class FloorQuestionController extends BaseController {
     @ILog
     public String floorQuestionList(Model model, String parameter) {
         //进行中的项目
-        parameter = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
+        //parameter = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
         try {
             byte[] byteArray = Base64Utils.decryptBASE64(parameter);
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
@@ -91,6 +91,20 @@ public class FloorQuestionController extends BaseController {
         model.addAttribute("user_id", userId);
 
         return "/mobile/service/floor-report";
+    }
+
+    @RequestMapping("/floorQuestionReportKnow.do")
+    @ILog
+    public String floorQuestionReportKnow(Model model, String searchContext, String serialNo,String userId) {
+        EtFloorQuestionInfo questionInfo = new EtFloorQuestionInfo();
+        questionInfo.setSerialNo(serialNo);
+        questionInfo.setQuestionDesc(searchContext);
+        List<EtFloorQuestionInfo> infoList = super.getFacade().getEtFloorQuestionInfoService()
+                .getEtFloorQuestionInfoWithHospitalList(questionInfo);
+        model.addAttribute("infoList", infoList);
+        model.addAttribute("user_id", userId);
+
+        return "/mobile/service/floor-report-knowledge";
     }
 
     @RequestMapping("/causeFloorData.do")

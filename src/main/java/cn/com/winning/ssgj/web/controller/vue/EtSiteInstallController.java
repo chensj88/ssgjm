@@ -9,16 +9,14 @@ import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import com.sun.xml.internal.ws.resources.HttpserverMessages;
 import com.sun.xml.internal.xsom.impl.scd.Iterators;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -187,7 +185,7 @@ public class EtSiteInstallController extends BaseController {
         String sfName="";
         if(StringUtils.isNotBlank(info.getPdId())){
             //所需要的 软件
-            List<PmisProductLineInfo> softHardwareList = super.getPdNameList(info.getPmId(),info.getHwId());
+            List<PmisProductLineInfo> softHardwareList = super.getPdNameList(info.getPmId(),info.getPdId());
             for (PmisProductLineInfo s:softHardwareList){
                 sfName +=s.getName()+";";
             }
@@ -341,6 +339,22 @@ public class EtSiteInstallController extends BaseController {
             map.put("status","0");
         }
 
+        map.put("type", Constants.SUCCESS);
+        map.put("msg", "硬件修改成功！");
+        return map;
+    }
+
+
+    /**
+     * 保存站点明细信息
+     * @return
+     */
+    @RequestMapping(value = "/saveSiteDetail.do", method ={RequestMethod.POST})
+    @ResponseBody
+    public synchronized Map<String,Object> saveSiteDetail (HttpServletRequest request,EtSiteInstallDetailForm ss) {
+        Map map = new HashMap();
+        String sss = request.getParameter("jj");
+        String siteList = request.getParameter("siteList");
 
 
 
@@ -348,8 +362,6 @@ public class EtSiteInstallController extends BaseController {
         map.put("msg", "硬件修改成功！");
         return map;
     }
-
-
 
 
 
