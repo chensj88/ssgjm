@@ -461,4 +461,20 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
+
+    <!--视频权限主键-->
+    <bean id="sysUserVideoAuthIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="VIDEO_AUTH"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
+    <!--视频权限临时表主键-->
+    <bean id="sysUserVideoAuthTempIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="VIDEO_AUTH_TEMP"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
 </beans>

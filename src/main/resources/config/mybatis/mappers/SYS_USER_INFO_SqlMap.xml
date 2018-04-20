@@ -27,6 +27,7 @@
     </resultMap>
 
     <resultMap id="sysUserInfoResult" type="sysUserInfo" extends="sysUserInfoResultForList">
+        <result column="ORG_NAME" property="map.orgName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="sf-sysUserInfo">
@@ -57,7 +58,8 @@
         <if test="userid != null and userid != ''">AND t.USERID LIKE '%${userid}%'</if>
         <if test="yhmc != null and yhmc != ''">AND t.YHMC LIKE '%${yhmc}%'</if>
         <if test="mobile != null and mobile != ''">AND t.MOBILE LIKE '%${mobile}%'</if>
-        <if test="status != null ">AND t.STATUS LIKE ${status}</if>
+        <if test="status != null ">AND t.STATUS = #{status}</if>
+        <if test="ssgs != null ">AND t.SSGS = #{ssgs}</if>
     </sql>
 
     <select id="selectSysUserInfo" resultMap="sysUserInfoResult" parameterType="sysUserInfo">
@@ -80,8 +82,14 @@
 
     <select id="selectSysUserInfoPaginatedList" resultMap="sysUserInfoResult" parameterType="sysUserInfo">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
-        from SYS_USER_INFO t where 1 = 1
+        select t.*,
+        CASE WHEN t.USER_TYPE = '0' THEN t1.NAME
+        ELSE t2.NAME END ORG_NAME,
+        ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_USER_INFO t
+        LEFT JOIN PMIS_CUSTOMER_INFORMATION t1 ON t.SSGS = t1.ID
+        LEFT JOIN SYS_ORGANIZATION t2 ON t.ORGID = t2.ID
+        where 1 = 1
         <include refid="sf-sysUserInfo"/>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
@@ -192,8 +200,13 @@
     </select>
     <select id="selectSysUserInfoQueryPaginatedList" resultMap="sysUserInfoResult" parameterType="sysUserInfo">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
-        from SYS_USER_INFO t where 1 = 1
+        select t.*, CASE WHEN t.USER_TYPE = '0' THEN t1.NAME
+        ELSE t2.NAME END ORG_NAME,
+        ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from SYS_USER_INFO t
+        LEFT JOIN PMIS_CUSTOMER_INFORMATION t1 ON t.SSGS = t1.ID
+        LEFT JOIN SYS_ORGANIZATION t2 ON t.ORGID = t2.ID
+        where 1 = 1
         <include refid="query-sysUserInfo"/>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}

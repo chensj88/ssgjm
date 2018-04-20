@@ -52,8 +52,6 @@ public class SysUserController extends BaseController {
     @RequestMapping(value = "/list.do")
     @ResponseBody
     public Map<String, Object> list(Row row, SysUserInfo userInfo) {
-        System.out.println(row);
-        System.out.println(userInfo);
         userInfo.setRow(row);
         userInfo.setStatus(Constants.PMIS_STATUS_USE);
         List<SysUserInfo> userInfos = getFacade().getSysUserInfoService().getSysUserInfoQueryPaginatedList(userInfo);

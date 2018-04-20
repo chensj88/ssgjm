@@ -135,6 +135,6 @@ public interface Facade {
 
     SysLoginUserService getSysLoginUserService();
 
-
+    SysUserVideoAuthService getSysUserVideoAuthService();
 
 }

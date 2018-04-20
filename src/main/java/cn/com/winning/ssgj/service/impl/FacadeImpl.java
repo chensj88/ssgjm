@@ -200,6 +200,9 @@ public class FacadeImpl implements Facade {
     @Resource
     SysLoginUserService sysLoginUserService;
 
+    @Resource
+    SysUserVideoAuthService sysUserVideoAuthService;
+
 
     public EtUserLookProjectService getEtUserLookProjectService() {
         return etUserLookProjectService;
@@ -455,6 +458,11 @@ public class FacadeImpl implements Facade {
     @Override
     public SysLoginUserService getSysLoginUserService() {
         return sysLoginUserService;
+    }
+
+    @Override
+    public SysUserVideoAuthService getSysUserVideoAuthService() {
+        return sysUserVideoAuthService;
     }
 
 }

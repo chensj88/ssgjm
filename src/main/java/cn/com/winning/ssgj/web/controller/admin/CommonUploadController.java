@@ -6,6 +6,7 @@ import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.SysDataCheckScript;
 import cn.com.winning.ssgj.domain.SysFlowInfo;
 import cn.com.winning.ssgj.domain.SysTrainVideoRepo;
+import cn.com.winning.ssgj.domain.SysUserVideoAuth;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,9 +31,6 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/admin/upload")
 public class CommonUploadController extends BaseController {
-
-    private static int port = Integer.valueOf(FtpPropertiesLoader.getProperty("ftp.port")).intValue();
-
     /**
      * 培训视频上传
      *
@@ -80,31 +78,21 @@ public class CommonUploadController extends BaseController {
             uploadFile.transferTo(newFile);
             //图片文件名称
             String img = filename.substring(0, filename.lastIndexOf("."));
+            //图片路径
             String imgUploadPath = "/image/" + parentFile + "/" + img + ".jpg";
             repo.setImgPath(imgUploadPath);
+            //第一帧获取
             VideoUtil.grabberFFmpegImage(imgUploadPath, newFile.getPath(), imgPath, repo.getVideoName());
             repo.setVideoTime(VideoUtil.getVideoTime(newFile));
             String remotePath = "/video/" + parentFile + "/" + filename;
-            String remoteDir = "/video/" + parentFile + "/";
-            boolean ftpStatus = false;
+            boolean ftpStatus = false ;
             String msg = "";
-            if (port == 21) {
-                try {
-                    ftpStatus = FtpUtils.uploadFile(remotePath, newFile);
-                } catch (IOException e) {
-                    msg = e.getMessage();
-                }
-            } else if (port == 22) {
-                try {
-                    SFtpUtils.uploadFile(newFile.getPath(), remoteDir, filename);
-                    ftpStatus = true;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ftpStatus = false;
-                    msg = e.getMessage();
-                }
-            }
 
+            try {
+                ftpStatus =CommonFtpUtils.uploadFile(remotePath,newFile);
+            } catch (IOException e) {
+                msg = e.getMessage();
+            }
             if (ftpStatus) {
                 newFile.delete();
                 result.put("status", "success");
@@ -142,51 +130,15 @@ public class CommonUploadController extends BaseController {
         Map<String, Object> result = new HashMap<String, Object>();
         //如果文件不为空，写入上传路径
         if (!uploadFile.isEmpty()) {
-            //上传文件路径
-            String path = request.getServletContext().getRealPath("/template/");
-            System.out.println(path);
-            path += parentFile + File.separator;
-            //上传文件名
             String filename = uploadFile.getOriginalFilename();
-            File filepath = new File(path, filename);
-            //判断路径是否存在，如果不存在就创建一个
-            if (!filepath.getParentFile().exists()) {
-                filepath.getParentFile().mkdirs();
-            }
-            //将上传文件保存到一个目标文件当中
-            File newFile = new File(path + File.separator + filename);
-            if (newFile.exists()) {
-                newFile.delete();
-            }
-            uploadFile.transferTo(newFile);
             String remotePath = "/template/" + parentFile + "/" + filename;
-            String remoteDir = "/template/" + parentFile + "/";
-            boolean ftpStatus = false;
             String msg = "";
-            if (port == 21) {
-                try {
-                    ftpStatus = FtpUtils.uploadFile(remotePath, newFile);
-                } catch (IOException e) {
-                    msg = e.getMessage();
-                }
-            } else if (port == 22) {
-                try {
-                    SFtpUtils.uploadFile(newFile.getPath(), remoteDir, filename);
-                    ftpStatus = true;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ftpStatus = false;
-                    msg = e.getMessage();
-                }
-            }
-
+            boolean ftpStatus =CommonFtpUtils.commonUploadInfo(request,msg,remotePath,uploadFile);
             if (ftpStatus) {
-                newFile.delete();
                 result.put("status", "success");
                 flowInfo.setRemotePath(Constants.FTP_SHARE_FLODER+remotePath);
                 super.getFacade().getSysFlowInfoService().modifySysFlowInfo(flowInfo);
             } else if (!StringUtil.isEmptyOrNull(msg)) {
-                newFile.delete();
                 result.put("status", "error");
                 result.put("msg", "上传文件失败,原因是：" + msg);
             }
@@ -217,10 +169,37 @@ public class CommonUploadController extends BaseController {
         Map<String, Object> result = new HashMap<String, Object>();
         //如果文件不为空，写入上传路径
         if (!uploadFile.isEmpty()) {
+            String filename = uploadFile.getOriginalFilename();
+            String remotePath = "/script/" + parentFile + "/" + filename;
+            String msg = "";
+            boolean ftpStatus =CommonFtpUtils.commonUploadInfo(request,msg,remotePath,uploadFile);
+            if (ftpStatus) {
+                result.put("status", "success");
+                script.setRemotePath(remotePath);
+                super.getFacade().getSysDataCheckScriptService().modifySysDataCheckScript(script);
+            } else if (!StringUtil.isEmptyOrNull(msg)) {
+                result.put("status", "error");
+                result.put("msg", "上传文件失败,原因是：" + msg);
+            }
+        } else {
+            result.put("status", "error");
+            result.put("msg", "上传文件失败,原因是：上传文件为空");
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/videoAuth.do")
+    @ResponseBody
+    @ILog
+    public Map<String, Object> uploadHosptial(HttpServletRequest request,
+                                                    SysUserVideoAuth auth,
+                                                    MultipartFile uploadFile) throws IOException {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        //如果文件不为空，写入上传路径
+        if (!uploadFile.isEmpty()) {
             //上传文件路径
-            String path = request.getServletContext().getRealPath("/script/");
-            System.out.println(path);
-            path += parentFile + File.separator;
+            String path = request.getServletContext().getRealPath("/temp/");
             //上传文件名
             String filename = uploadFile.getOriginalFilename();
             File filepath = new File(path, filename);
@@ -234,36 +213,16 @@ public class CommonUploadController extends BaseController {
                 newFile.delete();
             }
             uploadFile.transferTo(newFile);
-            String remotePath = "/script/" + parentFile + "/" + filename;
-            String remoteDir = "/script/" + parentFile + "/";
-            boolean ftpStatus = false;
-            String msg = "";
-            if (port == 21) {
-                try {
-                    ftpStatus = FtpUtils.uploadFile(remotePath, newFile);
-                } catch (IOException e) {
-                    msg = e.getMessage();
-                }
-            } else if (port == 22) {
-                try {
-                    SFtpUtils.uploadFile(newFile.getPath(), remoteDir, filename);
-                    ftpStatus = true;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ftpStatus = false;
-                    msg = e.getMessage();
-                }
-            }
 
-            if (ftpStatus) {
+            try {
+                List<List<Object>> userAuth = ExcelUtil.importExcel(newFile.getPath());
+                super.getFacade().getSysUserVideoAuthService().generateUserVideoAuthInfo(userAuth,auth);
                 newFile.delete();
                 result.put("status", "success");
-                script.setRemotePath(remotePath);
-                super.getFacade().getSysDataCheckScriptService().modifySysDataCheckScript(script);
-            } else if (!StringUtil.isEmptyOrNull(msg)) {
-                newFile.delete();
+            } catch (Exception e) {
+                e.printStackTrace();
                 result.put("status", "error");
-                result.put("msg", "上传文件失败,原因是：" + msg);
+                result.put("msg", "上传文件失败,原因是："+e.getMessage());
             }
         } else {
             result.put("status", "error");
@@ -271,4 +230,5 @@ public class CommonUploadController extends BaseController {
         }
         return result;
     }
+
 }

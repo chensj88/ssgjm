@@ -1,7 +1,9 @@
 package cn.com.winning.ssgj.base.util;
 
 import cn.com.winning.ssgj.base.Constants;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 
@@ -72,4 +74,40 @@ public class CommonFtpUtils {
         return  ftpStatus;
     }
 
+
+    /**
+     * 通用上传处理
+     * @param request 请求
+     * @param msg 错误信息
+     * @param remotePath 远程路径
+     * @param file 上传文件
+     * @return
+     * @throws IOException
+     */
+    public static boolean  commonUploadInfo(HttpServletRequest request, String msg, String remotePath, MultipartFile file) throws IOException {
+        boolean ftpStatus = false;
+        //上传文件路径
+        String path = request.getServletContext().getRealPath("/temp/");
+        //上传文件名
+        String filename = file.getOriginalFilename();
+        File filepath = new File(path, filename);
+        //判断路径是否存在，如果不存在就创建一个
+        if (!filepath.getParentFile().exists()) {
+            filepath.getParentFile().mkdirs();
+        }
+        //将上传文件保存到一个目标文件当中
+        File newFile = new File(path + File.separator + filename);
+        if (newFile.exists()) {
+            newFile.delete();
+        }
+        file.transferTo(newFile);
+        try {
+            ftpStatus = CommonFtpUtils.uploadFile(remotePath,newFile);
+        }catch (IOException e){
+            msg = e.getMessage();
+            ftpStatus = false;
+        }
+        newFile.delete();
+        return ftpStatus;
+    }
 }

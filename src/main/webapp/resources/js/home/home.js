@@ -75,6 +75,9 @@ jQuery(function($) {
             var content = '<li><i class="icon-home home-icon"></i>控制台</li> <li class="active">'+title+'</li>';
             breadcrumbMenu.empty();
             $(content).appendTo(breadcrumbMenu);
+            if(src !== '#'){ //主页信息特殊处理
+                $('#coniframe').attr('src',src);
+            }
         }
     });
 
@@ -91,7 +94,7 @@ jQuery(function($) {
     $('#coniframe').on('load',function () {
         var source = $(this).attr('src');
         var url = $(this)[0].contentWindow.location.href;
-        if(url.indexOf("login.do")!=-1){
+        if(url.indexOf("login.do") != -1){
             window.location.href = Common.getRootPath() + "/login/login.do";
         }
     })

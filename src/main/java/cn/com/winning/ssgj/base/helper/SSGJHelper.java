@@ -225,6 +225,21 @@ public class SSGJHelper {
     @Qualifier(value = "etReportIdService")
     private StepSequenceFactory  etReportIdService;
 
+    @Autowired
+    @Qualifier(value = "sysUserVideoAuthIdService")
+    private StepSequenceFactory  sysUserVideoAuthIdService;
+
+    @Autowired
+    @Qualifier(value = "sysUserVideoAuthTempIdService")
+    private StepSequenceFactory  sysUserVideoAuthTempIdService;
+
+
+    public long createSysUserVideoAuthTempIdService(){
+        return (long) sysUserVideoAuthTempIdService.create();
+    }
+    public long createSysUserVideoAuthIdService(){
+        return (long) sysUserVideoAuthIdService.create();
+    }
 
     public long createEtOnlineFileIdService(){
         return (long)etOnlineFileIdService.create();

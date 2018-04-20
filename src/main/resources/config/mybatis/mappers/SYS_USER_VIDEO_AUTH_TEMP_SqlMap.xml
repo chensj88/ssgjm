@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.SysUserVideoAuthTempDao">
+
+    <resultMap id="sysUserVideoAuthTempResultForList" type="sysUserVideoAuthTemp">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="USER_CODE" property="userCode" jdbcType="VARCHAR"/>
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="MENU_NAME" property="menuName" jdbcType="VARCHAR"/>
+        <result column="MENU_CODE" property="menuCode" jdbcType="VARCHAR"/>
+        <result column="SUSER_CODE" property="suserCode" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="VARCHAR"/>
+        <result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR"/>
+        <result column="IS_EXIST" property="isExist" jdbcType="INTEGER"/>
+        <result column="CREATOR" property="creator" jdbcType="BIGINT"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="sysUserVideoAuthTempResult" type="sysUserVideoAuthTemp" extends="sysUserVideoAuthTempResultForList">
+    </resultMap>
+
+    <sql id="sf-sysUserVideoAuthTemp">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="userCode != null and userCode != ''">and t.USER_CODE = #{userCode}</if>
+        <if test="userName != null and userName != ''">and t.USER_NAME = #{userName}</if>
+        <if test="menuName != null and menuName != ''">and t.MENU_NAME = #{menuName}</if>
+        <if test="menuCode != null and menuCode != ''">and t.MENU_CODE = #{menuCode}</if>
+        <if test="suserCode != null and suserCode != ''">and t.SUSER_CODE = #{suserCode}</if>
+        <if test="userId != null and userId != ''">and t.USER_ID = #{userId}</if>
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="(isExist != null and isExist != '') or isExist == 0">and t.IS_EXIST = #{isExist}</if>
+        <if test="(creator != null and creator != '') or creator == 0">and t.CREATOR = #{creator}</if>
+        <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
+    </sql>
+
+    <select id="selectSysUserVideoAuthTemp" resultMap="sysUserVideoAuthTempResult" parameterType="sysUserVideoAuthTemp">
+        select * from SYS_USER_VIDEO_AUTH_TEMP t where 1 = 1
+        <include refid="sf-sysUserVideoAuthTemp"/>
+    </select>
+
+    <select id="selectSysUserVideoAuthTempList" resultMap="sysUserVideoAuthTempResultForList" parameterType="sysUserVideoAuthTemp">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from SYS_USER_VIDEO_AUTH_TEMP t where 1 = 1
+        <include refid="sf-sysUserVideoAuthTemp"/>
+        <!-- order by ID asc -->
+    </select>
+
+    <select id="selectSysUserVideoAuthTempCount" resultType="int" parameterType="sysUserVideoAuthTemp">
+        select count(*) from SYS_USER_VIDEO_AUTH_TEMP t where 1 = 1
+        <include refid="sf-sysUserVideoAuthTemp"/>
+    </select>
+
+    <select id="selectSysUserVideoAuthTempPaginatedList" resultMap="sysUserVideoAuthTempResult"
+            parameterType="sysUserVideoAuthTemp">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from SYS_USER_VIDEO_AUTH_TEMP t where 1 = 1
+        <include refid="sf-sysUserVideoAuthTemp"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <insert id="insertSysUserVideoAuthTemp" parameterType="sysUserVideoAuthTemp">
+        insert into SYS_USER_VIDEO_AUTH_TEMP
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="userCode != null and userCode != ''">USER_CODE,</if>
+            <if test="userName != null and userName != ''">USER_NAME,</if>
+            <if test="menuName != null and menuName != ''">MENU_NAME,</if>
+            <if test="menuCode != null and menuCode != ''">MENU_CODE,</if>
+            <if test="suserCode != null and suserCode != ''">SUSER_CODE,</if>
+            <if test="userId != null and userId != ''">USER_ID,</if>
+            <if test="serialNo != null and serialNo != ''">SERIAL_NO,</if>
+            <if test="(isExist != null and isExist != '') or isExist == 0">IS_EXIST,</if>
+            <if test="(creator != null and creator != '') or creator == 0">CREATOR,</if>
+            <if test="createTime != null ">CREATE_TIME,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="userCode != null and userCode != ''">#{userCode, jdbcType=VARCHAR},</if>
+            <if test="userName != null and userName != ''">#{userName, jdbcType=VARCHAR},</if>
+            <if test="menuName != null and menuName != ''">#{menuName, jdbcType=VARCHAR},</if>
+            <if test="menuCode != null and menuCode != ''">#{menuCode, jdbcType=VARCHAR},</if>
+            <if test="suserCode != null and suserCode != ''">#{suserCode, jdbcType=VARCHAR},</if>
+            <if test="userId != null and userId != ''">#{userId, jdbcType=VARCHAR},</if>
+            <if test="serialNo != null and serialNo != ''">#{serialNo, jdbcType=VARCHAR},</if>
+            <if test="(isExist != null and isExist != '') or isExist == 0">#{isExist, jdbcType=INTEGER},</if>
+            <if test="(creator != null and creator != '') or creator == 0">#{creator, jdbcType=BIGINT},</if>
+            <if test="createTime != null ">#{createTime, jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysUserVideoAuthTemp" parameterType="sysUserVideoAuthTemp">
+        update SYS_USER_VIDEO_AUTH_TEMP
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="userCode != null and userCode != ''">USER_CODE = #{userCode, jdbcType=VARCHAR},</if>
+                <if test="userName != null and userName != ''">USER_NAME = #{userName, jdbcType=VARCHAR},</if>
+                <if test="menuName != null and menuName != ''">MENU_NAME = #{menuName, jdbcType=VARCHAR},</if>
+                <if test="menuCode != null and menuCode != ''">MENU_CODE = #{menuCode, jdbcType=VARCHAR},</if>
+                <if test="suserCode != null and suserCode != ''">SUSER_CODE = #{suserCode, jdbcType=VARCHAR},</if>
+                <if test="userId != null and userId != ''">USER_ID = #{userId, jdbcType=VARCHAR},</if>
+                <if test="serialNo != null and serialNo != ''">SERIAL_NO = #{serialNo, jdbcType=VARCHAR},</if>
+                <if test="(isExist != null and isExist != '') or isExist == 0">IS_EXIST =
+                    #{isExist, jdbcType=INTEGER},
+                </if>
+                <if test="(creator != null and creator != '') or creator == 0">CREATOR = #{creator, jdbcType=BIGINT},
+                </if>
+                <if test="createTime != null ">CREATE_TIME = #{createTime, jdbcType=TIMESTAMP},</if>
+            </trim>
+        </set>
+        where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </update>
+
+    <delete id="deleteSysUserVideoAuthTemp" parameterType="sysUserVideoAuthTemp">
+        delete from SYS_USER_VIDEO_AUTH_TEMP where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </delete>
+
+
+    <delete id="deleteSysUserVideoAuthTempBySerialNo" parameterType="sysUserVideoAuthTemp">
+		DELETE  FROM  SYS_USER_VIDEO_AUTH_TEMP WHERE SERIAL_NO = #{serialNo}
+	</delete>
+    <update id="batchUpdteMenuName" parameterType="sysUserVideoAuthTemp">
+        update SYS_USER_VIDEO_AUTH_TEMP
+        SET  MENU_CODE = (
+        CASE MENU_NAME
+        WHEN '公共模块系统' THEN  '0'
+        WHEN '门诊挂号系统' THEN  '1'
+        WHEN '门诊收费系统' THEN  '2'
+        WHEN '门诊药房系统' THEN  '3'
+        WHEN '药库管理系统' THEN  '4'
+        WHEN '出入院管理系统' THEN  '5'
+        WHEN '病区管理系统' THEN  '6'
+        WHEN '中心药房系统' THEN  '7'
+        WHEN '手术管理系统' THEN  '8'
+        WHEN '医技收费系统' THEN  '9'
+        WHEN '物资管理系统' THEN  'A'
+        WHEN '固定资产管理系统' THEN  'B'
+        WHEN '门诊输液室系统' THEN  'K'
+        WHEN '院长查询系统' THEN  'E'
+        WHEN '门诊医生站' THEN  'H'
+        WHEN '病区医生站' THEN  'G'
+        WHEN '体检管理系统' THEN  'I'
+        WHEN '病区护士站' THEN  'L'
+        WHEN '外挂报表' THEN  'Z'
+        WHEN '供应室系统' THEN  'O'
+        ELSE '-1' END
+        )
+        WHERE SERIAL_NO = #{serialNo}
+    </update>
+
+    <update id="validateExistsInSySUserInfo" parameterType="sysUserVideoAuthTemp">
+        UPDATE  SYS_USER_VIDEO_AUTH_TEMP  SET IS_EXIST = 1
+        WHERE EXISTS (
+        SELECT 1 FROM SYS_USER_INFO WHERE SUSER_CODE = USERID AND SERIAL_NO = SSGS AND USER_TYPE = '0'
+        )
+        AND SERIAL_NO = #{serialNo}
+    </update>
+
+    <update id="updateExistsUserId" parameterType="sysUserVideoAuthTemp">
+        UPDATE  SYS_USER_VIDEO_AUTH_TEMP  SET USER_ID = (
+        SELECT ID FROM SYS_USER_INFO WHERE SUSER_CODE = USERID AND SERIAL_NO = SSGS AND USER_TYPE = '0'
+        )
+        WHERE EXISTS (
+        SELECT 1 FROM SYS_USER_INFO WHERE SUSER_CODE = USERID AND SERIAL_NO = SSGS AND USER_TYPE = '0'
+        )
+        AND SERIAL_NO = #{serialNo}
+        AND IS_EXIST = 1
+    </update>
+
+    <select id="selectSumUserVideoAuthList" parameterType="sysUserVideoAuthTemp"  resultMap="sysUserVideoAuthTempResult">
+        SELECT 1 as ID,*,-1 as CREATOR,CURRENT_TIMESTAMP as CREATE_TIME FROM (
+        SELECT
+        USER_CODE,USER_NAME,SUSER_CODE,USER_ID,SERIAL_NO,IS_EXIST,
+        MENU_NAME = (
+        STUFF(
+        (SELECT  ',' +MENU_NAME
+        FROM SYS_USER_VIDEO_AUTH_TEMP
+        WHERE USER_CODE = A.USER_CODE
+        FOR xml path('')
+        ),1,1,''
+        )
+        ),
+        MENU_CODE = (
+        STUFF(
+        (SELECT  ',' +MENU_CODE
+        FROM SYS_USER_VIDEO_AUTH_TEMP
+        WHERE USER_CODE = A.USER_CODE
+        FOR xml path('')
+        ),1,1,''
+        )
+        )
+        FROM SYS_USER_VIDEO_AUTH_TEMP A
+        WHERE SERIAL_NO = #{serialNo}
+        GROUP by  USER_CODE,USER_NAME,SUSER_CODE,USER_ID,SERIAL_NO,IS_EXIST
+        ) t
+    </select>
+</mapper>

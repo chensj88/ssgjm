@@ -1,4 +1,4 @@
-package cn.com.winning.ssgj.dao;
+package cn.com.winning.ssgj.dao.mybatis;
 
 import org.springframework.stereotype.Service;
 

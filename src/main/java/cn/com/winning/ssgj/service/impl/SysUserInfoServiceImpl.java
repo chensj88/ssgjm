@@ -133,7 +133,7 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
     public void createHospitalUserInfo(List<List<Object>> userList,SysUserInfo userInfo) {
         long c_id = userInfo.getSsgs();
         for (List<Object> params : userList) {
-            String userid = params.get(0).toString();
+            String userid = c_id +""+ params.get(0).toString();
             String yhmc = params.get(1).toString();
             String clo1 = params.get(2).toString();
             String clo2 = params.get(3).toString();
