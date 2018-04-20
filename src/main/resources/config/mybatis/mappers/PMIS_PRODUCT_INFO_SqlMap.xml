@@ -56,8 +56,8 @@
         <if test="(zt != null and zt != '') or zt == 0">and t.ZT = #{zt}</if>
     </sql>
     <sql id="query-pmisProductInfo">
-        <if test="code != null and code != ''">and t.CODE LIKE  '%${code}%'</if>
-        <if test="name != null and name != ''">and t.NAME LIKE  '%${name}%'</if>
+        <if test="code != null and code != ''">and t.CODE LIKE '%${code}%'</if>
+        <if test="name != null and name != ''">and t.NAME LIKE '%${name}%'</if>
         <if test="(fid != null )">and t.FID = #{fid}</if>
         <if test="(zt != null  )">and t.ZT = #{zt}</if>
         <if test="cplb != null ">and t.CPLB = #{cplb}</if>
@@ -177,7 +177,7 @@
             <if test="id != null and id != ''">ID = #{id}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
-                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
             </if>
         </where>
     </update>
@@ -188,7 +188,7 @@
             <if test="id != null and id != ''">ID = #{id}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
-                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
             </if>
         </where>
     </delete>
@@ -200,7 +200,8 @@
         </where>
     </select>
 
-    <select id="selectPmisProductInfoPaginatedListByCodeAndName" resultMap="pmisProductInfoResult" parameterType="pmisProductInfo">
+    <select id="selectPmisProductInfoPaginatedListByCodeAndName" resultMap="pmisProductInfoResult"
+            parameterType="pmisProductInfo">
         select * from (
         select t.*,l.NAME cptxName, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
         from PMIS_PRODUCT_INFO t left join PMIS_PRODUCT_LINE_INFO l on CAST(t.CPTX AS DECIMAL) = l.ID
@@ -217,7 +218,7 @@
         <where>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 t.ID in
-                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
             </if>
         </where>
     </select>
@@ -238,7 +239,7 @@
         WHERE
         GETDATE() BETWEEN t.EFFECTIVE_DATE
         AND t.EXPIRE_DATE
-        AND s.DATA_TYPE = 3)
+        AND s.DATA_TYPE != 3)
         <!-- order by ID asc -->
     </select>
 

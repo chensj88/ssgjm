@@ -41,7 +41,7 @@ public interface SysDataInfoService {
 
     List<SysDataInfo> selectSysDataInfoPaginatedListByPidAndDataType(SysDataInfo t);
 
-    public Integer countSysDataInfoPaginatedListByPidAndDataType(SysDataInfo sysDataInfo);
+    public Integer countSysDataInfoListByPidAndDataType(SysDataInfo sysDataInfo);
 
     public List<SysDataInfo> selectSysDataInfoListByPidAndDataType(SysDataInfo t);
 

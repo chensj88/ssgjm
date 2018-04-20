@@ -74,9 +74,7 @@ public class EtReportController extends BaseController {
         //循环查询是否数据师傅存在，不存在则插入
         EtReport etReportTemp = null;
         for (EtReport report : etReports) {
-            etReportTemp = new EtReport();
-            etReportTemp.setSourceType(report.getSourceType());
-            etReportTemp = getFacade().getEtReportService().getEtReport(etReportTemp);
+            etReportTemp = getFacade().getEtReportService().getEtReport(report);
             if (etReportTemp == null) {
                 report.setId(ssgjHelper.createEtReportIdService());
                 getFacade().getEtReportService().createEtReport(report);
@@ -101,10 +99,10 @@ public class EtReportController extends BaseController {
     @Transactional
     @ILog
     public Map<String, Object> list(EtReport etReport, Row row) {
+        Integer completeNum = getCompleteNum(etReport);
         etReport.setRow(row);
         List<EtReport> etReports = super.getFacade().getEtReportService().getEtReportPaginatedList(etReport);
         int total = super.getFacade().getEtReportService().getEtReportCount(etReport);
-        Integer completeNum = 0;
         String imgPath = null;
         SysDictInfo sysDictInfoTemp = null;
         for (EtReport report : etReports) {
@@ -118,12 +116,9 @@ public class EtReportController extends BaseController {
             } else {
                 map.put("type", "");
             }
-
             //获取图片路径集合
             imgPath = report.getImgPath();
             if (!StringUtil.isEmptyOrNull(imgPath)) {
-                //如果未上传图片，则为未完成
-                completeNum++;
                 String[] pathArr = imgPath.split(";");
                 map.put("imgPath", pathArr);
             } else {
@@ -167,29 +162,6 @@ public class EtReportController extends BaseController {
         result.put("status", Constants.SUCCESS);
         return result;
     }
-
-    /**
-     * 统计完成和未完成数量
-     *
-     * @param process
-     * @return
-     */
-    @RequestMapping(value = "/countInfo.do")
-    @ResponseBody
-    public Map<String, Object> countProcessInfo(EtBusinessProcess process) {
-        //查询流程总的数量
-        process.setIsScope(Constants.STATUS_USE);
-        int sumBussinessProcessNum = super.getFacade().getEtBusinessProcessService().getEtBusinessProcessCount(process);
-        //查询完成的流程数量
-        process.setStatus(Constants.APPROVAL_STATUS_END);
-        int completeBPNum = super.getFacade().getEtBusinessProcessService().getEtBusinessProcessCount(process);
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("status", Constants.SUCCESS);
-        result.put("sumNum", sumBussinessProcessNum);
-        result.put("comNum", completeBPNum);
-        return result;
-    }
-
 
     /**
      * 添加或者修单据件信息
@@ -322,7 +294,10 @@ public class EtReportController extends BaseController {
 
                 super.getFacade().getEtReportService().modifyEtReport(report);
                 newFile.delete();
+                //上传图像完成后返回已完成数
+                Integer completeNum = getCompleteNum(report);
                 result.put("status", "success");
+                result.put("completeNum", completeNum);
             } catch (Exception e) {
                 e.printStackTrace();
                 result.put("status", "error");
@@ -334,5 +309,29 @@ public class EtReportController extends BaseController {
         }
         return result;
 
+    }
+
+    /**
+     * 计算完成数量
+     *
+     * @param etReport
+     * @return
+     */
+    public Integer getCompleteNum(EtReport etReport) {
+        Integer completeNum = 0;
+        EtReport etReportTemp = new EtReport();
+        etReportTemp.setPmId(etReport.getPmId());
+        //获取所有数据
+        List<EtReport> etReports = getFacade().getEtReportService().getEtReportList(etReportTemp);
+        String imgPath = null;
+        for (EtReport report : etReports) {
+            //获取图片路径集合
+            imgPath = report.getImgPath();
+            if (!StringUtil.isEmptyOrNull(imgPath)) {
+                //如果未上传图片，则为未完成
+                completeNum++;
+            }
+        }
+        return completeNum;
     }
 }

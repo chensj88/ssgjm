@@ -53,9 +53,10 @@ public class EtThirdIntterfaceController extends BaseController {
         etThirdIntterface.setPmId(pmId);
         //根据pmid获取所有接口信息
         List<EtThirdIntterface> etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().selectPmisInterfaceList(etThirdIntterface);
+        EtThirdIntterface temp = null;
         for (EtThirdIntterface intterface : etThirdIntterfaces) {
             //查询数据是否入库
-            EtThirdIntterface temp = getFacade().getEtThirdIntterfaceService().getEtThirdIntterface(intterface);
+            temp = getFacade().getEtThirdIntterfaceService().getEtThirdIntterface(intterface);
             if (temp == null) {
                 //不存在则将数据插入
                 intterface.setId(ssgjHelper.createThirdInterfaceId());
@@ -78,10 +79,10 @@ public class EtThirdIntterfaceController extends BaseController {
     @ResponseBody
     public Map<String, Object> initData(EtThirdIntterface etThirdIntterface, Row row) {
         etThirdIntterface.setRow(row);
-        //根据pmid获取所有接口数据
+        //根据pmid获取分页接口数据
         List<EtThirdIntterface> etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfacePaginatedList(etThirdIntterface);
         //根据pmid获取接口数
-        Integer total = etThirdIntterfaces == null ? 0 : etThirdIntterfaces.size();
+        Integer total = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfaceCount(etThirdIntterface);
         PmisProductLineInfo pmisProductLineInfo = null;
         Map map = null;
         //封装产品条线名(即产品名称)
@@ -110,16 +111,17 @@ public class EtThirdIntterfaceController extends BaseController {
     @RequestMapping(value = "/list.do")
     @ResponseBody
     public Map<String, Object> list(EtThirdIntterface etThirdIntterface, Row row) {
+        //完成数
+        Integer completeNum = getCompleteNum(etThirdIntterface);
         etThirdIntterface.setRow(row);
-        //根据pmid获取所有接口数据
+        //根据pmid获取所有分页接口数据
         List<EtThirdIntterface> etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfacePaginatedList(etThirdIntterface);
         //根据pmid获取接口数
-        Integer total = etThirdIntterfaces == null ? 0 : etThirdIntterfaces.size();
+        Integer total = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfaceCount(etThirdIntterface);
         PmisProductLineInfo pmisProductLineInfo = null;
         Map map = null;
         String contentType = null;
         String[] contentArr = null;
-        Integer completeNum = 0;
         //封装产品条线名、完成情况
         for (EtThirdIntterface intterface : etThirdIntterfaces) {
             map = new HashMap();
@@ -129,13 +131,10 @@ public class EtThirdIntterfaceController extends BaseController {
             pmisProductLineInfo = getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
             //完成情况
             contentType = intterface.getContentType();
-            if (contentType != null && contentType.contains("1") && contentType.contains("2") && contentType.contains("3")) {
-                ++completeNum;
-            }
-            if(contentType == null){
-                contentArr="".split(",");
-            }else {
-                contentArr=contentType.split(",");
+            if (contentType == null) {
+                contentArr = "".split(",");
+            } else {
+                contentArr = contentType.split(",");
             }
             map.put("contentList", contentArr);
             if (intterface.getStatus() == null || intterface.getStatus() == 0) {
@@ -150,7 +149,7 @@ public class EtThirdIntterfaceController extends BaseController {
         //根据项目Id和项目类型查询产品信息
         List<PmisProductInfo> pmisProductInfos = getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(etThirdIntterface.getPmId(), 9);
         //根据产品信息获取产品条线
-        List<PmisProductLineInfo> pmisProductLineInfoList =getFacade().getCommonQueryService().selectPmisProductLineInfoByProductInfo(pmisProductInfos);
+        List<PmisProductLineInfo> pmisProductLineInfoList = getFacade().getCommonQueryService().selectPmisProductLineInfoByProductInfo(pmisProductInfos);
         //获取所有不在本期范围原因
         SysDictInfo sysDictInfo = new SysDictInfo();
         sysDictInfo.setDictCode("NotInScope");
@@ -265,7 +264,7 @@ public class EtThirdIntterfaceController extends BaseController {
     @ResponseBody
     @ILog
     @Transactional
-    public Map<String, Object> confirm(Long pmId) {
+    public Map<String, Object> confirm(Long pmId, Long operator) {
 
         if (pmId == null) {
             return null;
@@ -291,6 +290,8 @@ public class EtThirdIntterfaceController extends BaseController {
         Map<String, Object> map = new HashMap<String, Object>();
         if (total > 0) {
             etProcessManager.setIsInterfaceDev(1);
+            etProcessManager.setOperator(operator);
+            etProcessManager.setOperatorTime(new Timestamp(new Date().getTime()));
             getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(etProcessManager);
             map.put("type", Constants.SUCCESS);
             map.put("msg", "确认成功！");
@@ -313,13 +314,14 @@ public class EtThirdIntterfaceController extends BaseController {
     @ILog
     @Transactional
     public Map<String, Object> changeScope(EtThirdIntterface etThirdIntterface) {
+        Map map = new HashMap();
         String noScopeCode = etThirdIntterface.getNoScopeCode();
         if (StringUtil.isEmptyOrNull(noScopeCode)) {
             etThirdIntterface.setIsScope(1);
         } else {
             etThirdIntterface.setIsScope(0);
         }
-        Map map = new HashMap();
+        etThirdIntterface.setOperatorTime(new Timestamp(new Date().getTime()));
         getFacade().getEtThirdIntterfaceService().modifyEtThirdIntterface(etThirdIntterface);
         map.put("type", Constants.SUCCESS);
         map.put("msg", "范围修改成功！");
@@ -337,10 +339,16 @@ public class EtThirdIntterfaceController extends BaseController {
     @ILog
     @Transactional
     public Map<String, Object> changeContent(EtThirdIntterface etThirdIntterface) {
+        EtThirdIntterface thirdIntterface = new EtThirdIntterface();
+        thirdIntterface.setPmId(etThirdIntterface.getPmId());
+        etThirdIntterface.setOperatorTime(new Timestamp(new Date().getTime()));
         getFacade().getEtThirdIntterfaceService().modifyEtThirdIntterface(etThirdIntterface);
+        //完成数量
+        Integer completeNum = getCompleteNum(thirdIntterface);
         Map map = new HashMap();
         map.put("type", Constants.SUCCESS);
         map.put("msg", "完成情况修改成功！");
+        map.put("completeNum", completeNum);
         return map;
     }
 
@@ -363,10 +371,35 @@ public class EtThirdIntterfaceController extends BaseController {
         } else {
             etThirdIntterface.setStatus(0);
         }
+        etThirdIntterface.setOperatorTime(new Timestamp(new Date().getTime()));
         getFacade().getEtThirdIntterfaceService().modifyEtThirdIntterface(etThirdIntterface);
         map.put("type", Constants.SUCCESS);
         map.put("msg", "完成情况修改成功！");
         return map;
+    }
+
+
+    /**
+     * 计算完成数量
+     *
+     * @param etThirdIntterface
+     * @return
+     */
+    public Integer getCompleteNum(EtThirdIntterface etThirdIntterface) {
+        EtThirdIntterface thirdIntterface = new EtThirdIntterface();
+        thirdIntterface.setPmId(etThirdIntterface.getPmId());
+        Integer completeNum = 0;
+        String contentType = null;
+        //获取所有数据
+        List<EtThirdIntterface> etThirdIntterfaceList = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfaceList(thirdIntterface);
+        for (EtThirdIntterface intterface : etThirdIntterfaceList) {
+            //完成情况
+            contentType = intterface.getContentType();
+            if (contentType != null && contentType.contains("1") && contentType.contains("2") && contentType.contains("3")) {
+                ++completeNum;
+            }
+        }
+        return completeNum;
     }
 
 
