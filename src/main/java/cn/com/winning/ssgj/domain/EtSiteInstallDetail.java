@@ -48,7 +48,7 @@ public class EtSiteInstallDetail extends BaseDomain implements Serializable {
 	private String building;
 	
 	/**
-	 * @val 楼宇
+	 * @val 楼层
 	 */
 	private Integer floorNum;
 	

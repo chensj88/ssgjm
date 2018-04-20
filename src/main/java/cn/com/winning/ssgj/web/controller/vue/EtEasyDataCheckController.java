@@ -64,8 +64,8 @@ public class EtEasyDataCheckController extends BaseController {
      */
     @RequestMapping("/initSourceData.do")
     @ResponseBody
-    private  Map<String, Object> initSourceData(Long pmId, Long operator, Integer dataType) {
-        Map map=new HashMap();
+    private Map<String, Object> initSourceData(Long pmId, Long operator, Integer dataType) {
+        Map map = new HashMap();
         if (pmId == null) {
             return null;
         }
@@ -456,29 +456,25 @@ public class EtEasyDataCheckController extends BaseController {
     /**
      * 确认完成
      *
-     * @param proStr
+     * @param etEasyDataCheck
      * @return
      */
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
     @Transactional
-    public Map<String, Object> confirm(String proStr) {
+    public Map<String, Object> confirm(EtEasyDataCheck etEasyDataCheck) {
 
         //项目id
-        Long proId = Long.parseLong(proStr);
-        if (proId == null) {
+        Long pmId = etEasyDataCheck.getPmId();
+        if (pmId == null) {
             return null;
         }
         //根据项目id获取项目基本信息
-        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(proId);
+        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
         //获取合同id
         Long contractId = pmisProjectBasicInfo.getHtxx();
         //获取单据号即客户
         Long customerId = pmisProjectBasicInfo.getKhxx();
-
-        EtEasyDataCheck etEasyDataCheck = new EtEasyDataCheck();
-
-        etEasyDataCheck.setPmId(proId);
 
         etEasyDataCheck.setcId(contractId);
 
@@ -486,10 +482,12 @@ public class EtEasyDataCheckController extends BaseController {
         int total = getFacade().getEtEasyDataCheckService().getEtEasyDataCheckCount(etEasyDataCheck);
 
         EtProcessManager etProcessManager = new EtProcessManager();
-        etProcessManager.setPmId(proId);
+        etProcessManager.setPmId(pmId);
         Map<String, Object> map = new HashMap<String, Object>();
         if (total > 0) {
             etProcessManager.setIsEasyDataCheck(1);
+            etProcessManager.setOperator(etEasyDataCheck.getOperator());
+            etProcessManager.setOperatorTime(new Timestamp(new Date().getTime()));
             getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(etProcessManager);
             map.put("type", Constants.SUCCESS);
             map.put("msg", "确认成功！");
@@ -511,6 +509,7 @@ public class EtEasyDataCheckController extends BaseController {
     @ResponseBody
     public void changeUse(EtEasyDataCheck t) {
         EtEasyDataCheck etEasyDataCheck = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(t);
+        t.setOperatorTime(new Timestamp(new Date().getTime()));
         //null校验
         if (etEasyDataCheck == null) {
             return;
@@ -626,6 +625,7 @@ public class EtEasyDataCheckController extends BaseController {
             etEasyDataCheck.setIsScope(0);
         }
         Map map = new HashMap();
+        etEasyDataCheck.setOperatorTime(new Timestamp(new Date().getTime()));
         getFacade().getEtEasyDataCheckService().modifyEtEasyDataCheck(etEasyDataCheck);
         map.put("type", Constants.SUCCESS);
         map.put("msg", "范围修改成功！");

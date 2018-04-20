@@ -142,8 +142,8 @@ public class SysDataInfoServiceImpl implements SysDataInfoService {
     }
 
     @Override
-    public Integer countSysDataInfoPaginatedListByPidAndDataType(SysDataInfo t) {
-        return this.sysDataInfoDao.countSysDataInfoPaginatedListByPidAndDataType(t);
+    public Integer countSysDataInfoListByPidAndDataType(SysDataInfo t) {
+        return this.sysDataInfoDao.countSysDataInfoListByPidAndDataType(t);
     }
 
     @Override

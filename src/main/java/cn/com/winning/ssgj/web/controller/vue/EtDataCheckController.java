@@ -343,34 +343,29 @@ public class EtDataCheckController extends BaseController {
     @ResponseBody
     @ILog
     @Transactional
-    public Map<String, Object> confirm(String proStr) {
+    public Map<String, Object> confirm(EtDataCheck etDataCheck) {
 
         //项目id
-        Long proId = Long.parseLong(proStr);
-        if (proId == null) {
+        Long pmId = etDataCheck.getPmId();
+        if (pmId == null) {
             return null;
         }
         //根据项目id获取项目基本信息
-        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(proId);
+        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
         //获取合同id
         Long contractId = pmisProjectBasicInfo.getHtxx();
         //获取单据号即客户
         Long customerId = pmisProjectBasicInfo.getKhxx();
-
-        EtDataCheck etDataCheck = new EtDataCheck();
-
-        etDataCheck.setPmId(proId);
-
         etDataCheck.setCId(contractId);
-
         etDataCheck.setSerialNo(customerId.toString());
         int total = getFacade().getEtDataCheckService().getEtDataCheckCount(etDataCheck);
-
         EtProcessManager etProcessManager = new EtProcessManager();
-        etProcessManager.setPmId(proId);
+        etProcessManager.setPmId(pmId);
         Map<String, Object> map = new HashMap<String, Object>();
         if (total > 0) {
             etProcessManager.setIsBasicDataCheck(1);
+            etProcessManager.setOperator(etDataCheck.getOperator());
+            etProcessManager.setOperatorTime(new Timestamp(new Date().getTime()));
             getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(etProcessManager);
             map.put("type", Constants.SUCCESS);
             map.put("msg", "确认成功！");

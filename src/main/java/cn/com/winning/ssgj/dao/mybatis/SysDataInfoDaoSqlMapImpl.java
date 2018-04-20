@@ -60,8 +60,8 @@ public class SysDataInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysDataInfo> i
     }
 
     @Override
-    public Integer countSysDataInfoPaginatedListByPidAndDataType(SysDataInfo t) {
-        String statement = "count"+ t.getClass().getSimpleName() +"PaginatedListByPidAndDataType";
+    public Integer countSysDataInfoListByPidAndDataType(SysDataInfo t) {
+        String statement = "countSysDataInfoListByPidAndDataType";
         return super.getSqlSession().selectOne(statement,t);
     }
 

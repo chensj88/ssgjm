@@ -73,9 +73,8 @@ public class EtSoftHardwareController extends BaseController {
         //循环查询是否数据师傅存在，不存在则插入
         EtSoftHardware softHardwareTemp = null;
         for (EtSoftHardware softHardware : etSoftHardwares) {
-            softHardwareTemp = new EtSoftHardware();
-            softHardwareTemp.setSourceId(softHardware.getSourceId());
-            softHardwareTemp = getFacade().getEtSoftHardwareService().getEtSoftHardware(softHardwareTemp);
+            //查询数据是否入库
+            softHardwareTemp = getFacade().getEtSoftHardwareService().getEtSoftHardware(softHardware);
             if (softHardwareTemp == null) {
                 softHardware.setId(ssgjHelper.createEtSoftHardwareIdService());
                 softHardware.setContent("0");
@@ -318,6 +317,7 @@ public class EtSoftHardwareController extends BaseController {
     @ResponseBody
     @ILog
     public Map<String, Object> numChange(EtSoftHardware etSoftHardware) {
+        etSoftHardware.setOperatorTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtSoftHardwareService().modifyEtSoftHardware(etSoftHardware);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
@@ -342,6 +342,7 @@ public class EtSoftHardwareController extends BaseController {
         } else {
             etSoftHardware.setIsScope(0);
         }
+        etSoftHardware.setOperatorTime(new Timestamp(new Date().getTime()));
         Map map = new HashMap();
         getFacade().getEtSoftHardwareService().modifyEtSoftHardware(etSoftHardware);
         map.put("type", Constants.SUCCESS);
@@ -360,6 +361,7 @@ public class EtSoftHardwareController extends BaseController {
     @ILog
     @Transactional
     public Map<String, Object> changeContent(EtSoftHardware etSoftHardware) {
+        etSoftHardware.setOperatorTime(new Timestamp(new Date().getTime()));
         getFacade().getEtSoftHardwareService().modifyEtSoftHardware(etSoftHardware);
         Map map = new HashMap();
         map.put("type", Constants.SUCCESS);
@@ -378,7 +380,7 @@ public class EtSoftHardwareController extends BaseController {
     @Transactional
     public Map<String, Object> confirm(EtSoftHardware etSoftHardware) {
         //项目id
-        Long pmId =etSoftHardware.getPmId();
+        Long pmId = etSoftHardware.getPmId();
         if (pmId == null) {
             return null;
         }
@@ -398,6 +400,7 @@ public class EtSoftHardwareController extends BaseController {
         Map<String, Object> map = new HashMap<String, Object>();
         if (total > 0) {
             etProcessManager.setIsHardwareList(1);
+            etProcessManager.setOperatorTime(new Timestamp(new Date().getTime()));
             getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(etProcessManager);
             map.put("type", Constants.SUCCESS);
             map.put("msg", "确认成功！");

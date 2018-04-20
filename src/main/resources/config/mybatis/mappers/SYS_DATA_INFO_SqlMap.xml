@@ -268,7 +268,7 @@
     </select>
 
     <!--根据产品ids和dataType获取基础数据总数 分页-->
-    <select id="countSysDataInfoPaginatedListByPidAndDataType" resultType="int" parameterType="sysDataInfo">
+    <select id="countSysDataInfoListByPidAndDataType" resultType="int" parameterType="sysDataInfo">
         select count(*) from SYS_DATA_INFO t where 1 = 1
         <include refid="dataCondition"/>
     </select>

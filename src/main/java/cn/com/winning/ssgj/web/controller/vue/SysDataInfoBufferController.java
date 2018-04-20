@@ -59,7 +59,7 @@ public class SysDataInfoBufferController extends BaseController {
      * 基础数据类型列表
      *
      * @param row
-     * @param proStr   项目id
+     * @param pmId   项目id
      * @param dataType 0 国标数据;1 行标数据；2 共享数据；3 易用数据；
      * @return
      * @description 根据项目id获取基础数据
@@ -67,17 +67,14 @@ public class SysDataInfoBufferController extends BaseController {
     @RequestMapping("/list.do")
     @ResponseBody
     @ILog(operationName = "基础数据类型列表", operationType = "list")
-    public Map<String, Object> list(Row row, String proStr, String dataType) {
-        //基础数据类型
-        Integer dataTypeNum = Integer.parseInt(dataType);
+    public Map<String, Object> list(Row row, Long pmId, Integer dataType) {
         //项目id
-        Long proId = Long.parseLong(proStr);
-        if (proId == null) {
+        if (pmId == null) {
             return null;
         }
         //根据项目id获取产品
         List<PmisProductInfo> pmisProductInfos =
-                getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(proId, 1);
+                getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId, 1);
         //产品id集合
         List pidList = new ArrayList();
         for (int i = 0; i < pmisProductInfos.size(); i++) {
@@ -91,11 +88,11 @@ public class SysDataInfoBufferController extends BaseController {
 
         SysDataInfo sysDataInfo = new SysDataInfo();
         sysDataInfo.setRow(row);
-        sysDataInfo.setDataType(dataTypeNum);
+        sysDataInfo.setDataType(dataType);
         sysDataInfo.setMap(propMap);
         //根据产品id和dataType获取基础数据 dataType:0 国标数据;1 行标数据；2 共享数据；3 易用数据；
         List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().selectSysDataInfoPaginatedListByPidAndDataType(sysDataInfo);
-        int total = getFacade().getSysDataInfoService().countSysDataInfoPaginatedListByPidAndDataType(sysDataInfo);
+        int total = getFacade().getSysDataInfoService().countSysDataInfoListByPidAndDataType(sysDataInfo);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", sysDataInfos);
         map.put("total", total);
@@ -206,19 +203,18 @@ public class SysDataInfoBufferController extends BaseController {
     /**
      * 文件导出
      * @param response
-     * @param proStr
+     * @param pmId
      * @param dataType
      */
     @RequestMapping(value = "/exportExcel.do")
     @ILog
-    public void wiriteExcel(HttpServletResponse response, String proStr, String dataType) {
-        Long proId = Long.parseLong(proStr);
-        if (proId == null) {
+    public void wiriteExcel(HttpServletResponse response, Long pmId, Integer dataType) {
+        if (pmId == null) {
             return;
         }
         //根据项目id获取产品
         List<PmisProductInfo> pmisProductInfos =
-                getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(proId, 1);
+                getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId, 1);
         //产品id集合
         List pidList = new ArrayList();
         for (int i = 0; i < pmisProductInfos.size(); i++) {
@@ -230,7 +226,7 @@ public class SysDataInfoBufferController extends BaseController {
         //pks为mapping xml中设定的属性名
         propMap.put("pidList", pidList);
         SysDataInfo sysDataInfo = new SysDataInfo();
-        sysDataInfo.setDataType(Integer.parseInt(dataType));
+        sysDataInfo.setDataType(dataType);
         sysDataInfo.setMap(propMap);
         //根据产品id和dataType获取基础数据 dataType:0 国标数据;1 行标数据；2 共享数据；3 易用数据；
         List<SysDataInfo> sysDataInfoList = getFacade().getSysDataInfoService().selectSysDataInfoListByPidAndDataType(sysDataInfo);
@@ -363,7 +359,7 @@ public class SysDataInfoBufferController extends BaseController {
     @ResponseBody
     @ILog
     public Map<String, Object> addOrModify(SysDataInfo sysDataInfo) {
-        if (sysDataInfo.getId() == 0L || sysDataInfo == null) {
+        if (sysDataInfo.getId() == 0L || sysDataInfo.getId() == null) {
             //不存在id或id为初始值，则为新增数据
             sysDataInfo.setId(ssgjHelper.createDataId());
             super.getFacade().getSysDataInfoService().createSysDataInfo(sysDataInfo);
@@ -380,25 +376,21 @@ public class SysDataInfoBufferController extends BaseController {
     /**
      * 确认完成
      *
-     * @param proStr
+     * @param pmId
      * @param dataType
      * @return
      */
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
     @ILog
-    public Map<String, Object> confirm(String proStr, String dataType) {
-
-        //基础数据类型
-        Integer dataTypeNum = Integer.parseInt(dataType);
+    public Map<String, Object> confirm(Long pmId, Integer dataType) {
         //项目id
-        Long proId = Long.parseLong(proStr);
-        if (proId == null) {
+        if (pmId == null) {
             return null;
         }
         //根据项目id获取产品
         List<PmisProductInfo> pmisProductInfos =
-                getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(proId, 1);
+                getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId, 1);
         //产品id集合
         List pidList = new ArrayList();
         for (int i = 0; i < pmisProductInfos.size(); i++) {
@@ -410,19 +402,16 @@ public class SysDataInfoBufferController extends BaseController {
         //pks为mapping xml中设定的属性名
         propMap.put("pidList", pidList);
         SysDataInfo sysDataInfo = new SysDataInfo();
-        sysDataInfo.setDataType(dataTypeNum);
+        sysDataInfo.setDataType(dataType);
         sysDataInfo.setMap(propMap);
-        int total = getFacade().getSysDataInfoService().countSysDataInfoPaginatedListByPidAndDataType(sysDataInfo);
+        int total = getFacade().getSysDataInfoService().countSysDataInfoListByPidAndDataType(sysDataInfo);
         EtProcessManager etProcessManager = new EtProcessManager();
-        etProcessManager.setPmId(proId);
+        etProcessManager.setPmId(pmId);
         Map<String, Object> map = new HashMap<String, Object>();
         if (total > 0) {
-            if (dataTypeNum == 0 || dataTypeNum == 1 || dataTypeNum == 2) {
-
+            if (dataType == 0 || dataType == 1 || dataType == 2) {
                     etProcessManager.setIsBasicDataUse(1);
-
-            } else if (dataTypeNum == 3) {
-
+            } else if (dataType == 3) {
                     etProcessManager.setIsEasyDataUse(1);
 
             }

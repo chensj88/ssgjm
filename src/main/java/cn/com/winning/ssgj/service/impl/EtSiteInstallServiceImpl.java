@@ -1,10 +1,15 @@
 package cn.com.winning.ssgj.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 
+import cn.com.winning.ssgj.base.util.ExcelUtil;
+import cn.com.winning.ssgj.domain.SysUserInfo;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.EtSiteInstallDao;
@@ -70,6 +75,44 @@ public class EtSiteInstallServiceImpl implements EtSiteInstallService {
     @Override
     public List<EtSiteInstall> getEtSiteInstallListWithInfo(EtSiteInstall t) {
         return this.etSiteInstallDao.selectEtSiteInstallListWithInfo(t);
+    }
+
+    @Override
+    public void getNerateSiteIntallExcel(EtSiteInstall info, String path) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
+        List<EtSiteInstall> querySiteList = this.etSiteInstallDao.selectEtSiteInstallListWithInfo(info);
+        int total = (Integer) this.etSiteInstallDao.selectEntityCount(info);
+        List<String> colList = new ArrayList<String>();
+        colList.add("deptName");
+        colList.add("pdName");
+        colList.add("hdName");
+        colList.add("noScopeCode");
+        colList.add("puserId");
+        colList.add("num");
+        List<Map> dataList = new ArrayList<Map>();
+
+        for (EtSiteInstall siteInfo : querySiteList) {
+            Map<String, String> siteMap = new HashMap<>();
+            siteMap.put("deptName", siteInfo.getDeptName());
+            siteMap.put("pdName", siteInfo.getPdName());
+            siteMap.put("hdName", siteInfo.getHdName());
+            siteMap.put("noScopeCode", siteInfo.getNoScopeCode());
+            siteMap.put("puserId", String.valueOf(siteInfo.getMap().get("puserName")));
+            siteMap.put("num", String.valueOf(siteInfo.getNum()));
+            dataList.add(siteMap);
+        }
+
+        dataMap.put("colList", colList);
+        dataMap.put("colSize", colList.size());
+        dataMap.put("data", dataList);
+        ExcelUtil.writeExcel(dataList, colList, colList.size(), path);
+
+
+    }
+
+    @Override
+    public List<EtSiteInstall> getEtSiteInstallGroupPuser(EtSiteInstall t) {
+        return this.etSiteInstallDao.selectEtSiteInstallGroupPuser(t);
     }
 
 }

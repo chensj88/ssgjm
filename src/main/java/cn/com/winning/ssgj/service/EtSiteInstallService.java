@@ -31,4 +31,8 @@ public interface EtSiteInstallService {
     List<EtSiteInstall> getEtSiteInstallListWithSum(EtSiteInstall entity);
 
     List<EtSiteInstall> getEtSiteInstallListWithInfo(EtSiteInstall info);
+
+    void getNerateSiteIntallExcel(EtSiteInstall info, String path);
+
+    List<EtSiteInstall> getEtSiteInstallGroupPuser(EtSiteInstall info);
 }
