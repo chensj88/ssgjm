@@ -32,6 +32,7 @@
         <result column="installed" property="map.installed" jdbcType="VARCHAR" />
         <result column="PUSERNAME" property="map.puserName" jdbcType="VARCHAR" />
         <result column="SITE_INFO" property="map.siteInfo" jdbcType="VARCHAR" />
+        <result column="PUSER_NUM" property="map.puserNum" jdbcType="VARCHAR" />
 
     </resultMap>
 
@@ -125,6 +126,14 @@
         select t.CPZXT,i.ZXTMC from ET_SITE_INSTALL t LEFT JOIN PMIS_CONTRACT_PRODUCT_INFO i
         ON i.CPZXT = t.CPZXT where 1 = 1
         <include refid="sf-etSiteInstall"/>  GROUP BY t.CPZXT,i.ZXTMC
+        <!-- order by ID asc -->
+    </select>
+
+    <!-- Chen,Kuai 获取站点工作比重 -->
+    <select id="selectEtSiteInstallGroupPuser" resultMap="etSiteInstallResult" parameterType="etSiteInstall">
+        SELECT t.PUSER_ID,count(t.PUSER_ID) AS PUSER_NUM,f.C_NAME as PUSERNAME FROM ET_SITE_INSTALL t
+        LEFT JOIN ET_USER_INFO f ON t.PUSER_ID=f.ID WHERE 1=1 <include refid="sf-etSiteInstall"/>
+        GROUP BY t.PUSER_ID,f.C_NAME;
         <!-- order by ID asc -->
     </select>
 

@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.web.controller.vue;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.FtpPropertiesLoader;
 import cn.com.winning.ssgj.base.util.FtpUtils;
@@ -11,6 +12,8 @@ import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.sun.xml.internal.ws.resources.HttpserverMessages;
 import com.sun.xml.internal.xsom.impl.scd.Iterators;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +23,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -274,7 +279,7 @@ public class EtSiteInstallController extends BaseController {
     }
 
     /**
-     * 站点数
+     * 站点图片上传
      * @return
      */
     @RequestMapping(value = "/uploadFileSite.do")
@@ -351,18 +356,111 @@ public class EtSiteInstallController extends BaseController {
      */
     @RequestMapping(value = "/saveSiteDetail.do", method ={RequestMethod.POST})
     @ResponseBody
-    public synchronized Map<String,Object> saveSiteDetail (HttpServletRequest request,EtSiteInstallDetailForm ss) {
+    public synchronized Map<String,Object> saveSiteDetail (HttpServletRequest request,EtSiteInstallDetailForm ss) throws  Exception {
         Map map = new HashMap();
-        String sss = request.getParameter("jj");
-        String siteList = request.getParameter("siteList");
+        String detailData = request.getParameter("detailData");
+        String operator = request.getParameter("operator");
+        JSONArray json = JSONArray.fromObject(detailData);
+        for(int i=0; i<json.size(); i++){
+            EtSiteInstallDetail detail = new EtSiteInstallDetail();
+            JSONObject jb = (JSONObject)json.get(i);
+            detail.setId(Long.parseLong(jb.getString("id")));
+            detail.setSiteName(jb.getString("siteName"));
+            detail.setIp(jb.getString("ip"));
+            detail.setBuilding(jb.getString("building"));
+            detail.setFloorNum(Integer.parseInt(jb.getString("floorNum")));
+            detail.setPcModel(jb.getString("pcModel"));
+            detail.setInstall(Integer.parseInt(jb.getString("install")));
+            detail.setOperator(Long.parseLong(operator));
+            detail.setOperatorTime(new Timestamp(new Date().getTime()));
+            super.getFacade().getEtSiteInstallDetailService().modifyEtSiteInstallDetail(detail);
 
-
+        }
 
         map.put("type", Constants.SUCCESS);
-        map.put("msg", "硬件修改成功！");
+        map.put("msg", "站点修改成功！");
         return map;
     }
 
+    /**
+     * 确认完成安装
+     * @return
+     */
+    @RequestMapping(value = "/siteEnd.do", method ={RequestMethod.POST})
+    @ResponseBody
+    public synchronized Map<String,Object> siteEnd (EtSiteInstall info,Long userId){
+        Map map = new HashMap();
+        EtProcessManager manager = new EtProcessManager();
+        manager.setPmId(info.getPmId());
+        manager.setIsSiteInstall(1);
+        manager.setOperator(userId);
+        manager.setOperatorTime(new Timestamp(new Date().getTime()));
+        super.getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(manager);
+        map.put("type", Constants.SUCCESS);
+        map.put("msg", "站点修改成功！");
+        return map;
+    }
+
+    @RequestMapping(value = "/exportExcel.do")
+    @ILog
+    public HttpServletResponse wiriteExcel(EtSiteInstall info, HttpServletResponse response) throws IOException {
+        String fileName = "siteInstall.xls";
+        String path = getClass().getClassLoader().getResource("/template").getPath() + fileName;
+        super.getFacade().getEtSiteInstallService().getNerateSiteIntallExcel(info,path);
+        try {
+            // path是指欲下载的文件的路径。
+            File file = new File(path);
+            // 取得文件名。
+            String filename = file.getName();
+            // 取得文件的后缀名。
+            String ext = filename.substring(filename.lastIndexOf(".") + 1).toUpperCase();
+
+            // 以流的形式下载文件。
+            InputStream fis = new BufferedInputStream(new FileInputStream(path));
+            byte[] buffer = new byte[fis.available()];
+            fis.read(buffer);
+            fis.close();
+            // 清空response
+            response.reset();
+            // 设置response的Header
+            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("工作站点安装.xls","UTF-8"));
+            response.addHeader("Content-Length", "" + file.length());
+            OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
+            response.setContentType("application/octet-stream");
+            toClient.write(buffer);
+            toClient.flush();
+            toClient.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+
+
+        return response;
+    }
+
+    /**
+     * 确认完成安装
+     * @return
+     */
+    @RequestMapping(value = "/showEchart.do", method ={RequestMethod.POST})
+    @ResponseBody
+    public synchronized Map<String,Object> showEchart (EtSiteInstall info){
+        Map map = new HashMap();
+        //获取分配人
+        List<EtSiteInstall> list = super.getFacade().getEtSiteInstallService().getEtSiteInstallGroupPuser(info);
+        List puserNameList = new ArrayList();
+        List puserNumList = new ArrayList();
+        if (list.size()>0){
+            for (int i=0;i<list.size();i++){
+                puserNameList.add(list.get(i).getMap().get("puserName"));
+                puserNumList.add(list.get(i).getMap().get("puserNum"));
+            }
+        }
+        map.put("puserNameList",puserNameList);
+        map.put("puserNumList",puserNumList);
+        return map;
+    }
 
 
 
