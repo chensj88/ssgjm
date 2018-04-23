@@ -75,27 +75,17 @@ public class EtEasyDataCheckController extends BaseController {
         Long cId = pmisProjectBasicInfo.getHtxx();
         //serialNo
         Long serialNo = pmisProjectBasicInfo.getKhxx();
-        //根据项目id获取产品
-        List<PmisProductInfo> pmisProductInfos =
-                getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId, 1);
-        //产品id集合
-        List pidList = new ArrayList();
-        for (int i = 0; i < pmisProductInfos.size(); i++) {
-            pidList.add(pmisProductInfos.get(i).getId());
-        }
-        logger.info("idList:{}", pidList);
         //创建map，封装其他属性
         Map<String, Object> propMap = new HashMap<String, Object>();
         //pks为mapping xml中设定的属性名
-        propMap.put("pidList", pidList);
-
+        propMap.put("pmId", pmId);
         SysDataInfo sysDataInfo = new SysDataInfo();
         sysDataInfo.setDataType(dataType);
         sysDataInfo.setMap(propMap);
         SysProductDataInfo sysProductDataInfo = new SysProductDataInfo();
         PmisProductInfo pmisProductInfo = new PmisProductInfo();
         //根据产品id和dataType获取基础数据 dataType:0 国标数据;1 行标数据；2 共享数据；3 易用数据；
-        List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().selectSysDataInfoListByPidAndDataType(sysDataInfo);
+        List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().selectSysDataInfoListByPmIdAndDataType(sysDataInfo);
         for (int i = 0; i < sysDataInfos.size(); i++) {
             //根据bdId查找sysProductDataInfo
             sysProductDataInfo.setBdId(sysDataInfos.get(i).getId());

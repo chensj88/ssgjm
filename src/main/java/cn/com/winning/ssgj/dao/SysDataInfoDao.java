@@ -23,11 +23,11 @@ public interface SysDataInfoDao extends EntityDao<SysDataInfo> {
 
     public Integer selectSysDataInfoCountByIds(SysDataInfo t);
 
-    public List<SysDataInfo> selectSysDataInfoPaginatedListByPidAndDataType(SysDataInfo t);
+    public List<SysDataInfo> selectSysDataInfoPaginatedListByPmIdAndDataType(SysDataInfo t);
 
-    public Integer countSysDataInfoListByPidAndDataType(SysDataInfo sysDataInfo);
+    public Integer countSysDataInfoListByPmIdAndDataType(SysDataInfo sysDataInfo);
 
-    public List<SysDataInfo> selectSysDataInfoListByPidAndDataType(SysDataInfo t);
+    public List<SysDataInfo> selectSysDataInfoListByPmIdAndDataType(SysDataInfo t);
 
     public List<SysDataInfo> selectSysDataInfoListForORKey(SysDataInfo t);
 }
