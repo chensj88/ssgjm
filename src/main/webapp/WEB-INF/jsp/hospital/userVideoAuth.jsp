@@ -116,11 +116,41 @@
             <div class="col-sm-6">
                 <input id="uploadFile" name="uploadFile" type="file">
             </div>
+            <button type="button" class="btn btn-info btn-sm" id="closeForm">
+                <span class="glyphicon glyphicon-remove"></span>
+                关闭
+            </button>
         </div>
     </form>
 </div>
 <!--表格区域  -->
 <table id="infoTable" class="table-align"></table>
+
+<div class="btn-group" id="btntoolbar" style="display: none;">
+    <button id="importAuth" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-upload"></span>导入用户菜单权限</button>
+</div>
+<div class="modal fade" id="message" tabindex="-1" role="dialog" aria-labelledby="messageModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width:450px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">提示信息</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="alert alert-info" role="alert" id="alertMsg">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap.min.js"></script>

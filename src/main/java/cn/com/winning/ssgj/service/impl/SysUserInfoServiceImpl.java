@@ -131,9 +131,9 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
 
     @Override
     public void createHospitalUserInfo(List<List<Object>> userList,SysUserInfo userInfo) {
-        long c_id = userInfo.getSsgs();
+        long serialNo = userInfo.getSsgs();
         for (List<Object> params : userList) {
-            String userid = c_id +""+ params.get(0).toString();
+            String userid = serialNo +""+ params.get(0).toString();
             String yhmc = params.get(1).toString();
             String clo1 = params.get(2).toString();
             String clo2 = params.get(3).toString();
@@ -143,7 +143,7 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
             user.setStatus(1);
             user.setUserType(Constants.User.USER_TYPE_HOSPITAL);
             user.setUserid(userid);
-            user.setSsgs(c_id);
+            user.setSsgs(serialNo);
             user = this.getSysUserInfo(user);
             if(user != null){
                 user.setYhmc(yhmc);
@@ -160,7 +160,7 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
                 user.setStatus(1);
                 user.setUserType(Constants.User.USER_TYPE_HOSPITAL);
                 user.setUserid(userid);
-                user.setSsgs(c_id);
+                user.setSsgs(serialNo);
                 user.setYhmc(yhmc);
                 user.setName(user.getYhmc() + "(" + user.getUserid() + ")");
                 user.setClo1(clo1);

@@ -42,4 +42,14 @@ public class SysHospitalUserVideoAuthController  extends BaseController {
         return result;
 
     }
+
+    @RequestMapping(value = "/modify.do")
+    @ResponseBody
+    public Map<String,Object> updateUserAuth(SysUserVideoAuth auth){
+        super.getFacade().getSysUserVideoAuthService().modifyHospitalUserVideoAuth(auth);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+
+    }
 }

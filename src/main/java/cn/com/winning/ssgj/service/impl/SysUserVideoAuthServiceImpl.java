@@ -107,4 +107,10 @@ public class SysUserVideoAuthServiceImpl implements SysUserVideoAuthService {
 		this.sysUserVideoAuthTempDao.deleteSysUserVideoAuthTempBySerialNo(authTemp);
 	}
 
+	@Override
+	public void modifyHospitalUserVideoAuth(SysUserVideoAuth auth) {
+		this.sysUserVideoAuthDao.modifyHospitalUserVideoAuth(auth);
+	}
+
+
 }

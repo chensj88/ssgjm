@@ -84,6 +84,7 @@ $(function () {
     }
 
     function initUserBootstrapTable() {
+        $('#btntoolbar').hide();
         $('#infoTable').bootstrapTable("destroy").bootstrapTable({
             url: Common.getRootPath() + '/admin/user/list.do',// 要请求数据的文件路径
             method: 'GET', // 请求方法
@@ -124,12 +125,17 @@ $(function () {
                 width: '20px',
                 align: 'center'
             }, {
+                field: "yhmc",
+                title: "用户姓名",
+                width: '20px',
+                align: 'center'
+            }, {
                 field: "name",
                 title: "姓名",
                 width: '20px',
                 align: 'center'
             },  {
-                field: "col5",
+                field: "clo4",
                 title: "视频权限",
                 width: '80px',
                 align: 'center'
@@ -150,6 +156,7 @@ $(function () {
     }
 
     function initUploadUserBootstrapTable() {
+        $('#btntoolbar').show();
         $('#infoTable').bootstrapTable("destroy").bootstrapTable({
             url: Common.getRootPath() + '/admin/videoAuth/list.do',// 要请求数据的文件路径
             method: 'GET', // 请求方法
@@ -206,14 +213,14 @@ $(function () {
                 align: 'center'
             }, {
                 field: "isExist",
-                title: "是否导入",
+                title: "用户是否存在",
                 width: '50px',
                 align: 'center',
                 formatter:function (value) {
                     if(value == '0'){
-                        return '用户未导入系统';
+                        return '否';
                     }else{
-                        return '用户已导入系统';
+                        return '是';
                     }
                 }
             }],
@@ -271,6 +278,7 @@ $(function () {
             if(_data.status == Common.SUCCESS){
                 $('#uploadForm').hide();
                 Ewin.alert('数据入库完成，点击查询上传结果可以查询数据。');
+                initUploadUserBootstrapTable();
             }else{
                 Ewin.alert(_data.msg)
             }
@@ -296,6 +304,34 @@ $(function () {
         }else{
             return ;
         }
+    });
 
+    $('#closeForm').on('click',function () {
+        $('#uploadForm').hide();
+    });
+
+    $('#importAuth').on('click',function () {
+        Ewin.confirm({message: "本操作将导入系统中<span style='color: red;font-style:inherit;font-weight:bold;'>已经存在的用户</span>的视频权限信息。<br><span style='font-weight:bold;'>未导入系统的用户，请先导入用户。</span>"}).on(function (e) {
+            if (!e) {
+                return;
+            }
+            $.ajax({
+                type: "post",
+                url: Common.getRootPath() + '/admin/videoAuth/modify.do',
+                data: {"serialNo": $('#serialId').val() },
+                dataType: 'json',
+                success: function (data, status) {
+                    if (status == Common.SUCCESS) {
+                        Ewin.alert('数据导入成功');
+                        initUserBootstrapTable();
+                    }
+                },
+                error: function () {
+                    Ewin.alert('Error');
+                },
+                complete: function () {
+                }
+            });
+        });
     });
 });
