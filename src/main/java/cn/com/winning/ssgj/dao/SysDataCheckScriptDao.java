@@ -18,4 +18,6 @@ public interface SysDataCheckScriptDao extends EntityDao<SysDataCheckScript> {
     public List<SysDataCheckScript> selectSysDataCheckScriptPageListFuzzy(SysDataCheckScript script);
 
     int selectExistDataCheckScriptName(SysDataCheckScript script);
+
+    int existDataCheckScript(SysDataCheckScript script);
 }

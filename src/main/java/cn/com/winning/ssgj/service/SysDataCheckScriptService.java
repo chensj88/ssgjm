@@ -31,4 +31,6 @@ public interface SysDataCheckScriptService {
 	int getSysDataCheckScriptCountFuzzy(SysDataCheckScript script);
 
     boolean existDataCheckScriptName(SysDataCheckScript script);
+
+	boolean existDataCheckScript(SysDataCheckScript script);
 }

@@ -9,6 +9,7 @@
 		<result column="REMOTE_PATH" property="remotePath" jdbcType="VARCHAR" />
 		<result column="APP_ID" property="appId" jdbcType="BIGINT" />
 		<result column="APP_NAME" property="appName" jdbcType="VARCHAR" />
+		<result column="DATA_TYPE" property="dataType" jdbcType="INTEGER" />
 		<result column="STATUS" property="status" jdbcType="INTEGER" />
 		<result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT" />
 		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
@@ -23,8 +24,9 @@
 	   <if test="sDesc != null and sDesc != ''"> and t.S_DESC = #{sDesc} </if>
 		<if test="appId != null "> and t.APP_ID = #{appId} </if>
 		<if test="appName != null and appName != ''"> and t.APP_NAME = #{appName} </if>
-	   <if test="remotePath != null and remotePath != ''"> and t.REMOTE_PATH = #{remotePath} </if>
-	   <if test="(status != null and status != '') or status == 0"> and t.STATUS = #{status} </if>
+	    <if test="remotePath != null and remotePath != ''"> and t.REMOTE_PATH = #{remotePath} </if>
+		<if test="dataType != null "> and t.DATA_TYPE = #{dataType} </if>
+	   <if test="status != null"> and t.STATUS = #{status} </if>
 	   <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> and t.LAST_UPDATOR = #{lastUpdator} </if>
 	   <if test="lastUpdateTime != null"> and t.LAST_UPDATE_TIME = #{lastUpdateTime} </if>
 	</sql>
@@ -83,7 +85,8 @@
 			<if test="appId != null ">  APP_ID, </if>
 			<if test="appName != null and appName != ''"> APP_NAME,</if>
 		   <if test="remotePath != null and remotePath != ''"> REMOTE_PATH, </if>
-	       <if test="(status != null and status != '') or status == 0"> STATUS, </if>
+			<if test="dataType != null "> DATA_TYPE, </if>
+	       <if test="status != null"> STATUS, </if>
 	       <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> LAST_UPDATOR, </if>
 		   <if test="lastUpdateTime != null"> LAST_UPDATE_TIME, </if>
 		</trim>
@@ -95,7 +98,8 @@
 			<if test="appId != null "> #{appId,jdbcType=BIGINT}, </if>
 			<if test="appName != null and appName != ''"> #{appName, jdbcType=VARCHAR}, </if>
 		   <if test="remotePath != null and remotePath != ''"> #{remotePath, jdbcType=VARCHAR}, </if>
-	       <if test="(status != null and status != '') or status == 0"> #{status, jdbcType=INTEGER}, </if>
+			<if test="dataType != null "> #{dataType, jdbcType=INTEGER}, </if>
+	       <if test="status != null"> #{status, jdbcType=INTEGER}, </if>
 	       <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> #{lastUpdator, jdbcType=BIGINT}, </if>
 		   <if test="lastUpdateTime != null"> #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
 		</trim>
@@ -111,7 +115,8 @@
 				<if test="appId != null ">  APP_ID = #{appId,jdbcType=BIGINT}, </if>
 				<if test="appName != null and appName != ''"> APP_NAME = #{appName, jdbcType=VARCHAR},</if>
 			   <if test="remotePath != null and remotePath != ''"> REMOTE_PATH = #{remotePath, jdbcType=VARCHAR}, </if>
-			   <if test="(status != null and status != '') or status == 0"> STATUS = #{status, jdbcType=INTEGER}, </if>
+				<if test="(dataType != null )"> DATA_TYPE = #{dataType, jdbcType=INTEGER}, </if>
+			   <if test="status != null"> STATUS = #{status, jdbcType=INTEGER}, </if>
 			   <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0"> LAST_UPDATOR = #{lastUpdator, jdbcType=BIGINT}, </if>
 			   <if test="lastUpdateTime != null"> LAST_UPDATE_TIME = #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
 			</trim>
@@ -135,5 +140,10 @@
 	<select id="selectExistDataCheckScriptName" resultType="int" parameterType="sysDataCheckScript">
 		select count(1) from SYS_DATA_CHECK_SCRIPT t
 		WHERE t.NAME = #{name,jdbcType=VARCHAR}
+	</select>
+	<select id="existDataCheckScript" resultType="int" parameterType="sysDataCheckScript">
+		select count(1) from SYS_DATA_CHECK_SCRIPT t
+		WHERE t.DATA_TYPE = #{dataType,jdbcType=INTEGER}
+		AND t.APP_ID = #{appId,jdbcType=INTEGER }
 	</select>
 </mapper>

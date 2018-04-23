@@ -30,6 +30,8 @@ public class SysDataCheckScript extends BaseDomain implements Serializable {
 	private Long appId;
 
 	private String appName;
+
+	private Integer dataType;
 	
 	private Integer status;
 	
@@ -111,5 +113,13 @@ public class SysDataCheckScript extends BaseDomain implements Serializable {
 
 	public void setAppName(String appName) {
 		this.appName = appName;
+	}
+
+	public Integer getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(Integer dataType) {
+		this.dataType = dataType;
 	}
 }
