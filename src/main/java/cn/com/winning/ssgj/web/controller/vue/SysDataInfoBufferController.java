@@ -66,37 +66,32 @@ public class SysDataInfoBufferController extends BaseController {
      */
     @RequestMapping("/list.do")
     @ResponseBody
-    @ILog(operationName = "基础数据类型列表", operationType = "list")
     public Map<String, Object> list(Row row, Long pmId, Integer dataType) {
         //项目id
         if (pmId == null) {
             return null;
         }
-        //根据项目id获取产品
-        List<PmisProductInfo> pmisProductInfos =
-                getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId, 1);
-        //产品id集合
-        List pidList = new ArrayList();
-        for (int i = 0; i < pmisProductInfos.size(); i++) {
-            pidList.add(pmisProductInfos.get(i).getId());
-        }
-        logger.info("idList:{}", pidList);
         //创建map，封装其他属性
         Map<String, Object> propMap = new HashMap<String, Object>();
         //pks为mapping xml中设定的属性名
-        propMap.put("pidList", pidList);
+        propMap.put("pmId", pmId);
 
         SysDataInfo sysDataInfo = new SysDataInfo();
         sysDataInfo.setRow(row);
         sysDataInfo.setDataType(dataType);
         sysDataInfo.setMap(propMap);
         //根据产品id和dataType获取基础数据 dataType:0 国标数据;1 行标数据；2 共享数据；3 易用数据；
-        List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().selectSysDataInfoPaginatedListByPidAndDataType(sysDataInfo);
-        int total = getFacade().getSysDataInfoService().countSysDataInfoListByPidAndDataType(sysDataInfo);
+        List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().selectSysDataInfoPaginatedListByPmIdAndDataType(sysDataInfo);
+        int total = getFacade().getSysDataInfoService().countSysDataInfoListByPmIdAndDataType(sysDataInfo);
+        //根据pmid获取项目进程
+        EtProcessManager etProcessManager=new EtProcessManager();
+        etProcessManager.setPmId(pmId);
+        etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", sysDataInfos);
         map.put("total", total);
         map.put("status", Constants.SUCCESS);
+        map.put("process",etProcessManager);
         return map;
     }
 
@@ -229,7 +224,7 @@ public class SysDataInfoBufferController extends BaseController {
         sysDataInfo.setDataType(dataType);
         sysDataInfo.setMap(propMap);
         //根据产品id和dataType获取基础数据 dataType:0 国标数据;1 行标数据；2 共享数据；3 易用数据；
-        List<SysDataInfo> sysDataInfoList = getFacade().getSysDataInfoService().selectSysDataInfoListByPidAndDataType(sysDataInfo);
+        List<SysDataInfo> sysDataInfoList = getFacade().getSysDataInfoService().selectSysDataInfoListByPmIdAndDataType(sysDataInfo);
         //参数集合
         List<Map> dataList = new ArrayList<>();
         for (int i = 0; i < sysDataInfoList.size(); i++) {
@@ -388,23 +383,14 @@ public class SysDataInfoBufferController extends BaseController {
         if (pmId == null) {
             return null;
         }
-        //根据项目id获取产品
-        List<PmisProductInfo> pmisProductInfos =
-                getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId, 1);
-        //产品id集合
-        List pidList = new ArrayList();
-        for (int i = 0; i < pmisProductInfos.size(); i++) {
-            pidList.add(pmisProductInfos.get(i).getId());
-        }
-        logger.info("idList:{}", pidList);
         //创建map，封装其他属性
         Map<String, Object> propMap = new HashMap<String, Object>();
         //pks为mapping xml中设定的属性名
-        propMap.put("pidList", pidList);
+        propMap.put("pmId", pmId);
         SysDataInfo sysDataInfo = new SysDataInfo();
         sysDataInfo.setDataType(dataType);
         sysDataInfo.setMap(propMap);
-        int total = getFacade().getSysDataInfoService().countSysDataInfoListByPidAndDataType(sysDataInfo);
+        int total = getFacade().getSysDataInfoService().countSysDataInfoListByPmIdAndDataType(sysDataInfo);
         EtProcessManager etProcessManager = new EtProcessManager();
         etProcessManager.setPmId(pmId);
         Map<String, Object> map = new HashMap<String, Object>();
