@@ -55,6 +55,8 @@ public interface Facade {
 
     EtUserInfoService getEtUserInfoService();
 
+    EtDepartmentService getEtDepartmentService();
+
     PmisContractInfoService getPmisContractInfoService();
 
     PmisContractProductInfoService getPmisContractProductInfoService();

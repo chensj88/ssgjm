@@ -35,4 +35,6 @@ public interface EtSiteInstallService {
     void getNerateSiteIntallExcel(EtSiteInstall info, String path);
 
     List<EtSiteInstall> getEtSiteInstallGroupPuser(EtSiteInstall info);
+
+    void createEtSiteInstallDeptInfo(List<List<Object>> deptList, EtSiteInstall info);
 }
