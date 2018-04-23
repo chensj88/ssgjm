@@ -206,7 +206,8 @@ public class EtBusinessProcessController extends BaseController {
         manager = super.getFacade().getEtProcessManagerService().getEtProcessManager(manager);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
-        result.put("data", manager.getIsFlowAffirm());
+        result.put("isActive", manager.getIsFlowAffirm());
+        result.put("isConfig", manager.getIsFlowConfig());
         return result;
 
     }
