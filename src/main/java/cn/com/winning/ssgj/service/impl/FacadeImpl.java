@@ -465,4 +465,10 @@ public class FacadeImpl implements Facade {
         return sysUserVideoAuthService;
     }
 
+    @Resource
+    EtDepartmentService etDepartmentService;
+
+    public EtDepartmentService getEtDepartmentService() {
+        return etDepartmentService;
+    }
 }

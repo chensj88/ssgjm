@@ -3,10 +3,7 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
-import cn.com.winning.ssgj.base.util.FtpPropertiesLoader;
-import cn.com.winning.ssgj.base.util.FtpUtils;
-import cn.com.winning.ssgj.base.util.SFtpUtils;
-import cn.com.winning.ssgj.base.util.StringUtil;
+import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -19,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -400,7 +398,59 @@ public class EtSiteInstallController extends BaseController {
         map.put("msg", "站点修改成功！");
         return map;
     }
+    /**
+     *导入excel文件
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/upload.do")
+    @ResponseBody
+    @ILog
+    @Transactional
+    public Map<String, Object> uploadExcel(HttpServletRequest request,EtSiteInstall info,
+                                                          MultipartFile file) throws IOException {
+            Map<String, Object> result = new HashMap<String, Object>();
+            //如果文件不为空，写入上传路径
+            if (!file.isEmpty()) {
+                //上传文件路径
+                String path = request.getServletContext().getRealPath("/temp/");
+                //上传文件名
+                String filename = file.getOriginalFilename();
+                File filepath = new File(path, filename);
+                //判断路径是否存在，如果不存在就创建一个
+                if (!filepath.getParentFile().exists()) {
+                    filepath.getParentFile().mkdirs();
+                }
+                //将上传文件保存到一个目标文件当中
+                File newFile = new File(path + File.separator + filename);
+                if (newFile.exists()) {
+                    newFile.delete();
+                }
+                file.transferTo(newFile);
 
+                try {
+                    List<List<Object>> deptList = ExcelUtil.importExcel(newFile.getPath());
+                    super.getFacade().getEtSiteInstallService().createEtSiteInstallDeptInfo(deptList,info);
+                    newFile.delete();
+                    result.put("status", "success");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    result.put("status", "error");
+                    result.put("msg", "上传文件失败,原因是："+e.getMessage());
+                }
+            } else {
+                result.put("status", "error");
+                result.put("msg", "上传文件失败,原因是：上传文件为空");
+            }
+            return result;
+    }
+
+
+    /**
+     *导出excel文件
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/exportExcel.do")
     @ILog
     public HttpServletResponse wiriteExcel(EtSiteInstall info, HttpServletResponse response) throws IOException {
