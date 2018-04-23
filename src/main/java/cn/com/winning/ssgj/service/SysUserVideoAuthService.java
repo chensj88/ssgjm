@@ -32,4 +32,10 @@ public interface SysUserVideoAuthService {
 	 * @param auth 前端传输数据
 	 */
     void generateUserVideoAuthInfo(List<List<Object>> userAuth, SysUserVideoAuth auth);
+
+	/**
+	 * 更新用户的视频权限信息
+	 * @param auth
+	 */
+    void modifyHospitalUserVideoAuth(SysUserVideoAuth auth);
 }

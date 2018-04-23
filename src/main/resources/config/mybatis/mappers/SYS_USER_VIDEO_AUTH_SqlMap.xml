@@ -137,4 +137,19 @@
 		DELETE  FROM  SYS_USER_VIDEO_AUTH WHERE SERIAL_NO = #{serialNo}
 	</delete>
 
+
+
+    <update id="modifyHospitalUserVideoAuth" parameterType="sysUserVideoAuth">
+        UPDATE A  SET A.VIDEO_DROIT = (
+          SELECT MENU_CODE FROM SYS_USER_VIDEO_AUTH  WHERE A.ID = USER_ID AND A.SSGS = SERIAL_NO AND IS_EXIST = 1
+        ) ,
+         A.CLO4 = (
+          SELECT MENU_NAME FROM SYS_USER_VIDEO_AUTH  WHERE A.ID = USER_ID AND A.SSGS = SERIAL_NO AND IS_EXIST = 1
+         )
+        FROM SYS_USER_INFO A
+        WHERE EXISTS (
+         SELECT 1 FROM SYS_USER_VIDEO_AUTH  WHERE A.ID = USER_ID AND A.SSGS = SERIAL_NO AND IS_EXIST = 1
+        )
+        AND  A.SSGS = ${serialNo}
+    </update>
 </mapper>

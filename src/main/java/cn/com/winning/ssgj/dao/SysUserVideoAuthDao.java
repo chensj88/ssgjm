@@ -15,4 +15,5 @@ public interface SysUserVideoAuthDao extends EntityDao<SysUserVideoAuth> {
 
     void deleteSysUserVideoAuthBySerialNo(SysUserVideoAuth auth);
 
+    void modifyHospitalUserVideoAuth(SysUserVideoAuth auth);
 }

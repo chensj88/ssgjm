@@ -23,4 +23,9 @@ public class SysUserVideoAuthDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysUserVi
         super.getSqlSession().delete("deleteSysUserVideoAuthBySerialNo",auth);
     }
 
+    @Override
+    public void modifyHospitalUserVideoAuth(SysUserVideoAuth auth) {
+        super.getSqlSession().update("modifyHospitalUserVideoAuth",auth);
+    }
+
 }
