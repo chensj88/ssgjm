@@ -26,4 +26,6 @@ public interface EtDataCheckService {
 
     List<EtDataCheck> getEtDataCheckPaginatedList(EtDataCheck t);
 
+    List<EtDataCheck> selectEtDataCheckListByPmIdAndDataType(EtDataCheck etDataCheck);
+
 }

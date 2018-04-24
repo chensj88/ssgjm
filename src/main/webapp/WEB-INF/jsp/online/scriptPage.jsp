@@ -108,6 +108,15 @@
                                         <input type="text" class="form-control" id="appName" name="appName" appName="请输入适用系统" data-provide="typeahead">
                                     </div>
                                 </div>
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label" for="dataType">数据类型</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="dataType" name="dataType">
+                                        <option value="0">基础数据</option>
+                                        <option value="1">易用数据</option>
+                                    </select>
+                                </div>
+                            </div>
                                 <input type="hidden" id="appId" name="appId">
                             <div class="form-group" id="isModifyDiv">
                                 <label class="col-sm-3 control-label" for="isModify">文件替换</label>

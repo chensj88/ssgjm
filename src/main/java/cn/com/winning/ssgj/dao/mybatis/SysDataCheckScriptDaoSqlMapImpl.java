@@ -31,4 +31,9 @@ public class SysDataCheckScriptDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysData
     public int selectExistDataCheckScriptName(SysDataCheckScript script) {
         return super.getSqlSession().selectOne("selectExistDataCheckScriptName",script);
     }
+
+    @Override
+    public int existDataCheckScript(SysDataCheckScript script) {
+        return super.getSqlSession().selectOne("existDataCheckScript",script);
+    }
 }

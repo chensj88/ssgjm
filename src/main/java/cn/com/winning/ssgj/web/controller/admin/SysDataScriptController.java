@@ -131,6 +131,16 @@ public class SysDataScriptController extends BaseController {
         return result;
     }
 
+    @RequestMapping(value = "/existScript.do")
+    @ResponseBody
+    public Map<String, Object> existDataCheckScript(SysDataCheckScript script) {
+        boolean exists = super.getFacade().getSysDataCheckScriptService().existDataCheckScript(script);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("valid", exists);
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
+
 
     @RequestMapping(value = "/queryAppName.do")
     @ResponseBody

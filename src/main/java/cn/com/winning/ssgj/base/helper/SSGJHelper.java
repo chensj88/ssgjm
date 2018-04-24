@@ -203,6 +203,10 @@ public class SSGJHelper {
     private StepSequenceFactory  etDevEnvHardwareIdService;
 
     @Autowired
+    @Qualifier(value = "etDataCheckIdService")
+    private StepSequenceFactory  etDataCheckIdService;
+
+    @Autowired
     @Qualifier(value = "etEasyDataCheckIdService")
     private StepSequenceFactory  etEasyDataCheckIdService;
 
@@ -545,6 +549,14 @@ public class SSGJHelper {
      */
     public Long createEtDevEnvHardwareId(){
         return (Long) etDevEnvHardwareIdService.create();
+    }
+
+    /**
+     * 基础数据校验数据ID
+     * @return
+     */
+    public Long createEtDataCheckId(){
+        return (Long) etDataCheckIdService.create();
     }
 
     /**

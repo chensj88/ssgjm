@@ -64,7 +64,7 @@ public class EtEasyDataCheckController extends BaseController {
      */
     @RequestMapping("/initSourceData.do")
     @ResponseBody
-    private Map<String, Object> initSourceData(Long pmId, Long operator, Integer dataType) {
+    public Map<String, Object> initSourceData(Long pmId, Long operator, Integer dataType) {
         Map map = new HashMap();
         if (pmId == null) {
             return null;
@@ -75,53 +75,27 @@ public class EtEasyDataCheckController extends BaseController {
         Long cId = pmisProjectBasicInfo.getHtxx();
         //serialNo
         Long serialNo = pmisProjectBasicInfo.getKhxx();
-        //根据项目id获取产品
-        List<PmisProductInfo> pmisProductInfos =
-                getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId, 1);
-        //产品id集合
-        List pidList = new ArrayList();
-        for (int i = 0; i < pmisProductInfos.size(); i++) {
-            pidList.add(pmisProductInfos.get(i).getId());
-        }
-        logger.info("idList:{}", pidList);
-        //创建map，封装其他属性
-        Map<String, Object> propMap = new HashMap<String, Object>();
-        //pks为mapping xml中设定的属性名
-        propMap.put("pidList", pidList);
-
-        SysDataInfo sysDataInfo = new SysDataInfo();
-        sysDataInfo.setDataType(dataType);
-        sysDataInfo.setMap(propMap);
-        SysProductDataInfo sysProductDataInfo = new SysProductDataInfo();
-        PmisProductInfo pmisProductInfo = new PmisProductInfo();
-        //根据产品id和dataType获取基础数据 dataType:0 国标数据;1 行标数据；2 共享数据；3 易用数据；
-        List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().selectSysDataInfoListByPidAndDataType(sysDataInfo);
-        for (int i = 0; i < sysDataInfos.size(); i++) {
-            //根据bdId查找sysProductDataInfo
-            sysProductDataInfo.setBdId(sysDataInfos.get(i).getId());
-            sysProductDataInfo = getFacade().getSysProductDataInfoService().getSysProductDataInfo(sysProductDataInfo);
-            //根据pdid查找ProductInfo
-            pmisProductInfo.setId(sysProductDataInfo.getPdId());
-            pmisProductInfo = getFacade().getPmisProductInfoService().getPmisProductInfo(pmisProductInfo);
-
-            EtEasyDataCheck etEasyDataCheck = new EtEasyDataCheck();
-            etEasyDataCheck.setcId(cId);
-            etEasyDataCheck.setPmId(pmId);
-            etEasyDataCheck.setSerialNo(serialNo.toString());
-            etEasyDataCheck.setDatabaseName(sysDataInfos.get(i).getDbName());
-            etEasyDataCheck.setTableName(sysDataInfos.get(i).getTableName());
-            etEasyDataCheck.setPlId(NumberParseUtil.parseLong(pmisProductInfo.getCptx()));
-            //按条件查询数据是否存在
-            EtEasyDataCheck etEasyDataCheckTemp = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(etEasyDataCheck);
+        EtEasyDataCheck etEasyDataCheck = new EtEasyDataCheck();
+        etEasyDataCheck.setPmId(pmId);
+        etEasyDataCheck.setcId(cId);
+        etEasyDataCheck.setSerialNo(serialNo.toString());
+        //根据pmId获取易用数据校验数据
+        List<EtEasyDataCheck> etEasyDataChecks = getFacade().getEtEasyDataCheckService().selectEtEasyDataCheckListByPmIdAndDataType(etEasyDataCheck);
+        EtEasyDataCheck etEasyDataCheckTemp = null;
+        for (EtEasyDataCheck easyDataCheck : etEasyDataChecks) {
+            etEasyDataCheckTemp = new EtEasyDataCheck();
+            etEasyDataCheckTemp.setPmId(easyDataCheck.getPmId());
+            etEasyDataCheckTemp.setPlId(easyDataCheck.getPlId());
+            etEasyDataCheckTemp = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(etEasyDataCheckTemp);
             if (etEasyDataCheckTemp == null) {
-                //当数据不存在时增加数据
-                etEasyDataCheck.setId(ssgjHelper.createEtEasyDataCheckId());
-                etEasyDataCheck.setMeaning(sysDataInfos.get(i).getTableCnName());
-                etEasyDataCheck.setOperator(operator);
-                etEasyDataCheck.setCreator(operator);
-                etEasyDataCheck.setCreateTime(new Timestamp(new java.util.Date().getTime()));
-                etEasyDataCheck.setOperatorTime(new Timestamp(new Date().getTime()));
-                getFacade().getEtEasyDataCheckService().createEtEasyDataCheck(etEasyDataCheck);
+                //不存在则插入
+                easyDataCheck.setId(ssgjHelper.createEtEasyDataCheckId());
+                getFacade().getEtEasyDataCheckService().createEtEasyDataCheck(easyDataCheck);
+            } else {
+                //存在则更新
+                etEasyDataCheckTemp.setOperator(operator);
+                etEasyDataCheckTemp.setOperatorTime(new Timestamp(new Date().getTime()));
+                getFacade().getEtEasyDataCheckService().modifyEtEasyDataCheck(etEasyDataCheckTemp);
             }
         }
         map.put("status", Constants.SUCCESS);
@@ -161,8 +135,12 @@ public class EtEasyDataCheckController extends BaseController {
         List<EtEasyDataCheck> etEasyDataChecks =
                 getFacade().getEtEasyDataCheckService().getEtEasyDataCheckPaginatedList(etEasyDataCheck);
         int total = getFacade().getEtEasyDataCheckService().getEtEasyDataCheckCount(etEasyDataCheck);
-
+        //封装外参数
+        PmisProductLineInfo pmisProductLineInfo = null;
         for (EtEasyDataCheck easyDataCheck : etEasyDataChecks) {
+            pmisProductLineInfo = new PmisProductLineInfo();
+            pmisProductLineInfo.setId(easyDataCheck.getPlId());
+            pmisProductLineInfo = getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
             //封装属性
             Map propMap = new HashMap();
             String content = easyDataCheck.getContent();
@@ -171,12 +149,18 @@ public class EtEasyDataCheckController extends BaseController {
             } else {
                 propMap.put("state", 1);
             }
+            propMap.put("type", pmisProductLineInfo.getName());
             easyDataCheck.setMap(propMap);
         }
+        //根据pmid获取项目进程
+        EtProcessManager etProcessManager=new EtProcessManager();
+        etProcessManager.setPmId(pmId);
+        etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", etEasyDataChecks);
         map.put("total", total);
         map.put("status", Constants.SUCCESS);
+        map.put("process",etProcessManager);
         return map;
     }
 
@@ -469,18 +453,9 @@ public class EtEasyDataCheckController extends BaseController {
         if (pmId == null) {
             return null;
         }
-        //根据项目id获取项目基本信息
-        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
-        //获取合同id
-        Long contractId = pmisProjectBasicInfo.getHtxx();
-        //获取单据号即客户
-        Long customerId = pmisProjectBasicInfo.getKhxx();
-
-        etEasyDataCheck.setcId(contractId);
-
-        etEasyDataCheck.setSerialNo(customerId.toString());
-        int total = getFacade().getEtEasyDataCheckService().getEtEasyDataCheckCount(etEasyDataCheck);
-
+        EtEasyDataCheck easyDataCheck=new EtEasyDataCheck();
+        easyDataCheck.setPmId(pmId);
+        int total = getFacade().getEtEasyDataCheckService().getEtEasyDataCheckCount(easyDataCheck);
         EtProcessManager etProcessManager = new EtProcessManager();
         etProcessManager.setPmId(pmId);
         Map<String, Object> map = new HashMap<String, Object>();
@@ -552,8 +527,14 @@ public class EtEasyDataCheckController extends BaseController {
             }
             temp.setAppId(etEasyDataCheck.getPlId());
             SysDataCheckScript sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(temp);
+            if(sysDataCheckScript ==null){
+                return;
+            }
             //获取脚本地址
             String scriptPath = sysDataCheckScript.getRemotePath();
+            if(StringUtil.isEmptyOrNull(scriptPath)){
+                return;
+            }
             //获取文件名
             String filename = scriptPath.substring(scriptPath.lastIndexOf("/") + 1);
             String saveFile = "/sql/" + filename.substring(0, filename.indexOf(".")) + "_" + i + "." + filename.substring(filename.indexOf(".") + 1);

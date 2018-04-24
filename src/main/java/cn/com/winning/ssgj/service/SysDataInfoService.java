@@ -39,11 +39,11 @@ public interface SysDataInfoService {
 
     Integer selectSysDataInfoCountByIds(SysDataInfo t);
 
-    List<SysDataInfo> selectSysDataInfoPaginatedListByPidAndDataType(SysDataInfo t);
+    List<SysDataInfo> selectSysDataInfoPaginatedListByPmIdAndDataType(SysDataInfo t);
 
-    public Integer countSysDataInfoListByPidAndDataType(SysDataInfo sysDataInfo);
+    public Integer countSysDataInfoListByPmIdAndDataType(SysDataInfo sysDataInfo);
 
-    public List<SysDataInfo> selectSysDataInfoListByPidAndDataType(SysDataInfo t);
+    public List<SysDataInfo> selectSysDataInfoListByPmIdAndDataType(SysDataInfo t);
 
     List<SysDataInfo> getSysDataInfoListForORKey(SysDataInfo sysDataInfo);
 }
