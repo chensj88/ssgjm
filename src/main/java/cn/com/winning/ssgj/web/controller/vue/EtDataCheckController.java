@@ -60,7 +60,7 @@ public class EtDataCheckController extends BaseController {
      */
     @RequestMapping("/initSourceData.do")
     @ResponseBody
-    private Map<String, Object> initSourceData(Long pmId, Long operator, Integer dataType) {
+    public Map<String, Object> initSourceData(Long pmId, Long operator, Integer dataType) {
         Map map = new HashMap();
         if (pmId == null) {
             return null;
@@ -71,26 +71,27 @@ public class EtDataCheckController extends BaseController {
         Long cId = pmisProjectBasicInfo.getHtxx();
         //serialNo
         Long serialNo = pmisProjectBasicInfo.getKhxx();
-//        pmId 项目id type 合同产品类型 @see cn.com.winning.ssgj.base.Constants.PMIS.CPLB_* 1 标准产品 9 接口
-//        dataType 数据类别 0 国标数据;1 行标数据；2 共享数据；3 易用数据；
-        List<PmisProductInfo> pmisProductInfos = this.getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndTypeAndDataType(pmId, 1, dataType);
-        for (int i = 0; i < pmisProductInfos.size(); i++) {
-            EtDataCheck etDataCheck = new EtDataCheck();
-            etDataCheck.setCId(cId);
-            etDataCheck.setPmId(pmId);
-            etDataCheck.setSerialNo(serialNo.toString());
-            etDataCheck.setPdId(pmisProductInfos.get(i).getId());
-            etDataCheck.setPlId(NumberParseUtil.parseLong(pmisProductInfos.get(i).getCptx()));
-            //按条件查询数据是否存在
-            EtDataCheck etDataCheckTemp = getFacade().getEtDataCheckService().getEtDataCheck(etDataCheck);
+        EtDataCheck etDataCheck = new EtDataCheck();
+        etDataCheck.setPmId(pmId);
+        etDataCheck.setcId(cId);
+        etDataCheck.setSerialNo(serialNo.toString());
+        //根据pmId获取基础数据校验数据
+        List<EtDataCheck> etDataCheckList = getFacade().getEtDataCheckService().selectEtDataCheckListByPmIdAndDataType(etDataCheck);
+        EtDataCheck etDataCheckTemp = null;
+        for (EtDataCheck dataCheck : etDataCheckList) {
+            etDataCheckTemp = new EtDataCheck();
+            etDataCheckTemp.setPmId(dataCheck.getPmId());
+            etDataCheckTemp.setPlId(dataCheck.getPlId());
+            etDataCheckTemp = getFacade().getEtDataCheckService().getEtDataCheck(etDataCheckTemp);
             if (etDataCheckTemp == null) {
-                //当数据不存在时增加数据
-                etDataCheck.setId(ssgjHelper.createDataId());
-                etDataCheck.setOperator(operator);
-                etDataCheck.setCreator(operator);
-                etDataCheck.setCreateTime(new Timestamp(new java.util.Date().getTime()));
-                etDataCheck.setOperatorTime(new Timestamp(new Date().getTime()));
-                getFacade().getEtDataCheckService().createEtDataCheck(etDataCheck);
+                //不存在则插入
+                dataCheck.setId(ssgjHelper.createEtDataCheckId());
+                getFacade().getEtDataCheckService().createEtDataCheck(dataCheck);
+            } else {
+                //存在则更新
+                etDataCheckTemp.setOperator(operator);
+                etDataCheckTemp.setOperatorTime(new Timestamp(new Date().getTime()));
+                getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheckTemp);
             }
         }
         map.put("status", Constants.SUCCESS);
@@ -102,21 +103,20 @@ public class EtDataCheckController extends BaseController {
      * 基础数据类型列表
      *
      * @param row
-     * @param proStr 项目id
+     * @param pmId 项目id
      * @return
      * @description 根据项目id获取基础数据
      */
     @RequestMapping("/list.do")
     @ResponseBody
     @ILog(operationName = "基础数据校验表", operationType = "list")
-    public Map<String, Object> list(Row row, String proStr, String operator) {
+    public Map<String, Object> list(Row row, Long pmId, String operator) {
         //项目id
-        Long proId = Long.parseLong(proStr);
-        if (proId == null) {
+        if (pmId == null) {
             return null;
         }
         //根据项目id获取项目基本信息
-        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(proId);
+        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
         //获取合同id
         Long contractId = pmisProjectBasicInfo.getHtxx();
         //获取单据号即客户
@@ -126,26 +126,22 @@ public class EtDataCheckController extends BaseController {
 
         etDataCheck.setRow(row);
 
-        etDataCheck.setPmId(proId);
+        etDataCheck.setPmId(pmId);
 
-        etDataCheck.setCId(contractId);
+        etDataCheck.setcId(contractId);
 
         etDataCheck.setSerialNo(customerId.toString());
         //获取基础数据校验
         List<EtDataCheck> etDataCheckList =
                 getFacade().getEtDataCheckService().getEtDataCheckPaginatedList(etDataCheck);
-        PmisProductInfo pmisProductInfo = new PmisProductInfo();
-        SysDataCheckScript sysDataCheckScript = new SysDataCheckScript();
         //封装外参数
-        PmisProductLineInfo pmisProductLineInfo = new PmisProductLineInfo();
+        PmisProductLineInfo pmisProductLineInfo = null;
         //封装外参数
         for (EtDataCheck e : etDataCheckList) {
-            pmisProductInfo.setId(e.getPdId());
-            pmisProductInfo = getFacade().getPmisProductInfoService().getPmisProductInfo(pmisProductInfo);
+            pmisProductLineInfo=new PmisProductLineInfo();
             pmisProductLineInfo.setId(e.getPlId());
             pmisProductLineInfo = getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
             Map<String, Object> map = new HashMap();
-            map.put("subSystem", pmisProductInfo.getName());
             map.put("type", pmisProductLineInfo.getName());
             String checkResult = e.getCheckResult();
             if (checkResult == null || "没问题".equals(checkResult) || "校验正常".equals(checkResult) || "".equals(checkResult)) {
@@ -156,10 +152,15 @@ public class EtDataCheckController extends BaseController {
             e.setMap(map);
         }
         int total = getFacade().getEtDataCheckService().getEtDataCheckCount(etDataCheck);
+        //根据pmid获取项目进程
+        EtProcessManager etProcessManager=new EtProcessManager();
+        etProcessManager.setPmId(pmId);
+        etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", etDataCheckList);
         map.put("total", total);
         map.put("status", Constants.SUCCESS);
+        map.put("process",etProcessManager);
         return map;
     }
 
@@ -350,15 +351,9 @@ public class EtDataCheckController extends BaseController {
         if (pmId == null) {
             return null;
         }
-        //根据项目id获取项目基本信息
-        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
-        //获取合同id
-        Long contractId = pmisProjectBasicInfo.getHtxx();
-        //获取单据号即客户
-        Long customerId = pmisProjectBasicInfo.getKhxx();
-        etDataCheck.setCId(contractId);
-        etDataCheck.setSerialNo(customerId.toString());
-        int total = getFacade().getEtDataCheckService().getEtDataCheckCount(etDataCheck);
+        EtDataCheck dataCheck=new EtDataCheck();
+        dataCheck.setPmId(pmId);
+        int total = getFacade().getEtDataCheckService().getEtDataCheckCount(dataCheck);
         EtProcessManager etProcessManager = new EtProcessManager();
         etProcessManager.setPmId(pmId);
         Map<String, Object> map = new HashMap<String, Object>();
