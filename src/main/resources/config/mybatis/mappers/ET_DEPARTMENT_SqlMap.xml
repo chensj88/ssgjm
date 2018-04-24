@@ -55,6 +55,12 @@
 		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
 	</select>
 
+	<!-- Chen,Kuai 获取部门分类 -->
+	<select id="selectDepartmentTypeList" resultMap="etDepartmentResult" parameterType="etDepartment">
+		SELECT t.DEPT_TYPE,t.TYPE_NAME FROM ET_DEPARTMENT t where 1 = 1
+		<include refid="sf-etDepartment" />  GROUP BY t.DEPT_TYPE,t.TYPE_NAME
+	</select>
+
 	<insert id="insertEtDepartment" parameterType="etDepartment">
 		insert into ET_DEPARTMENT 
 		<trim prefix="(" suffix=")" suffixOverrides=",">

@@ -70,14 +70,25 @@ public class EtDepartmentController extends BaseController {
         EtDepartment unique = new EtDepartment();
         unique.setDeptName(depart.getDeptName());
         unique.setTypeName(depart.getTypeName());
+        unique.setSerialNo(depart.getSerialNo());
         unique.setIsDel(1);
         List<EtDepartment> uniqueList = new ArrayList<EtDepartment>();
         if (depart.getId() == 0L) {
             uniqueList = super.getFacade().getEtDepartmentService().getEtDepartmentList(unique);
+            //判断分类是否存在
+            EtDepartment DeptType = new EtDepartment();
+            DeptType.setTypeName(depart.getTypeName());
+            DeptType.setSerialNo(depart.getSerialNo());
+            DeptType.setIsDel(1);
             depart.setId(ssgjHelper.createSysHospitalDeptIdService());
             depart.setIsDel(1);
             depart.setDeptCode(String.valueOf(depart.getId()));
-            depart.setDeptType(String.valueOf(ssgjHelper.createSysHospitalDeptTypeIdService()));
+            List<EtDepartment> deptTypeList= super.getFacade().getEtDepartmentService().getEtDepartmentList(DeptType);
+            if(deptTypeList.size()>0){
+                depart.setDeptType(deptTypeList.get(0).getDeptType());
+            }else{
+                depart.setDeptType(String.valueOf(ssgjHelper.createSysHospitalDeptTypeIdService()));
+            }
             if(uniqueList==null||uniqueList.size()==0){
                 super.getFacade().getEtDepartmentService().createEtDepartment(depart);
             }else{

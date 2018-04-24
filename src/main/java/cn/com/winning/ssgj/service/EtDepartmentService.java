@@ -29,4 +29,6 @@ public interface EtDepartmentService {
     void createEtDepartmentExcel(List<List<Object>> departList, EtDepartment department);
 
     void generateDepartInfo(EtDepartment department, String path);
+
+    List<EtDepartment> selectDepartmentTypeList(EtDepartment info);
 }

@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.dao;
 import cn.com.winning.ssgj.domain.EtDepartment;
 import cn.com.winning.ssgj.dao.EntityDao;
 
+import java.util.List;
+
 /**
  * Coder AutoGenerator generate.
  *
@@ -11,4 +13,5 @@ import cn.com.winning.ssgj.dao.EntityDao;
  */
 public interface EtDepartmentDao extends EntityDao<EtDepartment> {
 
+    List<EtDepartment> selectDepartmentTypeList(EtDepartment t);
 }

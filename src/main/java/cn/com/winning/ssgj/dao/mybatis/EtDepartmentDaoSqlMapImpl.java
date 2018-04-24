@@ -6,6 +6,8 @@ import cn.com.winning.ssgj.dao.EtDepartmentDao;
 import cn.com.winning.ssgj.domain.EtDepartment;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.List;
+
 /**
  * Coder AutoGenerator generate.
  *
@@ -15,4 +17,8 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 @Service
 public class EtDepartmentDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtDepartment> implements EtDepartmentDao {
 
+    @Override
+    public List<EtDepartment> selectDepartmentTypeList(EtDepartment t) {
+        return this.getSqlSession().selectList("selectDepartmentTypeList",t);
+    }
 }

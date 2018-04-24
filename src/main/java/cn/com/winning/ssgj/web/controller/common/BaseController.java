@@ -119,6 +119,20 @@ public class BaseController extends BaseSpringMvcMybatisController {
         return shiroUser != null ? shiroUser : sessionUser;
     }
 
+    /**
+     * 获取科室类别
+     *
+     * @return
+     */
+
+    public List<EtDepartment> getDepartmentTypeList(Long serialNo){
+        EtDepartment info = new EtDepartment();
+        info.setIsDel(1);
+        info.setSerialNo(serialNo);
+        List<EtDepartment> departmentTypeList=getFacade().getEtDepartmentService().selectDepartmentTypeList(info);
+        return departmentTypeList;
+    }
+
 
     /**
      * 根据项目获取软硬件产品条线的系统集合

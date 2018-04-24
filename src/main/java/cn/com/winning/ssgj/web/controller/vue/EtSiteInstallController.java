@@ -99,6 +99,10 @@ public class EtSiteInstallController extends BaseController {
         @ResponseBody
         public Map<String,Object> siteInstallAddDept(EtSoftHardware info) {
             Map<String,Object> result = new HashMap<String,Object>();
+            //科室类别与科室
+            result.put("productLineList", super.getProductLineList(info.getPmId()));
+            result.put("productLineList", super.getProductLineList(info.getPmId()));
+            //产品条线
             result.put("productLineList", super.getProductLineList(info.getPmId()));
             return result;
         }

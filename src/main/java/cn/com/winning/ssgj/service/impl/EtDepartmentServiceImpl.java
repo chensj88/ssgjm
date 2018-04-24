@@ -81,7 +81,17 @@ public class EtDepartmentServiceImpl implements EtDepartmentService {
 					repeat.setTypeName(typeName);
 					repeat.setIsDel(1);
 					repeat.setSerialNo(department.getSerialNo());
-					repeat.setDeptType(String.valueOf(ssgjHelper.createSysHospitalDeptTypeIdService()));
+					//分类code不能重复生成
+					EtDepartment DeptType = new EtDepartment();
+					DeptType.setTypeName(department.getTypeName());
+					DeptType.setSerialNo(department.getSerialNo());
+					DeptType.setIsDel(1);
+					List<EtDepartment> deptTypeList= this.etDepartmentDao.selectEntityList(DeptType);
+					if(deptTypeList.size()>0){
+						repeat.setDeptType(deptTypeList.get(0).getDeptType());
+					}else{
+						repeat.setDeptType(String.valueOf(ssgjHelper.createSysHospitalDeptTypeIdService()));
+					}
 					this.etDepartmentDao.insertEntity(repeat);
 				}
 		}
@@ -107,6 +117,12 @@ public class EtDepartmentServiceImpl implements EtDepartmentService {
 		dataMap.put("colSize", colList.size());
 		dataMap.put("data", dataList);
 		ExcelUtil.writeExcel(dataList, colList, colList.size(), path);
+	}
+
+	@Override
+	public List<EtDepartment> selectDepartmentTypeList(EtDepartment t) {
+
+		return this.etDepartmentDao.selectDepartmentTypeList(t);
 	}
 
 }
