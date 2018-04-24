@@ -79,4 +79,19 @@ public class ProjectQueryController extends BaseController {
         return result;
 
     }
+
+    @RequestMapping( value = "/common/checkAuth.do")
+    @ResponseBody
+    public Map<String,Object> checkAuth(PmisProjctUser user){
+        if(user.getRy() == 100001L){
+            user.setRyfl(0);
+        }else{
+            user = super.getFacade().getPmisProjctUserService().getPmisProjctUser(user);
+        }
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", user.getRyfl() );
+        return result;
+
+    }
 }

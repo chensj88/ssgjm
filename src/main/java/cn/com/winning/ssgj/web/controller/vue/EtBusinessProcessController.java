@@ -226,27 +226,7 @@ public class EtBusinessProcessController extends BaseController {
         result.put("data", manager.getIsFlowConfig());
         return result;
     }
-
-    /**
-     * 查看是否完成流程配置工作
-     * @param user
-     * @return
-     */
-    @RequestMapping(value = "/checkAuth.do")
-    @ResponseBody
-    public Map<String,Object> checkUserAuth(PmisProjctUser user){
-        if(user.getRy() == 100001L){
-            user.setRyfl(0);
-        }else {
-            user = super.getFacade().getPmisProjctUserService().getPmisProjctUser(user);
-        }
-
-        Map<String,Object> result = new HashMap<String,Object>();
-        result.put("status", Constants.SUCCESS);
-        result.put("data", user.getRyfl());
-        return result;
-    }
-
+    
     /**
      * 上传文件
      * @param process
