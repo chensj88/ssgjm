@@ -335,6 +335,13 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
+    <!--客户科室类别信息-->
+    <bean id="sysHospitalDeptTypeIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="DEPT_TYPE_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
     <!--客户科室信息-->
     <bean id="sysHospitalDeptIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>

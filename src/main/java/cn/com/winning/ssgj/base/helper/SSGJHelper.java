@@ -161,9 +161,14 @@ public class SSGJHelper {
     @Autowired
     @Qualifier(value = "sysFloorsIdService")
     private StepSequenceFactory sysFloorsIdService;
+
     @Autowired
     @Qualifier(value = "sysHospitalDeptIdService")
     private StepSequenceFactory sysHospitalDeptIdService;
+
+    @Autowired
+    @Qualifier(value = "sysHospitalDeptTypeIdService")
+    private StepSequenceFactory sysHospitalDeptTypeIdService;
 
     @Autowired
     @Qualifier(value = "etContractTaskIdService")
@@ -276,6 +281,10 @@ public class SSGJHelper {
     public long createSysHospitalDeptIdService(){
         return (long)sysHospitalDeptIdService.create();
     }
+    public long createSysHospitalDeptTypeIdService(){
+        return (long)sysHospitalDeptTypeIdService.create();
+    }
+
     public long createEtLookProjectIdService(){
         return (long) etLookProjectIdService.create();
     }

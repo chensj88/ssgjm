@@ -30,6 +30,7 @@
 	<select id="selectEtDepartment" resultMap="etDepartmentResult" parameterType="etDepartment">
 		select * from ET_DEPARTMENT t where 1 = 1
 		<include refid="sf-etDepartment" />
+		<if test="(map.not_id != null and map.not_id != '') or map.not_id == 0"> and t.ID NOT IN #{map.not_id} </if>
 	</select>
 
 	<select id="selectEtDepartmentList" resultMap="etDepartmentResultForList" parameterType="etDepartment">
@@ -47,7 +48,7 @@
 
 	<select id="selectEtDepartmentPaginatedList" resultMap="etDepartmentResult" parameterType="etDepartment">
 		select * from (
-			select *, ROW_NUMBER() OVER ( order by id desc ) as _rn 
+			select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
 				from ET_DEPARTMENT t where 1 = 1
 			<include refid="sf-etDepartment" />
 			<!-- order by ID asc -->
@@ -55,7 +56,6 @@
 	</select>
 
 	<insert id="insertEtDepartment" parameterType="etDepartment">
-	<selectKey resultType="String"  order="BEFORE"  keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID</selectKey>
 		insert into ET_DEPARTMENT 
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 	       <if test="(id != null and id != '') or id == 0"> ID, </if>
@@ -95,7 +95,7 @@
 			</trim>
 		</set>
 		where
-		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="id != null and id != ''"> ID = #{id} </if>
 		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
 			ID in
 			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
