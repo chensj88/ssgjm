@@ -226,7 +226,7 @@ public class EtBusinessProcessController extends BaseController {
         result.put("data", manager.getIsFlowConfig());
         return result;
     }
-    
+
     /**
      * 上传文件
      * @param process

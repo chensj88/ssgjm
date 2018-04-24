@@ -82,7 +82,7 @@
 <!--模态框  -->
 <div class="modal fade" id="sysSoftHardwareInfoModal" tabindex="-1" role="dialog" aria-labelledby="sysSoftHardwareInfoModal">
     <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width:450px;">
+        <div class="modal-content" style="width:550px;">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
