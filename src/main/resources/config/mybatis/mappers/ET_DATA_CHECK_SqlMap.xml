@@ -146,4 +146,41 @@
         </where>
     </delete>
 
+    <select id="selectEtDataCheckListByPmIdAndDataType" resultMap="etDataCheckResultForList"
+            parameterType="etDataCheck">
+            SELECT
+                0 AS ID,
+                #{cId} AS C_ID,
+                #{pmId} AS PM_ID,
+                #{serialNo} AS SERIAL_NO,
+                o.ID AS PL_ID,
+                0 AS PD_ID,
+                NULL AS SCRIPT_PATH,
+                NULL AS CHECK_RESULT,
+                NULL AS CONTENT,
+                0 AS CREATOR,
+                GETDATE() AS CREATE_TIME,
+                NULL AS OPERATOR,
+                NULL AS OPERATOR_TIME
+            FROM
+                PMIS_PRODUCT_LINE_INFO o
+            INNER JOIN SYS_DATA_CHECK_SCRIPT s ON o.ID = s.APP_ID
+            WHERE
+                s.STATUS = 1
+            AND s.DATA_TYPE =0
+            AND o.ID IN (
+                SELECT DISTINCT
+                    m.CPTX
+                FROM
+                    PMIS_CONTRACT_PRODUCT_INFO p
+                RIGHT JOIN PMIS_PRODUCT_INFO m ON p.CPXX = m.ID
+                WHERE
+                    p.XMLCB = #{pmId}
+                AND m.ZT = 1
+                AND p.ZT = 1
+                AND p.HTCPLB = 1
+            )
+    </select>
+
+
 </mapper>

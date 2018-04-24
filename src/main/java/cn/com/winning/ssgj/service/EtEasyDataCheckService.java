@@ -26,4 +26,7 @@ public interface EtEasyDataCheckService {
 
     List<EtEasyDataCheck> getEtEasyDataCheckPaginatedList(EtEasyDataCheck t);
 
+    List<EtEasyDataCheck> selectEtEasyDataCheckListByPmIdAndDataType(EtEasyDataCheck etEasyDataCheck);
+
+
 }
