@@ -91,11 +91,6 @@ public class EtEasyDataCheckController extends BaseController {
                 //不存在则插入
                 easyDataCheck.setId(ssgjHelper.createEtEasyDataCheckId());
                 getFacade().getEtEasyDataCheckService().createEtEasyDataCheck(easyDataCheck);
-            } else {
-                //存在则更新
-                etEasyDataCheckTemp.setOperator(operator);
-                etEasyDataCheckTemp.setOperatorTime(new Timestamp(new Date().getTime()));
-                getFacade().getEtEasyDataCheckService().modifyEtEasyDataCheck(etEasyDataCheckTemp);
             }
         }
         map.put("status", Constants.SUCCESS);

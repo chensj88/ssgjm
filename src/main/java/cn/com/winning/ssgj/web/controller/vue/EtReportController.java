@@ -74,7 +74,10 @@ public class EtReportController extends BaseController {
         //循环查询是否数据师傅存在，不存在则插入
         EtReport etReportTemp = null;
         for (EtReport report : etReports) {
-            etReportTemp = getFacade().getEtReportService().getEtReport(report);
+            etReportTemp=new EtReport();
+            etReportTemp.setPmId(pmId);
+            etReportTemp.setSourceType(report.getSourceType());
+            etReportTemp = getFacade().getEtReportService().getEtReport(etReportTemp);
             if (etReportTemp == null) {
                 report.setId(ssgjHelper.createEtReportIdService());
                 getFacade().getEtReportService().createEtReport(report);
@@ -91,6 +94,7 @@ public class EtReportController extends BaseController {
      * 主页面数据展示
      *
      * @param etReport
+     * @param userId
      * @param row
      * @return
      */
@@ -98,7 +102,8 @@ public class EtReportController extends BaseController {
     @ResponseBody
     @Transactional
     @ILog
-    public Map<String, Object> list(EtReport etReport, Row row) {
+    public Map<String, Object> list(EtReport etReport,Long userId, Row row) {
+        Long pmId=etReport.getPmId();
         Integer completeNum = getCompleteNum(etReport);
         etReport.setRow(row);
         List<EtReport> etReports = super.getFacade().getEtReportService().getEtReportPaginatedList(etReport);
@@ -130,12 +135,27 @@ public class EtReportController extends BaseController {
         SysDictInfo sysDictInfo = new SysDictInfo();
         sysDictInfo.setDictCode("paperType");
         List<SysDictInfo> sysDictInfoList = getFacade().getSysDictInfoService().getSysDictInfoList(sysDictInfo);
+        //根据pmid获取项目进程
+        EtProcessManager etProcessManager = new EtProcessManager();
+        etProcessManager.setPmId(pmId);
+        etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
+        //根据pmid和userid查询当前用户
+        PmisProjctUser user = new PmisProjctUser();
+        user.setXmlcb(pmId);
+        user.setRy(userId);
+        if (user.getRy() == 100001L) {
+            user.setRyfl(0);
+        } else {
+            user = super.getFacade().getPmisProjctUserService().getPmisProjctUser(user);
+        }
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("rows", etReports);
         result.put("total", total);
         result.put("typeList", sysDictInfoList);
         result.put("completeNum", completeNum);
+        result.put("process", etProcessManager);
+        result.put("user", user);
         return result;
     }
 
@@ -194,6 +214,7 @@ public class EtReportController extends BaseController {
             super.getFacade().getEtReportService().modifyEtReport(etReport);
         } else {
             etReport.setId(ssgjHelper.createEtReportIdService());
+            etReport.setStatus(1);
             etReport.setSourceType(0);
             etReport.setCreator(etReport.getOperator());
             etReport.setCreateTime(new Timestamp(new Date().getTime()));
@@ -207,45 +228,51 @@ public class EtReportController extends BaseController {
     }
 
     /**
-     * 确认完成
+     * 确认数量完成
      *
-     * @param etReport
+     * @param etProcessManager
      * @return
      */
-    @RequestMapping(value = "/confirm.do")
+    @RequestMapping(value = "/confirmNum.do")
     @ResponseBody
+    @ILog
     @Transactional
-    public Map<String, Object> confirm(EtReport etReport) {
-        //项目id
-        Long pmId = etReport.getPmId();
-        if (pmId == null) {
-            return null;
-        }
-        //根据项目id获取项目基本信息
-        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
-        //获取合同id
-        Long contractId = pmisProjectBasicInfo.getHtxx();
-        //获取单据号即客户
-        Long customerId = pmisProjectBasicInfo.getKhxx();
-
-        etReport.setcId(contractId);
-
-        etReport.setSerialNo(customerId.toString());
-        int total = getFacade().getEtReportService().getEtReportCount(etReport);
-        EtProcessManager etProcessManager = new EtProcessManager();
-        etProcessManager.setPmId(pmId);
-        Map<String, Object> map = new HashMap<String, Object>();
-        if (total > 0) {
-            etProcessManager.setIsPaperDev(1);
-            getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(etProcessManager);
-            map.put("type", Constants.SUCCESS);
-            map.put("msg", "确认成功！");
-        } else {
-            map.put("type", "info");
-            map.put("msg", "无数据，确认失败！");
-        }
-        return map;
+    public Map<String, Object> confirmNum(EtProcessManager etProcessManager) {
+        EtProcessManager temp = new EtProcessManager();
+        temp.setPmId(etProcessManager.getPmId());
+        temp = super.getFacade().getEtProcessManagerService().getEtProcessManager(temp);
+        temp.setOperator(etProcessManager.getOperator());
+        temp.setOperatorTime(new Timestamp(new Date().getTime()));
+        temp.setIsPaperAffirm(etProcessManager.getIsPaperAffirm());
+        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(temp);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
     }
+
+    /**
+     * 确认开发完成
+     *
+     * @param etProcessManager
+     * @return
+     */
+    @RequestMapping(value = "/confirmDev.do")
+    @ResponseBody
+    @ILog
+    @Transactional
+    public Map<String, Object> confirmDev(EtProcessManager etProcessManager) {
+        EtProcessManager temp = new EtProcessManager();
+        temp.setPmId(etProcessManager.getPmId());
+        temp = super.getFacade().getEtProcessManagerService().getEtProcessManager(temp);
+        temp.setOperator(etProcessManager.getOperator());
+        temp.setOperatorTime(new Timestamp(new Date().getTime()));
+        temp.setIsPaperDev(etProcessManager.getIsPaperDev());
+        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(temp);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
+
 
     /**
      * 上传文件
@@ -333,5 +360,24 @@ public class EtReportController extends BaseController {
             }
         }
         return completeNum;
+    }
+
+    /**
+     * 更改审核状态
+     *
+     * @param etReport
+     * @return
+     */
+    @RequestMapping(value = "/changeStatus.do")
+    @ResponseBody
+    @ILog
+    @Transactional
+    public Map<String, Object> changeStatus(EtReport etReport) {
+        Map map = new HashMap();
+        etReport.setOperatorTime(new Timestamp(new Date().getTime()));
+        getFacade().getEtReportService().modifyEtReport(etReport);
+        map.put("type", Constants.SUCCESS);
+        map.put("msg", "完成情况修改成功！");
+        return map;
     }
 }

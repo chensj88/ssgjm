@@ -55,8 +55,11 @@ public class EtThirdIntterfaceController extends BaseController {
         List<EtThirdIntterface> etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().selectPmisInterfaceList(etThirdIntterface);
         EtThirdIntterface temp = null;
         for (EtThirdIntterface intterface : etThirdIntterfaces) {
+            temp = new EtThirdIntterface();
+            temp.setPmId(pmId);
+            temp.setSourceId(intterface.getSourceId());
             //查询数据是否入库
-            temp = getFacade().getEtThirdIntterfaceService().getEtThirdIntterface(intterface);
+            temp = getFacade().getEtThirdIntterfaceService().getEtThirdIntterface(temp);
             if (temp == null) {
                 //不存在则将数据插入
                 intterface.setId(ssgjHelper.createThirdInterfaceId());
@@ -105,12 +108,17 @@ public class EtThirdIntterfaceController extends BaseController {
      * 获取接口信息集合
      *
      * @param etThirdIntterface
+     * @param userId
      * @param row
      * @return
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String, Object> list(EtThirdIntterface etThirdIntterface, Row row) {
+    public Map<String, Object> list(EtThirdIntterface etThirdIntterface, Long userId, Row row) {
+        Long pmId = etThirdIntterface.getPmId();
+        if (pmId == null) {
+            return null;
+        }
         //完成数
         Integer completeNum = getCompleteNum(etThirdIntterface);
         etThirdIntterface.setRow(row);
@@ -137,12 +145,6 @@ public class EtThirdIntterfaceController extends BaseController {
                 contentArr = contentType.split(",");
             }
             map.put("contentList", contentArr);
-            if (intterface.getStatus() == null || intterface.getStatus() == 0) {
-                map.put("status", false);
-            } else {
-                map.put("status", true);
-            }
-
             map.put("plName", pmisProductLineInfo == null ? null : pmisProductLineInfo.getName());
             intterface.setMap(map);
         }
@@ -154,7 +156,19 @@ public class EtThirdIntterfaceController extends BaseController {
         SysDictInfo sysDictInfo = new SysDictInfo();
         sysDictInfo.setDictCode("NotInScope");
         List<SysDictInfo> sysDictInfoList = getFacade().getSysDictInfoService().getSysDictInfoList(sysDictInfo);
-
+        //根据pmid获取项目进程
+        EtProcessManager etProcessManager = new EtProcessManager();
+        etProcessManager.setPmId(pmId);
+        etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
+        //根据pmid和userid查询当前用户
+        PmisProjctUser user = new PmisProjctUser();
+        user.setXmlcb(pmId);
+        user.setRy(userId);
+        if (user.getRy() == 100001L) {
+            user.setRyfl(0);
+        } else {
+            user = super.getFacade().getPmisProjctUserService().getPmisProjctUser(user);
+        }
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("completeNum", completeNum);
         result.put("total", total);
@@ -162,6 +176,8 @@ public class EtThirdIntterfaceController extends BaseController {
         result.put("rows", etThirdIntterfaces);
         result.put("plList", pmisProductLineInfoList);
         result.put("resonList", sysDictInfoList);
+        result.put("process", etProcessManager);
+        result.put("user", user);
         return result;
     }
 
@@ -197,6 +213,9 @@ public class EtThirdIntterfaceController extends BaseController {
         } else {
             etThirdIntterface.setId(ssgjHelper.createThirdInterfaceId());
             etThirdIntterface.setCreator(etThirdIntterface.getOperator());
+            etThirdIntterface.setStatus(1);
+            etThirdIntterface.setSourceType(1);
+            etThirdIntterface.setSourceId(0L);
             etThirdIntterface.setCreateTime(new Timestamp(new Date().getTime()));
             etThirdIntterface.setOperatorTime(new Timestamp(new Date().getTime()));
             super.getFacade().getEtThirdIntterfaceService().createEtThirdIntterface(etThirdIntterface);
@@ -255,51 +274,49 @@ public class EtThirdIntterfaceController extends BaseController {
     }
 
     /**
-     * 确认完成
+     * 确认数量完成
      *
-     * @param pmId
+     * @param etProcessManager
      * @return
      */
-    @RequestMapping(value = "/confirm.do")
+    @RequestMapping(value = "/confirmNum.do")
     @ResponseBody
     @ILog
     @Transactional
-    public Map<String, Object> confirm(Long pmId, Long operator) {
+    public Map<String, Object> confirmNum(EtProcessManager etProcessManager) {
+        EtProcessManager temp = new EtProcessManager();
+        temp.setPmId(etProcessManager.getPmId());
+        temp = super.getFacade().getEtProcessManagerService().getEtProcessManager(temp);
+        temp.setOperator(etProcessManager.getOperator());
+        temp.setOperatorTime(new Timestamp(new Date().getTime()));
+        temp.setIsInterfaceAffirm(etProcessManager.getIsInterfaceAffirm());
+        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(temp);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
 
-        if (pmId == null) {
-            return null;
-        }
-        //根据项目id获取项目基本信息
-        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
-        //获取合同id
-        Long contractId = pmisProjectBasicInfo.getHtxx();
-        //获取单据号即客户
-        Long customerId = pmisProjectBasicInfo.getKhxx();
-
-        EtThirdIntterface etThirdIntterface = new EtThirdIntterface();
-
-        etThirdIntterface.setPmId(pmId);
-
-        etThirdIntterface.setcId(contractId);
-
-        etThirdIntterface.setSerialNo(customerId.toString());
-        int total = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfaceCount(etThirdIntterface);
-
-        EtProcessManager etProcessManager = new EtProcessManager();
-        etProcessManager.setPmId(pmId);
-        Map<String, Object> map = new HashMap<String, Object>();
-        if (total > 0) {
-            etProcessManager.setIsInterfaceDev(1);
-            etProcessManager.setOperator(operator);
-            etProcessManager.setOperatorTime(new Timestamp(new Date().getTime()));
-            getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(etProcessManager);
-            map.put("type", Constants.SUCCESS);
-            map.put("msg", "确认成功！");
-        } else {
-            map.put("type", "info");
-            map.put("msg", "无数据，确认失败！");
-        }
-        return map;
+    /**
+     * 确认开发完成
+     *
+     * @param etProcessManager
+     * @return
+     */
+    @RequestMapping(value = "/confirmDev.do")
+    @ResponseBody
+    @ILog
+    @Transactional
+    public Map<String, Object> confirmDev(EtProcessManager etProcessManager) {
+        EtProcessManager temp = new EtProcessManager();
+        temp.setPmId(etProcessManager.getPmId());
+        temp = super.getFacade().getEtProcessManagerService().getEtProcessManager(temp);
+        temp.setOperator(etProcessManager.getOperator());
+        temp.setOperatorTime(new Timestamp(new Date().getTime()));
+        temp.setIsInterfaceDev(etProcessManager.getIsInterfaceDev());
+        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(temp);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
     }
 
 
@@ -355,22 +372,15 @@ public class EtThirdIntterfaceController extends BaseController {
     /**
      * 更改审核状态
      *
-     * @param status
+     * @param etThirdIntterface
      * @return
      */
     @RequestMapping(value = "/changeStatus.do")
     @ResponseBody
     @ILog
     @Transactional
-    public Map<String, Object> changeStatus(Boolean status, Long id) {
+    public Map<String, Object> changeStatus(EtThirdIntterface etThirdIntterface) {
         Map map = new HashMap();
-        EtThirdIntterface etThirdIntterface = new EtThirdIntterface();
-        etThirdIntterface.setId(id);
-        if (status) {
-            etThirdIntterface.setStatus(1);
-        } else {
-            etThirdIntterface.setStatus(0);
-        }
         etThirdIntterface.setOperatorTime(new Timestamp(new Date().getTime()));
         getFacade().getEtThirdIntterfaceService().modifyEtThirdIntterface(etThirdIntterface);
         map.put("type", Constants.SUCCESS);
