@@ -76,13 +76,21 @@ public class HospitalUserController extends BaseController {
     @ILog
     @Transactional
     public Map<String, Object> addOrModifyHospitalUserInfo(SysUserInfo userInfo) {
+        //用户重复性校验
+        SysUserInfo oldUser = new SysUserInfo();
+        oldUser.setUserType(Constants.User.USER_TYPE_HOSPITAL);
+        oldUser.setStatus(Constants.PMIS_STATUS_USE);
+        oldUser.setSsgs(userInfo.getSsgs());
+        oldUser.setUserid(userInfo.getUserid());
+        oldUser = super.getFacade().getSysUserInfoService().getSysUserInfo(oldUser);
         userInfo.setUserType(Constants.User.USER_TYPE_HOSPITAL);
         userInfo.setPassword(MD5.stringMD5(userInfo.getUserid()));
         userInfo.setStatus(Constants.PMIS_STATUS_USE);
-        if (userInfo.getId() == 0L) {
+        if (oldUser == null) {
             userInfo.setId(ssgjHelper.createUserId());
             super.getFacade().getSysUserInfoService().createSysUserInfo(userInfo);
         } else {
+            userInfo.setId(oldUser.getId());
             super.getFacade().getSysUserInfoService().modifySysUserInfo(userInfo);
         }
         Map<String, Object> result = new HashMap<String, Object>();

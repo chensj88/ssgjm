@@ -62,6 +62,16 @@ public class EtOnlineUserContorller extends BaseController{
 	        return result;
 	    }
 
+		@RequestMapping(value = "/checkWork.do")
+		@ResponseBody
+		public Map<String,Object>  checkWork(EtProcessManager manager){
+			manager = super.getFacade().getEtProcessManagerService().getEtProcessManager(manager);
+			Map<String,Object> result = new HashMap<String,Object>();
+			result.put("status", Constants.SUCCESS);
+			result.put("workStatus",manager.getIsSupportStaff() == 1 ? true : false);
+			return result;
+		}
+
 	    @RequestMapping(value = "/addOrModify.do")
 	    @ResponseBody
 	    @ILog
@@ -181,6 +191,7 @@ public class EtOnlineUserContorller extends BaseController{
 	@ILog
 	@Transactional
 	public Map<String, Object> confirmEtOnlineUser(EtProcessManager  processManager){
+	    processManager = super.getFacade().getEtProcessManagerService().getEtProcessManager(processManager);
 		processManager.setIsSupportStaff(Constants.STATUS_USE);
 		processManager.setIsEnd(Constants.STATUS_USE);
 		processManager.setOperatorTime(new Timestamp(new Date().getTime()));
