@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.dao;
 
 import cn.com.winning.ssgj.domain.SysDataInfo;
 import cn.com.winning.ssgj.dao.EntityDao;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -30,4 +31,6 @@ public interface SysDataInfoDao extends EntityDao<SysDataInfo> {
     public List<SysDataInfo> selectSysDataInfoListByPmIdAndDataType(SysDataInfo t);
 
     public List<SysDataInfo> selectSysDataInfoListForORKey(SysDataInfo t);
+
+    Integer countTable(String tableName);
 }

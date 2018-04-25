@@ -77,4 +77,11 @@ public interface CommonQueryService {
      */
     List<PmisProductLineInfo> selectPmisProductLineInfoByProductInfo(List<PmisProductInfo> pmisProductInfos);
 
+    /**
+     * 根据表名查询表是否存在数据库中
+     * @param tableName
+     * @return
+     */
+    Integer countTable(String tableName);
+
 }

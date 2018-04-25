@@ -3,10 +3,7 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
-import cn.com.winning.ssgj.base.util.ConnectionUtil;
-import cn.com.winning.ssgj.base.util.DateUtil;
-import cn.com.winning.ssgj.base.util.ExcelUtil;
-import cn.com.winning.ssgj.base.util.ResultSetUtil;
+import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.EtProcessManager;
 import cn.com.winning.ssgj.domain.PmisProductInfo;
 import cn.com.winning.ssgj.domain.SysDataInfo;
@@ -59,7 +56,7 @@ public class SysDataInfoBufferController extends BaseController {
      * 基础数据类型列表
      *
      * @param row
-     * @param pmId   项目id
+     * @param pmId     项目id
      * @param dataType 0 国标数据;1 行标数据；2 共享数据；3 易用数据；
      * @return
      * @description 根据项目id获取基础数据
@@ -84,14 +81,14 @@ public class SysDataInfoBufferController extends BaseController {
         List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().selectSysDataInfoPaginatedListByPmIdAndDataType(sysDataInfo);
         int total = getFacade().getSysDataInfoService().countSysDataInfoListByPmIdAndDataType(sysDataInfo);
         //根据pmid获取项目进程
-        EtProcessManager etProcessManager=new EtProcessManager();
+        EtProcessManager etProcessManager = new EtProcessManager();
         etProcessManager.setPmId(pmId);
         etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", sysDataInfos);
         map.put("total", total);
         map.put("status", Constants.SUCCESS);
-        map.put("process",etProcessManager);
+        map.put("process", etProcessManager);
         return map;
     }
 
@@ -111,9 +108,27 @@ public class SysDataInfoBufferController extends BaseController {
         //表名
         String tableName = sysDataInfo.getTableName();
         logger.info("tableName:{}", tableName);
+        if (StringUtil.isEmptyOrNull(tableName)) {
+            logger.warn("tableName is null or empty!");
+            return null;
+        }
         //数据库
         String dbName = sysDataInfo.getDbName();
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ").append(dbName).append(".dbo.").append(tableName);
+        String checkTableName = null;
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ");
+        if (StringUtil.isEmptyOrNull(dbName)) {
+            //当存在库名时查询本库
+            sqlBuilder.append(tableName);
+            checkTableName = tableName;
+        } else {
+            sqlBuilder.append(dbName).append(".dbo.").append(tableName);
+            checkTableName = dbName + ".dbo." + tableName;
+        }
+        Integer num = getFacade().getCommonQueryService().countTable(checkTableName);
+        if (num == null || num == 0) {
+            logger.warn("table is not exist!");
+            return null;
+        }
         String sql = sqlBuilder.toString();
         logger.info("sql:{}", sql);
         Connection connection = ConnectionUtil.getConnection();
@@ -197,6 +212,7 @@ public class SysDataInfoBufferController extends BaseController {
 
     /**
      * 文件导出
+     *
      * @param response
      * @param pmId
      * @param dataType
@@ -236,8 +252,8 @@ public class SysDataInfoBufferController extends BaseController {
         List<String> attrNameList = new ArrayList<>();
         for (int i = 0; i < fields.length; i++) {
             //过滤无用属性值并保存
-            if(!"serialVersionUID".equals(fields[i].getName())&&!"nodeTree".equals(fields[i].getName()))
-            attrNameList.add(fields[i].getName());
+            if (!"serialVersionUID".equals(fields[i].getName()) && !"nodeTree".equals(fields[i].getName()))
+                attrNameList.add(fields[i].getName());
         }
         String filename = "DataInfo" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
         //创建工作簿
@@ -260,9 +276,27 @@ public class SysDataInfoBufferController extends BaseController {
         //表名
         String tableName = sysDataInfo.getTableName();
         logger.info("tableName:{}", tableName);
+        if (StringUtil.isEmptyOrNull(tableName)) {
+            logger.warn("tableName is null or empty!");
+            return;
+        }
         //数据库
         String dbName = sysDataInfo.getDbName();
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ").append(dbName).append(".dbo.").append(tableName);
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ");
+        String checkTableName = null;
+        if (StringUtil.isEmptyOrNull(dbName)) {
+            //当存在库名时查询本库
+            sqlBuilder.append(tableName);
+            checkTableName = tableName;
+        } else {
+            sqlBuilder.append(dbName).append(".dbo.").append(tableName);
+            checkTableName = dbName + ".dbo." + tableName;
+        }
+        Integer num = getFacade().getCommonQueryService().countTable(checkTableName);
+        if (num == null || num == 0) {
+            logger.warn("table is not exist!");
+            return;
+        }
         String sql = sqlBuilder.toString();
         logger.info("sql:{}", sql);
         Connection connection = ConnectionUtil.getConnection();
@@ -303,9 +337,27 @@ public class SysDataInfoBufferController extends BaseController {
         SysDataInfo sysDataInfo = getFacade().getSysDataInfoService().getSysDataInfo(t);
         String dbName = sysDataInfo.getDbName();
         String tableName = sysDataInfo.getTableName();
+        if (StringUtil.isEmptyOrNull(tableName)) {
+            logger.warn("tableName is null or empty!");
+            return ;
+        }
         //导出文件名
         String filename = sysDataInfo.getTableName() + ".sql";
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ").append(dbName).append(".dbo.").append(tableName);
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ");
+        String checkTableName = null;
+        if (StringUtil.isEmptyOrNull(dbName)) {
+            //当存在库名时查询本库
+            sqlBuilder.append(tableName);
+            checkTableName = tableName;
+        } else {
+            sqlBuilder.append(dbName).append(".dbo.").append(tableName);
+            checkTableName = dbName + ".dbo." + tableName;
+        }
+        Integer num = getFacade().getCommonQueryService().countTable(checkTableName);
+        if (num == null || num == 0) {
+            logger.warn("table is not exist!");
+            return;
+        }
         String sql = sqlBuilder.toString();
         Connection connection = ConnectionUtil.getConnection();
         PreparedStatement preparedStatement = null;
@@ -396,15 +448,15 @@ public class SysDataInfoBufferController extends BaseController {
         Map<String, Object> map = new HashMap<String, Object>();
         if (total > 0) {
             if (dataType == 0 || dataType == 1 || dataType == 2) {
-                    etProcessManager.setIsBasicDataUse(1);
+                etProcessManager.setIsBasicDataUse(1);
             } else if (dataType == 3) {
-                    etProcessManager.setIsEasyDataUse(1);
+                etProcessManager.setIsEasyDataUse(1);
 
             }
             getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(etProcessManager);
             map.put("type", Constants.SUCCESS);
             map.put("msg", "确认成功！");
-        }else{
+        } else {
             map.put("type", "info");
             map.put("msg", "无数据，确认失败！");
         }

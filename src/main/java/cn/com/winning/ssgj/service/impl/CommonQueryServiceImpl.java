@@ -3,10 +3,7 @@ package cn.com.winning.ssgj.service.impl;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.StringUtil;
-import cn.com.winning.ssgj.dao.PmisContractProductInfoDao;
-import cn.com.winning.ssgj.dao.PmisProductInfoDao;
-import cn.com.winning.ssgj.dao.PmisProductLineInfoDao;
-import cn.com.winning.ssgj.dao.SysUserInfoDao;
+import cn.com.winning.ssgj.dao.*;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 import cn.com.winning.ssgj.service.*;
@@ -58,6 +55,10 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     private SSGJHelper ssgjHelper;
     @Autowired
     private EtThirdIntterfaceService etThirdIntterfaceService;
+    @Autowired
+    private SysDataInfoDao sysDataInfoDao;
+
+
     @Override
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId) {
         //获取用户可以查看的项目信息
@@ -371,6 +372,16 @@ public class CommonQueryServiceImpl implements CommonQueryService {
      */
     public List<PmisProductLineInfo> selectPmisProductLineInfoByProductInfo(List<PmisProductInfo> pmisProductInfos) {
         return pmisProductLineInfoDao.selectPmisProductLineInfoByProductInfo(pmisProductInfos);
+    }
+
+    /**
+     * 根据表名查询表是否存在数据库中
+     * @param tableName
+     * @return
+     */
+    @Override
+    public Integer countTable(String tableName) {
+        return sysDataInfoDao.countTable(tableName);
     }
 
 }
