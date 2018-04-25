@@ -124,7 +124,6 @@ public class BaseController extends BaseSpringMvcMybatisController {
      *
      * @return
      */
-
     public List<EtDepartment> getDepartmentTypeList(Long serialNo){
         EtDepartment info = new EtDepartment();
         info.setIsDel(1);
@@ -132,6 +131,21 @@ public class BaseController extends BaseSpringMvcMybatisController {
         List<EtDepartment> departmentTypeList=getFacade().getEtDepartmentService().selectDepartmentTypeList(info);
         return departmentTypeList;
     }
+
+    /**
+     * 获取科室分类下的科室
+     * @return
+     */
+    public List<EtDepartment> getDepartmentList(Long serialNo,String deptType){
+        EtDepartment info = new EtDepartment();
+        info.setIsDel(1);
+        info.setSerialNo(serialNo);
+        info.setDeptType(deptType);
+        List<EtDepartment> departmentList=getFacade().getEtDepartmentService().getEtDepartmentList(info);
+        return departmentList;
+    }
+
+
 
 
     /**

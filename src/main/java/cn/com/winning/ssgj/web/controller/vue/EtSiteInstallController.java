@@ -97,15 +97,28 @@ public class EtSiteInstallController extends BaseController {
          */
         @RequestMapping(value = "/addDept.do")
         @ResponseBody
-        public Map<String,Object> siteInstallAddDept(EtSoftHardware info) {
+        public Map<String,Object> siteInstallAddDept(EtSoftHardware info,Long serialNo,String deptType) {
             Map<String,Object> result = new HashMap<String,Object>();
             //科室类别与科室
-            result.put("productLineList", super.getProductLineList(info.getPmId()));
-            result.put("productLineList", super.getProductLineList(info.getPmId()));
+            result.put("deptTypeList", super.getDepartmentTypeList(serialNo));
+            result.put("deptList", super.getDepartmentList(serialNo,deptType));
             //产品条线
             result.put("productLineList", super.getProductLineList(info.getPmId()));
             return result;
         }
+
+    /**
+     * 查询分类下的科室
+     * @return
+     */
+    @RequestMapping(value = "/deptList.do")
+    @ResponseBody
+    public Map<String,Object> deptList(EtDepartment info) {
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("deptList", super.getDepartmentList(info.getSerialNo(),info.getDeptType()));
+        return result;
+    }
+
 
     /**
      * 新增/修改科室
@@ -119,11 +132,17 @@ public class EtSiteInstallController extends BaseController {
         //判断科室名称是否重复
         EtSiteInstall install = new EtSiteInstall();
         install.setStatus(1);
-        install.setDeptName(info.getDeptName());
+        install.setDeptCode(info.getDeptCode());
         List<EtSiteInstall> installList=super.getFacade().getEtSiteInstallService().getEtSiteInstallList(info);
         if(installList.size()>0){
             result.put("status",1);
         }else{
+            //获取部门名称
+            EtDepartment dept = new EtDepartment();
+            dept.setDeptCode(info.getDeptCode());
+            dept.setIsDel(1);
+            dept=super.getFacade().getEtDepartmentService().getEtDepartment(dept);
+            info.setDeptName(dept.getDeptName());
             info.setId(ssgjHelper.createSiteInstallIdService());
             info.setDeptCode(String.valueOf(ssgjHelper.createSysHospitalDeptIdService()));
             info.setStatus(1);
