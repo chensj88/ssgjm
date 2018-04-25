@@ -116,10 +116,15 @@ public class EtSoftHardwareController extends BaseController {
         }
         //根据项目Id
         List<PmisProductLineInfo> pmisProductLineInfoList = this.getProductLineList(pmId);
+        //根据pmid获取项目进程
+        EtProcessManager etProcessManager = new EtProcessManager();
+        etProcessManager.setPmId(pmId);
+        etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("rows", etSoftHardwarePaginatedList);
         result.put("total", total);
         result.put("plList", pmisProductLineInfoList);
+        result.put("process", etProcessManager);
         result.put("status", Constants.SUCCESS);
         return result;
     }
@@ -378,37 +383,17 @@ public class EtSoftHardwareController extends BaseController {
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
     @Transactional
-    public Map<String, Object> confirm(EtSoftHardware etSoftHardware) {
-        //项目id
-        Long pmId = etSoftHardware.getPmId();
-        if (pmId == null) {
-            return null;
-        }
-        //根据项目id获取项目基本信息
-        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
-        //获取合同id
-        Long contractId = pmisProjectBasicInfo.getHtxx();
-        //获取单据号即客户
-        Long customerId = pmisProjectBasicInfo.getKhxx();
-
-        etSoftHardware.setcId(contractId);
-
-        etSoftHardware.setSerialNo(customerId.toString());
-        int total = getFacade().getEtSoftHardwareService().getEtSoftHardwareCount(etSoftHardware);
-        EtProcessManager etProcessManager = new EtProcessManager();
-        etProcessManager.setPmId(pmId);
-        Map<String, Object> map = new HashMap<String, Object>();
-        if (total > 0) {
-            etProcessManager.setIsHardwareList(1);
-            etProcessManager.setOperatorTime(new Timestamp(new Date().getTime()));
-            getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(etProcessManager);
-            map.put("type", Constants.SUCCESS);
-            map.put("msg", "确认成功！");
-        } else {
-            map.put("type", "info");
-            map.put("msg", "无数据，确认失败！");
-        }
-        return map;
+    public Map<String, Object> confirm(EtProcessManager etProcessManager) {
+        EtProcessManager temp = new EtProcessManager();
+        temp.setPmId(etProcessManager.getPmId());
+        temp = super.getFacade().getEtProcessManagerService().getEtProcessManager(temp);
+        temp.setOperator(etProcessManager.getOperator());
+        temp.setOperatorTime(new Timestamp(new Date().getTime()));
+        temp.setIsHardwareList(etProcessManager.getIsHardwareList());
+        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(temp);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
     }
 
 
