@@ -1,0 +1,38 @@
+.form-text {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: bold;
+    padding: 5px 0px;
+    height: 30px;
+}
+.input-style{
+    font-size: 12px;
+    line-height: 1.42857143;
+    color: #555;
+    height: 30px;
+    padding: 5px 0px;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.div-style{
+    padding: 10px;
+}
+
+.col-xs-3 .form-text,
+.col-sm-3 .form-text,
+.col-md-3 .form-text{
+    font-size: 12px;
+}
+.col-lg-3 .form-text{
+    font-size: 16px;
+}
+.col-lg-4 .form-text{
+    font-size: 18px;
+}
+.select-style{
+    width: 150px;
+}

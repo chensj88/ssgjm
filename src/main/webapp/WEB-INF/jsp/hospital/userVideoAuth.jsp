@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-treeview.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/fileinput.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/css/common.css"/>
     <base href="<%=basePath%>">
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <style type="text/css">
@@ -72,78 +73,77 @@
     </style>
 </head>
 <body>
-<div class="row text-center" id="queryScope">
-    <div class="row">
-        <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3" role="group">
-                <label class="col-sm-6 control-label text-right" for="serialName">客户名称：</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control input-sm" style="width: 200px" id="serialName"
-                           data-provide="typeahead"/>
+<div class="container-fluid">
+    <div class="row text-center" id="queryScope">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 div-style text-center" role="group">
+                    <label class="ccol-sm-4 form-text" for="serialName">客户名称：</label>
+                        <input type="text" class="input-style" style="width: 200px" id="serialName"
+                               data-provide="typeahead"/>
+                </div>
+                <input type="hidden" id="serialId">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 div-style text-center">
+                    <label class="ccol-sm-4 form-text" for="serialName">客户号：</label>
+                        <input type="text" class="input-style" style="width: 200px" id="serialNo" readonly/>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 div-style text-center" role="group">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-info btn-sm" id="queryCustomer">
+                            <span class="glyphicon glyphicon-search"></span>
+                            查询用户菜单
+                        </button>
+                        <button type="button" class="btn btn-success btn-sm" id="upload">
+                            <span class="glyphicon glyphicon-upload"></span>
+                            上传用户菜单
+                        </button>
+                        <button type="button" class="btn btn-info btn-sm" id="queryUpload">
+                            <span class="glyphicon glyphicon-search"></span>
+                            查询上传结果
+                        </button>
+                    </div>
                 </div>
             </div>
-            <input type="hidden" id="serialId">
-            <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3" role="group">
-                <label class="col-sm-6 control-label text-right" for="serialName">客户号：</label>
+        </div>
+    </div>
+    <div class="hr hr32 hr-dotted"></div>
+    <div class="row text-center">
+        <form class="form-horizontal col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" id="uploadForm" role="form">
+            <div class="form-group" id="uploadFileDiv">
+                <label class="col-sm-3 control-label" for="uploadFile">用户菜单信息：</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control input-sm" style="width: 200px" id="serialNo" readonly/>
+                    <input id="uploadFile" name="uploadFile" type="file">
                 </div>
-            </div>
-            <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3" role="group">
-                <div class="btn-group" role="group" >
-                <button type="button" class="btn btn-info btn-sm" id="queryCustomer">
-                    <span class="glyphicon glyphicon-search"></span>
-                    查询用户菜单
+                <button type="button" class="btn btn-info btn-sm" id="closeForm">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    关闭
                 </button>
-                <button type="button" class="btn btn-success btn-sm" id="upload">
-                    <span class="glyphicon glyphicon-upload"></span>
-                    上传用户菜单
-                </button>
-                 <button type="button" class="btn btn-info btn-sm" id="queryUpload">
-                   <span class="glyphicon glyphicon-search"></span>
-                     查询上传结果
-                 </button>
-            </div>
             </div>
         </form>
     </div>
-</div>
-<div class="hr hr32 hr-dotted"></div>
-<div class="row text-center">
-    <form class="form-horizontal col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" id="uploadForm"  role="form">
-        <div class="form-group" id="uploadFileDiv">
-            <label class="col-sm-3 control-label" for="uploadFile">用户菜单信息：</label>
-            <div class="col-sm-6">
-                <input id="uploadFile" name="uploadFile" type="file">
-            </div>
-            <button type="button" class="btn btn-info btn-sm" id="closeForm">
-                <span class="glyphicon glyphicon-remove"></span>
-                关闭
-            </button>
-        </div>
-    </form>
-</div>
-<!--表格区域  -->
-<table id="infoTable" class="table-align"></table>
+    <!--表格区域  -->
+    <table id="infoTable" class="table-align"></table>
 
-<div class="btn-group" id="btntoolbar" style="display: none;">
-    <button id="importAuth" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-upload"></span>导入用户菜单权限</button>
-</div>
-<div class="modal fade" id="message" tabindex="-1" role="dialog" aria-labelledby="messageModal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width:450px;">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">提示信息</h4>
-            </div>
+    <div class="btn-group" id="btntoolbar" style="display: none;">
+        <button id="importAuth" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-upload"></span>导入用户菜单权限
+        </button>
+    </div>
+    <div class="modal fade" id="message" tabindex="-1" role="dialog" aria-labelledby="messageModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="width:450px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">提示信息</h4>
+                </div>
 
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="alert alert-info" role="alert" id="alertMsg">
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="alert alert-info" role="alert" id="alertMsg">
 
+                            </div>
                         </div>
                     </div>
                 </div>
