@@ -138,18 +138,7 @@
 	</select>
 
 	<update id="removeSysProductInterInfoByIds" parameterType="java.util.Map">
-		update SYS_PRODUCT_INTERFACE_INFO
-		<set>
-			<trim suffixOverrides=",">
-				<if test="user != null and user != ''">
-					LAST_UPDATOR =${user},
-				</if>
-				<if test="user != null and user != ''">
-					EXPIRE_DATE = CURRENT_TIMESTAMP,
-				</if>
-			</trim>
-
-		</set>
+		DELETE  FROM  SYS_PRODUCT_INTERFACE_INFO
 		<where>
 			<if test=" ids != null and ids != ''">
 				${ids}

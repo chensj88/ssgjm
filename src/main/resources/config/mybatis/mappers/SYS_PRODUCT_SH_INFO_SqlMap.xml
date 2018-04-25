@@ -136,24 +136,14 @@
 		</where>
 	</select>
 
-	<update id="removeSysProductShInfoMapping" parameterType="java.util.Map">
-		update SYS_PRODUCT_SH_INFO
-		<set>
-			<trim suffixOverrides=",">
-				<if test="user != null and user != ''">
-					LAST_UPDATOR =${user},
-				</if>
-				<if test="user != null and user != ''">
-					EXPIRE_DATE = CURRENT_TIMESTAMP,
-				</if>
-			</trim>
-		</set>
+	<delete id="removeSysProductShInfoMapping" parameterType="java.util.Map">
+		DELETE FROM  SYS_PRODUCT_SH_INFO
 		<where>
 			<if test=" ids != null and ids != ''">
 				${ids}
 			</if>
 		</where>
-	</update>
+	</delete>
 	<select id="selectSysProductSHInfoByIdMap" parameterType="java.util.Map" resultMap="sysProductShInfoResult">
 		SELECT
 		A.*

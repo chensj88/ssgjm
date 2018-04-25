@@ -135,24 +135,14 @@
 		</where>
 	</select>
 
-	<update id="removeSysProductPaperInfoMapping" parameterType="java.util.Map">
-		update SYS_PRODUCT_PAPER_INFO
-		<set>
-			<trim suffixOverrides=",">
-				<if test="user != null and user != ''">
-					LAST_UPDATOR =${user},
-				</if>
-				<if test="user != null and user != ''">
-					EXPIRE_DATE = CURRENT_TIMESTAMP,
-				</if>
-			</trim>
-		</set>
+	<delete id="removeSysProductPaperInfoMapping" parameterType="java.util.Map">
+		DELETE FROM  SYS_PRODUCT_PAPER_INFO
 		<where>
 			<if test=" ids != null and ids != ''">
 				${ids}
 			</if>
 		</where>
-	</update>
+	</delete>
 
 	<select id="selectSysProductPaperInfoByIdMap" parameterType="java.util.Map" resultMap="sysProductPaperInfoResult">
 		SELECT

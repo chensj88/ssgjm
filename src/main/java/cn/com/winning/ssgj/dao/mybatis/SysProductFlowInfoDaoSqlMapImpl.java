@@ -33,7 +33,7 @@ public class SysProductFlowInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysProd
     @Override
     public Integer removeSysProductFlowInfoMappingByIds(Map<String, Object> param) {
         String statement = "removeSysProductFlowInfoMappingByIds";
-        return  super.getSqlSession().update(statement,param);
+        return  super.getSqlSession().delete(statement,param);
     }
 
     @Override

@@ -27,7 +27,7 @@ public class SysProductShInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysProduc
     @Override
     public int removeSysProductShInfoMapping(Map<String, Object> param) {
         String statement = "removeSysProductShInfoMapping";
-        return super.getSqlSession().update(statement,param);
+        return super.getSqlSession().delete(statement,param);
     }
 
     @Override

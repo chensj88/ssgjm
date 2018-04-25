@@ -147,25 +147,14 @@
 		</where>
 	</select>
 
-	<update id="removeSysProductFlowInfoMappingByIds" parameterType="java.util.Map">
-		update SYS_PRODUCT_FLOW_INFO
-		<set>
-			<trim suffixOverrides=",">
-				<if test="user != null and user != ''">
-					LAST_UPDATOR =${user},
-				</if>
-				<if test="user != null and user != ''">
-					EXPIRE_DATE = CURRENT_TIMESTAMP,
-				</if>
-			</trim>
-
-		</set>
+	<delete id="removeSysProductFlowInfoMappingByIds" parameterType="java.util.Map">
+		DELETE FROM SYS_PRODUCT_FLOW_INFO
 		<where>
 			<if test=" ids != null and ids != ''">
 				${ids}
 			</if>
 		</where>
-	</update>
+	</delete>
 	
 	<select id="selectSysFlowInfoIdsoByPdId" parameterType="java.util.Map" resultType="long">
 		SELECT  DISTINCT A.FLOW_ID  FROM

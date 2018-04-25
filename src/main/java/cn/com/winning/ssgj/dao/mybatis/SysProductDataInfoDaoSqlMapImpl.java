@@ -27,7 +27,7 @@ public class SysProductDataInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysProd
     @Override
     public Integer removeSysProductDataInfoByIds(Map<String, Object> param) {
         String statement = "removeSysProductDataInfoByIds";
-        return super.getSqlSession().update(statement,param);
+        return super.getSqlSession().delete(statement,param);
     }
 
     @Override

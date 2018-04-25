@@ -25,7 +25,7 @@ public class SysProductPaperInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysPro
 
     @Override
     public int removeSysProductPaperInfoMapping(Map<String, Object> param) {
-        return this.getSqlSession().update("removeSysProductPaperInfoMapping",param);
+        return this.getSqlSession().delete("removeSysProductPaperInfoMapping",param);
     }
 
     @Override
