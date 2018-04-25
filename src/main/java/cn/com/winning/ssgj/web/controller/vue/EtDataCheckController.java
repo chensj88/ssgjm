@@ -87,11 +87,6 @@ public class EtDataCheckController extends BaseController {
                 //不存在则插入
                 dataCheck.setId(ssgjHelper.createEtDataCheckId());
                 getFacade().getEtDataCheckService().createEtDataCheck(dataCheck);
-            } else {
-                //存在则更新
-                etDataCheckTemp.setOperator(operator);
-                etDataCheckTemp.setOperatorTime(new Timestamp(new Date().getTime()));
-                getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheckTemp);
             }
         }
         map.put("status", Constants.SUCCESS);
