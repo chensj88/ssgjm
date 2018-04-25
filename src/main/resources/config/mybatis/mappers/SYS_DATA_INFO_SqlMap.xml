@@ -329,4 +329,15 @@
         )
     </select>
 
+    <!--查询表是否存在-->
+    <select id="countTable" resultType="int">
+        SELECT
+          COUNT (*)
+        FROM
+	      sysobjects
+        WHERE
+	      id = object_id(
+		    #{tableName}
+	      )
+    </select>
 </mapper>

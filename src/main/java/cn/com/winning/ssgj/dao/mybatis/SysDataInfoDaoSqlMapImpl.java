@@ -75,4 +75,9 @@ public class SysDataInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysDataInfo> i
     public List<SysDataInfo> selectSysDataInfoListForORKey(SysDataInfo t) {
         return super.getSqlSession().selectList("selectSysDataInfoListForORKey",t);
     }
+
+    @Override
+    public Integer countTable(String tableName) {
+        return this.getSqlSession().selectOne("countTable",tableName);
+    }
 }

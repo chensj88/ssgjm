@@ -104,7 +104,7 @@ public class ResultSetUtil {
      */
     public static String resultSetToSql(ResultSet resultSet, String dbName, String tableName) {
         if (resultSet == null) {
-            return "";
+            return "Can not find table!";
         }
         //存储列名和列类型
         Map<String, String> map = new HashMap<>();
