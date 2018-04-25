@@ -3,6 +3,71 @@
  * @author huwanli
  * @version 1.0.0
  */
+
+function initVliadate() {
+    // 表单验证
+    $('#sysSoftHardwareInfoForm').bootstrapValidator({
+        message: '输入的值不符合规格',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            shName: {
+                message: '设备名称验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '设备名称不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 18,
+                        message: '设备名称长度必须在2到18位之间'
+                    }
+
+                }
+            },
+            shDesc: {
+                validators: {
+                    notEmpty: {
+                        message: '设备描述不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 50,
+                        message: '设备描述长度必须在2到50位之间'
+                    }
+                }
+            },
+            shBrand : {
+                validators: {
+                    notEmpty: {
+                        message: '推荐品牌不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 50,
+                        message: '推荐品牌必须在2到50位之间'
+                    }
+                }
+            },
+            shBrandType : {
+                validators: {
+                    notEmpty: {
+                        message: '推荐型号不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 50,
+                        message: '推荐型号必须在2到50位之间'
+                    }
+                }
+            }
+        }
+    });
+}
+
 function editSH(id,shCode,shName,shDesc,shBrand,shBrandType) {
     console.log(id)
     $("#code").show();
@@ -12,6 +77,8 @@ function editSH(id,shCode,shName,shDesc,shBrand,shBrandType) {
     $('#shDesc').val(shDesc);
     $('#shBrand').val(shBrand);
     $('#shBrandType').val(shBrandType);
+    $('#sysSoftHardwareInfoForm').bootstrapValidator("destroy");
+    initVliadate();
     $('#sysSoftHardwareInfoModal').modal('show');
 }
 
@@ -102,7 +169,7 @@ $(function () {
             formatter: function (value) {
                 if (value == '1') {
                     return '硬件';
-                } else if (value = '0') {
+                } else if (value == '0') {
                     return '软件';
                 }
             },
@@ -130,9 +197,9 @@ $(function () {
                 formatter: function (value) {
                     if (value == '1') {
                         return '正式';
-                    } else if (value = '0') {
+                    } else if (value == '0') {
                         return '测试';
-                    } else if (value = '2') {
+                    } else if (value == '2') {
                         return '测试&正式';
                     }
                 },
@@ -174,6 +241,8 @@ $(function () {
         $('#shDesc').val("");
         $('#shBrand').val("");
         $('#shBrandType').val("");
+        $('#sysSoftHardwareInfoForm').bootstrapValidator("destroy");
+        initVliadate();
         $('#sysSoftHardwareInfoModal').modal('show');
     });
 
@@ -236,65 +305,6 @@ $(function () {
             }
         });
     });
-})
-// 表单验证
-$('#sysSoftHardwareInfoForm').bootstrapValidator({
-    message: '输入的值不符合规格',
-    feedbackIcons: {
-        valid: 'glyphicon glyphicon-ok',
-        invalid: 'glyphicon glyphicon-remove',
-        validating: 'glyphicon glyphicon-refresh'
-    },
-    fields: {
-    	shName: {
-            message: '设备名称验证失败',
-            validators: {
-                notEmpty: {
-                    message: '设备名称不能为空'
-                },
-                stringLength: {
-                    min: 2,
-                    max: 18,
-                    message: '设备名称长度必须在2到18位之间'
-                }
 
-            }
-        },
-        shDesc: {
-            validators: {
-                notEmpty: {
-                    message: '设备描述不能为空'
-                },
-                stringLength: {
-                    min: 2,
-                    max: 50,
-                    message: '设备描述长度必须在2到50位之间'
-                }
-            }
-        },
-        shBrand : {
-            validators: {
-                notEmpty: {
-                    message: '推荐品牌不能为空'
-                },
-                stringLength: {
-                    min: 2,
-                    max: 50,
-                    message: '推荐品牌必须在2到50位之间'
-                }
-            }
-        },
-        shBrandType : {
-            validators: {
-                notEmpty: {
-                    message: '推荐型号不能为空'
-                },
-                stringLength: {
-                    min: 2,
-                    max: 50,
-                    message: '推荐型号必须在2到50位之间'
-                }
-            }
-        }
-    }
-});
+
+})

@@ -108,6 +108,9 @@ $(function () {
         });
 
     }
+
+    let  itemData = [];
+    let  completeData = [];
     $.each(data,function (index,value,array) {
         var content =
             "<div class=\"grid3\">\n" +
@@ -118,129 +121,89 @@ $(function () {
             "            <h4 class=\"bigger pull-right\">"+value.data+"</h4>\n" +
             "            </div>";
         $('#userContent').append(content);
-        /*if(index == cLength - 1){
-            bdids += value.id;
-        }else{
-            bdids += value.id +',';
-        }*/
+        itemData.push(value.label);
+        completeData.push(value.data);
     });
-
-
-
-    var $tooltip = $("<div class='tooltip top in'><div class='tooltip-inner'></div></div>").hide().appendTo('body');
-    var previousPoint = null;
-
-    placeholder.on('plothover', function (event, pos, item) {
-        if(item) {
-            if (previousPoint != item.seriesIndex) {
-                previousPoint = item.seriesIndex;
-                var tip = item.series['label'] + " : " + item.series['percent']+'%';
-                $tooltip.show().children(0).text(tip);
+    let dataStyle = {
+        normal: {
+            label: {
+                show: true,
+                position: 'inside',
             }
-            $tooltip.css({top:pos.pageY + 10, left:pos.pageX + 10});
-        } else {
-            $tooltip.hide();
-            previousPoint = null;
-        }
-
-    });
-
-
-
-
-
-
-    var d1 = [];
-    for (var i = 0; i < Math.PI * 2; i += 0.5) {
-        d1.push([i, Math.sin(i)]);
-    }
-
-    var d2 = [];
-    for (var i = 0; i < Math.PI * 2; i += 0.5) {
-        d2.push([i, Math.cos(i)]);
-    }
-
-    var d3 = [];
-    for (var i = 0; i < Math.PI * 2; i += 0.2) {
-        d3.push([i, Math.tan(i)]);
-    }
-
-
-    var sales_charts = $('#sales-charts').css({'width':'100%' , 'height':'220px'});
-    $.plot("#sales-charts", [
-        { label: "Domains", data: d1 },
-        { label: "Hosting", data: d2 },
-        { label: "Services", data: d3 }
-    ], {
-        hoverable: true,
-        shadowSize: 0,
-        series: {
-            lines: { show: true },
-            points: { show: true }
         },
-        xaxis: {
-            tickLength: 0
+        borderColor: '#f00',
+        borderWidth: 10,
+        borderType: 'solid'
+    };
+    let option = {
+        tooltip: {
+            show: true,
+            trigger: 'item'
         },
-        yaxis: {
-            ticks: 10,
-            min: -2,
-            max: 2,
-            tickDecimals: 3
+        legend: {
+            data: ['数量'],
+            textStyle: {
+                color: '#666'
+            }
         },
         grid: {
-            backgroundColor: { colors: [ "#fff", "#fff" ] },
-            borderWidth: 1,
-            borderColor:'#555'
-        }
-    });
-
-
-    $('#recent-box [data-rel="tooltip"]').tooltip({placement: tooltip_placement});
-    function tooltip_placement(context, source) {
-        var $source = $(source);
-        var $parent = $source.closest('.tab-content')
-        var off1 = $parent.offset();
-        var w1 = $parent.width();
-
-        var off2 = $source.offset();
-        var w2 = $source.width();
-
-        if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
-        return 'left';
-    }
-
-
-    $('.dialogs,.comments').slimScroll({
-        height: '300px'
-    });
-
-
-    //Android's default browser somehow is confused when tapping on label which will lead to dragging the task
-    //so disable dragging when clicking on label
-    var agent = navigator.userAgent.toLowerCase();
-    if("ontouchstart" in document && /applewebkit/.test(agent) && /android/.test(agent))
-        $('#tasks').on('touchstart', function(e){
-            var li = $(e.target).closest('#tasks li');
-            if(li.length == 0)return;
-            var label = li.find('label.inline').get(0);
-            if(label == e.target || $.contains(label, e.target)) e.stopImmediatePropagation() ;
-        });
-
-    $('#tasks').sortable({
-            opacity:0.8,
-            revert:true,
-            forceHelperSize:true,
-            placeholder: 'draggable-placeholder',
-            forcePlaceholderSize:true,
-            tolerance:'pointer',
-            stop: function( event, ui ) {//just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
-                $(ui.item).css('z-index', 'auto');
+            left: '10%',
+            right: '10%',
+            bottom: '10%',
+            containLabel: true
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                mark: {show: true},
+                magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                restore: {show: true},
+                saveAsImage: {show: true}
             }
-        }
-    );
-    $('#tasks').disableSelection();
-    $('#tasks input:checkbox').removeAttr('checked').on('click', function(){
-        if(this.checked) $(this).closest('li').addClass('selected');
-        else $(this).closest('li').removeClass('selected');
-    });
+        },
+        calculable: true,
+        xAxis: [
+            {
+                type: 'category',
+                data:itemData,
+                axisTick: {
+                    alignWithLabel: true
+                },
+                axisLabel: {
+                    color: '#666666',
+                    fontFamily: 'Microsoft YaHei'
+                },
+                axisLine: {
+                    show: false
+                }
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                axisLabel: {
+                    color: '#93abba'
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#93abba'
+                    }
+                }
+            }
+        ],
+        series: [
+            {
+                name: '人员数量',
+                type: 'bar',
+                stack: '总量',
+                itemStyle: dataStyle,
+                data: completeData
+            }
+        ],
+        color: ['#7537ed', '#ba9bf6']
+    };
+    setTimeout(_ => {
+        let myChart = echarts.init(document.getElementById('main'));
+        myChart.setOption(option);
+    }, 0);
 });

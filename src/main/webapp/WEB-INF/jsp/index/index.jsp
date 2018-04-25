@@ -52,7 +52,7 @@
 
                             <div class="vspace-sm"></div>
 
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="widget-box">
                                     <div class="widget-header widget-header-flat widget-header-small">
                                         <h5>
@@ -64,30 +64,10 @@
                                     <div class="widget-body">
                                         <div class="widget-main">
                                             <div id="piechart-placeholder"></div>
-
                                             <div class="hr hr8 hr-double"></div>
-
                                             <div class="clearfix" id="userContent">
-
+                                            <div id="main" style="width: 100%;height: 300px;"></div>
                                             </div>
-                                        </div><!-- /widget-main -->
-                                    </div><!-- /widget-body -->
-                                </div><!-- /widget-box -->
-                            </div><!-- /span -->
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                <div class="widget-box">
-                                    <div class="widget-header widget-header-flat widget-header-small">
-                                        <h5>
-                                            <i class="icon-signal"></i>
-                                            菜单信息
-                                        </h5>
-                                    </div>
-
-                                    <div class="widget-body">
-                                        <div class="widget-main">
-                                            <ul class="nav nav-list" id="nav">
-
-                                            </ul>
                                         </div><!-- /widget-main -->
                                     </div><!-- /widget-body -->
                                 </div><!-- /widget-box -->
@@ -95,156 +75,6 @@
                         </div><!-- /row -->
 
                         <div class="hr hr32 hr-dotted"></div>
-
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <div class="widget-box transparent">
-                                    <div class="widget-header widget-header-flat">
-                                        <h4 class="lighter">
-                                            <i class="icon-star orange"></i>
-                                            热门域名
-                                        </h4>
-
-                                        <div class="widget-toolbar">
-                                            <a href="#" data-action="collapse">
-                                                <i class="icon-chevron-up"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div class="widget-body">
-                                        <div class="widget-main no-padding">
-                                            <table class="table table-bordered table-striped">
-                                                <thead class="thin-border-bottom">
-                                                <tr>
-                                                    <th>
-                                                        <i class="icon-caret-right blue"></i>
-                                                        名称
-                                                    </th>
-
-                                                    <th>
-                                                        <i class="icon-caret-right blue"></i>
-                                                        价格
-                                                    </th>
-
-                                                    <th class="hidden-480">
-                                                        <i class="icon-caret-right blue"></i>
-                                                        状态
-                                                    </th>
-                                                </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                <tr>
-                                                    <td>internet.com</td>
-
-                                                    <td>
-                                                        <small>
-                                                            <s class="red">$29.99</s>
-                                                        </small>
-                                                        <b class="green">$19.99</b>
-                                                    </td>
-
-                                                    <td class="hidden-480">
-                                                        <span class="label label-info arrowed-right arrowed-in">销售中</span>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>online.com</td>
-
-                                                    <td>
-                                                        <small>
-                                                            <s class="red"></s>
-                                                        </small>
-                                                        <b class="green">$16.45</b>
-                                                    </td>
-
-                                                    <td class="hidden-480">
-                                                        <span class="label label-success arrowed-in arrowed-in-right">可用</span>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>newnet.com</td>
-
-                                                    <td>
-                                                        <small>
-                                                            <s class="red"></s>
-                                                        </small>
-                                                        <b class="green">$15.00</b>
-                                                    </td>
-
-                                                    <td class="hidden-480">
-                                                        <span class="label label-danger arrowed">待定</span>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>web.com</td>
-
-                                                    <td>
-                                                        <small>
-                                                            <s class="red">$24.99</s>
-                                                        </small>
-                                                        <b class="green">$19.95</b>
-                                                    </td>
-
-                                                    <td class="hidden-480">
-																	<span class="label arrowed">
-																		<s>无货</s>
-																	</span>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>domain.com</td>
-
-                                                    <td>
-                                                        <small>
-                                                            <s class="red"></s>
-                                                        </small>
-                                                        <b class="green">$12.00</b>
-                                                    </td>
-
-                                                    <td class="hidden-480">
-                                                        <span class="label label-warning arrowed arrowed-right">售完</span>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div><!-- /widget-main -->
-                                    </div><!-- /widget-body -->
-                                </div><!-- /widget-box -->
-                            </div>
-
-                            <div class="col-sm-7">
-                                <div class="widget-box transparent">
-                                    <div class="widget-header widget-header-flat">
-                                        <h4 class="lighter">
-                                            <i class="icon-signal"></i>
-                                            销售统计
-                                        </h4>
-
-                                        <div class="widget-toolbar">
-                                            <a href="#" data-action="collapse">
-                                                <i class="icon-chevron-up"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div class="widget-body">
-                                        <div class="widget-main padding-4">
-                                            <div id="sales-charts"></div>
-                                        </div><!-- /widget-main -->
-                                    </div><!-- /widget-body -->
-                                </div><!-- /widget-box -->
-                            </div>
-                        </div>
-                       <%-- <div class="hr hr32 hr-dotted"></div>--%>
-
-
-
                         <!-- PAGE CONTENT ENDS -->
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -288,6 +118,7 @@
 <script src="<%=basePath%>resources/assets/js/flot/jquery.flot.min.js"></script>
 <script src="<%=basePath%>resources/assets/js/flot/jquery.flot.pie.min.js"></script>
 <script src="<%=basePath%>resources/assets/js/flot/jquery.flot.resize.min.js"></script>
+<script src="<%=basePath%>resources/assets/js/echarts.min.js"></script>
 
 <!-- ace scripts -->
 

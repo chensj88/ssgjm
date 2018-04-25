@@ -101,22 +101,22 @@ $(function () {
         columns: [ {
             field: "id",
             title: "序号",
-            width: '30px',
+            width: '15px',
             align: 'center'
         }, {
             field: "reportName",
             title: "名称",
-            width: '35px',
+            width: '60px',
             align: 'center'
         }, {
             field: "reportCode",
             title: "代码",
-            width: '35px',
+            width: '20px',
             align: 'center'
         }, {
             field: "reportType",
             title: "模板分类",
-            width: '30px',
+            width: '20px',
             formatter: function (value) {
                 if (value == '0') {
                     return '凭条';
@@ -164,16 +164,16 @@ $(function () {
         }, {
             field: "reportDesc",
             title: "描述",
-            width: '45px',
+            width: '50px',
             align: 'center'
         },{
             field: "status",
             title: "状态",
-            width: '20px',
+            width: '10px',
             formatter: function (value) {
                 if (value == '1') {
                     return '生效';
-                } else if (value = '0') {
+                } else if (value == '0') {
                     return '失效';
                 }
             },

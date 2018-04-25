@@ -160,7 +160,7 @@ $(function () {
                 }
             },
             align: 'center'
-        },{
+        }/*,{
             title: '操作',
             field: 'id',
             align: 'center',
@@ -170,7 +170,7 @@ $(function () {
                 var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
                 return e + d;
             }
-        }],
+        }*/],
     });
 
 

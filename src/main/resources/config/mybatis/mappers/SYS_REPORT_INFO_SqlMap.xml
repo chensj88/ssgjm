@@ -34,7 +34,7 @@
 	</sql>
 
 	<sql id="query-sysReportInfo">
-		<if test="reportCode != null and reportCode != ''"> and t.REPORT_CODE LIKE '%${reportCode}%' #{} </if>
+		<if test="reportCode != null and reportCode != ''"> and t.REPORT_CODE LIKE '%${reportCode}%' </if>
 		<if test="reportName != null and reportName != ''"> and t.REPORT_NAME LIKE '%${reportName}%' </if>
 		<if test="reportType != null "> and t.REPORT_TYPE = ${reportType} </if>
 		<if test="status != null"> AND  t.STATUS = ${status} </if>
