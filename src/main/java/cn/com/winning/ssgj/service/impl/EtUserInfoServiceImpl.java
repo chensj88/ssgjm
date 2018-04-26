@@ -8,7 +8,9 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 
+import cn.com.winning.ssgj.base.exception.SSGJException;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.dao.PmisProjectBasicInfoDao;
 import cn.com.winning.ssgj.dao.SysDictInfoDao;
 import cn.com.winning.ssgj.dao.SysUserInfoDao;
@@ -132,6 +134,11 @@ public class EtUserInfoServiceImpl implements EtUserInfoService {
         basicInfo.setId(userInfo.getPmId());
         basicInfo = pmisProjectBasicInfoDao.selectEntity(basicInfo);
         for (List<Object> params : userList) {
+            if (params.size() < 5) {
+                throw new SSGJException("上传文件中存在必填项未填写。");
+            }
+        }
+        for (List<Object> params : userList) {
             EtUserInfo user = new EtUserInfo();
             user.setUserType(Integer.parseInt( resolveDictType(params.get(0).toString(),"userType")));
             user.setcId(basicInfo.getHtxx());
@@ -143,9 +150,18 @@ public class EtUserInfoServiceImpl implements EtUserInfoService {
                 user.setCName(params.get(2).toString());
                 user.setOrgName(params.get(3).toString());
                 user.setPositionName((String) resolveDictType(params.get(4).toString(),"positionName"));
-                user.setTelephone(params.get(5).toString());
-                user.setEmail(params.get(6).toString());
+                if(params.size() < 6){
+                    user.setTelephone(" ");
+                }else {
+                    user.setTelephone(params.get(5).toString());
+                }
+                if(params.size() < 7 ){
+                    user.setEmail(" ");
+                }else{
+                    user.setEmail(params.get(6).toString());
+                }
                 user.setIsDel(Constants.STATUS_USE);
+                user.setUserId(getuserIdByUserCardAndUserType(user.getUserCard(),user.getUserType()));
                 etUserInfoDao.updateEntity(user);
             }else{
                 user = new EtUserInfo();
@@ -158,8 +174,17 @@ public class EtUserInfoServiceImpl implements EtUserInfoService {
                 user.setCName(params.get(2).toString());
                 user.setOrgName(params.get(3).toString());
                 user.setPositionName((String) resolveDictType(params.get(4).toString(),"positionName"));
-                user.setTelephone(params.get(5).toString());
-                user.setEmail(params.get(6).toString());
+                if(params.size() < 6){
+                    user.setTelephone(" ");
+                }else {
+                    user.setTelephone(params.get(5).toString());
+                }
+                if(params.size() < 7 ){
+                    user.setEmail(" ");
+                }else{
+                    user.setEmail(params.get(6).toString());
+                }
+                user.setUserId(getuserIdByUserCardAndUserType(user.getUserCard(),user.getUserType()));
                 user.setIsDel(Constants.STATUS_USE);
                 etUserInfoDao.insertEntity(user);
             }
@@ -167,6 +192,20 @@ public class EtUserInfoServiceImpl implements EtUserInfoService {
 
 
 	}
+
+    private Long getuserIdByUserCardAndUserType(String userCard, Integer userType) {
+        long userId = 0L;
+        if(userType != 0){
+            SysUserInfo userInfo = new SysUserInfo();
+            userInfo.setUserid(userCard);
+            userInfo.setUserType(userType+"");
+            userInfo = sysUserInfoDao.selectEntity(userInfo);
+            if(userInfo != null ){
+                userId = userInfo.getId();
+            }
+        }
+        return userId;
+    }
 
     /**
      * 字典值转换

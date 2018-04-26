@@ -12,6 +12,7 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -144,8 +145,7 @@ public class ExcelUtil {
         }
         return wb;
     }
-
-    public  static  List<List<Object>> importExcel(String fileName) throws Exception{
+    public  static  List<List<Object>> importExcel(String fileName,int startSheet) throws Exception{
         List<List<Object>> list = null;
 
         //创建Excel工作薄
@@ -157,30 +157,59 @@ public class ExcelUtil {
         Sheet sheet = null;
         Row row = null;
         Cell cell = null;
-
         list = new ArrayList<List<Object>>();
         //遍历Excel中所有的sheet
-        for (int i = 0; i < work.getNumberOfSheets(); i++) {
+        for (int i = startSheet; i < work.getNumberOfSheets(); i++) {
             sheet = work.getSheetAt(i);
             if(sheet==null){continue;}
-
-            //遍历当前sheet中的所有行
-            for (int j = sheet.getFirstRowNum(); j <=sheet.getLastRowNum(); j++) {
-                row = sheet.getRow(j);
-                if(row==null||row.getFirstCellNum()==j){continue;}
-
-                //遍历所有的列
-                List<Object> li = new ArrayList<Object>();
-                for (int y = row.getFirstCellNum(); y < row.getLastCellNum(); y++) {
-                    cell = row.getCell(y);
-                    li.add(getCellValue(cell));
-                }
-                list.add(li);
-            }
+            list.addAll(resolveSheetData(sheet));
         }
         return list;
     }
 
+    public  static  List<List<Object>> importExcel(String fileName) throws Exception{
+        List<List<Object>> list = null;
+
+        //创建Excel工作薄
+        File finalXlsxFile = new File(fileName);
+        Workbook work = getWorkbook(finalXlsxFile);
+        if(null == work){
+            throw new Exception("创建Excel工作薄为空！");
+        }
+        list = new ArrayList<List<Object>>();
+        Sheet sheet = null;
+        Row row = null;
+        Cell cell = null;
+        //遍历Excel中所有的sheet
+        for (int i = 0; i < work.getNumberOfSheets(); i++) {
+            sheet = work.getSheetAt(i);
+            if (sheet == null) {
+                continue;
+            }
+            list = resolveSheetData(sheet);
+        }
+        return list;
+    }
+
+    private  static List<List<Object>>  resolveSheetData(Sheet sheet){
+        List<List<Object>> list = new ArrayList<List<Object>>();
+        Row row = null;
+        Cell cell = null;
+        //遍历当前sheet中的所有行
+        for (int j = sheet.getFirstRowNum(); j <=sheet.getLastRowNum(); j++) {
+            row = sheet.getRow(j);
+            if(row==null||row.getFirstCellNum()==j){continue;}
+
+            //遍历所有的列
+            List<Object> li = new ArrayList<Object>();
+            for (int y = row.getFirstCellNum(); y < row.getLastCellNum(); y++) {
+                cell = row.getCell(y);
+                li.add(getCellValue(cell));
+            }
+            list.add(li);
+        }
+        return list;
+    }
     /**
      * 描述：对表格中数值进行格式化
      * @param cell
