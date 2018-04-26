@@ -74,9 +74,10 @@ public class CommonQueryServiceImpl implements CommonQueryService {
 
     @Override
     public List<PmisProductInfo> queryProductOfProjectByProjectIdAndType(long pmId, int type) {
-        PmisProductInfo productInfo = new PmisProductInfo();
-        productInfo.getMap().put("pks", queryProductIdByProjectIdAndType(pmId, type));
-        return pmisProductInfoDao.selectPmisProductInfoListByIdList(productInfo);
+        Map<String,Object> param = new HashMap<>();
+        param.put("pmId",pmId);
+        param.put("type",type);
+        return pmisProductInfoDao.selectProductInfoListByPmIdAndType(param);
     }
 
     /**
@@ -87,15 +88,10 @@ public class CommonQueryServiceImpl implements CommonQueryService {
      * @return pdIds
      */
     private List<Long> queryProductIdByProjectIdAndType(long pmId, int type) {
-        PmisContractProductInfo cpInfo = new PmisContractProductInfo();
-        cpInfo.setHtcplb(type);
-        cpInfo.setXmlcb(pmId);
-        cpInfo.setZt(Constants.PMIS_STATUS_USE);
-        List<PmisContractProductInfo> cpInfoList = pmisContractProductInfoDao.selectEntityList(cpInfo);
-        List<Long> pIds = new ArrayList<Long>();
-        for (PmisContractProductInfo info : cpInfoList) {
-            pIds.add(info.getCpxx());
-        }
+        Map<String,Object> param = new HashMap<>();
+        param.put("pmId",pmId);
+        param.put("type",type);
+        List<Long> pIds = pmisContractProductInfoDao.selectProcuctIdListByPmIdAndHtcplb(param);
         return pIds;
     }
 
@@ -170,6 +166,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
      * @param projectItem
      */
     private void etReportCheckByProjectId(long pmId, List<Integer> projectCompele, List<Integer> projectHandle, List<String> projectItem) {
+        //TODO
         projectCompele.add(10);
         projectHandle.add(5);
         projectItem.add("单据准备(15)");

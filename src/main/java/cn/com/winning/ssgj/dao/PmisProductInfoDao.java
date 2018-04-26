@@ -4,6 +4,7 @@ import cn.com.winning.ssgj.domain.PmisProductInfo;
 import cn.com.winning.ssgj.dao.EntityDao;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -29,4 +30,10 @@ public interface PmisProductInfoDao extends EntityDao<PmisProductInfo> {
 
     List<PmisProductInfo> selectBasicDataPmisProductInfoList(PmisProductInfo t);
 
+    /**
+     * 根据项目ID和合同产品类型获取产品信息
+     * @param param
+     * @return
+     */
+    List<PmisProductInfo> selectProductInfoListByPmIdAndType(Map<String, Object> param);
 }

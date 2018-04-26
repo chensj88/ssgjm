@@ -261,4 +261,15 @@
         AND t.EXPIRE_DATE
         AND s.DATA_TYPE = 3)
     </select>
+
+    <!--根据项目ID和合同产品类别查询产品信息-->
+    <select id="selectProductInfoListByPmIdAndType" resultMap="pmisProductInfoResult"  parameterType="java.util.Map">
+        SELECT
+        B.*
+        FROM PMIS_CONTRACT_PRODUCT_INFO A
+        LEFT JOIN PMIS_PRODUCT_INFO B ON  A.CPXX = B.ID
+        WHERE A.ZT = 1
+        AND A.XMLCB = ${pmId}
+        AND A.HTCPLB = ${type}
+    </select>
 </mapper>

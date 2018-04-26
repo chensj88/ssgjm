@@ -4,6 +4,7 @@ import cn.com.winning.ssgj.domain.PmisContractProductInfo;
 import cn.com.winning.ssgj.dao.EntityDao;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -14,4 +15,6 @@ import java.util.List;
 public interface PmisContractProductInfoDao extends EntityDao<PmisContractProductInfo> {
 
     List<PmisContractProductInfo> selectPmisContractProductInfoMkList(PmisContractProductInfo t);
+
+    List<Long> selectProcuctIdListByPmIdAndHtcplb(Map<String,Object> param );
 }

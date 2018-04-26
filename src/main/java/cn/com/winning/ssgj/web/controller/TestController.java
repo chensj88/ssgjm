@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.web.controller;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.domain.EtBusinessProcess;
+import cn.com.winning.ssgj.domain.PmisProductInfo;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -80,4 +81,16 @@ public class TestController extends BaseController{
         return result;
 
     }
+
+    @RequestMapping(value = "/product.do")
+    @ResponseBody
+    public Map<String,Object> testUserProduct(){
+        List<PmisProductInfo> nodeTrees =  super.getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(  28252L,1);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data",nodeTrees);
+        return result;
+
+    }
+
 }
