@@ -46,7 +46,7 @@
 <div class="row" id="queryScope">
     <form class="form-inline col-xs-12 col-sm-12 col-md-12 col-lg-12" >
         <div class="input-group col-xs-3 col-sm-3 col-md-3 col-lg-3" >
-            <label class="col-sm-6 control-label text-right" for="shQCode">软硬件编号：</label>
+            <label class="col-sm-6 control-label text-right" for="shQCode">软硬件代码：</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control input-sm" id="shQCode"/>
             </div>
