@@ -264,7 +264,7 @@ public class EtSoftHardwareController extends BaseController {
                 List<List<Object>> etSoftHardwareList = ExcelUtil.importExcel(newFile.getPath());
                 for (List<Object> temp : etSoftHardwareList) {
                     EtSoftHardware etSoftHardware = new EtSoftHardware();
-                    etSoftHardware.setId(ssgjHelper.createEtDevEnvHardwareId());
+                    etSoftHardware.setId(ssgjHelper.createEtSoftHardwareIdService());
                     etSoftHardware.setPmId(pmId);
                     etSoftHardware.setcId(contractId);
                     etSoftHardware.setSerialNo(customerId.toString());

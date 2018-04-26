@@ -169,11 +169,15 @@ public class EtContractProjectController extends BaseController {
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
     @ILog
-    public Map<String,Object> confirmTask(EtProcessManager processManager){
-        processManager.setIsPmScope(Constants.STATUS_USE);
-        processManager.setOperatorTime(new Timestamp(new Date().getTime()));
-        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(processManager);
-        Map<String,Object> result = new HashMap<String,Object>();
+    public Map<String,Object> confirmTask(EtProcessManager etProcessManager){
+        EtProcessManager temp = new EtProcessManager();
+        temp.setPmId(etProcessManager.getPmId());
+        temp = super.getFacade().getEtProcessManagerService().getEtProcessManager(temp);
+        temp.setOperator(etProcessManager.getOperator());
+        temp.setOperatorTime(new Timestamp(new Date().getTime()));
+        temp.setIsPmScope(etProcessManager.getIsPmScope());
+        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(temp);
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
 

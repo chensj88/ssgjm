@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.com.winning.ssgj.domain.EtProcessManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +34,7 @@ import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.domain.EtUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+
 /**
  * @author huwanli
  * @title 项目组员信息
@@ -44,18 +48,23 @@ public class EtUserInfoContorller extends BaseController{
 	    @Autowired
 	    private SSGJHelper ssgjHelper;
 
-	    @RequestMapping(value = "/list.do")
-	    @ResponseBody
-	    public Map<String, Object> rtOnlineUserList(EtUserInfo etUserInfo,Row row) {
-	    	etUserInfo.setRow(row);
-	    	etUserInfo.setIsDel(Constants.STATUS_USE);
-	        List<EtUserInfo> etUserInfoList = super.getFacade().getEtUserInfoService().getEtUserInfoPaginatedList(etUserInfo);
-	        int total = super.getFacade().getEtUserInfoService().getEtUserInfoCount(etUserInfo);
-	        Map<String, Object> result = new HashMap<String, Object>();
-	        result.put("total", total);
-	        result.put("status", Constants.SUCCESS);
-	        result.put("rows", etUserInfoList);
-	        return result;
+    @RequestMapping(value = "/list.do")
+    @ResponseBody
+    public Map<String, Object> rtOnlineUserList(EtUserInfo etUserInfo, Row row) {
+        etUserInfo.setRow(row);
+        etUserInfo.setIsDel(Constants.STATUS_USE);
+        List<EtUserInfo> etUserInfoList = super.getFacade().getEtUserInfoService().getEtUserInfoPaginatedList(etUserInfo);
+        int total = super.getFacade().getEtUserInfoService().getEtUserInfoCount(etUserInfo);
+        //根据pmid获取项目进程
+        EtProcessManager etProcessManager = new EtProcessManager();
+        etProcessManager.setPmId(etUserInfo.getPmId());
+        etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("total", total);
+        result.put("status", Constants.SUCCESS);
+        result.put("rows", etUserInfoList);
+        result.put("process", etProcessManager);
+        return result;
 
 	    }
 
