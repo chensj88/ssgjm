@@ -258,7 +258,7 @@ public class SysDataInfoBufferController extends BaseController {
         String filename = "DataInfo" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
         //创建工作簿
         Workbook workbook = new HSSFWorkbook();
-        ExcelUtil.exportExcelByStream(dataList, attrNameList, response, workbook, filename);
+        ExcelUtil.exportExcelByStream(dataList, attrNameList,null, response, workbook, filename);
     }
 
     /**

@@ -18,6 +18,7 @@ public class Constants implements Serializable {
      * 是否成功
      */
     public static final String SUCCESS = "success";
+    public static final String FAILD = "faild";
 
     /**
      * 定义用户类型

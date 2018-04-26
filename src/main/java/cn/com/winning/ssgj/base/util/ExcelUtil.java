@@ -30,7 +30,7 @@ public class ExcelUtil {
     private static final String EXCEL_XLS = "xls";
     private static final String EXCEL_XLSX = "xlsx";
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
       /* List<Map> param = new ArrayList<Map>();
         for (int i=0;i<50;i++){
            Map m = new HashMap();
@@ -46,14 +46,14 @@ public class ExcelUtil {
        writeExcel(param,colList,3,"d:/a.xlsx");*/
         List<List<Object>> aaa = new ArrayList<>();
         try {
-            aaa =  importExcel("D:/download/userinfo.xls");
+            aaa = importExcel("D:/download/userinfo.xls");
         } catch (Exception e) {
             e.printStackTrace();
         }
         for (List<Object> objects : aaa) {
             StringBuilder sb = new StringBuilder();
             for (Object o : objects) {
-                sb.append(o+",");
+                sb.append(o + ",");
             }
             System.out.println(sb);
         }
@@ -61,12 +61,13 @@ public class ExcelUtil {
 
     /**
      * 导出Excel
-     * @param dataList 数据Map
-     * @param colList  Map中列名称
-     * @param cloumnCount  列数
+     *
+     * @param dataList      数据Map
+     * @param colList       Map中列名称
+     * @param cloumnCount   列数
      * @param finalXlsxPath Excel放置位置
      */
-    public static void writeExcel(List<Map> dataList,List<String> colList, int cloumnCount, String finalXlsxPath){
+    public static void writeExcel(List<Map> dataList, List<String> colList, int cloumnCount, String finalXlsxPath) {
         OutputStream out = null;
         try {
             // 获取总列数
@@ -83,13 +84,13 @@ public class ExcelUtil {
             System.out.println("原始数据总行数，除属性列：" + rowNumber);
             for (int i = 1; i <= rowNumber; i++) {
                 Row row = sheet.getRow(i);
-                if(row != null){
+                if (row != null) {
                     sheet.removeRow(row);
                 }
 
             }
             // 创建文件输出流，输出电子表格：这个必须有，否则你在sheet上做的任何操作都不会有效
-            out =  new FileOutputStream(finalXlsxPath);
+            out = new FileOutputStream(finalXlsxPath);
             workBook.write(out);
             /**
              * 往Excel中写新数据
@@ -102,9 +103,9 @@ public class ExcelUtil {
                 for (int k = 0; k < columnNumCount; k++) {
                     // 在一行内循环
                     Cell cell = row.createCell(k);
-                    String value  = "" ;
-                    if(dataMap.get(colList.get(k)) != null){
-                        value  = dataMap.get(colList.get(k)).toString();
+                    String value = "";
+                    if (dataMap.get(colList.get(k)) != null) {
+                        value = dataMap.get(colList.get(k)).toString();
                     }
 
                     cell.setCellValue(value);
@@ -112,13 +113,13 @@ public class ExcelUtil {
                 }
             }
             // 创建文件输出流，准备输出电子表格：这个必须有，否则你在sheet上做的任何操作都不会有效
-            out =  new FileOutputStream(finalXlsxPath);
+            out = new FileOutputStream(finalXlsxPath);
             workBook.write(out);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally{
+        } finally {
             try {
-                if(out != null){
+                if (out != null) {
                     out.flush();
                     out.close();
                 }
@@ -131,27 +132,29 @@ public class ExcelUtil {
 
     /**
      * 判断Excel的版本,获取Workbook
+     *
      * @param file
      * @return
      * @throws IOException
      */
-    public static Workbook getWorkbook(File file) throws IOException{
+    public static Workbook getWorkbook(File file) throws IOException {
         Workbook wb = null;
         FileInputStream in = new FileInputStream(file);
-        if(file.getName().endsWith(EXCEL_XLS)){  //Excel 2003
+        if (file.getName().endsWith(EXCEL_XLS)) {  //Excel 2003
             wb = new HSSFWorkbook(in);
-        }else if(file.getName().endsWith(EXCEL_XLSX)){  // Excel 2007/2010
+        } else if (file.getName().endsWith(EXCEL_XLSX)) {  // Excel 2007/2010
             wb = new XSSFWorkbook(in);
         }
         return wb;
     }
-    public  static  List<List<Object>> importExcel(String fileName,int startSheet) throws Exception{
+
+    public static List<List<Object>> importExcel(String fileName, int startSheet) throws Exception {
         List<List<Object>> list = null;
 
         //创建Excel工作薄
         File finalXlsxFile = new File(fileName);
         Workbook work = getWorkbook(finalXlsxFile);
-        if(null == work){
+        if (null == work) {
             throw new Exception("创建Excel工作薄为空！");
         }
         Sheet sheet = null;
@@ -161,19 +164,21 @@ public class ExcelUtil {
         //遍历Excel中所有的sheet
         for (int i = startSheet; i < work.getNumberOfSheets(); i++) {
             sheet = work.getSheetAt(i);
-            if(sheet==null){continue;}
+            if (sheet == null) {
+                continue;
+            }
             list.addAll(resolveSheetData(sheet));
         }
         return list;
     }
 
-    public  static  List<List<Object>> importExcel(String fileName) throws Exception{
+    public static List<List<Object>> importExcel(String fileName) throws Exception {
         List<List<Object>> list = null;
 
         //创建Excel工作薄
         File finalXlsxFile = new File(fileName);
         Workbook work = getWorkbook(finalXlsxFile);
-        if(null == work){
+        if (null == work) {
             throw new Exception("创建Excel工作薄为空！");
         }
         list = new ArrayList<List<Object>>();
@@ -191,14 +196,16 @@ public class ExcelUtil {
         return list;
     }
 
-    private  static List<List<Object>>  resolveSheetData(Sheet sheet){
+    private static List<List<Object>> resolveSheetData(Sheet sheet) {
         List<List<Object>> list = new ArrayList<List<Object>>();
         Row row = null;
         Cell cell = null;
         //遍历当前sheet中的所有行
-        for (int j = sheet.getFirstRowNum(); j <=sheet.getLastRowNum(); j++) {
+        for (int j = sheet.getFirstRowNum(); j <= sheet.getLastRowNum(); j++) {
             row = sheet.getRow(j);
-            if(row==null||row.getFirstCellNum()==j){continue;}
+            if (row == null || row.getFirstCellNum() == j) {
+                continue;
+            }
 
             //遍历所有的列
             List<Object> li = new ArrayList<Object>();
@@ -210,12 +217,14 @@ public class ExcelUtil {
         }
         return list;
     }
+
     /**
      * 描述：对表格中数值进行格式化
+     *
      * @param cell
      * @return
      */
-    public  static  Object getCellValue(Cell cell){
+    public static Object getCellValue(Cell cell) {
         Object value = null;
         DecimalFormat df = new DecimalFormat("0");  //格式化number String字符
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  //日期格式化
@@ -226,14 +235,14 @@ public class ExcelUtil {
                 value = cell.getRichStringCellValue().getString();
                 break;
             case Cell.CELL_TYPE_NUMERIC:
-                if("General".equals(cell.getCellStyle().getDataFormatString())){
-                value = df.format(cell.getNumericCellValue());
-            }else if("m/d/yy".equals(cell.getCellStyle().getDataFormatString())){
-                value = sdf.format(cell.getDateCellValue());
-            }else{
-                value = df2.format(cell.getNumericCellValue());
-            }
-            break;
+                if ("General".equals(cell.getCellStyle().getDataFormatString())) {
+                    value = df.format(cell.getNumericCellValue());
+                } else if ("m/d/yy".equals(cell.getCellStyle().getDataFormatString())) {
+                    value = sdf.format(cell.getDateCellValue());
+                } else {
+                    value = df2.format(cell.getNumericCellValue());
+                }
+                break;
             case Cell.CELL_TYPE_BOOLEAN:
                 value = cell.getBooleanCellValue();
                 break;
@@ -248,21 +257,29 @@ public class ExcelUtil {
 
     /**
      * 导出Excel
+     *
      * @param dataList 数据Map
      * @param colList  Map中列名称：列名
      * @param response HTTP 响应
      * @param workBook Excel工作簿
      * @param filename Excel导出文件名
      */
-    public static void exportExcelByStream(List<Map> dataList, List<String> colList, HttpServletResponse response, Workbook workBook, String filename){
+    public static void exportExcelByStream(List<Map> dataList, List<String> colList, List<String> tableNameList, HttpServletResponse response, Workbook workBook, String filename) {
         try {
             // sheet 对应一个工作页
             Sheet sheet = workBook.createSheet();
             //第一行保存列名
-            Row colRow=sheet.createRow(0);
-            for (int i = 0; i < colList.size(); i++) {
-                colRow.createCell(i).setCellValue(colList.get(i).toString());
+            Row colRow = sheet.createRow(0);
+            if (tableNameList == null) {
+                for (int i = 0; i < colList.size(); i++) {
+                    colRow.createCell(i).setCellValue(colList.get(i).toString());
+                }
+            } else {
+                for (int i = 0; i < tableNameList.size(); i++) {
+                    colRow.createCell(i).setCellValue(tableNameList.get(i).toString());
+                }
             }
+
             /**
              * 往Excel中写新数据
              */
@@ -274,16 +291,16 @@ public class ExcelUtil {
                 for (int k = 0; k < colList.size(); k++) {
                     // 在一行内循环
                     Cell cell = row.createCell(k);
-                    String value  = "" ;
-                    if(dataMap.get(colList.get(k)) != null){
-                        value  = dataMap.get(colList.get(k)).toString();
+                    String value = "";
+                    if (dataMap.get(colList.get(k)) != null) {
+                        value = dataMap.get(colList.get(k)).toString();
                     }
                     cell.setCellValue(value);
 
                 }
             }
             //获取响应输出流
-            OutputStream outputStream=new BufferedOutputStream(response.getOutputStream());
+            OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
             // 设置response的Header
             response.setContentType("application/msexcel;charset=UTF-8");
             response.addHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode(filename, "UTF-8"))));
