@@ -134,8 +134,9 @@ public class EtUserInfoServiceImpl implements EtUserInfoService {
         for (List<Object> params : userList) {
             EtUserInfo user = new EtUserInfo();
             user.setUserType(Integer.parseInt( resolveDictType(params.get(0).toString(),"userType")));
-            user.setCId(basicInfo.getHtxx());
+            user.setcId(basicInfo.getHtxx());
             user.setPmId(basicInfo.getId());
+            user.setSerialNo(basicInfo.getKhxx()+"");
             user.setUserCard(params.get(1).toString().trim());
             user = etUserInfoDao.selectEntity(user);
             if(user != null){
@@ -150,7 +151,8 @@ public class EtUserInfoServiceImpl implements EtUserInfoService {
                 user = new EtUserInfo();
                 user.setId(ssgjHelper.createEtUserInfoIdService());
                 user.setUserType(Integer.parseInt( resolveDictType(params.get(0).toString(),"userType")));
-                user.setCId(basicInfo.getHtxx());
+                user.setcId(basicInfo.getHtxx());
+                user.setSerialNo(basicInfo.getKhxx()+"");
                 user.setPmId(basicInfo.getId());
                 user.setUserCard(params.get(1).toString().trim());
                 user.setCName(params.get(2).toString());
