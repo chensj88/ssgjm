@@ -61,26 +61,29 @@ public class CommonQueryServiceImpl implements CommonQueryService {
 
     @Override
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId) {
+
+        List<NodeTree> treeList = new ArrayList<NodeTree>();
         //获取用户可以查看的项目信息
         PmisProjctUser projctUser = new PmisProjctUser();
         projctUser.setRy(userId);
         List<PmisProjctUser> userList = pmisProjctUserService.getPmisProjctUserList(projctUser);
-        List<PmisProjectBasicInfo> basicInfoList = pmisProjectBasicInfoService.getUserProcjectBasicInfo(userList);
-        //项目ID的集合
-        List<String> pidList = new ArrayList<String>();
-        for (PmisProjectBasicInfo basicInfo : basicInfoList) {
-            pidList.add(basicInfo.getId() + "");
+        if(userList != null && userList.size() > 0){
+            List<PmisProjectBasicInfo> basicInfoList = pmisProjectBasicInfoService.getUserProcjectBasicInfo(userList);
+            //项目ID的集合
+            List<String> pidList = new ArrayList<String>();
+            for (PmisProjectBasicInfo basicInfo : basicInfoList) {
+                pidList.add(basicInfo.getId() + "");
+            }
+            PmisCustomerInformation custinfo = new PmisCustomerInformation();
+            custinfo.getMap().put("idList", pidList);
+            List<PmisCustomerInformation> custInfoList = pmisCustomerInformationService.getCustomerInfoListByProjectList(custinfo);
+            for (PmisCustomerInformation info : custInfoList) {
+                NodeTree node = info.getNodeTree();
+                node.setNodes(queryCustomerProjectNode(pidList, info.getId()));
+                treeList.add(node);
+            }
         }
 
-        PmisCustomerInformation custinfo = new PmisCustomerInformation();
-        custinfo.getMap().put("idList", pidList);
-        List<PmisCustomerInformation> custInfoList = pmisCustomerInformationService.getCustomerInfoListByProjectList(custinfo);
-        List<NodeTree> treeList = new ArrayList<NodeTree>();
-        for (PmisCustomerInformation info : custInfoList) {
-            NodeTree node = info.getNodeTree();
-            node.setNodes(queryCustomerProjectNode(pidList, info.getId()));
-            treeList.add(node);
-        }
         return treeList;
     }
 

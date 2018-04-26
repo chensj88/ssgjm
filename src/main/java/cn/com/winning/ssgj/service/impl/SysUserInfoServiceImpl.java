@@ -12,6 +12,7 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.base.util.MD5;
+import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.dao.EtUserLookProjectDao;
 import cn.com.winning.ssgj.domain.EtUserLookProject;
 import cn.com.winning.ssgj.domain.expand.FlotDataInfo;
@@ -137,8 +138,14 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
             String yhmc = params.get(1).toString();
             String clo1 = params.get(2).toString();
             String clo2 = params.get(3).toString();
-            String mobile = params.get(4).toString();
-            String email = params.get(5).toString();
+            String mobile = "";
+            if(!StringUtil.isEmptyOrNull(params.get(4).toString())){
+                mobile = params.get(4).toString();
+            }
+            String email = "";
+            if(!StringUtil.isEmptyOrNull(params.get(5).toString())){
+                mobile = params.get(5).toString();
+            }
             SysUserInfo user = new SysUserInfo();
             user.setStatus(1);
             user.setUserType(Constants.User.USER_TYPE_HOSPITAL);

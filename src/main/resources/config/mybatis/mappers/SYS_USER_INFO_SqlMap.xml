@@ -36,8 +36,8 @@
         <if test="userid != null and userid != ''"> and t.USERID = #{userid} </if>
         <if test="yhmc != null and yhmc != ''"> and t.YHMC = #{yhmc} </if>
         <if test="name != null and name != ''"> and t.NAME = #{name} </if>
-        <if test="email != null and email != ''"> and t.Email = #{email} </if>
-        <if test="mobile != null and mobile != ''"> and t.MOBILE = #{mobile} </if>
+        <if test="email != null "> and t.Email = #{email} </if>
+        <if test="mobile != null "> and t.MOBILE = #{mobile} </if>
         <if test="telephone != null and telephone != ''"> and t.TELEPHONE = #{telephone} </if>
         <if test="password != null and password != ''"> and t.PASSWORD = #{password} </if>
         <if test="orgid != null and orgid != ''"> and t.ORGID = #{orgid} </if>
@@ -57,7 +57,7 @@
     <sql id="query-sysUserInfo">
         <if test="userid != null and userid != ''">AND t.USERID LIKE '%${userid}%'</if>
         <if test="yhmc != null and yhmc != ''">AND t.YHMC LIKE '%${yhmc}%'</if>
-        <if test="mobile != null and mobile != ''">AND t.MOBILE LIKE '%${mobile}%'</if>
+        <if test="mobile != null ">AND t.MOBILE LIKE '%${mobile}%'</if>
         <if test="status != null ">AND t.STATUS = #{status}</if>
         <if test="ssgs != null ">AND t.SSGS = #{ssgs}</if>
     </sql>
@@ -104,8 +104,8 @@
             <if test="userid != null and userid != ''"> USERID, </if>
             <if test="yhmc != null and yhmc != ''"> YHMC, </if>
             <if test="name != null and name != ''"> NAME, </if>
-            <if test="email != null and email != ''"> Email, </if>
-            <if test="mobile != null and mobile != ''"> MOBILE, </if>
+            <if test="email != null "> Email, </if>
+            <if test="mobile != null "> MOBILE, </if>
             <if test="telephone != null and telephone != ''"> TELEPHONE, </if>
             <if test="password != null and password != ''"> PASSWORD, </if>
             <if test="orgid != null and orgid != ''"> ORGID, </if>
@@ -127,8 +127,8 @@
             <if test="userid != null and userid != ''"> #{userid, jdbcType=VARCHAR}, </if>
             <if test="yhmc != null and yhmc != ''"> #{yhmc, jdbcType=VARCHAR}, </if>
             <if test="name != null and name != ''"> #{name, jdbcType=VARCHAR}, </if>
-            <if test="email != null and email != ''"> #{email, jdbcType=VARCHAR}, </if>
-            <if test="mobile != null and mobile != ''"> #{mobile, jdbcType=VARCHAR}, </if>
+            <if test="email != null "> #{email, jdbcType=VARCHAR}, </if>
+            <if test="mobile != null "> #{mobile, jdbcType=VARCHAR}, </if>
             <if test="telephone != null and telephone != ''"> #{telephone, jdbcType=VARCHAR}, </if>
             <if test="password != null and password != ''"> #{password, jdbcType=VARCHAR}, </if>
             <if test="orgid != null and orgid != ''"> #{orgid, jdbcType=BIGINT}, </if>
@@ -156,8 +156,8 @@
                 <if test="userid != null and userid != ''"> USERID = #{userid, jdbcType=VARCHAR}, </if>
                 <if test="yhmc != null and yhmc != ''"> YHMC = #{yhmc, jdbcType=VARCHAR}, </if>
                 <if test="name != null and name != ''"> NAME = #{name, jdbcType=VARCHAR}, </if>
-                <if test="email != null and email != ''"> Email = #{email, jdbcType=VARCHAR}, </if>
-                <if test="mobile != null and mobile != ''"> MOBILE = #{mobile, jdbcType=VARCHAR}, </if>
+                <if test="email != null "> Email = #{email, jdbcType=VARCHAR}, </if>
+                <if test="mobile != null "> MOBILE = #{mobile, jdbcType=VARCHAR}, </if>
                 <if test="telephone != null and telephone != ''"> TELEPHONE = #{telephone, jdbcType=VARCHAR}, </if>
                 <if test="password != null and password != ''"> PASSWORD = #{password, jdbcType=VARCHAR}, </if>
                 <if test="orgid != null and orgid != ''"> ORGID = #{orgid, jdbcType=BIGINT}, </if>
