@@ -6,7 +6,9 @@ import cn.com.winning.ssgj.dao.PmisProjectBasicInfoDao;
 import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -18,13 +20,13 @@ import java.util.List;
 public class PmisProjectBasicInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<PmisProjectBasicInfo> implements PmisProjectBasicInfoDao {
 
     @Override
-    public List<PmisProjectBasicInfo> selectUserProcjectBasicInfo(PmisProjectBasicInfo basicInfo) {
-        return super.getSqlSession().selectList("selectUserProcjectBasicInfo",basicInfo);
+    public List<PmisProjectBasicInfo> selectUserCanViewProject(Long userId) {
+        return super.getSqlSession().selectList("selectUserCanViewProject",userId);
     }
 
     @Override
-    public List<PmisProjectBasicInfo> selectPmisProjectBasicByKHXXAndIds(PmisProjectBasicInfo project) {
-        return super.getSqlSession().selectList("selectPmisProjectBasicByKHXXAndIds",project);
+    public List<PmisProjectBasicInfo> selectProjectInfoByCustomerIdAndProjectId(PmisProjectBasicInfo project) {
+        return super.getSqlSession().selectList("selectProjectInfoByCustomerIdAndProjectId",project);
     }
 
     @Override
@@ -35,5 +37,10 @@ public class PmisProjectBasicInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<PmisP
     @Override
     public List<Long> selectPmisProjectBasicInfoIdListByCustomerID(PmisProjectBasicInfo basicInfo) {
         return super.getSqlSession().selectList("selectPmisProjectBasicInfoIdListByCustomerID",basicInfo);
+    }
+
+    @Override
+    public List<Long> selectUserCanViewProjectIdList(Long userId) {
+        return super.getSqlSession().selectList("selectUserCanViewProjectIdList",userId);
     }
 }

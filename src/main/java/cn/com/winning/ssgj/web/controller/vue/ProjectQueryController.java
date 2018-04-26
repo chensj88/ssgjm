@@ -34,7 +34,6 @@ public class ProjectQueryController extends BaseController {
     @ResponseBody
     public Map<String,Object> queryUserCustomerAndProjectInfo(long userid){
         //TODO
-       /* userid = 225L;*/
         List<NodeTree> nodeTreeList = super.getFacade().getCommonQueryService().queryUserCustomerProjectTreeInfo(userid);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);

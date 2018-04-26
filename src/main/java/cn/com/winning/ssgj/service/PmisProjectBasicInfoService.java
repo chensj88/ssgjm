@@ -27,9 +27,26 @@ public interface PmisProjectBasicInfoService {
 
     List<PmisProjectBasicInfo> getPmisProjectBasicInfoPaginatedList(PmisProjectBasicInfo t);
 
-    List<PmisProjectBasicInfo> getUserProcjectBasicInfo(List<PmisProjctUser> userList);
+    /**
+     * 根据登录用户Id获取用户可以查看的项目信息
+     * @param userId
+     * @return
+     */
+    List<PmisProjectBasicInfo> getUserCanViewProject(Long userId);
 
-    List<PmisProjectBasicInfo> getPmisProjectBasicByKHXXAndIds(PmisProjectBasicInfo project);
+    /**
+     * 根据登录用户Id获取用户可以查看的项目信息IdList
+     * @param userId
+     * @return
+     */
+    List<Long> getUserCanViewProjectIdList(Long userId);
+
+    /**
+     * 根据客户ID和项目ID获取可以显示的项目信息
+     * @param project
+     * @return
+     */
+    List<PmisProjectBasicInfo> getProjectInfoByCustomerIdAndProjectId(PmisProjectBasicInfo project);
 
     PmisProjectBasicInfo queryPmisProjectBasicInfoByProjectId(long pmId);
 

@@ -75,4 +75,9 @@ public class PmisCustomerInformationServiceImpl implements PmisCustomerInformati
         return this.pmisCustomerInformationDao.selectCustomerInfoListByProjectList(custinfo);
     }
 
+    @Override
+    public List<PmisCustomerInformation> getUserCanViewCustomerList(Long userId) {
+        return this.pmisCustomerInformationDao.selectUserCanViewCustomerList(userId);
+    }
+
 }

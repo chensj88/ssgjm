@@ -32,4 +32,11 @@ public interface PmisCustomerInformationService {
     public List<PmisCustomerInformation> getPmisCustomerInformationPageListFuzzy(PmisCustomerInformation c);
 
     List<PmisCustomerInformation> getCustomerInfoListByProjectList(PmisCustomerInformation basicInfoList);
+
+    /**
+     * 获取用户可以查看的客户信息
+     * @param userId
+     * @return
+     */
+    List<PmisCustomerInformation> getUserCanViewCustomerList(Long userId);
 }
