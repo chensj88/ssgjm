@@ -97,10 +97,15 @@ public class EtThirdIntterfaceController extends BaseController {
                 intterface.setProductName(pmisProductLineInfo == null ? null : pmisProductLineInfo.getName());
             }
         }
+        //根据pmid获取项目进程
+        EtProcessManager etProcessManager = new EtProcessManager();
+        etProcessManager.setPmId(etThirdIntterface.getPmId());
+        etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows", etThirdIntterfaces);
+        result.put("process", etProcessManager);
         return result;
     }
 
