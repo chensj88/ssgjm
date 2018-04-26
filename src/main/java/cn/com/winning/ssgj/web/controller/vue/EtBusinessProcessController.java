@@ -264,13 +264,7 @@ public class EtBusinessProcessController extends BaseController {
             try {
                 CommonFtpUtils.uploadFile(remotePath,newFile);
                 process.setStatus(1);
-                if(StringUtil.isEmptyOrNull(process.getUploadPath())){
-                    process.setUploadPath(remotePath);
-                }else{
-                    String newPath = process.getUploadPath() + ";" +remotePath;
-                    process.setUploadPath(newPath);
-                }
-
+                process.setUploadPath(remotePath);
                 super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
                 newFile.delete();
                 result.put("status", "success");

@@ -147,7 +147,7 @@ public class EtUserInfoContorller extends BaseController{
 	            file.transferTo(newFile);
 
 	            try {
-	                List<List<Object>> etUserList = ExcelUtil.importExcel(newFile.getPath());
+	                List<List<Object>> etUserList = ExcelUtil.importExcel(newFile.getPath(),1);
 	                super.getFacade().getEtUserInfoService().createEtUserInfoList(etUserList,userInfo);
 	                newFile.delete();
 	                result.put("status", "success");

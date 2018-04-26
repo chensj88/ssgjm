@@ -30,6 +30,11 @@ public class EtUserInfo extends BaseDomain implements Serializable {
 	 * @val 合同ID
 	 */
 	private Long cId;
+
+	/**
+	 * @val 客户号
+	 */
+	private String serialNo;
 	
 	/**
 	 * @val 用户ID
@@ -112,21 +117,23 @@ public class EtUserInfo extends BaseDomain implements Serializable {
 	public void setPmId(Long pmId) {
 		this.pmId = pmId;
 	}
-	
-	/**
-	 * @val 合同ID
-	 */
-	public Long getCId() {
+
+	public Long getcId() {
 		return cId;
 	}
-	
-	/**
-	 * @val 合同ID
-	 */
-	public void setCId(Long cId) {
+
+	public void setcId(Long cId) {
 		this.cId = cId;
 	}
-	
+
+	public String getSerialNo() {
+		return serialNo;
+	}
+
+	public void setSerialNo(String serialNo) {
+		this.serialNo = serialNo;
+	}
+
 	/**
 	 * @val 用户ID
 	 */
