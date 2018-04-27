@@ -57,6 +57,8 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     private EtThirdIntterfaceService etThirdIntterfaceService;
     @Autowired
     private SysDataInfoDao sysDataInfoDao;
+    @Autowired
+    private EtReportService etReportService;
 
 
     @Override
@@ -166,13 +168,25 @@ public class CommonQueryServiceImpl implements CommonQueryService {
      * @param projectItem
      */
     private void etReportCheckByProjectId(long pmId, List<Integer> projectCompele, List<Integer> projectHandle, List<String> projectItem) {
-        //TODO
-        projectCompele.add(10);
-        projectHandle.add(5);
-        projectItem.add("单据准备(15)");
-        projectCompele.add(12);
-        projectHandle.add(2);
-        projectItem.add("报表准备(14)");
+        EtReport report = new EtReport();
+        report.setIsScope(1);
+        report.setPmId(pmId);
+        int total = etReportService.getEtReportCount(report);
+        report.setStatus(9);
+        int sumSucc = etReportService.getEtReportCount(report);
+        report.setStatus(null);
+        report.setReportType(Constants.ReportType.RP_BB);
+        int reportTotal = etReportService.getEtReportCount(report);
+        report.setStatus(9);
+        int succReportNum = etReportService.getEtReportCount(report);
+        int otherSucc = sumSucc - succReportNum;
+        int otherFail = total -sumSucc - reportTotal + succReportNum;
+        projectCompele.add(otherSucc);
+        projectHandle.add(otherFail);
+        projectItem.add("单据准备("+(otherSucc+otherFail)+")");
+        projectCompele.add(succReportNum);
+        projectHandle.add(reportTotal-succReportNum);
+        projectItem.add("报表准备("+reportTotal+")");
     }
 
     /**
@@ -207,11 +221,31 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         thirdIntterface.setPmId(pmId);
         thirdIntterface.setIsScope(1);
         int total = etThirdIntterfaceService.getEtThirdIntterfaceCount(thirdIntterface);
-        int succNum = etThirdIntterfaceService.getEtThirdIntterfaceSuccessCount(thirdIntterface);
+        int succNum = getCompleteNum(thirdIntterface);
         int failNum = total - succNum;
         projectCompele.add(succNum);
         projectHandle.add(failNum);
         projectItem.add("接口准备(" + total + ")");
+    }
+    /**
+     * 计算接口完成数量
+     *
+     * @param etThirdIntterface
+     * @return
+     */
+    public Integer getCompleteNum(EtThirdIntterface etThirdIntterface) {
+        Integer completeNum = 0;
+        String contentType = null;
+        //获取所有数据
+        List<EtThirdIntterface> etThirdIntterfaceList = etThirdIntterfaceService.getEtThirdIntterfaceList(etThirdIntterface);
+        for (EtThirdIntterface intterface : etThirdIntterfaceList) {
+            //完成情况
+            contentType = intterface.getContentType();
+            if (contentType != null && contentType.contains("1") && contentType.contains("2") && contentType.contains("3")) {
+                ++completeNum;
+            }
+        }
+        return completeNum;
     }
 
     /**

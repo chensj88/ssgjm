@@ -11,8 +11,8 @@ public class Constants implements Serializable {
     private static final long serialVersionUID = -1L;
 
     public static int FTP_PORT = Integer.valueOf(FtpPropertiesLoader.getProperty("ftp.port")).intValue();
-    public static String FTP_SERVER =  FtpPropertiesLoader.getProperty("ftp.server");
-    public static String FTP_SHARE_FLODER = "http://"+FTP_SERVER +":8081/shareFolder";
+    public static String FTP_SERVER = FtpPropertiesLoader.getProperty("ftp.server");
+    public static String FTP_SHARE_FLODER = "http://" + FTP_SERVER + ":8081/shareFolder";
 
     /**
      * 是否成功
@@ -24,6 +24,7 @@ public class Constants implements Serializable {
      * 定义用户类型
      */
     public static Map<String, String> USER_TYPE_MAP = new HashMap<String, String>();
+
     static {
         USER_TYPE_MAP.put("0", "医院/客户");
         USER_TYPE_MAP.put("1", "公司员工");
@@ -54,20 +55,20 @@ public class Constants implements Serializable {
     /**
      * 审批状态码  开始/新增
      */
-    public static  final  Integer APPROVAL_STATUS_START = 0;
+    public static final Integer APPROVAL_STATUS_START = 0;
     /**
      * 审批状态码  待审核/提交
      */
-    public static  final  Integer APPROVAL_STATUS_SUMMIT = 1;
+    public static final Integer APPROVAL_STATUS_SUMMIT = 1;
     /**
      * 审批状态码  审核不通过
      */
-    public static  final  Integer APPROVAL_STATUS_REJECT = 2;
+    public static final Integer APPROVAL_STATUS_REJECT = 2;
 
     /**
      * 审批状态码  审核（完结）
      */
-    public static  final  Integer APPROVAL_STATUS_END = 9;
+    public static final Integer APPROVAL_STATUS_END = 9;
     /**
      * PMIS状态码  2|作废
      */
@@ -103,25 +104,25 @@ public class Constants implements Serializable {
     /**
      * 流程调研
      */
-    public  static final String REPORT_TYPE_BUSINESS_PROCESS = "1";
+    public static final String REPORT_TYPE_BUSINESS_PROCESS = "1";
     /**
      * 报表单据
      */
-    public  static final String REPORT_TYPE_REPORT_AND_BILL = "2";
+    public static final String REPORT_TYPE_REPORT_AND_BILL = "2";
     /**
      * 上线评估和上线联调
      */
-    public  static final String REPORT_TYPE_ONLINE_FILE = "3";
+    public static final String REPORT_TYPE_ONLINE_FILE = "3";
     /**
      * 上线切换 图片
      */
-    public  static final String REPORT_TYPE_ONLINE_SWITCH_IMG_FILE = "4";
+    public static final String REPORT_TYPE_ONLINE_SWITCH_IMG_FILE = "4";
     /**
      * 上线切换报告
      */
-    public  static final String REPORT_TYPE_ONLINE_SWITCH_FILE = "5";
+    public static final String REPORT_TYPE_ONLINE_SWITCH_FILE = "5";
 
-   public class PMIS {
+    public class PMIS {
         /**
          * 计划执行状态  暂停/搁置
          */
@@ -276,11 +277,11 @@ public class Constants implements Serializable {
         /**
          * 流程大类
          */
-        public static final  String FLOW_TYPE_BIG = "0";
+        public static final String FLOW_TYPE_BIG = "0";
         /**
          * 流程小类
          */
-        public static final  String FLOW_TYPE_SMALL = "1";
+        public static final String FLOW_TYPE_SMALL = "1";
 
         /**
          * 一级流程ID
@@ -290,44 +291,44 @@ public class Constants implements Serializable {
 
     }
 
-    public class  DataInfo {
+    public class DataInfo {
         /**
          * 国标数据
          */
-        public static final  String DATA_TYPE_GUOBIAO = "0"  ;
+        public static final String DATA_TYPE_GUOBIAO = "0";
         /**
          * 行标数据
          */
-        public static final  String DATA_TYPE_HANGBIAO = "1"  ;
+        public static final String DATA_TYPE_HANGBIAO = "1";
         /**
          * 共享数据
          */
-        public static final  String DATA_TYPE_GONGXIANG = "2"  ;
+        public static final String DATA_TYPE_GONGXIANG = "2";
         /**
          * 易用数据
          */
-        public static final  String DATA_TYPE_YIYONG = "3"  ;
+        public static final String DATA_TYPE_YIYONG = "3";
 
 
     }
 
-    public  class  PmisWSConstants{
+    public class PmisWSConstants {
         /**
          * PMIS WS URL
          */
-        public static final  String WS_URL = "http://weberp.winning.com.cn:9080/service/LBEBusiness?wsdl";
+        public static final String WS_URL = "http://weberp.winning.com.cn:9080/service/LBEBusiness?wsdl";
         /**
          * PMIS WS 用户
          */
-        public static final  String WS_USER = "sszhb";
+        public static final String WS_USER = "sszhb";
         /**
          * PMIS WS 密码
          */
-        public static final  String WS_PASSWORD = "abc123";
+        public static final String WS_PASSWORD = "abc123";
         /**
          * PMIS WS 密码加密方式 plain 不加密
          */
-        public static final  String WS_ALGORITHM = "plain";
+        public static final String WS_ALGORITHM = "plain";
         /**
          * PMIS WS 服务节点名称
          */
@@ -335,35 +336,35 @@ public class Constants implements Serializable {
         /**
          * PMIS WS 服务类型  1 用户
          */
-        public static final  String  WS_SERVICE_QUERY_USER =  "1";
+        public static final String WS_SERVICE_QUERY_USER = "1";
         /**
          * PMIS WS 服务类型 客户信息
          */
-        public static final  String WS_SERVICE_QUERY_CUSTOM = "2";
+        public static final String WS_SERVICE_QUERY_CUSTOM = "2";
         /**
          * PMIS WS 服务类型 项目信息
          */
-        public static final  String WS_SERVICE_QUERY_PROJECT = "3";
+        public static final String WS_SERVICE_QUERY_PROJECT = "3";
         /**
          * PMIS WS 服务类型 项目人员信息
          */
-        public static final  String WS_SERVICE_QUERY_PUSER = "4";
+        public static final String WS_SERVICE_QUERY_PUSER = "4";
         /**
          * PMIS WS 服务类型 合同信息
          */
-        public static final  String WS_SERVICE_QUERY_CONTRACT = "5";
+        public static final String WS_SERVICE_QUERY_CONTRACT = "5";
         /**
          * PMIS WS 服务类型  产品信息
          */
-        public static final  String WS_SERVICE_QUERY_PRODUCT = "6";
+        public static final String WS_SERVICE_QUERY_PRODUCT = "6";
         /**
          * PMIS WS 服务类型 合同产品清单
          */
-        public static final  String WS_SERVICE_QUERY_CONTRACT_PRODUCT = "7";
+        public static final String WS_SERVICE_QUERY_CONTRACT_PRODUCT = "7";
         /**
          * PMIS WS 服务类型 组织机构
          */
-        public static final  String WS_SERVICE_QUERY_ORG   = "8";
+        public static final String WS_SERVICE_QUERY_ORG = "8";
 
         /**
          * PMIS WS 服务类型 用户登录验证
@@ -372,27 +373,27 @@ public class Constants implements Serializable {
         /**
          * PMIS WS 返回结果码, <=0失败
          */
-        public static final int RESULT_CODE_FAIL = 0 ;
+        public static final int RESULT_CODE_FAIL = 0;
 
         /**
          * PMIS WS 返回结果码,>0 成功
          */
-        public static final int RESULT_CODE_SUCCESS = 1 ;
+        public static final int RESULT_CODE_SUCCESS = 1;
 
         /**
          * PMIS WS 查询类别名称
          */
-        public static final String QUERY_TYPE_NAME = "Ptype" ;
+        public static final String QUERY_TYPE_NAME = "Ptype";
 
         /**
          * PMIS WS 第一次查询的数量
          */
-        public static final int QUERY_FIRST_BATCH_SIZE = 1 ;
+        public static final int QUERY_FIRST_BATCH_SIZE = 1;
 
         /**
          * PMIS WS 每次查询的数量
          */
-        public static final int QUERY_BATCH_SIZE = 1000 ;
+        public static final int QUERY_BATCH_SIZE = 1000;
         /**
          * 项目/客户经理
          */
@@ -421,11 +422,79 @@ public class Constants implements Serializable {
     }
 
     public class Vue {
-        public static  final  String VUE_LOGIN_URL = "/ssgjm/vue/login.do";
-        public static  final  String VUE_LOGOUT_URL = "/ssgjm/vue/logout.do";
-        public static  final  String VUE_TOKEN_NAME = "token";
-        public static  final  String COMMON_EXPORT_TAG = "export";
-        public static  final  String COMMON_DOWNLOAD_TAG = "download";
-        public static  final  String COMMON_UPLOAD_TAG = "upload";
+        public static final String VUE_LOGIN_URL = "/ssgjm/vue/login.do";
+        public static final String VUE_LOGOUT_URL = "/ssgjm/vue/logout.do";
+        public static final String VUE_TOKEN_NAME = "token";
+        public static final String COMMON_EXPORT_TAG = "export";
+        public static final String COMMON_DOWNLOAD_TAG = "download";
+        public static final String COMMON_UPLOAD_TAG = "upload";
+    }
+
+    /**
+     * 单据类型
+     * 0 凭条;1 发票;2 缴款;3 缴款单据;4 单据;5 台账;6 处方医嘱;7 申请单;8 治疗单据;9 医疗文书;10 临时医嘱;11 报告调阅;12 巡视单;13 报表;
+     */
+    public class ReportType {
+        /**
+         * 凭条
+         */
+        public static final int RP_PT = 0;
+        /**
+         *发票
+         */
+        public static final int RP_FP = 1;
+        /**
+         *缴款
+         */
+        public static final int RP_JK = 2;
+        /**
+         *缴款单据
+         */
+        public static final int RP_JKDJ = 3;
+        /**
+         *单据
+         */
+        public static final int RP_DJ = 4;
+        /**
+         *台账
+         */
+        public static final int RP_TZ = 5;
+        /**
+         *处方医嘱
+         */
+        public static final int RP_CFYZ = 6;
+        /**
+         *申请单
+         */
+        public static final int RP_SQD = 7;
+        /**
+         *治疗单据
+         */
+        public static final int RP_ZLDJ = 8;
+        /**
+         *医疗文书
+         */
+        public static final int RP_YLWS = 9;
+        /**
+         *临时医嘱
+         */
+        public static final int RP_LSYZ = 10;
+        /**
+         *报告调阅
+         */
+        public static final int RP_BGDY = 11;
+        /**
+         *巡视单
+         */
+        public static final int RP_XSD = 12;
+        /**
+         *出区通知单
+         */
+        public static final int RP_CQTZD = 13;
+        /**
+         *报表
+         */
+        public static final int RP_BB = 14;
+
     }
 }
