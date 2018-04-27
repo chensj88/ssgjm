@@ -30,7 +30,7 @@
 	<select id="selectEtDepartment" resultMap="etDepartmentResult" parameterType="etDepartment">
 		select * from ET_DEPARTMENT t where 1 = 1
 		<include refid="sf-etDepartment" />
-		<if test="(map.not_id != null and map.not_id != '') or map.not_id == 0"> and t.ID NOT IN #{map.not_id} </if>
+		<if test="(map.not_id != null and map.not_id != '') or map.not_id == 0"> and t.ID NOT IN (#{map.not_id}) </if>
 	</select>
 
 	<select id="selectEtDepartmentList" resultMap="etDepartmentResultForList" parameterType="etDepartment">
