@@ -13,11 +13,13 @@ import java.util.List;
  */
 public interface PmisProjectBasicInfoDao extends EntityDao<PmisProjectBasicInfo> {
 
-    List<PmisProjectBasicInfo> selectUserProcjectBasicInfo(PmisProjectBasicInfo basicInfo);
+    List<PmisProjectBasicInfo> selectUserCanViewProject(Long userId);
 
-    List<PmisProjectBasicInfo> selectPmisProjectBasicByKHXXAndIds(PmisProjectBasicInfo project);
+    List<PmisProjectBasicInfo> selectProjectInfoByCustomerIdAndProjectId(PmisProjectBasicInfo project);
 
     PmisProjectBasicInfo queryPmisProjectBasicInfoByProjectId(long pmId);
 
     List<Long> selectPmisProjectBasicInfoIdListByCustomerID(PmisProjectBasicInfo basicInfo);
+
+    List<Long> selectUserCanViewProjectIdList(Long userId);
 }

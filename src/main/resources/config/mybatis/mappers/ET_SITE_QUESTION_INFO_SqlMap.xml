@@ -112,7 +112,7 @@
             SELECT t.ALLOCATE_USER,count(*) as NUM FROM ET_SITE_QUESTION_INFO t where 1 = 1 <include refid="sf-etSiteQuestionInfo"/>
             GROUP BY ALLOCATE_USER)AS tt LEFT JOIN ET_USER_INFO i ON tt.ALLOCATE_USER=i.USER_ID AND i.USER_TYPE = 1
             <where>
-                <if test="serialNo != null and serialNo != ''">and tt.SERIAL_NO = #{serialNo}</if>
+                <if test="serialNo != null and serialNo != ''">and i.SERIAL_NO = #{serialNo}</if>
             </where>
         ;
     </select>

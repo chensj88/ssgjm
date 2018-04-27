@@ -272,24 +272,35 @@
         </where>
     </delete>
 
-
-    <select id="selectUserProcjectBasicInfo" parameterType="PmisProjectBasicInfo"
-            resultMap="pmisProjectBasicInfoResult">
-        SELECT * FROM PMIS_PROJECT_BASIC_INFO
-        <where>
-            <if test="(jhzt != null)">AND JHZT = #{jhzt, jdbcType=INTEGER}</if>
-            <if test="(fwlx != null)">AND FWLX = #{fwlx, jdbcType=INTEGER}</if>
-            <if test="(zjzt != null)">AND ZJZT = #{zjzt, jdbcType=INTEGER}</if>
-            <if test="(zjzt != null)">AND CAST(KHJDLJ AS NUMERIC(10,2)) &lt; 90 </if>
-            <if test="(id == null ) and (map.pks != null and map.pks.size >0)">
-                AND ID in
-                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-            </if>
-        </where>
+    <!--查询用户对应的项目信息 add chensj-->
+    <select id="selectUserCanViewProject" parameterType="java.lang.Long"  resultMap="pmisProjectBasicInfoResult">
+        SELECT
+        B.*
+        FROM PMIS_PROJCT_USER A
+        LEFT JOIN PMIS_PROJECT_BASIC_INFO B ON A.XMLCB = B.ID
+        WHERE  B.ID IS NOT NULL
+        AND B.JHZT = 0
+        AND  B.FWLX = 0
+        AND B.ZJZT = 1
+        AND  CAST(KHJDLJ AS NUMERIC(10,2)) &lt; 90
+        AND A.RY = #{userId}
+    </select>
+    <!--查询用户对应的项目信息 add chensj-->
+    <select id="selectUserCanViewProjectIdList" parameterType="java.lang.Long" resultType="java.lang.Long">
+        SELECT
+        DISTINCT B.ID
+        FROM PMIS_PROJCT_USER A
+        LEFT JOIN PMIS_PROJECT_BASIC_INFO B ON A.XMLCB = B.ID
+        WHERE  B.ID IS NOT NULL
+        AND B.JHZT = 0
+        AND  B.FWLX = 0
+        AND B.ZJZT = 1
+        AND  CAST(KHJDLJ AS NUMERIC(10,2)) &lt; 90
+        AND A.RY = #{userId}
     </select>
 
-    <select id="selectPmisProjectBasicByKHXXAndIds" parameterType="pmisProjectBasicInfo"
-            resultMap="pmisProjectBasicInfoResult">
+    <!--根据客户ID和可查看项目获取项目信息 add chensj-->
+    <select id="selectProjectInfoByCustomerIdAndProjectId" parameterType="pmisProjectBasicInfo"  resultMap="pmisProjectBasicInfoResult">
         SELECT * FROM PMIS_PROJECT_BASIC_INFO
         <where>
             <if test="(khxx != null)">AND KHXX = #{khxx, jdbcType=BIGINT}</if>

@@ -86,21 +86,15 @@ public class EtThirdIntterfaceController extends BaseController {
         List<EtThirdIntterface> etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfacePaginatedList(etThirdIntterface);
         //根据pmid获取接口数
         Integer total = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfaceCount(etThirdIntterface);
-        PmisProductLineInfo pmisProductLineInfo = null;
-        Map map = null;
-        //封装产品条线名(即产品名称)
-        for (EtThirdIntterface intterface : etThirdIntterfaces) {
-            if (StringUtil.isEmptyOrNull(intterface.getProductName())) {
-                pmisProductLineInfo = new PmisProductLineInfo();
-                pmisProductLineInfo.setId(intterface.getPlId());
-                pmisProductLineInfo = getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
-                intterface.setProductName(pmisProductLineInfo == null ? null : pmisProductLineInfo.getName());
-            }
-        }
+        //根据pmid获取项目进程
+        EtProcessManager etProcessManager = new EtProcessManager();
+        etProcessManager.setPmId(etThirdIntterface.getPmId());
+        etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows", etThirdIntterfaces);
+        result.put("process", etProcessManager);
         return result;
     }
 
@@ -126,18 +120,12 @@ public class EtThirdIntterfaceController extends BaseController {
         List<EtThirdIntterface> etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfacePaginatedList(etThirdIntterface);
         //根据pmid获取接口数
         Integer total = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfaceCount(etThirdIntterface);
-        PmisProductLineInfo pmisProductLineInfo = null;
         Map map = null;
         String contentType = null;
         String[] contentArr = null;
         //封装产品条线名、完成情况
         for (EtThirdIntterface intterface : etThirdIntterfaces) {
             map = new HashMap();
-            //产品条线
-            pmisProductLineInfo = new PmisProductLineInfo();
-            pmisProductLineInfo.setId(intterface.getPlId());
-            pmisProductLineInfo = getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
-            //完成情况
             contentType = intterface.getContentType();
             if (contentType == null) {
                 contentArr = "".split(",");
@@ -145,13 +133,8 @@ public class EtThirdIntterfaceController extends BaseController {
                 contentArr = contentType.split(",");
             }
             map.put("contentList", contentArr);
-            map.put("plName", pmisProductLineInfo == null ? null : pmisProductLineInfo.getName());
             intterface.setMap(map);
         }
-        //根据项目Id和项目类型查询产品信息
-        List<PmisProductInfo> pmisProductInfos = getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(etThirdIntterface.getPmId(), 9);
-        //根据产品信息获取产品条线
-        List<PmisProductLineInfo> pmisProductLineInfoList = getFacade().getCommonQueryService().selectPmisProductLineInfoByProductInfo(pmisProductInfos);
         //获取所有不在本期范围原因
         SysDictInfo sysDictInfo = new SysDictInfo();
         sysDictInfo.setDictCode("NotInScope");
@@ -174,7 +157,6 @@ public class EtThirdIntterfaceController extends BaseController {
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows", etThirdIntterfaces);
-        result.put("plList", pmisProductLineInfoList);
         result.put("resonList", sysDictInfoList);
         result.put("process", etProcessManager);
         result.put("user", user);
@@ -213,6 +195,7 @@ public class EtThirdIntterfaceController extends BaseController {
         } else {
             etThirdIntterface.setId(ssgjHelper.createThirdInterfaceId());
             etThirdIntterface.setCreator(etThirdIntterface.getOperator());
+            etThirdIntterface.setPlId(0L);
             etThirdIntterface.setStatus(1);
             etThirdIntterface.setSourceType(1);
             etThirdIntterface.setSourceId(0L);
@@ -225,9 +208,43 @@ public class EtThirdIntterfaceController extends BaseController {
         return result;
 
     }
+    /**
+     * 接口对应系统导出Excel
+     *
+     * @param response
+     * @param etThirdIntterface
+     * @throws IOException
+     */
+    @RequestMapping(value = "/export.do")
+    @ILog
+    public void export(HttpServletResponse response, EtThirdIntterface etThirdIntterface) throws IOException {
+        //根据pmid获取所有接口数据
+        List<EtThirdIntterface> etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().selectEtThirdIntterfaceMergeList(etThirdIntterface);
+        //参数集合
+        List<Map> dataList = new ArrayList<>();
+        for (int i = 0; i < etThirdIntterfaces.size(); i++) {
+            dataList.add(ConnectionUtil.objectToMap(etThirdIntterfaces.get(i)));
+        }
+        //属性集合
+        List<String> attrNameList = new ArrayList<>();
+        attrNameList.add("productName");
+        attrNameList.add("interfaceName");
+        attrNameList.add("moduleDetail");
+        attrNameList.add("remark");
+        //表名集合
+        List<String> tableNameList = new ArrayList<>();
+        tableNameList.add("产品名称");
+        tableNameList.add("模块名称");
+        tableNameList.add("明细");
+        tableNameList.add("备注");
+        String filename = "接口对应系统表" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
+        //创建工作簿
+        Workbook workbook = new HSSFWorkbook();
+        ExcelUtil.exportExcelByStream(dataList, attrNameList,tableNameList, response, workbook, filename);
+    }
 
     /**
-     * 导出Excel
+     * 第三方接口导出Excel
      *
      * @param response
      * @param etThirdIntterface
@@ -253,7 +270,7 @@ public class EtThirdIntterfaceController extends BaseController {
         String filename = "InterfaceInfo" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
         //创建工作簿
         Workbook workbook = new HSSFWorkbook();
-        ExcelUtil.exportExcelByStream(dataList, attrNameList, response, workbook, filename);
+        ExcelUtil.exportExcelByStream(dataList, attrNameList,null, response, workbook, filename);
     }
 
     /**

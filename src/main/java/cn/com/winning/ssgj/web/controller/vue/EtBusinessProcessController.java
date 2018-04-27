@@ -155,6 +155,28 @@ public class EtBusinessProcessController extends BaseController {
         return result;
     }
 
+    @RequestMapping(value = "/deleteFile.do")
+    @ResponseBody
+    @Transactional
+    @ILog
+    public Map<String,Object> deleteFile(EtBusinessProcess process){
+        long operator = process.getOperator();
+        process.setOperator(null);
+        process = super.getFacade().getEtBusinessProcessService().getEtBusinessProcess(process);
+        try {
+            CommonFtpUtils.removeUploadFile(process.getUploadPath());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        process.setUploadPath(" ");
+        process.setOperator(operator);
+        process.setOperatorTime(new Timestamp(new Date().getTime()));
+        super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
     /**
      * 流程数量确认
      * @param manager

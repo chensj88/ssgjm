@@ -2,6 +2,8 @@ package cn.com.winning.ssgj.web.controller;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.domain.EtBusinessProcess;
+import cn.com.winning.ssgj.domain.PmisProductInfo;
+import cn.com.winning.ssgj.domain.expand.NodeTree;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,11 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/test")
 public class TestController extends BaseController{
+
+    @RequestMapping(value = "/page.do")
+    public String pageInfo(){
+        return "test/test";
+    }
 
     @RequestMapping(value = "/exec.do")
     @ResponseBody
@@ -62,6 +69,28 @@ public class TestController extends BaseController{
         result.put("row", processList);
         result.put("total", processList.size());
         return result;
+    }
+
+    @RequestMapping(value = "/menu.do")
+    @ResponseBody
+    public Map<String,Object> testUserMenu(){
+        List<NodeTree> nodeTrees =  super.getFacade().getCommonQueryService().queryUserCustomerProjectTreeInfo(77L);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data",nodeTrees);
+        return result;
 
     }
+
+    @RequestMapping(value = "/product.do")
+    @ResponseBody
+    public Map<String,Object> testUserProduct(){
+        List<PmisProductInfo> nodeTrees =  super.getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(  28252L,1);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data",nodeTrees);
+        return result;
+
+    }
+
 }

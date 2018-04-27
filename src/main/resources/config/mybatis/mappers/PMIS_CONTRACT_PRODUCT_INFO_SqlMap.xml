@@ -199,5 +199,13 @@
             </if>
         </where>
     </delete>
-
+    <!--根据项目ID和合同产品类别获取产品ID add chensj-->
+    <select id="selectProcuctIdListByPmIdAndHtcplb" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT
+          DISTINCT  A.CPXX
+        FROM PMIS_CONTRACT_PRODUCT_INFO A
+        WHERE A.ZT = 1
+        AND A.XMLCB = ${pmId}
+        AND A.HTCPLB = ${type}
+    </select>
 </mapper>

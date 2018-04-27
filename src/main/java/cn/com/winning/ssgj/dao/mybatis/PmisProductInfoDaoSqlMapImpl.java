@@ -7,6 +7,7 @@ import cn.com.winning.ssgj.domain.PmisProductInfo;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -44,5 +45,10 @@ public class PmisProductInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<PmisProduc
     public List<PmisProductInfo> selectBasicDataPmisProductInfoList(PmisProductInfo t) {
         String statement = "selectBasicDataPmisProductInfoList";
         return super.getSqlSession().selectList(statement, t);
+    }
+
+    @Override
+    public List<PmisProductInfo> selectProductInfoListByPmIdAndType(Map<String, Object> param) {
+        return super.getSqlSession().selectList("selectProductInfoListByPmIdAndType", param);
     }
 }

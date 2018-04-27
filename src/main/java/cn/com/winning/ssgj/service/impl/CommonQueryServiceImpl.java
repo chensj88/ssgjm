@@ -61,37 +61,23 @@ public class CommonQueryServiceImpl implements CommonQueryService {
 
     @Override
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId) {
-
         List<NodeTree> treeList = new ArrayList<NodeTree>();
-        //获取用户可以查看的项目信息
-        PmisProjctUser projctUser = new PmisProjctUser();
-        projctUser.setRy(userId);
-        List<PmisProjctUser> userList = pmisProjctUserService.getPmisProjctUserList(projctUser);
-        if(userList != null && userList.size() > 0){
-            List<PmisProjectBasicInfo> basicInfoList = pmisProjectBasicInfoService.getUserProcjectBasicInfo(userList);
-            //项目ID的集合
-            List<String> pidList = new ArrayList<String>();
-            for (PmisProjectBasicInfo basicInfo : basicInfoList) {
-                pidList.add(basicInfo.getId() + "");
-            }
-            PmisCustomerInformation custinfo = new PmisCustomerInformation();
-            custinfo.getMap().put("idList", pidList);
-            List<PmisCustomerInformation> custInfoList = pmisCustomerInformationService.getCustomerInfoListByProjectList(custinfo);
-            for (PmisCustomerInformation info : custInfoList) {
-                NodeTree node = info.getNodeTree();
-                node.setNodes(queryCustomerProjectNode(pidList, info.getId()));
-                treeList.add(node);
-            }
+        List<Long> basicInfoList = pmisProjectBasicInfoService.getUserCanViewProjectIdList(userId);
+        List<PmisCustomerInformation> custInfoList = pmisCustomerInformationService.getUserCanViewCustomerList(userId);
+        for (PmisCustomerInformation info : custInfoList) {
+            NodeTree node = info.getNodeTree();
+            node.setNodes(queryCustomerProjectNode(basicInfoList, info.getId()));
+            treeList.add(node);
         }
-
         return treeList;
     }
 
     @Override
     public List<PmisProductInfo> queryProductOfProjectByProjectIdAndType(long pmId, int type) {
-        PmisProductInfo productInfo = new PmisProductInfo();
-        productInfo.getMap().put("pks", queryProductIdByProjectIdAndType(pmId, type));
-        return pmisProductInfoDao.selectPmisProductInfoListByIdList(productInfo);
+        Map<String,Object> param = new HashMap<>();
+        param.put("pmId",pmId);
+        param.put("type",type);
+        return pmisProductInfoDao.selectProductInfoListByPmIdAndType(param);
     }
 
     /**
@@ -102,15 +88,10 @@ public class CommonQueryServiceImpl implements CommonQueryService {
      * @return pdIds
      */
     private List<Long> queryProductIdByProjectIdAndType(long pmId, int type) {
-        PmisContractProductInfo cpInfo = new PmisContractProductInfo();
-        cpInfo.setHtcplb(type);
-        cpInfo.setXmlcb(pmId);
-        cpInfo.setZt(Constants.PMIS_STATUS_USE);
-        List<PmisContractProductInfo> cpInfoList = pmisContractProductInfoDao.selectEntityList(cpInfo);
-        List<Long> pIds = new ArrayList<Long>();
-        for (PmisContractProductInfo info : cpInfoList) {
-            pIds.add(info.getCpxx());
-        }
+        Map<String,Object> param = new HashMap<>();
+        param.put("pmId",pmId);
+        param.put("type",type);
+        List<Long> pIds = pmisContractProductInfoDao.selectProcuctIdListByPmIdAndHtcplb(param);
         return pIds;
     }
 
@@ -185,6 +166,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
      * @param projectItem
      */
     private void etReportCheckByProjectId(long pmId, List<Integer> projectCompele, List<Integer> projectHandle, List<String> projectItem) {
+        //TODO
         projectCompele.add(10);
         projectHandle.add(5);
         projectItem.add("单据准备(15)");
@@ -348,18 +330,16 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     }
 
     /**
-     * 查询项目信息
-     *
+     * 查询项目信息,根据客户ID和项目ID
      * @param pidList 项目IDList
      * @param custId  客户ID
      * @return
      */
-    private List<NodeTree> queryCustomerProjectNode(List<String> pidList, Long custId) {
+    private List<NodeTree> queryCustomerProjectNode(List<Long> pidList, Long custId) {
         PmisProjectBasicInfo project = new PmisProjectBasicInfo();
         project.getMap().put("idList", pidList);
         project.setKhxx(custId);
-        List<PmisProjectBasicInfo> basicInfoList = pmisProjectBasicInfoService
-                .getPmisProjectBasicByKHXXAndIds(project);
+        List<PmisProjectBasicInfo> basicInfoList = pmisProjectBasicInfoService.getProjectInfoByCustomerIdAndProjectId(project);
         List<NodeTree> treeList = new ArrayList<NodeTree>();
         for (PmisProjectBasicInfo info : basicInfoList) {
             treeList.add(info.getNodeTree());

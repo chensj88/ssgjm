@@ -218,7 +218,7 @@ public class EtSoftHardwareController extends BaseController {
         String filename = "EtSoftHardware" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
         //创建工作簿
         Workbook workbook = new HSSFWorkbook();
-        ExcelUtil.exportExcelByStream(dataList, attrNameList, response, workbook, filename);
+        ExcelUtil.exportExcelByStream(dataList, attrNameList,null, response, workbook, filename);
     }
 
     /**
@@ -264,7 +264,7 @@ public class EtSoftHardwareController extends BaseController {
                 List<List<Object>> etSoftHardwareList = ExcelUtil.importExcel(newFile.getPath());
                 for (List<Object> temp : etSoftHardwareList) {
                     EtSoftHardware etSoftHardware = new EtSoftHardware();
-                    etSoftHardware.setId(ssgjHelper.createEtDevEnvHardwareId());
+                    etSoftHardware.setId(ssgjHelper.createEtSoftHardwareIdService());
                     etSoftHardware.setPmId(pmId);
                     etSoftHardware.setcId(contractId);
                     etSoftHardware.setSerialNo(customerId.toString());
@@ -377,7 +377,7 @@ public class EtSoftHardwareController extends BaseController {
     /**
      * 确认完成
      *
-     * @param etSoftHardware
+     * @param etProcessManager
      * @return
      */
     @RequestMapping(value = "/confirm.do")

@@ -60,23 +60,19 @@ public class PmisProjectBasicInfoServiceImpl implements PmisProjectBasicInfoServ
     }
 
     @Override
-    public List<PmisProjectBasicInfo> getUserProcjectBasicInfo(List<PmisProjctUser> userList) {
-        PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
-        basicInfo.setJhzt(Constants.PMIS.JHZXZT_RUNING);
-        basicInfo.setFwlx(Constants.PMIS.FWLX_SSXM);
-        basicInfo.setZjzt(Constants.STATUS_USE); //选择项目在建状态为在建。
-        List<String> idString = new ArrayList<String>();
-        for (PmisProjctUser projctUser : userList) {
-            idString.add(projctUser.getXmlcb()+"");
-        }
-        basicInfo.getMap().put("pks",idString);
-
-        return this.pmisProjectBasicInfoDao.selectUserProcjectBasicInfo(basicInfo);
+    public List<PmisProjectBasicInfo> getUserCanViewProject(Long userId) {
+        return this.pmisProjectBasicInfoDao.selectUserCanViewProject(userId);
     }
 
     @Override
-    public List<PmisProjectBasicInfo> getPmisProjectBasicByKHXXAndIds(PmisProjectBasicInfo project) {
-        return this.pmisProjectBasicInfoDao.selectPmisProjectBasicByKHXXAndIds(project);
+    public List<Long> getUserCanViewProjectIdList(Long userId) {
+        return this.pmisProjectBasicInfoDao.selectUserCanViewProjectIdList(userId);
+    }
+
+
+    @Override
+    public List<PmisProjectBasicInfo> getProjectInfoByCustomerIdAndProjectId(PmisProjectBasicInfo project) {
+        return this.pmisProjectBasicInfoDao.selectProjectInfoByCustomerIdAndProjectId(project);
     }
 
     @Override

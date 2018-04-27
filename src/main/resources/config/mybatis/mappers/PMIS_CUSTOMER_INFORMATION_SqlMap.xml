@@ -303,4 +303,21 @@
         </where>
         )
     </select>
+
+    <select id="selectUserCanViewCustomerList" parameterType="java.lang.Long" resultMap="pmisCustomerInformationResult">
+       SELECT * FROM PMIS_CUSTOMER_INFORMATION
+       WHERE  ID IN (
+           SELECT
+            DISTINCT C.ID
+            FROM PMIS_PROJCT_USER A
+            LEFT JOIN PMIS_PROJECT_BASIC_INFO B ON A.XMLCB = B.ID
+            LEFT JOIN PMIS_CUSTOMER_INFORMATION C ON B.KHXX = C.ID
+            WHERE  B.ID IS NOT NULL
+            AND B.JHZT = 0
+            AND  B.FWLX = 0
+            AND B.ZJZT = 1
+            AND  CAST(KHJDLJ AS NUMERIC(10,2)) &lt; 90
+            AND A.RY = #{userId}
+        )
+    </select>
 </mapper>
