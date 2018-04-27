@@ -77,13 +77,14 @@ public class EtDataCheckController extends BaseController {
         etDataCheck.setSerialNo(serialNo.toString());
         //根据pmId获取基础数据校验数据
         List<EtDataCheck> etDataCheckList = getFacade().getEtDataCheckService().selectEtDataCheckListByPmIdAndDataType(etDataCheck);
+        List<EtDataCheck> list = null;
         EtDataCheck etDataCheckTemp = null;
         for (EtDataCheck dataCheck : etDataCheckList) {
             etDataCheckTemp = new EtDataCheck();
             etDataCheckTemp.setPmId(dataCheck.getPmId());
             etDataCheckTemp.setPlId(dataCheck.getPlId());
-            etDataCheckTemp = getFacade().getEtDataCheckService().getEtDataCheck(etDataCheckTemp);
-            if (etDataCheckTemp == null) {
+            list = getFacade().getEtDataCheckService().getEtDataCheckList(etDataCheckTemp);
+            if (list.size() == 0) {
                 //不存在则插入
                 dataCheck.setId(ssgjHelper.createEtDataCheckId());
                 getFacade().getEtDataCheckService().createEtDataCheck(dataCheck);
@@ -133,7 +134,7 @@ public class EtDataCheckController extends BaseController {
         PmisProductLineInfo pmisProductLineInfo = null;
         //封装外参数
         for (EtDataCheck e : etDataCheckList) {
-            pmisProductLineInfo=new PmisProductLineInfo();
+            pmisProductLineInfo = new PmisProductLineInfo();
             pmisProductLineInfo.setId(e.getPlId());
             pmisProductLineInfo = getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
             Map<String, Object> map = new HashMap();
@@ -148,14 +149,14 @@ public class EtDataCheckController extends BaseController {
         }
         int total = getFacade().getEtDataCheckService().getEtDataCheckCount(etDataCheck);
         //根据pmid获取项目进程
-        EtProcessManager etProcessManager=new EtProcessManager();
+        EtProcessManager etProcessManager = new EtProcessManager();
         etProcessManager.setPmId(pmId);
         etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", etDataCheckList);
         map.put("total", total);
         map.put("status", Constants.SUCCESS);
-        map.put("process",etProcessManager);
+        map.put("process", etProcessManager);
         return map;
     }
 
@@ -206,7 +207,10 @@ public class EtDataCheckController extends BaseController {
     @Transactional
     public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtDataCheck t) throws IOException {
         //根据id获取表属性
-        EtDataCheck etDataCheck = getFacade().getEtDataCheckService().getEtDataCheck(t);
+        EtDataCheck temp = new EtDataCheck();
+        temp.setId(t.getId());
+        EtDataCheck etDataCheck = getFacade().getEtDataCheckService().getEtDataCheck(temp);
+        etDataCheck.setOperator(t.getOperator());
         SysDataCheckScript sysDataCheckScript = new SysDataCheckScript();
         sysDataCheckScript.setAppId(etDataCheck.getPlId());
         sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(sysDataCheckScript);
@@ -334,36 +338,66 @@ public class EtDataCheckController extends BaseController {
         }
     }
 
+    /**
+     * @param response
+     * @return
+     * @throws IOException
+     * @description 导出sql
+     */
+    @RequestMapping(value = "/exportModel.do")
+    @ResponseBody
+    @ILog
+    public void exportModel(HttpServletResponse response, EtDataCheck t) throws IOException {
+
+        String realPath = Thread.currentThread().getContextClassLoader().getResource("/template").getPath();
+        //获取文件名
+        String filename = realPath + "\\DataCheckModel.xlsx";
+        File file = new File(filename);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        InputStream inputStream = new BufferedInputStream(fileInputStream);
+        byte[] bytes = new byte[inputStream.available()];
+        inputStream.read(bytes);
+        response.setCharacterEncoding("utf-8");
+        //设置响应内容的类型
+        response.setContentType("text/plain");
+        //设置文件的名称和格式
+        response.addHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode("基础数据校验模板.xlsx", "UTF-8"))));
+        BufferedOutputStream buff = null;
+        OutputStream outStr = null;
+        try {
+            outStr = response.getOutputStream();
+            buff = new BufferedOutputStream(outStr);
+            buff.write(bytes);
+            buff.flush();
+            buff.close();
+        } catch (Exception e) {
+            logger.error("导出模板出错，e:{}", e);
+        } finally {
+            try {
+                buff.close();
+                outStr.close();
+            } catch (Exception e) {
+                logger.error("关闭流对象出错 e:{}", e);
+            }
+        }
+    }
+
 
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
     @ILog
     @Transactional
-    public Map<String, Object> confirm(EtDataCheck etDataCheck) {
-
-        //项目id
-        Long pmId = etDataCheck.getPmId();
-        if (pmId == null) {
-            return null;
-        }
-        EtDataCheck dataCheck=new EtDataCheck();
-        dataCheck.setPmId(pmId);
-        int total = getFacade().getEtDataCheckService().getEtDataCheckCount(dataCheck);
-        EtProcessManager etProcessManager = new EtProcessManager();
-        etProcessManager.setPmId(pmId);
-        Map<String, Object> map = new HashMap<String, Object>();
-        if (total > 0) {
-            etProcessManager.setIsBasicDataCheck(1);
-            etProcessManager.setOperator(etDataCheck.getOperator());
-            etProcessManager.setOperatorTime(new Timestamp(new Date().getTime()));
-            getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(etProcessManager);
-            map.put("type", Constants.SUCCESS);
-            map.put("msg", "确认成功！");
-        } else {
-            map.put("type", "info");
-            map.put("msg", "无数据，确认失败！");
-        }
-        return map;
+    public Map<String, Object> confirm(EtProcessManager etProcessManager) {
+        EtProcessManager temp = new EtProcessManager();
+        temp.setPmId(etProcessManager.getPmId());
+        temp = super.getFacade().getEtProcessManagerService().getEtProcessManager(temp);
+        temp.setOperator(etProcessManager.getOperator());
+        temp.setOperatorTime(new Timestamp(new Date().getTime()));
+        temp.setIsBasicDataCheck(etProcessManager.getIsBasicDataCheck());
+        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(temp);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
     }
 }
 
