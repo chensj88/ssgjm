@@ -54,6 +54,7 @@ public class EtSiteInstallController extends BaseController {
         public Map<String,Object> siteInstallList(EtSiteInstall info, Long userId,Row row) {
             Map<String,Object> result = new HashMap<String,Object>();
             info.setRow(row);
+            info.setStatus(1);//有效的
             List<EtSiteInstall> installList = super.getFacade().getEtSiteInstallService().getEtSiteInstallListWithInfo(info);
             if(installList.size() > 0){
                 for (int i=0;i<installList.size();i++){
@@ -175,6 +176,58 @@ public class EtSiteInstallController extends BaseController {
         return map;
     }
 
+    /**
+     * 删除站点
+     * @return
+     */
+    @RequestMapping(value = "/removeSite.do")
+    @ResponseBody
+    public synchronized Map<String,Object> removeSite (EtSiteInstall info) {
+        Map map = new HashMap();
+        info.setStatus(0);
+        super.getFacade().getEtSiteInstallService().modifyEtSiteInstall(info);
+        map.put("type", Constants.SUCCESS);
+        map.put("msg", "删除成功！");
+        return map;
+    }
+
+    /**
+     * Chen,Kuai 删除图片
+     * @param id
+     * @return
+     */
+    @RequestMapping("/deleteImg.do")
+    @ResponseBody
+    public synchronized Map<String,Boolean> deleteImg(Long id,String imgPath){
+        Map<String,Boolean> map = new HashMap<String,Boolean>();
+        EtSiteInstallDetail info = new EtSiteInstallDetail();
+        info.setId(id);
+        try{
+            info = super.getFacade().getEtSiteInstallDetailService().getEtSiteInstallDetail(info);
+            if (port == 21) {
+                FtpUtils.deleteFtpFile(imgPath);
+            } else if (port == 22) {
+                SFtpUtils.rmFile(imgPath);
+            }
+            String[] imgs=info.getImgPath().split(";");
+            String str="";
+            for(int i = 0; i < imgs.length; i++) {
+                if(imgPath.equals(imgs[i])){
+                    info.setImgPath("");
+                }else{
+                    str +=imgs[i]+";";
+                    info.setImgPath(str.substring(0,str.length()-1));
+                }
+            }
+
+            super.getFacade().getEtSiteInstallDetailService().modifyEtSiteInstallDetail(info);
+            map.put("status",true);
+        }catch (Exception e){
+            map.put("status",false);
+        }
+        return map;
+    }
+
 
     /**
      * 硬件变化
@@ -281,6 +334,7 @@ public class EtSiteInstallController extends BaseController {
                 detail.setId(ssgjHelper.createSiteInstallDetailIdService());
                 detail.setSourceId(info.getId());
                 detail.setInstall(0);
+                detail.setFloorNum(1);//默认楼层为 1楼
                 super.getFacade().getEtSiteInstallDetailService().createEtSiteInstallDetail(detail);
             }
             //当为空的时候重新获取 初始化的安装明细信息
@@ -295,6 +349,7 @@ public class EtSiteInstallController extends BaseController {
             }
         }
         result.put("siteInstallDetails", siteInstallDetails);
+        result.put("deptName",info.getDeptName());
         result.put("status", Constants.SUCCESS);
         return result;
     }
@@ -409,16 +464,24 @@ public class EtSiteInstallController extends BaseController {
      */
     @RequestMapping(value = "/siteEnd.do", method ={RequestMethod.POST})
     @ResponseBody
-    public synchronized Map<String,Object> siteEnd (EtSiteInstall info,Long userId){
+    public synchronized Map<String,Object> siteEnd (EtSiteInstall info,Long userId,Long dataType){
         Map map = new HashMap();
         EtProcessManager manager = new EtProcessManager();
         manager.setPmId(info.getPmId());
-        manager.setIsSiteInstall(1);
+        if(dataType ==0){
+            manager.setIsSiteInstall(1);
+            map.put("type", "1");
+            map.put("msg", "确认成功！");
+
+        }else{
+            manager.setIsSiteInstall(0);
+            map.put("type", "0");
+            map.put("msg", "取消确认成功！");
+        }
         manager.setOperator(userId);
         manager.setOperatorTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(manager);
-        map.put("type", Constants.SUCCESS);
-        map.put("msg", "站点修改成功！");
+        map.put("dataType",manager.getIsSiteInstall());
         return map;
     }
     /**

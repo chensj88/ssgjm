@@ -28,8 +28,9 @@ import java.util.*;
  * @author ChenKuai
  * @create 2018-03-16 上午 9:36
  **/
+@CrossOrigin
 @Controller
-    @RequestMapping("mobile/siteInstall")
+@RequestMapping("mobile/siteInstall")
 public class SiteInstallController extends BaseController {
 
     @Autowired
