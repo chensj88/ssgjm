@@ -66,7 +66,7 @@ public class EtDepartmentController extends BaseController {
     @Transactional
     public Map<String, Object> addOrModify(EtDepartment depart) {
         Map<String, Object> result = new HashMap<String, Object>();
-        //判断重复
+        //类别+科室确定唯一性
         EtDepartment unique = new EtDepartment();
         unique.setDeptName(depart.getDeptName());
         unique.setTypeName(depart.getTypeName());
@@ -95,8 +95,13 @@ public class EtDepartmentController extends BaseController {
                 result.put("status", "repeat");
             }
         } else {
-            unique.getMap().put("not_id",depart.getId());
-            if(uniqueList.size()==1){
+            EtDepartment unique_old = new EtDepartment();
+            unique_old.setIsDel(1);
+            unique_old.setTypeName(depart.getTypeName());
+            unique_old.setDeptName(depart.getDeptName());
+            unique_old.getMap().put("not_id",depart.getId());
+            unique_old = super.getFacade().getEtDepartmentService().getEtDepartment(unique_old);
+            if(unique_old==null){
                 super.getFacade().getEtDepartmentService().modifyEtDepartment(depart);
             }else{
                 result.put("status", "repeat");
@@ -108,7 +113,7 @@ public class EtDepartmentController extends BaseController {
 
     /**
      * 导出医院科室信息
-     * @param queryUser
+     * @param department
      * @param response
      * @return
      * @throws IOException
@@ -154,7 +159,7 @@ public class EtDepartmentController extends BaseController {
     /**
      * 上传医院用户信息Excel
      * @param request
-     * @param userInfo
+     * @param department
      * @param file
      * @return
      * @throws IOException
