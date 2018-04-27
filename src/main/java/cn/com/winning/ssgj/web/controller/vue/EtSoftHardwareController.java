@@ -201,24 +201,37 @@ public class EtSoftHardwareController extends BaseController {
     public void wiriteExcel(HttpServletResponse response, EtSoftHardware etSoftHardware) throws IOException {
         //根据pmid获取所有硬件数据
         List<EtSoftHardware> etSoftHardwares = getFacade().getEtSoftHardwareService().getEtSoftHardwareList(etSoftHardware);
+        PmisProductLineInfo pmisProductLineInfo = null;
         //参数集合
         List<Map> dataList = new ArrayList<>();
         for (int i = 0; i < etSoftHardwares.size(); i++) {
+            //导出字段封装
+            pmisProductLineInfo=new PmisProductLineInfo();
+            pmisProductLineInfo.setId(etSoftHardwares.get(i).getPlId());
+            pmisProductLineInfo=getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
+            etSoftHardwares.get(i).getMap().put("productLine",pmisProductLineInfo==null?"":pmisProductLineInfo.getName());
             dataList.add(ConnectionUtil.objectToMap(etSoftHardwares.get(i)));
         }
-        //属性数组
-        Field[] fields = EtSoftHardware.class.getDeclaredFields();
         //属性集合
         List<String> attrNameList = new ArrayList<>();
-        for (int i = 0; i < fields.length; i++) {
-            if (!"serialVersionUID".equals(fields[i].getName())) {
-                attrNameList.add(fields[i].getName());
-            }
-        }
-        String filename = "EtSoftHardware" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
+        attrNameList.add("map.productLine");
+        attrNameList.add("hwName");
+        attrNameList.add("brand");
+        attrNameList.add("model");
+        attrNameList.add("num");
+        attrNameList.add("useContent");
+        //表名集合
+        List<String> tableNameList = new ArrayList<>();
+        tableNameList.add("系统名称");
+        tableNameList.add("硬件名称");
+        tableNameList.add("推荐品牌");
+        tableNameList.add("推荐型号");
+        tableNameList.add("数量");
+        tableNameList.add("用途");
+        String filename = "测试与硬件表" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
         //创建工作簿
         Workbook workbook = new HSSFWorkbook();
-        ExcelUtil.exportExcelByStream(dataList, attrNameList,null, response, workbook, filename);
+        ExcelUtil.exportExcelByStream(dataList, attrNameList, tableNameList, response, workbook, filename);
     }
 
     /**

@@ -12,9 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 public class ConnectionUtil {
     private static HashMap<String, String> properties = new HashMap<String, String>();
@@ -108,7 +106,19 @@ public class ConnectionUtil {
                 }
                 Method getter = property.getReadMethod();
                 Object value = getter != null ? getter.invoke(obj) : null;
-                map.put(key, value);
+                Set<String> set = null;
+                HashMap<String, Object> curMap = null;
+                if (value != null && "map".equalsIgnoreCase(key)) {
+                    //封装map内属性
+                    curMap = (HashMap) value;
+                    //获取keySet
+                    set = curMap.keySet();
+                    for (String curSet : set) {
+                        map.put(key.toLowerCase() + "." + curSet, curMap.get(curSet).toString());
+                    }
+                } else {
+                    map.put(key, value);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
