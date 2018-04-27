@@ -223,19 +223,10 @@ public class SysDataInfoBufferController extends BaseController {
         if (pmId == null) {
             return;
         }
-        //根据项目id获取产品
-        List<PmisProductInfo> pmisProductInfos =
-                getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId, 1);
-        //产品id集合
-        List pidList = new ArrayList();
-        for (int i = 0; i < pmisProductInfos.size(); i++) {
-            pidList.add(pmisProductInfos.get(i).getId());
-        }
-        logger.info("idList:{}", pidList);
         //创建map，封装其他属性
         Map<String, Object> propMap = new HashMap<String, Object>();
         //pks为mapping xml中设定的属性名
-        propMap.put("pidList", pidList);
+        propMap.put("pmId", pmId);
         SysDataInfo sysDataInfo = new SysDataInfo();
         sysDataInfo.setDataType(dataType);
         sysDataInfo.setMap(propMap);
@@ -246,19 +237,32 @@ public class SysDataInfoBufferController extends BaseController {
         for (int i = 0; i < sysDataInfoList.size(); i++) {
             dataList.add(ConnectionUtil.objectToMap(sysDataInfoList.get(i)));
         }
-        //属性数组
-        Field[] fields = SysDataInfo.class.getDeclaredFields();
         //属性集合
         List<String> attrNameList = new ArrayList<>();
-        for (int i = 0; i < fields.length; i++) {
-            //过滤无用属性值并保存
-            if (!"serialVersionUID".equals(fields[i].getName()) && !"nodeTree".equals(fields[i].getName()))
-                attrNameList.add(fields[i].getName());
+        attrNameList.add("tableName");
+        attrNameList.add("tableCnName");
+        attrNameList.add("standardCode");
+        attrNameList.add("tableAttention");
+        //表名集合
+        List<String> tableNameList = new ArrayList<>();
+        tableNameList.add("This表名");
+        tableNameList.add("数据涵义");
+        tableNameList.add("标准文号");
+        tableNameList.add("注意事项");
+        String filename = null;
+        if (dataType == 0) {
+            filename = "国标数据";
+        } else if (dataType == 1) {
+            filename = "行标数据";
+        } else if (dataType == 2) {
+            filename = "共享数据";
+        } else if (dataType == 3) {
+            filename = "易用数据";
         }
-        String filename = "DataInfo" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
+        filename += DateUtil.format(DateUtil.PATTERN_14) + ".xls";
         //创建工作簿
         Workbook workbook = new HSSFWorkbook();
-        ExcelUtil.exportExcelByStream(dataList, attrNameList,null, response, workbook, filename);
+        ExcelUtil.exportExcelByStream(dataList, attrNameList, tableNameList, response, workbook, filename);
     }
 
     /**
@@ -339,7 +343,7 @@ public class SysDataInfoBufferController extends BaseController {
         String tableName = sysDataInfo.getTableName();
         if (StringUtil.isEmptyOrNull(tableName)) {
             logger.warn("tableName is null or empty!");
-            return ;
+            return;
         }
         //导出文件名
         String filename = sysDataInfo.getTableName() + ".sql";
