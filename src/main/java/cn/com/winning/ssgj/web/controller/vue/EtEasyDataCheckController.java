@@ -107,7 +107,6 @@ public class EtEasyDataCheckController extends BaseController {
      */
     @RequestMapping("/list.do")
     @ResponseBody
-    @ILog(operationName = "基础数据校验表", operationType = "list")
     public Map<String, Object> list(Row row, EtEasyDataCheck etEasyDataCheck) {
         //项目id
         Long pmId = etEasyDataCheck.getPmId();
@@ -148,14 +147,14 @@ public class EtEasyDataCheckController extends BaseController {
             easyDataCheck.setMap(propMap);
         }
         //根据pmid获取项目进程
-        EtProcessManager etProcessManager=new EtProcessManager();
+        EtProcessManager etProcessManager = new EtProcessManager();
         etProcessManager.setPmId(pmId);
         etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", etEasyDataChecks);
         map.put("total", total);
         map.put("status", Constants.SUCCESS);
-        map.put("process",etProcessManager);
+        map.put("process", etProcessManager);
         return map;
     }
 
@@ -168,7 +167,6 @@ public class EtEasyDataCheckController extends BaseController {
      */
     @RequestMapping("/detail.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> detail(EtEasyDataCheckDetail t) {
         //根据sourceId获取表属性
         List<EtEasyDataCheckDetail> etEasyDataCheckDetails = getFacade().getEtEasyDataCheckDetailService().getEtEasyDataCheckDetailList(t);
@@ -435,37 +433,23 @@ public class EtEasyDataCheckController extends BaseController {
     /**
      * 确认完成
      *
-     * @param etEasyDataCheck
+     * @param etProcessManager
      * @return
      */
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
     @Transactional
-    public Map<String, Object> confirm(EtEasyDataCheck etEasyDataCheck) {
-
-        //项目id
-        Long pmId = etEasyDataCheck.getPmId();
-        if (pmId == null) {
-            return null;
-        }
-        EtEasyDataCheck easyDataCheck=new EtEasyDataCheck();
-        easyDataCheck.setPmId(pmId);
-        int total = getFacade().getEtEasyDataCheckService().getEtEasyDataCheckCount(easyDataCheck);
-        EtProcessManager etProcessManager = new EtProcessManager();
-        etProcessManager.setPmId(pmId);
-        Map<String, Object> map = new HashMap<String, Object>();
-        if (total > 0) {
-            etProcessManager.setIsEasyDataCheck(1);
-            etProcessManager.setOperator(etEasyDataCheck.getOperator());
-            etProcessManager.setOperatorTime(new Timestamp(new Date().getTime()));
-            getFacade().getEtProcessManagerService().updateEtProcessManagerByPmId(etProcessManager);
-            map.put("type", Constants.SUCCESS);
-            map.put("msg", "确认成功！");
-        } else {
-            map.put("type", "info");
-            map.put("msg", "无数据，确认失败！");
-        }
-        return map;
+    public Map<String, Object> confirm(EtProcessManager etProcessManager) {
+        EtProcessManager temp = new EtProcessManager();
+        temp.setPmId(etProcessManager.getPmId());
+        temp = super.getFacade().getEtProcessManagerService().getEtProcessManager(temp);
+        temp.setOperator(etProcessManager.getOperator());
+        temp.setOperatorTime(new Timestamp(new Date().getTime()));
+        temp.setIsEasyDataCheck(etProcessManager.getIsEasyDataCheck());
+        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(temp);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
     }
 
 
@@ -522,12 +506,12 @@ public class EtEasyDataCheckController extends BaseController {
             }
             temp.setAppId(etEasyDataCheck.getPlId());
             SysDataCheckScript sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(temp);
-            if(sysDataCheckScript ==null){
+            if (sysDataCheckScript == null) {
                 return;
             }
             //获取脚本地址
             String scriptPath = sysDataCheckScript.getRemotePath();
-            if(StringUtil.isEmptyOrNull(scriptPath)){
+            if (StringUtil.isEmptyOrNull(scriptPath)) {
                 return;
             }
             //获取文件名

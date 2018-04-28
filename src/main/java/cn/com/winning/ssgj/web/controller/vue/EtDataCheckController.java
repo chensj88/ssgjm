@@ -383,6 +383,11 @@ public class EtDataCheckController extends BaseController {
     }
 
 
+    /**
+     * 确认完成
+     * @param etProcessManager
+     * @return
+     */
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
     @ILog
