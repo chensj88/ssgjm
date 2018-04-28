@@ -113,6 +113,8 @@ public class EtThirdIntterfaceController extends BaseController {
         if (pmId == null) {
             return null;
         }
+        //统计总数
+        Integer countNum = getCountNum(etThirdIntterface);
         //完成数
         Integer completeNum = getCompleteNum(etThirdIntterface);
         etThirdIntterface.setRow(row);
@@ -153,6 +155,7 @@ public class EtThirdIntterfaceController extends BaseController {
             user = super.getFacade().getPmisProjctUserService().getPmisProjctUser(user);
         }
         Map<String, Object> result = new HashMap<String, Object>();
+        result.put("countNum", countNum);
         result.put("completeNum", completeNum);
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
@@ -208,6 +211,7 @@ public class EtThirdIntterfaceController extends BaseController {
         return result;
 
     }
+
     /**
      * 接口对应系统导出Excel
      *
@@ -240,7 +244,7 @@ public class EtThirdIntterfaceController extends BaseController {
         String filename = "接口对应系统表" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
         //创建工作簿
         Workbook workbook = new HSSFWorkbook();
-        ExcelUtil.exportExcelByStream(dataList, attrNameList,tableNameList, response, workbook, filename);
+        ExcelUtil.exportExcelByStream(dataList, attrNameList, tableNameList, response, workbook, filename);
     }
 
     /**
@@ -270,7 +274,7 @@ public class EtThirdIntterfaceController extends BaseController {
         String filename = "InterfaceInfo" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
         //创建工作簿
         Workbook workbook = new HSSFWorkbook();
-        ExcelUtil.exportExcelByStream(dataList, attrNameList,null, response, workbook, filename);
+        ExcelUtil.exportExcelByStream(dataList, attrNameList, null, response, workbook, filename);
     }
 
     /**
@@ -357,8 +361,11 @@ public class EtThirdIntterfaceController extends BaseController {
         }
         etThirdIntterface.setOperatorTime(new Timestamp(new Date().getTime()));
         getFacade().getEtThirdIntterfaceService().modifyEtThirdIntterface(etThirdIntterface);
+        Integer countNum = getCountNum(etThirdIntterface);
         map.put("type", Constants.SUCCESS);
         map.put("msg", "范围修改成功！");
+        map.put("countNum", countNum);
+        map.put("isScope", etThirdIntterface.getIsScope());
         return map;
     }
 
@@ -377,12 +384,9 @@ public class EtThirdIntterfaceController extends BaseController {
         thirdIntterface.setPmId(etThirdIntterface.getPmId());
         etThirdIntterface.setOperatorTime(new Timestamp(new Date().getTime()));
         getFacade().getEtThirdIntterfaceService().modifyEtThirdIntterface(etThirdIntterface);
-        //完成数量
-        Integer completeNum = getCompleteNum(thirdIntterface);
         Map map = new HashMap();
         map.put("type", Constants.SUCCESS);
         map.put("msg", "完成情况修改成功！");
-        map.put("completeNum", completeNum);
         return map;
     }
 
@@ -400,8 +404,11 @@ public class EtThirdIntterfaceController extends BaseController {
         Map map = new HashMap();
         etThirdIntterface.setOperatorTime(new Timestamp(new Date().getTime()));
         getFacade().getEtThirdIntterfaceService().modifyEtThirdIntterface(etThirdIntterface);
+        //完成数量
+        Integer completeNum = getCompleteNum(etThirdIntterface);
         map.put("type", Constants.SUCCESS);
         map.put("msg", "完成情况修改成功！");
+        map.put("completeNum", completeNum);
         return map;
     }
 
@@ -415,18 +422,28 @@ public class EtThirdIntterfaceController extends BaseController {
     public Integer getCompleteNum(EtThirdIntterface etThirdIntterface) {
         EtThirdIntterface thirdIntterface = new EtThirdIntterface();
         thirdIntterface.setPmId(etThirdIntterface.getPmId());
-        Integer completeNum = 0;
-        String contentType = null;
+        thirdIntterface.setIsScope(1);
+        thirdIntterface.setStatus(9);
         //获取所有数据
         List<EtThirdIntterface> etThirdIntterfaceList = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfaceList(thirdIntterface);
-        for (EtThirdIntterface intterface : etThirdIntterfaceList) {
-            //完成情况
-            contentType = intterface.getContentType();
-            if (contentType != null && contentType.contains("1") && contentType.contains("2") && contentType.contains("3")) {
-                ++completeNum;
-            }
-        }
+        Integer completeNum = etThirdIntterfaceList.size();
         return completeNum;
+    }
+
+    /**
+     * 计算统计总数
+     *
+     * @param etThirdIntterface
+     * @return
+     */
+    public Integer getCountNum(EtThirdIntterface etThirdIntterface) {
+        EtThirdIntterface thirdIntterface = new EtThirdIntterface();
+        thirdIntterface.setPmId(etThirdIntterface.getPmId());
+        thirdIntterface.setIsScope(1);
+        //获取所有数据
+        List<EtThirdIntterface> etThirdIntterfaceList = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfaceList(thirdIntterface);
+        Integer countNum = etThirdIntterfaceList.size();
+        return countNum;
     }
 
 
