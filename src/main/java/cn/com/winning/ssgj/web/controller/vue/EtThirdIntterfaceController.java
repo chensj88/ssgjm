@@ -362,9 +362,12 @@ public class EtThirdIntterfaceController extends BaseController {
         etThirdIntterface.setOperatorTime(new Timestamp(new Date().getTime()));
         getFacade().getEtThirdIntterfaceService().modifyEtThirdIntterface(etThirdIntterface);
         Integer countNum = getCountNum(etThirdIntterface);
+        //已完成数
+        Integer completeNum = getCompleteNum(etThirdIntterface);
         map.put("type", Constants.SUCCESS);
         map.put("msg", "范围修改成功！");
         map.put("countNum", countNum);
+        map.put("completeNum", completeNum);
         map.put("isScope", etThirdIntterface.getIsScope());
         return map;
     }

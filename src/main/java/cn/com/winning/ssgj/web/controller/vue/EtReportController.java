@@ -104,7 +104,11 @@ public class EtReportController extends BaseController {
     @ILog
     public Map<String, Object> list(EtReport etReport,Long userId, Row row) {
         Long pmId=etReport.getPmId();
+        //统计总数
+        Integer countNum = getCountNum(etReport);
+        //已完成数
         Integer completeNum = getCompleteNum(etReport);
+
         etReport.setRow(row);
         List<EtReport> etReports = super.getFacade().getEtReportService().getEtReportPaginatedList(etReport);
         int total = super.getFacade().getEtReportService().getEtReportCount(etReport);
@@ -153,6 +157,7 @@ public class EtReportController extends BaseController {
         result.put("rows", etReports);
         result.put("total", total);
         result.put("typeList", sysDictInfoList);
+        result.put("countNum", countNum);
         result.put("completeNum", completeNum);
         result.put("process", etProcessManager);
         result.put("user", user);
@@ -178,8 +183,14 @@ public class EtReportController extends BaseController {
         }
         etReport.setOperatorTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtReportService().modifyEtReport(etReport);
+        Integer countNum = getCountNum(etReport);
+        //已完成数
+        Integer completeNum = getCompleteNum(etReport);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
+        result.put("countNum", countNum);
+        result.put("completeNum", completeNum);
+        result.put("isScope", etReport.getIsScope());
         return result;
     }
 
@@ -345,21 +356,30 @@ public class EtReportController extends BaseController {
      * @return
      */
     public Integer getCompleteNum(EtReport etReport) {
-        Integer completeNum = 0;
-        EtReport etReportTemp = new EtReport();
-        etReportTemp.setPmId(etReport.getPmId());
+        EtReport report = new EtReport();
+        report.setPmId(etReport.getPmId());
+        report.setIsScope(1);
+        report.setStatus(9);
         //获取所有数据
-        List<EtReport> etReports = getFacade().getEtReportService().getEtReportList(etReportTemp);
-        String imgPath = null;
-        for (EtReport report : etReports) {
-            //获取图片路径集合
-            imgPath = report.getImgPath();
-            if (!StringUtil.isEmptyOrNull(imgPath)) {
-                //如果未上传图片，则为未完成
-                completeNum++;
-            }
-        }
+        List<EtReport> reports = getFacade().getEtReportService().getEtReportList(report);
+        Integer completeNum = reports.size();
         return completeNum;
+    }
+
+    /**
+     * 计算统计总数
+     *
+     * @param etReport
+     * @return
+     */
+    public Integer getCountNum(EtReport etReport) {
+        EtReport report = new EtReport();
+        report.setPmId(etReport.getPmId());
+        report.setIsScope(1);
+        //获取所有数据
+        List<EtReport> etReports = getFacade().getEtReportService().getEtReportList(report);
+        Integer countNum = etReports.size();
+        return countNum;
     }
 
     /**
@@ -376,8 +396,11 @@ public class EtReportController extends BaseController {
         Map map = new HashMap();
         etReport.setOperatorTime(new Timestamp(new Date().getTime()));
         getFacade().getEtReportService().modifyEtReport(etReport);
+        //完成数量
+        Integer completeNum = getCompleteNum(etReport);
         map.put("type", Constants.SUCCESS);
         map.put("msg", "完成情况修改成功！");
+        map.put("completeNum", completeNum);
         return map;
     }
 }
