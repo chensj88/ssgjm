@@ -107,6 +107,7 @@
         delete from ET_EASY_DATA_CHECK_DETAIL
         <where>
             <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="sourceId != null and sourceId != ''">SOURCE_ID =#{sourceId}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>

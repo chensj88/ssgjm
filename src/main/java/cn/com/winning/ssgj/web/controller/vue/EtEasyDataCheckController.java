@@ -3,12 +3,10 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
-import cn.com.winning.ssgj.base.util.ExcelUtil;
-import cn.com.winning.ssgj.base.util.NumberParseUtil;
-import cn.com.winning.ssgj.base.util.SFtpUtils;
-import cn.com.winning.ssgj.base.util.StringUtil;
+import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
+import cn.com.winning.ssgj.service.EtEasyDataCheckDetailService;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.jcraft.jsch.ChannelSftp;
 import org.apache.poi.ss.usermodel.Cell;
@@ -47,10 +45,10 @@ public class EtEasyDataCheckController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(EtEasyDataCheckController.class);
 
-    private static final String DOCTOR_MAINTAIN_LIST = "doctorMaintainList";
-    private static final String DOCTOR_NOT_MAINTAIN_LIST = "doctorNotMaintainList";
-    private static final String DEPT_MAINTAIN_LIST = "deptMaintainList";
-    private static final String DEPT_NOT_MAINTAIN_LIST = "deptNotMaintainList";
+    private static final String DOCTOR_MAINTAIN_LIST = "doctorMaintainNum";
+    private static final String DOCTOR_NOT_MAINTAIN_LIST = "doctorNotMaintainNum";
+    private static final String DEPT_MAINTAIN_LIST = "deptMaintainNum";
+    private static final String DEPT_NOT_MAINTAIN_LIST = "deptNotMaintainNum";
     @Autowired
     private SSGJHelper ssgjHelper;
 
@@ -212,10 +210,10 @@ public class EtEasyDataCheckController extends BaseController {
                 newFile.delete();
             }
             file.transferTo(newFile);
-            Map<String, List<EtEasyDataCheckDetail>> map = null;
+            Map<String, Integer> map = null;
             //解析Excel文件
             try {
-                map = parseExcel(newFile.getPath(), etEasyDataCheck.getId());
+                map = parseExcel(newFile.getPath(), etEasyDataCheck.getId(), getFacade().getEtEasyDataCheckDetailService());
 
                 if (map == null) {
                     result.put("status", "error");
@@ -224,29 +222,21 @@ public class EtEasyDataCheckController extends BaseController {
                 }
 
                 //获取解析集合
-                List<EtEasyDataCheckDetail> doctorMaintainList = map.get(DOCTOR_MAINTAIN_LIST);
-                List<EtEasyDataCheckDetail> doctorNotMaintainList = map.get(DOCTOR_NOT_MAINTAIN_LIST);
-                List<EtEasyDataCheckDetail> deptMaintainList = map.get(DEPT_MAINTAIN_LIST);
-                List<EtEasyDataCheckDetail> deptNotMaintainList = map.get(DEPT_NOT_MAINTAIN_LIST);
-
-                //将未维护数据入库EtEasyDataCheckDetail
-                getFacade().getEtEasyDataCheckDetailService().insertEtEasyDataCheckDetailByList(doctorNotMaintainList);
-                getFacade().getEtEasyDataCheckDetailService().insertEtEasyDataCheckDetailByList(deptNotMaintainList);
+                Integer doctorMaintainNum = map.get(DOCTOR_MAINTAIN_LIST);
+                Integer doctorNotMaintainNum = map.get(DOCTOR_NOT_MAINTAIN_LIST);
+                Integer deptMaintainNum = map.get(DEPT_MAINTAIN_LIST);
+                Integer deptNotMaintainNum = map.get(DEPT_NOT_MAINTAIN_LIST);
 
                 String content = "";
                 //当无未维护数据时，校验正常
-                if (doctorNotMaintainList.size() == 0 && deptNotMaintainList.size() == 0) {
+                if (doctorNotMaintainNum == 0 && deptNotMaintainNum == 0) {
                     content = "校验正常";
 
                 } else {
                     //计算医生维护率
-                    Integer num1 = doctorMaintainList.size();
-                    Integer num2 = doctorNotMaintainList.size() + num1;
-                    String docStr = NumberParseUtil.parsePercent(num1, num2);
+                    String docStr = NumberParseUtil.parsePercent(doctorMaintainNum, doctorMaintainNum+doctorNotMaintainNum);
                     //计算科室维护率
-                    Integer num3 = deptMaintainList.size();
-                    Integer num4 = deptNotMaintainList.size() + num3;
-                    String deptStr = NumberParseUtil.parsePercent(num3, num4);
+                    String deptStr = NumberParseUtil.parsePercent(deptMaintainNum, deptMaintainNum+deptNotMaintainNum);
                     content = docStr + "的医生维护；" + deptStr + "的科室维护。";
                 }
                 //更新易用校验数据content
@@ -281,8 +271,12 @@ public class EtEasyDataCheckController extends BaseController {
      * @return
      * @throws Exception
      */
-    private Map<String, List<EtEasyDataCheckDetail>> parseExcel(String filePath, Long sourceId) throws Exception {
-        Map<String, List<EtEasyDataCheckDetail>> map = new HashMap<>();
+    private Map<String, Integer> parseExcel(String filePath, Long sourceId, EtEasyDataCheckDetailService service) throws Exception {
+        EtEasyDataCheckDetail temp = new EtEasyDataCheckDetail();
+        temp.setSourceId(sourceId);
+        //清库
+        service.removeEtEasyDataCheckDetail(temp);
+        Map<String, Integer> map = new HashMap<>();
         //创建Excel工作薄
         File finalXlsxFile = new File(filePath);
         Workbook work = null;
@@ -298,13 +292,14 @@ public class EtEasyDataCheckController extends BaseController {
         org.apache.poi.ss.usermodel.Row row = null;
         Cell cell = null;
         //已经维护的个人协定数据
-        List<EtEasyDataCheckDetail> doctorMaintainList = new ArrayList<>();
+        Integer doctorMaintainNum = 0;
         //已经维护的科室协定数据
-        List<EtEasyDataCheckDetail> deptMaintainList = new ArrayList<>();
+        Integer deptMaintainNum = 0;
         //未维护的个人协定数据
-        List<EtEasyDataCheckDetail> doctorNotMaintainList = new ArrayList<>();
+        Integer doctorNotMaintainNum = 0;
         //未维护的科室协定数据
-        List<EtEasyDataCheckDetail> deptNotMaintainList = new ArrayList<>();
+        Integer deptNotMaintainNum = 0;
+
         //标识
         String flag = "";
         //获取第一页
@@ -315,57 +310,49 @@ public class EtEasyDataCheckController extends BaseController {
             if (row == null) {
                 continue;
             }
-            if ("已经维护的个人协定方信息统计:".equals(ExcelUtil.getCellValue(row.getCell(0)) + "")) {
+            if ("已经维护的个人协定方信息统计:".equals(row.getCell(0) + "")) {
                 flag = DOCTOR_MAINTAIN_LIST;
                 continue;
-            } else if ("工号".equals(ExcelUtil.getCellValue(row.getCell(0)) + "")) {
+            } else if ("工号".equals(row.getCell(0) + "")) {
                 flag = DOCTOR_NOT_MAINTAIN_LIST;
                 continue;
-            } else if ("已经维护的科室协定方信息统计:".equals(ExcelUtil.getCellValue(row.getCell(0)) + "")) {
+            } else if ("已经维护的科室协定方信息统计:".equals(row.getCell(0) + "")) {
                 flag = DEPT_MAINTAIN_LIST;
                 continue;
-            } else if ("科室代码".equals(ExcelUtil.getCellValue(row.getCell(0)) + "")) {
+            } else if ("科室代码".equals(row.getCell(0) + "")) {
                 flag = DEPT_NOT_MAINTAIN_LIST;
                 continue;
             }
             if (DOCTOR_MAINTAIN_LIST.equals(flag)) {
                 //已经维护的个人协定数据封装
-                EtEasyDataCheckDetail etEasyDataCheckDetail = new EtEasyDataCheckDetail();
-                etEasyDataCheckDetail.setSourceId(sourceId);
-                etEasyDataCheckDetail.setDeptDoctorName(ExcelUtil.getCellValue(row.getCell(0)).toString());
-                etEasyDataCheckDetail.setNum(NumberParseUtil.parseInt(ExcelUtil.getCellValue(row.getCell(1)) == null ? null : ExcelUtil.getCellValue(row.getCell(1)).toString()));
-                doctorMaintainList.add(etEasyDataCheckDetail);
+                doctorMaintainNum++;
             } else if (DOCTOR_NOT_MAINTAIN_LIST.equals(flag)) {
                 //未维护的个人协定数据封装
                 EtEasyDataCheckDetail etEasyDataCheckDetail = new EtEasyDataCheckDetail();
                 etEasyDataCheckDetail.setId(ssgjHelper.createEtEasyDataCheckDetailId());
                 etEasyDataCheckDetail.setSourceId(sourceId);
-                etEasyDataCheckDetail.setDeptDoctorCode(ExcelUtil.getCellValue(row.getCell(0)) == null ? null : ExcelUtil.getCellValue(row.getCell(0)).toString());
-                etEasyDataCheckDetail.setDeptDoctorName(ExcelUtil.getCellValue(row.getCell(1)) == null ? null : ExcelUtil.getCellValue(row.getCell(1)).toString());
-                doctorNotMaintainList.add(etEasyDataCheckDetail);
-
+                etEasyDataCheckDetail.setDeptDoctorCode(row.getCell(0) == null ? null : row.getCell(0).toString());
+                etEasyDataCheckDetail.setDeptDoctorName(row.getCell(1) == null ? null : row.getCell(1).toString());
+                service.createEtEasyDataCheckDetail(etEasyDataCheckDetail);
+                doctorNotMaintainNum++;
             } else if (DEPT_MAINTAIN_LIST.equals(flag)) {
                 //已经维护的科室协定数据封装
-                EtEasyDataCheckDetail etEasyDataCheckDetail = new EtEasyDataCheckDetail();
-                etEasyDataCheckDetail.setSourceId(sourceId);
-                etEasyDataCheckDetail.setDeptDoctorName(ExcelUtil.getCellValue(row.getCell(0)) == null ? null : ExcelUtil.getCellValue(row.getCell(0)).toString());
-                etEasyDataCheckDetail.setNum(NumberParseUtil.parseInt(ExcelUtil.getCellValue(row.getCell(1)) == null ? null : ExcelUtil.getCellValue(row.getCell(1)).toString()));
-                deptMaintainList.add(etEasyDataCheckDetail);
-
+                deptMaintainNum++;
             } else if (DEPT_NOT_MAINTAIN_LIST.equals(flag)) {
                 //未维护的科室协定数据封装
                 EtEasyDataCheckDetail etEasyDataCheckDetail = new EtEasyDataCheckDetail();
                 etEasyDataCheckDetail.setId(ssgjHelper.createEtEasyDataCheckDetailId());
                 etEasyDataCheckDetail.setSourceId(sourceId);
-                etEasyDataCheckDetail.setDeptDoctorCode(ExcelUtil.getCellValue(row.getCell(0)) == null ? null : ExcelUtil.getCellValue(row.getCell(0)).toString());
-                etEasyDataCheckDetail.setDeptDoctorName(ExcelUtil.getCellValue(row.getCell(1)) == null ? null : ExcelUtil.getCellValue(row.getCell(1)).toString());
-                deptNotMaintainList.add(etEasyDataCheckDetail);
+                etEasyDataCheckDetail.setDeptDoctorCode(row.getCell(0) == null ? null : row.getCell(0).toString());
+                etEasyDataCheckDetail.setDeptDoctorName(row.getCell(1) == null ? null : row.getCell(1).toString());
+                service.createEtEasyDataCheckDetail(etEasyDataCheckDetail);
+                deptNotMaintainNum++;
             }
         }
-        map.put(DOCTOR_MAINTAIN_LIST, doctorMaintainList);
-        map.put(DOCTOR_NOT_MAINTAIN_LIST, doctorNotMaintainList);
-        map.put(DEPT_MAINTAIN_LIST, deptMaintainList);
-        map.put(DEPT_NOT_MAINTAIN_LIST, deptNotMaintainList);
+        map.put(DOCTOR_MAINTAIN_LIST, doctorMaintainNum);
+        map.put(DOCTOR_NOT_MAINTAIN_LIST, doctorNotMaintainNum);
+        map.put(DEPT_MAINTAIN_LIST, deptMaintainNum);
+        map.put(DEPT_NOT_MAINTAIN_LIST, deptNotMaintainNum);
         return map;
     }
 
@@ -473,6 +460,50 @@ public class EtEasyDataCheckController extends BaseController {
 
     }
 
+    /**
+     * @param response
+     * @return
+     * @throws IOException
+     * @description 导出sql
+     */
+    @RequestMapping(value = "/exportModel.do")
+    @ResponseBody
+    public void exportModel(HttpServletResponse response, EtDataCheck t) throws IOException {
+
+        String realPath = Thread.currentThread().getContextClassLoader().getResource("/template").getPath();
+        //获取文件名
+        String filename = realPath + "\\EasyDataCheckModel.xlsx";
+        File file = new File(filename);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        InputStream inputStream = new BufferedInputStream(fileInputStream);
+        String excelName = "易用数据校验模板" + DateUtil.format(DateUtil.PATTERN_14) + ".xlsx";
+        byte[] bytes = new byte[inputStream.available()];
+        inputStream.read(bytes);
+        response.setCharacterEncoding("utf-8");
+        //设置响应内容的类型
+        response.setContentType("text/plain");
+        //设置文件的名称和格式
+        response.addHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode(excelName, "UTF-8"))));
+        BufferedOutputStream buff = null;
+        OutputStream outStr = null;
+        try {
+            outStr = response.getOutputStream();
+            buff = new BufferedOutputStream(outStr);
+            buff.write(bytes);
+            buff.flush();
+            buff.close();
+        } catch (Exception e) {
+            logger.error("导出模板出错，e:{}", e);
+        } finally {
+            try {
+                buff.close();
+                outStr.close();
+            } catch (Exception e) {
+                logger.error("关闭流对象出错 e:{}", e);
+            }
+        }
+    }
+
 
     /**
      * 批量导出sql压缩包
@@ -575,7 +606,6 @@ public class EtEasyDataCheckController extends BaseController {
      */
     @RequestMapping(value = "/changeScope.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> changeScope(EtEasyDataCheck etEasyDataCheck) {
         String noScopeCode = etEasyDataCheck.getNoScopeCode();
