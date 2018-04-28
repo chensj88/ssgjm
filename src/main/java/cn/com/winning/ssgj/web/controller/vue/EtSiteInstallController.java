@@ -6,6 +6,7 @@ import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
+import cn.com.winning.ssgj.domain.support.UrlContent;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.sun.xml.internal.ws.resources.HttpserverMessages;
 import com.sun.xml.internal.xsom.impl.scd.Iterators;
@@ -193,15 +194,16 @@ public class EtSiteInstallController extends BaseController {
 
     /**
      * Chen,Kuai 删除图片
-     * @param id
+     * @param content
      * @return
      */
     @RequestMapping("/deleteImg.do")
     @ResponseBody
-    public synchronized Map<String,Boolean> deleteImg(Long id,String imgPath){
+    public synchronized Map<String,Boolean> deleteImg(UrlContent content){
         Map<String,Boolean> map = new HashMap<String,Boolean>();
+        String imgPath = content.getName();
         EtSiteInstallDetail info = new EtSiteInstallDetail();
-        info.setId(id);
+        info.setId(content.getId());
         try{
             info = super.getFacade().getEtSiteInstallDetailService().getEtSiteInstallDetail(info);
             if (port == 21) {
@@ -597,7 +599,5 @@ public class EtSiteInstallController extends BaseController {
         map.put("puserNumList",puserNumList);
         return map;
     }
-
-
 
 }

@@ -175,13 +175,10 @@
         #{serialNo} AS SERIAL_NO,
         NULL AS DATABASE_NAME,
         NULL AS TABLE_NAME,
-        NULL AS MEANING,
-        NULL AS CONTENT,
         NULL AS SCRIPT_PATH,
         0 AS CREATOR,
         GETDATE() AS CREATE_TIME,
         NULL AS OPERATOR,
-        NULL AS OPERATOR_TIME,
         o.ID AS PL_ID,
         1 AS IS_SCOPE,
         NULL AS NO_SCOPE_CODE

@@ -64,11 +64,11 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     @Override
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId) {
         List<NodeTree> treeList = new ArrayList<NodeTree>();
-        List<Long> basicInfoList = pmisProjectBasicInfoService.getUserCanViewProjectIdList(userId);
+       /* List<Long> basicInfoList = pmisProjectBasicInfoService.getUserCanViewProjectIdList(userId);*/
         List<PmisCustomerInformation> custInfoList = pmisCustomerInformationService.getUserCanViewCustomerList(userId);
         for (PmisCustomerInformation info : custInfoList) {
             NodeTree node = info.getNodeTree();
-            node.setNodes(queryCustomerProjectNode(basicInfoList, info.getId()));
+            node.setNodes(queryCustomerProjectNode(userId,info.getId()));
             treeList.add(node);
         }
         return treeList;
@@ -365,13 +365,13 @@ public class CommonQueryServiceImpl implements CommonQueryService {
 
     /**
      * 查询项目信息,根据客户ID和项目ID
-     * @param pidList 项目IDList
+     * @param userId 人员ID
      * @param custId  客户ID
      * @return
      */
-    private List<NodeTree> queryCustomerProjectNode(List<Long> pidList, Long custId) {
+    private List<NodeTree> queryCustomerProjectNode(Long userId,Long custId) {
         PmisProjectBasicInfo project = new PmisProjectBasicInfo();
-        project.getMap().put("idList", pidList);
+        project.getMap().put("userId",userId);
         project.setKhxx(custId);
         List<PmisProjectBasicInfo> basicInfoList = pmisProjectBasicInfoService.getProjectInfoByCustomerIdAndProjectId(project);
         List<NodeTree> treeList = new ArrayList<NodeTree>();

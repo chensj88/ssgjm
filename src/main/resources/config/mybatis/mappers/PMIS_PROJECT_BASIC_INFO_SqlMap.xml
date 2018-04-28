@@ -301,14 +301,21 @@
 
     <!--根据客户ID和可查看项目获取项目信息 add chensj-->
     <select id="selectProjectInfoByCustomerIdAndProjectId" parameterType="pmisProjectBasicInfo"  resultMap="pmisProjectBasicInfoResult">
-        SELECT * FROM PMIS_PROJECT_BASIC_INFO
-        <where>
-            <if test="(khxx != null)">AND KHXX = #{khxx, jdbcType=BIGINT}</if>
-            <if test="(id == null ) and (map.idList != null and map.idList.size >0)">
-                AND ID in
-                <foreach item="item" collection="map.idList" open="(" separator="," close=")">#{item}</foreach>
-            </if>
-        </where>
+        SELECT
+        B.*
+        FROM PMIS_PROJCT_USER A
+        LEFT JOIN PMIS_PROJECT_BASIC_INFO B ON A.XMLCB = B.ID
+        WHERE  B.ID IS NOT NULL
+        AND B.JHZT = 0
+        AND  B.FWLX = 0
+        AND B.ZJZT = 1
+        AND  CAST(KHJDLJ AS NUMERIC(10,2)) &lt; 90
+        <if test="map.userId != null">
+            AND A.RY = #{map.userId}
+        </if>
+        <if test="khxx != null">
+            AND B.KHXX = #{khxx, jdbcType=BIGINT}
+        </if>
     </select>
 
 
