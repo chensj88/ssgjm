@@ -33,4 +33,8 @@ public interface SysDataInfoDao extends EntityDao<SysDataInfo> {
     public List<SysDataInfo> selectSysDataInfoListForORKey(SysDataInfo t);
 
     Integer countTable(String tableName);
+
+    List<SysDataInfo> selectNonSelectedSysDataInfoListByProductId(SysDataInfo d);
+
+    List<SysDataInfo> selectSelectedSysDataInfoListByProductId(SysDataInfo d);
 }

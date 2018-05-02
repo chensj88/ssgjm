@@ -169,7 +169,7 @@ public class EtBusinessProcessController extends BaseController {
             e.printStackTrace();
         }
 
-        process.setUploadPath(" ");
+        process.setUploadPath("");
         process.setOperator(operator);
         process.setOperatorTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);

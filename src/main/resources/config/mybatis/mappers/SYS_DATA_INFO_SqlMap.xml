@@ -340,4 +340,36 @@
 		    #{tableName}
 	      )
     </select>
+
+
+    <select id="selectNonSelectedSysDataInfoListByProductId" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
+        SELECT
+        DISTINCT s.*
+        FROM SYS_DATA_INFO s
+        LEFT JOIN SYS_PRODUCT_DATA_INFO t ON s.ID = t.BD_ID
+        <where>
+            <if test="status != null ">
+              AND  s.STATUS = #{status}
+            </if>
+            <if test="map.pdId != null ">
+              AND  t.PD_ID != #{map.pdId}
+            </if>
+        </where>
+    </select>
+    <select id="selectSelectedSysDataInfoListByProductId" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
+        SELECT
+        DISTINCT s.*
+        FROM SYS_DATA_INFO s
+        LEFT JOIN SYS_PRODUCT_DATA_INFO t ON s.ID = t.BD_ID
+        <where>
+            <if test="status != null ">
+                AND  s.STATUS = #{status}
+            </if>
+            <if test="map.pdId != null ">
+                AND  t.PD_ID IS NOT NULL
+                AND  t.PD_ID = #{map.pdId}
+            </if>
+        </where>
+    </select>
+
 </mapper>
