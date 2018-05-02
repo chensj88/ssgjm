@@ -37,7 +37,7 @@
 					</li>
 					</a>
 					<c:forEach var="vul" items="${onlineFileList_one}">
-					<li>
+					<li onclick="fileDatail(vul.id)">
 						<h3>${vul.map.get("dictLabel")}</h3>
 						<div class="datum-middle">
 							<div>
@@ -86,7 +86,7 @@
 					<li class="datum-row-add"><i class="iconfont icon-plus"></i></li>
 
 					<c:forEach var="vul" items="${onlineFileList_three}">
-						<li>
+						<li onclick="fileDatail(vul.id)">
 							<h3>${vul.dataType}</h3>
 							<div class="datum-middle">
 								<div>
@@ -125,7 +125,12 @@
 		</div>
 		<script src="<%=basePath%>resources/mobile/js/mui.min.js"></script>
 		<script type="text/javascript">
-			mui.init()
+			mui.init();
+
+			function fileDatail(id) {
+				alert(id);
+            }
+
 		</script>
 	</body>
 
