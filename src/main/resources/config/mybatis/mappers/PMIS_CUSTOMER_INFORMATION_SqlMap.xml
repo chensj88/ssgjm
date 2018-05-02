@@ -318,6 +318,11 @@
             AND B.ZJZT = 1
             AND  CAST(KHJDLJ AS NUMERIC(10,2)) &lt; 90
             AND A.RY = #{userId}
+            UNION
+            SELECT DISTINCT T.SERIAL_NO  FROM dbo.ET_USER_INFO T
+            WHERE T.USER_ID = #{userId}
+            AND  T.IS_DEL = 1
+            AND T.USER_TYPE = 1
         )
     </select>
 </mapper>

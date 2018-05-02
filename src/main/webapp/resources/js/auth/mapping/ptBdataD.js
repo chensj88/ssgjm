@@ -188,9 +188,8 @@ $(function () {
         });
     }
     $('#doublebox').on("change",function (event) {
-        if(!productId){
-            Ewin.alert("请先选择产品")
-        }
+        console.log(event.target());
+        console.log(event);
         console.log(doublebox.getSelectedOptions());
     });
 
