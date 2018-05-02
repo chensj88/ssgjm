@@ -155,4 +155,14 @@ public class SysDataInfoServiceImpl implements SysDataInfoService {
     public List<SysDataInfo> getSysDataInfoListForORKey(SysDataInfo sysDataInfo) {
         return this.sysDataInfoDao.selectSysDataInfoListForORKey(sysDataInfo);
     }
+
+    @Override
+    public List<SysDataInfo> getNonSelectedSysDataInfoListByProductId(SysDataInfo d) {
+        return this.sysDataInfoDao.selectNonSelectedSysDataInfoListByProductId(d);
+    }
+
+    @Override
+    public List<SysDataInfo> getSelectedSysDataInfoListByProductId(SysDataInfo d) {
+        return this.sysDataInfoDao.selectSelectedSysDataInfoListByProductId(d);
+    }
 }

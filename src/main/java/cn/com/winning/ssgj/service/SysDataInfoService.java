@@ -46,4 +46,8 @@ public interface SysDataInfoService {
     public List<SysDataInfo> selectSysDataInfoListByPmIdAndDataType(SysDataInfo t);
 
     List<SysDataInfo> getSysDataInfoListForORKey(SysDataInfo sysDataInfo);
+
+    List<SysDataInfo> getNonSelectedSysDataInfoListByProductId(SysDataInfo d);
+
+    List<SysDataInfo> getSelectedSysDataInfoListByProductId(SysDataInfo d);
 }

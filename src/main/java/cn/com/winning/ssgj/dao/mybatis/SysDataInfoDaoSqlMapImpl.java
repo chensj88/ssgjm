@@ -80,4 +80,14 @@ public class SysDataInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysDataInfo> i
     public Integer countTable(String tableName) {
         return this.getSqlSession().selectOne("countTable",tableName);
     }
+
+    @Override
+    public List<SysDataInfo> selectNonSelectedSysDataInfoListByProductId(SysDataInfo d) {
+        return super.getSqlSession().selectList("selectNonSelectedSysDataInfoListByProductId",d);
+    }
+
+    @Override
+    public List<SysDataInfo> selectSelectedSysDataInfoListByProductId(SysDataInfo d) {
+        return super.getSqlSession().selectList("selectSelectedSysDataInfoListByProductId",d);
+    }
 }

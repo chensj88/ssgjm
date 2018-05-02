@@ -41,7 +41,7 @@
 	   <if test="message != null and message != ''"> and t.MESSAGE = #{message} </if>
 	   <if test="(status != null )"> and t.STATUS = #{status} </if>
 	   <if test="(sourceType != null and sourceType != '') or sourceType == 0"> and t.SOURCE_TYPE = #{sourceType} </if>
-	   <if test="uploadPath != null and uploadPath != ''"> and t.UPLOAD_PATH = #{uploadPath} </if>
+	   <if test="uploadPath != null "> and t.UPLOAD_PATH = #{uploadPath} </if>
 	   <if test="downloadPath != null and downloadPath != ''"> and t.DOWNLOAD_PATH = #{downloadPath} </if>
 	   <if test="(creator != null and creator != '') or creator == 0"> and t.CREATOR = #{creator} </if>
 	   <if test="createTime != null "> and t.CREATE_TIME = #{createTime} </if>
@@ -100,7 +100,7 @@
 		   <if test="message != null and message != ''"> MESSAGE, </if>
 	       <if test="(status != null )"> STATUS, </if>
 	       <if test="(sourceType != null and sourceType != '') or sourceType == 0"> SOURCE_TYPE, </if>
-		   <if test="uploadPath != null and uploadPath != ''"> UPLOAD_PATH, </if>
+		   <if test="uploadPath != null "> UPLOAD_PATH, </if>
 		   <if test="downloadPath != null and downloadPath != ''"> DOWNLOAD_PATH, </if>
 	       <if test="(creator != null and creator != '') or creator == 0"> CREATOR, </if>
 		   <if test="createTime != null "> CREATE_TIME, </if>
@@ -121,7 +121,7 @@
 		   <if test="message != null and message != ''"> #{message, jdbcType=LONGVARCHAR}, </if>
 	       <if test="(status != null )"> #{status, jdbcType=INTEGER}, </if>
 	       <if test="(sourceType != null and sourceType != '') or sourceType == 0"> #{sourceType, jdbcType=INTEGER}, </if>
-		   <if test="uploadPath != null and uploadPath != ''"> #{uploadPath, jdbcType=VARCHAR}, </if>
+		   <if test="uploadPath != null "> #{uploadPath, jdbcType=VARCHAR}, </if>
 		   <if test="downloadPath != null and downloadPath != ''"> #{downloadPath, jdbcType=VARCHAR}, </if>
 	       <if test="(creator != null and creator != '') or creator == 0"> #{creator, jdbcType=BIGINT}, </if>
 		   <if test="createTime != null "> #{createTime, jdbcType=TIMESTAMP}, </if>
@@ -146,7 +146,7 @@
 			   <if test="message != null and message != ''"> MESSAGE = #{message, jdbcType=LONGVARCHAR}, </if>
 			   <if test="(status != null )"> STATUS = #{status, jdbcType=INTEGER}, </if>
 			   <if test="(sourceType != null and sourceType != '') or sourceType == 0"> SOURCE_TYPE = #{sourceType, jdbcType=INTEGER}, </if>
-			   <if test="uploadPath != null and uploadPath != ''"> UPLOAD_PATH = #{uploadPath, jdbcType=VARCHAR}, </if>
+			   <if test="uploadPath != null "> UPLOAD_PATH = #{uploadPath, jdbcType=VARCHAR}, </if>
 			   <if test="downloadPath != null and downloadPath != ''"> DOWNLOAD_PATH = #{downloadPath, jdbcType=VARCHAR}, </if>
 			   <if test="(creator != null and creator != '') or creator == 0"> CREATOR = #{creator, jdbcType=BIGINT}, </if>
 			   <if test="createTime != null "> CREATE_TIME = #{createTime, jdbcType=TIMESTAMP}, </if>

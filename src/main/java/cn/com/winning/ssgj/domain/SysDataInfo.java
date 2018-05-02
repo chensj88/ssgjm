@@ -81,6 +81,10 @@ public class SysDataInfo extends BaseDomain implements Serializable {
 	 * @val 维护时间
 	 */
 	private java.sql.Timestamp lastUpdateName;
+	/**
+	 * 表的全名
+	 */
+	private String tableContent;
 
 	private NodeTree nodeTree = new NodeTree();
 	
@@ -275,5 +279,13 @@ public class SysDataInfo extends BaseDomain implements Serializable {
 
 	public void setNodeTree(NodeTree nodeTree) {
 		this.nodeTree = nodeTree;
+	}
+
+	public String getTableContent() {
+		return this.dbName +"." +this.tableName +"["+this.tableCnName+"]";
+	}
+
+	public void setTableContent(String tableContent) {
+		this.tableContent = tableContent;
 	}
 }

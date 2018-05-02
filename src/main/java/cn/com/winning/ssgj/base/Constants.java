@@ -497,4 +497,5 @@ public class Constants implements Serializable {
         public static final int RP_BB = 14;
 
     }
+
 }
