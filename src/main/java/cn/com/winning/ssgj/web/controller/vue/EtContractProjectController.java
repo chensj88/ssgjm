@@ -39,19 +39,20 @@ public class EtContractProjectController extends BaseController {
 
     /**
      * 查询项目产品信息
+     *
      * @param productInfo
      * @param row
      * @return
      */
     @RequestMapping(value = "/initData.do")
     @ResponseBody
-    public Map<String,Object> listProductOfProject(PmisContractProductInfo productInfo, Row row){
+    public Map<String, Object> listProductOfProject(PmisContractProductInfo productInfo, Row row) {
         EtContractTask task = new EtContractTask();
         task.setPmId(productInfo.getXmlcb());
         task.setRow(row);
         List<EtContractTask> productInfoList = super.getFacade().getEtContractTaskService().getEtContractTaskPageMergeList(task);
         int total = super.getFacade().getEtContractTaskService().getEtContractTaskMergeCount(task);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows", productInfoList);
@@ -60,50 +61,52 @@ public class EtContractProjectController extends BaseController {
 
     /**
      * 查询产品信息
+     *
      * @param productInfo
      * @return
      */
     @RequestMapping(value = "/queryProduct.do")
     @ResponseBody
-    public Map<String,Object> queryProduct(PmisProductInfo productInfo){
-        Row row = new Row(0,10);
+    public Map<String, Object> queryProduct(PmisProductInfo productInfo) {
+        Row row = new Row(0, 10);
         productInfo.setRow(row);
         productInfo.setZt(Constants.PMIS_STATUS_USE);
         productInfo.setCplb("1");
         List<PmisProductInfo> productInfos = super.getFacade().getPmisProductInfoService().getPmisProductInfoPaginatedListByCodeAndName(productInfo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
-        result.put("data",productInfos);
+        result.put("data", productInfos);
         return result;
     }
 
     /**
      * 添加或者修改项目产品信息
+     *
      * @param task
      * @return
      */
     @RequestMapping(value = "/addOrModifyProduct.do")
     @ResponseBody
     @ILog
-    public Map<String,Object> addOrModifyProduct(EtContractTask task){
+    public Map<String, Object> addOrModifyProduct(EtContractTask task) {
         EtContractTask oldTask = new EtContractTask();
         oldTask.setId(task.getId());
         oldTask = super.getFacade().getEtContractTaskService().getEtContractTask(oldTask);
         PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
         basicInfo.setId(task.getPmId());
         basicInfo = super.getFacade().getPmisProjectBasicInfoService().getPmisProjectBasicInfo(basicInfo);
-        task.setSerialNo(basicInfo.getKhxx()+"");
-        if(oldTask != null){
+        task.setSerialNo(basicInfo.getKhxx() + "");
+        if (oldTask != null) {
             task.setOperatorTime(new Timestamp(new Date().getTime()));
             super.getFacade().getEtContractTaskService().modifyEtContractTask(task);
-        }else{
+        } else {
             task.setId(ssgjHelper.createEtContractTaskIdService());
             task.setCreator(task.getOperator());
             task.setCreateTime(new Timestamp(new Date().getTime()));
             task.setOperatorTime(new Timestamp(new Date().getTime()));
             super.getFacade().getEtContractTaskService().createEtContractTask(task);
         }
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
 
@@ -111,21 +114,23 @@ public class EtContractProjectController extends BaseController {
 
     /**
      * 删除项目产品信息
+     *
      * @param task
      * @return
      */
     @RequestMapping(value = "/deleteProduct.do")
     @ResponseBody
     @ILog
-    public Map<String,Object> deleteProduct(EtContractTask task){
+    public Map<String, Object> deleteProduct(EtContractTask task) {
         super.getFacade().getEtContractTaskService().removeEtContractTask(task);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }
 
     /**
      * 导出Excel
+     *
      * @param task
      * @param response
      * @return
@@ -152,7 +157,7 @@ public class EtContractProjectController extends BaseController {
             // 清空response
             response.reset();
             // 设置response的Header
-            response.addHeader("Content-Disposition", "attachment;filename=" +  URLEncoder.encode("合同产品清单.xls","UTF-8"));
+            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("合同产品清单.xls", "UTF-8"));
             response.addHeader("Content-Length", "" + file.length());
             OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/octet-stream");
@@ -169,13 +174,14 @@ public class EtContractProjectController extends BaseController {
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
     @ILog
-    public Map<String,Object> confirmTask(EtProcessManager etProcessManager){
+    public Map<String, Object> confirmTask(EtProcessManager etProcessManager) {
         EtProcessManager temp = new EtProcessManager();
         temp.setPmId(etProcessManager.getPmId());
         temp = super.getFacade().getEtProcessManagerService().getEtProcessManager(temp);
         temp.setOperator(etProcessManager.getOperator());
         temp.setOperatorTime(new Timestamp(new Date().getTime()));
         temp.setIsPmScope(etProcessManager.getIsPmScope());
+        temp.setIsEtPlan(etProcessManager.getIsEtPlan());
         super.getFacade().getEtProcessManagerService().modifyEtProcessManager(temp);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);

@@ -50,14 +50,14 @@ public class EtProcessManagerController extends BaseController {
             //判断各种状态 传入对应的值
             List<ProcessModel> pModelList = new ArrayList<ProcessModel>();
             String[] textProcess = new String[]{"", "", "", "", "开始", "项目接单", "完善项目信息", "硬件清单准备", "入场准备","实施计划制定",
-                    "测试环境搭建","确认项目范围", "项目启动", "模拟系统运行", "培训客户&考核", "安装站点软硬件",
-                    "检验易用数据", "检验基础数据", "维护基础数据", "维护易用数据", "调研流程&配置", "开发接口&交付", "单据报表&交付",
-                    "确认流程数量", "确认接口数量", "确认数据报表数量", "确认硬件数量", "评估上线可行性", "审批切换方案",
-                    "安排人员到岗", "切换项目", "切换项目"};
+                    "测试环境搭建","确认项目范围", "项目启动",
+                    "模拟系统运行", "培训客户&考核", "安装站点软硬件", "检验易用数据", "检验基础数据", "维护基础数据", "维护易用数据", "调研流程&配置", "开发接口&交付", "单据报表&交付",
+                    "确认流程数量", "确认接口数量", "确认数据报表数量", "确认硬件数量",
+                    "评估上线可行性", "审批切换方案", "安排人员到岗", "切换项目", "切换项目"};
             Integer isCommon;
             entity = processManagerList.get(0);
             Field[] fields = entity.getClass().getDeclaredFields();
-            for (int i = 4; i < 13; i++) {
+            for (int i = 4; i < 12; i++) {
                 ProcessModel pModel = new ProcessModel();
                 Field f = fields[i];
                 f.setAccessible(true);
@@ -66,8 +66,24 @@ public class EtProcessManagerController extends BaseController {
                 pModel.setText(textProcess[i]);
                 pModelList.add(pModel);
             }
-            result.put("result", pModelList);
 
+            ProcessModel pModel_1 = new ProcessModel();
+            pModel_1.setState("state1");
+            String str_1="";
+            for (int i = 5; i < 12; i++) {
+                Field f = fields[i];
+                f.setAccessible(true);
+                isCommon = (Integer) f.get(entity);
+                if (isCommon == 0) {
+                    str_1 = "state2";
+                }
+            }
+            if (StringUtils.isNotBlank(str_1)) {
+                pModel_1.setState(str_1);
+            }
+            pModel_1.setText(textProcess[12]);
+            pModelList.add(pModel_1);
+            result.put("result", pModelList);
 
             //第二部分
             List<ProcessModel> pModelList_two = new ArrayList<ProcessModel>();
@@ -102,7 +118,7 @@ public class EtProcessManagerController extends BaseController {
             pModelList_two.add(pModel4);
 
             ProcessModel pModel5 = new ProcessModel();
-            isCommon = entity.getIsTraining();
+            isCommon = entity.getIsSiteInstall();
             pModel5.setState(stateClass(isCommon, 2));
             pModel5.setText("安装站点软硬件");
             pModelList_two.add(pModel5);
@@ -110,7 +126,7 @@ public class EtProcessManagerController extends BaseController {
             ProcessModel pModel6 = new ProcessModel();
             pModel6.setState("state3");
             String str6 = "";
-            for (int i = 13; i < 22; i++) {
+            for (int i = 15; i < 25; i++) {
                 Field f = fields[i];
                 f.setAccessible(true);
                 isCommon = (Integer) f.get(entity);
@@ -128,7 +144,7 @@ public class EtProcessManagerController extends BaseController {
             ProcessModel pModel7 = new ProcessModel();
             pModel7.setState("state3");
             String str7 = "";
-            for (int i = 13; i < 25; i++) {
+            for (int i = 15; i < 19; i++) {
                 Field f = fields[i];
                 f.setAccessible(true);
                 isCommon = (Integer) f.get(entity);

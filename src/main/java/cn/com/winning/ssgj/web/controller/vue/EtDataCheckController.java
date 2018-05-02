@@ -105,7 +105,6 @@ public class EtDataCheckController extends BaseController {
      */
     @RequestMapping("/list.do")
     @ResponseBody
-    @ILog(operationName = "基础数据校验表", operationType = "list")
     public Map<String, Object> list(Row row, Long pmId, String operator) {
         //项目id
         if (pmId == null) {
@@ -169,7 +168,6 @@ public class EtDataCheckController extends BaseController {
      */
     @RequestMapping("/detail.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> detail(EtDataCheck t) {
         //根据id获取表属性
         EtDataCheck etDataCheck = getFacade().getEtDataCheckService().getEtDataCheck(t);
@@ -203,7 +201,6 @@ public class EtDataCheckController extends BaseController {
      */
     @RequestMapping(value = "/upload.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtDataCheck t) throws IOException {
         //根据id获取表属性
@@ -287,7 +284,6 @@ public class EtDataCheckController extends BaseController {
      */
     @RequestMapping(value = "/exportSql.do")
     @ResponseBody
-    @ILog
     public void exportSql(HttpServletResponse response, EtDataCheck t) throws IOException {
         //获取数据校验信息
         EtDataCheck etDataCheck = getFacade().getEtDataCheckService().getEtDataCheck(t);
@@ -346,7 +342,6 @@ public class EtDataCheckController extends BaseController {
      */
     @RequestMapping(value = "/exportModel.do")
     @ResponseBody
-    @ILog
     public void exportModel(HttpServletResponse response, EtDataCheck t) throws IOException {
 
         String realPath = Thread.currentThread().getContextClassLoader().getResource("/template").getPath();
@@ -355,13 +350,14 @@ public class EtDataCheckController extends BaseController {
         File file = new File(filename);
         FileInputStream fileInputStream = new FileInputStream(file);
         InputStream inputStream = new BufferedInputStream(fileInputStream);
+        String excelName = "基础数据校验模板" + DateUtil.format(DateUtil.PATTERN_14) + ".xlsx";
         byte[] bytes = new byte[inputStream.available()];
         inputStream.read(bytes);
         response.setCharacterEncoding("utf-8");
         //设置响应内容的类型
         response.setContentType("text/plain");
         //设置文件的名称和格式
-        response.addHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode("基础数据校验模板.xlsx", "UTF-8"))));
+        response.addHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode(excelName, "UTF-8"))));
         BufferedOutputStream buff = null;
         OutputStream outStr = null;
         try {
@@ -383,9 +379,13 @@ public class EtDataCheckController extends BaseController {
     }
 
 
+    /**
+     * 确认完成
+     * @param etProcessManager
+     * @return
+     */
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> confirm(EtProcessManager etProcessManager) {
         EtProcessManager temp = new EtProcessManager();
