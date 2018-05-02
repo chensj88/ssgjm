@@ -64,23 +64,26 @@ public class EtReportController extends BaseController {
         Long serialNo = pmisProjectBasicInfo.getKhxx();
         //根据项目id获取产品
         List<PmisProductInfo> pmisProductInfos = getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId, 1);
-        Map map = new HashMap();
-        map.put("productList", pmisProductInfos);
-        etReport.setcId(cId);
-        etReport.setSerialNo(serialNo.toString());
-        etReport.setMap(map);
-        //根据产品集合获取硬件集合
-        List<EtReport> etReports = getFacade().getEtReportService().selectEtReportByProductInfo(etReport);
-        //循环查询是否数据师傅存在，不存在则插入
-        EtReport etReportTemp = null;
-        for (EtReport report : etReports) {
-            etReportTemp=new EtReport();
-            etReportTemp.setPmId(pmId);
-            etReportTemp.setSourceType(report.getSourceType());
-            etReportTemp = getFacade().getEtReportService().getEtReport(etReportTemp);
-            if (etReportTemp == null) {
-                report.setId(ssgjHelper.createEtReportIdService());
-                getFacade().getEtReportService().createEtReport(report);
+        List<EtReport> etReports = null;
+        if (pmisProductInfos != null && pmisProductInfos.size() != 0) {
+            Map map = new HashMap();
+            map.put("productList", pmisProductInfos);
+            etReport.setcId(cId);
+            etReport.setSerialNo(serialNo.toString());
+            etReport.setMap(map);
+            //根据产品集合获取硬件集合
+            etReports = getFacade().getEtReportService().selectEtReportByProductInfo(etReport);
+            //循环查询是否数据师傅存在，不存在则插入
+            EtReport etReportTemp = null;
+            for (EtReport report : etReports) {
+                etReportTemp = new EtReport();
+                etReportTemp.setPmId(pmId);
+                etReportTemp.setSourceType(report.getSourceType());
+                etReportTemp = getFacade().getEtReportService().getEtReport(etReportTemp);
+                if (etReportTemp == null) {
+                    report.setId(ssgjHelper.createEtReportIdService());
+                    getFacade().getEtReportService().createEtReport(report);
+                }
             }
         }
         HashMap result = new HashMap();
@@ -102,8 +105,8 @@ public class EtReportController extends BaseController {
     @ResponseBody
     @Transactional
     @ILog
-    public Map<String, Object> list(EtReport etReport,Long userId, Row row) {
-        Long pmId=etReport.getPmId();
+    public Map<String, Object> list(EtReport etReport, Long userId, Row row) {
+        Long pmId = etReport.getPmId();
         //统计总数
         Integer countNum = getCountNum(etReport);
         //已完成数
