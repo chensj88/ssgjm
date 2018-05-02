@@ -3,9 +3,7 @@ package cn.com.winning.ssgj.web.controller.mobile;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.*;
-import cn.com.winning.ssgj.domain.EtOnlineFile;
-import cn.com.winning.ssgj.domain.SysDictInfo;
-import cn.com.winning.ssgj.domain.SysUserInfo;
+import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -44,7 +42,7 @@ public class OnlineFileController extends BaseController {
     public String floorQuestionList(Model model, String parameter) {
 
         EtOnlineFile onlineFile = new  EtOnlineFile();
-        //parameter="eyJXT1JLTlVNIjoiMTQyMCwiSE9TUENPREUiOiIxMTk4MCJ9";
+        parameter="eyJXT1JLTlVNIjoiMTQyMCwiSE9TUENPREUiOiIxMTk4MCJ9";
         try{
             byte[] byteArray = Base64Utils.decryptBASE64(parameter);
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
@@ -65,18 +63,25 @@ public class OnlineFileController extends BaseController {
             info.setUserType("1");  //0医院1公司员工
             info = super.getFacade().getSysUserInfoService().getSysUserInfo(info);
             if(info !=null){
-                //根据客户编号 找出对应的全部
+                //根据客户编号 找出对应的全部 1.业务流程调研 = 调研报告
+                EtBusinessProcess businessProcess = new EtBusinessProcess();
+                businessProcess.setSerialNo(hospcode);
+                businessProcess.setStatus(1);
+                List<EtBusinessProcess> businessProcessesList = super.getFacade().getEtBusinessProcessService().getEtBusinessProcessList(businessProcess);
+                //根据客户编号 找出对应的全部 2.单据报表开发 = 单据
+                EtReport report=new EtReport();
+                report.setSerialNo(hospcode);
+                report.setStatus(1);
+                List<EtReport> reportList = super.getFacade().getEtReportService().getEtReportList(report);
+                //根据客户编号 找出对应的全部 3.上线可行性评估 = 上线联调报告 4.上线切换方案
                 onlineFile.setSerialNo(hospcode);
-                onlineFile.setFileType("1");
-                List<EtOnlineFile> onlineFileList_one = super.getFacade().getEtOnlineFileService().getEtOnlineFileList(onlineFile);
-                onlineFile.setFileType("2");
-                List<EtOnlineFile> onlineFileList_two = super.getFacade().getEtOnlineFileService().getEtOnlineFileList(onlineFile);
+                onlineFile.setStatus(1);
                 onlineFile.setFileType("3");
                 List<EtOnlineFile> onlineFileList_three = super.getFacade().getEtOnlineFileService().getEtOnlineFileList(onlineFile);
                 onlineFile.setFileType("4");
                 List<EtOnlineFile> onlineFileList_four = super.getFacade().getEtOnlineFileService().getEtOnlineFileList(onlineFile);
-                model.addAttribute("onlineFileList_one",onlineFileList_one);
-                model.addAttribute("onlineFileList_two",onlineFileList_two);
+                model.addAttribute("onlineFileList_one",businessProcessesList);
+                model.addAttribute("onlineFileList_two",reportList);
                 model.addAttribute("onlineFileList_three",onlineFileList_three);
                 model.addAttribute("onlineFileList_four",onlineFileList_four);
             }else{

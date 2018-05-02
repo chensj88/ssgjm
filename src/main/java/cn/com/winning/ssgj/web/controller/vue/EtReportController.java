@@ -403,4 +403,20 @@ public class EtReportController extends BaseController {
         map.put("completeNum", completeNum);
         return map;
     }
+
+    /**
+     * 删除单据报表
+     *
+     * @param etReport
+     * @return
+     */
+    @RequestMapping(value = "/delete.do")
+    @ResponseBody
+    @ILog
+    public Map<String, Object> delete(EtReport etReport) {
+        super.getFacade().getEtReportService().removeEtReport(etReport);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
 }

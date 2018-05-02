@@ -132,14 +132,14 @@ public class EtProcessManager extends BaseDomain implements Serializable {
 	private Integer isInterfaceAffirm;
 
 	/**
+	 * @val 报表类确认 0未开始，1结束，2异常，3实施中
+	 */
+	private Integer isPaperAffirm; //25
+
+	/**
 	 * @val 硬件设施清单 0未开始，1结束，2异常，3实施中
 	 */
 	private Integer isHardwareList;
-
-	/**
-	 * @val 报表类确认 0未开始，1结束，2异常，3实施中
-	 */
-	private Integer isPaperAffirm; //26
 
 	/**
 	 * @val 评估上线可行性 0未开始，1结束，2异常，3实施中
