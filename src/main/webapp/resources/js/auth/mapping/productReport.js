@@ -1,6 +1,9 @@
 /**
  *
  */
+toastr.options.positionClass = 'toast-top-center';
+toastr.options.timeOut = 30;
+toastr.options.extendedTimeOut = 60;
 $(function () {
     /**==========================方法区========================================*/
     /**
@@ -522,12 +525,12 @@ $(function () {
         event.preventDefault();
         var productSelections = pdTable.bootstrapTable('getSelections');
         if(!productSelections || productSelections.length <= 0){
-            Ewin.alert('请选择至少一条产品信息');
+            toastr.error('请选择至少一条产品信息');
             return ;
         }
         var reportSelections = configTable.bootstrapTable('getSelections');
         if(!reportSelections || reportSelections.length <= 0){
-            Ewin.alert('请先选择至少一条需要删除的信息');
+            toastr.error('请先选择至少一条需要删除的信息');
             return ;
         }
 
@@ -572,13 +575,13 @@ $(function () {
         event.preventDefault();
         var productSelections = pdTable.bootstrapTable('getSelections');
         if(!productSelections || productSelections.length <= 0){
-            Ewin.alert('请选择至少一条产品信息');
+            toastr.error('请选择至少一条产品信息');
             return ;
         }
         console.log(productSelections);
         var queryTableSelections = queryTable.bootstrapTable('getSelections');
         if(!queryTableSelections || queryTableSelections.length <= 0){
-            Ewin.alert('请先选择至少一条需要添加的信息');
+            toastr.error('请先选择至少一条需要添加的信息');
             return ;
         }
 
@@ -604,6 +607,7 @@ $(function () {
             success: function (data, status) {
                 if (data.status == Common.SUCCESS) {
                     refreshConfigTable(pdId);
+                    toastr.success('映射关系添加成功');
                 }
             },
             error: function (e) {
@@ -635,6 +639,7 @@ $(function () {
             success: function (data, status) {
                 if (data.status == Common.SUCCESS) {
                     $('#pdModal').modal('hide');
+                    toastr.success('映射关系删除成功');
                     refreshConfigTable(pdId);
                 }
             },

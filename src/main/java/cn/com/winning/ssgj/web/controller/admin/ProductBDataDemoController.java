@@ -8,6 +8,7 @@ import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -26,6 +27,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "/admin")
+@CrossOrigin
 public class ProductBDataDemoController extends BaseController {
 
     @RequestMapping(value = "/mapping/pBdataDInfo.do")
