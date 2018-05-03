@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.apache.ibatis.type.Alias;
 
 import java.util.Date;
+import java.util.List;
 
 import cn.com.winning.ssgj.domain.BaseDomain;
 
@@ -104,6 +105,8 @@ public class EtReport extends BaseDomain implements Serializable {
      * @val 操作时间
      */
     private java.sql.Timestamp operatorTime;
+
+    private List imgs;
 
     public EtReport() {
 
@@ -341,4 +344,11 @@ public class EtReport extends BaseDomain implements Serializable {
         this.operatorTime = operatorTime;
     }
 
+    public List getImgs() {
+        return imgs;
+    }
+
+    public void setImgs(List imgs) {
+        this.imgs = imgs;
+    }
 }

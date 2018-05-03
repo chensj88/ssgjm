@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.domain;
 import java.io.Serializable;
 import org.apache.ibatis.type.Alias;
 import java.util.Date;
+import java.util.List;
+
 import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
@@ -44,6 +46,8 @@ public class EtBusinessProcess extends BaseDomain implements Serializable {
 	private String uploadPath;
 	
 	private String downloadPath;
+
+	private String imgPath;
 	
 	private Long creator;
 	
@@ -52,6 +56,8 @@ public class EtBusinessProcess extends BaseDomain implements Serializable {
 	private Long operator;
 	
 	private java.sql.Timestamp operatorTime;
+
+	private List imgs;
 	
 	public EtBusinessProcess() {
 
@@ -200,5 +206,21 @@ public class EtBusinessProcess extends BaseDomain implements Serializable {
 	public void setOperatorTime(java.sql.Timestamp operatorTime) {
 		this.operatorTime = operatorTime;
 	}
-	
+
+	public String getImgPath() {
+		return imgPath;
+	}
+
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
+	}
+
+	public List getImgs() {
+		return imgs;
+	}
+
+	public void setImgs(List imgs) {
+		this.imgs = imgs;
+	}
+
 }

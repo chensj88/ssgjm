@@ -8,6 +8,7 @@ import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,7 +43,7 @@ public class OnlineFileController extends BaseController {
     public String floorQuestionList(Model model, String parameter) {
 
         EtOnlineFile onlineFile = new  EtOnlineFile();
-        parameter="eyJXT1JLTlVNIjoiMTQyMCwiSE9TUENPREUiOiIxMTk4MCJ9";
+        parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
         try{
             byte[] byteArray = Base64Utils.decryptBASE64(parameter);
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
@@ -66,12 +67,11 @@ public class OnlineFileController extends BaseController {
                 //根据客户编号 找出对应的全部 1.业务流程调研 = 调研报告
                 EtBusinessProcess businessProcess = new EtBusinessProcess();
                 businessProcess.setSerialNo(hospcode);
-                businessProcess.setStatus(1);
+                businessProcess.setIsScope(1);
                 List<EtBusinessProcess> businessProcessesList = super.getFacade().getEtBusinessProcessService().getEtBusinessProcessList(businessProcess);
                 //根据客户编号 找出对应的全部 2.单据报表开发 = 单据
                 EtReport report=new EtReport();
                 report.setSerialNo(hospcode);
-                report.setStatus(1);
                 List<EtReport> reportList = super.getFacade().getEtReportService().getEtReportList(report);
                 //根据客户编号 找出对应的全部 3.上线可行性评估 = 上线联调报告 4.上线切换方案
                 onlineFile.setSerialNo(hospcode);
@@ -100,20 +100,47 @@ public class OnlineFileController extends BaseController {
 
     @RequestMapping("/details.do")
     @ILog
-    public String fileDetails(Model model, String fileType,String serialNo,String userId) {
-        EtOnlineFile info = new EtOnlineFile();
-        info.setFileType(fileType);
-        info.setSerialNo(serialNo);
-        List<EtOnlineFile> onlineFiles =super.getFacade().getEtOnlineFileService().getEtOnlineFileList(info);
-        //获取文件的类型
-        SysDictInfo info1 = new SysDictInfo();
-        info1.setDictCode("FileType");
-        List<SysDictInfo> dictInfos =super.getFacade().getSysDictInfoService().getSysDictInfoList(info1);
-        model.addAttribute("dictInfos",dictInfos);
-        model.addAttribute("onlineFiles",onlineFiles);
+    public String fileDetails(Model model, String fileType,String serialNo,String userId,Long id) {
+        if(fileType.equals("1")){
+            EtBusinessProcess process = new EtBusinessProcess();
+            process.setId(id);
+            process = super.getFacade().getEtBusinessProcessService().getEtBusinessProcess(process);
+            if(StringUtils.isNotBlank(process.getImgPath())){
+                String[] imgs=process.getImgPath().split(";");
+                List<String> lists= Arrays.asList(imgs);
+                process.setImgs(lists);
+            }
+            model.addAttribute("onlineFiles",process);
+            model.addAttribute("dataName",process.getFlowName());
+
+        }else if(fileType.equals("2")){
+            EtReport report = new EtReport();
+            report.setId(id);
+            report = super.getFacade().getEtReportService().getEtReport(report);
+            if(StringUtils.isNotBlank(report.getImgPath())){
+                String[] imgs=report.getImgPath().split(";");
+                List<String> lists= Arrays.asList(imgs);
+                report.setImgs(lists);
+            }
+            model.addAttribute("onlineFiles",report);
+            model.addAttribute("dataName",report.getReportName());
+
+        }else{
+            EtOnlineFile info = new EtOnlineFile();
+            info.setId(id);
+            info= super.getFacade().getEtOnlineFileService().getEtOnlineFile(info);
+            if(StringUtils.isNotBlank(info.getImgPath())){
+                String[] imgs=info.getImgPath().split(";");
+                List<String> lists= Arrays.asList(imgs);
+                info.setImgs(lists);
+            }
+            model.addAttribute("onlineFiles",info);
+            model.addAttribute("dataName",info.getDataName());
+        }
         model.addAttribute("serialNo",serialNo);
         model.addAttribute("userId",userId);
         model.addAttribute("fileType",fileType);
+
         return "/mobile/enterprise/data-upload-report";
     }
 
@@ -125,13 +152,10 @@ public class OnlineFileController extends BaseController {
     @ResponseBody
     public Map<String,Boolean> uploadImgAjax (HttpServletRequest request,@RequestParam MultipartFile uploadFile){
         Map<String,Boolean> map = new HashMap<String,Boolean>();
-        String serialNo = request.getParameter("serialNo");
+        //String serialNo = request.getParameter("serialNo");
         String userId = request.getParameter("userId");
         String fileType = request.getParameter("fileType");
-        String dataName = request.getParameter("dataName");
-        String dataType = request.getParameter("dataType");
-        EtOnlineFile info = new EtOnlineFile();
-
+        String id =request.getParameter("id");
         try{
             if(!uploadFile.isEmpty()) {
                 //上传文件路径
@@ -168,24 +192,62 @@ public class OnlineFileController extends BaseController {
                     }
                 }
                 if(ftpStatus){
-                    SysUserInfo userInfo = new SysUserInfo();
-                    userInfo.setUserid(userId+"");//员工编码
-                    userInfo.setStatus(1);
-                    userInfo.setUserType("0");//0医院
-                    List<SysUserInfo> userInfoList = super.getFacade().getSysUserInfoService().getSysUserInfoList(userInfo);
-                    //上传资料 1.生成一条记录
-                    //2.修改原来图片路径
-                    info.setId(ssgjHelper.createOnlineFileIdService());
-                    info.setcId((long)-2);    //移动端
-                    info.setPmId((long)-2);
-                    info.setSerialNo(serialNo);//客户编码
-                    info.setImgPath(remotePath);//图片路径
-                    info.setCreator((long)super.user_id(userId,"1"));
-                    info.setCreateTime(new Timestamp(new Date().getTime()));
-                    info.setFileType(fileType);
-                    info.setDataName(dataName);
-                    info.setDataType(dataType);
-                    super.getFacade().getEtOnlineFileService().createEtOnlineFile(info);
+                    if(fileType.equals("1")){  //调研报告
+                        EtBusinessProcess process = new EtBusinessProcess();
+                        process.setId(Long.valueOf(id));
+                        process = super.getFacade().getEtBusinessProcessService().getEtBusinessProcess(process);
+                        if(StringUtils.isNotBlank(process.getImgPath())){
+                            process.setImgPath(process.getImgPath()+";"+ remotePath);//拼接图片路径
+                        }else{
+                            process.setImgPath(remotePath);
+                        }
+                        process.setOperator(super.user_id(userId,"1"));
+                        process.setOperatorTime(new Timestamp(new Date().getTime()));
+                        super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
+
+                    }else if(fileType.equals("2")){//单据报表
+                        EtReport report = new EtReport();
+                        report.setId(Long.valueOf(id));
+                        report = super.getFacade().getEtReportService().getEtReport(report);
+                        if(StringUtils.isNotBlank(report.getImgPath())){
+                            report.setImgPath(report.getImgPath()+";"+ remotePath);//拼接图片路径
+                        }else{
+                            report.setImgPath(remotePath);
+                        }
+                        report.setOperator(super.user_id(userId,"1"));
+                        report.setOperatorTime(new Timestamp(new Date().getTime()));
+                        super.getFacade().getEtReportService().modifyEtReport(report);
+
+                    }else{ //上线/切花审批
+                        EtOnlineFile info = new EtOnlineFile();
+                        info.setId(Long.valueOf(id));
+                        info = super.getFacade().getEtOnlineFileService().getEtOnlineFile(info);
+                        if(StringUtils.isNotBlank(info.getImgPath())){
+                            info.setImgPath(info.getImgPath()+";"+ remotePath);//拼接图片路径
+                        }else{
+                            info.setImgPath(remotePath);
+                        }
+                        info.setOperator(super.user_id(userId,"1"));
+                        info.setOperatorTime(new Timestamp(new Date().getTime()));
+                        super.getFacade().getEtOnlineFileService().modifyEtOnlineFile(info);
+
+//                        EtOnlineFile info = new EtOnlineFile();
+//                        SysUserInfo userInfo = new SysUserInfo();
+//                        userInfo.setUserid(userId+"");//员工编码
+//                        userInfo.setStatus(1);
+//                        userInfo.setUserType("0");//0医院
+//                        List<SysUserInfo> userInfoList = super.getFacade().getSysUserInfoService().getSysUserInfoList(userInfo);
+//                        //上传资料 1.生成一条记录//2.修改原来图片路径
+//                        info.setId(ssgjHelper.createOnlineFileIdService());
+//                        info.setcId((long)-2);    //移动端
+//                        info.setPmId((long)-2);
+//                        info.setImgPath(remotePath);//图片路径
+//                        info.setCreator((long)super.user_id(userId,"1"));
+//                        info.setCreateTime(new Timestamp(new Date().getTime()));
+//                        info.setFileType(fileType);
+//                        super.getFacade().getEtOnlineFileService().createEtOnlineFile(info);
+                    }
+
                     map.put("status",true);
 
                 }else if(!StringUtil.isEmptyOrNull(msg)){
@@ -214,19 +276,76 @@ public class OnlineFileController extends BaseController {
     @RequestMapping("/deleteImg.do")
     @ResponseBody
     @ILog
-    public Map<String,Boolean> deleteImg(Long id){
+    public Map<String,Boolean> deleteImg(Long id,String fileType,String imgPath){
         Map<String,Boolean> map = new HashMap<String,Boolean>();
-        EtOnlineFile info = new EtOnlineFile();
-        info.setId(id);
         try{
-            info = super.getFacade().getEtOnlineFileService().getEtOnlineFile(info);
-            if (port == 21) {
-                    FtpUtils.deleteFtpFile(info.getImgPath());
-            } else if (port == 22) {
-                    SFtpUtils.rmFile(info.getImgPath());
+            if(fileType.equals("1")){
+                EtBusinessProcess process = new EtBusinessProcess();
+                process.setId(id);
+                process = super.getFacade().getEtBusinessProcessService().getEtBusinessProcess(process);
+                String[] imgs=process.getImgPath().split(";");
+                String str="";
+                if(imgs.length >1){
+                    for(int i = 0; i < imgs.length; i++) {
+                        if(imgPath.equals(imgs[i])){
+
+                        }else{
+                            str +=imgs[i]+";";
+                        }
+                    }
+                    process.setImgPath(str.substring(0,str.length()-1));
+                }else{
+                    process.setImgPath("");
+                }
+                super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
+
+
+            }else if(fileType.equals("2")){
+                EtReport report = new EtReport();
+                report.setId(id);
+                report=super.getFacade().getEtReportService().getEtReport(report);
+                String[] imgs=report.getImgPath().split(";");
+                String str="";
+                if(imgs.length >1){
+                    for(int i = 0; i < imgs.length; i++) {
+                        if(imgPath.equals(imgs[i])){
+
+                        }else{
+                            str +=imgs[i]+";";
+                        }
+                    }
+                    report.setImgPath(str.substring(0,str.length()-1));
+                }else{
+                    report.setImgPath("");
+                }
+                super.getFacade().getEtReportService().modifyEtReport(report);
+
+            }else{
+                EtOnlineFile info = new EtOnlineFile();
+                info.setId(id);
+                info = super.getFacade().getEtOnlineFileService().getEtOnlineFile(info);
+                String[] imgs=info.getImgPath().split(";");
+                String str="";
+                if(imgs.length >1){
+                    for(int i = 0; i < imgs.length; i++) {
+                        if(imgPath.equals(imgs[i])){
+
+                        }else{
+                            str +=imgs[i]+";";
+                        }
+                    }
+                    info.setImgPath(str.substring(0,str.length()-1));
+                }else{
+                    info.setImgPath("");
+                }
+
+                super.getFacade().getEtOnlineFileService().modifyEtOnlineFile(info);
             }
-            info.setStatus(0);
-            super.getFacade().getEtOnlineFileService().modifyEtOnlineFile(info);
+            if (port == 21) {
+                FtpUtils.deleteFtpFile(imgPath);
+            } else if (port == 22) {
+                SFtpUtils.rmFile(imgPath);
+            }
             map.put("status",true);
         }catch (Exception e){
             map.put("status",false);
