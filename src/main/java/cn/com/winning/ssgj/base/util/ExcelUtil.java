@@ -191,7 +191,7 @@ public class ExcelUtil {
             if (sheet == null) {
                 continue;
             }
-            list = resolveSheetData(sheet);
+            list.addAll(resolveSheetData(sheet));
         }
         return list;
     }
