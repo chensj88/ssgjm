@@ -43,7 +43,7 @@ public class OnlineFileController extends BaseController {
     public String floorQuestionList(Model model, String parameter) {
 
         EtOnlineFile onlineFile = new  EtOnlineFile();
-        parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
+        //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
         try{
             byte[] byteArray = Base64Utils.decryptBASE64(parameter);
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
