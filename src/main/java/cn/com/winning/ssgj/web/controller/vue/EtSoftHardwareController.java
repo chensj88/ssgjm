@@ -63,22 +63,25 @@ public class EtSoftHardwareController extends BaseController {
         Long serialNo = pmisProjectBasicInfo.getKhxx();
         //根据项目id获取产品
         List<PmisProductInfo> pmisProductInfos = getFacade().getCommonQueryService().queryProductOfProjectByProjectIdAndType(pmId, 1);
-        Map map = new HashMap();
-        map.put("productList", pmisProductInfos);
-        etSoftHardware.setcId(cId);
-        etSoftHardware.setSerialNo(serialNo.toString());
-        etSoftHardware.setMap(map);
-        //根据产品集合获取硬件集合
-        List<EtSoftHardware> etSoftHardwares = getFacade().getEtSoftHardwareService().selectEtSoftHardwareByProductInfo(etSoftHardware);
-        //循环查询是否数据师傅存在，不存在则插入
-        EtSoftHardware softHardwareTemp = null;
-        for (EtSoftHardware softHardware : etSoftHardwares) {
-            //查询数据是否入库
-            softHardwareTemp = getFacade().getEtSoftHardwareService().getEtSoftHardware(softHardware);
-            if (softHardwareTemp == null) {
-                softHardware.setId(ssgjHelper.createEtSoftHardwareIdService());
-                softHardware.setContent("0");
-                getFacade().getEtSoftHardwareService().createEtSoftHardware(softHardware);
+        List<EtSoftHardware> etSoftHardwares = null;
+        if (pmisProductInfos != null && pmisProductInfos.size() != 0) {
+            Map map = new HashMap();
+            map.put("productList", pmisProductInfos);
+            etSoftHardware.setcId(cId);
+            etSoftHardware.setSerialNo(serialNo.toString());
+            etSoftHardware.setMap(map);
+            //根据产品集合获取硬件集合
+            etSoftHardwares = getFacade().getEtSoftHardwareService().selectEtSoftHardwareByProductInfo(etSoftHardware);
+            //循环查询是否数据师傅存在，不存在则插入
+            EtSoftHardware softHardwareTemp = null;
+            for (EtSoftHardware softHardware : etSoftHardwares) {
+                //查询数据是否入库
+                softHardwareTemp = getFacade().getEtSoftHardwareService().getEtSoftHardware(softHardware);
+                if (softHardwareTemp == null) {
+                    softHardware.setId(ssgjHelper.createEtSoftHardwareIdService());
+                    softHardware.setContent("0");
+                    getFacade().getEtSoftHardwareService().createEtSoftHardware(softHardware);
+                }
             }
         }
         HashMap result = new HashMap();

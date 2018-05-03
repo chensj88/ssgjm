@@ -74,12 +74,12 @@ public class EtUserInfoContorller extends BaseController {
     @Transactional
     public Map<String, Object> addOrModifyHospitalUserInfo(EtUserInfo etUserInfo) {
         Map<String, Object> result = new HashMap<String, Object>();
+        EtUserInfo temp = new EtUserInfo();
+        temp.setUserCard(etUserInfo.getUserCard());
+        temp = getFacade().getEtUserInfoService().getEtUserInfo(temp);
         if (etUserInfo.getId() == 0L) {
             //工号查重
-            EtUserInfo temp = new EtUserInfo();
-            temp.setUserCard(etUserInfo.getUserCard());
-            temp = getFacade().getEtUserInfoService().getEtUserInfo(temp);
-            if(temp!=null){
+            if (temp != null) {
                 result.put("status", Constants.FAILD);
                 return result;
             }
@@ -87,8 +87,14 @@ public class EtUserInfoContorller extends BaseController {
             etUserInfo.setIsDel(Constants.STATUS_USE);
             super.getFacade().getEtUserInfoService().createEtUserInfo(etUserInfo);
         } else {
+            //工号查重
+            if (temp != null&&temp.getId()!=etUserInfo.getId()) {
+                result.put("status", Constants.FAILD);
+                return result;
+            }
             super.getFacade().getEtUserInfoService().modifyEtUserInfo(etUserInfo);
         }
+        result.put("status", Constants.SUCCESS);
         return result;
     }
 
@@ -176,6 +182,7 @@ public class EtUserInfoContorller extends BaseController {
     @ILog
     @Transactional
     public Map<String, Object> deleteHospitalUser(EtUserInfo userInfo) {
+        userInfo = super.getFacade().getEtUserInfoService().getEtUserInfo(userInfo);
         userInfo.setIsDel(Constants.STATUS_UNUSE);
         super.getFacade().getEtUserInfoService().modifyEtUserInfo(userInfo);
         Map<String, Object> result = new HashMap<String, Object>();

@@ -31,7 +31,7 @@ public class PmisWebServiceClient {
 
     public static void main(String[] args){
         PmisWebServiceClient.insertData();
-        /*PmisWebServiceClient.insertPMISInterfaceData("1");*/
+       /* PmisWebServiceClient.insertPMISInterfaceData("9");*/
     }
     /**
      * PMIS接口表信息
@@ -158,6 +158,7 @@ public class PmisWebServiceClient {
         sb.append("insert into "+tableName.toUpperCase()+" values \n");
         List<LbRecord> recordList = result.getRecords();
         List<ColInfo> colInfos = result.getMetaData().getColInfo();
+
         for (int i = 0; i < recordList.size(); i++) {
             LbRecord record = recordList.get(i);
             List<Object>  values = record.getValues();

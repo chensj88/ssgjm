@@ -31,7 +31,7 @@ public class SysDataInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysDataInfo> i
 
     @Override
     public List<SysDataInfo> selectSysDataInfoListForSelectiveKey(SysDataInfo t) {
-        String statement = "select" + t.getClass().getSimpleName() + "ListForSelectiveKey";
+        String statement = "selectSysDataInfoListForSelectiveKey";
         return super.getSqlSession().selectList(statement,t);
     }
 

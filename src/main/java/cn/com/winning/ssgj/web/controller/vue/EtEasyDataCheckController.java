@@ -234,9 +234,9 @@ public class EtEasyDataCheckController extends BaseController {
 
                 } else {
                     //计算医生维护率
-                    String docStr = NumberParseUtil.parsePercent(doctorMaintainNum, doctorMaintainNum+doctorNotMaintainNum);
+                    String docStr = NumberParseUtil.parsePercent(doctorMaintainNum, doctorMaintainNum + doctorNotMaintainNum);
                     //计算科室维护率
-                    String deptStr = NumberParseUtil.parsePercent(deptMaintainNum, deptMaintainNum+deptNotMaintainNum);
+                    String deptStr = NumberParseUtil.parsePercent(deptMaintainNum, deptMaintainNum + deptNotMaintainNum);
                     content = docStr + "的医生维护；" + deptStr + "的科室维护。";
                 }
                 //更新易用校验数据content
@@ -375,8 +375,17 @@ public class EtEasyDataCheckController extends BaseController {
         }
         temp.setAppId(etEasyDataCheck.getPlId());
         SysDataCheckScript sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(temp);
+        //增加null判断
+        if (sysDataCheckScript == null) {
+            logger.error("Script is not exist!");
+            return;
+        }
         //获取脚本地址
         String scriptPath = sysDataCheckScript.getRemotePath();
+        if (StringUtil.isEmptyOrNull(scriptPath)) {
+            logger.error("Script path is null or empty!");
+            return;
+        }
         //获取文件名
         String filename = scriptPath.substring(scriptPath.lastIndexOf("/") + 1);
         ChannelSftp sftpConnect = null;

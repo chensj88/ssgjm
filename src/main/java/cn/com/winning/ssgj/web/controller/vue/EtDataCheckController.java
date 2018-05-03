@@ -292,9 +292,14 @@ public class EtDataCheckController extends BaseController {
         SysDataCheckScript sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(temp);
         //获取脚本地址
         if (sysDataCheckScript == null) {
+            logger.error("Script is not exist!");
             return;
         }
         String scriptPath = sysDataCheckScript.getRemotePath();
+        if (StringUtil.isEmptyOrNull(scriptPath)) {
+            logger.error("Script path is null or empty!");
+            return;
+        }
         //获取文件名
         String filename = scriptPath.substring(scriptPath.lastIndexOf("/") + 1);
         ChannelSftp sftpConnect = null;

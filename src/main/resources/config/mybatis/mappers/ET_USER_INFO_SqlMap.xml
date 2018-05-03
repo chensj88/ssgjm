@@ -38,7 +38,7 @@
         <if test="telephone != null and telephone != ''">and t.TELEPHONE = #{telephone}</if>
         <if test="email != null and email != ''">and t.EMAIL = #{email}</if>
         <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
-        <if test="(isDel != null ) or isDel == 0">and t.IS_DEL = #{isDel}</if>
+        <if test="(isDel != null ) ">and t.IS_DEL = #{isDel}</if>
     </sql>
 
     <select id="selectEtUserInfo" resultMap="etUserInfoResult" parameterType="etUserInfo">
@@ -60,6 +60,7 @@
         <if test="( map.position != null and map.position != '' )">
             AND t.POSITION_NAME IN (${map.position})
         </if>
+        <if test="(isDel != null ) ">and t.USER_ID != 100001 </if>
         <!-- order by ID asc -->
     </select>
 
@@ -67,6 +68,7 @@
     <select id="selectEtUserInfoCount" resultType="int" parameterType="etUserInfo">
         select count(*) from ET_USER_INFO t where 1 = 1
         <include refid="sf-etUserInfo"/>
+        <if test="(isDel != null ) ">and t.USER_ID != 100001 </if>
     </select>
 
     <select id="selectEtUserInfoPaginatedList" resultMap="etUserInfoResult" parameterType="etUserInfo">
@@ -81,6 +83,7 @@
         LEFT JOIN SYS_DICT_INFO B ON t.POSITION_NAME = B.DICT_VALUE AND B.DICT_CODE='positionName'
         <where>
             <include refid="sf-etUserInfo"/>
+            <if test="(isDel != null ) ">and t.USER_ID != 100001 </if>
         </where>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
@@ -103,7 +106,7 @@
             <if test="telephone != null and telephone != ''">TELEPHONE,</if>
             <if test="email != null and email != ''">EMAIL,</if>
             <if test="remark != null and remark != ''">REMARK,</if>
-            <if test="(isDel != null  or isDel == 0 )">IS_DEL,</if>
+            <if test="(isDel != null   )">IS_DEL,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -120,7 +123,7 @@
             <if test="telephone != null and telephone != ''">#{telephone, jdbcType=VARCHAR},</if>
             <if test="email != null and email != ''">#{email, jdbcType=VARCHAR},</if>
             <if test="remark != null and remark != ''">#{remark, jdbcType=LONGVARCHAR},</if>
-            <if test="(isDel != null  or isDel == 0 )">#{isDel, jdbcType=INTEGER},</if>
+            <if test="(isDel != null   )">#{isDel, jdbcType=INTEGER},</if>
         </trim>
     </insert>
 
@@ -145,7 +148,7 @@
                 <if test="telephone != null and telephone != ''">TELEPHONE = #{telephone, jdbcType=VARCHAR},</if>
                 <if test="email != null and email != ''">EMAIL = #{email, jdbcType=VARCHAR},</if>
                 <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
-                <if test="(isDel != null  or isDel == 0 )">IS_DEL = #{isDel, jdbcType=INTEGER},</if>
+                <if test="(isDel != null   )">IS_DEL = #{isDel, jdbcType=INTEGER},</if>
             </trim>
         </set>
         <where>

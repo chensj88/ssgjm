@@ -301,23 +301,42 @@
 
     <!--根据客户ID和可查看项目获取项目信息 add chensj-->
     <select id="selectProjectInfoByCustomerIdAndProjectId" parameterType="pmisProjectBasicInfo"  resultMap="pmisProjectBasicInfoResult">
-        SELECT
-        B.*
-        FROM PMIS_PROJCT_USER A
-        LEFT JOIN PMIS_PROJECT_BASIC_INFO B ON A.XMLCB = B.ID
-        WHERE  B.ID IS NOT NULL
-        AND B.JHZT = 0
-        AND  B.FWLX = 0
-        AND B.ZJZT = 1
-        AND  CAST(KHJDLJ AS NUMERIC(10,2)) &lt; 90
-        <if test="map.userId != null">
-            AND A.RY = #{map.userId}
-        </if>
-        <if test="khxx != null">
-            AND B.KHXX = #{khxx, jdbcType=BIGINT}
-        </if>
+        SELECT  * FROM PMIS_PROJECT_BASIC_INFO WHERE
+        ID IN (
+            SELECT
+            DISTINCT B.ID
+            FROM PMIS_PROJCT_USER A
+            LEFT JOIN PMIS_PROJECT_BASIC_INFO B ON A.XMLCB = B.ID
+            WHERE  B.ID IS NOT NULL
+            AND B.JHZT = 0
+            AND  B.FWLX = 0
+            AND B.ZJZT = 1
+            AND  CAST(KHJDLJ AS NUMERIC(10,2)) &lt; 90
+            <if test="map.userId != null">
+                AND A.RY = #{map.userId}
+            </if>
+            <if test="khxx != null">
+                AND B.KHXX = #{khxx, jdbcType=BIGINT}
+            </if>
+            UNION
+            SELECT
+            DISTINCT B.ID
+            FROM ET_USER_INFO A
+            LEFT JOIN PMIS_PROJECT_BASIC_INFO B ON A.PM_ID = B.ID
+            WHERE  B.ID IS NOT NULL
+            AND B.JHZT = 0
+            AND  B.FWLX = 0
+            AND B.ZJZT = 1
+            AND  CAST(KHJDLJ AS NUMERIC(10,2)) &lt; 90
+            AND  A.IS_DEL=1
+            <if test="map.userId != null">
+                AND A.USER_ID = #{map.userId}
+            </if>
+            <if test="khxx != null">
+                AND B.KHXX = #{khxx, jdbcType=BIGINT}
+            </if>
+        )
     </select>
-
 
     <select id="queryPmisProjectBasicInfoByProjectId" resultType="pmisProjectBasicInfo" parameterType="java.lang.Long">
         select * from PMIS_PROJECT_BASIC_INFO t where
