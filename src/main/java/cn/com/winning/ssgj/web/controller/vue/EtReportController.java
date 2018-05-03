@@ -328,7 +328,7 @@ public class EtReportController extends BaseController {
                 CommonFtpUtils.uploadFile(remotePath, newFile);
                 report.setOperatorTime(new Timestamp(new Date().getTime()));
                 if (temp.getImgPath() != null && !"".equals(temp.getImgPath().trim())) {
-                    report.setImgPath(temp.getImgPath() + ";" + Constants.FTP_SHARE_FLODER + remotePath);
+                    report.setImgPath(temp.getImgPath() + ";" +  remotePath);
                 } else {
                     report.setImgPath(Constants.FTP_SHARE_FLODER + remotePath);
                 }
