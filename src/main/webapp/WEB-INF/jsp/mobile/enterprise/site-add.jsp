@@ -75,15 +75,15 @@
 							</div>
 							<div class="register-item">
 								<div class="register-item-title">楼宇</div>
-								<input type="text" name="building" value="${vwr.building}" placeholder="请输入站点名称"/>
+								<input type="text" name="building" value="${vwr.building}" placeholder="请输入楼宇名称"/>
 							</div>
 							<div class="register-item">
 								<div class="register-item-title">楼层</div>
-								<input type="text" name="floorNum" value="${vwr.floorNum}" placeholder="请输楼层名称"/>
+								<input type="number" name="floorNum" value="${vwr.floorNum}" placeholder="请输入楼层层数"/>
 							</div>
 							<div class="register-item">
 								<div class="register-item-title">PC机型号</div>
-								<input type="text" name="pcModel" value="${vwr.pcModel}" placeholder="请输入站点名称"/>
+								<input type="text" name="pcModel" value="${vwr.pcModel}" placeholder="请输入PC机型号"/>
 							</div>
 							<div class="register-item">
 								<div class="register-item-title">安装情况</div>

@@ -27,26 +27,27 @@
 			<div class="datum-item">
 				<div class="datum-row">
 					<span>调研报告</span>
-					<a href="<%=basePath%>mobile/implementData/details.do?fileType=1&serialNo=${serialNo}&userId=${userId}">
-						<i class="mui-icon mui-icon-arrowright" ></i></a>
 				</div>
 				<ul class="datum-row-img clearfix">
+					<!--
 					<a href="<%=basePath%>mobile/implementData/details.do?fileType=1&serialNo=${serialNo}&userId=${userId}">
 					<li class="datum-row-add">
 						<i class="iconfont icon-plus"></i>
 					</li>
-					</a>
+					</a> -->
 					<c:forEach var="vul" items="${onlineFileList_one}">
-					<li onclick="fileDatail(vul.id)">
-						<h3>${vul.map.get("dictLabel")}</h3>
+					<a href="<%=basePath%>mobile/implementData/details.do?fileType=1&serialNo=${serialNo}&userId=${userId}&id=${vul.id}">
+					<li>
+						<h3>调研</h3>
 						<div class="datum-middle">
 							<div>
 								<p>
-									<span>${vul.dataName}</span>
+									<span>${vul.flowName}</span>
 								</p>
 							</div>
 						</div>
 					</li>
+					</a>
 					</c:forEach>
 
 				</ul>
@@ -55,22 +56,21 @@
 			<div class="datum-item">
 				<div class="datum-row">
 					<span>单据</span>
-					<a href="<%=basePath%>mobile/implementData/details.do?fileType=2&serialNo=${serialNo}&userId=${userId}&">
-						<i class="mui-icon mui-icon-arrowright" ></i></a>
 				</div>
 				<ul class="datum-row-img clearfix">
-					<li class="datum-row-add"><i class="iconfont icon-plus"></i></li>
 					<c:forEach var="vul" items="${onlineFileList_two}">
-						<li>
-							<h3>${vul.dataType}</h3>
+                    <a href="<%=basePath%>mobile/implementData/details.do?fileType=2&serialNo=${serialNo}&userId=${userId}&id=${vul.id}">
+                    <li>
+							<h3>单据</h3>
 							<div class="datum-middle">
 								<div>
 									<p>
-										<span>${vul.dataName}</span>
+										<span>${vul.reportName}</span>
 									</p>
 								</div>
 							</div>
 						</li>
+                    </a>
 					</c:forEach>
 				
 				</ul>
@@ -79,15 +79,13 @@
 			<div class="datum-item">
 				<div class="datum-row">
 					<span>上线联调报告</span>
-					<a href="<%=basePath%>mobile/implementData/details.do?fileType=3&serialNo=${serialNo}&userId=${userId}">
-						<i class="mui-icon mui-icon-arrowright" ></i></a>
 				</div>
 				<ul class="datum-row-img clearfix">
-					<li class="datum-row-add"><i class="iconfont icon-plus"></i></li>
 
 					<c:forEach var="vul" items="${onlineFileList_three}">
-						<li onclick="fileDatail(vul.id)">
-							<h3>${vul.dataType}</h3>
+                    <a href="<%=basePath%>mobile/implementData/details.do?fileType=3&serialNo=${serialNo}&userId=${userId}&id=${vul.id}">
+						<li>
+							<h3>调研</h3>
 							<div class="datum-middle">
 								<div>
 									<p>
@@ -96,6 +94,7 @@
 								</div>
 							</div>
 						</li>
+                    </a>
 					</c:forEach>
 				</ul>
 			</div>
@@ -103,14 +102,12 @@
 			<div class="datum-item">
 				<div class="datum-row">
 					<span>上线切换方案</span>
-					<a href="<%=basePath%>mobile/implementData/details.do?fileType=4&serialNo=${serialNo}&userId=${userId}">
-						<i class="mui-icon mui-icon-arrowright" ></i></a>
 				</div>
 				<ul class="datum-row-img clearfix">
-					<li class="datum-row-add"><i class="iconfont icon-plus"></i></li>
 					<c:forEach var="vul" items="${onlineFileList_four}">
-						<li>
-							<h3>${vul.dataType}</h3>
+                    <a href="<%=basePath%>mobile/implementData/details.do?fileType=4&serialNo=${serialNo}&userId=${userId}&id=${vul.id}">
+                    <li>
+							<h3>方案</h3>
 							<div class="datum-middle">
 								<div>
 									<p>
@@ -119,6 +116,7 @@
 								</div>
 							</div>
 						</li>
+                    </a>
 					</c:forEach>
 				</ul>
 			</div>

@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.domain;
 import java.io.Serializable;
 import org.apache.ibatis.type.Alias;
 import java.util.Date;
+import java.util.List;
+
 import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
@@ -87,6 +89,8 @@ public class EtOnlineFile extends BaseDomain implements Serializable {
 	 * @val 状态 0 否 1 是
 	 */
 	private Integer status;
+
+	private List imgs;
 	
 	public EtOnlineFile() {
 
@@ -285,5 +289,13 @@ public class EtOnlineFile extends BaseDomain implements Serializable {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public List getImgs() {
+		return imgs;
+	}
+
+	public void setImgs(List imgs) {
+		this.imgs = imgs;
 	}
 }

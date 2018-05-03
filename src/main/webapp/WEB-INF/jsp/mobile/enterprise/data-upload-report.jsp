@@ -29,39 +29,43 @@
 			<div class="datum-report">
 				<div class="datum-report-item">
 					<span>资料名称</span>
-					<input id="dataName" name="dataName" type="text"  autocomplete="off" />
+					<input id="dataName" name="dataName" value="${dataName}" type="text"  autocomplete="off" />
 				</div>
 			</div>
-			<div class="datum-report padding-btm-20">
-				<div class="datum-report-item">
-					<span>资料类别</span>
-					<div class="select">
-						<input id="dataType" name="dataType" type="hidden" onchange=""/>
-						<a href="#"><span>--请选择--</span><i class="arrow"></i></a>
-		                <ul>
-		                	<!--<li data-val="-1">--请选择--</li>-->
-							<c:forEach var="dict" items="${dictInfos}">
-								<li data-val="${dict.dictValue}">${dict.dictLabel}</li>
-							</c:forEach>
-		                </ul>
-					</div>
-				</div>
-			</div>
+
+
+			<%--<div class="datum-report padding-btm-20">--%>
+				<%--<div class="datum-report-item">--%>
+					<%--<span>资料类别</span>--%>
+					<%--<div class="select">--%>
+						<%--<input id="dataType" name="dataType" type="hidden" onchange=""/>--%>
+						<%--<a href="#"><span>--请选择--</span><i class="arrow"></i></a>--%>
+		                <%--<ul>--%>
+							<%--<c:forEach var="dict" items="${dictInfos}">--%>
+								<%--<li data-val="${dict.dictValue}">${dict.dictLabel}</li>--%>
+							<%--</c:forEach>--%>
+		                <%--</ul>--%>
+					<%--</div>--%>
+				<%--</div>--%>
+			<%--</div>--%>
+
+
 			<form id="file" action="" method="post" enctype="multipart/form-data">
-			<div class="datum-upload">
+			<div  class="datum-upload">
 				<div>
 					<i class="iconfont icon-plus"></i>
-					<input type="file" id="uploadFile" name="uploadFile" onchange="fileSelected2();" />
+					<input type="file" id="uploadFile" name="uploadFile" onchange="fileSelected2(${onlineFiles.id});" />
 				</div>
 
-				<c:forEach var="vul" items="${onlineFiles}">
-					<div id="close_id">
-						<!-- <img src="<%=basePathNuName%>shareFolder${vul.imgPath}"/> -->
-						<img src="<%=basePathNuName%>shareFolder${vul.imgPath}" />
-						<span class="iconfont icon-close" onclick="closeImg('${vul.id}');"></span>
-						<input type="hidden" />
-					</div>
+				<c:if test="${onlineFiles.imgPath !=null && onlineFiles.imgPath !=''}">
+				<c:forEach var="img" items="${onlineFiles.imgs}">
+				<div id="close_id">
+					<img src="<%=basePathNuName%>shareFolder${img}" />
+					<span class="iconfont icon-close" onclick="closeImg('${onlineFiles.id}','${img}');"></span>
+					<input type="hidden" />
+				</div>
 				</c:forEach>
+				</c:if>
 
 			</div>
 			</form>
@@ -84,21 +88,21 @@
                 enterprise.init();
 			})
 			//添加图片
-            function fileSelected2(){
+            function fileSelected2(id){
 			    //获取文件的内容
-                var dataName = $("#dataName").val();
-                var dataType = $("#dataType").val();
-                if(dataName == null || dataName ==''){
-                    mui.toast('名称不能为空',{ duration:'long(3500ms)', type:'div' });
-                    return false;
-                }
-                if(dataType == null || dataType ==''){
-                    mui.toast('请选择类型',{ duration:'long(3500ms)', type:'div' });
-                    return false;
-                }
+                //var dataName = $("#dataName").val();
+                //var dataType = $("#dataType").val();
+                // if(dataName == null || dataName ==''){
+                //     mui.toast('名称不能为空',{ duration:'long(3500ms)', type:'div' });
+                //     return false;
+                // }
+                // if(dataType == null || dataType ==''){
+                //     mui.toast('请选择类型',{ duration:'long(3500ms)', type:'div' });
+                //     return false;
+                // }
                 var fileType = $("#fileType").val();
                 var userId = $("#userId").val();
-                var serialNo = $("#serialNo").val();
+                //var serialNo = $("#serialNo").val();
                 var uploadFile = new FormData($("#file")[0]);
 				//判断上传的只能是图片
                 var f=document.getElementById("uploadFile").value;
@@ -110,12 +114,10 @@
                     }
                 }
 
-                console.log(uploadFile);
                 if("undefined" != typeof(uploadFile) && uploadFile != null && uploadFile != ""){
                     $.ajax({
                         type: "POST",
-                        url:"<%=basePath%>/mobile/implementData/uploadImgAjax.do?dataName="+dataName+"&dataType="
-						+dataType+"&fileType="+fileType+"&userId="+userId+"&serialNo="+serialNo,
+                        url:"<%=basePath%>/mobile/implementData/uploadImgAjax.do?id="+id+"&fileType="+fileType+"&userId="+userId,
 						data:uploadFile,
                         cache : false,
                         async: false,
@@ -126,12 +128,14 @@
                             console.log(request);
                         },
                         success: function(data) {
+                            alert(data);
+                            console.log(data);
                             if(data.status) {
-                                mui.toast('修改成功',{ duration:'long(3500ms)', type:'div' });
+                                //mui.toast('修改成功',{ duration:'long(3500ms)', type:'div' });
                                 //追加图片预览
                                 setTimeout("location.reload()",3500);
                             } else {
-                                mui.toast('修改失败',{ duration:'long(3500ms)', type:'div' });
+                                //mui.toast('修改失败',{ duration:'long(3500ms)', type:'div' });
                                 //追加图片预览
                                 setTimeout("location.reload()",3500);
 
@@ -148,14 +152,15 @@
 
 
 
-            function closeImg(e){
+            function closeImg(e,imgPath){
 	    	    if(e==null || e ==''){
 	    	       return false;
 				}
+                var fileType =$("#fileType").val();
                 $.ajax({
                     type: "POST",
                     url:"<%=basePath%>/mobile/implementData/deleteImg.do",
-                    data:{id:e},
+                    data:{id:e,imgPath:imgPath,fileType:fileType},
                     cache : false,
                     dataType:"json",
                     async: false,
