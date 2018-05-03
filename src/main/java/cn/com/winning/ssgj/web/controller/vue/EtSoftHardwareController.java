@@ -119,6 +119,12 @@ public class EtSoftHardwareController extends BaseController {
         }
         //根据项目Id
         List<PmisProductLineInfo> pmisProductLineInfoList = this.getProductLineList(pmId);
+        //当无法根据pmid找到产品条线时，给出所有产品条线
+        if (pmisProductLineInfoList == null || pmisProductLineInfoList.size() == 0) {
+            PmisProductLineInfo temp = new PmisProductLineInfo();
+            temp.setZt(1);
+            pmisProductLineInfoList = getFacade().getPmisProductLineInfoService().getPmisProductLineInfoList(temp);
+        }
         //根据pmid获取项目进程
         EtProcessManager etProcessManager = new EtProcessManager();
         etProcessManager.setPmId(pmId);
