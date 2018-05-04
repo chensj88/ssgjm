@@ -384,4 +384,216 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 	public void setImgs(List imgs) {
 		this.imgs = imgs;
 	}
+
+
+	/**
+	 * @val 批次
+	 */
+	private String batchNo;
+
+	/**
+	 * @val 底稿类型 1|解释类;2|操作错误类;3|系统BUG类;4|新增需求类;5|单据报表类;6|其他
+	 */
+	private Integer manuscriptType;
+
+	/**
+	 * @val 原因分类 1|功能;2|基础数据;3|界面;4|其他
+	 */
+	private Integer reasonType;
+
+	/**
+	 * @val 底稿状态：1|新收集;2|登记未答复;3|答复未确认;4|协调过程中;5|编码过程;6|测试过程中;9|测试通过未升级;7|升级未确认;8|已确认关闭
+	 */
+	private Integer manuscriptStatus;
+
+	/**
+	 * @val 公司方接收人
+	 */
+	private String devUser;
+
+	/**
+	 * @val 解决方式 1|现场;2|远程;3|电话;
+	 */
+	private Integer solutionType;
+
+	/**
+	 * @val 难度级别 1|高;2|中;3|低
+	 */
+	private Integer diffcultLevel;
+
+	/**
+	 * @val 用户方信息
+	 */
+	private String userMessage;
+
+	/**
+	 * @val 批次
+	 */
+	public String getBatchNo() {
+		return batchNo;
+	}
+
+	/**
+	 * @val 批次
+	 */
+	public void setBatchNo(String batchNo) {
+		this.batchNo = batchNo;
+	}
+
+	/**
+	 * @val 底稿类型 1|解释类;2|操作错误类;3|系统BUG类;4|新增需求类;5|单据报表类;6|其他
+	 */
+	public Integer getManuscriptType() {
+		return manuscriptType;
+	}
+
+	/**
+	 * @val 底稿类型 1|解释类;2|操作错误类;3|系统BUG类;4|新增需求类;5|单据报表类;6|其他
+	 */
+	public void setManuscriptType(Integer manuscriptType) {
+		this.manuscriptType = manuscriptType;
+	}
+
+	/**
+	 * @val 原因分类 1|功能;2|基础数据;3|界面;4|其他
+	 */
+	public Integer getReasonType() {
+		return reasonType;
+	}
+
+	/**
+	 * @val 原因分类 1|功能;2|基础数据;3|界面;4|其他
+	 */
+	public void setReasonType(Integer reasonType) {
+		this.reasonType = reasonType;
+	}
+
+	/**
+	 * @val 底稿状态：1|新收集;2|登记未答复;3|答复未确认;4|协调过程中;5|编码过程;6|测试过程中;9|测试通过未升级;7|升级未确认;8|已确认关闭
+	 */
+	public Integer getManuscriptStatus() {
+		return manuscriptStatus;
+	}
+
+	/**
+	 * @val 底稿状态：1|新收集;2|登记未答复;3|答复未确认;4|协调过程中;5|编码过程;6|测试过程中;9|测试通过未升级;7|升级未确认;8|已确认关闭
+	 */
+	public void setManuscriptStatus(Integer manuscriptStatus) {
+		this.manuscriptStatus = manuscriptStatus;
+	}
+
+	/**
+	 * @val 公司方接收人
+	 */
+	public String getDevUser() {
+		return devUser;
+	}
+
+	/**
+	 * @val 公司方接收人
+	 */
+	public void setDevUser(String devUser) {
+		this.devUser = devUser;
+	}
+
+	/**
+	 * @val 解决方式 1|现场;2|远程;3|电话;
+	 */
+	public Integer getSolutionType() {
+		return solutionType;
+	}
+
+	/**
+	 * @val 解决方式 1|现场;2|远程;3|电话;
+	 */
+	public void setSolutionType(Integer solutionType) {
+		this.solutionType = solutionType;
+	}
+
+	/**
+	 * @val 难度级别 1|高;2|中;3|低
+	 */
+	public Integer getDiffcultLevel() {
+		return diffcultLevel;
+	}
+
+	/**
+	 * @val 难度级别 1|高;2|中;3|低
+	 */
+	public void setDiffcultLevel(Integer diffcultLevel) {
+		this.diffcultLevel = diffcultLevel;
+	}
+
+	/**
+	 * @val 用户方信息
+	 */
+	public String getUserMessage() {
+		return userMessage;
+	}
+
+	/**
+	 * @val 用户方信息
+	 */
+	public void setUserMessage(String userMessage) {
+		this.userMessage = userMessage;
+	}
+
+	/**
+	 *解决结果
+	 */
+	private String solutionResult;
+	/**
+	 *联系人
+	 */
+	private String linkman;
+	/**
+	 *联系电话
+	 */
+	private String mobile;
+	/**
+	 *希望完成时间
+	 */
+	private String hopeFinishDate;
+
+	public String getSolutionResult() {
+		return solutionResult;
+	}
+
+	public void setSolutionResult(String solutionResult) {
+		this.solutionResult = solutionResult;
+	}
+
+	public String getLinkman() {
+		return linkman;
+	}
+
+	public void setLinkman(String linkman) {
+		this.linkman = linkman;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getHopeFinishDate() {
+		return hopeFinishDate;
+	}
+
+	public void setHopeFinishDate(String hopeFinishDate) {
+		this.hopeFinishDate = hopeFinishDate;
+	}
+
+	private Integer pmisStatus;
+
+	public Integer getPmisStatus() {
+		return pmisStatus;
+	}
+
+	public void setPmisStatus(Integer pmisStatus) {
+		this.pmisStatus = pmisStatus;
+	}
 }

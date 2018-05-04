@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.sql.Timestamp;
@@ -141,4 +142,15 @@ public class EtSiteQuestionInfoController extends BaseController {
         return result;
     }
 
+    @RequestMapping(value = "/exportPmisData.do",method = {RequestMethod.POST})
+    @ResponseBody
+    @ILog
+    @Transactional
+    public Map<String,Object> exportPmisData(EtSiteQuestionInfo info){
+        info.setOperatorTime(new Timestamp(new Date().getTime()));
+        super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
 }
