@@ -116,22 +116,7 @@ $(function () {
         $(element).addClass('success');//添加当前选中的 success样式用于区别
         productId = row.id;
         var url = Common.getRootPath() + "/admin/pBdataD/queryById.do";
-        $.ajax({
-            type: "post",
-            url: url,
-            data: {"pdId": productId},
-            dataType: 'json',
-            cache:false,
-            success: function (data, status) {
-                if (data.status == Common.SUCCESS) {
-                }
-            },
-            error: function (e) {
-                console.log(e);
-                Ewin.alert('Error:' + e.statusText);
-            }
-        });
-
+        initDoubleBoxData(productId);
     });
 
     initDoubleBoxData();
@@ -188,17 +173,10 @@ $(function () {
         });
     }
     $('#doublebox').on("change",function (event) {
-        console.log(event.target());
-        console.log(event);
+
         console.log(doublebox.getSelectedOptions());
     });
 
-    $('#doublebox').on("dbclick",function (event) {
-        console.log(event);
-        console.log(event.currentTarget);
-        console.log(event.target);
-        console.log(doublebox.getSelectedOptions());
-    });
 
 
 });
