@@ -188,14 +188,15 @@
         WHERE
         s.STATUS = 1
         AND s.DATA_TYPE =1
-        AND o.ID IN (
-        SELECT DISTINCT
-        m.CPTX
+        AND EXISTS(
+        SELECT
+        1
         FROM
         PMIS_CONTRACT_PRODUCT_INFO p
-        RIGHT JOIN PMIS_PRODUCT_INFO m ON p.CPXX = m.ID
+        INNER JOIN PMIS_PRODUCT_INFO m ON p.CPXX = m.ID
         WHERE
-        p.XMLCB = #{pmId}
+        o.ID=m.CPTX
+        AND p.XMLCB = #{pmId}
         AND m.ZT = 1
         AND p.ZT = 1
         AND p.HTCPLB = 1
