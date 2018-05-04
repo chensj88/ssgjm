@@ -96,7 +96,10 @@ $(function () {
                 field: "lastUpdateTime",
                 title: "维护时间",
                 width: '40px',
-                align: 'center'
+                align: 'center',
+                formatter: function (value) {
+                   return Common.getDate(value);
+                }
             },{
                 field: "status",
                 title: "状态",
@@ -135,7 +138,10 @@ $(function () {
         $('#interCode').val("");
         $('#refProductName').val("");
         $('#interDesc').val("");
+        $('#interFaceInfoForm').bootstrapValidator('destroy');
+        validateForm();
         $('#interFaceInfoModal').modal('show');
+
     });
 //
 
@@ -214,11 +220,14 @@ function edit(id,interName,interCode,refProductName,interDesc) {
     $('#refProductName').val(refProductName);
     $('#interDesc').val(interDesc);
     $('#id').val(id);
+    $('#interFaceInfoForm').bootstrapValidator('destroy');
+    validateForm();
     $('#interFaceInfoModal').modal('show');
 }
 
-//表单验证
-$('#interFaceInfoForm').bootstrapValidator({
+function validateForm() {
+    //表单验证
+    $('#interFaceInfoForm').bootstrapValidator({
         message: '输入的值不符合规格',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -226,7 +235,7 @@ $('#interFaceInfoForm').bootstrapValidator({
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-        	interName: {
+            interName: {
                 message: '接口名称验证失败',
                 validators: {
                     notEmpty: {
@@ -246,7 +255,7 @@ $('#interFaceInfoForm').bootstrapValidator({
                     },
                     stringLength: {
                         min: 2,
-                        max: 12,
+                        max: 24,
                         message: '适用产品名称长度必须在2到12位之间'
                     }
                 }
@@ -265,80 +274,4 @@ $('#interFaceInfoForm').bootstrapValidator({
             }
         }
     });
-///**
-//* 删除适用产品
-//* 只能删除一条数据
-//*/
-//$('#deleteProductInfo').on('click', function () {
-// var arrselections = $("#userTable").bootstrapTable('getSelections');
-// if (arrselections.length > 1) {
-//    // toastr.warning('只能选择一行进行编辑');
-//     Ewin.alert('只能选择一行进行编辑');
-//     return;
-// }
-// if (arrselections.length <= 0) {
-//     //toastr.warning('请选择有效数据');
-//     Ewin.alert('只能选择一行进行编辑');
-//     return;
-// }
-// var userId = arrselections[0].userId;
-// Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
-//     if (!e) {
-//         return;
-//     }
-//     $.ajax({
-//         type: "post",
-//         url: Common.getRootPath() + '/admin/thirx/deleteById.do',
-//         data: {"userId": userId},
-//         dataType: 'json',
-//         success: function (data, status) {
-//             if (status == Common.SUCCESS) {
-//                 toastr.success('提交数据成功');
-//                 $("#userTable").bootstrapTable('refresh');
-//             }
-//         },
-//         error: function () {
-//             toastr.error('Error');
-//         },
-//         complete: function () {
-//         }
-//     });
-// });
-//});
-/**
-//* 修改适用产品
-//* 只能修改一条数据
-//*/
-//$('#modifyUser').on('click', function () {
-//  var arrselections = $("#userTable").bootstrapTable('getSelections');
-//  if (arrselections.length > 1) {
-//      //toastr.warning('只能选择一行进行编辑');
-//      Ewin.alert('只能选择一行进行编辑');
-//      return;
-//  }
-//  if (arrselections.length <= 0) {
-//      //toastr.warning('请选择有效数据');
-//      Ewin.alert('请选择有效数据');
-//      return;
-//  }
-//  var userId = arrselections[0].id;
-//  $.ajax({
-//      url: Common.getRootPath() + '/admin/thirx/getById.do',
-//      data: {'userId': userId},
-//      type: "post",
-//      dataType: 'json',
-//      async: false,
-//      success: function (result) {
-//          var _result = eval(result);
-//          if (_result.status == Common.SUCCESS) {
-//              $('#userForm').initForm(_result.data);
-//              $('#orgid').val(_result.data.orgid);
-//              $('#password').val(_result.data.password);
-//              $('#cpfl').val(_result.data.password);
-//              $('#syfw').val(_result.data.password);
-//              $('#sysDataInfo').modal('show');
-//          }
-//
-//      }
-//  });
-//});
+}

@@ -1,5 +1,7 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,8 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.domain.SysThirdInterfaceInfo;
+import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,6 +115,9 @@ public class SysInterFaceInfoController extends BaseController {
         t.setInterCode(code);
         t.setId(id);
         t.setStatus(1);
+        SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
+        t.setLastUpdator(userInfo.getId());
+        t.setLastUpdateTime(new Timestamp(new Date().getTime()));
         getFacade().getSysThirdInterfaceInfoService().createSysThirdInterfaceInfo(t);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("status", Constants.SUCCESS);

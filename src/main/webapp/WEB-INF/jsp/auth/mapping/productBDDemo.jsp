@@ -117,28 +117,6 @@
         <select multiple="multiple" size="10" name="doublebox" class="demo" id="doublebox"></select>
     </div>
 </div>
-<%--弹出框--%>
-<div class="modal fade" id="pdModal" tabindex="-1" role="dialog" aria-labelledby="pdModal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width:600px;overflow:auto;">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <h4 class="modal-title" id="pdModalLabel">列表</h4>
-            </div>
-            <div class="modal-body" style="height: 200px;overflow:auto;">
-                <table class="table-hover table-align" id="infoTable"></table>
-            </div>
-            <div class="modal-footer">
-                <div class="col-sm-12 text-center">
-                    <button class="btn btn-primary" id="remove" type="button">提交</button>
-                    <button class="btn btn-danger" data-dismiss="modal">取消</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 </body>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap.min.js"></script>

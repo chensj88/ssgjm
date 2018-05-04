@@ -1,6 +1,9 @@
 /**
  *
  */
+toastr.options.positionClass = 'toast-top-center';
+toastr.options.timeOut = 30;
+toastr.options.extendedTimeOut = 60;
 $(function () {
     /**==========================方法区========================================*/
     /**
@@ -532,18 +535,17 @@ $(function () {
         event.preventDefault();
         var productSelections = pdTable.bootstrapTable('getSelections');
         if(!productSelections || productSelections.length <= 0){
-            Ewin.alert('请选择至少一条产品信息');
+            toastr.error('请选择至少一条产品信息');
             return ;
         }
         var flowSelections = configTable.bootstrapTable('getSelections');
         if(!flowSelections || flowSelections.length <= 0){
-            Ewin.alert('请先选择至少一条需要删除的接口信息');
+            toastr.error('请先选择至少一条需要删除的接口信息');
             return ;
         }
 
         console.log(productSelections);
         var pdId = productSelections[0].id;
-        console.log("pdId:"+pdId);
         var interIds = '';
         var cLength = flowSelections.length;
         $.each(flowSelections,function (index,value,array) {
@@ -553,7 +555,6 @@ $(function () {
                 interIds += value.id +',';
             }
         });
-        console.log("interIds:"+interIds);
         var url = Common.getRootPath() + "/admin/pthirdinfo/queryProductInterById.do";
         $.ajax({
             type: "post",
@@ -582,18 +583,17 @@ $(function () {
         event.preventDefault();
         var productSelections = pdTable.bootstrapTable('getSelections');
         if(!productSelections || productSelections.length <= 0){
-            Ewin.alert('请选择至少一条产品信息');
+            toastr.error('请选择至少一条产品信息');
             return ;
         }
         console.log(productSelections);
         var queryTableSelections = queryTable.bootstrapTable('getSelections');
         if(!queryTableSelections || queryTableSelections.length <= 0){
-            Ewin.alert('请先选择至少一条需要添加的接口信息');
+            toastr.error('请先选择至少一条需要添加的接口信息');
             return ;
         }
 
         var pdId = productSelections[0].id;
-        console.log(pdId);
         var bdids = '';
         var cLength = queryTableSelections.length;
         $.each(queryTableSelections,function (index,value,array) {
@@ -603,7 +603,6 @@ $(function () {
                 bdids += pdId +','+value.id +';';
             }
         });
-        console.log(bdids);
         var url = Common.getRootPath() + "/admin/pthirdinfo/addMapping.do";
         $.ajax({
             type: "post",
@@ -614,6 +613,7 @@ $(function () {
             success: function (data, status) {
                 if (data.status == Common.SUCCESS) {
                     refreshConfigTable(pdId);
+                    toastr.success('映射关系添加成功');
                 }
             },
             error: function (e) {
@@ -645,6 +645,7 @@ $(function () {
             success: function (data, status) {
                 if (data.status == Common.SUCCESS) {
                     $('#pdModal').modal('hide');
+                    toastr.success('映射关系删除成功');
                     refreshConfigTable(pdId);
                 }
             },

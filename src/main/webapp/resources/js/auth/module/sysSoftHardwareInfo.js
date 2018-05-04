@@ -288,7 +288,6 @@ $(function () {
         } else {
             url = Common.getRootPath() + '/admin/hardware/update.do';
         }
-        console.log($("#sysSoftHardwareInfoForm").serialize());
         $.ajax({
             url: url,
             data: $("#sysSoftHardwareInfoForm").serialize(),
