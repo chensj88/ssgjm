@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/commons/header.jsp" %>
+<%String ref = request.getHeader("REFERER");%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -16,7 +17,7 @@
 		<div class="mui-content gray">
 		    <!--header-->
 			<div class="header">
-				<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
+				<span class="mui-icon mui-icon-arrowleft" onclick="javascript:window.location='<%=ref%>'"></span>
 				<div>站点安装登记</div>
 				<span class="mui-icon mui-icon-more"></span>
 			</div>
@@ -151,7 +152,7 @@
 			<div class="fix-hole"></div>
 		    <div class="check-distribuion-btn">
 		    	<input type="button" onclick="save();" value="保存" />
-		    	<input type="button" value="取消" />
+		    	<input type="button" onclick="history.go(-1)" value="取消" />
 		    </div>
 		</div>
 

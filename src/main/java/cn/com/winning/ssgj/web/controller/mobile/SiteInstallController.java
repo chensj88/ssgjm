@@ -51,9 +51,15 @@ public class SiteInstallController extends BaseController {
         try{
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
             ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
-            String work_num=(String) userList.get(0).get("WORKNUM");
-            String hospcode=(String) userList.get(0).get("HOSPCODE ");
-
+            String work_num = null;
+            String hospcode = null;
+            if (userList != null && !userList.equals("")) {
+                for (int i = 0; i < userList.size(); i++) { //  推荐用这个
+                    JSONObject io = userList.get(i);
+                    work_num = (String) io.get("WORKNUM");
+                    hospcode = (String) io.get("HOSPCODE");
+                }
+            }
             SysUserInfo info = new SysUserInfo();
             info.setUserid(work_num);
             info.setStatus(1);

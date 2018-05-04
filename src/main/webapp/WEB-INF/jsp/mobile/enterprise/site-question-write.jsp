@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/commons/header.jsp" %>
+<%String ref = request.getHeader("REFERER");%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -21,7 +22,7 @@
 			    <input id="id" type="hidden" name="id" value="${siteQuestionInfo.id}">
 
 			<div class="header">
-				<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
+				<span class="mui-icon mui-icon-arrowleft" onclick="javascript:window.location='<%=ref%>'"></span>
 				<div>站点问题汇报</div>
 				<span class="mui-icon mui-icon-more"></span>
 			</div>
@@ -188,7 +189,7 @@
                         $("#productId a").find("span").text("--请选择--") ;
                         $("#menuName").val("");
                         $("#menuId a").find("span").text("--请选择--") ;
-                        $("#ul2").html("");
+                        $("#ul2").empty();
 
 
                         //加载菜单数据
@@ -203,9 +204,10 @@
                                 console.log(request);
                             },
                             success: function(data) {
+                                str_html="";
+                                $("#ul2").empty();
                                 console.log(data);
                                 var json=eval(data.xtJsons);
-
                                 $.each(json,function(i,item){
                                     str_html=str_html+"<li data-val='"+json[i].map['zxtmc']+"'>"+json[i].map['zxtmc']+"</li>";
 
