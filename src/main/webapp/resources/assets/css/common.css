@@ -36,3 +36,11 @@
 .select-style{
     width: 150px;
 }
+
+.hr32 {
+    margin: 32px 0
+}
+
+.hr-dotted {
+    border-top-style: dotted
+}
