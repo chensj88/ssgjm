@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-treeview.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/fileinput.min.css"/>
+    <link rel="stylesheet" href="/resources/assets/css/common.css"/>
     <base href="<%=basePath%>">
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <style type="text/css">
