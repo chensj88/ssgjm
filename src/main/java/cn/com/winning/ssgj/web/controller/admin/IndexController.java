@@ -52,7 +52,7 @@ public class IndexController extends BaseController {
         user.setUserType(Constants.User.USER_TYPE_COMPANY);
         user.setStatus(1);
         int userNum = super.getFacade().getSysUserInfoService().getSysUserInfoCount(user);
-        itemData.add("医院用户信息");
+        itemData.add("公司用户信息");
         numData.add(userNum);
         user.setUserType(Constants.User.USER_TYPE_HOSPITAL);
         user.setStatus(1);

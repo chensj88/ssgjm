@@ -31,10 +31,10 @@ public class ImportPmisDataJob {
 
     public void execute() throws JobExecutionException {
         logger.info("开始导入PMIS数据，开始时间为[{}]",sdf.format(new Date()));
-       /* pmisWebServiceClient.importPmisData();*/
+        pmisWebServiceClient.importPmisData();
         logger.info("PMIS数据导入结束，结束时间为[{}]",sdf.format(new Date()));
         logger.info("开始生成机构全路径数据，开始时间为[{}]",sdf.format(new Date()));
-        /*sysOrgExtService.callProcedure();*/
+        sysOrgExtService.callProcedure();
         logger.info("机构全路径数据导入结束，结束时间为[{}]",sdf.format(new Date()));
     }
 

@@ -30,7 +30,7 @@
 	<bean id="pmisJobTaskTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="pmisJobDetailMethod" />
 		<!--  每天4点执行一次 -->
-		<property name="cronExpression" value="0 0 4 * * ?" />
+		<property name="cronExpression" value="0 0 16 * * ?" />
 		<!--每小时40分钟跑一次-->
 		<!--<property name="cronExpression" value="0 40 * * * ?" />-->
 	</bean>
