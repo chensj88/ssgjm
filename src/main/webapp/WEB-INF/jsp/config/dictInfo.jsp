@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/commons/header.jsp" %>
+<!DOCTYPE html >
 <html>
 <head>
     <meta charset="UTF-8">
@@ -20,6 +21,13 @@
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/common.css"/>
     <base href="<%=basePath%>"/>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
+    <style type="text/css">
+        .table-align{
+            table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
+            width: 100%;
+            font-size:12px;
+        }
+    </style>
 </head>
 <body>
 <div class="container-fluid">
@@ -42,7 +50,7 @@
         </div>
     </div>
     <!--表格区域  -->
-    <table id="infoTable"></table>
+    <table id="infoTable" class="table-align"></table>
     <!--toolbar区域  -->
     <div class="btn-group" id="btntoolbar">
         <button id="add" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>增加</button>
