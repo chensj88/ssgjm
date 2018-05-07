@@ -1,10 +1,10 @@
 package cn.com.winning.ssgj.base.util;
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.servlet.http.HttpServletResponse;
@@ -266,17 +266,28 @@ public class ExcelUtil {
      */
     public static void exportExcelByStream(List<Map> dataList, List<String> colList, List<String> tableNameList, HttpServletResponse response, Workbook workBook, String filename) {
         try {
+            //样式
+            CellStyle cellStyle = workBook.createCellStyle();
+            Font font=workBook.createFont();
+            font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            cellStyle.setFont(font);
             // sheet 对应一个工作页
             Sheet sheet = workBook.createSheet();
             //第一行保存列名
             Row colRow = sheet.createRow(0);
             if (tableNameList == null) {
                 for (int i = 0; i < colList.size(); i++) {
-                    colRow.createCell(i).setCellValue(colList.get(i).toString());
+                    Cell cell=colRow.createCell(i);
+                    cell.setCellValue(colList.get(i).toString());
+                    cell.setCellStyle(cellStyle);
+                    sheet.setColumnWidth(i, 20 * 256);
                 }
             } else {
                 for (int i = 0; i < tableNameList.size(); i++) {
-                    colRow.createCell(i).setCellValue(tableNameList.get(i).toString());
+                    Cell cell=colRow.createCell(i);
+                    cell.setCellStyle(cellStyle);
+                    cell.setCellValue(tableNameList.get(i).toString());
+                    sheet.setColumnWidth(i, 20 * 256);
                 }
             }
 
@@ -296,7 +307,6 @@ public class ExcelUtil {
                         value = dataMap.get(colList.get(k)).toString();
                     }
                     cell.setCellValue(value);
-
                 }
             }
             //获取响应输出流

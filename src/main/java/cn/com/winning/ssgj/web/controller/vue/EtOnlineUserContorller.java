@@ -78,17 +78,38 @@ public class EtOnlineUserContorller extends BaseController{
 		@Transactional
 	    public Map<String, Object> addOrModifyHospitalUserInfo(EtOnlineUser etOnlineUser) {
 	    	etOnlineUser.setStatus(Constants.STATUS_USE);
+			Map<String, Object> result = new HashMap<String, Object>();
+			EtOnlineUser temp = new EtOnlineUser();
+			temp.setUserCode(etOnlineUser.getUserCode());
+			temp = getFacade().getEtOnlineUserService().getEtOnlineUser(temp);
 	        if (etOnlineUser.getId() == 0L) {
-	        	etOnlineUser.setId(ssgjHelper.createEtOnlineInfoIdService());
-	        	etOnlineUser.setCreator(etOnlineUser.getOperator());
-	        	etOnlineUser.setCreateTime(new Timestamp(new Date().getTime()));
-	        	etOnlineUser.setOperatorTime(new Timestamp(new Date().getTime()));
-	            super.getFacade().getEtOnlineUserService().createEtOnlineUser(etOnlineUser);
+				//工号查重
+				if (temp != null&&temp.getStatus()==1) {
+					result.put("status", Constants.FAILD);
+					return result;
+				} else {
+					if(temp == null){
+						etOnlineUser.setId(ssgjHelper.createEtOnlineInfoIdService());
+						etOnlineUser.setCreator(etOnlineUser.getOperator());
+						etOnlineUser.setCreateTime(new Timestamp(new Date().getTime()));
+						etOnlineUser.setOperatorTime(new Timestamp(new Date().getTime()));
+						super.getFacade().getEtOnlineUserService().createEtOnlineUser(etOnlineUser);
+					}else{
+						etOnlineUser.setId(temp.getId());
+						etOnlineUser.setStatus(1);
+						etOnlineUser.setOperatorTime(new Timestamp(new Date().getTime()));
+						super.getFacade().getEtOnlineUserService().modifyEtOnlineUser(etOnlineUser);
+					}
+				}
 	        } else {
+				//工号查重
+				if (temp != null&&temp.getId()!=etOnlineUser.getId()) {
+					result.put("status", Constants.FAILD);
+					return result;
+				}
 				etOnlineUser.setOperatorTime(new Timestamp(new Date().getTime()));
 	            super.getFacade().getEtOnlineUserService().modifyEtOnlineUser(etOnlineUser);
 	        }
-	        Map<String, Object> result = new HashMap<String, Object>();
 	        result.put("status", Constants.SUCCESS);
 	        return result;
 	    }

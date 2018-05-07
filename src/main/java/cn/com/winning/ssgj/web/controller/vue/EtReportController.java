@@ -323,14 +323,15 @@ public class EtReportController extends BaseController {
                 newFile.delete();
             }
             file.transferTo(newFile);
-            String remotePath = "/report/" + DateUtil.getCurrentDay() + "/" + filename;
+            String fileType=filename.substring(filename.lastIndexOf("."));
+            String remotePath = "/report/" + System.currentTimeMillis()+fileType;
             try {
                 CommonFtpUtils.uploadFile(remotePath, newFile);
                 report.setOperatorTime(new Timestamp(new Date().getTime()));
                 if (temp.getImgPath() != null && !"".equals(temp.getImgPath().trim())) {
                     report.setImgPath(temp.getImgPath() + ";" +  remotePath);
                 } else {
-                    report.setImgPath(Constants.FTP_SHARE_FLODER + remotePath);
+                    report.setImgPath(remotePath);
                 }
 
                 super.getFacade().getEtReportService().modifyEtReport(report);
