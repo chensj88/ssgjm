@@ -397,7 +397,7 @@
     <!--站点安装登记明细ID-->
     <bean id="siteInstallDetailIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
-        <property name="type" value="SI_ID"/>
+        <property name="type" value="SI_DETAIL_ID"/>
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
