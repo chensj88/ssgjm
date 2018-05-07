@@ -12,3 +12,5 @@ target/*
 *.pdm
 .project
 *.properties
+src/main/resources/ftp.properties
+src/main/resources/jdbc.properties
