@@ -53,7 +53,7 @@ public class EtOnlineUserContorller extends BaseController {
     @RequestMapping(value = "/list.do")
     @ResponseBody
     public Map<String, Object> rtOnlineUserList(EtOnlineUser etOnlineUser, Long serialNo, Row row) {
-        System.err.println("上线人员信息。。。。。。。。。。。。。。。。。。。。。");
+        Long pmId=etOnlineUser.getPmId();
         etOnlineUser.setRow(row);
         etOnlineUser.setStatus(Constants.PMIS_STATUS_USE);
         List<EtOnlineUser> etOnlineUserList = super.getFacade().getEtOnlineUserService().getEtOnlineUserPaginatedList(etOnlineUser);
@@ -75,10 +75,15 @@ public class EtOnlineUserContorller extends BaseController {
         queryDepart.setSerialNo(serialNo);
         queryDepart.setIsDel(Constants.PMIS_STATUS_USE);
         List<EtDepartment> etDepartments = super.getFacade().getEtDepartmentService().getEtDepartmentList(queryDepart);
+        //根据pmid获取项目进程
+        EtProcessManager etProcessManager = new EtProcessManager();
+        etProcessManager.setPmId(pmId);
+        etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows", etOnlineUserList);
+        result.put("process", etProcessManager);
         result.put("deptList", etDepartments);
         return result;
     }
@@ -232,12 +237,15 @@ public class EtOnlineUserContorller extends BaseController {
     @ResponseBody
     @ILog
     @Transactional
-    public Map<String, Object> confirmEtOnlineUser(EtProcessManager processManager) {
-        processManager = super.getFacade().getEtProcessManagerService().getEtProcessManager(processManager);
-        processManager.setIsSupportStaff(Constants.STATUS_USE);
-        processManager.setIsEnd(Constants.STATUS_USE);
-        processManager.setOperatorTime(new Timestamp(new Date().getTime()));
-        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(processManager);
+    public Map<String, Object> confirmEtOnlineUser(EtProcessManager etProcessManager) {
+        EtProcessManager temp = new EtProcessManager();
+        temp.setPmId(etProcessManager.getPmId());
+        temp = super.getFacade().getEtProcessManagerService().getEtProcessManager(temp);
+        temp.setOperator(etProcessManager.getOperator());
+        temp.setOperatorTime(new Timestamp(new Date().getTime()));
+        temp.setIsSupportStaff(etProcessManager.getIsSupportStaff());
+        temp.setIsEnd(etProcessManager.getIsEnd());
+        super.getFacade().getEtProcessManagerService().modifyEtProcessManager(temp);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
