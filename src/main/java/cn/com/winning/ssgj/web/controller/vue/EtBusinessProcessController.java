@@ -5,6 +5,7 @@ import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.CommonFtpUtils;
 import cn.com.winning.ssgj.base.util.DateUtil;
+import cn.com.winning.ssgj.base.util.FileUtis;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.EtBusinessProcess;
 import cn.com.winning.ssgj.domain.EtProcessManager;
@@ -269,7 +270,7 @@ public class EtBusinessProcessController extends BaseController {
             //上传文件路径
             String path = request.getServletContext().getRealPath("/temp/");
             //上传文件名
-            String filename = file.getOriginalFilename();
+            String filename = FileUtis.generateFileName(file.getOriginalFilename());
             File filepath = new File(path, filename);
             //判断路径是否存在，如果不存在就创建一个
             if (!filepath.getParentFile().exists()) {

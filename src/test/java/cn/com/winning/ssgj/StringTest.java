@@ -105,4 +105,11 @@ public class StringTest {
     }
 
 
+    public static void main(String[] args){
+        String filename = "aaa.xxx";
+        String realFileName = filename.substring(0, filename.lastIndexOf("."));
+        String suffix = filename.substring( filename.lastIndexOf("."));
+        System.out.println(realFileName);
+        System.out.println(suffix);
+    }
 }
