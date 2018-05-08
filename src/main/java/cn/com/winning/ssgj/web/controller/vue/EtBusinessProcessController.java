@@ -270,7 +270,8 @@ public class EtBusinessProcessController extends BaseController {
             //上传文件路径
             String path = request.getServletContext().getRealPath("/temp/");
             //上传文件名
-            String filename = FileUtis.generateFileName(file.getOriginalFilename());
+//            String filename = FileUtis.generateFileName(file.getOriginalFilename());
+            String filename = file.getOriginalFilename();
             File filepath = new File(path, filename);
             //判断路径是否存在，如果不存在就创建一个
             if (!filepath.getParentFile().exists()) {
