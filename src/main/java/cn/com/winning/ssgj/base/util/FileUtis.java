@@ -43,4 +43,22 @@ public class FileUtis {
 		return excludes;
 
 	}
+
+	/**
+	 * 获取时间戳文件名称
+	 * @param filename 文件名，主要用于获取后缀
+	 * @return
+	 */
+	public static String generateFileName(String filename){
+		String suffix = filename.substring( filename.lastIndexOf("."));
+		return  System.currentTimeMillis() + suffix;
+	}
+
+	/**
+	 * 获取时间戳文件名
+	 * @return
+	 */
+	public static String generateFileName(){
+		return  System.currentTimeMillis() + "";
+	}
 }

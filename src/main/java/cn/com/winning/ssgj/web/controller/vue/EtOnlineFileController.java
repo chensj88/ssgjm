@@ -5,6 +5,7 @@ import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.CommonFtpUtils;
 import cn.com.winning.ssgj.base.util.DateUtil;
+import cn.com.winning.ssgj.base.util.FileUtis;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.EtOnlineFile;
 import cn.com.winning.ssgj.domain.EtProcessManager;
@@ -187,7 +188,7 @@ public class EtOnlineFileController extends BaseController {
         String parentFile = prefix+"_"+System.currentTimeMillis();
         Map<String, Object> result = new HashMap<String, Object>();
         if (!file.isEmpty()) {
-            String filename = file.getOriginalFilename();
+            String filename = FileUtis.generateFileName(file.getOriginalFilename());
             String remotePath = "/"+prefix+"/" + parentFile + "/" + filename;
             String msg = "";
             boolean ftpStatus =CommonFtpUtils.commonUploadInfo(request,msg,remotePath,file);
