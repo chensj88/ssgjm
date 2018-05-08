@@ -208,7 +208,7 @@ public class EtProcessManagerController extends BaseController {
             }
 
             ProcessModel pModel31 = new ProcessModel();
-            isCommon = processManagerList.get(0).getIsAccept();
+            isCommon = processManagerList.get(0).getIsEnd();
             pModel31.setState(stateClass(isCommon, 2));
             pModel31.setText("结束");
             pModelList_Three.add(pModel31);
