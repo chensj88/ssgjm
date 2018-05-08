@@ -202,7 +202,7 @@
     </sql>
 
     <select id="selectSysDataInfoListForORKey" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
-        select *
+        select DISTINCT *
         from SYS_DATA_INFO t
         <where>
             <include refid="queryOrSysDataInfo"/>
@@ -210,7 +210,7 @@
     </select>
 
     <select id="selectSysDataInfoListByIds" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
-        select *
+        select DISTINCT *
         from SYS_DATA_INFO t
         <where>
             <if test="status != null ">and t.STATUS = ${status}</if>
@@ -232,7 +232,7 @@
 
     <!--根据id集合获取数据信息-->
     <select id="selectSysDataInfoPaginatedListByIds" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
-        select * from (
+        select DISTINCT * from (
         select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
         from SYS_DATA_INFO t where 1 = 1
         <include refid="idsCondition"/>
@@ -313,7 +313,7 @@
     <!--根据产品ids和dataType获取所有基础数据-->
     <select id="selectSysDataInfoListByPmIdAndDataType" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
         SELECT
-            *
+        DISTINCT *
         FROM
             SYS_DATA_INFO s
         LEFT JOIN SYS_PRODUCT_DATA_INFO t ON s.ID = t.BD_ID
@@ -354,10 +354,10 @@
         LEFT JOIN SYS_PRODUCT_DATA_INFO t ON s.ID = t.BD_ID
         <where>
             <if test="status != null ">
-              AND  s.STATUS = #{status}
+                AND s.STATUS = #{status}
             </if>
             <if test="map.pdId != null ">
-              AND  t.PD_ID != #{map.pdId}
+                AND t.PD_ID != #{map.pdId}
             </if>
         </where>
     </select>
@@ -368,11 +368,11 @@
         LEFT JOIN SYS_PRODUCT_DATA_INFO t ON s.ID = t.BD_ID
         <where>
             <if test="status != null ">
-                AND  s.STATUS = #{status}
+                AND s.STATUS = #{status}
             </if>
             <if test="map.pdId != null ">
-                AND  t.PD_ID IS NOT NULL
-                AND  t.PD_ID = #{map.pdId}
+                AND t.PD_ID IS NOT NULL
+                AND t.PD_ID = #{map.pdId}
             </if>
         </where>
     </select>
