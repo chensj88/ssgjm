@@ -262,7 +262,7 @@
     <!--根据产品ids和dataType获取基础数据 分页-->
     <select id="selectSysDataInfoPaginatedListByPmIdAndDataType" resultMap="sysDataInfoResult"
             parameterType="sysDataInfo">
-        select * from (
+        select DISTINCT * from (
         select s.*, ROW_NUMBER() OVER ( order by s.ID desc ) as _rn
         FROM
         SYS_DATA_INFO s
