@@ -274,7 +274,7 @@
         AND s.DATA_TYPE = #{dataType}
         AND t.PD_ID IN (
         SELECT
-        p.CPXX
+        DISTINCT p.CPXX
         FROM
         PMIS_CONTRACT_PRODUCT_INFO p
         WHERE
