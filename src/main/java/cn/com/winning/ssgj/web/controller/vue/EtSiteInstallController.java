@@ -369,6 +369,7 @@ public class EtSiteInstallController extends BaseController {
                 String path = request.getServletContext().getRealPath("/onlineFile/");
                 //上传文件名
                 String filename = file.getOriginalFilename();
+                filename = System.currentTimeMillis()+"."+StringUtils.substringAfterLast(filename,".");
                 File filepath = new File(path,filename);
                 //判断路径是否存在，如果不存在就创建一个
                 if (!filepath.getParentFile().exists()) {
