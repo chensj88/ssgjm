@@ -58,7 +58,8 @@ public class CommonUploadController extends BaseController {
             System.out.println(path);
             path += parentFile + File.separator;
             //上传文件名
-            String filename = FileUtis.generateFileName(uploadFile.getOriginalFilename());
+           /* String filename = FileUtis.generateFileName(uploadFile.getOriginalFilename());*/
+            String filename = uploadFile.getOriginalFilename();
             File filepath = new File(path, filename);
             //判断路径是否存在，如果不存在就创建一个
             if (!filepath.getParentFile().exists()) {
@@ -130,7 +131,8 @@ public class CommonUploadController extends BaseController {
         Map<String, Object> result = new HashMap<String, Object>();
         //如果文件不为空，写入上传路径
         if (!uploadFile.isEmpty()) {
-            String filename = FileUtis.generateFileName(uploadFile.getOriginalFilename());
+            /*String filename = FileUtis.generateFileName(uploadFile.getOriginalFilename());*/
+            String filename = uploadFile.getOriginalFilename();
             String remotePath = "/template/" + parentFile + "/" + filename;
             String msg = "";
             boolean ftpStatus =CommonFtpUtils.commonUploadInfo(request,msg,remotePath,uploadFile);
@@ -169,7 +171,8 @@ public class CommonUploadController extends BaseController {
         Map<String, Object> result = new HashMap<String, Object>();
         //如果文件不为空，写入上传路径
         if (!uploadFile.isEmpty()) {
-            String filename = FileUtis.generateFileName(uploadFile.getOriginalFilename());
+            // String filename = FileUtis.generateFileName(uploadFile.getOriginalFilename());
+            String filename = uploadFile.getOriginalFilename();
             String remotePath = "/script/" + parentFile + "/" + filename;
             String msg = "";
             boolean ftpStatus =CommonFtpUtils.commonUploadInfo(request,msg,remotePath,uploadFile);

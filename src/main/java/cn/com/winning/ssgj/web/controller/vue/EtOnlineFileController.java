@@ -188,7 +188,8 @@ public class EtOnlineFileController extends BaseController {
         String parentFile = prefix+"_"+System.currentTimeMillis();
         Map<String, Object> result = new HashMap<String, Object>();
         if (!file.isEmpty()) {
-            String filename = FileUtis.generateFileName(file.getOriginalFilename());
+           // String filename = FileUtis.generateFileName(file.getOriginalFilename());
+            String filename = file.getOriginalFilename();
             String remotePath = "/"+prefix+"/" + parentFile + "/" + filename;
             String msg = "";
             boolean ftpStatus =CommonFtpUtils.commonUploadInfo(request,msg,remotePath,file);
