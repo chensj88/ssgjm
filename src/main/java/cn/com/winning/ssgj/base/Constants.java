@@ -12,7 +12,8 @@ public class Constants implements Serializable {
 
     public static int FTP_PORT = Integer.valueOf(FtpPropertiesLoader.getProperty("ftp.port")).intValue();
     public static String FTP_SERVER = FtpPropertiesLoader.getProperty("ftp.server");
-    public static String FTP_SHARE_FLODER = "http://" + FTP_SERVER + ":8081/shareFolder";
+    public static String FTP_SHARE_SERVER = FtpPropertiesLoader.getProperty("ftp.share");
+    public static String FTP_SHARE_FLODER = "http://" + FTP_SHARE_SERVER + ":8081/shareFolder";
 
     /**
      * 是否成功

@@ -59,12 +59,14 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     private SysDataInfoDao sysDataInfoDao;
     @Autowired
     private EtReportService etReportService;
-
+    @Autowired
+    private EtUserInfoService etUserInfoService;
+    @Autowired
+    private SysOrganizationService sysOrganizationService;
 
     @Override
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId) {
         List<NodeTree> treeList = new ArrayList<NodeTree>();
-       /* List<Long> basicInfoList = pmisProjectBasicInfoService.getUserCanViewProjectIdList(userId);*/
         List<PmisCustomerInformation> custInfoList = pmisCustomerInformationService.getUserCanViewCustomerList(userId);
         for (PmisCustomerInformation info : custInfoList) {
             NodeTree node = info.getNodeTree();
@@ -400,5 +402,65 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     public Integer countTable(String tableName) {
         return sysDataInfoDao.countTable(tableName);
     }
+
+    @Override
+    public void generateEtUserInfoFromPmisProjectUser(Long pmId) {
+        PmisProjctUser projctUser = new PmisProjctUser();
+        projctUser.setXmlcb(pmId);
+        //查询当前项目下的人员信息
+        List<PmisProjctUser> userList = pmisProjctUserService.getPmisProjctUserList(projctUser);
+        PmisProjectBasicInfo project = this.queryPmisProjectBasicInfoByProjectId(pmId);
+        //人员列表数据判断
+        if( userList != null && userList.size() > 0){
+            for (PmisProjctUser pmisProjctUser : userList) {
+                //判断人员是否存在于PMIS人员表中
+                SysUserInfo user  = new SysUserInfo();
+                user.setId(pmisProjctUser.getRy());
+                user = sysUserInfoService.getSysUserInfo(user);
+                if(user != null ){
+                    SysOrganization org = sysOrganizationService.getSysOrganizationById(user.getOrgid());
+                    EtUserInfo etUserInfo = new EtUserInfo();
+                    etUserInfo.setPmId(pmId);
+                    etUserInfo.setUserId(user.getId());
+                    etUserInfo.setPositionName(pmisProjctUser.getRyfl()+"");
+                    etUserInfo = etUserInfoService.getEtUserInfo(etUserInfo);
+                    if(etUserInfo == null){
+                        etUserInfo = new EtUserInfo();
+                        etUserInfo.setId(ssgjHelper.createEtUserInfoIdService());
+                        etUserInfo.setPmId(pmId);
+                        etUserInfo.setcId(project.getHtxx());
+                        etUserInfo.setSerialNo(project.getKhxx()+"");
+                        etUserInfo.setUserId(user.getId());
+                        etUserInfo.setUserType(1);
+                        etUserInfo.setUserCard(user.getUserid());
+                        etUserInfo.setCName(user.getYhmc());
+                        etUserInfo.setOrgName(org.getName());
+                        etUserInfo.setTelephone(user.getMobile());
+                        etUserInfo.setEmail(user.getEmail());
+                        etUserInfo.setRemark("0");
+                        etUserInfo.setIsDel(Constants.STATUS_USE);
+                        etUserInfo.setPositionName(pmisProjctUser.getRyfl()+"");
+                        etUserInfoService.createEtUserInfo(etUserInfo);
+                    }else{
+                        etUserInfo.setPmId(pmId);
+                        etUserInfo.setcId(project.getHtxx());
+                        etUserInfo.setSerialNo(project.getKhxx()+"");
+                        etUserInfo.setUserId(user.getId());
+                        etUserInfo.setUserType(1);
+                        etUserInfo.setUserCard(user.getUserid());
+                        etUserInfo.setCName(user.getYhmc());
+                        etUserInfo.setOrgName(org.getName());
+                        etUserInfo.setTelephone(user.getMobile());
+                        etUserInfo.setEmail(user.getEmail());
+                        etUserInfo.setRemark("0");
+                        etUserInfo.setIsDel(Constants.STATUS_USE);
+                        etUserInfo.setPositionName(pmisProjctUser.getRyfl()+"");
+                        etUserInfoService.modifyEtUserInfo(etUserInfo);
+                    }
+                }
+            }
+        }
+    }
+
 
 }

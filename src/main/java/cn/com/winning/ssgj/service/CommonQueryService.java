@@ -84,4 +84,9 @@ public interface CommonQueryService {
      */
     Integer countTable(String tableName);
 
+    /**
+     * 从PMIS项目组成员导入数据到ET_USER_INFO中
+     * @param pmId
+     */
+    void generateEtUserInfoFromPmisProjectUser(Long pmId);
 }

@@ -11,7 +11,7 @@
         <result column="NAME" property="name" jdbcType="VARCHAR"/>
         <result column="JGQC" property="jgqc" jdbcType="VARCHAR"/>
         <result column="PY" property="py" jdbcType="VARCHAR"/>
-        <result column="FDNCODE" property="fdncode" jdbcType="LONGVARCHAR"/>
+        <result column="FDNCODE" property="fdncode" jdbcType="VARCHAR"/>
         <result column="BBXH" property="bbxh" jdbcType="VARCHAR"/>
         <result column="YJBM" property="yjbm" jdbcType="BIGINT"/>
         <result column="SSGS" property="ssgs" jdbcType="BIGINT"/>
@@ -95,7 +95,7 @@
             <if test="name != null and name != ''">#{name, jdbcType=VARCHAR},</if>
             <if test="jgqc != null and jgqc != ''">#{jgqc, jdbcType=VARCHAR},</if>
             <if test="py != null and py != ''">#{py, jdbcType=VARCHAR},</if>
-            <if test="fdncode != null and fdncode != ''">#{fdncode, jdbcType=LONGVARCHAR},</if>
+            <if test="fdncode != null and fdncode != ''">#{fdncode, jdbcType=VARCHAR},</if>
             <if test="bbxh != null and bbxh != ''">#{bbxh, jdbcType=VARCHAR},</if>
             <if test="(yjbm != null and yjbm != '') or yjbm == 0">#{yjbm, jdbcType=BIGINT},</if>
             <if test="(ssgs != null and ssgs != '') or ssgs == 0">#{ssgs, jdbcType=BIGINT},</if>
@@ -116,7 +116,7 @@
                 <if test="name != null and name != ''">NAME = #{name, jdbcType=VARCHAR},</if>
                 <if test="jgqc != null and jgqc != ''">JGQC = #{jgqc, jdbcType=VARCHAR},</if>
                 <if test="py != null and py != ''">PY = #{py, jdbcType=VARCHAR},</if>
-                <if test="fdncode != null and fdncode != ''">FDNCODE = #{fdncode, jdbcType=LONGVARCHAR},</if>
+                <if test="fdncode != null and fdncode != ''">FDNCODE = #{fdncode, jdbcType=VARCHAR},</if>
                 <if test="bbxh != null and bbxh != ''">BBXH = #{bbxh, jdbcType=VARCHAR},</if>
                 <if test="(yjbm != null and yjbm != '') or yjbm == 0">YJBM = #{yjbm, jdbcType=BIGINT},</if>
                 <if test="(ssgs != null and ssgs != '') or ssgs == 0">SSGS = #{ssgs, jdbcType=BIGINT},</if>

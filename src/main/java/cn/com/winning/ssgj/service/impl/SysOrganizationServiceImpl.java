@@ -57,4 +57,11 @@ public class SysOrganizationServiceImpl implements SysOrganizationService {
         return this.sysOrganizationDao.selectEntityPaginatedList(t);
     }
 
+    @Override
+    public SysOrganization getSysOrganizationById(Long id) {
+        SysOrganization org = new SysOrganization();
+        org.setId(id);
+        return this.sysOrganizationDao.selectEntity(org);
+    }
+
 }

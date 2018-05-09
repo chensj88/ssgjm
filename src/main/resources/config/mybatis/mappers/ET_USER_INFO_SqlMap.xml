@@ -73,11 +73,11 @@
 
     <select id="selectEtUserInfoPaginatedList" resultMap="etUserInfoResult" parameterType="etUserInfo">
         select * from (
-        SELECT  m.*,  ROW_NUMBER() OVER ( order by m.ID desc ) as _rn FROM  (
             select
             t.*,
             A.DICT_LABEL AS USER_TYPE_LABEL,
-            CASE WHEN B.DICT_LABEL IS NOT NULL THEN B.DICT_LABEL ELSE t.POSITION_NAME END AS POSITION_NAME_LABEL
+            CASE WHEN B.DICT_LABEL IS NOT NULL THEN B.DICT_LABEL ELSE t.POSITION_NAME END AS POSITION_NAME_LABEL,
+            ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
             from ET_USER_INFO t
             LEFT JOIN SYS_DICT_INFO A ON A.DICT_VALUE = t.USER_TYPE AND A.DICT_CODE='userType'
             LEFT JOIN SYS_DICT_INFO B ON t.POSITION_NAME = B.DICT_VALUE AND B.DICT_CODE='positionName'
@@ -85,37 +85,6 @@
                 <include refid="sf-etUserInfo"/>
                 <if test="(isDel != null ) ">and t.USER_ID != 100001 </if>
             </where>
-            UNION all
-            SELECT
-            t.ID,
-            t.XMLCB as PM_ID,
-            t3.HTXX as C_ID,
-            t3.KHXX as SERIAL_NO,
-            t2.ID AS USER_ID,
-            t2.USER_TYPE AS USER_TYPE,
-            t2.USERID AS USER_CARD,
-            t2.YHMC AS C_NAME,
-            t4.NAME AS ORG_NAME,
-            CAST(t.RYFL as varchar(12)) AS POSITION_NAME,
-            t2.MOBILE AS TELEPHONE,
-            t2.Email AS EMAIL,
-            '' AS REMARK,
-            -1 AS IS_DEL,
-            A.DICT_LABEL AS USER_TYPE_LABEL,
-            CASE WHEN B.DICT_LABEL IS NOT NULL THEN B.DICT_LABEL ELSE ''  END AS POSITION_NAME_LABEL
-            FROM dbo.PMIS_PROJCT_USER t
-            left join dbo.SYS_USER_INFO t2 on t.RY = t2.ID
-            left join dbo.PMIS_PROJECT_BASIC_INFO t3 ON t.XMLCB = t3.ID
-            left join dbo.SYS_ORGANIZATION t4 on t2.ORGID = t4.ID
-            LEFT JOIN SYS_DICT_INFO A ON A.DICT_VALUE = t2.USER_TYPE AND A.DICT_CODE='userType'
-            LEFT JOIN SYS_DICT_INFO B ON t.RYFL = B.DICT_VALUE AND B.DICT_CODE='positionName'
-            <where>
-                <if test="(pmId != null  and pmId != '') or pmId == 0">
-                    AND t.XMLCB = #{pmId}
-                </if>
-                AND  t2.ID IS NOT NULL
-            </where>
-            ) m
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>

@@ -26,4 +26,6 @@ public interface SysOrganizationService {
 
     List<SysOrganization> getSysOrganizationPaginatedList(SysOrganization t);
 
+    SysOrganization getSysOrganizationById(Long id);
+
 }

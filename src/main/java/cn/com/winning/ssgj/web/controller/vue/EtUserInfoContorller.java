@@ -51,6 +51,7 @@ public class EtUserInfoContorller extends BaseController {
     @RequestMapping(value = "/list.do")
     @ResponseBody
     public Map<String, Object> rtOnlineUserList(EtUserInfo etUserInfo, Row row) {
+        super.getFacade().getCommonQueryService().generateEtUserInfoFromPmisProjectUser(etUserInfo.getPmId());
         etUserInfo.setRow(row);
         etUserInfo.setIsDel(Constants.STATUS_USE);
         List<EtUserInfo> etUserInfoList = super.getFacade().getEtUserInfoService().getEtUserInfoPaginatedList(etUserInfo);
