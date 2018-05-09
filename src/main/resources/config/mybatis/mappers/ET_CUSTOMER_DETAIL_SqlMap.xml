@@ -126,8 +126,8 @@
 			   <if test="serialNo != null and serialNo != ''"> SERIAL_NO = #{serialNo, jdbcType=VARCHAR}, </if>
 			   <if test="custName != null and custName != ''"> CUST_NAME = #{custName, jdbcType=VARCHAR}, </if>
 			   <if test="(hospitalLevel != null and hospitalLevel != '') or hospitalLevel == 0"> HOSPITAL_LEVEL = #{hospitalLevel, jdbcType=INTEGER}, </if>
-			   <if test="specialType != null and specialType != ''"> SPECIAL_TYPE = #{specialType, jdbcType=VARCHAR}, </if>
-			   <if test="characteristic != null and characteristic != ''"> CHARACTERISTIC = #{characteristic, jdbcType=VARCHAR}, </if>
+			   <if test="specialType != null "> SPECIAL_TYPE = #{specialType, jdbcType=VARCHAR}, </if>
+			   <if test="characteristic != null "> CHARACTERISTIC = #{characteristic, jdbcType=VARCHAR}, </if>
 				<if test="(cityCode != null and cityCode != '') or cityCode == 0">CITY_CODE = #{cityCode, jdbcType=INTEGER}, </if>
 			   <if test="(areaCode != null and areaCode != '') or areaCode == 0"> AREA_CODE = #{areaCode, jdbcType=INTEGER}, </if>
 			   <if test="(outpatientNum != null and outpatientNum != '') or outpatientNum == 0"> OUTPATIENT_NUM = #{outpatientNum, jdbcType=INTEGER}, </if>
