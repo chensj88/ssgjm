@@ -242,6 +242,10 @@ public class SSGJHelper {
     @Qualifier(value = "sysUserVideoAuthTempIdService")
     private StepSequenceFactory  sysUserVideoAuthTempIdService;
 
+    @Autowired
+    @Qualifier(value = "cutomerFlowCodeGenerateService")
+    private StepSequenceFactory  cutomerFlowCodeGenerateService;
+
 
     public long createSysUserVideoAuthTempIdService(){
         return (long) sysUserVideoAuthTempIdService.create();
@@ -654,4 +658,7 @@ public class SSGJHelper {
         }
     }
 
+    public String createCustomerFlowCode() {
+        return cutomerFlowCodeGenerateService.create().toString();
+    }
 }

@@ -125,6 +125,7 @@ public class EtBusinessProcessController extends BaseController {
     public Map<String,Object> addOrModifyProcessInfo(EtBusinessProcess process){
         if (process.getId() == 0L) {
             process.setId(ssgjHelper.createEtBusinessProcessIdService());
+            process.setFlowCode(ssgjHelper.createCustomerFlowCode());
             process.setSourceType(Constants.STATUS_USE);
             process.setStatus(Constants.STATUS_USE);
             process.setCreator(process.getOperator());
