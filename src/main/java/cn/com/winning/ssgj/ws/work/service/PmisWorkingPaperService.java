@@ -14,10 +14,11 @@ import java.util.List;
 
 /**
  * @author chenshijie
- * @title
+ * @title  工作底稿导入功能
  * @email chensj@winning.com.cm
  * @package cn.com.winning.ssgj.ws.work.service
  * @date 2018-05-09 21:27
+ * @command wsdl2java -p cn.com.winning.ssgj.ws.work.service -d D:\\ws\\  http://203.110.176.178:9083/service/LBEBusiness?wsdl
  */
 @Component
 public class PmisWorkingPaperService {
