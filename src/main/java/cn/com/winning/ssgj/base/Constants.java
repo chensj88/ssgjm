@@ -319,6 +319,10 @@ public class Constants implements Serializable {
          */
         public static final String WS_URL = "http://weberp.winning.com.cn:9080/service/LBEBusiness?wsdl";
         /**
+         * PMIS 工作底稿 WS URL
+         */
+        public static final String WORK_WS_URL = "http://203.110.176.178:9083/service/LBEBusiness?wsdl";
+        /**
          * PMIS WS 用户
          */
         public static final String WS_USER = "sszhb";
@@ -331,9 +335,13 @@ public class Constants implements Serializable {
          */
         public static final String WS_ALGORITHM = "plain";
         /**
-         * PMIS WS 服务节点名称
+         * PMIS WS 服务节点名称 数据导入
          */
         public static final String WS_SERVICE_OBJECT_NAME = "WS_DS_CXJCXX";
+        /**
+         * PMIS WS 服务节点名称 实施底稿登记
+         */
+        public static final String WORK_WS_SERVICE_OBJECT_NAME = "PM_GZDG_WSXZ";
         /**
          * PMIS WS 服务类型  1 用户
          */
