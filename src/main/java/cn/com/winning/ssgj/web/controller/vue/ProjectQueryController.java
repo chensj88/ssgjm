@@ -89,8 +89,14 @@ public class ProjectQueryController extends BaseController {
             user = super.getFacade().getPmisProjctUserService().getPmisProjctUser(user);
         }
         Map<String,Object> result = new HashMap<String,Object>();
+        if( user == null ){
+            result.put("data", 1 );
+        }else{
+            result.put("data", user.getRyfl() );
+        }
+
         result.put("status", Constants.SUCCESS);
-        result.put("data", user.getRyfl() );
+
         return result;
 
     }
