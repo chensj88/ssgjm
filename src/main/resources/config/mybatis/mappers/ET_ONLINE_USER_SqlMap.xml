@@ -133,9 +133,9 @@
                     #{responseSite, jdbcType=VARCHAR},
                 </if>
                 <if test="telephone != null and telephone != ''">TELEPHONE = #{telephone, jdbcType=VARCHAR},</if>
-                <if test="wechatNo != null and wechatNo != ''">WECHAT_NO = #{wechatNo, jdbcType=VARCHAR},</if>
-                <if test="email != null and email != ''">EMAIL = #{email, jdbcType=VARCHAR},</if>
-                <if test="lodging != null and lodging != ''">LODGING = #{lodging, jdbcType=VARCHAR},</if>
+                <if test="wechatNo != null">WECHAT_NO = #{wechatNo, jdbcType=VARCHAR},</if>
+                <if test="email != null">EMAIL = #{email, jdbcType=VARCHAR},</if>
+                <if test="lodging != null">LODGING = #{lodging, jdbcType=VARCHAR},</if>
                 <if test="(creator != null and creator != '') or creator == 0">CREATOR = #{creator, jdbcType=BIGINT},
                 </if>
                 <if test="createTime != null ">CREATE_TIME = #{createTime, jdbcType=TIMESTAMP},</if>
