@@ -294,14 +294,14 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 	public Integer getQuestionType() {
 		return questionType;
 	}
-	
+
 	/**
 	 * @val 问题类型
 	 */
 	public void setQuestionType(Integer questionType) {
 		this.questionType = questionType;
 	}
-	
+
 	/**
 	 * @val 问题描述
 	 */

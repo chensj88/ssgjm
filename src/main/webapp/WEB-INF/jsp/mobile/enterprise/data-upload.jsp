@@ -85,7 +85,7 @@
 					<c:forEach var="vul" items="${onlineFileList_three}">
                     <a href="<%=basePath%>mobile/implementData/details.do?fileType=3&serialNo=${serialNo}&userId=${userId}&id=${vul.id}">
 						<li>
-							<h3>调研</h3>
+							<h3>联调</h3>
 							<div class="datum-middle">
 								<div>
 									<p>

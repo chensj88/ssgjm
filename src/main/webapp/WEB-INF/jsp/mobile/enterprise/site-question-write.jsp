@@ -85,13 +85,12 @@
 			<div class="datum-report padding-btm-20">
 				<div class="datum-report-item">
 					<span>问题类型</span>
-					<div class="select">
+					<div id="questionTypeId" class="select">
+						<input id="questionType" name="questionType" value="${siteQuestionInfo.questionType}" type="hidden"/>
 						<c:if test="${siteQuestionInfo.questionType != null}" >
-							<input id="questionType" name="questionType" value="${siteQuestionInfo.questionType}" type="hidden"/>
 							<a href="#"><span>${siteQuestionInfo.map.get("dict_label")}</span><i class="arrow"></i></a>
 						</c:if>
 						<c:if test="${siteQuestionInfo.questionType == null}" >
-							<input id="questionType" name="questionType" type="hidden"/>
 							<a href="#"><span>--请选择--</span><i class="arrow"></i></a>
 						</c:if>
 						<ul>
@@ -140,7 +139,7 @@
 						</div>
 						<div class="mui-input-row mui-radio mui-left">
 							<label>未解决</label>
-							<input name="radio" type="radio" value="0">
+							<input name="radio" type="radio" value="0" checked="checked">
 						</div>
 					</div>
 				</div>
@@ -260,6 +259,23 @@
                     }
                 });
 
+                $("#menuId").on("click","ul>li",function(){
+                    var _this=$(this),_dropd=_this.parent("ul"), _val=_this.data("val"),_txt=_this.text();
+                    _dropd.slideToggle();
+                    _dropd.siblings("[type='hidden']").val(_val);
+                    _dropd.siblings("a").find("span").text(_txt);
+                    _dropd.siblings("a").find("i").toggleClass("reverse");
+
+                });
+
+				$("#questionTypeId").on("click","ul>li",function(){
+                    var _this=$(this),_dropd=_this.parent("ul"), _val=_this.data("val"),_txt=_this.text();
+                    _dropd.slideToggle();
+                    _dropd.siblings("[type='hidden']").val(_val);
+                    _dropd.siblings("a").find("span").text(_txt);
+                    _dropd.siblings("a").find("i").toggleClass("reverse");
+
+				});
 
 
 

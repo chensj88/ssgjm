@@ -25,7 +25,7 @@ public class EtProcessManager extends BaseDomain implements Serializable {
 	private Long cId;
 	
 	private Long pmId;
-	
+
 	/**
 	 * @val 项目开始 0未开始，1结束，2异常
 	 */
@@ -160,7 +160,12 @@ public class EtProcessManager extends BaseDomain implements Serializable {
 	 * @val 项目切换 0未开始，1结束，2异常，3实施中
 	 */
 	private Integer isEnd;
-	
+
+	/**
+	 * @val 客户ID
+	 */
+	private String serialNo;
+
 	/**
 	 * @val 创建人员
 	 */
@@ -592,7 +597,21 @@ public class EtProcessManager extends BaseDomain implements Serializable {
 	public void setIsEnd(Integer isEnd) {
 		this.isEnd = isEnd;
 	}
-	
+
+	/**
+	 * @val 客户ID
+	 */
+	public String getSerialNo() {
+		return serialNo;
+	}
+
+	/**
+	 * @val 客户ID
+	 */
+	public void setSerialNo(String serialNo) {
+		this.serialNo = serialNo;
+	}
+
 	/**
 	 * @val 创建人员
 	 */
