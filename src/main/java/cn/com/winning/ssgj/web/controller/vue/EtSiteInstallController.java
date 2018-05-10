@@ -146,7 +146,7 @@ public class EtSiteInstallController extends BaseController {
             dept=super.getFacade().getEtDepartmentService().getEtDepartment(dept);
             info.setDeptName(dept.getDeptName());
             info.setId(ssgjHelper.createSiteInstallIdService());
-            info.setDeptCode(String.valueOf(ssgjHelper.createSysHospitalDeptIdService()));
+            info.setDeptCode(info.getDeptCode());
             info.setStatus(1);
             info.setNum(0);
             info.setCreator(info.getOperator());
