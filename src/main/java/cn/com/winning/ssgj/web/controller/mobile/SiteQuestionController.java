@@ -219,25 +219,31 @@ public class SiteQuestionController extends BaseController {
     @ResponseBody
     public Map<String,String> saveData(HttpServletRequest request, EtSiteQuestionInfo info,String old_id,String userId) {
         Map<String, String> map = new HashMap<String, String>();
-        if(StringUtils.isNotBlank(old_id)){
-            info.setId(Long.parseLong(old_id));
-            info.setCreator(super.user_id(userId,"1"));
-            info.setCreateTime(new Timestamp(new Date().getTime()));
-            info.setOperator(super.user_id(userId,"1"));
-            info.setOperatorTime(new Timestamp(new Date().getTime()));
-            super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
-            map.put("result","1");
-        }else{ //新增
-            info.setId(ssgjHelper.createSiteQuestionIdService()); //站点问题ID
-            info.setCId((long)-2); //11980游客
-            info.setPmId((long)-2);//11980游客
-            info.setCreator(super.user_id(userId,"1"));
-            info.setCreateTime(new Timestamp(new Date().getTime()));
-            info.setOperator(super.user_id(userId,"1"));
-            info.setOperatorTime(new Timestamp(new Date().getTime()));
-            super.getFacade().getEtSiteQuestionInfoService().createEtSiteQuestionInfo(info);
-            map.put("result","0");
+        try {
+            if(StringUtils.isNotBlank(old_id)){
+                info.setId(Long.parseLong(old_id));
+                info.setCreator(super.user_id(userId,"1"));
+                info.setCreateTime(new Timestamp(new Date().getTime()));
+                info.setOperator(super.user_id(userId,"1"));
+                info.setOperatorTime(new Timestamp(new Date().getTime()));
+                super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+                map.put("result","1");
+            }else{ //新增
+                info.setId(ssgjHelper.createSiteQuestionIdService()); //站点问题ID
+                info.setCId((long)-2); //11980游客
+                info.setPmId((long)-2);//11980游客
+                info.setCreator(super.user_id(userId,"1"));
+                info.setCreateTime(new Timestamp(new Date().getTime()));
+                info.setOperator(super.user_id(userId,"1"));
+                info.setOperatorTime(new Timestamp(new Date().getTime()));
+                super.getFacade().getEtSiteQuestionInfoService().createEtSiteQuestionInfo(info);
+                map.put("result","1");
 
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            map.put("result","0");
         }
 
         return map;
