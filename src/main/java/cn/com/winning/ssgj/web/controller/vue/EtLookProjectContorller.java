@@ -85,6 +85,7 @@ public class EtLookProjectContorller extends BaseController {
             processManager.setId(ssgjHelper.createEtProcessManagerIdService());
             processManager.setPmId(project.getPmId());
             processManager.setCId(project.getCId());
+            processManager.setSerialNo(project.getSerialNo());
             processManager.setIsStart(Constants.STATUS_USE);
             processManager.setIsAccept(Constants.STATUS_USE);
             processManager.setCreator(project.getUserId());

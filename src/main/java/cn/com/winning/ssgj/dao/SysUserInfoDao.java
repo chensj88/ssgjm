@@ -24,4 +24,6 @@ public interface SysUserInfoDao extends EntityDao<SysUserInfo> {
     List<SysUserInfo> selectSysUserInfoListByUserIdList(SysUserInfo userInfo);
 
     SysUserInfo selectSysUserInfoByUserCode(SysUserInfo user);
+
+    List<SysUserInfo> selectSysUserInfoQueryPageListASC(SysUserInfo t);
 }

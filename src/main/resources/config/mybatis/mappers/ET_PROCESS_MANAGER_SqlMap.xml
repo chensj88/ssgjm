@@ -33,6 +33,7 @@
         <result column="IS_SWITCH_PLAN" property="isSwitchPlan" jdbcType="INTEGER"/>
         <result column="IS_SUPPORT_STAFF" property="isSupportStaff" jdbcType="INTEGER"/>
         <result column="IS_END" property="isEnd" jdbcType="INTEGER"/>
+        <result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR"/>
         <result column="CREATOR" property="creator" jdbcType="BIGINT"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="OPERATOR" property="operator" jdbcType="BIGINT"/>
@@ -109,6 +110,7 @@
             #{isSupportStaff}
         </if>
         <if test="(isEnd != null and isEnd != '') or isEnd == 0">and t.IS_END = #{isEnd}</if>
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
         <if test="(creator != null and creator != '') or creator == 0">and t.CREATOR = #{creator}</if>
         <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
         <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
@@ -185,6 +187,7 @@
             <if test="(isSwitchPlan != null and isSwitchPlan != '') or isSwitchPlan == 0">IS_SWITCH_PLAN,</if>
             <if test="(isSupportStaff != null and isSupportStaff != '') or isSupportStaff == 0">IS_SUPPORT_STAFF,</if>
             <if test="(isEnd != null and isEnd != '') or isEnd == 0">IS_END,</if>
+            <if test="serialNo != null and serialNo != ''">SERIAL_NO,</if>
             <if test="(creator != null and creator != '') or creator == 0">CREATOR,</if>
             <if test="createTime != null ">CREATE_TIME,</if>
             <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
@@ -260,6 +263,7 @@
                 #{isSupportStaff, jdbcType=INTEGER},
             </if>
             <if test="(isEnd != null and isEnd != '') or isEnd == 0">#{isEnd, jdbcType=INTEGER},</if>
+            <if test="serialNo != null and serialNo != ''">#{serialNo, jdbcType=VARCHAR},</if>
             <if test="(creator != null and creator != '') or creator == 0">#{creator, jdbcType=BIGINT},</if>
             <if test="createTime != null ">#{createTime, jdbcType=TIMESTAMP},</if>
             <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
@@ -353,6 +357,7 @@
                     #{isSupportStaff, jdbcType=INTEGER},
                 </if>
                 <if test="(isEnd != null and isEnd != '') or isEnd == 0">IS_END = #{isEnd, jdbcType=INTEGER},</if>
+                <if test="serialNo != null and serialNo != ''">SERIAL_NO = #{serialNo, jdbcType=VARCHAR},</if>
                 <if test="(creator != null and creator != '') or creator == 0">CREATOR = #{creator, jdbcType=BIGINT},
                 </if>
                 <if test="createTime != null ">CREATE_TIME = #{createTime, jdbcType=TIMESTAMP},</if>
@@ -471,6 +476,7 @@
                     #{isSupportStaff, jdbcType=INTEGER},
                 </if>
                 <if test="(isEnd != null and isEnd != '') or isEnd == 0">IS_END = #{isEnd, jdbcType=INTEGER},</if>
+                <if test="serialNo != null and serialNo != ''">SERIAL_NO = #{serialNo, jdbcType=VARCHAR},</if>
                 <if test="(creator != null and creator != '') or creator == 0">CREATOR = #{creator, jdbcType=BIGINT},
                 </if>
                 <if test="createTime != null ">CREATE_TIME = #{createTime, jdbcType=TIMESTAMP},</if>

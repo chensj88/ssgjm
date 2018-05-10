@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
+import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
@@ -48,6 +49,7 @@ public class ProjectQueryController extends BaseController {
      */
     @RequestMapping(value = "/common/user.do")
     @ResponseBody
+    @Deprecated
     public Map<String,Object> queryUserInfo(){
       /*  SysUserInfo loginUser = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();*/
         SysUserInfo loginUser = new SysUserInfo();
@@ -89,8 +91,27 @@ public class ProjectQueryController extends BaseController {
             user = super.getFacade().getPmisProjctUserService().getPmisProjctUser(user);
         }
         Map<String,Object> result = new HashMap<String,Object>();
+        if( user == null ){
+            result.put("data", 1 );
+        }else{
+            result.put("data", user.getRyfl() );
+        }
+
         result.put("status", Constants.SUCCESS);
-        result.put("data", user.getRyfl() );
+
+        return result;
+
+    }
+
+
+    @RequestMapping(value = "/common/queryUser.do")
+    @ResponseBody
+    public Map<String,Object> queryUser(SysUserInfo user, Row row){
+        user.setRow(row);
+        user.setStatus(Constants.STATUS_USE);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("rows", super.getFacade().getSysUserInfoService().getSysUserInfoQueryPageListASC(user));
         return result;
 
     }

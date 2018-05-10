@@ -236,4 +236,19 @@
         WHERE  t.STATUS = 1 AND  t.USER_TYPE ='1'
         <if test="userid != null and userid != ''"> AND  t.USERID = #{userid, jdbcType=VARCHAR} </if>
     </select>
+
+    <select id="selectSysUserInfoQueryPageListASC" parameterType="sysUserInfo" resultMap="sysUserInfoResult">
+        select * from (
+        select t.*, CASE WHEN t.USER_TYPE = '0' THEN t1.NAME
+        ELSE t2.NAME END ORG_NAME,
+        ROW_NUMBER() OVER ( order by t.ID ASC ) as _rn
+        from SYS_USER_INFO t
+        LEFT JOIN PMIS_CUSTOMER_INFORMATION t1 ON t.SSGS = t1.ID
+        LEFT JOIN SYS_ORGANIZATION t2 ON t.ORGID = t2.ID
+        where 1 = 1
+        <include refid="query-sysUserInfo"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+
+    </select>
 </mapper>

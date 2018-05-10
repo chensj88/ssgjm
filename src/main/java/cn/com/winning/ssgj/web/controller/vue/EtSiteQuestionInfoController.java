@@ -8,6 +8,9 @@ import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import cn.com.winning.ssgj.ws.service.PmisWebServiceClient;
+import cn.com.winning.ssgj.ws.work.client.BizProcessResult;
+import cn.com.winning.ssgj.ws.work.service.PmisWorkingPaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +33,11 @@ import java.util.*;
 @CrossOrigin
 @RequestMapping(value = "/vue/siteCenter")
 public class EtSiteQuestionInfoController extends BaseController {
+
+    @Autowired
+    private PmisWorkingPaperService pmisWorkingPaperService;
+    @Autowired
+    private PmisWebServiceClient pmisWebServiceClient;
     /**
      * 站点问题初始化显示
      * @param info
@@ -92,11 +100,11 @@ public class EtSiteQuestionInfoController extends BaseController {
     }
 
     /**
-     * 处理方式修改
+     * 处理方式修改/优先级修改/分配人修改
      * @param info
      * @return
      */
-    @RequestMapping(value = "/updateOperate.do")
+    @RequestMapping(value = "/update.do")
     @ResponseBody
     @ILog
     @Transactional
@@ -108,39 +116,6 @@ public class EtSiteQuestionInfoController extends BaseController {
         return result;
     }
 
-    /**
-     * 优先级修改
-     * @param info
-     * @return
-     */
-    @RequestMapping(value = "/updatePriority.do")
-    @ResponseBody
-    @ILog
-    @Transactional
-    public Map<String,Object> updatePriority(EtSiteQuestionInfo info){
-        info.setOperatorTime(new Timestamp(new Date().getTime()));
-        super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
-        Map<String,Object> result = new HashMap<String,Object>();
-        result.put("status", Constants.SUCCESS);
-        return result;
-    }
-
-    /**
-     * 分配人修改
-     * @param info
-     * @return
-     */
-    @RequestMapping(value = "/updateAllocateUser.do")
-    @ResponseBody
-    @ILog
-    @Transactional
-    public Map<String,Object> updateAllocateUser(EtSiteQuestionInfo info){
-        info.setOperatorTime(new Timestamp(new Date().getTime()));
-        super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
-        Map<String,Object> result = new HashMap<String,Object>();
-        result.put("status", Constants.SUCCESS);
-        return result;
-    }
 
     @RequestMapping(value = "/exportPmisData.do",method = {RequestMethod.POST})
     @ResponseBody
@@ -148,6 +123,17 @@ public class EtSiteQuestionInfoController extends BaseController {
     @Transactional
     public Map<String,Object> exportPmisData(EtSiteQuestionInfo info){
         info.setOperatorTime(new Timestamp(new Date().getTime()));
+        super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+        info = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info);
+        SysUserInfo user = new SysUserInfo();
+        user.setUserid(info.getCreateNo());
+        user = super.getFacade().getSysUserInfoService().getSysUserInfo(user);
+        info.getMap().put("createUser",user.getName());
+        //TODO 测试使用
+        BizProcessResult bizResult =  pmisWorkingPaperService.importWorkReport(info);
+        //TODO 上线使用
+        // cn.com.winning.ssgj.ws.client.BizProcessResult bizResult =  pmisWebServiceClient.importWorkDataToPmis(info);
+        info.setPmisStatus(Constants.STATUS_USE);
         super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);

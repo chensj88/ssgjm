@@ -32,6 +32,8 @@ public interface SysUserInfoService {
 
     List<SysUserInfo> getSysUserInfoQueryPaginatedList(SysUserInfo t);
 
+    List<SysUserInfo> getSysUserInfoQueryPageListASC(SysUserInfo t);
+
     List<FlotDataInfo> countUserInfoByType();
 
     void generateUserInfo(SysUserInfo queryUser, String path);
