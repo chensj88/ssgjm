@@ -54,7 +54,7 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 	/**
 	 * @val 问题类型
 	 */
-	private String questionType;
+	private int questionType;
 	
 	/**
 	 * @val 问题描述
@@ -212,17 +212,17 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 	/**
 	 * @val 问题类型
 	 */
-	public String getQuestionType() {
+	public int getQuestionType() {
 		return questionType;
 	}
-	
+
 	/**
 	 * @val 问题类型
 	 */
-	public void setQuestionType(String questionType) {
+	public void setQuestionType(int questionType) {
 		this.questionType = questionType;
 	}
-	
+
 	/**
 	 * @val 问题描述
 	 */

@@ -10,7 +10,7 @@
         <result column="SITE_NAME" property="siteName" jdbcType="VARCHAR"/>
         <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR"/>
         <result column="MENU_NAME" property="menuName" jdbcType="VARCHAR"/>
-        <result column="QUESTION_TYPE" property="questionType" jdbcType="VARCHAR"/>
+        <result column="QUESTION_TYPE" property="questionType" jdbcType="INTEGER"/>
         <result column="QUESTION_DESC" property="questionDesc" jdbcType="LONGVARCHAR"/>
         <result column="IMG_PATH" property="imgPath" jdbcType="LONGVARCHAR"/>
         <result column="OPER_TYPE" property="operType" jdbcType="INTEGER"/>
