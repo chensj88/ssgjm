@@ -4,6 +4,7 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.exception.SSGJException;
 import cn.com.winning.ssgj.base.util.ConnectionUtil;
 import cn.com.winning.ssgj.base.util.PmisWSUtil;
+import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
 import cn.com.winning.ssgj.ws.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +72,26 @@ public class PmisWebServiceClient {
             String tableNam = pmisInfoData.get(dataType);
             generateDymaicSql(tableNam, dataType);
         }
+    }
+
+    /**
+     * 工作底稿导入
+     * @param info
+     * @return
+     */
+    public BizProcessResult importWorkDataToPmis(EtSiteQuestionInfo info){
+        LBEBusinessService lbeBusinessService = PmisWSUtil.createLBEBusinessService();
+        LoginResult loginResult = PmisWSUtil.createLoginResult();
+        List<LbParameter> params = PmisWSUtil.createLbParameter(info);
+        List<LbParameter> variables = new ArrayList<LbParameter>();
+        BizProcessResult result = lbeBusinessService.execBizProcess(loginResult.getSessionId(),
+                Constants.PmisWSConstants.WORK_WS_SERVICE_OBJECT_NAME,"",
+                params,variables);
+        if(result.getResult() != 1){
+            throw  new SSGJException(result.getMessage());
+        }
+        PmisWSUtil.createLogoutResult(loginResult);
+        return result;
     }
 
     /**

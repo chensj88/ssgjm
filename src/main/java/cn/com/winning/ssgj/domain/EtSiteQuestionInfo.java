@@ -42,19 +42,20 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 	private String siteName;
 	
 	/**
-	 * @val 系统名称
+	 * @val 系统名称 PMIS中菜单名称
 	 */
 	private String productName;
 	
 	/**
-	 * @val 菜单名称
+	 * @val 菜单名称  PMIS中模块名称
 	 */
 	private String menuName;
 	
 	/**
-	 * @val 问题类型
+	 * @val 问题类型 来源于PMIS
+	 * 1|解释类;2|操作错误类;3|系统BUG类;4|新增需求类;5|报表类
 	 */
-	private String questionType;
+	private Integer questionType;
 	
 	/**
 	 * @val 问题描述
@@ -67,12 +68,14 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 	private String imgPath;
 	
 	/**
-	 * @val 处理方式 0 程序修改；1模板配置
+	 * @val 处理方式  1|现场;2|远程;3|电话
+	 * PMIS解决方式
 	 */
 	private Integer operType;
 	
 	/**
-	 * @val 优先级 0 高；1中；2低；3不处理；4 加强管理，解释
+	 * @val 优先级  来源于PMIS
+	 *  1|A级(紧急);2|B级(急);3|C级(一般);4|D级(暂缓)
 	 */
 	private Integer priority;
 	
@@ -110,6 +113,82 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 	 * @val 操作时间
 	 */
 	private java.sql.Timestamp operatorTime;
+
+	/**
+	 * @val 批次
+	 */
+	private Integer batchNo;
+
+	/**
+	 * @val 原因分类 1|功能;2|基础数据;3|界面;4|其他
+	 */
+	private Integer reasonType;
+
+	/**
+	 * @val 底稿状态：1|新收集;2|登记未答复;3|答复未确认;4|协调过程中;5|编码过程;6|测试过程中;9|测试通过未升级;7|升级未确认;8|已确认关闭
+	 */
+	private Integer manuscriptStatus;
+
+	/**
+	 * @val 工程师工号
+	 */
+	private String devUser;
+
+	/**
+	 * @val 公司方接收人
+	 */
+	private String devUserName;
+
+	/**
+	 * @val 联系人
+	 */
+	private String linkman;
+
+	/**
+	 * @val 联系电话
+	 */
+	private String mobile;
+
+	/**
+	 * @val 希望完成日期
+	 */
+	private String hopeFinishDate;
+
+	/**
+	 * @val 解决日期
+	 */
+	private String resolveDate;
+
+	/**
+	 * @val 解决方式 1|现场;2|远程;3|电话;
+	 */
+	private Integer solutionType;
+
+	private String solutionResult;
+
+	/**
+	 * @val 难度级别 1|高;2|中;3|低
+	 */
+	private Integer diffcultLevel;
+
+	/**
+	 * @val 用户方信息
+	 */
+	private String userMessage;
+
+	/**
+	 * @val 登记人工号
+	 */
+	private String createNo;
+
+	/**
+	 * @val 导入状态 1 导入 2 未导入
+	 */
+	private Integer pmisStatus;
+	/**
+	 * @val 工作量
+	 */
+	private String workLoad;
 
 	private List imgs;
 	
@@ -212,14 +291,14 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 	/**
 	 * @val 问题类型
 	 */
-	public String getQuestionType() {
+	public Integer getQuestionType() {
 		return questionType;
 	}
 	
 	/**
 	 * @val 问题类型
 	 */
-	public void setQuestionType(String questionType) {
+	public void setQuestionType(Integer questionType) {
 		this.questionType = questionType;
 	}
 	
@@ -389,69 +468,15 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 	/**
 	 * @val 批次
 	 */
-	private String batchNo;
-
-	/**
-	 * @val 底稿类型 1|解释类;2|操作错误类;3|系统BUG类;4|新增需求类;5|单据报表类;6|其他
-	 */
-	private Integer manuscriptType;
-
-	/**
-	 * @val 原因分类 1|功能;2|基础数据;3|界面;4|其他
-	 */
-	private Integer reasonType;
-
-	/**
-	 * @val 底稿状态：1|新收集;2|登记未答复;3|答复未确认;4|协调过程中;5|编码过程;6|测试过程中;9|测试通过未升级;7|升级未确认;8|已确认关闭
-	 */
-	private Integer manuscriptStatus;
-
-	/**
-	 * @val 公司方接收人
-	 */
-	private String devUser;
-
-	/**
-	 * @val 解决方式 1|现场;2|远程;3|电话;
-	 */
-	private Integer solutionType;
-
-	/**
-	 * @val 难度级别 1|高;2|中;3|低
-	 */
-	private Integer diffcultLevel;
-
-	/**
-	 * @val 用户方信息
-	 */
-	private String userMessage;
-
-	/**
-	 * @val 批次
-	 */
-	public String getBatchNo() {
+	public Integer getBatchNo() {
 		return batchNo;
 	}
 
 	/**
 	 * @val 批次
 	 */
-	public void setBatchNo(String batchNo) {
+	public void setBatchNo(Integer batchNo) {
 		this.batchNo = batchNo;
-	}
-
-	/**
-	 * @val 底稿类型 1|解释类;2|操作错误类;3|系统BUG类;4|新增需求类;5|单据报表类;6|其他
-	 */
-	public Integer getManuscriptType() {
-		return manuscriptType;
-	}
-
-	/**
-	 * @val 底稿类型 1|解释类;2|操作错误类;3|系统BUG类;4|新增需求类;5|单据报表类;6|其他
-	 */
-	public void setManuscriptType(Integer manuscriptType) {
-		this.manuscriptType = manuscriptType;
 	}
 
 	/**
@@ -483,17 +508,87 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 	}
 
 	/**
-	 * @val 公司方接收人
+	 * @val 工程师工号
 	 */
 	public String getDevUser() {
 		return devUser;
 	}
 
 	/**
-	 * @val 公司方接收人
+	 * @val 工程师工号
 	 */
 	public void setDevUser(String devUser) {
 		this.devUser = devUser;
+	}
+
+	/**
+	 * @val 公司方接收人
+	 */
+	public String getDevUserName() {
+		return devUserName;
+	}
+
+	/**
+	 * @val 公司方接收人
+	 */
+	public void setDevUserName(String devUserName) {
+		this.devUserName = devUserName;
+	}
+
+	/**
+	 * @val 联系人
+	 */
+	public String getLinkman() {
+		return linkman;
+	}
+
+	/**
+	 * @val 联系人
+	 */
+	public void setLinkman(String linkman) {
+		this.linkman = linkman;
+	}
+
+	/**
+	 * @val 联系电话
+	 */
+	public String getMobile() {
+		return mobile;
+	}
+
+	/**
+	 * @val 联系电话
+	 */
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	/**
+	 * @val 希望完成日期
+	 */
+	public String getHopeFinishDate() {
+		return hopeFinishDate;
+	}
+
+	/**
+	 * @val 希望完成日期
+	 */
+	public void setHopeFinishDate(String hopeFinishDate) {
+		this.hopeFinishDate = hopeFinishDate;
+	}
+
+	/**
+	 * @val 解决日期
+	 */
+	public String getResolveDate() {
+		return resolveDate;
+	}
+
+	/**
+	 * @val 解决日期
+	 */
+	public void setResolveDate(String resolveDate) {
+		this.resolveDate = resolveDate;
 	}
 
 	/**
@@ -508,6 +603,14 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 	 */
 	public void setSolutionType(Integer solutionType) {
 		this.solutionType = solutionType;
+	}
+
+	public String getSolutionResult() {
+		return solutionResult;
+	}
+
+	public void setSolutionResult(String solutionResult) {
+		this.solutionResult = solutionResult;
 	}
 
 	/**
@@ -539,61 +642,38 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 	}
 
 	/**
-	 *解决结果
+	 * @val 登记人工号
 	 */
-	private String solutionResult;
+	public String getCreateNo() {
+		return createNo;
+	}
+
 	/**
-	 *联系人
+	 * @val 登记人工号
 	 */
-	private String linkman;
+	public void setCreateNo(String createNo) {
+		this.createNo = createNo;
+	}
+
 	/**
-	 *联系电话
+	 * @val 导入状态 1 导入 2 未导入
 	 */
-	private String mobile;
-	/**
-	 *希望完成时间
-	 */
-	private String hopeFinishDate;
-
-	public String getSolutionResult() {
-		return solutionResult;
-	}
-
-	public void setSolutionResult(String solutionResult) {
-		this.solutionResult = solutionResult;
-	}
-
-	public String getLinkman() {
-		return linkman;
-	}
-
-	public void setLinkman(String linkman) {
-		this.linkman = linkman;
-	}
-
-	public String getMobile() {
-		return mobile;
-	}
-
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
-	public String getHopeFinishDate() {
-		return hopeFinishDate;
-	}
-
-	public void setHopeFinishDate(String hopeFinishDate) {
-		this.hopeFinishDate = hopeFinishDate;
-	}
-
-	private Integer pmisStatus;
-
 	public Integer getPmisStatus() {
 		return pmisStatus;
 	}
 
+	/**
+	 * @val 导入状态 1 导入 2 未导入
+	 */
 	public void setPmisStatus(Integer pmisStatus) {
 		this.pmisStatus = pmisStatus;
+	}
+
+	public String getWorkLoad() {
+		return workLoad;
+	}
+
+	public void setWorkLoad(String workLoad) {
+		this.workLoad = workLoad;
 	}
 }

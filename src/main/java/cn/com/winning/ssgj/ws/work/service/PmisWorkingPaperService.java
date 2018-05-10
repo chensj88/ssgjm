@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * @author chenshijie
- * @title  工作底稿导入功能
+ * @title  工作底稿导入功能 （测试环境使用）
  * @email chensj@winning.com.cm
  * @package cn.com.winning.ssgj.ws.work.service
  * @date 2018-05-09 21:27
@@ -28,117 +28,20 @@ public class PmisWorkingPaperService {
 
     private static LBEBusinessService lbeBusinessService = null;
 
-    public void importWorkReport(EtSiteQuestionInfo info){
+    public BizProcessResult importWorkReport(EtSiteQuestionInfo info){
+
+
         LBEBusinessService lbeBusinessService = createLBEBusinessService();
         LoginResult loginResult = createLoginResult();
-        List<LbParameter> params = createLbParameter(info);
+        List<LbParameter> params = PmisWSUtil.createTestLbParameter(info);
         List<LbParameter> variables = new ArrayList<LbParameter>();
         BizProcessResult result = lbeBusinessService.execBizProcess(loginResult.getSessionId(),
                 Constants.PmisWSConstants.WORK_WS_SERVICE_OBJECT_NAME,"",
                 params,variables);
-
+        createLogoutResult(loginResult);
+        return result;
     }
 
-    private List<LbParameter> createLbParameter(EtSiteQuestionInfo info) {
-        List<LbParameter> params = new ArrayList<LbParameter>();
-        LbParameter param = new LbParameter();
-        param.setName("xmlcb");
-        param.setValue(info.getPmId()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("pc");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("wtyxj");
-        param.setValue(info.getPriority()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("cdmc");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("djr");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("wtms");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("dglx");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("yyfl");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("wtzt");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("jjgcs");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("gsfjsr");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("yfglr");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("yflxdh");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("tcr");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("tcr");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("tcrq");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("xwwcrq");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("jjrq");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("jjfs");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("jjjg");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("yggzl");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("nd");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("qrqk");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        param = new LbParameter();
-        param.setName("lrrgh");
-        param.setValue(info.getBatchNo()+"");
-        params.add(param);
-        return  params;
-    }
 
     /**
      * 获取登录结果，主要提取结果中sessionId用户后续查询使用
