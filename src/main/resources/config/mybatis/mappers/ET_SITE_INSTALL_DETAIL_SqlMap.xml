@@ -140,4 +140,17 @@
         </where>
     </delete>
 
+    <select id="getSiteListByDeptId" resultMap="etSiteInstallDetailResult"
+            parameterType="etDepartment">
+            SELECT
+            *
+            FROM
+            ET_SITE_INSTALL_DETAIL e
+            WHERE
+            EXISTS(
+            select 1 from ET_DEPARTMENT d RIGHT JOIN  ET_SITE_INSTALL s
+            ON d.ID= s.DEPT_CODE WHERE e.SOURCE_ID=s.ID and d.ID=#{id}
+            )
+    </select>
+
 </mapper>

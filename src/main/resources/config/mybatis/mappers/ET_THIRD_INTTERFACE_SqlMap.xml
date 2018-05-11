@@ -166,10 +166,10 @@
                 </if>
                 <if test="productName != null and productName != ''">PRODUCT_NAME = #{productName, jdbcType=VARCHAR},
                 </if>
-                <if test="moduleDetail != null and moduleDetail != ''">MODULE_DETAIL =
+                <if test="moduleDetail != null">MODULE_DETAIL =
                     #{moduleDetail, jdbcType=VARCHAR},
                 </if>
-                <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
+                <if test="remark != null">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
             </trim>
         </set>
         <where>
