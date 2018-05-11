@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.web.controller.vue;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
+import cn.com.winning.ssgj.base.exception.SSGJException;
 import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
 import cn.com.winning.ssgj.domain.EtUserInfo;
 import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
@@ -124,19 +125,25 @@ public class EtSiteQuestionInfoController extends BaseController {
     public Map<String,Object> exportPmisData(EtSiteQuestionInfo info){
         info.setOperatorTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
-        info = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info);
+        EtSiteQuestionInfo newInfo = new EtSiteQuestionInfo();
+        newInfo.setId(info.getId());
+        newInfo = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(newInfo);
         SysUserInfo user = new SysUserInfo();
         user.setUserid(info.getCreateNo());
         user = super.getFacade().getSysUserInfoService().getSysUserInfo(user);
         info.getMap().put("createUser",user.getName());
         //TODO 测试使用
-        BizProcessResult bizResult =  pmisWorkingPaperService.importWorkReport(info);
+        BizProcessResult bizResult =  pmisWorkingPaperService.importWorkReport(newInfo);
         //TODO 上线使用
         // cn.com.winning.ssgj.ws.client.BizProcessResult bizResult =  pmisWebServiceClient.importWorkDataToPmis(info);
+        if(bizResult.getResult() != 1){
+            throw new SSGJException(bizResult.getMessage());
+        }
         info.setPmisStatus(Constants.STATUS_USE);
         super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
+        result.put("msg", bizResult.getMessage());
         return result;
     }
 }

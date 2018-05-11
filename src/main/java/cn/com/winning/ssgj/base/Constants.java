@@ -14,6 +14,14 @@ public class Constants implements Serializable {
     public static String FTP_SERVER = FtpPropertiesLoader.getProperty("ftp.server");
     public static String FTP_SHARE_SERVER = FtpPropertiesLoader.getProperty("ftp.share");
     public static String FTP_SHARE_FLODER = "http://" + FTP_SHARE_SERVER + ":8081/shareFolder";
+    /**
+     * FTP上传文件前缀  PC端
+     */
+    public static String UPLOAD_PC_PREFIX = "/upload/";
+    /**
+     * FTP上传文件前缀 手机端
+     */
+    public static String UPLOAD_MOBILE_PREFIX = "/mupload/";
 
     /**
      * 是否成功

@@ -292,7 +292,7 @@ public class PmisWSUtil {
         params.add(param);
         param = new cn.com.winning.ssgj.ws.work.client.LbParameter();
         param.setName("jjrq"); //解决日期
-        param.setValue(info.getResolveDate());
+        param.setValue(info.getResolveDate() == null ? "":info.getResolveDate() );
         params.add(param);
         param = new cn.com.winning.ssgj.ws.work.client.LbParameter();
         param.setName("jjfs"); //解决方式
