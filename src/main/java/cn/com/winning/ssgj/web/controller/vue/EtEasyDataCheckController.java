@@ -185,10 +185,14 @@ public class EtEasyDataCheckController extends BaseController {
     @RequestMapping(value = "/upload.do")
     @ResponseBody
     @Transactional
-    public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtEasyDataCheck t) throws IOException {
+    public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtEasyDataCheck t, Long pmId) throws IOException {
         Map<String, Object> result = new HashMap<String, Object>();
         //根据id获取表属性
         EtEasyDataCheck etEasyDataCheck = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(t);
+        //根据应用数据id删除detail表数据
+        EtEasyDataCheckDetail etEasyDataCheckDetail=new EtEasyDataCheckDetail();
+        etEasyDataCheckDetail.setSourceId(t.getId());
+        getFacade().getEtEasyDataCheckDetailService().removeEtEasyDataCheckDetail(etEasyDataCheckDetail);
         //获取产品条线名称
         PmisProductLineInfo pmisProductLineInfo = new PmisProductLineInfo();
         pmisProductLineInfo.setId(etEasyDataCheck.getPlId());
@@ -242,7 +246,7 @@ public class EtEasyDataCheckController extends BaseController {
                 //更新易用校验数据content
                 etEasyDataCheck.setContent(content);
                 //文件夹路径
-                String dir = "/easyCheck/" + pmisProductLineInfo.getName() + "/";
+                String dir = Constants.UPLOAD_PC_PREFIX + pmId + "/easyDataCheck/" + pmisProductLineInfo.getName() + "/";
                 String src = newFile.getAbsolutePath();
                 String fileName = newFile.getName();
                 etEasyDataCheck.setScriptPath(dir + fileName);
@@ -331,7 +335,7 @@ public class EtEasyDataCheckController extends BaseController {
                 EtEasyDataCheckDetail etEasyDataCheckDetail = new EtEasyDataCheckDetail();
                 etEasyDataCheckDetail.setId(ssgjHelper.createEtEasyDataCheckDetailId());
                 etEasyDataCheckDetail.setSourceId(sourceId);
-                etEasyDataCheckDetail.setDeptDoctorCode(row.getCell(0) == null ? null : row.getCell(0).toString());
+                etEasyDataCheckDetail.setDeptDoctorCode(row.getCell(0) == null ? null : (int)Double.parseDouble(row.getCell(0).toString())+"");
                 etEasyDataCheckDetail.setDeptDoctorName(row.getCell(1) == null ? null : row.getCell(1).toString());
                 service.createEtEasyDataCheckDetail(etEasyDataCheckDetail);
                 doctorNotMaintainNum++;
@@ -343,7 +347,7 @@ public class EtEasyDataCheckController extends BaseController {
                 EtEasyDataCheckDetail etEasyDataCheckDetail = new EtEasyDataCheckDetail();
                 etEasyDataCheckDetail.setId(ssgjHelper.createEtEasyDataCheckDetailId());
                 etEasyDataCheckDetail.setSourceId(sourceId);
-                etEasyDataCheckDetail.setDeptDoctorCode(row.getCell(0) == null ? null : row.getCell(0).toString());
+                etEasyDataCheckDetail.setDeptDoctorCode(row.getCell(0) == null ? null : (int)Double.parseDouble(row.getCell(0).toString())+"");
                 etEasyDataCheckDetail.setDeptDoctorName(row.getCell(1) == null ? null : row.getCell(1).toString());
                 service.createEtEasyDataCheckDetail(etEasyDataCheckDetail);
                 deptNotMaintainNum++;
