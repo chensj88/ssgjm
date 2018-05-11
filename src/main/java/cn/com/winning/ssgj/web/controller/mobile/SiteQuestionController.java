@@ -65,7 +65,8 @@ public class SiteQuestionController extends BaseController {
             List<EtSiteQuestionInfo> siteQuestionInfoList=super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoList(entity);
             //获取项目成员信息
             EtUserInfo userInfo = new EtUserInfo();
-            userInfo.setPositionName("主力工程师");
+            userInfo.setPositionName("1");
+            userInfo.setSerialNo(hospcode);
             userInfo.setUserType(1);
             List<EtUserInfo> infos = super.getFacade().getEtUserInfoService().getEtUserInfoList(userInfo);
 
