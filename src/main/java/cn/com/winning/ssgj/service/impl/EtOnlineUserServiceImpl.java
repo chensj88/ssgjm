@@ -11,16 +11,11 @@ import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.base.util.NumberParseUtil;
 import cn.com.winning.ssgj.base.util.StringUtil;
-import cn.com.winning.ssgj.dao.EtDepartmentDao;
-import cn.com.winning.ssgj.dao.PmisProjectBasicInfoDao;
-import cn.com.winning.ssgj.domain.EtDepartment;
-import cn.com.winning.ssgj.domain.EtUserInfo;
-import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
+import cn.com.winning.ssgj.dao.*;
+import cn.com.winning.ssgj.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.com.winning.ssgj.dao.EtOnlineUserDao;
-import cn.com.winning.ssgj.domain.EtOnlineUser;
 import cn.com.winning.ssgj.service.EtOnlineUserService;
 
 /**
@@ -36,6 +31,10 @@ public class EtOnlineUserServiceImpl implements EtOnlineUserService {
     private PmisProjectBasicInfoDao pmisProjectBasicInfoDao;
     @Autowired
     private EtDepartmentDao etDepartmentDao;
+    @Autowired
+    private EtSiteInstallDetailDao etSiteInstallDetailDao;
+    @Autowired
+    private EtSiteInstallDao etSiteInstallDao;
     @Autowired
     private SSGJHelper ssgjHelper;
 
@@ -92,19 +91,23 @@ public class EtOnlineUserServiceImpl implements EtOnlineUserService {
 
         for (EtOnlineUser et : etUserInfoList) {
             EtDepartment departmentTemp = new EtDepartment();
+            EtSiteInstallDetail siteInstallDetail = new EtSiteInstallDetail();
             Map<String, String> userMap = new HashMap<>();
             userMap.put("userCard", et.getUserCode());
             userMap.put("cName", et.getCName());
             userMap.put("roleName", et.getRoleName());
             Long deptId = NumberParseUtil.parseLong(et.getResponseDept());
-            if (deptId == null) {
-                continue;
-            } else {
+            Long siteId = NumberParseUtil.parseLong(et.getResponseSite());
+            if (deptId != null) {
                 departmentTemp.setId(deptId);
                 departmentTemp = etDepartmentDao.selectEntity(departmentTemp);
             }
+            if (siteId != null) {
+                siteInstallDetail.setId(siteId);
+                siteInstallDetail = etSiteInstallDetailDao.selectEntity(siteInstallDetail);
+            }
             userMap.put("responseDept", departmentTemp == null ? "" : departmentTemp.getDeptName());
-            userMap.put("responseSite", et.getResponseSite());
+            userMap.put("responseSite", siteInstallDetail == null ? "" : siteInstallDetail.getSiteName());
             userMap.put("telephone", et.getTelephone());
             userMap.put("wechatNo", et.getWechatNo());
             userMap.put("email", et.getEmail());
@@ -115,14 +118,17 @@ public class EtOnlineUserServiceImpl implements EtOnlineUserService {
     }
 
     @Override
-    public void createEtOnlineUserList(List<List<Object>> userList, EtOnlineUser etOnlineUser,Long serialNo) {
+    public void createEtOnlineUserList(List<List<Object>> userList, EtOnlineUser etOnlineUser, Long serialNo) {
         PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
         basicInfo.setId(etOnlineUser.getPmId());
         basicInfo = pmisProjectBasicInfoDao.selectEntity(basicInfo);
-        List<EtOnlineUser> etOnlineUsers = null;
-        String deptName = null;
-        EtDepartment departmentTemp = null;
         for (List<Object> params : userList) {
+            List<EtOnlineUser> etOnlineUsers = null;
+            String deptName = null;
+            String siteName = null;
+            EtDepartment departmentTemp = null;
+            EtSiteInstall etSiteInstall = null;
+            EtSiteInstallDetail siteInstallDetail = null;
             EtOnlineUser user = new EtOnlineUser();
             user.setCId(basicInfo.getHtxx());
             user.setPmId(basicInfo.getId());
@@ -130,11 +136,26 @@ public class EtOnlineUserServiceImpl implements EtOnlineUserService {
             //user = etOnlineUserDao.selectEntity(user);
             etOnlineUsers = etOnlineUserDao.selectEntityList(user);
             deptName = params.get(3).toString();
-            if(!StringUtil.isEmptyOrNull(deptName)){
+            siteName = params.get(4).toString();
+            if (!StringUtil.isEmptyOrNull(deptName)) {
                 departmentTemp = new EtDepartment();
                 departmentTemp.setDeptName(deptName);
                 departmentTemp.setSerialNo(serialNo);
                 departmentTemp = etDepartmentDao.selectEntity(departmentTemp);
+            }
+            if (!StringUtil.isEmptyOrNull(siteName) && departmentTemp != null) {
+                etSiteInstall = new EtSiteInstall();
+                etSiteInstall.setSerialNo(serialNo.toString());
+                etSiteInstall.setDeptCode(departmentTemp.getId().toString());
+                etSiteInstall = etSiteInstallDao.selectEntity(etSiteInstall);
+                if (etSiteInstall != null) {
+                    siteInstallDetail = new EtSiteInstallDetail();
+                    siteInstallDetail.setSourceId(etSiteInstall.getId());
+                    siteInstallDetail.setSiteName(siteName);
+                    siteInstallDetail = etSiteInstallDetailDao.selectEntity(siteInstallDetail);
+                }else{
+                    siteInstallDetail=null;
+                }
             }
             if (etOnlineUsers == null || etOnlineUsers.size() <= 0) {
                 user.setId(ssgjHelper.createEtOnlineInfoIdService());
@@ -142,7 +163,7 @@ public class EtOnlineUserServiceImpl implements EtOnlineUserService {
                 user.setCName(params.get(1).toString());
                 user.setRoleName(params.get(2).toString());
                 user.setResponseDept(departmentTemp == null ? "" : departmentTemp.getId().toString());
-                user.setResponseSite(params.get(4).toString());
+                user.setResponseSite(siteInstallDetail == null ? "" : siteInstallDetail.getId().toString());
                 user.setTelephone(params.get(5).toString());
                 user.setWechatNo(params.get(6).toString());
                 user.setEmail(params.get(7).toString());
@@ -158,7 +179,7 @@ public class EtOnlineUserServiceImpl implements EtOnlineUserService {
                     onlineUser.setCName(params.get(1).toString());
                     onlineUser.setRoleName(params.get(2).toString());
                     onlineUser.setResponseDept(departmentTemp == null ? "" : departmentTemp.getId().toString());
-                    onlineUser.setResponseSite(params.get(4).toString());
+                    onlineUser.setResponseSite(siteInstallDetail == null ? "" : siteInstallDetail.getId().toString());
                     onlineUser.setTelephone(params.get(5).toString());
                     onlineUser.setWechatNo(params.get(6).toString());
                     onlineUser.setEmail(params.get(7).toString());
