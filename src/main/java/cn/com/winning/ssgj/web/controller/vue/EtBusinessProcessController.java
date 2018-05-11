@@ -258,6 +258,7 @@ public class EtBusinessProcessController extends BaseController {
      * @param file
      * @return
      * @throws IOException
+     * @info 上传文件目录为 /upload/PM_ID/process/流程表ID/文件名  避免重复
      */
     @RequestMapping(value = "/upload.do")
     @ResponseBody
@@ -285,7 +286,7 @@ public class EtBusinessProcessController extends BaseController {
             }
             file.transferTo(newFile);
             ;
-            String remotePath = "/process/"+DateUtil.getCurrentDay()+"/"+filename;
+            String remotePath = Constants.UPLOAD_PC_PREFIX+process.getPmId()+"/process/"+process.getId()+"/"+filename;
             try {
                 CommonFtpUtils.uploadFile(remotePath,newFile);
                 process.setStatus(1);

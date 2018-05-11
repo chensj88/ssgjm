@@ -17,11 +17,11 @@ public class Constants implements Serializable {
     /**
      * FTP上传文件前缀  PC端
      */
-    public static String UPLOAD_PC_PREFIX = "/upload";
+    public static String UPLOAD_PC_PREFIX = "/upload/";
     /**
      * FTP上传文件前缀 手机端
      */
-    public static String UPLOAD_MOBILE_PREFIX = "/mupload";
+    public static String UPLOAD_MOBILE_PREFIX = "/mupload/";
 
     /**
      * 是否成功
