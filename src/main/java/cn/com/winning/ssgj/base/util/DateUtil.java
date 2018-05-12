@@ -190,4 +190,8 @@ public final class DateUtil {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return df.format(new Date());
     }
+
+    public static String getTimstamp(){
+        return System.currentTimeMillis() +"";
+    }
 }

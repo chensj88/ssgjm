@@ -65,15 +65,17 @@ public class EtOnlineFileServiceImpl implements EtOnlineFileService {
         List<EtOnlineFile> onlineFileList = this.etOnlineFileDao.selectEntityList(t);
         List<UrlContent> contentList = new ArrayList<>();
         for (EtOnlineFile file : onlineFileList) {
-            UrlContent content = new UrlContent();
-            content.setId(file.getId());
-            content.setSourceId(file.getId());
-            String imgPath = file.getImgPath();
-            content.setName(imgPath.substring(imgPath.lastIndexOf("/")+1));
-            content.setUrl(Constants.FTP_SHARE_FLODER + imgPath);
-            content.setOperDate(file.getMap().get("createDate").toString());
-            content.setUserName(file.getMap().get("userName").toString());
-            contentList.add(content);
+            if(!"".equals(file.getImgPath())){
+                UrlContent content = new UrlContent();
+                content.setId(file.getId());
+                content.setSourceId(file.getId());
+                String imgPath = file.getImgPath();
+                content.setName(imgPath.substring(imgPath.lastIndexOf("/")+1));
+                content.setUrl(Constants.FTP_SHARE_FLODER + imgPath);
+                content.setOperDate(file.getMap().get("createDate").toString());
+                content.setUserName(file.getMap().get("userName").toString());
+                contentList.add(content);
+            }
         }
         return contentList;
     }
