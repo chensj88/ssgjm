@@ -103,7 +103,7 @@
                 // }
                 var fileType = $("#fileType").val();
                 var userId = $("#userId").val();
-                //var serialNo = $("#serialNo").val();
+                var serialNo = $("#serialNo").val();
                 var uploadFile = new FormData($("#file")[0]);
 				//判断上传的只能是图片
                 var f=document.getElementById("uploadFile").value;
@@ -118,7 +118,7 @@
                 if("undefined" != typeof(uploadFile) && uploadFile != null && uploadFile != ""){
                     $.ajax({
                         type: "POST",
-                        url:"<%=basePath%>/mobile/implementData/uploadImgAjax.do?id="+id+"&fileType="+fileType+"&userId="+userId,
+                        url:"<%=basePath%>/mobile/implementData/uploadImgAjax.do?id="+id+"&fileType="+fileType+"&userId="+userId+"&serialNo="+serialNo,
 						data:uploadFile,
                         cache : false,
                         async: false,

@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.web.controller.mobile;
 
+import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.*;
@@ -152,15 +153,15 @@ public class OnlineFileController extends BaseController {
     @ResponseBody
     public Map<String,Boolean> uploadImgAjax (HttpServletRequest request,@RequestParam MultipartFile uploadFile){
         Map<String,Boolean> map = new HashMap<String,Boolean>();
-        //String serialNo = request.getParameter("serialNo");
+        String serialNo = request.getParameter("serialNo");
         String userId = request.getParameter("userId");
         String fileType = request.getParameter("fileType");
         String id =request.getParameter("id");
         try{
             if(!uploadFile.isEmpty()) {
                 //上传文件路径
-                String path = request.getServletContext().getRealPath("/onlineFile/");
-                System.out.println(path);
+                String pathLu= Constants.UPLOAD_MOBILE_PREFIX+serialNo+"/onlineFile/";
+                String path = request.getServletContext().getRealPath(pathLu);
 
                 //上传文件名
                 String filename = uploadFile.getOriginalFilename();
@@ -176,8 +177,8 @@ public class OnlineFileController extends BaseController {
                     newFile.delete();
                 }
                 uploadFile.transferTo(newFile);
-                String remotePath = "/onlineFile/"+ filename;
-                String remoteDir ="/onlineFile/" ;
+                String remotePath = pathLu+ filename;
+                String remoteDir =pathLu ;
                 boolean ftpStatus = false;
                 String msg = "";
                 if (port == 21){
