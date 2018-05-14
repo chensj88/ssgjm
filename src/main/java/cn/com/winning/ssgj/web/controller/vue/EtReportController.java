@@ -301,7 +301,7 @@ public class EtReportController extends BaseController {
     @ResponseBody
     @ILog
     @Transactional
-    public Map<String, Object> upload(EtReport report, HttpServletRequest request, MultipartFile file) throws IOException {
+    public Map<String, Object> upload(EtReport report, HttpServletRequest request, MultipartFile file,Long pmId) throws IOException {
         Map<String, Object> result = new HashMap<String, Object>();
         EtReport temp = new EtReport();
         temp.setId(report.getId());
@@ -324,7 +324,7 @@ public class EtReportController extends BaseController {
             }
             file.transferTo(newFile);
             String fileType=filename.substring(filename.lastIndexOf("."));
-            String remotePath = "/report/" + System.currentTimeMillis()+fileType;
+            String remotePath = Constants.UPLOAD_PC_PREFIX+pmId+"/report/" + System.currentTimeMillis()+fileType;
             try {
                 CommonFtpUtils.uploadFile(remotePath, newFile);
                 report.setOperatorTime(new Timestamp(new Date().getTime()));

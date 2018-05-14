@@ -141,7 +141,6 @@ public class EtSimulateRecordController extends BaseController {
     @ResponseBody
     @ILog
     public Map<String,Object> uploadEtSimulateRecord(HttpServletRequest request,EtSimulateRecord record,MultipartFile file) throws IOException {
-        String parentFile = "simulate_"+System.currentTimeMillis();
         Map<String, Object> result = new HashMap<String, Object>();
         if (!file.isEmpty()) {
             //上传文件路径
@@ -160,7 +159,7 @@ public class EtSimulateRecordController extends BaseController {
                 newFile.delete();
             }
             file.transferTo(newFile);
-            String remotePath = "/simulate/" + parentFile + "/" + filename;
+            String remotePath = Constants.UPLOAD_PC_PREFIX+record.getPmId()+"/simulate/" + DateUtil.getTimstamp() + "/" + filename;
             String url = Constants.FTP_SHARE_FLODER + remotePath;
             SysUserInfo user = super.getFacade().getSysUserInfoService().getSysUserInfoById(record.getOperator());
             UrlContent urlContent = new UrlContent(ssgjHelper.createUrlContentIdService(),record.getId(),filename,url,user.getName(),DateUtil.getCurrentDayByFormatter());

@@ -153,7 +153,7 @@ public class EtOnlineFileController extends BaseController {
         file = super.getFacade().getEtOnlineFileService().getEtOnlineFile(file);
         String source = file.getImgPath();
         CommonFtpUtils.removeUploadFile(source);
-        file.setImgPath(null);
+        file.setImgPath("");
         file.setStatus(Constants.STATUS_UNUSE);
         super.getFacade().getEtOnlineFileService().modifyEtOnlineFile(file);
         Map<String,Object> result = new HashMap<String,Object>();
@@ -175,22 +175,22 @@ public class EtOnlineFileController extends BaseController {
     @Transactional
     public Map<String,Object> uploadOnline(HttpServletRequest request, EtOnlineFile onlineFile, MultipartFile file) throws IOException {
         long operator = onlineFile.getOperator();
-        String prefix = "";
+        String prefix = Constants.UPLOAD_PC_PREFIX + onlineFile.getPmId();
         if(Constants.REPORT_TYPE_ONLINE_FILE.equals(onlineFile.getFileType())){
-            prefix = "online";
+            prefix += "/online";
         }else if(Constants.REPORT_TYPE_ONLINE_SWITCH_IMG_FILE.equals(onlineFile.getFileType())){
-            prefix = "switch_image";
+            prefix += "/switch_image";
         }else if(Constants.REPORT_TYPE_ONLINE_SWITCH_FILE.equals(onlineFile.getFileType())){
-            prefix = "switch";
+            prefix += "/switch";
         }else{
-            prefix = "common";
+            prefix += "/common";
         }
         String parentFile = prefix+"_"+System.currentTimeMillis();
         Map<String, Object> result = new HashMap<String, Object>();
         if (!file.isEmpty()) {
            // String filename = FileUtis.generateFileName(file.getOriginalFilename());
             String filename = file.getOriginalFilename();
-            String remotePath = "/"+prefix+"/" + parentFile + "/" + filename;
+            String remotePath = prefix+"/" + DateUtil.getTimstamp() + "/" + filename;
             String msg = "";
             boolean ftpStatus =CommonFtpUtils.commonUploadInfo(request,msg,remotePath,file);
             if (ftpStatus) {

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import cn.com.winning.ssgj.base.util.NumberParseUtil;
 import cn.com.winning.ssgj.domain.EtDepartment;
 import cn.com.winning.ssgj.domain.EtProcessManager;
+import cn.com.winning.ssgj.domain.EtSiteInstallDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,21 +54,27 @@ public class EtOnlineUserContorller extends BaseController {
     @RequestMapping(value = "/list.do")
     @ResponseBody
     public Map<String, Object> rtOnlineUserList(EtOnlineUser etOnlineUser, Long serialNo, Row row) {
-        Long pmId=etOnlineUser.getPmId();
+        Long pmId = etOnlineUser.getPmId();
         etOnlineUser.setRow(row);
         etOnlineUser.setStatus(Constants.PMIS_STATUS_USE);
         List<EtOnlineUser> etOnlineUserList = super.getFacade().getEtOnlineUserService().getEtOnlineUserPaginatedList(etOnlineUser);
         Long deptId = null;
+        Long siteId = null;
         //封装属性
         for (EtOnlineUser onlineUser : etOnlineUserList) {
             deptId = NumberParseUtil.parseLong(onlineUser.getResponseDept());
-            if (deptId == null) {
-                continue;
-            } else {
+            siteId = NumberParseUtil.parseLong(onlineUser.getResponseSite());
+            if (deptId != null) {
                 EtDepartment departmentTemp = new EtDepartment();
                 departmentTemp.setId(deptId);
                 departmentTemp = super.getFacade().getEtDepartmentService().getEtDepartment(departmentTemp);
                 onlineUser.getMap().put("department", departmentTemp == null ? null : departmentTemp.getDeptName());
+            }
+            if (siteId != null) {
+                EtSiteInstallDetail siteInstallDetail = new EtSiteInstallDetail();
+                siteInstallDetail.setId(siteId);
+                siteInstallDetail = this.getFacade().getEtSiteInstallDetailService().getEtSiteInstallDetail(siteInstallDetail);
+                onlineUser.getMap().put("site", siteInstallDetail == null ? null : siteInstallDetail.getSiteName());
             }
         }
         int total = super.getFacade().getEtOnlineUserService().getEtOnlineUserCount(etOnlineUser);
@@ -250,6 +257,20 @@ public class EtOnlineUserContorller extends BaseController {
         result.put("status", Constants.SUCCESS);
         return result;
 
+    }
+
+    @RequestMapping(value = "/responseSiteList.do")
+    @ResponseBody
+    @Transactional
+    public Map<String, Object> responseSiteList(EtDepartment etDepartment) {
+        List<EtSiteInstallDetail> etSiteInstallDetails = null;
+        if (etDepartment.getId() != null) {
+            etSiteInstallDetails = super.getFacade().getEtSiteInstallDetailService().getSiteListByDeptId(etDepartment);
+        }
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", Constants.SUCCESS);
+        result.put("siteList", etSiteInstallDetails);
+        return result;
     }
 
 

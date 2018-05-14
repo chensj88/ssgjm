@@ -59,7 +59,9 @@
 											<p class="dealer">
 												<input class="this_id" type="hidden" value="${vwr.id}">
 												处理人:<span class="pro-down">${vwr.map.get("allocate_name")==null?"待分配":vwr.map.get("allocate_name")}</span>
+												<input id="allocateUser" name="allocateUser" type="hidden" value="" onpropertychange="allots(1);" />
 											</p>
+
 										</c:if>
 									</div>
 								</div>
@@ -152,13 +154,10 @@
 					<i class="iconfont icon-close"></i>
 				</div>
 				<div class="select-user-cnt">
-					<p><span>本人</span>实施工程师</p>
-					<p class="active"><span>李峰</span>研发工程师</p>
-					<p><span>李芬</span>实施工程师</p>
-					<p><span>刘辉</span>研发工程师</p>
-					<p><span>本人</span>实施工程师</p>
-					<p><span>本人</span>实施工程师</p>
-					<p><span>本人</span>实施工程师</p>
+					<c:forEach var="vwr" items="${infos}">
+						<p data-key='${vwr.userId}'><span>${vwr.CName}</span>${vwr.positionName}</p>
+					</c:forEach>
+
 				</div>
 			</div>
 		</div>
@@ -172,6 +171,37 @@
             function detail(id){
                 location.href="<%=basePath%>mobile/siteInstallSet/addAndUpdate.do?id="+id+"&serialNo=${hospcode}&userId=${work_num}";
             }
+
+            function allots(id,data_key){
+
+                $.ajax({
+                    type: "POST",
+                    url:"<%=basePath%>mobile/siteQuestionInfo/allocateUser.do",
+                    data:{id:id,allocateUser:data_key},
+                    cache : false,
+                    dataType:"json",
+                    async: false,
+                    error: function(request) {
+                        mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                    },
+                    success: function(data) {
+                        if(data.status) {
+                            mui.toast('分配成功',{ duration:'long(3500ms)', type:'div' });
+                            //追加图片预览
+                            //setTimeout("location.reload()",3500);
+                        } else {
+                            mui.toast('分配失败',{ duration:'long(3500ms)', type:'div' });
+                            //追加图片预览
+                            //setTimeout("location.reload()",3500);
+
+                        }
+                    }
+                });
+
+
+
+            }
+
 
 
 		</script>

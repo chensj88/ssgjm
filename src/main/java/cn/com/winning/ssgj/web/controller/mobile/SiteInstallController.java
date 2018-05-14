@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.web.controller.mobile;
 
+import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.*;
@@ -177,7 +178,8 @@ public class SiteInstallController extends BaseController {
 
         try{
             if(!uploadFile.isEmpty()) {
-                String path = request.getServletContext().getRealPath("/onlineFile/");
+                String pathLu= Constants.UPLOAD_MOBILE_PREFIX+serialNo+"/site/";
+                String path = request.getServletContext().getRealPath(pathLu);
                 //上传文件名
                 String filename = uploadFile.getOriginalFilename();
                 filename = System.currentTimeMillis()+"."+StringUtils.substringAfterLast(filename,".");
@@ -192,8 +194,8 @@ public class SiteInstallController extends BaseController {
                     newFile.delete();
                 }
                 uploadFile.transferTo(newFile);
-                String remotePath = "/onlineFile/"+ filename;
-                String remoteDir ="/onlineFile/" ;
+                String remotePath = pathLu+ filename;
+                String remoteDir =pathLu ;
                 boolean ftpStatus = false;
                 String msg = "";
                 if (port == 21){

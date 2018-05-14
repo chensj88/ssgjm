@@ -364,9 +364,11 @@ public class EtSiteInstallController extends BaseController {
     @ResponseBody
     public Map<String,Object> uploadFileSite (HttpServletRequest request,EtSiteInstallDetail installDetail, MultipartFile file) {
         Map map = new HashMap();
+        String pmId =request.getParameter("pmId");
         try{
             if(!file.isEmpty()) {
-                String path = request.getServletContext().getRealPath("/onlineFile/");
+                String pathLu=Constants.UPLOAD_PC_PREFIX+pmId+"/site/";
+                String path = request.getServletContext().getRealPath(pathLu);
                 //上传文件名
                 String filename = file.getOriginalFilename();
                 filename = System.currentTimeMillis()+"."+StringUtils.substringAfterLast(filename,".");
@@ -381,8 +383,8 @@ public class EtSiteInstallController extends BaseController {
                     newFile.delete();
                 }
                 file.transferTo(newFile);
-                String remotePath = "/onlineFile/"+ filename;
-                String remoteDir ="/onlineFile/" ;
+                String remotePath = pathLu+ filename;
+                String remoteDir =pathLu ;
                 boolean ftpStatus = false;
                 String msg = "";
                 if (port == 21){
@@ -449,7 +451,11 @@ public class EtSiteInstallController extends BaseController {
             detail.setBuilding(jb.getString("building"));
             detail.setFloorNum(Integer.parseInt(jb.getString("floorNum")));
             detail.setPcModel(jb.getString("pcModel"));
-            detail.setInstall(Integer.parseInt(jb.getString("install")));
+            if(StringUtils.isNotBlank(jb.getString("install"))){
+                detail.setInstall(Integer.parseInt(jb.getString("install")));
+            }else{
+                detail.setInstall(0);
+            }
             detail.setOperator(Long.parseLong(operator));
             detail.setOperatorTime(new Timestamp(new Date().getTime()));
             super.getFacade().getEtSiteInstallDetailService().modifyEtSiteInstallDetail(detail);

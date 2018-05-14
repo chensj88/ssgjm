@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.web.controller.mobile;
 
+import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.*;
@@ -153,7 +154,8 @@ public class FloorQuestionUploadController extends BaseController {
         String serialNo = request.getParameter("serialNo");
         try{
             if(!uploadFile.isEmpty()) {
-                String path = request.getServletContext().getRealPath("/onlineFile/");
+                String pathLu= Constants.UPLOAD_MOBILE_PREFIX+serialNo+"/floor/";
+                String path = request.getServletContext().getRealPath(pathLu);
                 //上传文件名
                 String filename = uploadFile.getOriginalFilename();
                 filename = System.currentTimeMillis()+"."+StringUtils.substringAfterLast(filename,".");
@@ -168,8 +170,8 @@ public class FloorQuestionUploadController extends BaseController {
                     newFile.delete();
                 }
                 uploadFile.transferTo(newFile);
-                String remotePath = "/onlineFile/"+ filename;
-                String remoteDir ="/onlineFile/" ;
+                String remotePath = pathLu+ filename;
+                String remoteDir =pathLu ;
                 boolean ftpStatus = false;
                 String msg = "";
                 if (port == 21){
@@ -259,12 +261,12 @@ public class FloorQuestionUploadController extends BaseController {
                 String str="";
                 for(int i = 0; i < imgs.length; i++) {
                     if(imgPath.equals(imgs[i])){
-
+                        info.setImgPath("");
                     }else{
                         str +=imgs[i]+";";
+                        info.setImgPath(str.substring(0,str.length()-1));
                     }
                 }
-                info.setImgPath(str.substring(0,str.length()-1));
                 super.getFacade().getEtFloorQuestionInfoService().modifyEtFloorQuestionInfo(info);
             }
             map.put("status",true);

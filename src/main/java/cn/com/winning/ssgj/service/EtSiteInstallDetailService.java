@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.service;
 
 import java.util.List;
 
+import cn.com.winning.ssgj.domain.EtDepartment;
 import cn.com.winning.ssgj.domain.EtSiteInstallDetail;
 
 /**
@@ -25,5 +26,7 @@ public interface EtSiteInstallDetailService {
     Integer getEtSiteInstallDetailCount(EtSiteInstallDetail t);
 
     List<EtSiteInstallDetail> getEtSiteInstallDetailPaginatedList(EtSiteInstallDetail t);
+
+    List<EtSiteInstallDetail> getSiteListByDeptId(EtDepartment etDepartment);
 
 }

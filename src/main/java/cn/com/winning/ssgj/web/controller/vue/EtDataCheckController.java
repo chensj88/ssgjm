@@ -202,7 +202,7 @@ public class EtDataCheckController extends BaseController {
     @RequestMapping(value = "/upload.do")
     @ResponseBody
     @Transactional
-    public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtDataCheck t) throws IOException {
+    public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtDataCheck t,Long pmId) throws IOException {
         //根据id获取表属性
         EtDataCheck temp = new EtDataCheck();
         temp.setId(t.getId());
@@ -253,7 +253,7 @@ public class EtDataCheckController extends BaseController {
                 }
                 etDataCheck.setCheckResult(checkResult);
                 //文件夹路径
-                String dir = "/check/" + sysDataCheckScript.getAppName() + "/";
+                String dir = Constants.UPLOAD_PC_PREFIX +pmId +"/dataCheck/" + sysDataCheckScript.getAppName() + "/";
                 String src = newFile.getAbsolutePath();
                 String fileName = newFile.getName();
                 etDataCheck.setScriptPath(dir + fileName);
@@ -386,6 +386,7 @@ public class EtDataCheckController extends BaseController {
 
     /**
      * 确认完成
+     *
      * @param etProcessManager
      * @return
      */

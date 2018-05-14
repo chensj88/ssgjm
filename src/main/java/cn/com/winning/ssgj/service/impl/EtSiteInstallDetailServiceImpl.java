@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 
+import cn.com.winning.ssgj.domain.EtDepartment;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.EtSiteInstallDetailDao;
@@ -20,7 +21,6 @@ public class EtSiteInstallDetailServiceImpl implements EtSiteInstallDetailServic
 
     @Resource
     private EtSiteInstallDetailDao etSiteInstallDetailDao;
-
 
 
     public Integer createEtSiteInstallDetail(EtSiteInstallDetail t) {
@@ -55,6 +55,11 @@ public class EtSiteInstallDetailServiceImpl implements EtSiteInstallDetailServic
 
     public List<EtSiteInstallDetail> getEtSiteInstallDetailPaginatedList(EtSiteInstallDetail t) {
         return this.etSiteInstallDetailDao.selectEntityPaginatedList(t);
+    }
+
+    @Override
+    public List<EtSiteInstallDetail> getSiteListByDeptId(EtDepartment etDepartment) {
+        return this.etSiteInstallDetailDao.getSiteListByDeptId(etDepartment);
     }
 
 }

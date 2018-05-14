@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.web.controller.mobile;
 
+import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.*;
@@ -65,7 +66,8 @@ public class SiteQuestionController extends BaseController {
             List<EtSiteQuestionInfo> siteQuestionInfoList=super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoList(entity);
             //获取项目成员信息
             EtUserInfo userInfo = new EtUserInfo();
-            userInfo.setPositionName("主力工程师");
+            userInfo.setPositionName("1");
+            userInfo.setSerialNo(hospcode);
             userInfo.setUserType(1);
             List<EtUserInfo> infos = super.getFacade().getEtUserInfoService().getEtUserInfoList(userInfo);
 
@@ -129,8 +131,8 @@ public class SiteQuestionController extends BaseController {
 
         try{
             if(!uploadFile.isEmpty()) {
-                String path = request.getServletContext().getRealPath("/onlineFile/");
-                System.out.println(path);
+                String pathLu= Constants.UPLOAD_PC_PREFIX+serialNo+"/site/";
+                String path = request.getServletContext().getRealPath(pathLu);
 
                 //上传文件名
                 String filename = uploadFile.getOriginalFilename();
@@ -146,8 +148,8 @@ public class SiteQuestionController extends BaseController {
                     newFile.delete();
                 }
                 uploadFile.transferTo(newFile);
-                String remotePath = "/onlineFile/"+ filename;
-                String remoteDir ="/onlineFile/" ;
+                String remotePath = pathLu+ filename;
+                String remoteDir =pathLu ;
                 boolean ftpStatus = false;
                 String msg = "";
                 if (port == 21){

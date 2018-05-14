@@ -5,7 +5,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<title>住院流程调研报告</title>
+		<title>资料信息</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/normalize.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
@@ -103,7 +103,7 @@
                 // }
                 var fileType = $("#fileType").val();
                 var userId = $("#userId").val();
-                //var serialNo = $("#serialNo").val();
+                var serialNo = $("#serialNo").val();
                 var uploadFile = new FormData($("#file")[0]);
 				//判断上传的只能是图片
                 var f=document.getElementById("uploadFile").value;
@@ -118,7 +118,7 @@
                 if("undefined" != typeof(uploadFile) && uploadFile != null && uploadFile != ""){
                     $.ajax({
                         type: "POST",
-                        url:"<%=basePath%>/mobile/implementData/uploadImgAjax.do?id="+id+"&fileType="+fileType+"&userId="+userId,
+                        url:"<%=basePath%>/mobile/implementData/uploadImgAjax.do?id="+id+"&fileType="+fileType+"&userId="+userId+"&serialNo="+serialNo,
 						data:uploadFile,
                         cache : false,
                         async: false,
@@ -129,7 +129,6 @@
                             console.log(request);
                         },
                         success: function(data) {
-                            alert(data);
                             console.log(data);
                             if(data.status) {
                                 //mui.toast('修改成功',{ duration:'long(3500ms)', type:'div' });
