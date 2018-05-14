@@ -128,16 +128,20 @@ public class EtSiteQuestionInfoController extends BaseController {
         EtSiteQuestionInfo newInfo = new EtSiteQuestionInfo();
         newInfo.setId(info.getId());
         newInfo = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(newInfo);
-        SysUserInfo user = new SysUserInfo();
-        user.setUserid(info.getCreateNo());
-        user = super.getFacade().getSysUserInfoService().getSysUserInfo(user);
-        info.getMap().put("createUser",user.getName());
-        //TODO 测试使用
-        BizProcessResult bizResult =  pmisWorkingPaperService.importWorkReport(newInfo);
-        //TODO 上线使用
-        // cn.com.winning.ssgj.ws.client.BizProcessResult bizResult =  pmisWebServiceClient.importWorkDataToPmis(info);
-        if(bizResult.getResult() != 1){
-            throw new SSGJException(bizResult.getMessage());
+        BizProcessResult bizResult = null;
+        //cn.com.winning.ssgj.ws.client.BizProcessResult bizResult = null;
+        if(newInfo.getPmisStatus() == 2){
+            SysUserInfo user = new SysUserInfo();
+            user.setUserid(info.getCreateNo());
+            user = super.getFacade().getSysUserInfoService().getSysUserInfo(user);
+            info.getMap().put("createUser",user.getName());
+            //TODO 测试使用
+            bizResult =  pmisWorkingPaperService.importWorkReport(newInfo);
+            //TODO 上线使用
+            // bizResult =  pmisWebServiceClient.importWorkDataToPmis(info);
+            if(bizResult.getResult() != 1){
+                throw new SSGJException(bizResult.getMessage());
+            }
         }
         info.setPmisStatus(Constants.STATUS_USE);
         super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
@@ -145,5 +149,51 @@ public class EtSiteQuestionInfoController extends BaseController {
         result.put("status", Constants.SUCCESS);
         result.put("msg", bizResult.getMessage());
         return result;
+    }
+
+    @RequestMapping(value = "/exportBatchPmisData.do")
+    @ResponseBody
+    public Map<String,Object> exportBatchPmisData(EtSiteQuestionInfo info,Long[] idList){
+        EtSiteQuestionInfo oldInfo = null;
+        for (int i=0 ;i<idList.length;i++) {
+            oldInfo = new EtSiteQuestionInfo();
+            oldInfo.setId(idList[i]);
+            oldInfo = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(oldInfo);
+            if(oldInfo.getPmisStatus() == 2 ){
+                oldInfo.setBatchNo(info.getBatchNo());
+                oldInfo.setQuestionType(info.getQuestionType());
+                oldInfo.setReasonType(info.getReasonType());
+                oldInfo.setManuscriptStatus(info.getManuscriptStatus());
+                oldInfo.setDiffcultLevel(info.getDiffcultLevel());
+                oldInfo.setDevUser(info.getDevUser());
+                oldInfo.setDevUserName(info.getDevUserName());
+                oldInfo.setLinkman(info.getLinkman());
+                oldInfo.setMobile(info.getMobile());
+                oldInfo.setSolutionResult(info.getSolutionResult());
+                oldInfo.setHopeFinishDate(info.getHopeFinishDate());
+                oldInfo.setResolveDate(info.getResolveDate());
+                oldInfo.setWorkLoad(info.getWorkLoad());
+                oldInfo.setUserMessage(info.getUserMessage());
+                oldInfo.setOperator(info.getOperator());
+                oldInfo.setOperatorTime(new Timestamp(new Date().getTime()));
+                SysUserInfo user = new SysUserInfo();
+                user.setId(oldInfo.getCreator());
+                user = super.getFacade().getSysUserInfoService().getSysUserInfo(user);
+                oldInfo.setCreateNo(user.getUserid());
+                super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(oldInfo);
+                oldInfo.getMap().put("createUser",user.getName());
+                BizProcessResult bizResult =  pmisWorkingPaperService.importWorkReport(oldInfo);
+                if(bizResult.getResult() != 1){
+                    throw new SSGJException(bizResult.getMessage());
+                }
+                oldInfo.setPmisStatus(Constants.STATUS_USE);
+                super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(oldInfo);
+            }
+        }
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+//        result.put("data", );
+        return result;
+
     }
 }
