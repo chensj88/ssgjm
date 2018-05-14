@@ -301,7 +301,7 @@ public class EtReportController extends BaseController {
     @ResponseBody
     @ILog
     @Transactional
-    public Map<String, Object> upload(EtReport report, HttpServletRequest request, MultipartFile file,Long pmId) throws IOException {
+    public Map<String, Object> upload(EtReport report, HttpServletRequest request, MultipartFile file, Long pmId) throws IOException {
         Map<String, Object> result = new HashMap<String, Object>();
         EtReport temp = new EtReport();
         temp.setId(report.getId());
@@ -323,13 +323,13 @@ public class EtReportController extends BaseController {
                 newFile.delete();
             }
             file.transferTo(newFile);
-            String fileType=filename.substring(filename.lastIndexOf("."));
-            String remotePath = Constants.UPLOAD_PC_PREFIX+pmId+"/report/" + System.currentTimeMillis()+fileType;
+            String fileType = filename.substring(filename.lastIndexOf("."));
+            String remotePath = Constants.UPLOAD_PC_PREFIX + pmId + "/report/" + System.currentTimeMillis() + fileType;
             try {
                 CommonFtpUtils.uploadFile(remotePath, newFile);
                 report.setOperatorTime(new Timestamp(new Date().getTime()));
                 if (temp.getImgPath() != null && !"".equals(temp.getImgPath().trim())) {
-                    report.setImgPath(temp.getImgPath() + ";" +  remotePath);
+                    report.setImgPath(temp.getImgPath() + ";" + remotePath);
                 } else {
                     report.setImgPath(remotePath);
                 }
@@ -418,7 +418,18 @@ public class EtReportController extends BaseController {
     @ResponseBody
     @ILog
     public Map<String, Object> delete(EtReport etReport) {
+        EtReport report = getFacade().getEtReportService().getEtReport(etReport);
+        //删除数据
         super.getFacade().getEtReportService().removeEtReport(etReport);
+        //图片路径
+        String imgPath = report.getImgPath();
+        //删除图片
+        if (!StringUtil.isEmptyOrNull(imgPath)) {
+            String[] imgArr = imgPath.split(";");
+            for (String path : imgArr) {
+                CommonFtpUtils.removeUploadFile(path);
+            }
+        }
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
