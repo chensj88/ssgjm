@@ -83,14 +83,16 @@ public class HospitalUserController extends BaseController {
         oldUser.setSsgs(userInfo.getSsgs());
         oldUser.setUserid(userInfo.getUserid());
         oldUser = super.getFacade().getSysUserInfoService().getSysUserInfo(oldUser);
-        userInfo.setUserType(Constants.User.USER_TYPE_HOSPITAL);
-        userInfo.setPassword(MD5.stringMD5(userInfo.getUserid()));
-        userInfo.setStatus(Constants.PMIS_STATUS_USE);
-        if (oldUser == null) {
+//        oldUser.setId(userInfo.getId());
+        if (userInfo.getId() == 0 && oldUser == null ) {
+            userInfo.setUserType(Constants.User.USER_TYPE_HOSPITAL);
+            userInfo.setStatus(Constants.PMIS_STATUS_USE);
             userInfo.setId(ssgjHelper.createUserId());
             super.getFacade().getSysUserInfoService().createSysUserInfo(userInfo);
         } else {
-            userInfo.setId(oldUser.getId());
+            //userInfo.setId(oldUser.getId());
+            userInfo.setUserType(Constants.User.USER_TYPE_HOSPITAL);
+            userInfo.setStatus(Constants.PMIS_STATUS_USE);
             super.getFacade().getSysUserInfoService().modifySysUserInfo(userInfo);
         }
         Map<String, Object> result = new HashMap<String, Object>();
