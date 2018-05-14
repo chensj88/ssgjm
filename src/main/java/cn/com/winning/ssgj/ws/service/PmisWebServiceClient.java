@@ -32,8 +32,8 @@ public class PmisWebServiceClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(PmisWebServiceClient.class);
 
     public static void main(String[] args) {
-        PmisWebServiceClient.insertData();
-        /* PmisWebServiceClient.insertPMISInterfaceData("9");*/
+      /*  PmisWebServiceClient.insertData();*/
+         PmisWebServiceClient.insertPMISInterfaceData("2");
     }
 
     /**
@@ -146,9 +146,12 @@ public class PmisWebServiceClient {
                 page = total / pageSize;
                 pageEnd = false;
             }
+            System.out.println(lastPageSize);
+            System.out.println(page);
+            System.out.println(pageEnd);
             for (int i = 1; i <= page; i++) {
                 if ((i == page) && pageEnd) {
-                    queryOption = PmisWSUtil.createQueryValueOption(i, lastPageSize);
+                    queryOption = PmisWSUtil.createQueryValueOption(i, pageSize);
                     result = lbeBusinessService.query(loginResult.getSessionId(), Constants.PmisWSConstants.WS_SERVICE_OBJECT_NAME,
                             params, "", queryOption);
                     resolveWSResult(result, tableName);
@@ -208,7 +211,7 @@ public class PmisWebServiceClient {
                     sb.append(resolveValue(values.get(j)) + "  ),  \n");
 //              单行结束为字符或者时间
                 } else if ((j == values.size() - 1) && (colInfos.get(j).getType() == 0 || colInfos.get(j).getType() == 3)) {
-                    sb.append("\'" + resolveStringValue(values.get(j)) + " \' ),");
+                    sb.append("\'" + resolveStringValue(values.get(j)) + " \' ),\n");
 //              字段处理 数字
                 } else if (colInfos.get(j).getType() == 1) {
                     sb.append(resolveValue(values.get(j)) + ",");
@@ -218,6 +221,7 @@ public class PmisWebServiceClient {
                 }
             }
         }
+//        System.out.println(sb.toString());
         executeSqlInfo(sb.toString());
     }
 
