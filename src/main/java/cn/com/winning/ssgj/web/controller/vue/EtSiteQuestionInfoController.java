@@ -128,17 +128,17 @@ public class EtSiteQuestionInfoController extends BaseController {
         EtSiteQuestionInfo newInfo = new EtSiteQuestionInfo();
         newInfo.setId(info.getId());
         newInfo = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(newInfo);
-        BizProcessResult bizResult = null;
-        //cn.com.winning.ssgj.ws.client.BizProcessResult bizResult = null;
+        //BizProcessResult bizResult = null;
+        cn.com.winning.ssgj.ws.client.BizProcessResult bizResult = null;
         if(newInfo.getPmisStatus() == 2){
             SysUserInfo user = new SysUserInfo();
             user.setUserid(info.getCreateNo());
             user = super.getFacade().getSysUserInfoService().getSysUserInfo(user);
             info.getMap().put("createUser",user.getName());
             //TODO 测试使用
-            bizResult =  pmisWorkingPaperService.importWorkReport(newInfo);
+//            bizResult =  pmisWorkingPaperService.importWorkReport(newInfo);
             //TODO 上线使用
-            // bizResult =  pmisWebServiceClient.importWorkDataToPmis(info);
+             bizResult =  pmisWebServiceClient.importWorkDataToPmis(info);
             if(bizResult.getResult() != 1){
                 throw new SSGJException(bizResult.getMessage());
             }
@@ -182,7 +182,10 @@ public class EtSiteQuestionInfoController extends BaseController {
                 oldInfo.setCreateNo(user.getUserid());
                 super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(oldInfo);
                 oldInfo.getMap().put("createUser",user.getName());
-                BizProcessResult bizResult =  pmisWorkingPaperService.importWorkReport(oldInfo);
+                //TODO 测试使用
+               // BizProcessResult bizResult =  pmisWorkingPaperService.importWorkReport(oldInfo);
+                //TODO 上线使用
+                cn.com.winning.ssgj.ws.client.BizProcessResult bizResult =  pmisWebServiceClient.importWorkDataToPmis(info);
                 if(bizResult.getResult() != 1){
                     throw new SSGJException(bizResult.getMessage());
                 }
