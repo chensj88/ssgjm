@@ -32,8 +32,8 @@ public class PmisWebServiceClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(PmisWebServiceClient.class);
 
     public static void main(String[] args) {
-      /*  PmisWebServiceClient.insertData();*/
-         PmisWebServiceClient.insertPMISInterfaceData("2");
+        PmisWebServiceClient.insertData();
+//         PmisWebServiceClient.insertPMISInterfaceData("2");
     }
 
     /**
