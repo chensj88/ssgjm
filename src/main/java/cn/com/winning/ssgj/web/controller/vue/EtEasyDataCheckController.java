@@ -369,26 +369,29 @@ public class EtEasyDataCheckController extends BaseController {
      */
     @RequestMapping(value = "/exportSql.do")
     @ResponseBody
-    public void exportSql(HttpServletResponse response, EtEasyDataCheck t) throws IOException {
+    public Map<String, Object> exportSql(HttpServletResponse response, EtEasyDataCheck t) throws IOException {
         //获取数据校验信息
         EtEasyDataCheck etEasyDataCheck = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(t);
         SysDataCheckScript temp = new SysDataCheckScript();
         Long plId = etEasyDataCheck.getPlId();
+        Map map = new HashMap();
         if (plId == null) {
-            return;
+            return null;
         }
         temp.setAppId(etEasyDataCheck.getPlId());
         SysDataCheckScript sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(temp);
         //增加null判断
         if (sysDataCheckScript == null) {
             logger.error("Script is not exist!");
-            return;
+            map.put("error", "Script is not exist!");
+            return map;
         }
         //获取脚本地址
         String scriptPath = sysDataCheckScript.getRemotePath();
         if (StringUtil.isEmptyOrNull(scriptPath)) {
             logger.error("Script path is null or empty!");
-            return;
+            map.put("error", "Script path is null or empty!");
+            return map;
         }
         //获取文件名
         String filename = scriptPath.substring(scriptPath.lastIndexOf("/") + 1);
@@ -427,6 +430,8 @@ public class EtEasyDataCheckController extends BaseController {
                 logger.error("关闭流对象出错 e:{}", e);
             }
         }
+        map.put("status", Constants.SUCCESS);
+        return map;
     }
 
 

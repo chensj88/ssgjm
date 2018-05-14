@@ -202,7 +202,7 @@ public class EtDataCheckController extends BaseController {
     @RequestMapping(value = "/upload.do")
     @ResponseBody
     @Transactional
-    public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtDataCheck t,Long pmId) throws IOException {
+    public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtDataCheck t, Long pmId) throws IOException {
         //根据id获取表属性
         EtDataCheck temp = new EtDataCheck();
         temp.setId(t.getId());
@@ -253,7 +253,7 @@ public class EtDataCheckController extends BaseController {
                 }
                 etDataCheck.setCheckResult(checkResult);
                 //文件夹路径
-                String dir = Constants.UPLOAD_PC_PREFIX +pmId +"/dataCheck/" + sysDataCheckScript.getAppName() + "/";
+                String dir = Constants.UPLOAD_PC_PREFIX + pmId + "/dataCheck/" + sysDataCheckScript.getAppName() + "/";
                 String src = newFile.getAbsolutePath();
                 String fileName = newFile.getName();
                 etDataCheck.setScriptPath(dir + fileName);
@@ -284,21 +284,24 @@ public class EtDataCheckController extends BaseController {
      */
     @RequestMapping(value = "/exportSql.do")
     @ResponseBody
-    public void exportSql(HttpServletResponse response, EtDataCheck t) throws IOException {
+    public Map<String, Object> exportSql(HttpServletResponse response, EtDataCheck t) throws IOException {
         //获取数据校验信息
         EtDataCheck etDataCheck = getFacade().getEtDataCheckService().getEtDataCheck(t);
         SysDataCheckScript temp = new SysDataCheckScript();
         temp.setAppId(etDataCheck.getPlId());
         SysDataCheckScript sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(temp);
+        Map map = new HashMap();
         //获取脚本地址
         if (sysDataCheckScript == null) {
             logger.error("Script is not exist!");
-            return;
+            map.put("error", "Script is not exist!");
+            return map;
         }
         String scriptPath = sysDataCheckScript.getRemotePath();
         if (StringUtil.isEmptyOrNull(scriptPath)) {
             logger.error("Script path is null or empty!");
-            return;
+            map.put("error", "Script path is null or empty!");
+            return map;
         }
         //获取文件名
         String filename = scriptPath.substring(scriptPath.lastIndexOf("/") + 1);
@@ -337,6 +340,8 @@ public class EtDataCheckController extends BaseController {
                 logger.error("关闭流对象出错 e:{}", e);
             }
         }
+        map.put("status", Constants.SUCCESS);
+        return map;
     }
 
     /**
@@ -347,7 +352,7 @@ public class EtDataCheckController extends BaseController {
      */
     @RequestMapping(value = "/exportModel.do")
     @ResponseBody
-    public void exportModel(HttpServletResponse response, EtDataCheck t) throws IOException {
+    public Map<String, Object> exportModel(HttpServletResponse response, EtDataCheck t) throws IOException {
 
         String realPath = Thread.currentThread().getContextClassLoader().getResource("/template").getPath();
         //获取文件名
@@ -381,6 +386,10 @@ public class EtDataCheckController extends BaseController {
                 logger.error("关闭流对象出错 e:{}", e);
             }
         }
+        Map map = new HashMap();
+        map.put("status", Constants.SUCCESS);
+        return map;
+
     }
 
 

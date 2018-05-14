@@ -274,15 +274,17 @@ public class SysDataInfoBufferController extends BaseController {
     @RequestMapping(value = "/exportDataInfo.do")
     @ResponseBody
     @ILog
-    public void exportDataInfo(HttpServletResponse response, SysDataInfo t) throws IOException {
+    public Map<String, Object> exportDataInfo(HttpServletResponse response, SysDataInfo t) throws IOException {
         //根据id获取表属性
         SysDataInfo sysDataInfo = getFacade().getSysDataInfoService().getSysDataInfo(t);
         //表名
         String tableName = sysDataInfo.getTableName();
         logger.info("tableName:{}", tableName);
+        Map map = new HashMap();
         if (StringUtil.isEmptyOrNull(tableName)) {
             logger.warn("tableName is null or empty!");
-            return;
+            map.put("error", "tableName is null or empty!");
+            return map;
         }
         //数据库
         String dbName = sysDataInfo.getDbName();
@@ -299,7 +301,8 @@ public class SysDataInfoBufferController extends BaseController {
         Integer num = getFacade().getCommonQueryService().countTable(checkTableName);
         if (num == null || num == 0) {
             logger.warn("table is not exist!");
-            return;
+            map.put("error", "table is not exist!");
+            return map;
         }
         String sql = sqlBuilder.toString();
         logger.info("sql:{}", sql);
@@ -325,6 +328,8 @@ public class SysDataInfoBufferController extends BaseController {
         OutputStream toClient = response.getOutputStream();
         wb.write(toClient);
         toClient.flush();
+        map.put("status", Constants.SUCCESS);
+        return map;
     }
 
     /**
@@ -336,14 +341,16 @@ public class SysDataInfoBufferController extends BaseController {
     @RequestMapping(value = "/exportSql.do")
     @ResponseBody
     @ILog
-    public void exportSql(HttpServletResponse response, SysDataInfo t) throws IOException {
+    public Map<String, Object> exportSql(HttpServletResponse response, SysDataInfo t) throws IOException {
         //获取数据信息
         SysDataInfo sysDataInfo = getFacade().getSysDataInfoService().getSysDataInfo(t);
         String dbName = sysDataInfo.getDbName();
         String tableName = sysDataInfo.getTableName();
+        Map map = new HashMap();
         if (StringUtil.isEmptyOrNull(tableName)) {
             logger.warn("tableName is null or empty!");
-            return;
+            map.put("error", "tableName is null or empty!");
+            return map;
         }
         //导出文件名
         String filename = sysDataInfo.getTableName() + ".sql";
@@ -360,7 +367,8 @@ public class SysDataInfoBufferController extends BaseController {
         Integer num = getFacade().getCommonQueryService().countTable(checkTableName);
         if (num == null || num == 0) {
             logger.warn("table is not exist!");
-            return;
+            map.put("error", "table is not exist!");
+            return map;
         }
         String sql = sqlBuilder.toString();
         Connection connection = ConnectionUtil.getConnection();
@@ -398,6 +406,8 @@ public class SysDataInfoBufferController extends BaseController {
                 logger.error("关闭流对象出错 e:{}", e);
             }
         }
+        map.put("status", Constants.SUCCESS);
+        return map;
     }
 
     /**
