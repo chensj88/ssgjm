@@ -376,10 +376,11 @@
                             if(obj.status == "1") {
                                 mui.toast('上传成功',{ duration:'long(3500ms)', type:'div' });
                                 //追加图片预览
-                                var imgs = "<div><img src='<%=basePathNuName%>shareFolder${obj.path}'></img><span class=\"iconfont icon-close\" onclick=\"closeImg('${obj.id}');\"></span>\n</div>";
-                                $(".datum-upload.site-width").append(imgs);
+                                //var imgs = "<div><img src='<%=basePathNuName%>shareFolder${obj.path}'></img><span class=\"iconfont icon-close\" onclick=\"closeImg('${obj.id}');\"></span>\n</div>";
+                                //$(".datum-upload.site-width").append(imgs);
 							    //$("#img_upload").append("<div id='close_id'><img src='<%=basePathNuName%>shareFolder${siteQuestionInfo.imgPath}' /></div>");
-							    $("#id").val(obj.id);
+							    //$("#id").val(obj.id);
+                                setTimeout("location.reload()",3500);
                             } else {
                                 mui.toast('上传失败',{ duration:'long(3500ms)', type:'div' });
                                 //追加图片预览
