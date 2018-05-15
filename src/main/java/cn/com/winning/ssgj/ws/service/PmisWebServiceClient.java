@@ -146,9 +146,9 @@ public class PmisWebServiceClient {
                 page = total / pageSize;
                 pageEnd = false;
             }
-            System.out.println(lastPageSize);
-            System.out.println(page);
-            System.out.println(pageEnd);
+//            System.out.println(lastPageSize);
+//            System.out.println(page);
+//            System.out.println(pageEnd);
             for (int i = 1; i <= page; i++) {
                 if ((i == page) && pageEnd) {
                     queryOption = PmisWSUtil.createQueryValueOption(i, pageSize);

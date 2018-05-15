@@ -14,3 +14,4 @@ target/*
 *.properties
 src/main/resources/ftp.properties
 src/main/resources/jdbc.properties
+src/test/*
