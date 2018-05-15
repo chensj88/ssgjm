@@ -319,14 +319,7 @@
         t.HTXX AS C_ID,
         t.XMLCB AS PM_ID,
         t.KHXX AS SERIAL_NO,
-        (
-        SELECT
-        p.CPTX
-        FROM
-        PMIS_PRODUCT_INFO p
-        WHERE
-        p.ID = t.CPXX
-        ) AS PL_ID,
+        0 AS PL_ID,
         t.CPMC AS INTERFACE_NAME,
         1 AS IS_SCOPE,
         NULL AS NO_SCOPE_CODE,
@@ -347,7 +340,7 @@
         <where>
             1=1
             <if test="(pmId != null ) or pmId == 0">and t.XMLCB = #{pmId,jdbcType=BIGINT}</if>
-            <if test="(pmId != null ) or pmId == 0">and t.HTCPLB = 9</if>
+            <if test="(pmId != null ) or pmId == 0">and t.HTCPLB = 2</if>
             <if test="(pmId != null ) or pmId == 0">and t.ZT = 1</if>
         </where>
     </select>
