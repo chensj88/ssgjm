@@ -112,8 +112,8 @@
             <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
             <if test="operatorTime != null ">#{operatorTime, jdbcType=TIMESTAMP},</if>
             <if test="(plId != null and plId != '') or plId == 0">#{plId,jdbcType=BIGINT},</if>
-            <if test="(isScope != null and isScope != '') or isScope == 0">IS_SCOPE = #{isScope,jdbcType=INTEGER},</if>
-            <if test="noScopeCode != null and noScopeCode != ''">NO_SCOPE_CODE = #{noScopeCode,jdbcType=VARCHAR},</if>
+            <if test="(isScope != null and isScope != '') or isScope == 0">#{isScope,jdbcType=INTEGER},</if>
+            <if test="noScopeCode != null and noScopeCode != ''">#{noScopeCode,jdbcType=VARCHAR}</if>
         </trim>
     </insert>
 
