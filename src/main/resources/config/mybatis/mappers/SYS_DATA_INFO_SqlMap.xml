@@ -262,8 +262,8 @@
     <!--根据产品ids和dataType获取基础数据 分页-->
     <select id="selectSysDataInfoPaginatedListByPmIdAndDataType" resultMap="sysDataInfoResult"
             parameterType="sysDataInfo">
-        select DISTINCT * from (
-        select s.*, ROW_NUMBER() OVER ( order by s.ID desc ) as _rn
+        select * from (
+        select DISTINCT s.*, ROW_NUMBER() OVER ( order by s.ID desc ) as _rn
         FROM
         SYS_DATA_INFO s
         LEFT JOIN SYS_PRODUCT_DATA_INFO t ON s.ID = t.BD_ID
@@ -272,15 +272,16 @@
         AND GETDATE() BETWEEN t.EFFECTIVE_DATE
         AND t.EXPIRE_DATE
         AND s.DATA_TYPE = #{dataType}
-        AND t.PD_ID IN (
+        AND EXISTS (
         SELECT
-        DISTINCT p.CPXX
+        1
         FROM
         PMIS_CONTRACT_PRODUCT_INFO p
         WHERE
         p.XMLCB=#{map.pmId}
         AND p.HTCPLB = 1
         AND p.ZT = 1
+        AND t.PD_ID = p.CPXX
         )
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
@@ -298,15 +299,16 @@
         AND GETDATE() BETWEEN t.EFFECTIVE_DATE
         AND t.EXPIRE_DATE
         AND s.DATA_TYPE = #{dataType}
-        AND t.PD_ID IN (
+        AND  EXISTS (
             SELECT
-                p.CPXX
+                1
             FROM
                 PMIS_CONTRACT_PRODUCT_INFO p
             WHERE
                 p.XMLCB=#{map.pmId}
                 AND p.HTCPLB = 1
                 AND p.ZT = 1
+                AND t.PD_ID = p.CPXX
         )
     </select>
 
@@ -322,15 +324,16 @@
         AND GETDATE() BETWEEN t.EFFECTIVE_DATE
         AND t.EXPIRE_DATE
         AND s.DATA_TYPE = #{dataType}
-        AND t.PD_ID IN (
+        AND  EXISTS (
             SELECT
-                p.CPXX
+                1
             FROM
                 PMIS_CONTRACT_PRODUCT_INFO p
             WHERE
                 p.XMLCB=#{map.pmId}
                 AND  p.HTCPLB = 1
                 AND p.ZT = 1
+                AND t.PD_ID = p.CPXX
         )
     </select>
 

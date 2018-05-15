@@ -13,7 +13,7 @@ public class ConnectTest {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Connection connection
-                     = DriverManager.getConnection("jdbc:sqlserver://172.16.0.200:1433;DatabaseName=ssgj","sa","zyc@8468");
+                     = DriverManager.getConnection("jdbc:sqlserver://47.97.170.21:1433;DatabaseName=ssgj","sa","SQL2k08!");
             System.out.println(connection);
             PreparedStatement ps = connection.prepareStatement("select * from sys_dict_info");
             ResultSet rs = ps.executeQuery();
@@ -35,24 +35,5 @@ public class ConnectTest {
     @Test
     public void testConnectionUtil(){
         System.out.println(ConnectionUtil.getConnection());
-    }
-
-
-    @Test
-    public void dateAndDatetime() throws SQLException {
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            Connection connection
-                    = DriverManager.getConnection("jdbc:sqlserver://172.16.0.200:1433;DatabaseName=ssgj","sa","zyc@8468");
-            System.out.println(connection);
-            PreparedStatement ps = connection.prepareStatement("select * from sys_dict_info");
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()){
-                System.out.println(rs.getString(1));
-            }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
     }
 }

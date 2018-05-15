@@ -139,7 +139,7 @@
         var date = new Date();
         date.setTime(longTime);
         var dateType = "";
-        dateType += "  " + getHours(date); // 时
+        dateType += "  " + getHoursForAsia(date); // 时
         dateType += ":" + getMinutes(date); // 分
         dateType += ":" + getSeconds(date); // 分
         return dateType;
@@ -192,6 +192,15 @@
     function getHours(date) {
         var hours = "";
         hours = date.getHours();
+        if (hours < 10) {
+            hours = "0" + hours;
+        }
+        return hours;
+    }
+    // 返回小时
+    function getHoursForAsia(date) {
+        var hours = "";
+        hours = date.getHours() - 8;
         if (hours < 10) {
             hours = "0" + hours;
         }
