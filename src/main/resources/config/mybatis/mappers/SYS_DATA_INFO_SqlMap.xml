@@ -380,4 +380,28 @@
         </where>
     </select>
 
+    <!--根据dataType获取所有基础数据-->
+    <select id="selectSysDataInfoPaginatedListByDataType" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
+        select * from (
+        select s.*, ROW_NUMBER() OVER ( order by s.ID desc ) as _rn
+        FROM
+        SYS_DATA_INFO s
+        WHERE
+        s.STATUS = 1
+        AND s.DATA_TYPE = #{dataType}
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
+
+    <!--根据dataType查询基础数据数量-->
+    <select id="countSysDataInfoListByDataType" resultType="int" parameterType="sysDataInfo">
+        select
+        COUNT (*)
+        FROM
+        SYS_DATA_INFO s
+        WHERE
+        s.STATUS = 1
+        AND s.DATA_TYPE = #{dataType}
+    </select>
+
 </mapper>

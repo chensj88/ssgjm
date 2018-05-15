@@ -50,4 +50,8 @@ public interface SysDataInfoService {
     List<SysDataInfo> getNonSelectedSysDataInfoListByProductId(SysDataInfo d);
 
     List<SysDataInfo> getSelectedSysDataInfoListByProductId(SysDataInfo d);
+
+    List<SysDataInfo> selectSysDataInfoPaginatedListByDataType(SysDataInfo sysDataInfo);
+
+    Integer countSysDataInfoListByDataType(SysDataInfo sysDataInfo);
 }

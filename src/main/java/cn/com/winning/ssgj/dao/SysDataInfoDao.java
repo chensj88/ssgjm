@@ -37,4 +37,8 @@ public interface SysDataInfoDao extends EntityDao<SysDataInfo> {
     List<SysDataInfo> selectNonSelectedSysDataInfoListByProductId(SysDataInfo d);
 
     List<SysDataInfo> selectSelectedSysDataInfoListByProductId(SysDataInfo d);
+
+    List<SysDataInfo> selectSysDataInfoPaginatedListByDataType(SysDataInfo sysDataInfo);
+
+    Integer countSysDataInfoListByDataType(SysDataInfo sysDataInfo);
 }

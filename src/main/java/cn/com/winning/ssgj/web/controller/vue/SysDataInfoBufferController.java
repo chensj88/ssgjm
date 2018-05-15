@@ -68,18 +68,18 @@ public class SysDataInfoBufferController extends BaseController {
         if (pmId == null) {
             return null;
         }
-        //创建map，封装其他属性
-        Map<String, Object> propMap = new HashMap<String, Object>();
-        //pks为mapping xml中设定的属性名
-        propMap.put("pmId", pmId);
+//        //创建map，封装其他属性
+//        Map<String, Object> propMap = new HashMap<String, Object>();
+//        //pks为mapping xml中设定的属性名
+//        propMap.put("pmId", pmId);
 
         SysDataInfo sysDataInfo = new SysDataInfo();
-        sysDataInfo.setRow(row);
         sysDataInfo.setDataType(dataType);
-        sysDataInfo.setMap(propMap);
+        sysDataInfo.setRow(row);
+//        sysDataInfo.setMap(propMap);
         //根据产品id和dataType获取基础数据 dataType:0 国标数据;1 行标数据；2 共享数据；3 易用数据；
-        List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().selectSysDataInfoPaginatedListByPmIdAndDataType(sysDataInfo);
-        int total = getFacade().getSysDataInfoService().countSysDataInfoListByPmIdAndDataType(sysDataInfo);
+        List<SysDataInfo> sysDataInfos = getFacade().getSysDataInfoService().selectSysDataInfoPaginatedListByDataType(sysDataInfo);
+        int total = getFacade().getSysDataInfoService().countSysDataInfoListByDataType(sysDataInfo);
         //根据pmid获取项目进程
         EtProcessManager etProcessManager = new EtProcessManager();
         etProcessManager.setPmId(pmId);
