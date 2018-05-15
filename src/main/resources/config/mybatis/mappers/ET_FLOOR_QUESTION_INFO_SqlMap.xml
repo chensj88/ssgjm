@@ -84,11 +84,12 @@
     <select id="selectEtFloorQuestionInfoPaginatedList" resultMap="etFloorQuestionInfoResult"
             parameterType="etFloorQuestionInfo">
         select * from (
-        select t.*, i.YHMC,ii.YHMC AS operator_name,d.DICT_LABEL,
+        select t.*,r.FLOOR_NAME as F_NAME, i.YHMC,ii.YHMC AS operator_name,d.DICT_LABEL,
         CASE WHEN ( CREATE_TIME IS  NOT  NULL ) THEN CONVERT(VARCHAR(32),CREATE_TIME,120) ELSE '' END AS CREATE_TIME_STR,
         CASE WHEN ( OPERATOR_TIME IS  NOT  NULL ) THEN CONVERT(VARCHAR(32),OPERATOR_TIME,120) ELSE '' END AS OPERATOR_TIME_STR,
         ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
         from ET_FLOOR_QUESTION_INFO t
+        LEFT JOIN SYS_FLOORS r ON t.FLOOR_NAME = r.FLOOR_CODE
         LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
         LEFT JOIN SYS_USER_INFO ii ON  t.OPERATOR=ii.ID
         LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'

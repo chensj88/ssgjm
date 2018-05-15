@@ -83,7 +83,7 @@ public class EtDepartmentServiceImpl implements EtDepartmentService {
 					repeat.setSerialNo(department.getSerialNo());
 					//分类code不能重复生成
 					EtDepartment DeptType = new EtDepartment();
-					DeptType.setTypeName(department.getTypeName());
+					DeptType.setTypeName(repeat.getTypeName());
 					DeptType.setSerialNo(department.getSerialNo());
 					DeptType.setIsDel(1);
 					List<EtDepartment> deptTypeList= this.etDepartmentDao.selectEntityList(DeptType);
