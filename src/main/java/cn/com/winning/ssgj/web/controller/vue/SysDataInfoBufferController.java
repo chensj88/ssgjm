@@ -113,7 +113,7 @@ public class SysDataInfoBufferController extends BaseController {
             return null;
         }
         //数据库
-        String dbName = sysDataInfo.getDbName();
+        String dbName ="data";
         String checkTableName = null;
         String dataBase = null;
         StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ");
@@ -294,7 +294,7 @@ public class SysDataInfoBufferController extends BaseController {
             return map;
         }
         //数据库
-        String dbName = sysDataInfo.getDbName();
+        String dbName = "data";
         StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ");
         String checkTableName = null;
         String dataBase = null;
@@ -357,7 +357,8 @@ public class SysDataInfoBufferController extends BaseController {
     public Map<String, Object> exportSql(HttpServletResponse response, SysDataInfo t) throws IOException {
         //获取数据信息
         SysDataInfo sysDataInfo = getFacade().getSysDataInfoService().getSysDataInfo(t);
-        String dbName = sysDataInfo.getDbName();
+        String dbName = "data";
+        String curDbName=sysDataInfo.getDbName();
         String tableName = sysDataInfo.getTableName();
         Map map = new HashMap();
         if (StringUtil.isEmptyOrNull(tableName)) {
@@ -397,7 +398,7 @@ public class SysDataInfoBufferController extends BaseController {
         try {
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
-            sqlStr = ResultSetUtil.resultSetToSql(resultSet, dbName, tableName);
+            sqlStr = ResultSetUtil.resultSetToSql(resultSet, curDbName, tableName);
 
         } catch (SQLException e) {
             e.printStackTrace();
