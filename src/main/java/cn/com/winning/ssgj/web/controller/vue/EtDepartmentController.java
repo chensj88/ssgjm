@@ -89,6 +89,7 @@ public class EtDepartmentController extends BaseController {
             }else{
                 depart.setDeptType(String.valueOf(ssgjHelper.createSysHospitalDeptTypeIdService()));
             }
+
             if(uniqueList==null||uniqueList.size()==0){
                 super.getFacade().getEtDepartmentService().createEtDepartment(depart);
             }else{

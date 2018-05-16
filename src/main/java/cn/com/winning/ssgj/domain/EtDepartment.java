@@ -31,6 +31,10 @@ public class EtDepartment extends BaseDomain implements Serializable {
 	private String deptName;
 	
 	private Integer isDel;
+	/**
+	 * 科室地理位置
+	 */
+	private String deptLocation;
 	
 	public EtDepartment() {
 
@@ -99,5 +103,12 @@ public class EtDepartment extends BaseDomain implements Serializable {
 	public void setIsDel(Integer isDel) {
 		this.isDel = isDel;
 	}
-	
+
+	public String getDeptLocation() {
+		return deptLocation;
+	}
+
+	public void setDeptLocation(String deptLocation) {
+		this.deptLocation = deptLocation;
+	}
 }
