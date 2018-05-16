@@ -79,10 +79,10 @@ public interface CommonQueryService {
 
     /**
      * 根据表名查询表是否存在数据库中
-     * @param tableName
+     * @param propMap
      * @return
      */
-    Integer countTable(String tableName);
+    Integer countTable(Map propMap);
 
     /**
      * 从PMIS项目组成员导入数据到ET_USER_INFO中

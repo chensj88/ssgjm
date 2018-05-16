@@ -115,16 +115,22 @@ public class SysDataInfoBufferController extends BaseController {
         //数据库
         String dbName = sysDataInfo.getDbName();
         String checkTableName = null;
+        String dataBase = null;
         StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ");
         if (StringUtil.isEmptyOrNull(dbName)) {
             //当存在库名时查询本库
             sqlBuilder.append(tableName);
             checkTableName = tableName;
+            dataBase = "sysobjects";
         } else {
             sqlBuilder.append(dbName).append(".dbo.").append(tableName);
             checkTableName = dbName + ".dbo." + tableName;
+            dataBase = dbName + ".dbo." + "sysobjects";
         }
-        Integer num = getFacade().getCommonQueryService().countTable(checkTableName);
+        Map propMap = new HashMap();
+        propMap.put("dataBase", dataBase);
+        propMap.put("tableName", checkTableName);
+        Integer num = getFacade().getCommonQueryService().countTable(propMap);
         if (num == null || num == 0) {
             logger.warn("table is not exist!");
             return null;
@@ -223,15 +229,16 @@ public class SysDataInfoBufferController extends BaseController {
         if (pmId == null) {
             return;
         }
-        //创建map，封装其他属性
-        Map<String, Object> propMap = new HashMap<String, Object>();
-        //pks为mapping xml中设定的属性名
-        propMap.put("pmId", pmId);
+//        //创建map，封装其他属性
+//        Map<String, Object> propMap = new HashMap<String, Object>();
+//        //pks为mapping xml中设定的属性名
+//        propMap.put("pmId", pmId);
         SysDataInfo sysDataInfo = new SysDataInfo();
         sysDataInfo.setDataType(dataType);
-        sysDataInfo.setMap(propMap);
+        sysDataInfo.setStatus(1);
+//        sysDataInfo.setMap(propMap);
         //根据产品id和dataType获取基础数据 dataType:0 国标数据;1 行标数据；2 共享数据；3 易用数据；
-        List<SysDataInfo> sysDataInfoList = getFacade().getSysDataInfoService().selectSysDataInfoListByPmIdAndDataType(sysDataInfo);
+        List<SysDataInfo> sysDataInfoList = getFacade().getSysDataInfoService().getSysDataInfoList(sysDataInfo);
         //参数集合
         List<Map> dataList = new ArrayList<>();
         for (int i = 0; i < sysDataInfoList.size(); i++) {
@@ -290,15 +297,21 @@ public class SysDataInfoBufferController extends BaseController {
         String dbName = sysDataInfo.getDbName();
         StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ");
         String checkTableName = null;
+        String dataBase = null;
         if (StringUtil.isEmptyOrNull(dbName)) {
             //当存在库名时查询本库
             sqlBuilder.append(tableName);
             checkTableName = tableName;
+            dataBase = "sysobjects";
         } else {
             sqlBuilder.append(dbName).append(".dbo.").append(tableName);
             checkTableName = dbName + ".dbo." + tableName;
+            dataBase = dbName + ".dbo." + "sysobjects";
         }
-        Integer num = getFacade().getCommonQueryService().countTable(checkTableName);
+        Map propMap = new HashMap();
+        propMap.put("dataBase", dataBase);
+        propMap.put("tableName", checkTableName);
+        Integer num = getFacade().getCommonQueryService().countTable(propMap);
         if (num == null || num == 0) {
             logger.warn("table is not exist!");
             map.put("error", "table is not exist!");
@@ -356,15 +369,21 @@ public class SysDataInfoBufferController extends BaseController {
         String filename = sysDataInfo.getTableName() + ".sql";
         StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ");
         String checkTableName = null;
+        String dataBase = null;
         if (StringUtil.isEmptyOrNull(dbName)) {
             //当存在库名时查询本库
             sqlBuilder.append(tableName);
             checkTableName = tableName;
+            dataBase = "sysobjects";
         } else {
             sqlBuilder.append(dbName).append(".dbo.").append(tableName);
             checkTableName = dbName + ".dbo." + tableName;
+            dataBase = dbName + ".dbo." + "sysobjects";
         }
-        Integer num = getFacade().getCommonQueryService().countTable(checkTableName);
+        Map propMap = new HashMap();
+        propMap.put("dataBase", dataBase);
+        propMap.put("tableName", checkTableName);
+        Integer num = getFacade().getCommonQueryService().countTable(propMap);
         if (num == null || num == 0) {
             logger.warn("table is not exist!");
             map.put("error", "table is not exist!");

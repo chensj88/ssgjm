@@ -395,12 +395,12 @@ public class CommonQueryServiceImpl implements CommonQueryService {
 
     /**
      * 根据表名查询表是否存在数据库中
-     * @param tableName
+     * @param propMap
      * @return
      */
     @Override
-    public Integer countTable(String tableName) {
-        return sysDataInfoDao.countTable(tableName);
+    public Integer countTable(Map propMap) {
+        return sysDataInfoDao.countTable(propMap);
     }
 
     @Override

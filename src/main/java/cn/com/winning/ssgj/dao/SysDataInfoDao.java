@@ -5,6 +5,7 @@ import cn.com.winning.ssgj.dao.EntityDao;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author SSGJ
@@ -32,7 +33,7 @@ public interface SysDataInfoDao extends EntityDao<SysDataInfo> {
 
     public List<SysDataInfo> selectSysDataInfoListForORKey(SysDataInfo t);
 
-    Integer countTable(String tableName);
+    Integer countTable(Map propMap);
 
     List<SysDataInfo> selectNonSelectedSysDataInfoListByProductId(SysDataInfo d);
 

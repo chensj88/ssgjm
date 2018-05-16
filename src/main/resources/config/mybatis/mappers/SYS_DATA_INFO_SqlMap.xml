@@ -338,11 +338,11 @@
     </select>
 
     <!--查询表是否存在-->
-    <select id="countTable" resultType="int">
+    <select id="countTable" resultType="int" parameterType="java.util.Map">
         SELECT
           COUNT (*)
         FROM
-	      sysobjects
+	      ${dataBase}
         WHERE
 	      id = object_id(
 		    #{tableName}
@@ -380,7 +380,7 @@
         </where>
     </select>
 
-    <!--根据dataType获取所有基础数据-->
+    <!--根据dataType获取分页基础数据-->
     <select id="selectSysDataInfoPaginatedListByDataType" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
         select * from (
         select s.*, ROW_NUMBER() OVER ( order by s.ID desc ) as _rn

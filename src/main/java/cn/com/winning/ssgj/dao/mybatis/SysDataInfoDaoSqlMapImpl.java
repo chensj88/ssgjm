@@ -7,6 +7,7 @@ import cn.com.winning.ssgj.domain.SysDataInfo;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author SSGJ
@@ -75,8 +76,8 @@ public class SysDataInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysDataInfo> i
     }
 
     @Override
-    public Integer countTable(String tableName) {
-        return this.getSqlSession().selectOne("countTable", tableName);
+    public Integer countTable(Map propMap) {
+        return this.getSqlSession().selectOne("countTable",propMap);
     }
 
     @Override
