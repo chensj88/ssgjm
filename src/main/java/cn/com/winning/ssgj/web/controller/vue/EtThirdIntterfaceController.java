@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -126,7 +128,19 @@ public class EtThirdIntterfaceController extends BaseController {
         String contentType = null;
         String[] contentArr = null;
         //封装产品条线名、完成情况
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         for (EtThirdIntterface intterface : etThirdIntterfaces) {
+            //创建人id
+            Long creator = intterface.getCreator();
+            String creatorName = null;
+            if (creator != null && creator != 0) {
+                EtUserInfo etUserInfo = new EtUserInfo();
+                etUserInfo.setUserId(creator);
+                List<EtUserInfo> etUserInfos = getFacade().getEtUserInfoService().getEtUserInfoList(etUserInfo);
+                creatorName = etUserInfos.size() > 0 ? etUserInfos.get(0).getCName() : "";
+            } else {
+                creatorName = "admin";
+            }
             map = new HashMap();
             contentType = intterface.getContentType();
             if (contentType == null) {
@@ -134,7 +148,10 @@ public class EtThirdIntterfaceController extends BaseController {
             } else {
                 contentArr = contentType.split(",");
             }
+            String createDate=df.format(intterface.getCreateTime());
             map.put("contentList", contentArr);
+            map.put("creator", creatorName);
+            map.put("createDate", createDate);
             intterface.setMap(map);
         }
         //获取所有不在本期范围原因
