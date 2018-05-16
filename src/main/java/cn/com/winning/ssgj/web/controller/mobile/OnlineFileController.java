@@ -58,6 +58,8 @@ public class OnlineFileController extends BaseController {
                     hospcode=(String) io.get("HOSPCODE");
                 }
             }
+//            String work_num ="5823";
+//            String hospcode ="10159";
             //获取用户的信息
             SysUserInfo info = new SysUserInfo();
             info.setUserid(work_num);
