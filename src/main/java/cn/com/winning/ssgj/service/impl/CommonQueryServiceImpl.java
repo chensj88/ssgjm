@@ -357,7 +357,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
                     queryProcess.setFlowName(info.getFlowName());
                     queryProcess.setIsScope(Constants.STATUS_USE);
                     queryProcess.setStatus(Constants.STATUS_UNUSE);
-                    queryProcess.setCreator(10001L);
+                    queryProcess.setCreator(100001L);
                     queryProcess.setCreateTime(new Timestamp(new Date().getTime()));
                     etBusinessProcessService.createEtBusinessProcess(queryProcess);
                 }
