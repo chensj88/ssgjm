@@ -27,6 +27,8 @@
 	<resultMap id="etBusinessProcessResult" type="etBusinessProcess" extends="etBusinessProcessResultForList">
 		<result column="stateClass" property="map.stateClass" jdbcType="VARCHAR"/>
 		<result column="stateTxt" property="map.stateTxt" jdbcType="VARCHAR"/>
+		<result column="CREATE_USER" property="map.creator" jdbcType="VARCHAR"/>
+		<result column="CREATE_DATE" property="map.createDate" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<sql id="sf-etBusinessProcess">
@@ -73,14 +75,17 @@
 	-->
 	<select id="selectEtBusinessProcessPaginatedList" resultMap="etBusinessProcessResult" parameterType="etBusinessProcess">
 		select * from (
-			select * ,
+			select t.* ,
             CASE WHEN t.STATUS = 2 THEN 'disaudit'
 		         WHEN t.STATUS = 9 THEN 'audited'
 		         ELSE 'audit' END  AS stateClass,
 			 t1.DICT_LABEL AS stateTxt,
+		     t2.YHMC AS CREATE_USER,
+		     CONVERT(VARCHAR(32),t.CREATE_TIME,120) CREATE_DATE,
 		     ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
 			 from ET_BUSINESS_PROCESS t
              LEFT JOIN SYS_DICT_INFO t1 ON t.STATUS = CAST(t1.DICT_VALUE AS INT) AND t1.DICT_CODE ='audiType'
+		     LEFT JOIN SYS_USER_INFO t2 ON t.CREATOR = t2.ID
 		    where 1 = 1
 			<include refid="sf-etBusinessProcess" />
 			<!-- order by ID asc -->
