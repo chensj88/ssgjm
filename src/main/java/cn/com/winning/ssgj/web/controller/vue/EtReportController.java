@@ -82,6 +82,8 @@ public class EtReportController extends BaseController {
                 etReportTemp = getFacade().getEtReportService().getEtReport(etReportTemp);
                 if (etReportTemp == null) {
                     report.setId(ssgjHelper.createEtReportIdService());
+                    report.setCreator(100001L);
+                    report.setCreateTime(new Timestamp(new Date().getTime()));
                     getFacade().getEtReportService().createEtReport(report);
                 }
             }
@@ -116,27 +118,13 @@ public class EtReportController extends BaseController {
         List<EtReport> etReports = super.getFacade().getEtReportService().getEtReportPaginatedList(etReport);
         int total = super.getFacade().getEtReportService().getEtReportCount(etReport);
         String imgPath = null;
-        SysDictInfo sysDictInfoTemp = null;
         for (EtReport report : etReports) {
-            sysDictInfoTemp = new SysDictInfo();
-            sysDictInfoTemp.setDictCode("paperType");
-            sysDictInfoTemp.setDictValue(report.getReportType() == null ? null : report.getReportType().toString());
-            sysDictInfoTemp = getFacade().getSysDictInfoService().getSysDictInfo(sysDictInfoTemp);
-            Map map = new HashMap();
-            if (sysDictInfoTemp != null) {
-                map.put("type", sysDictInfoTemp.getDictLabel());
-            } else {
-                map.put("type", "");
-            }
             //获取图片路径集合
             imgPath = report.getImgPath();
             if (!StringUtil.isEmptyOrNull(imgPath)) {
                 String[] pathArr = imgPath.split(";");
-                map.put("imgPath", pathArr);
-            } else {
-                map.put("imgPath", null);
+                report.getMap().put("imgPath",pathArr);
             }
-            report.setMap(map);
         }
         //获取所有报表分类
         SysDictInfo sysDictInfo = new SysDictInfo();

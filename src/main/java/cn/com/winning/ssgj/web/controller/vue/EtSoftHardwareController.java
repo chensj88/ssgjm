@@ -107,16 +107,6 @@ public class EtSoftHardwareController extends BaseController {
         etSoftHardware.setRow(row);
         List<EtSoftHardware> etSoftHardwarePaginatedList = getFacade().getEtSoftHardwareService().getEtSoftHardwarePaginatedList(etSoftHardware);
         int total = getFacade().getEtSoftHardwareService().getEtSoftHardwareCount(etSoftHardware);
-        PmisProductLineInfo pmisProductLineInfo = null;
-        //封装系统名称
-        for (EtSoftHardware softHardware : etSoftHardwarePaginatedList) {
-            pmisProductLineInfo = new PmisProductLineInfo();
-            pmisProductLineInfo.setId(softHardware.getPlId());
-            pmisProductLineInfo = getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
-            Map nameMap = new HashMap();
-            nameMap.put("plName", pmisProductLineInfo.getName());
-            softHardware.setMap(nameMap);
-        }
         //根据项目Id
         List<PmisProductLineInfo> pmisProductLineInfoList = this.getProductLineList(pmId);
         //当无法根据pmid找到产品条线时，给出所有产品条线

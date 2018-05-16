@@ -23,6 +23,9 @@
     </resultMap>
 
     <resultMap id="etReportResult" type="etReport" extends="etReportResultForList">
+        <result column="CREATE_USER" property="map.creator" jdbcType="VARCHAR"/>
+        <result column="CREATE_DATE" property="map.createDate" jdbcType="VARCHAR"/>
+        <result column="R_TYPE" property="map.type" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="sf-etReport">
@@ -65,8 +68,15 @@
 
     <select id="selectEtReportPaginatedList" resultMap="etReportResult" parameterType="etReport">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
-        from ET_REPORT t where 1 = 1
+        select t.*,
+        t1.DICT_LABEL AS R_TYPE,
+        t2.YHMC AS CREATE_USER,
+        CONVERT(VARCHAR(32),t.CREATE_TIME,111) CREATE_DATE,
+        ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from ET_REPORT t
+        LEFT JOIN SYS_DICT_INFO t1 ON t.REPORT_TYPE = CAST(t1.DICT_VALUE AS INT) AND t1.DICT_CODE ='paperType'
+        LEFT JOIN SYS_USER_INFO t2 ON t.CREATOR = t2.ID
+        where 1 = 1
         <include refid="sf-etReport"/>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
