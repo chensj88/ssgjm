@@ -128,7 +128,7 @@ public class EtThirdIntterfaceController extends BaseController {
         String contentType = null;
         String[] contentArr = null;
         //封装产品条线名、完成情况
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         for (EtThirdIntterface intterface : etThirdIntterfaces) {
             //创建人id
             Long creator = intterface.getCreator();
