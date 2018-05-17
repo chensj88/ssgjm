@@ -131,7 +131,7 @@
 
     <!-- Chen,Kuai 获取站点工作比重 -->
     <select id="selectEtSiteInstallGroupPuser" resultMap="etSiteInstallResult" parameterType="etSiteInstall">
-        SELECT t.PUSER_ID,count(t.PUSER_ID) AS PUSER_NUM,f.C_NAME as PUSERNAME FROM ET_SITE_INSTALL t
+        SELECT t.PUSER_ID,SUM(t.NUM) AS PUSER_NUM,f.C_NAME as PUSERNAME FROM ET_SITE_INSTALL t
         LEFT JOIN ET_USER_INFO f ON t.PUSER_ID=f.ID WHERE 1=1 <include refid="sf-etSiteInstall"/>
         GROUP BY t.PUSER_ID,f.C_NAME;
         <!-- order by ID asc -->
