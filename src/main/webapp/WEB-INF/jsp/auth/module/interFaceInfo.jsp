@@ -59,7 +59,7 @@
                 <input type="text" class="input-style" id="interQCode"/>
             </div>
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 div-style text-center">
-                <label class="col-sm-4 form-text" for="refQProductName">适用产品名称:</label>
+                <label class="col-sm-5 form-text" for="refQProductName">适用产品名称:</label>
                 <input type="text" class="input-style" id="refQProductName"/>
             </div>
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 div-style text-center">
