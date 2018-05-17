@@ -120,6 +120,16 @@ public class EtThirdIntterface extends BaseDomain implements Serializable {
      */
     private Long sourceId;
 
+    /**
+     * @val 调研情况
+     */
+    private String situation;
+
+    /**
+     * @val 上传文件地址
+     */
+    private String filePath;
+
     public EtThirdIntterface() {
 
     }
@@ -381,5 +391,21 @@ public class EtThirdIntterface extends BaseDomain implements Serializable {
 
     public void setSourceId(Long sourceId) {
         this.sourceId = sourceId;
+    }
+
+    public String getSituation() {
+        return situation;
+    }
+
+    public void setSituation(String situation) {
+        this.situation = situation;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }
