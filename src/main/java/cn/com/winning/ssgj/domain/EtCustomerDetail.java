@@ -1,6 +1,12 @@
 package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
+
+import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.util.DateUtil;
+import cn.com.winning.ssgj.domain.expand.NodeTree;
+import cn.com.winning.ssgj.domain.support.UrlContent;
+import com.alibaba.fastjson.JSON;
 import org.apache.ibatis.type.Alias;
 import java.util.Date;
 import cn.com.winning.ssgj.domain.BaseDomain;
@@ -51,7 +57,18 @@ public class EtCustomerDetail extends BaseDomain implements Serializable {
 
 	private java.sql.Timestamp operatorTime;
 
-	
+	private String leader;
+
+	private String leaderMobile;
+
+	private String constractPath;
+
+	private String taskPath;
+
+	private String constractPathJson;
+
+	private String taskPathJson;
+
 	public EtCustomerDetail() {
 
 	}
@@ -198,5 +215,68 @@ public class EtCustomerDetail extends BaseDomain implements Serializable {
 
 	public void setCityCode(Integer cityCode) {
 		this.cityCode = cityCode;
+	}
+
+	public String getLeader() {
+		return leader;
+	}
+
+	public void setLeader(String leader) {
+		this.leader = leader;
+	}
+
+	public String getLeaderMobile() {
+		return leaderMobile;
+	}
+
+	public void setLeaderMobile(String leaderMobile) {
+		this.leaderMobile = leaderMobile;
+	}
+
+	public String getConstractPath() {
+
+		return constractPath;
+	}
+
+	public void setConstractPath(String constractPath) {
+		this.constractPath = constractPath;
+	}
+
+	public String getTaskPath() {
+		return taskPath;
+	}
+
+	public void setTaskPath(String taskPath) {
+		this.taskPath = taskPath;
+	}
+
+	public String getConstractPathJson() {
+		UrlContent content = new UrlContent();
+		if(constractPath != null  && !"".equals(constractPath) ){
+			content.setName(constractPath.substring(constractPath.lastIndexOf("/")+1,constractPath.lastIndexOf(".")));
+			content.setUrl(Constants.FTP_SHARE_FLODER + constractPath);
+			content.setOperDate(DateUtil.format(this.operatorTime,DateUtil.DEFAULT_PATTERN));
+			content.setUserName(this.getMap().get("userName").toString());
+		}
+		return constractPath != null ? JSON.toJSONString(content) : null;
+	}
+
+	public void setConstractPathJson(String constractPathJson) {
+		this.constractPathJson = constractPathJson;
+	}
+
+	public String getTaskPathJson() {
+		UrlContent content = new UrlContent();
+		if(taskPath != null && !"".equals(taskPath)){
+			content.setName(taskPath.substring(taskPath.lastIndexOf("/")+1,taskPath.lastIndexOf(".")));
+			content.setUrl(Constants.FTP_SHARE_FLODER + taskPath);
+			content.setOperDate(DateUtil.format(this.operatorTime,DateUtil.DEFAULT_PATTERN));
+			content.setUserName(this.getMap().get("userName").toString());
+		}
+		return taskPath != null ? JSON.toJSONString(content) : null;
+	}
+
+	public void setTaskPathJson(String taskPathJson) {
+		this.taskPathJson = taskPathJson;
 	}
 }

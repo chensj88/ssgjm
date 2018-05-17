@@ -76,12 +76,15 @@ public class PmisWebServiceClient {
 
     /**
      * 工作底稿导入
+     * @param wsUrl 通过这个来区分请求的WS网点，分为测试和上线两种
+     * @see cn.com.winning.ssgj.base.Constants.PmisWSConstants#WS_URL 生产环境
+     * @see  cn.com.winning.ssgj.base.Constants.PmisWSConstants#WS_TEST_URL 测试环境
      * @param info
      * @return
      */
-    public BizProcessResult importWorkDataToPmis(EtSiteQuestionInfo info){
-        LBEBusinessService lbeBusinessService = PmisWSUtil.createLBEBusinessService();
-        LoginResult loginResult = PmisWSUtil.createLoginResult();
+    public BizProcessResult importWorkDataToPmis(String wsUrl,EtSiteQuestionInfo info){
+        LBEBusinessService lbeBusinessService = PmisWSUtil.createLBEBusinessService(wsUrl);
+        LoginResult loginResult = PmisWSUtil.createLoginResult(wsUrl);
         List<LbParameter> params = PmisWSUtil.createLbParameter(info);
         List<LbParameter> variables = new ArrayList<LbParameter>();
         BizProcessResult result = lbeBusinessService.execBizProcess(loginResult.getSessionId(),
@@ -90,7 +93,7 @@ public class PmisWebServiceClient {
         if(result.getResult() != 1){
             throw  new SSGJException(result.getMessage());
         }
-        PmisWSUtil.createLogoutResult(loginResult);
+        PmisWSUtil.createLogoutResult(wsUrl,loginResult);
         return result;
     }
 
@@ -122,8 +125,8 @@ public class PmisWebServiceClient {
         LOGGER.info("删除表SQL：" + sql);
         executeSqlInfo(sql);
         LOGGER.info("删除表" + tableName + "数据结束");
-        LBEBusinessService lbeBusinessService = PmisWSUtil.createLBEBusinessService();
-        LoginResult loginResult = PmisWSUtil.createLoginResult();
+        LBEBusinessService lbeBusinessService = PmisWSUtil.createLBEBusinessService(Constants.PmisWSConstants.WS_URL);
+        LoginResult loginResult = PmisWSUtil.createLoginResult(Constants.PmisWSConstants.WS_URL);
         List<LbParameter> params = PmisWSUtil.createLbParameter(dataType);
         QueryOption queryOption = PmisWSUtil.createFirstCountValueOption();
         QueryResult result = lbeBusinessService.query(loginResult.getSessionId(), Constants.PmisWSConstants.WS_SERVICE_OBJECT_NAME,
@@ -165,7 +168,7 @@ public class PmisWebServiceClient {
             long endTime = System.currentTimeMillis();
             LOGGER.info("导入表" + tableName + "数据结束，耗时：" + (endTime - statTime));
         }
-        PmisWSUtil.createLogoutResult(loginResult);
+        PmisWSUtil.createLogoutResult(Constants.PmisWSConstants.WS_URL,loginResult);
     }
 
     private static void resolveWSResult(QueryResult result, String tableName) {

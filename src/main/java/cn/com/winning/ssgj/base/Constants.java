@@ -329,7 +329,7 @@ public class Constants implements Serializable {
         /**
          * PMIS 工作底稿 WS URL
          */
-        public static final String WORK_WS_URL = "http://203.110.176.178:9083/service/LBEBusiness?wsdl";
+        public static final String WS_TEST_URL = "http://203.110.176.178:9083/service/LBEBusiness?wsdl";
         /**
          * PMIS WS 用户
          */

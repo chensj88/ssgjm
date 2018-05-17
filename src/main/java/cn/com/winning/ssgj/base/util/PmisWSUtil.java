@@ -27,9 +27,9 @@ public class PmisWSUtil {
      * 获取登录结果，主要提取结果中sessionId用户后续查询使用
      * @return
      */
-    public static LoginResult createLoginResult() {
+    public static LoginResult createLoginResult(String wsUrl) {
 
-        LoginResult result = createLBEBusinessService().login(Constants.PmisWSConstants.WS_USER,
+        LoginResult result = createLBEBusinessService(wsUrl).login(Constants.PmisWSConstants.WS_USER,
                             Constants.PmisWSConstants.WS_PASSWORD,
                             "",
                             Constants.PmisWSConstants.WS_ALGORITHM,
@@ -42,9 +42,9 @@ public class PmisWSUtil {
     /**
      * 退出登录解决超时问题
      */
-    public static void createLogoutResult(LoginResult result) {
+    public static void createLogoutResult(String wsUrl,LoginResult result) {
 
-       LogoutResult logoutResult = createLBEBusinessService().logout(result.getSessionId());
+       LogoutResult logoutResult = createLBEBusinessService(wsUrl).logout(result.getSessionId());
        LOGGER.info("WebService用户"+Constants.PmisWSConstants.WS_USER+"退出登录："+logoutResult.getMessage());
 
 
@@ -52,13 +52,14 @@ public class PmisWSUtil {
 
     /**
      * 获取WS服务 LBEBusinessService
+     * @param wsUrl 请求WebService服务的地址信息
      * @return
      */
-    public static LBEBusinessService createLBEBusinessService() {
+    public static LBEBusinessService createLBEBusinessService(String wsUrl) {
         if (lbeBusinessService == null) {
             JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
             factory.setServiceClass(LBEBusinessService.class);
-            factory.setAddress(Constants.PmisWSConstants.WS_URL);
+            factory.setAddress(wsUrl);
             lbeBusinessService = factory.create(LBEBusinessService.class);
         }
         return lbeBusinessService;
