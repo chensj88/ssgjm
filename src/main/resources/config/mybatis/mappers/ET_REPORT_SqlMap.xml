@@ -145,10 +145,10 @@
                 </if>
                 <if test="noScopeCode != null">NO_SCOPE_CODE = #{noScopeCode, jdbcType=VARCHAR},
                 </if>
-                <if test="require != null and require != ''">REQUIRE = #{require, jdbcType=VARCHAR},</if>
+                <if test="require != null">REQUIRE = #{require, jdbcType=VARCHAR},</if>
                 <if test="(status != null )">STATUS = #{status, jdbcType=INTEGER},</if>
                 <if test="imgPath != null ">IMG_PATH = #{imgPath, jdbcType=LONGVARCHAR},</if>
-                <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
+                <if test="remark != null">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
                 <if test="(sourceType != null and sourceType != '') or sourceType == 0">SOURCE_TYPE =
                     #{sourceType, jdbcType=INTEGER},
                 </if>
