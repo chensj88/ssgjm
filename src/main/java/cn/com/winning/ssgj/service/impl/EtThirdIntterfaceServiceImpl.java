@@ -106,4 +106,14 @@ public class EtThirdIntterfaceServiceImpl implements EtThirdIntterfaceService {
         return successNum;
     }
 
+    @Override
+    public List<EtThirdIntterface> selectPmisInterfacePaginatedList(EtThirdIntterface etThirdIntterface) {
+        return etThirdIntterfaceDao.selectPmisInterfacePaginatedList(etThirdIntterface);
+    }
+
+    @Override
+    public Integer selectPmisInterfaceCount(EtThirdIntterface etThirdIntterface) {
+        return etThirdIntterfaceDao.selectPmisInterfaceCount(etThirdIntterface);
+    }
+
 }
