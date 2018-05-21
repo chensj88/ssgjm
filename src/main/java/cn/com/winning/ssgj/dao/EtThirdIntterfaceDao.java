@@ -19,6 +19,10 @@ public interface EtThirdIntterfaceDao extends EntityDao<EtThirdIntterface> {
 
     List<EtThirdIntterface> selectPmisInterfaceList(EtThirdIntterface etThirdIntterface);
 
+    List<EtThirdIntterface> selectPmisInterfacePaginatedList(EtThirdIntterface etThirdIntterface);
+
+    Integer selectPmisInterfaceCount(EtThirdIntterface etThirdIntterface);
+
 
 
 }

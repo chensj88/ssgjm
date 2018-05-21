@@ -115,7 +115,7 @@ public class EtThirdIntterfaceController extends BaseController {
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String, Object> list(EtThirdIntterface etThirdIntterface, Long userId, Row row) {
+    public Map<String, Object> list(EtThirdIntterface etThirdIntterface, Long userId, Row row,Integer isPmis) {
         Long pmId = etThirdIntterface.getPmId();
         if (pmId == null) {
             return null;
@@ -124,12 +124,20 @@ public class EtThirdIntterfaceController extends BaseController {
         Integer countNum = getCountNum(etThirdIntterface);
         //完成数
         Integer completeNum = getCompleteNum(etThirdIntterface);
+        Integer total=0;
+        List<EtThirdIntterface> etThirdIntterfaces=null;
         etThirdIntterface.setRow(row);
-        etThirdIntterface.setSourceId(0L);
-        //根据pmid获取所有分页接口数据
-        List<EtThirdIntterface> etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfacePaginatedList(etThirdIntterface);
-        //根据pmid获取接口数
-        Integer total = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfaceCount(etThirdIntterface);
+        if (isPmis==1){
+            etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().selectPmisInterfacePaginatedList(etThirdIntterface);
+            total = getFacade().getEtThirdIntterfaceService().selectPmisInterfaceCount(etThirdIntterface);
+        }else if(isPmis==0){
+            etThirdIntterface.setSourceId(0L);
+            //根据pmid获取所有分页接口数据
+            etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfacePaginatedList(etThirdIntterface);
+            //根据pmid获取接口数
+            total = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfaceCount(etThirdIntterface);
+        }
+
         //封装产品条线名、完成情况
         DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         for (EtThirdIntterface intterface : etThirdIntterfaces) {

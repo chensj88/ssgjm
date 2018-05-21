@@ -350,4 +350,24 @@
         </where>
     </select>
 
+
+    <!--获取PMIS接口数-->
+    <select id="selectPmisInterfaceCount" resultType="int" parameterType="etThirdIntterface">
+        select count(*) from ET_THIRD_INTTERFACE t where 1 = 1
+        AND SOURCE_ID != 0
+        <include refid="sf-etThirdIntterface"/>
+    </select>
+
+    <!---->
+    <select id="selectPmisInterfacePaginatedList" resultMap="etThirdIntterfaceResult"
+            parameterType="etThirdIntterface">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from ET_THIRD_INTTERFACE t where 1 = 1
+        <include refid="sf-etThirdIntterface"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+        and SOURCE_ID != 0
+    </select>
+
 </mapper>
