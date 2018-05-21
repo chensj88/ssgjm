@@ -14,6 +14,11 @@ public class SSGJException extends RuntimeException {
     public SSGJException(String message) {
         super(message);
     }
+    public SSGJException(String message,String responseCode,String responseMsg) {
+        super(message);
+        this.responseCode = responseCode;
+        this.responseMsg = responseMsg;
+    }
 
     public SSGJException() {
         super();

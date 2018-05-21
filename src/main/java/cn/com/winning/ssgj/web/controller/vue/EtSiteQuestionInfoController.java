@@ -11,6 +11,7 @@ import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import cn.com.winning.ssgj.ws.client.BizProcessResult;
 import cn.com.winning.ssgj.ws.service.PmisWebServiceClient;
+import cn.com.winning.ssgj.ws.work.service.PmisWorkingPaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,8 @@ public class EtSiteQuestionInfoController extends BaseController {
 
     @Autowired
     private PmisWebServiceClient pmisWebServiceClient;
+    @Autowired
+    private PmisWorkingPaperService pmisWorkingPaperService;
     /**
      * 站点问题初始化显示
      * @param info
@@ -122,26 +125,12 @@ public class EtSiteQuestionInfoController extends BaseController {
     public Map<String,Object> exportPmisData(EtSiteQuestionInfo info){
         info.setOperatorTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
-        EtSiteQuestionInfo newInfo = new EtSiteQuestionInfo();
-        newInfo.setId(info.getId());
-        newInfo = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(newInfo);
-        BizProcessResult bizResult = null;
-        if(newInfo.getPmisStatus() == 2){
-            SysUserInfo user = new SysUserInfo();
-            user.setUserid(info.getCreateNo());
-            user = super.getFacade().getSysUserInfoService().getSysUserInfo(user);
-            info.getMap().put("createUser",user.getName());
-            //使用WS_TEST_URL 为测试环境  WS_URL为生产环境
-             bizResult =  pmisWebServiceClient.importWorkDataToPmis(Constants.PmisWSConstants.WS_TEST_URL,info);
-            if(bizResult.getResult() != 1){
-                throw new SSGJException(bizResult.getMessage());
-            }
-        }
-        info.setPmisStatus(Constants.STATUS_USE);
-        super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+        EtSiteQuestionInfo oldInfo = new EtSiteQuestionInfo();
+        oldInfo.setId(info.getId());
+        oldInfo = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(oldInfo);
+        importData(oldInfo);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
-        result.put("msg", bizResult.getMessage());
         return result;
     }
 
@@ -154,6 +143,7 @@ public class EtSiteQuestionInfoController extends BaseController {
             oldInfo.setId(idList[i]);
             oldInfo = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(oldInfo);
             if(oldInfo.getPmisStatus() == 2 ){
+                oldInfo.setPmId(info.getPmId());
                 oldInfo.setBatchNo(info.getBatchNo());
                 oldInfo.setQuestionType(info.getQuestionType());
                 oldInfo.setReasonType(info.getReasonType());
@@ -168,27 +158,46 @@ public class EtSiteQuestionInfoController extends BaseController {
                 oldInfo.setResolveDate(info.getResolveDate());
                 oldInfo.setWorkLoad(info.getWorkLoad());
                 oldInfo.setUserMessage(info.getUserMessage());
+                oldInfo.setIntroducer(info.getIntroducer());
+                oldInfo.setIntroducerDate(info.getIntroducerDate());
+                oldInfo.setIntroducerName(info.getIntroducerName());
                 oldInfo.setOperator(info.getOperator());
                 oldInfo.setOperatorTime(new Timestamp(new Date().getTime()));
                 SysUserInfo user = new SysUserInfo();
                 user.setId(oldInfo.getCreator());
                 user = super.getFacade().getSysUserInfoService().getSysUserInfo(user);
                 oldInfo.setCreateNo(user.getUserid());
-                super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(oldInfo);
-                oldInfo.getMap().put("createUser",user.getName());
-                //TODO 上线使用
-                BizProcessResult bizResult =  pmisWebServiceClient.importWorkDataToPmis(Constants.PmisWSConstants.WS_TEST_URL,info);
-                if(bizResult.getResult() != 1){
-                    throw new SSGJException(bizResult.getMessage());
-                }
-                oldInfo.setPmisStatus(Constants.STATUS_USE);
-                super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(oldInfo);
+                importData(oldInfo);
             }
         }
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
-//        result.put("data", );
         return result;
+    }
 
+
+    private void importData(EtSiteQuestionInfo info){
+        //TODO 生产环境工作底稿导入功能
+        //        BizProcessResult bizResult = null;
+        //        if(newInfo.getPmisStatus() == 2){
+        //            //使用WS_TEST_URL 为测试环境  WS_URL为生产环境
+        //             bizResult =  pmisWebServiceClient.importWorkDataToPmis(Constants.PmisWSConstants.WS_TEST_URL,info);
+        //            if(bizResult.getResult() != 1){
+        //                throw new SSGJException(bizResult.getMessage());
+        //            }
+        //        }
+        //TODO 测试环境工作底稿导入功能
+        cn.com.winning.ssgj.ws.work.client.BizProcessResult bizResult = null;
+        if(info.getPmisStatus() == 2){
+            //使用WS_TEST_URL 为测试环境  WS_URL为生产环境
+            bizResult =  pmisWorkingPaperService.importWorkReport(info);
+            if(bizResult.getResult() != -1){
+                info.setRequirementNo(bizResult.getResult()+"");
+            }else{
+                throw new SSGJException(bizResult.getMessage(),"PMIS-WS-E0001","错误原因:"+bizResult.getMessage());
+            }
+        }
+        info.setPmisStatus(Constants.STATUS_USE);
+        super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
     }
 }

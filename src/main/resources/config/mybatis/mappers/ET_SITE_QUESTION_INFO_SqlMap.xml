@@ -22,33 +22,37 @@
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="OPERATOR" property="operator" jdbcType="BIGINT"/>
         <result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP"/>
-		<result column="BATCH_NO" property="batchNo" jdbcType="INTEGER" />
-		<result column="REASON_TYPE" property="reasonType" jdbcType="INTEGER" />
-		<result column="MANUSCRIPT_STATUS" property="manuscriptStatus" jdbcType="INTEGER" />
-		<result column="DEV_USER" property="devUser" jdbcType="VARCHAR" />
-		<result column="DEV_USER_NAME" property="devUserName" jdbcType="VARCHAR" />
-		<result column="LINKMAN" property="linkman" jdbcType="VARCHAR" />
-		<result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
-		<result column="HOPE_FINISH_DATE" property="hopeFinishDate" jdbcType="VARCHAR" />
-		<result column="RESOLVE_DATE" property="resolveDate" jdbcType="VARCHAR" />
-		<result column="SOLUTION_TYPE" property="solutionType" jdbcType="INTEGER" />
-		<result column="SOLUTION_RESULT" property="solutionResult" jdbcType="VARCHAR" />
-		<result column="DIFFCULT_LEVEL" property="diffcultLevel" jdbcType="INTEGER" />
-		<result column="USER_MESSAGE" property="userMessage" jdbcType="VARCHAR" />
-		<result column="CREATE_NO" property="createNo" jdbcType="VARCHAR" />
-		<result column="PMIS_STATUS" property="pmisStatus" jdbcType="INTEGER" />
-        <result column="WORK_LOAD" property="workLoad" jdbcType="VARCHAR" />
+        <result column="BATCH_NO" property="batchNo" jdbcType="INTEGER"/>
+        <result column="REASON_TYPE" property="reasonType" jdbcType="INTEGER"/>
+        <result column="MANUSCRIPT_STATUS" property="manuscriptStatus" jdbcType="INTEGER"/>
+        <result column="DEV_USER" property="devUser" jdbcType="VARCHAR"/>
+        <result column="DEV_USER_NAME" property="devUserName" jdbcType="VARCHAR"/>
+        <result column="LINKMAN" property="linkman" jdbcType="VARCHAR"/>
+        <result column="MOBILE" property="mobile" jdbcType="VARCHAR"/>
+        <result column="HOPE_FINISH_DATE" property="hopeFinishDate" jdbcType="VARCHAR"/>
+        <result column="RESOLVE_DATE" property="resolveDate" jdbcType="VARCHAR"/>
+        <result column="SOLUTION_TYPE" property="solutionType" jdbcType="INTEGER"/>
+        <result column="SOLUTION_RESULT" property="solutionResult" jdbcType="VARCHAR"/>
+        <result column="DIFFCULT_LEVEL" property="diffcultLevel" jdbcType="INTEGER"/>
+        <result column="USER_MESSAGE" property="userMessage" jdbcType="VARCHAR"/>
+        <result column="CREATE_NO" property="createNo" jdbcType="VARCHAR"/>
+        <result column="PMIS_STATUS" property="pmisStatus" jdbcType="INTEGER"/>
+        <result column="WORK_LOAD" property="workLoad" jdbcType="VARCHAR"/>
+        <result column="INTRODUCER" property="introducer" jdbcType="VARCHAR"/>
+        <result column="INTRODUCER_NAME" property="introducerName" jdbcType="VARCHAR"/>
+        <result column="INTRODUCER_DATE" property="introducerDate" jdbcType="VARCHAR"/>
+        <result column="REQUIREMENT_NO" property="requirementNo" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="etSiteQuestionInfoResult" type="etSiteQuestionInfo" extends="etSiteQuestionInfoResultForList">
-        <result column="create_name" property="map.create_name" jdbcType="VARCHAR" />
-        <result column="createUser" property="map.createUser" jdbcType="VARCHAR" />
-        <result column="createUserName" property="map.createUserName" jdbcType="VARCHAR" />
-        <result column="allocate_name" property="map.allocate_name" jdbcType="VARCHAR" />
-        <result column="DICT_LABEL" property="map.dict_label" jdbcType="VARCHAR" />
-        <result column="NUM" property="map.num" jdbcType="VARCHAR" />
-        <result column="C_NAME" property="map.c_name" jdbcType="VARCHAR" />
-        <result column="POSITION_NAME" property="map.position_name" jdbcType="VARCHAR" />
+        <result column="create_name" property="map.create_name" jdbcType="VARCHAR"/>
+        <result column="createUser" property="map.createUser" jdbcType="VARCHAR"/>
+        <result column="createUserName" property="map.createUserName" jdbcType="VARCHAR"/>
+        <result column="allocate_name" property="map.allocate_name" jdbcType="VARCHAR"/>
+        <result column="DICT_LABEL" property="map.dict_label" jdbcType="VARCHAR"/>
+        <result column="NUM" property="map.num" jdbcType="VARCHAR"/>
+        <result column="C_NAME" property="map.c_name" jdbcType="VARCHAR"/>
+        <result column="POSITION_NAME" property="map.position_name" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME_STRING" property="map.createTimeString" jdbcType="VARCHAR"/>
         <result column="OPERATOR_TIME_STRING" property="map.operatorTimeString" jdbcType="VARCHAR"/>
     </resultMap>
@@ -66,29 +70,42 @@
         <if test="imgPath != null and imgPath != ''">and t.IMG_PATH = #{imgPath}</if>
         <if test="(operType != null and operType != '') or operType == 0">and t.OPER_TYPE = #{operType}</if>
         <if test="(priority != null and priority != '') or priority == 0">and t.PRIORITY = #{priority}</if>
-        <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0">and t.ALLOCATE_USER = #{allocateUser}</if>
-        <if test="(isOperation != null and isOperation != '') or isOperation == 0">and t.IS_OPERATION = #{isOperation}</if>
+        <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0">and t.ALLOCATE_USER =
+            #{allocateUser}
+        </if>
+        <if test="(isOperation != null and isOperation != '') or isOperation == 0">and t.IS_OPERATION = #{isOperation}
+        </if>
         <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
         <if test="(creator != null and creator != '') or creator == 0">and t.CREATOR = #{creator}</if>
         <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
         <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
         <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
-	   <if test="batchNo != null and batchNo != ''"> and t.BATCH_NO = #{batchNo} </if>
-	   <if test="(reasonType != null and reasonType != '') or reasonType == 0"> and t.REASON_TYPE = #{reasonType} </if>
-	   <if test="(manuscriptStatus != null and manuscriptStatus != '') or manuscriptStatus == 0"> and t.MANUSCRIPT_STATUS = #{manuscriptStatus} </if>
-	   <if test="devUser != null and devUser != ''"> and t.DEV_USER = #{devUser} </if>
-	   <if test="devUserName != null and devUserName != ''"> and t.DEV_USER_NAME = #{devUserName} </if>
-	   <if test="linkman != null and linkman != ''"> and t.LINKMAN = #{linkman} </if>
-	   <if test="mobile != null and mobile != ''"> and t.MOBILE = #{mobile} </if>
-	   <if test="hopeFinishDate != null and hopeFinishDate != ''"> and t.HOPE_FINISH_DATE = #{hopeFinishDate} </if>
-	   <if test="resolveDate != null and resolveDate != ''"> and t.RESOLVE_DATE = #{resolveDate} </if>
-	   <if test="(solutionType != null and solutionType != '') or solutionType == 0"> and t.SOLUTION_TYPE = #{solutionType} </if>
-	   <if test="solutionResult != null and solutionResult != ''"> and t.SOLUTION_RESULT = #{solutionResult} </if>
-	   <if test="(diffcultLevel != null and diffcultLevel != '') or diffcultLevel == 0"> and t.DIFFCULT_LEVEL = #{diffcultLevel} </if>
-	   <if test="userMessage != null and userMessage != ''"> and t.USER_MESSAGE = #{userMessage} </if>
-	   <if test="createNo != null and createNo != ''"> and t.CREATE_NO = #{createNo} </if>
-	   <if test="(pmisStatus != null and pmisStatus != '') or pmisStatus == 0"> and t.PMIS_STATUS = #{pmisStatus} </if>
-       <if test="workLoad != null and workLoad != ''"> and t.WORK_LOAD = #{workLoad} </if>
+        <if test="batchNo != null and batchNo != ''">and t.BATCH_NO = #{batchNo}</if>
+        <if test="(reasonType != null and reasonType != '') or reasonType == 0">and t.REASON_TYPE = #{reasonType}</if>
+        <if test="(manuscriptStatus != null and manuscriptStatus != '') or manuscriptStatus == 0">and
+            t.MANUSCRIPT_STATUS = #{manuscriptStatus}
+        </if>
+        <if test="devUser != null and devUser != ''">and t.DEV_USER = #{devUser}</if>
+        <if test="devUserName != null and devUserName != ''">and t.DEV_USER_NAME = #{devUserName}</if>
+        <if test="linkman != null and linkman != ''">and t.LINKMAN = #{linkman}</if>
+        <if test="mobile != null and mobile != ''">and t.MOBILE = #{mobile}</if>
+        <if test="hopeFinishDate != null and hopeFinishDate != ''">and t.HOPE_FINISH_DATE = #{hopeFinishDate}</if>
+        <if test="resolveDate != null and resolveDate != ''">and t.RESOLVE_DATE = #{resolveDate}</if>
+        <if test="(solutionType != null and solutionType != '') or solutionType == 0">and t.SOLUTION_TYPE =
+            #{solutionType}
+        </if>
+        <if test="solutionResult != null and solutionResult != ''">and t.SOLUTION_RESULT = #{solutionResult}</if>
+        <if test="(diffcultLevel != null and diffcultLevel != '') or diffcultLevel == 0">and t.DIFFCULT_LEVEL =
+            #{diffcultLevel}
+        </if>
+        <if test="userMessage != null and userMessage != ''">and t.USER_MESSAGE = #{userMessage}</if>
+        <if test="createNo != null and createNo != ''">and t.CREATE_NO = #{createNo}</if>
+        <if test="(pmisStatus != null and pmisStatus != '') or pmisStatus == 0">and t.PMIS_STATUS = #{pmisStatus}</if>
+        <if test="workLoad != null and workLoad != ''">and t.WORK_LOAD = #{workLoad}</if>
+        <if test="introducer != null and introducer != ''">and t.INTRODUCER = #{introducer}</if>
+        <if test="introducerName != null and introducerName != ''">and t.INTRODUCER_NAME = #{introducerName}</if>
+        <if test="introducerDate != null and introducerDate != ''">and t.INTRODUCER_DATE = #{introducerDate}</if>
+        <if test="requirementNo != null and requirementNo != ''">and t.REQUIREMENT_NO = #{requirementNo}</if>
     </sql>
 
     <select id="selectEtSiteQuestionInfo" resultMap="etSiteQuestionInfoResult" parameterType="etSiteQuestionInfo">
@@ -122,9 +139,11 @@
     <select id="selectEtSiteQuestionInfoPaginatedList" resultMap="etSiteQuestionInfoResult"
             parameterType="etSiteQuestionInfo">
         select * from (
-        select t.*,i.YHMC as create_name,i.USERID AS createUser,i.NAME AS createUserName,ii.YHMC as allocate_name,d.DICT_LABEL,
-        CASE WHEN CREATE_TIME IS  NOT  NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,120) ELSE '' END AS CREATE_TIME_STRING,
-        CASE WHEN ( IS_OPERATION = 1 AND  OPERATOR_TIME IS  NOT  NULL ) THEN CONVERT(VARCHAR(32),OPERATOR_TIME,120) ELSE '' END AS OPERATOR_TIME_STRING,
+        select t.*,i.YHMC as create_name,i.USERID AS createUser,i.NAME AS createUserName,ii.YHMC as
+        allocate_name,d.DICT_LABEL,
+        CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,120) ELSE '' END AS CREATE_TIME_STRING,
+        CASE WHEN ( IS_OPERATION = 1 AND OPERATOR_TIME IS NOT NULL ) THEN CONVERT(VARCHAR(32),OPERATOR_TIME,120) ELSE ''
+        END AS OPERATOR_TIME_STRING,
         ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
         from ET_SITE_QUESTION_INFO t
         LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
@@ -138,14 +157,17 @@
 
 
     <!-- Chen,Kuai 2018年3月24日16:50:08   统计分配人员 -->
-    <select id="selectEtSiteQuestionInfoUserTotal" resultMap="etSiteQuestionInfoResult" parameterType="etSiteQuestionInfo">
-            SELECT ALLOCATE_USER,i.C_NAME,i.POSITION_NAME,tt.NUM from (
-            SELECT t.ALLOCATE_USER,count(*) as NUM FROM ET_SITE_QUESTION_INFO t where 1 = 1 <include refid="sf-etSiteQuestionInfo"/>
-            GROUP BY ALLOCATE_USER)AS tt LEFT JOIN ET_USER_INFO i ON tt.ALLOCATE_USER=i.USER_ID AND i.USER_TYPE = 1 AND i.IS_DEL = 1
-            <where>
-                <if test="serialNo != null and serialNo != ''">and i.SERIAL_NO = #{serialNo}</if>
-                <if test="serialNo != null and serialNo != ''">and i.USER_ID != 100001 </if>
-            </where>
+    <select id="selectEtSiteQuestionInfoUserTotal" resultMap="etSiteQuestionInfoResult"
+            parameterType="etSiteQuestionInfo">
+        SELECT ALLOCATE_USER,i.C_NAME,i.POSITION_NAME,tt.NUM from (
+        SELECT t.ALLOCATE_USER,count(*) as NUM FROM ET_SITE_QUESTION_INFO t where 1 = 1
+        <include refid="sf-etSiteQuestionInfo"/>
+        GROUP BY ALLOCATE_USER)AS tt LEFT JOIN ET_USER_INFO i ON tt.ALLOCATE_USER=i.USER_ID AND i.USER_TYPE = 1 AND
+        i.IS_DEL = 1
+        <where>
+            <if test="serialNo != null and serialNo != ''">and i.SERIAL_NO = #{serialNo}</if>
+            <if test="serialNo != null and serialNo != ''">and i.USER_ID != 100001</if>
+        </where>
         ;
     </select>
 
@@ -172,23 +194,29 @@
             <if test="(creator != null and creator != '') or creator == 0">CREATOR,</if>
             <if test="createTime != null ">CREATE_TIME,</if>
             <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
-		   <if test="operatorTime != null and operatorTime != ''"> OPERATOR_TIME, </if>
-		   <if test="batchNo != null and batchNo != ''"> BATCH_NO, </if>
-	       <if test="(reasonType != null and reasonType != '') or reasonType == 0"> REASON_TYPE, </if>
-	       <if test="(manuscriptStatus != null and manuscriptStatus != '') or manuscriptStatus == 0"> MANUSCRIPT_STATUS, </if>
-		   <if test="devUser != null and devUser != ''"> DEV_USER, </if>
-		   <if test="devUserName != null and devUserName != ''"> DEV_USER_NAME, </if>
-		   <if test="linkman != null and linkman != ''"> LINKMAN, </if>
-		   <if test="mobile != null and mobile != ''"> MOBILE, </if>
-		   <if test="hopeFinishDate != null and hopeFinishDate != ''"> HOPE_FINISH_DATE, </if>
-		   <if test="resolveDate != null and resolveDate != ''"> RESOLVE_DATE, </if>
-	       <if test="(solutionType != null and solutionType != '') or solutionType == 0"> SOLUTION_TYPE, </if>
-		   <if test="solutionResult != null and solutionResult != ''"> SOLUTION_RESULT, </if>
-	       <if test="(diffcultLevel != null and diffcultLevel != '') or diffcultLevel == 0"> DIFFCULT_LEVEL, </if>
-		   <if test="userMessage != null and userMessage != ''"> USER_MESSAGE, </if>
-		   <if test="createNo != null and createNo != ''"> CREATE_NO, </if>
-	       <if test="(pmisStatus != null and pmisStatus != '') or pmisStatus == 0"> PMIS_STATUS, </if>
-            <if test="workLoad != null and workLoad != ''"> WORK_LOAD, </if>
+            <if test="operatorTime != null and operatorTime != ''">OPERATOR_TIME,</if>
+            <if test="batchNo != null and batchNo != ''">BATCH_NO,</if>
+            <if test="(reasonType != null and reasonType != '') or reasonType == 0">REASON_TYPE,</if>
+            <if test="(manuscriptStatus != null and manuscriptStatus != '') or manuscriptStatus == 0">
+                MANUSCRIPT_STATUS,
+            </if>
+            <if test="devUser != null and devUser != ''">DEV_USER,</if>
+            <if test="devUserName != null and devUserName != ''">DEV_USER_NAME,</if>
+            <if test="linkman != null and linkman != ''">LINKMAN,</if>
+            <if test="mobile != null and mobile != ''">MOBILE,</if>
+            <if test="hopeFinishDate != null and hopeFinishDate != ''">HOPE_FINISH_DATE,</if>
+            <if test="resolveDate != null and resolveDate != ''">RESOLVE_DATE,</if>
+            <if test="(solutionType != null and solutionType != '') or solutionType == 0">SOLUTION_TYPE,</if>
+            <if test="solutionResult != null and solutionResult != ''">SOLUTION_RESULT,</if>
+            <if test="(diffcultLevel != null and diffcultLevel != '') or diffcultLevel == 0">DIFFCULT_LEVEL,</if>
+            <if test="userMessage != null and userMessage != ''">USER_MESSAGE,</if>
+            <if test="createNo != null and createNo != ''">CREATE_NO,</if>
+            <if test="(pmisStatus != null and pmisStatus != '') or pmisStatus == 0">PMIS_STATUS,</if>
+            <if test="workLoad != null and workLoad != ''">WORK_LOAD,</if>
+            <if test="introducer != null and introducer != ''">INTRODUCER ,</if>
+            <if test="introducerName != null and introducerName != ''">INTRODUCER_NAME,</if>
+            <if test="introducerDate != null and introducerDate != ''">INTRODUCER_DATE,</if>
+            <if test="requirementNo != null and requirementNo != ''"> REQUIREMENT_NO,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -204,30 +232,47 @@
             <if test="imgPath != null and imgPath != ''">#{imgPath, jdbcType=LONGVARCHAR},</if>
             <if test="(operType != null and operType != '') or operType == 0">#{operType, jdbcType=INTEGER},</if>
             <if test="(priority != null and priority != '') or priority == 0">#{priority, jdbcType=INTEGER},</if>
-            <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0">#{allocateUser, jdbcType=BIGINT},</if>
-            <if test="(isOperation != null and isOperation != '') or isOperation == 0">#{isOperation, jdbcType=INTEGER},</if>
+            <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0">
+                #{allocateUser, jdbcType=BIGINT},
+            </if>
+            <if test="(isOperation != null and isOperation != '') or isOperation == 0">
+                #{isOperation, jdbcType=INTEGER},
+            </if>
             <if test="remark != null and remark != ''">#{remark, jdbcType=LONGVARCHAR},</if>
             <if test="(creator != null and creator != '') or creator == 0">#{creator, jdbcType=BIGINT},</if>
             <if test="createTime != null ">#{createTime, jdbcType=TIMESTAMP},</if>
             <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
             <if test="operatorTime != null ">#{operatorTime, jdbcType=TIMESTAMP},</if>
-		   <if test="batchNo != null and batchNo != ''"> #{batchNo, jdbcType=INTEGER}, </if>
-	       <if test="(reasonType != null and reasonType != '') or reasonType == 0"> #{reasonType, jdbcType=INTEGER}, </if>
-	       <if test="(manuscriptStatus != null and manuscriptStatus != '') or manuscriptStatus == 0"> #{manuscriptStatus, jdbcType=INTEGER}, </if>
-		   <if test="devUser != null and devUser != ''"> #{devUser, jdbcType=VARCHAR}, </if>
-		   <if test="devUserName != null and devUserName != ''"> #{devUserName, jdbcType=VARCHAR}, </if>
-		   <if test="linkman != null and linkman != ''"> #{linkman, jdbcType=VARCHAR}, </if>
-		   <if test="mobile != null and mobile != ''"> #{mobile, jdbcType=VARCHAR}, </if>
-		   <if test="hopeFinishDate != null and hopeFinishDate != ''"> #{hopeFinishDate, jdbcType=VARCHAR}, </if>
-		   <if test="resolveDate != null and resolveDate != ''"> #{resolveDate, jdbcType=VARCHAR}, </if>
-	       <if test="(solutionType != null and solutionType != '') or solutionType == 0"> #{solutionType, jdbcType=INTEGER}, </if>
-		   <if test="solutionResult != null and solutionResult != ''"> #{solutionResult, jdbcType=VARCHAR}, </if>
-	       <if test="(diffcultLevel != null and diffcultLevel != '') or diffcultLevel == 0"> #{diffcultLevel, jdbcType=INTEGER}, </if>
-		   <if test="userMessage != null and userMessage != ''"> #{userMessage, jdbcType=VARCHAR}, </if>
-		   <if test="createNo != null and createNo != ''"> #{createNo, jdbcType=VARCHAR}, </if>
-	       <if test="(pmisStatus != null and pmisStatus != '') or pmisStatus == 0"> #{pmisStatus, jdbcType=INTEGER}, </if>
-            <if test="workLoad != null and workLoad != ''">  #{workLoad , jdbcType=VARCHAR} ,</if>
-		</trim>
+            <if test="batchNo != null and batchNo != ''">#{batchNo, jdbcType=INTEGER},</if>
+            <if test="(reasonType != null and reasonType != '') or reasonType == 0">#{reasonType, jdbcType=INTEGER},
+            </if>
+            <if test="(manuscriptStatus != null and manuscriptStatus != '') or manuscriptStatus == 0">
+                #{manuscriptStatus, jdbcType=INTEGER},
+            </if>
+            <if test="devUser != null and devUser != ''">#{devUser, jdbcType=VARCHAR},</if>
+            <if test="devUserName != null and devUserName != ''">#{devUserName, jdbcType=VARCHAR},</if>
+            <if test="linkman != null and linkman != ''">#{linkman, jdbcType=VARCHAR},</if>
+            <if test="mobile != null and mobile != ''">#{mobile, jdbcType=VARCHAR},</if>
+            <if test="hopeFinishDate != null and hopeFinishDate != ''">#{hopeFinishDate, jdbcType=VARCHAR},</if>
+            <if test="resolveDate != null and resolveDate != ''">#{resolveDate, jdbcType=VARCHAR},</if>
+            <if test="(solutionType != null and solutionType != '') or solutionType == 0">
+                #{solutionType, jdbcType=INTEGER},
+            </if>
+            <if test="solutionResult != null and solutionResult != ''">#{solutionResult, jdbcType=VARCHAR},</if>
+            <if test="(diffcultLevel != null and diffcultLevel != '') or diffcultLevel == 0">
+                #{diffcultLevel, jdbcType=INTEGER},
+            </if>
+            <if test="userMessage != null and userMessage != ''">#{userMessage, jdbcType=VARCHAR},</if>
+            <if test="createNo != null and createNo != ''">#{createNo, jdbcType=VARCHAR},</if>
+            <if test="(pmisStatus != null and pmisStatus != '') or pmisStatus == 0">#{pmisStatus, jdbcType=INTEGER},
+            </if>
+            <if test="workLoad != null and workLoad != ''">#{workLoad , jdbcType=VARCHAR} ,</if>
+            <if test="introducer != null and introducer != ''">#{introducer, jdbcType=VARCHAR} ,</if>
+            <if test="introducerName != null and introducerName != ''">#{introducerName, jdbcType=VARCHAR},</if>
+            <if test="introducerDate != null and introducerDate != ''">#{introducerDate, jdbcType=VARCHAR} ,</if>
+            <if test="requirementNo != null and requirementNo != ''"> #{requirementNo,jdbcType=VARCHAR},</if>
+
+        </trim>
     </insert>
 
     <!-- Chen,Kuai 2018年3月21日14:28:26 清空图片信息 -->
@@ -244,43 +289,85 @@
                 <if test="(cId != null and cId != '') or cId == 0">C_ID = #{cId, jdbcType=BIGINT},</if>
                 <if test="serialNo != null and serialNo != ''">SERIAL_NO = #{serialNo, jdbcType=VARCHAR},</if>
                 <if test="siteName != null and siteName != ''">SITE_NAME = #{siteName, jdbcType=VARCHAR},</if>
-                <if test="productName != null and productName != ''">PRODUCT_NAME = #{productName, jdbcType=VARCHAR},</if>
+                <if test="productName != null and productName != ''">PRODUCT_NAME = #{productName, jdbcType=VARCHAR},
+                </if>
                 <if test="menuName != null and menuName != ''">MENU_NAME = #{menuName, jdbcType=VARCHAR},</if>
-                <if test="questionType != null and questionType != ''">QUESTION_TYPE =#{questionType, jdbcType=INTEGER}, </if>
-                <if test="questionDesc != null and questionDesc != ''">QUESTION_DESC =#{questionDesc, jdbcType=LONGVARCHAR},</if>
+                <if test="questionType != null and questionType != ''">QUESTION_TYPE
+                    =#{questionType, jdbcType=INTEGER},
+                </if>
+                <if test="questionDesc != null and questionDesc != ''">QUESTION_DESC
+                    =#{questionDesc, jdbcType=LONGVARCHAR},
+                </if>
                 <if test="imgPath != null">IMG_PATH = #{imgPath, jdbcType=LONGVARCHAR},</if>
-                <if test="(operType != null and operType != '') or operType == 0">OPER_TYPE =#{operType, jdbcType=INTEGER},</if>
-                <if test="(priority != null and priority != '') or priority == 0">PRIORITY = #{priority, jdbcType=INTEGER},</if>
-                <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0">ALLOCATE_USER = #{allocateUser, jdbcType=BIGINT}, </if>
-                <if test="(isOperation != null and isOperation != '') or isOperation == 0">IS_OPERATION = #{isOperation, jdbcType=INTEGER}, </if>
+                <if test="(operType != null and operType != '') or operType == 0">OPER_TYPE
+                    =#{operType, jdbcType=INTEGER},
+                </if>
+                <if test="(priority != null and priority != '') or priority == 0">PRIORITY =
+                    #{priority, jdbcType=INTEGER},
+                </if>
+                <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0">ALLOCATE_USER =
+                    #{allocateUser, jdbcType=BIGINT},
+                </if>
+                <if test="(isOperation != null and isOperation != '') or isOperation == 0">IS_OPERATION =
+                    #{isOperation, jdbcType=INTEGER},
+                </if>
                 <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
-                <if test="(creator != null and creator != '') or creator == 0">CREATOR = #{creator, jdbcType=BIGINT}, </if>
+                <if test="(creator != null and creator != '') or creator == 0">CREATOR = #{creator, jdbcType=BIGINT},
+                </if>
                 <if test="createTime != null ">CREATE_TIME = #{createTime, jdbcType=TIMESTAMP},</if>
-                <if test="(operator != null and operator != '') or operator == 0">OPERATOR = #{operator, jdbcType=BIGINT}, </if>
-                <if test="operatorTime != null "> OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP}, </if>
-                <if test="batchNo != null and batchNo != ''"> BATCH_NO = #{batchNo, jdbcType=INTEGER}, </if>
-			   <if test="(reasonType != null and reasonType != '') or reasonType == 0"> REASON_TYPE = #{reasonType, jdbcType=INTEGER}, </if>
-			   <if test="(manuscriptStatus != null and manuscriptStatus != '') or manuscriptStatus == 0"> MANUSCRIPT_STATUS = #{manuscriptStatus, jdbcType=INTEGER}, </if>
-			   <if test="devUser != null and devUser != ''"> DEV_USER = #{devUser, jdbcType=VARCHAR}, </if>
-			   <if test="devUserName != null and devUserName != ''"> DEV_USER_NAME = #{devUserName, jdbcType=VARCHAR}, </if>
-			   <if test="linkman != null and linkman != ''"> LINKMAN = #{linkman, jdbcType=VARCHAR}, </if>
-			   <if test="mobile != null and mobile != ''"> MOBILE = #{mobile, jdbcType=VARCHAR}, </if>
-			   <if test="hopeFinishDate != null and hopeFinishDate != ''"> HOPE_FINISH_DATE = #{hopeFinishDate, jdbcType=VARCHAR}, </if>
-			   <if test="resolveDate != null and resolveDate != ''"> RESOLVE_DATE = #{resolveDate, jdbcType=VARCHAR}, </if>
-			   <if test="(solutionType != null and solutionType != '') or solutionType == 0"> SOLUTION_TYPE = #{solutionType, jdbcType=INTEGER}, </if>
-			   <if test="solutionResult != null and solutionResult != ''"> SOLUTION_RESULT = #{solutionResult, jdbcType=VARCHAR}, </if>
-			   <if test="(diffcultLevel != null and diffcultLevel != '') or diffcultLevel == 0"> DIFFCULT_LEVEL = #{diffcultLevel, jdbcType=INTEGER}, </if>
-			   <if test="userMessage != null and userMessage != ''"> USER_MESSAGE = #{userMessage, jdbcType=VARCHAR}, </if>
-			   <if test="createNo != null and createNo != ''"> CREATE_NO = #{createNo, jdbcType=VARCHAR}, </if>
-			   <if test="(pmisStatus != null and pmisStatus != '') or pmisStatus == 0"> PMIS_STATUS = #{pmisStatus, jdbcType=INTEGER}, </if>
-               <if test="workLoad != null and workLoad != ''"> WORK_LOAD = #{workLoad , jdbcType=VARCHAR},</if>
+                <if test="(operator != null and operator != '') or operator == 0">OPERATOR =
+                    #{operator, jdbcType=BIGINT},
+                </if>
+                <if test="operatorTime != null ">OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP},</if>
+                <if test="batchNo != null and batchNo != ''">BATCH_NO = #{batchNo, jdbcType=INTEGER},</if>
+                <if test="(reasonType != null and reasonType != '') or reasonType == 0">REASON_TYPE =
+                    #{reasonType, jdbcType=INTEGER},
+                </if>
+                <if test="(manuscriptStatus != null and manuscriptStatus != '') or manuscriptStatus == 0">
+                    MANUSCRIPT_STATUS = #{manuscriptStatus, jdbcType=INTEGER},
+                </if>
+                <if test="devUser != null and devUser != ''">DEV_USER = #{devUser, jdbcType=VARCHAR},</if>
+                <if test="devUserName != null and devUserName != ''">DEV_USER_NAME = #{devUserName, jdbcType=VARCHAR},
+                </if>
+                <if test="linkman != null and linkman != ''">LINKMAN = #{linkman, jdbcType=VARCHAR},</if>
+                <if test="mobile != null and mobile != ''">MOBILE = #{mobile, jdbcType=VARCHAR},</if>
+                <if test="hopeFinishDate != null and hopeFinishDate != ''">HOPE_FINISH_DATE =
+                    #{hopeFinishDate, jdbcType=VARCHAR},
+                </if>
+                <if test="resolveDate != null and resolveDate != ''">RESOLVE_DATE = #{resolveDate, jdbcType=VARCHAR},
+                </if>
+                <if test="(solutionType != null and solutionType != '') or solutionType == 0">SOLUTION_TYPE =
+                    #{solutionType, jdbcType=INTEGER},
+                </if>
+                <if test="solutionResult != null and solutionResult != ''">SOLUTION_RESULT =
+                    #{solutionResult, jdbcType=VARCHAR},
+                </if>
+                <if test="(diffcultLevel != null and diffcultLevel != '') or diffcultLevel == 0">DIFFCULT_LEVEL =
+                    #{diffcultLevel, jdbcType=INTEGER},
+                </if>
+                <if test="userMessage != null and userMessage != ''">USER_MESSAGE = #{userMessage, jdbcType=VARCHAR},
+                </if>
+                <if test="createNo != null and createNo != ''">CREATE_NO = #{createNo, jdbcType=VARCHAR},</if>
+                <if test="(pmisStatus != null and pmisStatus != '') or pmisStatus == 0">PMIS_STATUS =
+                    #{pmisStatus, jdbcType=INTEGER},
+                </if>
+                <if test="workLoad != null and workLoad != ''">WORK_LOAD = #{workLoad , jdbcType=VARCHAR},</if>
+                <if test="introducer != null and introducer != ''">INTRODUCER = #{introducer, jdbcType=VARCHAR} ,</if>
+                <if test="introducerName != null and introducerName != ''">INTRODUCER_NAME =
+                    #{introducerName, jdbcType=VARCHAR} ,
+                </if>
+                <if test="introducerDate != null and introducerDate != ''">INTRODUCER_DATE =
+                    #{introducerDate, jdbcType=VARCHAR} ,
+                </if>
+                <if test="requirementNo != null and requirementNo != ''"> REQUIREMENT_NO = #{requirementNo,jdbcType=VARCHAR} ,</if>
+
             </trim>
         </set>
         <where>
             <if test="id != null and id != ''">ID = #{id}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
-                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
             </if>
         </where>
     </update>
@@ -291,7 +378,7 @@
             <if test="id != null and id != ''">ID = #{id}</if>
             <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
                 ID in
-                 <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item} </foreach>
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
             </if>
         </where>
     </delete>

@@ -179,11 +179,11 @@ public class PmisWSUtil {
         params.add(param);
         param = new LbParameter();
         param.setName("tcr"); //提出人
-        param.setValue(info.getMap().get("createUser")+"");
+        param.setValue(info.getIntroducer()+"");
         params.add(param);
         param = new LbParameter();
         param.setName("tcrq");//提出日期
-        param.setValue(info.getCreateTime()+"");
+        param.setValue(info.getIntroducerDate()+"");
         params.add(param);
         param = new LbParameter();
         param.setName("xwwcrq"); //希望完成日期
@@ -281,11 +281,11 @@ public class PmisWSUtil {
         params.add(param);
         param = new cn.com.winning.ssgj.ws.work.client.LbParameter();
         param.setName("tcr"); //提出人
-        param.setValue(info.getMap().get("createUser")+"");
+        param.setValue(info.getIntroducer()+"");
         params.add(param);
         param = new cn.com.winning.ssgj.ws.work.client.LbParameter();
         param.setName("tcrq");//提出日期
-        param.setValue(info.getCreateTime()+"");
+        param.setValue(info.getIntroducerDate()+"");
         params.add(param);
         param = new cn.com.winning.ssgj.ws.work.client.LbParameter();
         param.setName("xwwcrq"); //希望完成日期
@@ -293,7 +293,7 @@ public class PmisWSUtil {
         params.add(param);
         param = new cn.com.winning.ssgj.ws.work.client.LbParameter();
         param.setName("jjrq"); //解决日期
-        param.setValue(info.getResolveDate() == null ? "":info.getResolveDate() );
+        param.setValue(info.getResolveDate());
         params.add(param);
         param = new cn.com.winning.ssgj.ws.work.client.LbParameter();
         param.setName("jjfs"); //解决方式
