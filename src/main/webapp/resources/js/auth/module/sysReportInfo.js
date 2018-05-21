@@ -123,6 +123,11 @@ $(function () {
             width: '20px',
             align: 'center'
         }, {
+            field: "pdName",
+            title: "产品名称",
+            width: '40px',
+            align: 'center'
+        }, {
             field: "reportType",
             title: "模板分类",
             width: '20px',

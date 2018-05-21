@@ -108,6 +108,18 @@ $(function () {
             width: '40px',
             align: 'center'
         }, {
+            field: 'isMust',
+            title: '是否必须',
+            width: '20px',
+            align: 'center',
+            formatter:function (value) {
+                if (value == '0') {
+                    return '否';
+                } else if (value == '1') {
+                    return '是';
+                }
+            }
+        }, {
             title: '操作',
             field: 'id',
             align: 'center',
@@ -171,6 +183,7 @@ $(function () {
                 if (_result.status == Common.SUCCESS) {
                     $('#flowForm').initForm(_result.data);
                     $('#flowCode').attr('readonly','true');
+                    $('#isMust').val(_result.data.isMust);
                     if(_result.data.flowType == "0"){
                         $('#flowParent').hide();
                         $('#uploadFileDiv').hide();

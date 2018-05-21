@@ -15,6 +15,7 @@
         <result column="FLOW_PARENT_CODE" property="flowParentCode" jdbcType="VARCHAR"/>
         <result column="FLOW_PARENT_NAME" property="flowParentName" jdbcType="VARCHAR"/>
         <result column="REMOTE_PATH" property="remotePath" jdbcType="VARCHAR"/>
+        <result column="IS_MUST" property="isMust" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="sysFlowInfoResult" type="sysFlowInfo" extends="sysFlowInfoResultForList">
@@ -32,6 +33,7 @@
         </if>
         <if test="lastUpdateTime != null ">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
         <if test="remotePath != null ">and t.REMOTE_PATH = #{remotePath}</if>
+        <if test="isMust != null "> AND t.IS_MUST = #{isMust}</if>
     </sql>
 
     <sql id="query-sysFlowInfo">
@@ -111,6 +113,7 @@
             <if test="(lastUpdator != null and lastUpdator != '')">LAST_UPDATOR,</if>
             <if test="lastUpdateTime != null ">LAST_UPDATE_TIME,</if>
             <if test="remotePath != null ">REMOTE_PATH,</if>
+            <if test="isMust != null ">  IS_MUST,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -126,6 +129,7 @@
             </if>
             <if test="lastUpdateTime != null ">#{lastUpdateTime, jdbcType=TIMESTAMP},</if>
             <if test="remotePath != null "> #{remotePath,jdbcType=VARCHAR},</if>
+            <if test="isMust != null ">  #{isMust,jdbcType=INTEGER},</if>
         </trim>
     </insert>
 
@@ -147,7 +151,8 @@
                 <if test="lastUpdateTime != null ">LAST_UPDATE_TIME =
                     #{lastUpdateTime, jdbcType=TIMESTAMP},
                 </if>
-                <if test="remotePath != null ">REMOTE_PATH = #{remotePath}</if>
+                <if test="remotePath != null ">REMOTE_PATH = #{remotePath},</if>
+                <if test="isMust != null ">IS_MUST = #{isMust,jdbcType=INTEGER}</if>
             </trim>
         </set>
         <where>

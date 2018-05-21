@@ -68,6 +68,11 @@ public class SysFlowInfo extends BaseDomain implements Serializable {
      * @val 流程调研报告上传地址
      */
     private String remotePath;
+    /**
+     * @val 是否必要 0 否，1 是
+     */
+    private Integer isMust;
+
 
     public SysFlowInfo() {
 
@@ -232,6 +237,14 @@ public class SysFlowInfo extends BaseDomain implements Serializable {
 
     public void setRemotePath(String remotePath) {
         this.remotePath = remotePath;
+    }
+
+    public Integer getIsMust() {
+        return isMust;
+    }
+
+    public void setIsMust(Integer isMust) {
+        this.isMust = isMust;
     }
 
     @Override
