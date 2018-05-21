@@ -123,7 +123,7 @@ public class EtReportController extends BaseController {
             imgPath = report.getImgPath();
             if (!StringUtil.isEmptyOrNull(imgPath)) {
                 String[] pathArr = imgPath.split(";");
-                report.getMap().put("imgPath",pathArr);
+                report.getMap().put("imgPath", pathArr);
             }
         }
         //获取所有报表分类
@@ -317,9 +317,9 @@ public class EtReportController extends BaseController {
                 CommonFtpUtils.uploadFile(remotePath, newFile);
                 report.setOperatorTime(new Timestamp(new Date().getTime()));
                 if (temp.getImgPath() != null && !"".equals(temp.getImgPath().trim())) {
-                    report.setImgPath(temp.getImgPath() + ";" + remotePath);
+                    report.setImgPath(temp.getImgPath() + remotePath + ";");
                 } else {
-                    report.setImgPath(remotePath);
+                    report.setImgPath(remotePath + ";");
                 }
 
                 super.getFacade().getEtReportService().modifyEtReport(report);
@@ -422,4 +422,49 @@ public class EtReportController extends BaseController {
         result.put("status", Constants.SUCCESS);
         return result;
     }
+
+    /**
+     * 删除图片
+     *
+     * @param path
+     * @param etReport
+     * @return
+     */
+    @RequestMapping(value = "/deleteImg.do")
+    @ResponseBody
+    public Map<String, Object> deleteImg(String path, EtReport etReport) {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        if (StringUtil.isEmptyOrNull(path)) {
+            result.put("status", Constants.FAILD);
+            return result;
+        }
+        //根据id查找report
+        EtReport reportTemp = new EtReport();
+        reportTemp.setId(etReport.getId());
+        reportTemp = getFacade().getEtReportService().getEtReport(reportTemp);
+        //图片路径
+        String imgPath = reportTemp.getImgPath();
+        String imgPathTemp = imgPath.replace(path, "");
+        String[] arr = imgPathTemp.split(";");
+        String newImgPath = "";
+        for (String imgStr : arr) {
+            if (!StringUtil.isEmptyOrNull(imgStr)) {
+                newImgPath += imgStr + ";";
+            }
+        }
+
+        //更新imgPath
+        EtReport report = new EtReport();
+        report.setId(etReport.getId());
+        report.setImgPath(newImgPath);
+        report.setOperator(etReport.getOperator());
+        report.setOperatorTime(new Timestamp(new Date().getTime()));
+        getFacade().getEtReportService().modifyEtReport(report);
+        //删除图片
+        CommonFtpUtils.removeUploadFile(path);
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
+
 }
