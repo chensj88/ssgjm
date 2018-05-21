@@ -19,7 +19,7 @@ import java.util.List;
  * @package cn.com.winning.ssgj.ws.work.service
  * @date 2018-05-09 21:27
  * @command wsdl2java -p cn.com.winning.ssgj.ws.work.service -d D:\\ws\\  http://203.110.176.178:9083/service/LBEBusiness?wsdl
- * @deprecated 2018-05-17 chensj
+ * 2018-05-17 chensj
  */
 @Component
 public class PmisWorkingPaperService {

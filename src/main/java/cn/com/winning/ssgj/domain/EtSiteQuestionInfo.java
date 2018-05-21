@@ -189,6 +189,22 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 	 * @val 工作量
 	 */
 	private String workLoad;
+	/**
+	 * 提出人
+	 */
+	private String introducer;
+	/**
+	 * 提出人姓名
+	 */
+	private String introducerName;
+	/**
+	 * 提出日期
+	 */
+	private String introducerDate;
+	/**
+	 * PMIS 需求编号
+	 */
+	private String requirementNo;
 
 	private List imgs;
 	
@@ -675,5 +691,37 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 
 	public void setWorkLoad(String workLoad) {
 		this.workLoad = workLoad;
+	}
+
+	public String getIntroducer() {
+		return introducer;
+	}
+
+	public void setIntroducer(String introducer) {
+		this.introducer = introducer;
+	}
+
+	public String getIntroducerName() {
+		return introducerName;
+	}
+
+	public void setIntroducerName(String introducerName) {
+		this.introducerName = introducerName;
+	}
+
+	public String getIntroducerDate() {
+		return introducerDate;
+	}
+
+	public void setIntroducerDate(String introducerDate) {
+		this.introducerDate = introducerDate;
+	}
+
+	public String getRequirementNo() {
+		return requirementNo;
+	}
+
+	public void setRequirementNo(String requirementNo) {
+		this.requirementNo = requirementNo;
 	}
 }

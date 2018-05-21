@@ -123,6 +123,15 @@
                                                placeholder="请输入流程描述">
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="isMust">是否必须</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="isMust" name="isMust">
+                                            <option value="0">否</option>
+                                            <option value="1">是</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="form-group" id="isModifyDiv">
                                     <label class="col-sm-3 control-label" for="isModify">文件替换</label>
                                     <div class="col-sm-6">
