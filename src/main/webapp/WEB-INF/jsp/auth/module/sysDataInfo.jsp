@@ -51,7 +51,7 @@
     <div class="row" id="queryScope">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 div-style text-center">
-                <label class="col-sm-4 form-text"  for="dbQName">数据库名称：</label>
+                <label class="col-sm-5 form-text"  for="dbQName">数据库名称：</label>
                 <input type="text" class="input-style" id="dbQName"/>
             </div>
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 div-style text-center">

@@ -29,12 +29,11 @@
 					<span>调研报告</span>
 				</div>
 				<ul class="datum-row-img clearfix">
-					<!--
-					<a href="<%=basePath%>mobile/implementData/details.do?fileType=1&serialNo=${serialNo}&userId=${userId}">
+					<a href="<%=basePath%>mobile/implementData/addDetails.do?fileType=1&serialNo=${serialNo}&userId=${userId}">
 					<li class="datum-row-add">
 						<i class="iconfont icon-plus"></i>
 					</li>
-					</a> -->
+					</a>
 					<c:forEach var="vul" items="${onlineFileList_one}">
 					<a href="<%=basePath%>mobile/implementData/details.do?fileType=1&serialNo=${serialNo}&userId=${userId}&id=${vul.id}">
 					<li>
@@ -78,14 +77,14 @@
 			<div class="interval"></div>
 			<div class="datum-item">
 				<div class="datum-row">
-					<span>上线联调报告</span>
+					<span>上线可行性报告</span>
 				</div>
 				<ul class="datum-row-img clearfix">
 
-					<c:forEach var="vul" items="${onlineFileList_three}">
+					<%--<c:forEach var="vul" items="${onlineFileList_three}">--%>
                     <a href="<%=basePath%>mobile/implementData/details.do?fileType=3&serialNo=${serialNo}&userId=${userId}&id=${vul.id}">
 						<li>
-							<h3>联调</h3>
+							<h3>可行性资料</h3>
 							<div class="datum-middle">
 								<div>
 									<p>
@@ -95,7 +94,7 @@
 							</div>
 						</li>
                     </a>
-					</c:forEach>
+					<%--</c:forEach>--%>
 				</ul>
 			</div>
 			<div class="interval"></div>

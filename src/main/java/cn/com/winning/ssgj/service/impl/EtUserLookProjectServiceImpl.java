@@ -23,7 +23,14 @@ public class EtUserLookProjectServiceImpl implements EtUserLookProjectService {
     @Resource
     private EtUserLookProjectDao etUserLookProjectDao;
 
-
+    /**
+     * 获取最后登录的项目信息
+     * @param userId
+     * @return
+     */
+    public EtUserLookProject getLastUserLookProject(long userId){
+        return this.etUserLookProjectDao.selectLastUserLookProject(userId);
+    }
 
     public Integer createEtUserLookProject(EtUserLookProject t) {
         return this.etUserLookProjectDao.insertEntity(t);

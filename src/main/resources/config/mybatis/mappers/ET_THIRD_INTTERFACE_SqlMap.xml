@@ -23,6 +23,8 @@
         <result column="MODULE_DETAIL" property="moduleDetail" jdbcType="VARCHAR"/>
         <result column="REMARK" property="remark" jdbcType="LONGVARCHAR"/>
         <result column="SOURCE_ID" property="sourceId" jdbcType="BIGINT"/>
+        <result column="SITUATION" property="situation" jdbcType="VARCHAR"/>
+        <result column="FILE_PATH" property="filePath" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="etThirdIntterfaceResult" type="etThirdIntterface" extends="etThirdIntterfaceResultForList">
@@ -104,6 +106,8 @@
             <if test="moduleDetail != null and moduleDetail != ''">MODULE_DETAIL,</if>
             <if test="remark != null and remark != ''">REMARK,</if>
             <if test="(sourceId != null and sourceId != '') or sourceId == 0">SOURCE_ID,</if>
+            <if test="situation != null">SITUATION,</if>
+            <if test="filePath != null">FILE_PATH,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -128,6 +132,8 @@
             <if test="moduleDetail != null and moduleDetail != ''">#{moduleDetail, jdbcType=VARCHAR},</if>
             <if test="remark != null and remark != ''">#{remark, jdbcType=LONGVARCHAR},</if>
             <if test="(sourceId != null and sourceId != '') or sourceId == 0">#{sourceId, jdbcType=BIGINT},</if>
+            <if test="situation != null">#{situation, jdbcType=VARCHAR},</if>
+            <if test="filePath != null">#{filePath, jdbcType=VARCHAR},</if>
         </trim>
     </insert>
 
@@ -151,7 +157,7 @@
                 <if test="contentType != null">CONTENT_TYPE = #{contentType, jdbcType=VARCHAR},
                 </if>
                 <if test="(status != null )">STATUS = #{status, jdbcType=INTEGER},</if>
-                <if test="message != null and message != ''">MESSAGE = #{message, jdbcType=LONGVARCHAR},</if>
+                <if test="message != null">MESSAGE = #{message, jdbcType=LONGVARCHAR},</if>
                 <if test="(sourceType != null and sourceType != '') or sourceType == 0">SOURCE_TYPE =
                     #{sourceType, jdbcType=INTEGER},
                 </if>
@@ -170,6 +176,8 @@
                     #{moduleDetail, jdbcType=VARCHAR},
                 </if>
                 <if test="remark != null">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
+                <if test="situation != null">SITUATION = #{situation, jdbcType=VARCHAR},</if>
+                <if test="filePath != null">FILE_PATH = #{filePath, jdbcType=VARCHAR},</if>
             </trim>
         </set>
         <where>
@@ -340,6 +348,26 @@
             <if test="(pmId != null ) or pmId == 0">and t.HTCPLB = 2</if>
             <if test="(pmId != null ) or pmId == 0">and t.ZT = 1</if>
         </where>
+    </select>
+
+
+    <!--获取PMIS接口数-->
+    <select id="selectPmisInterfaceCount" resultType="int" parameterType="etThirdIntterface">
+        select count(*) from ET_THIRD_INTTERFACE t where 1 = 1
+        AND SOURCE_ID != 0
+        <include refid="sf-etThirdIntterface"/>
+    </select>
+
+    <!---->
+    <select id="selectPmisInterfacePaginatedList" resultMap="etThirdIntterfaceResult"
+            parameterType="etThirdIntterface">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from ET_THIRD_INTTERFACE t where 1 = 1
+        <include refid="sf-etThirdIntterface"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+        and SOURCE_ID != 0
     </select>
 
 </mapper>

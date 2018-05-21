@@ -64,26 +64,6 @@
 			</div>
 			<div class="datum-report padding-btm-20">
 				<div class="datum-report-item">
-					<span>菜单名称</span>
-					<div id="menuId" class="select">
-                        <input id="menuName" name="menuName" value="${siteQuestionInfo.menuName}" type="hidden"/>
-                        <c:if test="${siteQuestionInfo.menuName != null}" >
-							<a href="#"><span>${siteQuestionInfo.menuName}</span><i class="arrow"></i></a>
-						</c:if>
-						<c:if test="${siteQuestionInfo.menuName == null}" >
-							<a href="#"><span>--请选择--</span><i class="arrow"></i></a>
-						</c:if>
-		                <ul id="ul3">
-
-							<%--<c:forEach var="vwr" items="${contractProductInfos}">--%>
-								<%--<li data-val="${vwr.map.get("meunName")}">${vwr.map.get("meunName")}</li>--%>
-							<%--</c:forEach>--%>
-		                </ul>
-					</div>
-				</div>
-			</div>
-			<div class="datum-report padding-btm-20">
-				<div class="datum-report-item">
 					<span>问题类型</span>
 					<div id="questionTypeId" class="select">
 						<input id="questionType" name="questionType" value="${siteQuestionInfo.questionType}" type="hidden"/>
@@ -99,6 +79,28 @@
 							</c:forEach>
 						</ul>
 					</div>
+				</div>
+			</div>
+			<div class="datum-report padding-btm-20">
+				<div class="datum-report-item">
+					<span>菜单名称</span>
+					<input id="menuName" type="text" name="menuName" value="${siteQuestionInfo.menuName}" />
+					<%--<div id="menuId" class="select">--%>
+					<%--<input id="menuName" type="text" name="menuName" value="${siteQuestionInfo.menuName}" />--%>
+					<%--&lt;%&ndash;<c:if test="${siteQuestionInfo.menuName != null}" >&ndash;%&gt;--%>
+					<%--&lt;%&ndash;<a href="#"><span>${siteQuestionInfo.menuName}</span><i class="arrow"></i></a>&ndash;%&gt;--%>
+					<%--&lt;%&ndash;</c:if>&ndash;%&gt;--%>
+					<%--&lt;%&ndash;<c:if test="${siteQuestionInfo.menuName == null}" >&ndash;%&gt;--%>
+					<%--&lt;%&ndash;<a href="#"><span>--请选择--</span><i class="arrow"></i></a>&ndash;%&gt;--%>
+					<%--&lt;%&ndash;</c:if>&ndash;%&gt;--%>
+					<%--<ul id="ul3">--%>
+					<%--&lt;%&ndash;<c:forEach var="vwr" items="${contractProductInfos}">&ndash;%&gt;--%>
+					<%--&lt;%&ndash;<li data-val="${vwr.map.get("meunName")}">${vwr.map.get("meunName")}</li>&ndash;%&gt;--%>
+					<%--&lt;%&ndash;</c:forEach>&ndash;%&gt;--%>
+					<%--</ul>--%>
+
+
+					<%--</div>--%>
 				</div>
 			</div>
 			<div class="datum-report">
@@ -259,14 +261,14 @@
                     }
                 });
 
-                $("#menuId").on("click","ul>li",function(){
-                    var _this=$(this),_dropd=_this.parent("ul"), _val=_this.data("val"),_txt=_this.text();
-                    _dropd.slideToggle();
-                    _dropd.siblings("[type='hidden']").val(_val);
-                    _dropd.siblings("a").find("span").text(_txt);
-                    _dropd.siblings("a").find("i").toggleClass("reverse");
-
-                });
+                // $("#menuId").on("click","ul>li",function(){
+                //     var _this=$(this),_dropd=_this.parent("ul"), _val=_this.data("val"),_txt=_this.text();
+                //     _dropd.slideToggle();
+                //     _dropd.siblings("[type='hidden']").val(_val);
+                //     _dropd.siblings("a").find("span").text(_txt);
+                //     _dropd.siblings("a").find("i").toggleClass("reverse");
+                //
+                // });
 
 				$("#questionTypeId").on("click","ul>li",function(){
                     var _this=$(this),_dropd=_this.parent("ul"), _val=_this.data("val"),_txt=_this.text();
@@ -341,6 +343,12 @@
                 var userId = $("#userId").val();
                 var serialNo = $("#serialNo").val();
                 var old_id = $("#id").val();
+                var siteName =$("#siteName").val();
+                var productName =$("#productName").val();
+                var menuName =$("#menuName").val();
+                var questionDesc =$("#questionDesc").val();
+                var questionType =$("#questionType").val();
+                var isOperation = $("input[name='radio']:checked").val();
                 var uploadFile = new FormData($("#file")[0]);
                 //判断上传的只能是图片
                 var f=document.getElementById("uploadFile").value;
@@ -374,13 +382,16 @@
                         success: function(data) {
                             var obj = JSON.parse(data);
                             if(obj.status == "1") {
+                                alert(obj.path);
+                                console.log(obj.path);
                                 mui.toast('上传成功',{ duration:'long(3500ms)', type:'div' });
                                 //追加图片预览
-                                //var imgs = "<div><img src='<%=basePathNuName%>shareFolder${obj.path}'></img><span class=\"iconfont icon-close\" onclick=\"closeImg('${obj.id}');\"></span>\n</div>";
-                                //$(".datum-upload.site-width").append(imgs);
-							    //$("#img_upload").append("<div id='close_id'><img src='<%=basePathNuName%>shareFolder${siteQuestionInfo.imgPath}' /></div>");
-							    //$("#id").val(obj.id);
-                                setTimeout("location.reload()",3500);
+                                var imgs = "<div><img src='<%=basePathNuName%>shareFolder"+obj.path+"'></img><span class=\"iconfont icon-close\" onclick=\"closeImg('${obj.id}');\"></span>\n</div>";
+                                $(".datum-upload.site-width").append(imgs);
+                                //$("#img_upload").append("<div id='close_id'><img src='<%=basePathNuName%>shareFolder${siteQuestionInfo.imgPath}' /></div>");
+                                //$("#id").val(obj.id);
+                                //setTimeout("location.reload()",0);
+
                             } else {
                                 mui.toast('上传失败',{ duration:'long(3500ms)', type:'div' });
                                 //追加图片预览

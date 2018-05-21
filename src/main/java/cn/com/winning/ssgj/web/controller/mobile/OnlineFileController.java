@@ -44,7 +44,7 @@ public class OnlineFileController extends BaseController {
     public String floorQuestionList(Model model, String parameter) {
 
         EtOnlineFile onlineFile = new  EtOnlineFile();
-        //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
+        parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
         try{
             byte[] byteArray = Base64Utils.decryptBASE64(parameter);
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
@@ -147,6 +147,22 @@ public class OnlineFileController extends BaseController {
         return "/mobile/enterprise/data-upload-report";
     }
 
+    @RequestMapping("/addDetails.do")
+    @ILog
+    public String addDetails(Model model, String fileType,String serialNo,String userId,Long id) {
+        if(fileType.equals("2")){
+            SysDictInfo info1 = new SysDictInfo();
+            info1.setDictCode("paperType");
+            List<SysDictInfo> dictInfos =super.getFacade().getSysDictInfoService().getSysDictInfoList(info1);
+            model.addAttribute("dictInfos",dictInfos);
+        }
+        model.addAttribute("serialNo",serialNo);
+        model.addAttribute("userId",userId);
+        model.addAttribute("fileType",fileType);
+
+        return "/mobile/enterprise/data-upload-add";
+    }
+
 
     /**
      * Chen,Kuai 上传图片
@@ -214,9 +230,9 @@ public class OnlineFileController extends BaseController {
                         report.setId(Long.valueOf(id));
                         report = super.getFacade().getEtReportService().getEtReport(report);
                         if(StringUtils.isNotBlank(report.getImgPath())){
-                            report.setImgPath(report.getImgPath()+";"+ remotePath);//拼接图片路径
+                            report.setImgPath(report.getImgPath()+ remotePath+";");//拼接图片路径
                         }else{
-                            report.setImgPath(remotePath);
+                            report.setImgPath(remotePath+";");
                         }
                         report.setOperator(super.user_id(userId,"1"));
                         report.setOperatorTime(new Timestamp(new Date().getTime()));
@@ -272,6 +288,155 @@ public class OnlineFileController extends BaseController {
 
     }
 
+
+    /**
+     * Chen,Kuai 上传图片
+     */
+    @RequestMapping(value="/uploadImgAjaxAdd.do", method=RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> uploadImgAjaxAdd (HttpServletRequest request,@RequestParam MultipartFile uploadFile){
+        Map<String,Object> map = new HashMap<String,Object>();
+        String serialNo = request.getParameter("serialNo");
+        String userId = request.getParameter("userId");
+        String fileType = request.getParameter("fileType");
+        String dataName = request.getParameter("dataName");
+        String id = request.getParameter("id");
+        try{
+            if(!uploadFile.isEmpty()) {
+                //上传文件路径
+                String pathLu= Constants.UPLOAD_MOBILE_PREFIX+serialNo+"/onlineFile/";
+                String path = request.getServletContext().getRealPath(pathLu);
+
+                //上传文件名
+                String filename = uploadFile.getOriginalFilename();
+                filename = System.currentTimeMillis()+"."+StringUtils.substringAfterLast(filename,".");
+                File filepath = new File(path,filename);
+                //判断路径是否存在，如果不存在就创建一个
+                if (!filepath.getParentFile().exists()) {
+                    filepath.getParentFile().mkdirs();
+                }
+                //将上传文件保存到一个目标文件当中
+                File newFile = new File(path + File.separator + filename);
+                if(newFile.exists()){
+                    newFile.delete();
+                }
+                uploadFile.transferTo(newFile);
+                String remotePath = pathLu+ filename;
+                String remoteDir =pathLu ;
+                boolean ftpStatus = false;
+                String msg = "";
+                if (port == 21){
+                    ftpStatus = FtpUtils.uploadFile(remotePath, newFile);
+                }else if(port == 22){
+                    try {
+                        SFtpUtils.uploadFile(newFile.getPath(),remoteDir,filename);
+                        ftpStatus = true;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        ftpStatus = false;
+                        msg = e.getMessage();
+                    }
+                }
+                EtUserLookProject lastProject= super.getFacade().getEtUserLookProjectService().getLastUserLookProject(super.user_id(userId,"1"));
+                if(ftpStatus){
+                    if(fileType.equals("1")){  //调研报告
+                        EtBusinessProcess process = new EtBusinessProcess();
+                        if(StringUtils.isBlank(id)){  //id为空新建一个流程项目
+                            Long onlineId =ssgjHelper.createEtBusinessProcessIdService();
+                            process.setId(onlineId);//业务流程ID
+                            process.setImgPath(remotePath);
+                            if(lastProject !=null && !"".equals(lastProject)){
+                                process.setcId(lastProject.getCId());
+                                process.setPmId(lastProject.getPmId());
+                            }else{
+                                process.setcId((long)-2);
+                                process.setPmId((long)-2);
+                            }
+                            process.setFlowName(dataName);
+                            process.setSerialNo(serialNo);
+                            process.setFlowCode(ssgjHelper.createCustomerFlowCode());
+                            process.setSourceType(Constants.STATUS_USE);
+                            process.setStatus(Constants.STATUS_USE);
+                            process.setIsScope(1);
+                            process.setCreator(super.user_id(userId,"1"));
+                            process.setCreateTime(new Timestamp(new Date().getTime()));
+                            super.getFacade().getEtBusinessProcessService().createEtBusinessProcess(process);
+                            map.put("onlineId",String.valueOf(onlineId));
+                        }else{
+                            process.setId(Long.valueOf(id));
+                            process = super.getFacade().getEtBusinessProcessService().getEtBusinessProcess(process);
+                            if(StringUtils.isNotBlank(process.getImgPath())){
+                                process.setImgPath(process.getImgPath()+";"+ remotePath);//拼接图片路径
+                            }else{
+                                process.setImgPath(remotePath);
+                            }
+                            process.setOperator(super.user_id(userId,"1"));
+                            process.setOperatorTime(new Timestamp(new Date().getTime()));
+                            super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
+
+                        }
+
+                    }else if(fileType.equals("2")){//单据报表
+                        EtReport report = new EtReport();
+                        
+
+
+
+                        report.setOperator(super.user_id(userId,"1"));
+                        report.setOperatorTime(new Timestamp(new Date().getTime()));
+                        super.getFacade().getEtReportService().modifyEtReport(report);
+
+                    }else{ //上线/切花审批
+                        EtOnlineFile info = new EtOnlineFile();
+                        //info.setId(Long.valueOf(id));
+                        info = super.getFacade().getEtOnlineFileService().getEtOnlineFile(info);
+                        if(StringUtils.isNotBlank(info.getImgPath())){
+                            info.setImgPath(info.getImgPath()+";"+ remotePath);//拼接图片路径
+                        }else{
+                            info.setImgPath(remotePath);
+                        }
+                        info.setOperator(super.user_id(userId,"1"));
+                        info.setOperatorTime(new Timestamp(new Date().getTime()));
+                        super.getFacade().getEtOnlineFileService().modifyEtOnlineFile(info);
+
+//                        EtOnlineFile info = new EtOnlineFile();
+//                        SysUserInfo userInfo = new SysUserInfo();
+//                        userInfo.setUserid(userId+"");//员工编码
+//                        userInfo.setStatus(1);
+//                        userInfo.setUserType("0");//0医院
+//                        List<SysUserInfo> userInfoList = super.getFacade().getSysUserInfoService().getSysUserInfoList(userInfo);
+//                        //上传资料 1.生成一条记录//2.修改原来图片路径
+//                        info.setId(ssgjHelper.createOnlineFileIdService());
+//                        info.setcId((long)-2);    //移动端
+//                        info.setPmId((long)-2);
+//                        info.setImgPath(remotePath);//图片路径
+//                        info.setCreator((long)super.user_id(userId,"1"));
+//                        info.setCreateTime(new Timestamp(new Date().getTime()));
+//                        info.setFileType(fileType);
+//                        super.getFacade().getEtOnlineFileService().createEtOnlineFile(info);
+                    }
+
+                    map.put("status","true");
+
+                }else if(!StringUtil.isEmptyOrNull(msg)){
+                    map.put("status","false");
+
+                }
+            } else {
+                map.put("status","false");
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            map.put("status","false");
+        }
+
+
+        return map;
+
+    }
+
+
     /**
      * Chen,Kuai 删除图片
      * @param id
@@ -297,7 +462,7 @@ public class OnlineFileController extends BaseController {
                             str +=imgs[i]+";";
                         }
                     }
-                    process.setImgPath(str.substring(0,str.length()-1));
+                    //process.setImgPath(str.substring(0,str.length()-1));
                 }else{
                     process.setImgPath("");
                 }

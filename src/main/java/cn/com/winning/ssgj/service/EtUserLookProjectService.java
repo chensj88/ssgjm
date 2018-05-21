@@ -26,4 +26,7 @@ public interface EtUserLookProjectService {
 
 	List<EtUserLookProject> getEtUserLookProjectPaginatedList(EtUserLookProject t);
 
+	EtUserLookProject getLastUserLookProject(long userId);
+
+
 }

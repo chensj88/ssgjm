@@ -40,4 +40,14 @@ public class EtThirdIntterfaceDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtThirdI
         String statement="selectPmisInterfaceList";
         return this.getSqlSession().selectList(statement,etThirdIntterface);
     }
+
+    @Override
+    public List<EtThirdIntterface> selectPmisInterfacePaginatedList(EtThirdIntterface etThirdIntterface) {
+        return this.getSqlSession().selectList("selectPmisInterfacePaginatedList",etThirdIntterface);
+    }
+
+    @Override
+    public Integer selectPmisInterfaceCount(EtThirdIntterface etThirdIntterface) {
+        return this.getSqlSession().selectOne("selectPmisInterfaceCount",etThirdIntterface);
+    }
 }

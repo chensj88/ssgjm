@@ -1,5 +1,7 @@
 package cn.com.winning.ssgj.web.controller.admin;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,8 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.domain.SysReportInfo;
+import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +94,10 @@ public class SysReportInfoController extends BaseController {
     @Transactional
     @ILog(operationName = "通过产品ID删除报表类信息表", operationType = "deleteById")
     public Map<String, Object> deleteById(SysReportInfo t) {
+        SysUserInfo user = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         t.setStatus(0);
+        t.setLastUpdator(user.getId());
+        t.setLastUpdateTime(new Timestamp(new Date().getTime()));
         getFacade().getSysReportInfoService().modifySysReportInfo(t);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("status", Constants.SUCCESS);
@@ -108,12 +115,15 @@ public class SysReportInfoController extends BaseController {
     @Transactional
     @ILog(operationName = "添加报表类信息表", operationType = "addSysReportInfo")
     public Map<String, Object> addSysReportInfo(SysReportInfo t) {
+        SysUserInfo user = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         Long id = ssgjHelper.createReportInfoId();
         String code = ssgjHelper.createReportInfoCode();
         t.setReportCode(code);
         t.setId(id);
         t.setReportCode(ssgjHelper.createReportInfoCode());
         t.setStatus(1);
+        t.setLastUpdator(user.getId());
+        t.setLastUpdateTime(new Timestamp(new Date().getTime()));
         getFacade().getSysReportInfoService().createSysReportInfo(t);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("status", Constants.SUCCESS);
@@ -131,6 +141,9 @@ public class SysReportInfoController extends BaseController {
     @Transactional
     @ILog(operationName = "修改报表类信息表", operationType = "update")
     public Map<String, Object> update(SysReportInfo t) {
+        SysUserInfo user = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
+        t.setLastUpdator(user.getId());
+        t.setLastUpdateTime(new Timestamp(new Date().getTime()));
         getFacade().getSysReportInfoService().modifySysReportInfo(t);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("status", Constants.SUCCESS);

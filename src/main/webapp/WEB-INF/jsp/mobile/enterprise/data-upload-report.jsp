@@ -22,7 +22,7 @@
 				<input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
 
 			<div class="header">
-				<span class="mui-icon mui-icon-arrowleft" onclick="javascript:window.location='<%=ref%>'"></span>
+				<span class="mui-icon mui-icon-arrowleft" onclick="javascript:history.go(-1);"></span>
 					<div>实施资料上传</div>
 				<span class="mui-icon mui-icon-more"></span>
 			</div>

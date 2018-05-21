@@ -14,6 +14,9 @@
 		<result column="STATUS" property="status" jdbcType="INTEGER" />
 		<result column="LAST_UPDATOR" property="lastUpdator" jdbcType="BIGINT" />
 		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+		<!--add chensj 2018-05-17 增加产品信息-->
+		<result column="PD_ID" property="pdId" jdbcType="BIGINT"/>
+		<result column="PD_NAME" property="pdName" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<resultMap id="sysReportInfoResult" type="sysReportInfo" extends="sysReportInfoResultForList">
@@ -31,6 +34,8 @@
 	   <if test="(status != null )"> and t.STATUS = #{status} </if>
 	   <if test="(lastUpdator != null and lastUpdator != '')"> and t.LAST_UPDATOR = #{lastUpdator} </if>
 	   <if test="lastUpdateTime != null "> and t.LAST_UPDATE_TIME = #{lastUpdateTime} </if>
+	   <if test="pdId != null">and t.PD_ID = #{pdId}</if>
+		<if test="pdName != null">AND t.PD_NAME = #{pdName}</if>
 	</sql>
 
 	<sql id="query-sysReportInfo">
@@ -81,6 +86,8 @@
 	       <if test="(status != null )"> STATUS, </if>
 	       <if test="(lastUpdator != null and lastUpdator != '')"> LAST_UPDATOR, </if>
 		   <if test="lastUpdateTime != null "> LAST_UPDATE_TIME, </if>
+			<if test="pdId != null">PD_ID,</if>
+			<if test="pdName != null">PD_NAME,</if>
 		</trim>
 		values
 		<trim prefix="(" suffix=")" suffixOverrides=",">
@@ -95,6 +102,8 @@
 	       <if test="(status != null )"> #{status, jdbcType=INTEGER}, </if>
 	       <if test="(lastUpdator != null and lastUpdator != '')"> #{lastUpdator, jdbcType=BIGINT}, </if>
 		   <if test="lastUpdateTime != null "> #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
+			<if test="pdId != null"> #{pdId, jdbcType=BIGINT},</if>
+			<if test="pdName != null"> #{pdName, jdbcType=VARCHAR},</if>
 		</trim>
 	</insert>
 
@@ -113,6 +122,8 @@
 			   <if test="(status != null )"> STATUS = #{status, jdbcType=INTEGER}, </if>
 			   <if test="(lastUpdator != null and lastUpdator != '')"> LAST_UPDATOR = #{lastUpdator, jdbcType=BIGINT}, </if>
 			   <if test="lastUpdateTime != null "> LAST_UPDATE_TIME = #{lastUpdateTime, jdbcType=TIMESTAMP}, </if>
+				<if test="pdId != null">PD_ID =  #{pdId, jdbcType=BIGINT},</if>
+				<if test="pdName != null"> PD_NAME = #{pdName, jdbcType=VARCHAR},</if>
 			</trim>
 		</set>
 		where

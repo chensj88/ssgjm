@@ -75,8 +75,8 @@ public class PmisWebServiceTest {
     }
 
     private void generateDataSql(String tableName, String dataType,String dictType) {
-        LBEBusinessService lbeBusinessService = PmisWSUtil.createLBEBusinessService();
-        LoginResult loginResult = PmisWSUtil.createLoginResult();
+        LBEBusinessService lbeBusinessService = PmisWSUtil.createLBEBusinessService(Constants.PmisWSConstants.WS_URL);
+        LoginResult loginResult = PmisWSUtil.createLoginResult(Constants.PmisWSConstants.WS_URL);
         List<LbParameter> params = PmisWSUtil.createLbParameter(dataType);
         QueryOption queryOption = PmisWSUtil.createFirstCountValueOption();
         QueryResult result = lbeBusinessService.query(loginResult.getSessionId(), Constants.PmisWSConstants.WS_SERVICE_OBJECT_NAME,
@@ -283,8 +283,8 @@ public class PmisWebServiceTest {
         LOGGER.info("删除表SQL："+sql );
         executeSqlInfo(sql);
         LOGGER.info("删除表"+tableName+"数据结束" );
-        LBEBusinessService lbeBusinessService = PmisWSUtil.createLBEBusinessService();
-        LoginResult loginResult = PmisWSUtil.createLoginResult();
+        LBEBusinessService lbeBusinessService = PmisWSUtil.createLBEBusinessService(Constants.PmisWSConstants.WS_URL);
+        LoginResult loginResult = PmisWSUtil.createLoginResult(Constants.PmisWSConstants.WS_URL);
         List<LbParameter> params = PmisWSUtil.createLbParameter(dataType);
         QueryOption queryOption = PmisWSUtil.createFirstCountValueOption();
         QueryResult result = lbeBusinessService.query(loginResult.getSessionId(), Constants.PmisWSConstants.WS_SERVICE_OBJECT_NAME,
@@ -324,8 +324,8 @@ public class PmisWebServiceTest {
     public void queryDataCount() {
         String tableName = "PMIS_CONTRACT_PRODUCT_INFO";
         String dataType = "7";
-        LBEBusinessService lbeBusinessService = PmisWSUtil.createLBEBusinessService();
-        LoginResult loginResult = PmisWSUtil.createLoginResult();
+        LBEBusinessService lbeBusinessService = PmisWSUtil.createLBEBusinessService(Constants.PmisWSConstants.WS_URL);
+        LoginResult loginResult = PmisWSUtil.createLoginResult(Constants.PmisWSConstants.WS_URL);
         List<LbParameter> params = PmisWSUtil.createLbParameter(dataType);
         QueryOption queryOption = PmisWSUtil.createFirstCountValueOption();
         QueryResult result = lbeBusinessService.query(loginResult.getSessionId(),
@@ -344,8 +344,8 @@ public class PmisWebServiceTest {
     public void getDatainfoSql() {
         String tableName = "PMIS_PRODUCT_LINE_INFO";
         String dataType = "9";
-        LBEBusinessService lbeBusinessService = PmisWSUtil.createLBEBusinessService();
-        LoginResult loginResult = PmisWSUtil.createLoginResult();
+        LBEBusinessService lbeBusinessService = PmisWSUtil.createLBEBusinessService(Constants.PmisWSConstants.WS_URL);
+        LoginResult loginResult = PmisWSUtil.createLoginResult(Constants.PmisWSConstants.WS_URL);
         List<LbParameter> params = PmisWSUtil.createLbParameter(dataType);
         QueryOption queryOption = PmisWSUtil.createFirstCountValueOption();
         QueryResult result = lbeBusinessService.query(loginResult.getSessionId(),

@@ -62,20 +62,9 @@
                 <label class="col-sm-4 form-text" for="reportQType">类型：</label>
                 <select class="input-style select-style" id="reportQType" name="reportQType">
                     <option value="-1"></option>
-                    <option value="0">凭条</option>
+                    <option value="0">单据</option>
                     <option value="1">发票</option>
-                    <option value="2">缴款</option>
-                    <option value="3">缴款单据</option>
-                    <option value="4">单据</option>
-                    <option value="5">台账</option>
-                    <option value="6">处方医嘱</option>
-                    <option value="7">申请单</option>
-                    <option value="8">治疗单据</option>
-                    <option value="9">医疗文书</option>
-                    <option value="10">临时医嘱</option>
-                    <option value="11">报告调阅</option>
-                    <option value="12">巡视单</option>
-                    <option value="13">报表</option>
+                    <option value="2">报表</option>
                 </select>
             </div>
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 div-style text-center">
@@ -129,29 +118,27 @@
                                                placeholder="请输入描述">
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label" for="pdName">系统:</label>
+                                    <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="pdName" name="pdName"
+                                           placeholder="请输入系统名称" data-provide="typeahead">
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label" for="reportType">类型:</label>
                                     <div class="col-sm-6">
                                         <select class="form-control" id="reportType" name="reportType">
-                                            <option value="0">凭条</option>
+                                            <option value="0">单据</option>
                                             <option value="1">发票</option>
-                                            <option value="2">缴款</option>
-                                            <option value="3">缴款单据</option>
-                                            <option value="4">单据</option>
-                                            <option value="5">台账</option>
-                                            <option value="6">处方医嘱</option>
-                                            <option value="7">申请单</option>
-                                            <option value="8">治疗单据</option>
-                                            <option value="9">医疗文书</option>
-                                            <option value="10">临时医嘱</option>
-                                            <option value="11">报告调阅</option>
-                                            <option value="12">巡视单</option>
-                                            <option value="13">报表</option>
+                                            <option value="2">报表</option>
                                         </select>
                                     </div>
                                 </div>
-
                                 <input type="hidden" name="id" id="id">
+                                <input type="hidden" name="pdId" id="pdId">
                                 <input type="reset" style="display:none;"/>
                                 <div class="col-sm-8 text-center">
                                     <button class="btn btn-primary" id="save" type="button">保存</button>
@@ -173,6 +160,7 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrapValidator.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/language/zh_CN.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/toastr.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap3-typeahead.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/auth/module/sysReportInfo.js"></script>
 </html>

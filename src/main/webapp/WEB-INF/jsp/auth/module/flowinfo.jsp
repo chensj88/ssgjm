@@ -44,7 +44,7 @@
                 <input type="text" class="input-style" id="flowQName"/>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 div-style text-center">
-                <label class="col-sm-3 form-text" for="flowQCode">流程编码：</label>
+                <label class="col-sm-4 form-text" for="flowQCode">流程编码：</label>
                 <input type="text" class="input-style" id="flowQCode"/>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 div-style text-center">

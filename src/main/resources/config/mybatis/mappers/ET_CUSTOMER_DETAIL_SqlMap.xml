@@ -20,9 +20,15 @@
 		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="OPERATOR" property="operator" jdbcType="BIGINT" />
 		<result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP" />
+		<!--增加 chensj 20180517 增加分管院长、联系方式、 上传合同路径和上传任务单路径-->
+		<result column="LEADER" property="leader" jdbcType="VARCHAR" />
+		<result column="LEADER_MOBILE" property="leaderMobile" jdbcType="VARCHAR" />
+		<result column="CONSTRACT_PATH" property="constractPath" jdbcType="VARCHAR" />
+		<result column="TASK_PATH" property="taskPath" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<resultMap id="etCustomerDetailResult" type="etCustomerDetail" extends="etCustomerDetailResultForList">
+		<result column="USER_NAME" property="map.userName" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<sql id="sf-etCustomerDetail">
@@ -43,6 +49,10 @@
 	   <if test="createTime != null "> and t.CREATE_TIME = #{createTime} </if>
 	   <if test="(operator != null and operator != '') or operator == 0"> and t.OPERATOR = #{operator} </if>
 	   <if test="operatorTime != null "> and t.OPERATOR_TIME = #{operatorTime} </if>
+	   <if test="leader != null "> AND t.LEADER = ${leader} </if>
+		<if test="leaderMobile != null "> AND t.LEADER_MOBILE = ${leaderMobile} </if>
+		<if test="constractPath != null "> AND t.CONSTRACT_PATH = ${constractPath} </if>
+		<if test="taskPath != null "> AND t.TASK_PATH = ${taskPath} </if>
 	</sql>
 
 	<select id="selectEtCustomerDetail" resultMap="etCustomerDetailResult" parameterType="etCustomerDetail">
@@ -92,6 +102,10 @@
 		   <if test="createTime != null "> CREATE_TIME, </if>
 	       <if test="(operator != null and operator != '') or operator == 0"> OPERATOR, </if>
 		   <if test="operatorTime != null "> OPERATOR_TIME, </if>
+			<if test="leader != null ">  LEADER,</if>
+			<if test="leaderMobile != null "> LEADER_MOBILE,</if>
+			<if test="constractPath != null ">  CONSTRACT_PATH , </if>
+			<if test="taskPath != null ">  TASK_PATH, </if>
 		</trim>
 		values
 		<trim prefix="(" suffix=")" suffixOverrides=",">
@@ -112,6 +126,10 @@
 		   <if test="createTime != null "> #{createTime, jdbcType=TIMESTAMP}, </if>
 	       <if test="(operator != null and operator != '') or operator == 0"> #{operator, jdbcType=BIGINT}, </if>
 		   <if test="operatorTime != null "> #{operatorTime, jdbcType=TIMESTAMP}, </if>
+			<if test="leader != null "> #{leader, jdbcType=VARCHAR}, </if>
+			<if test="leaderMobile != null "> #{leaderMobile, jdbcType=VARCHAR}, </if>
+			<if test="constractPath != null "> #{constractPath, jdbcType=VARCHAR}, </if>
+			<if test="taskPath != null "> #{taskPath, jdbcType=VARCHAR},</if>
 		</trim>
 	</insert>
 
@@ -136,6 +154,10 @@
 			   <if test="createTime != null "> CREATE_TIME = #{createTime, jdbcType=TIMESTAMP}, </if>
 			   <if test="(operator != null and operator != '') or operator == 0"> OPERATOR = #{operator, jdbcType=BIGINT}, </if>
 			   <if test="operatorTime != null "> OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP}, </if>
+				<if test="leader != null "> LEADER = #{leader, jdbcType=VARCHAR}, </if>
+				<if test="leaderMobile != null "> LEADER_MOBILE = #{leaderMobile, jdbcType=VARCHAR}, </if>
+				<if test="constractPath != null "> CONSTRACT_PATH = #{constractPath, jdbcType=VARCHAR}, </if>
+				<if test="taskPath != null "> TASK_PATH = #{taskPath, jdbcType=VARCHAR}, </if>
 			</trim>
 		</set>
 		where
@@ -169,10 +191,13 @@
 			CASE WHEN C.AREA_CODE IS NOT NULL THEN C.AREA_CODE ELSE B.QYXX  END AS AREA_CODE,
 			CASE WHEN C.OUTPATIENT_NUM IS NOT NULL THEN C.OUTPATIENT_NUM ELSE B.MZL  END AS OUTPATIENT_NUM,
 			CASE WHEN C.BED_NUM IS NOT NULL THEN C.BED_NUM ELSE B.CWS END AS BED_NUM,
-			C.CREATOR,C.CREATE_TIME,C.OPERATOR,C.OPERATOR_TIME
+			C.CREATOR,C.CREATE_TIME,C.OPERATOR,C.OPERATOR_TIME,
+		    C.LEADER,C.LEADER_MOBILE,C.CONSTRACT_PATH,C.TASK_PATH,
+		    D.YHMC AS USER_NAME
 			FROM PMIS_PROJECT_BASIC_INFO A
 			left JOIN PMIS_CUSTOMER_INFORMATION B ON A.KHXX = B.ID
 			LEFT JOIN ET_CUSTOMER_DETAIL C ON A.ID = C.ID
+		    LEFT JOIN SYS_USER_INFO D ON C.OPERATOR = D.ID
 			<where>
 				<if test="id != null "> A.ID = #{id} </if>
 			</where>

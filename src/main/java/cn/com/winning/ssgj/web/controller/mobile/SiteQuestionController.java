@@ -46,7 +46,7 @@ public class SiteQuestionController extends BaseController {
     public String SiteQuestionList(Model model, String parameter) {
         //String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9"; //工号
         //String hospcode="11980";  //客户号
-        //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
+        parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
         EtSiteQuestionInfo entity = new EtSiteQuestionInfo();
         try{
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";

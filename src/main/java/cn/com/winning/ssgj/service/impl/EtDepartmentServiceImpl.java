@@ -67,6 +67,7 @@ public class EtDepartmentServiceImpl implements EtDepartmentService {
 			for (List<Object> params : departList) {
 				String typeName = params.get(0).toString();
 				String deptName = params.get(1).toString();
+				String deptLocation = params.get(2).toString();
 				EtDepartment repeat = new EtDepartment();
 				repeat.setDeptName(deptName);
 				repeat.setTypeName(typeName);
@@ -92,6 +93,7 @@ public class EtDepartmentServiceImpl implements EtDepartmentService {
 					}else{
 						repeat.setDeptType(String.valueOf(ssgjHelper.createSysHospitalDeptTypeIdService()));
 					}
+					repeat.setDeptLocation(deptLocation);
 					this.etDepartmentDao.insertEntity(repeat);
 				}
 		}
@@ -105,12 +107,14 @@ public class EtDepartmentServiceImpl implements EtDepartmentService {
 		List<String> colList = new ArrayList<String>();
 		colList.add("typeName");
 		colList.add("deptName");
+		colList.add("deptLocation");
 		List<Map> dataList = new ArrayList<Map>();
 
 		for (EtDepartment deptInfo : departmentList) {
 			Map<String, String> deptMap = new HashMap<>();
 			deptMap.put("typeName",deptInfo.getTypeName());
 			deptMap.put("deptName", deptInfo.getDeptName());
+			deptMap.put("deptLocation", deptInfo.getDeptLocation());
 			dataList.add(deptMap);
 		}
 		dataMap.put("colList", colList);

@@ -9,9 +9,8 @@ import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import cn.com.winning.ssgj.ws.client.BizProcessResult;
 import cn.com.winning.ssgj.ws.service.PmisWebServiceClient;
-import cn.com.winning.ssgj.ws.work.client.BizProcessResult;
-import cn.com.winning.ssgj.ws.work.service.PmisWorkingPaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,8 +34,6 @@ import java.util.*;
 @RequestMapping(value = "/vue/siteCenter")
 public class EtSiteQuestionInfoController extends BaseController {
 
-    @Autowired
-    private PmisWorkingPaperService pmisWorkingPaperService;
     @Autowired
     private PmisWebServiceClient pmisWebServiceClient;
     /**
@@ -128,17 +125,14 @@ public class EtSiteQuestionInfoController extends BaseController {
         EtSiteQuestionInfo newInfo = new EtSiteQuestionInfo();
         newInfo.setId(info.getId());
         newInfo = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(newInfo);
-        //BizProcessResult bizResult = null;
-        cn.com.winning.ssgj.ws.client.BizProcessResult bizResult = null;
+        BizProcessResult bizResult = null;
         if(newInfo.getPmisStatus() == 2){
             SysUserInfo user = new SysUserInfo();
             user.setUserid(info.getCreateNo());
             user = super.getFacade().getSysUserInfoService().getSysUserInfo(user);
             info.getMap().put("createUser",user.getName());
-            //TODO 测试使用
-//            bizResult =  pmisWorkingPaperService.importWorkReport(newInfo);
-            //TODO 上线使用
-             bizResult =  pmisWebServiceClient.importWorkDataToPmis(info);
+            //使用WS_TEST_URL 为测试环境  WS_URL为生产环境
+             bizResult =  pmisWebServiceClient.importWorkDataToPmis(Constants.PmisWSConstants.WS_TEST_URL,info);
             if(bizResult.getResult() != 1){
                 throw new SSGJException(bizResult.getMessage());
             }
@@ -182,10 +176,8 @@ public class EtSiteQuestionInfoController extends BaseController {
                 oldInfo.setCreateNo(user.getUserid());
                 super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(oldInfo);
                 oldInfo.getMap().put("createUser",user.getName());
-                //TODO 测试使用
-               // BizProcessResult bizResult =  pmisWorkingPaperService.importWorkReport(oldInfo);
                 //TODO 上线使用
-                cn.com.winning.ssgj.ws.client.BizProcessResult bizResult =  pmisWebServiceClient.importWorkDataToPmis(info);
+                BizProcessResult bizResult =  pmisWebServiceClient.importWorkDataToPmis(Constants.PmisWSConstants.WS_TEST_URL,info);
                 if(bizResult.getResult() != 1){
                     throw new SSGJException(bizResult.getMessage());
                 }

@@ -3,13 +3,11 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
-import cn.com.winning.ssgj.base.util.ConnectionUtil;
-import cn.com.winning.ssgj.base.util.DateUtil;
-import cn.com.winning.ssgj.base.util.ExcelUtil;
-import cn.com.winning.ssgj.base.util.StringUtil;
+import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import com.jcraft.jsch.ChannelSftp;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +16,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -84,6 +88,7 @@ public class EtThirdIntterfaceController extends BaseController {
     @ResponseBody
     public Map<String, Object> initData(EtThirdIntterface etThirdIntterface, Row row) {
         etThirdIntterface.setRow(row);
+        etThirdIntterface.setSourceId(0L);
         //根据pmid获取分页接口数据
         List<EtThirdIntterface> etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfacePaginatedList(etThirdIntterface);
         //根据pmid获取接口数
@@ -110,7 +115,7 @@ public class EtThirdIntterfaceController extends BaseController {
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String, Object> list(EtThirdIntterface etThirdIntterface, Long userId, Row row) {
+    public Map<String, Object> list(EtThirdIntterface etThirdIntterface, Long userId, Row row,Integer isPmis) {
         Long pmId = etThirdIntterface.getPmId();
         if (pmId == null) {
             return null;
@@ -119,14 +124,20 @@ public class EtThirdIntterfaceController extends BaseController {
         Integer countNum = getCountNum(etThirdIntterface);
         //完成数
         Integer completeNum = getCompleteNum(etThirdIntterface);
+        Integer total=0;
+        List<EtThirdIntterface> etThirdIntterfaces=null;
         etThirdIntterface.setRow(row);
-        //根据pmid获取所有分页接口数据
-        List<EtThirdIntterface> etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfacePaginatedList(etThirdIntterface);
-        //根据pmid获取接口数
-        Integer total = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfaceCount(etThirdIntterface);
-        Map map = null;
-        String contentType = null;
-        String[] contentArr = null;
+        if (isPmis==1){
+            etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().selectPmisInterfacePaginatedList(etThirdIntterface);
+            total = getFacade().getEtThirdIntterfaceService().selectPmisInterfaceCount(etThirdIntterface);
+        }else if(isPmis==0){
+            etThirdIntterface.setSourceId(0L);
+            //根据pmid获取所有分页接口数据
+            etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfacePaginatedList(etThirdIntterface);
+            //根据pmid获取接口数
+            total = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfaceCount(etThirdIntterface);
+        }
+
         //封装产品条线名、完成情况
         DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         for (EtThirdIntterface intterface : etThirdIntterfaces) {
@@ -141,17 +152,27 @@ public class EtThirdIntterfaceController extends BaseController {
             } else {
                 creatorName = "admin";
             }
-            map = new HashMap();
-            contentType = intterface.getContentType();
+            Map map = new HashMap();
+            String contentType = intterface.getContentType();
+            String[] contentArr = null;
             if (contentType == null) {
                 contentArr = "".split(",");
             } else {
                 contentArr = contentType.split(",");
             }
-            String createDate=df.format(intterface.getCreateTime());
+            String createDate = df.format(intterface.getCreateTime());
+            Long plId = intterface.getPlId();
+            PmisProductLineInfo pmisProductLineInfo = new PmisProductLineInfo();
+            if (plId != null && plId != 0) {
+                pmisProductLineInfo.setId(plId);
+                pmisProductLineInfo = getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
+            }
+            String filePath = intterface.getFilePath();
+            map.put("plName", pmisProductLineInfo.getName());
             map.put("contentList", contentArr);
             map.put("creator", creatorName);
             map.put("createDate", createDate);
+            map.put("isUpload", !StringUtil.isEmptyOrNull(filePath));
             intterface.setMap(map);
         }
         //获取所有不在本期范围原因
@@ -171,6 +192,14 @@ public class EtThirdIntterfaceController extends BaseController {
         } else {
             user = super.getFacade().getPmisProjctUserService().getPmisProjctUser(user);
         }
+        //根据项目Id
+        List<PmisProductLineInfo> pmisProductLineInfoList = this.getProductLineList(pmId);
+        //当无法根据pmid找到产品条线时，给出所有产品条线
+        if (pmisProductLineInfoList == null || pmisProductLineInfoList.size() == 0) {
+            PmisProductLineInfo temp = new PmisProductLineInfo();
+            temp.setZt(1);
+            pmisProductLineInfoList = getFacade().getPmisProductLineInfoService().getPmisProductLineInfoList(temp);
+        }
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("countNum", countNum);
         result.put("completeNum", completeNum);
@@ -179,6 +208,7 @@ public class EtThirdIntterfaceController extends BaseController {
         result.put("rows", etThirdIntterfaces);
         result.put("resonList", sysDictInfoList);
         result.put("process", etProcessManager);
+        result.put("plList", pmisProductLineInfoList);
         result.put("user", user);
         return result;
     }
@@ -215,7 +245,6 @@ public class EtThirdIntterfaceController extends BaseController {
         } else {
             etThirdIntterface.setId(ssgjHelper.createThirdInterfaceId());
             etThirdIntterface.setCreator(etThirdIntterface.getOperator());
-            etThirdIntterface.setPlId(0L);
             etThirdIntterface.setStatus(1);
             etThirdIntterface.setSourceType(1);
             etThirdIntterface.setSourceId(0L);
@@ -305,7 +334,13 @@ public class EtThirdIntterfaceController extends BaseController {
     @ILog
     @Transactional
     public Map<String, Object> delete(EtThirdIntterface etThirdIntterface) {
+        //获取接口
+        EtThirdIntterface temp = super.getFacade().getEtThirdIntterfaceService().getEtThirdIntterface(etThirdIntterface);
         super.getFacade().getEtThirdIntterfaceService().removeEtThirdIntterface(etThirdIntterface);
+        if (temp.getFilePath() != null && !"".equals(temp.getFilePath().trim())) {
+            //如果已上传文件，则删除之前上传的文件
+            CommonFtpUtils.removeUploadFile(temp.getFilePath());
+        }
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
@@ -444,6 +479,7 @@ public class EtThirdIntterfaceController extends BaseController {
         thirdIntterface.setPmId(etThirdIntterface.getPmId());
         thirdIntterface.setIsScope(1);
         thirdIntterface.setStatus(9);
+        thirdIntterface.setSourceId(0L);
         //获取所有数据
         List<EtThirdIntterface> etThirdIntterfaceList = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfaceList(thirdIntterface);
         Integer completeNum = etThirdIntterfaceList.size();
@@ -460,11 +496,132 @@ public class EtThirdIntterfaceController extends BaseController {
         EtThirdIntterface thirdIntterface = new EtThirdIntterface();
         thirdIntterface.setPmId(etThirdIntterface.getPmId());
         thirdIntterface.setIsScope(1);
+        thirdIntterface.setSourceId(0L);
         //获取所有数据
         List<EtThirdIntterface> etThirdIntterfaceList = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfaceList(thirdIntterface);
         Integer countNum = etThirdIntterfaceList.size();
         return countNum;
     }
 
+    /**
+     * 上传文件
+     *
+     * @param etThirdIntterface
+     * @param request
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/upload.do")
+    @ResponseBody
+    @ILog
+    @Transactional
+    public Map<String, Object> upload(EtThirdIntterface etThirdIntterface, HttpServletRequest request, MultipartFile file, Long pmId) throws IOException {
+        Map<String, Object> result = new HashMap<String, Object>();
+        EtThirdIntterface temp = new EtThirdIntterface();
+        temp.setId(etThirdIntterface.getId());
+        temp = getFacade().getEtThirdIntterfaceService().getEtThirdIntterface(temp);
+        boolean ftpStatus = false;
+        if (!file.isEmpty()) {
+            //上传文件路径
+            String path = request.getServletContext().getRealPath("/temp/");
+            //上传文件名
+            String filename = file.getOriginalFilename();
+            File filepath = new File(path, filename);
+            //判断路径是否存在，如果不存在就创建一个
+            if (!filepath.getParentFile().exists()) {
+                filepath.getParentFile().mkdirs();
+            }
+            //将上传文件保存到一个目标文件当中
+            File newFile = new File(path + File.separator + filename);
+            if (newFile.exists()) {
+                newFile.delete();
+            }
+            file.transferTo(newFile);
+            String fileType = filename.substring(filename.lastIndexOf("."));
+            String remotePath = Constants.UPLOAD_PC_PREFIX + pmId + "/interface/" + System.currentTimeMillis() + fileType;
+            try {
+                CommonFtpUtils.uploadFile(remotePath, newFile);
+                etThirdIntterface.setOperatorTime(new Timestamp(new Date().getTime()));
+                if (temp.getFilePath() != null && !"".equals(temp.getFilePath().trim())) {
+                    //如果已上传文件，则删除之前上传的文件
+                    CommonFtpUtils.removeUploadFile(temp.getFilePath());
+                }
+                etThirdIntterface.setFilePath(remotePath);
+                super.getFacade().getEtThirdIntterfaceService().modifyEtThirdIntterface(etThirdIntterface);
+                newFile.delete();
+                result.put("status", "success");
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.put("status", "error");
+                result.put("msg", "上传文件失败,原因是：" + e.getMessage());
+            }
+        } else {
+            result.put("status", "error");
+            result.put("msg", "上传文件失败,原因是：上传文件为空");
+        }
+        return result;
+
+    }
+
+
+    /**
+     * @param response
+     * @return
+     * @throws IOException
+     * @description 下载
+     */
+    @RequestMapping(value = "/download.do")
+    @ResponseBody
+    public Map<String, Object> download(HttpServletResponse response, EtThirdIntterface etThirdIntterface) throws IOException {
+        //获取数据校验信息
+        etThirdIntterface = getFacade().getEtThirdIntterfaceService().getEtThirdIntterface(etThirdIntterface);
+        String filePath = etThirdIntterface.getFilePath();
+        Map map = new HashMap();
+        if (StringUtil.isEmptyOrNull(filePath)) {
+            logger.error("Script is not exist!");
+            map.put("error", "File is not exist!");
+            return map;
+        }
+        //获取文件名
+        String filename = etThirdIntterface.getInterfaceName() + filePath.substring(filePath.lastIndexOf("."));
+        ChannelSftp sftpConnect = null;
+        byte[] bytes = null;
+        try {
+            sftpConnect = SFtpUtils.getSftpConnect();
+            //sftpConnect.setFilenameEncoding("GBK");
+            bytes = SFtpUtils.downloadAsByte(filePath, sftpConnect);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        response.setCharacterEncoding("utf-8");
+        //设置响应内容的类型
+        response.setContentType("text/plain");
+        //设置文件的名称和格式
+        response.addHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode(filename, "UTF-8"))));
+        BufferedOutputStream buff = null;
+        OutputStream outStr = null;
+        try {
+            outStr = response.getOutputStream();
+            buff = new BufferedOutputStream(outStr);
+            buff.write(bytes);
+            buff.flush();
+            buff.close();
+        } catch (Exception e) {
+            logger.error("导出文件文件出错，e:{}", e);
+        } finally {
+            try {
+                buff.close();
+                outStr.close();
+            } catch (Exception e) {
+                logger.error("关闭流对象出错 e:{}", e);
+            }
+        }
+        map.put("status", Constants.SUCCESS);
+        return map;
+    }
 
 }
