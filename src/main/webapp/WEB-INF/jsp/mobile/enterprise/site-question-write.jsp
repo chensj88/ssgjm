@@ -127,7 +127,7 @@
 								</div>
 								</c:forEach>
 							</c:if>
-					</div>
+						</div>
 				</div>
 			</div>
 			</form>
@@ -343,12 +343,6 @@
                 var userId = $("#userId").val();
                 var serialNo = $("#serialNo").val();
                 var old_id = $("#id").val();
-                var siteName =$("#siteName").val();
-                var productName =$("#productName").val();
-                var menuName =$("#menuName").val();
-                var questionDesc =$("#questionDesc").val();
-                var questionType =$("#questionType").val();
-                var isOperation = $("input[name='radio']:checked").val();
                 var uploadFile = new FormData($("#file")[0]);
                 //判断上传的只能是图片
                 var f=document.getElementById("uploadFile").value;
@@ -382,14 +376,13 @@
                         success: function(data) {
                             var obj = JSON.parse(data);
                             if(obj.status == "1") {
-                                alert(obj.path);
-                                console.log(obj.path);
                                 mui.toast('上传成功',{ duration:'long(3500ms)', type:'div' });
-                                //追加图片预览
-                                var imgs = "<div><img src='<%=basePathNuName%>shareFolder"+obj.path+"'></img><span class=\"iconfont icon-close\" onclick=\"closeImg('${obj.id}');\"></span>\n</div>";
+                                //追加图片预览 <span class="iconfont icon-close" onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>
+                                //									<input type="hidden" />
+                                var imgs = "<div id=\"close_id\"><img src='<%=basePathNuName%>shareFolder"+obj.path+"'></img><span class=\"iconfont icon-close\" onclick=\"closeImg('+"+obj.id+"',"+"'"+obj.path+"');\"></span>\n</div>";
                                 $(".datum-upload.site-width").append(imgs);
                                 //$("#img_upload").append("<div id='close_id'><img src='<%=basePathNuName%>shareFolder${siteQuestionInfo.imgPath}' /></div>");
-                                //$("#id").val(obj.id);
+                                $("#id").val(obj.id);
                                 //setTimeout("location.reload()",0);
 
                             } else {

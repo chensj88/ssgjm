@@ -7,10 +7,10 @@
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
     //检查用户是否登录
    /* SysUserInfo user = (SysUserInfo) request.getSession().getAttribute(Constants.USER_INFO);
-    if(user == null ){
+    if(user == null ){ request.getServerName()
         request.getRequestDispatcher("/login/login.do").forward(request,response);
     }*/
 
-    String basePathNuName = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/";
+    String basePathNuName = request.getScheme() + "://" +"47.97.170.21" +":" + request.getServerPort() + "/";
 
 %>
