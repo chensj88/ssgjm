@@ -33,7 +33,7 @@ public class SysReportInfo extends BaseDomain implements Serializable {
 	private String reportName;
 	
 	/**
-	 * @val 类型 0 凭条;1 发票;2 缴款;3 缴款单据;4 单据;5 台账;6 处方医嘱;7 申请单;8 治疗单据;9 医疗文书;10 临时医嘱;11 报告调阅;12 巡视单;13 报表;
+	 * @val 类型 0单据;1 发票;2 报表;
 	 */
 	private Integer reportType;
 	
@@ -71,6 +71,10 @@ public class SysReportInfo extends BaseDomain implements Serializable {
 	 * @val 维护时间
 	 */
 	private java.sql.Timestamp lastUpdateTime;
+
+	private Long pdId;
+
+	private String pdName;
 	
 	public SysReportInfo() {
 
@@ -119,14 +123,14 @@ public class SysReportInfo extends BaseDomain implements Serializable {
 	}
 	
 	/**
-	 * @val 类型 0 凭条;1 发票;2 缴款;3 缴款单据;4 单据;5 台账;6 处方医嘱;7 申请单;8 治疗单据;9 医疗文书;10 临时医嘱;11 报告调阅;12 巡视单;13 报表;
+	 * @val 类型 0单据;1 发票;2 报表;
 	 */
 	public Integer getReportType() {
 		return reportType;
 	}
 	
 	/**
-	 * @val 类型 0 凭条;1 发票;2 缴款;3 缴款单据;4 单据;5 台账;6 处方医嘱;7 申请单;8 治疗单据;9 医疗文书;10 临时医嘱;11 报告调阅;12 巡视单;13 报表;
+	 * @val 类型 0单据;1 发票;2 报表;
 	 */
 	public void setReportType(Integer reportType) {
 		this.reportType = reportType;
@@ -228,5 +232,20 @@ public class SysReportInfo extends BaseDomain implements Serializable {
 	public void setLastUpdateTime(java.sql.Timestamp lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
 	}
-	
+
+	public Long getPdId() {
+		return pdId;
+	}
+
+	public void setPdId(Long pdId) {
+		this.pdId = pdId;
+	}
+
+	public String getPdName() {
+		return pdName;
+	}
+
+	public void setPdName(String pdName) {
+		this.pdName = pdName;
+	}
 }

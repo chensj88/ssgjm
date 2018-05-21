@@ -449,70 +449,21 @@ public class Constants implements Serializable {
 
     /**
      * 单据类型
-     * 0 凭条;1 发票;2 缴款;3 缴款单据;4 单据;5 台账;6 处方医嘱;7 申请单;8 治疗单据;9 医疗文书;10 临时医嘱;11 报告调阅;12 巡视单;13 报表;
+     * 0单据;1 发票;2 报表;
      */
     public class ReportType {
         /**
-         * 凭条
+         * 单据
          */
-        public static final int RP_PT = 0;
+        public static final int RP_DJ = 0;
         /**
-         *发票
+         * 发票
          */
         public static final int RP_FP = 1;
         /**
-         *缴款
+         * 报表
          */
-        public static final int RP_JK = 2;
-        /**
-         *缴款单据
-         */
-        public static final int RP_JKDJ = 3;
-        /**
-         *单据
-         */
-        public static final int RP_DJ = 4;
-        /**
-         *台账
-         */
-        public static final int RP_TZ = 5;
-        /**
-         *处方医嘱
-         */
-        public static final int RP_CFYZ = 6;
-        /**
-         *申请单
-         */
-        public static final int RP_SQD = 7;
-        /**
-         *治疗单据
-         */
-        public static final int RP_ZLDJ = 8;
-        /**
-         *医疗文书
-         */
-        public static final int RP_YLWS = 9;
-        /**
-         *临时医嘱
-         */
-        public static final int RP_LSYZ = 10;
-        /**
-         *报告调阅
-         */
-        public static final int RP_BGDY = 11;
-        /**
-         *巡视单
-         */
-        public static final int RP_XSD = 12;
-        /**
-         *出区通知单
-         */
-        public static final int RP_CQTZD = 13;
-        /**
-         *报表
-         */
-        public static final int RP_BB = 14;
-
+        public static final int RP_BB = 2;
     }
 
 }
