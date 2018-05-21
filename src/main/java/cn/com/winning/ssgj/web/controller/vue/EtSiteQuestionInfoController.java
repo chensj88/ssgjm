@@ -178,25 +178,27 @@ public class EtSiteQuestionInfoController extends BaseController {
 
     private void importData(EtSiteQuestionInfo info){
         //TODO 生产环境工作底稿导入功能
-        //        BizProcessResult bizResult = null;
-        //        if(newInfo.getPmisStatus() == 2){
-        //            //使用WS_TEST_URL 为测试环境  WS_URL为生产环境
-        //             bizResult =  pmisWebServiceClient.importWorkDataToPmis(Constants.PmisWSConstants.WS_TEST_URL,info);
-        //            if(bizResult.getResult() != 1){
-        //                throw new SSGJException(bizResult.getMessage());
-        //            }
-        //        }
-        //TODO 测试环境工作底稿导入功能
-        cn.com.winning.ssgj.ws.work.client.BizProcessResult bizResult = null;
+        BizProcessResult bizResult = null;
         if(info.getPmisStatus() == 2){
             //使用WS_TEST_URL 为测试环境  WS_URL为生产环境
-            bizResult =  pmisWorkingPaperService.importWorkReport(info);
+             bizResult =  pmisWebServiceClient.importWorkDataToPmis(Constants.PmisWSConstants.WS_URL,info);
             if(bizResult.getResult() != -1){
                 info.setRequirementNo(bizResult.getResult()+"");
             }else{
                 throw new SSGJException(bizResult.getMessage(),"PMIS-WS-E0001","错误原因:"+bizResult.getMessage());
             }
         }
+        //TODO 测试环境工作底稿导入功能
+//        cn.com.winning.ssgj.ws.work.client.BizProcessResult bizResult = null;
+//        if(info.getPmisStatus() == 2){
+//            //使用WS_TEST_URL 为测试环境  WS_URL为生产环境
+//            bizResult =  pmisWorkingPaperService.importWorkReport(info);
+//            if(bizResult.getResult() != -1){
+//                info.setRequirementNo(bizResult.getResult()+"");
+//            }else{
+//                throw new SSGJException(bizResult.getMessage(),"PMIS-WS-E0001","错误原因:"+bizResult.getMessage());
+//            }
+//        }
         info.setPmisStatus(Constants.STATUS_USE);
         super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
     }
