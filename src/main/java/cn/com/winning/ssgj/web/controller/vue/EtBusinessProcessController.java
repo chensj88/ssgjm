@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -54,10 +55,15 @@ public class EtBusinessProcessController extends BaseController {
     @ResponseBody
     @Transactional
     @ILog
-    public Map<String,Object> queryFlowInfoByPmId(EtBusinessProcess process, Row row){
+    public Map<String,Object> queryFlowInfoByPmId(EtBusinessProcess process, Row row,String startDate,String endDate) throws ParseException {
         //生成业务流程信息
         super.getFacade().getCommonQueryService().generateEtBusinessProcessByProject(process);
         process.setRow(row);
+        if(!"null".equals(startDate) && !"null".equals(endDate) && !StringUtil.isEmptyOrNull(startDate) && !StringUtil.isEmptyOrNull(endDate)){
+            Map<String,Object> param = process.getMap();
+            param.put("startDate",DateUtil.convertDateStringToTimestap(startDate));
+            param.put("endDate",DateUtil.convertDateStringToTimestap(endDate));
+        }
         //查询流程信息
         List<EtBusinessProcess> processList = super.getFacade().getEtBusinessProcessService().getEtBusinessProcessPaginatedList(process);
         //查询流程总的数量

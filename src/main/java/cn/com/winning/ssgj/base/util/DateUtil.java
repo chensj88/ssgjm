@@ -194,4 +194,9 @@ public final class DateUtil {
     public static String getTimstamp(){
         return System.currentTimeMillis() +"";
     }
+
+    public static Timestamp convertDateStringToTimestap(String dateString) throws ParseException {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        return new Timestamp(df.parse(dateString).getTime());
+    }
 }

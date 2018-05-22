@@ -53,6 +53,31 @@
 	   <if test="operatorTime != null "> and t.OPERATOR_TIME = #{operatorTime} </if>
 	</sql>
 
+	<sql id="query-etBusinessProcess">
+		<if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
+		<if test="(cId != null and cId != '') or cId == 0"> and t.C_ID = #{cId} </if>
+		<if test="(pmId != null and pmId != '') or pmId == 0"> and t.PM_ID = #{pmId} </if>
+		<if test="serialNo != null and serialNo != ''"> and t.SERIAL_NO = #{serialNo} </if>
+		<if test="(flowId != null and flowId != '') or flowId == 0"> and t.FLOW_ID = #{flowId} </if>
+		<if test="flowCode != null and flowCode != ''"> and t.FLOW_CODE LIKE '%#{flowCode}%' </if>
+		<if test="flowName != null and flowName != ''"> and t.FLOW_NAME LIKE '%#{flowName}%' </if>
+		<if test="(isScope != null )"> and t.IS_SCOPE = #{isScope} </if>
+		<if test="noScopeCode != null and noScopeCode != ''"> and t.NO_SCOPE_CODE = #{noScopeCode} </if>
+		<if test="message != null and message != ''"> and t.MESSAGE = #{message} </if>
+		<if test="(status != null )"> and t.STATUS = #{status} </if>
+		<if test="(sourceType != null and sourceType != '') or sourceType == 0"> and t.SOURCE_TYPE = #{sourceType} </if>
+		<if test="uploadPath != null "> and t.UPLOAD_PATH = #{uploadPath} </if>
+		<if test="imgPath != null and imgPath != ''">and t.IMG_PATH = #{imgPath}</if>
+		<if test="downloadPath != null and downloadPath != ''"> and t.DOWNLOAD_PATH = #{downloadPath} </if>
+		<if test="(creator != null and creator != '') or creator == 0"> and t.CREATOR = #{creator} </if>
+		<if test="createTime != null "> and t.CREATE_TIME = #{createTime} </if>
+		<if test="(operator != null and operator != '') or operator == 0"> and t.OPERATOR = #{operator} </if>
+		<if test="operatorTime != null "> and t.OPERATOR_TIME = #{operatorTime} </if>
+		<if test="map.startDate != null and map.endDate != null "> and t.CREATE_TIME
+			BETWEEN  #{map.startDate} AND  dateadd(day,1,#{map.endDate})
+		</if>
+	</sql>
+
 	<select id="selectEtBusinessProcess" resultMap="etBusinessProcessResult" parameterType="etBusinessProcess">
 		select * from ET_BUSINESS_PROCESS t where 1 = 1
 		<include refid="sf-etBusinessProcess" />
@@ -68,7 +93,7 @@
 
 	<select id="selectEtBusinessProcessCount" resultType="int" parameterType="etBusinessProcess">
 		select count(*) from ET_BUSINESS_PROCESS t where 1 = 1
-		<include refid="sf-etBusinessProcess" />
+		<include refid="query-etBusinessProcess" />
 	</select>
 	<!--
 	  补充状态信息对应的class
@@ -87,7 +112,7 @@
              LEFT JOIN SYS_DICT_INFO t1 ON t.STATUS = CAST(t1.DICT_VALUE AS INT) AND t1.DICT_CODE ='audiType'
 		     LEFT JOIN SYS_USER_INFO t2 ON t.CREATOR = t2.ID
 		    where 1 = 1
-			<include refid="sf-etBusinessProcess" />
+			<include refid="query-etBusinessProcess" />
 			<!-- order by ID asc -->
 		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
 	</select>
@@ -143,7 +168,7 @@
 		update ET_BUSINESS_PROCESS
 		<set>
 			<trim suffixOverrides=",">
-			   <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>
+			 <!--  <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>-->
 			   <if test="(cId != null and cId != '') or cId == 0"> C_ID = #{cId, jdbcType=BIGINT}, </if>
 			   <if test="(pmId != null and pmId != '') or pmId == 0"> PM_ID = #{pmId, jdbcType=BIGINT}, </if>
 			   <if test="serialNo != null and serialNo != ''"> SERIAL_NO = #{serialNo, jdbcType=VARCHAR}, </if>
