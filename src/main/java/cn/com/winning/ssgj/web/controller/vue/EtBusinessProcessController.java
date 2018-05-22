@@ -285,7 +285,6 @@ public class EtBusinessProcessController extends BaseController {
                 newFile.delete();
             }
             file.transferTo(newFile);
-            ;
             String remotePath = Constants.UPLOAD_PC_PREFIX+process.getPmId()+"/process/" + DateUtil.getTimstamp() +"/"+filename;
             try {
                 CommonFtpUtils.uploadFile(remotePath,newFile);

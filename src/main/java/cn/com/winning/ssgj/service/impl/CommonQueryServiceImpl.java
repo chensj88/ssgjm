@@ -323,6 +323,8 @@ public class CommonQueryServiceImpl implements CommonQueryService {
 
     @Override
     public void generateEtBusinessProcessByProject(EtBusinessProcess process) {
+       /*
+        根据流程是否必须来获取是否需要展示
         List<Long> pdIds = this.queryProductIdByProjectIdAndType(process.getPmId(), Constants.PMIS.CPLB_1);
         List<Long> flowIds = null;
         List<SysFlowInfo> flowInfoList = null;
@@ -337,7 +339,17 @@ public class CommonQueryServiceImpl implements CommonQueryService {
             SysFlowInfo flowInfo = new SysFlowInfo();
             flowInfo.getMap().put("pks", flowIds);
             flowInfoList = this.sysFlowInfoService.getSysFlowInfoListById(flowInfo);
-        }
+        }*/
+
+        long pmId = process.getPmId();
+        long cId = process.getcId();
+        String serialNo = process.getSerialNo();
+        List<SysFlowInfo> flowInfoList = null;
+        SysFlowInfo flowInfo = new SysFlowInfo();
+        flowInfo.setStatus(Constants.STATUS_USE);
+        flowInfo.setIsMust(Constants.STATUS_USE);
+        flowInfo.setFlowType(Constants.Flow.FLOW_TYPE_SMALL);
+        flowInfoList = this.sysFlowInfoService.getSysFlowInfoList(flowInfo);
         if (flowInfoList != null && flowInfoList.size() > 0) {
             for (SysFlowInfo info : flowInfoList) {
                 EtBusinessProcess queryProcess = new EtBusinessProcess();
