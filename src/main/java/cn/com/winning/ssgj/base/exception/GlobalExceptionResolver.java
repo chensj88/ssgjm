@@ -31,7 +31,7 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
                 logger.warn("ajax warn - [{}]", ssgjException.getResponseCode()+":"+ssgjException.getResponseMsg());
             }else {
                 ex.printStackTrace();
-                printWrite("系统异常！", resp);
+                printWrite("系统异常！"+ex.getMessage(), resp);
             }
 
             return new ModelAndView();

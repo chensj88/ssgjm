@@ -74,9 +74,8 @@ public class EtReportController extends BaseController {
             //根据产品集合获取硬件集合
             etReports = getFacade().getEtReportService().selectEtReportByProductInfo(etReport);
             //循环查询是否数据师傅存在，不存在则插入
-            EtReport etReportTemp = null;
             for (EtReport report : etReports) {
-                etReportTemp = new EtReport();
+                EtReport etReportTemp= new EtReport();
                 etReportTemp.setPmId(pmId);
                 etReportTemp.setSourceType(report.getSourceType());
                 etReportTemp = getFacade().getEtReportService().getEtReport(etReportTemp);
@@ -117,10 +116,9 @@ public class EtReportController extends BaseController {
         etReport.setRow(row);
         List<EtReport> etReports = super.getFacade().getEtReportService().getEtReportPaginatedList(etReport);
         int total = super.getFacade().getEtReportService().getEtReportCount(etReport);
-        String imgPath = null;
         for (EtReport report : etReports) {
             //获取图片路径集合
-            imgPath = report.getImgPath();
+            String imgPath = report.getImgPath();
             if (!StringUtil.isEmptyOrNull(imgPath)) {
                 String[] pathArr = imgPath.split(";");
                 report.getMap().put("imgPath", pathArr);
