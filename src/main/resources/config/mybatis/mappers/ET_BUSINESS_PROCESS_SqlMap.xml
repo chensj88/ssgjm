@@ -59,8 +59,8 @@
 		<if test="(pmId != null and pmId != '') or pmId == 0"> and t.PM_ID = #{pmId} </if>
 		<if test="serialNo != null and serialNo != ''"> and t.SERIAL_NO = #{serialNo} </if>
 		<if test="(flowId != null and flowId != '') or flowId == 0"> and t.FLOW_ID = #{flowId} </if>
-		<if test="flowCode != null and flowCode != ''"> and t.FLOW_CODE LIKE '%#{flowCode}%' </if>
-		<if test="flowName != null and flowName != ''"> and t.FLOW_NAME LIKE '%#{flowName}%' </if>
+		<if test="flowCode != null and flowCode != ''"> and t.FLOW_CODE LIKE '%${flowCode}%' </if>
+		<if test="flowName != null and flowName != ''"> and t.FLOW_NAME LIKE '%${flowName}%' </if>
 		<if test="(isScope != null )"> and t.IS_SCOPE = #{isScope} </if>
 		<if test="noScopeCode != null and noScopeCode != ''"> and t.NO_SCOPE_CODE = #{noScopeCode} </if>
 		<if test="message != null and message != ''"> and t.MESSAGE = #{message} </if>

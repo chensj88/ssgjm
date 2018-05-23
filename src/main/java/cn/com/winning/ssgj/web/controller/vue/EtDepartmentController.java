@@ -26,6 +26,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @history
+ *  @add chen.kuai
+ *  @modify  chensj 2018-05-23 添加模糊查询
+ */
 @Controller
 @CrossOrigin
 @RequestMapping(value = "/vue/department")
@@ -42,7 +47,6 @@ public class EtDepartmentController extends BaseController {
     @RequestMapping(value = "/list.do")
     @ResponseBody
     public Map<String, Object> queryHospitalUserInfo(EtDepartment queryDepart, Row row) {
-
         queryDepart.setRow(row);
         queryDepart.setIsDel(Constants.PMIS_STATUS_USE);
         List<EtDepartment> queryDepartList = super.getFacade().getEtDepartmentService().getEtDepartmentPaginatedList(queryDepart);
