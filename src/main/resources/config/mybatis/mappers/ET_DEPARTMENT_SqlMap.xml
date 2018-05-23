@@ -35,8 +35,9 @@
 		<if test="serialName != null and serialName != ''"> and t.SERIAL_NAME = #{serialName} </if>
 		<if test="deptType != null and deptType != ''"> and t.DEPT_TYPE = #{deptType} </if>
 		<if test="deptCode != null and deptCode != ''"> and t.DEPT_CODE = #{deptCode} </if>
-		<if test="typeName != null and typeName != ''"> and (t.TYPE_NAME LIKE '%${typeName}%' </if>
-		<if test="deptName != null and deptName != ''"> OR t.DEPT_NAME LIKE '%${deptName}%' ) </if>
+		<if test="typeName != null and typeName != '' and (deptName == null or deptName == '')"> and (t.TYPE_NAME LIKE '%${typeName}%')</if>
+		<if test="deptName != null and deptName != '' and (typeName == null or typeName == '')"> and (t.DEPT_NAME LIKE '%${deptName}%')</if>
+		<if test="typeName != null and typeName != '' and deptName != null and deptName != ''"> and (t.TYPE_NAME LIKE '%${typeName}%' OR t.DEPT_NAME LIKE '%${deptName}%' )</if>
 		<if test="(isDel != null and isDel != '') or isDel == 0"> and t.IS_DEL = #{isDel} </if>
 		<if test="deptLocation != null and deptLocation != ''">and t.DEPT_LOCATION = #{deptLocation}</if>
 	</sql>
