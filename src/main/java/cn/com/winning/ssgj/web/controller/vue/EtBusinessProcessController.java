@@ -66,6 +66,7 @@ public class EtBusinessProcessController extends BaseController {
         }
         //查询流程信息
         List<EtBusinessProcess> processList = super.getFacade().getEtBusinessProcessService().getEtBusinessProcessPaginatedList(process);
+        int total = super.getFacade().getEtBusinessProcessService().getEtBusinessProcessCount(process);
         //查询流程总的数量
         process.setIsScope(Constants.STATUS_USE);
         int sumBussinessProcessNum  = super.getFacade().getEtBusinessProcessService().getEtBusinessProcessCount(process);
@@ -75,7 +76,7 @@ public class EtBusinessProcessController extends BaseController {
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         result.put("rows", processList);
-        result.put("total", processList.size());
+        result.put("total", total);
         result.put("sumNum", sumBussinessProcessNum);
         result.put("comNum", completeBPNum);
         return result;
