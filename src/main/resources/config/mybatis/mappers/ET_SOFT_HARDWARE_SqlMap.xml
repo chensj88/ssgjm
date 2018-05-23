@@ -52,6 +52,32 @@
         <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
     </sql>
 
+
+    <sql id="selectSql">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(cId != null and cId != '') or cId == 0">and t.C_ID = #{cId}</if>
+        <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="(plId != null and plId != '') or plId == 0">and t.PL_ID = #{plId}</if>
+        <if test="hwName != null and hwName != ''">and t.HW_NAME LIKE '%${hwName}%'</if>
+        <if test="hwCode != null and hwCode != ''">and t.HW_CODE = #{hwCode}</if>
+        <if test="brand != null and brand != ''">and t.BRAND = #{brand}</if>
+        <if test="model != null and model != ''">and t.MODEL = #{model}</if>
+        <if test="(num != null and num != '') or num == 0">and t.NUM = #{num}</if>
+        <if test="useContent != null and useContent != ''">and t.USE_CONTENT = #{useContent}</if>
+        <if test="(isScope != null and isScope != '') or isScope == 0">and t.IS_SCOPE = #{isScope}</if>
+        <if test="noScopeCode != null and noScopeCode != ''">and t.NO_SCOPE_CODE = #{noScopeCode}</if>
+        <if test="content != null and content != ''">and t.CONTENT = #{content}</if>
+        <if test="(sourceId != null and sourceId != '') or sourceId == 0">and t.SOURCE_ID = #{sourceId}</if>
+        <if test="(creator != null and creator != '') or creator == 0">and t.CREATOR = #{creator}</if>
+        <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
+        <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
+        <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
+        <if test="map.startDate != null and map.endDate != null ">and t.CREATE_TIME
+            BETWEEN #{map.startDate} AND dateadd(day,1,#{map.endDate})
+        </if>
+    </sql>
+
     <select id="selectEtSoftHardware" resultMap="etSoftHardwareResult" parameterType="etSoftHardware">
         select * from ET_SOFT_HARDWARE t where 1 = 1
         <include refid="sf-etSoftHardware"/>
@@ -68,7 +94,7 @@
 
     <select id="selectEtSoftHardwareCount" resultType="int" parameterType="etSoftHardware">
         select count(*) from ET_SOFT_HARDWARE t where 1 = 1
-        <include refid="sf-etSoftHardware"/>
+        <include refid="selectSql"/>
     </select>
 
     <select id="selectEtSoftHardwarePaginatedList" resultMap="etSoftHardwareResult" parameterType="etSoftHardware">
@@ -82,7 +108,7 @@
         LEFT JOIN PMIS_PRODUCT_LINE_INFO t1 ON t.PL_ID = t1.ID
         LEFT JOIN SYS_USER_INFO t2 ON t.CREATOR = t2.ID
         where 1 = 1
-        <include refid="sf-etSoftHardware"/>
+        <include refid="selectSql"/>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>

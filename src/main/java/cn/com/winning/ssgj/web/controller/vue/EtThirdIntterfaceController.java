@@ -28,6 +28,7 @@ import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -115,7 +116,7 @@ public class EtThirdIntterfaceController extends BaseController {
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String, Object> list(EtThirdIntterface etThirdIntterface, Long userId, Row row,Integer isPmis) {
+    public Map<String, Object> list(EtThirdIntterface etThirdIntterface, Long userId, Row row, Integer isPmis, String startDate, String endDate) throws ParseException {
         Long pmId = etThirdIntterface.getPmId();
         if (pmId == null) {
             return null;
@@ -124,13 +125,24 @@ public class EtThirdIntterfaceController extends BaseController {
         Integer countNum = getCountNum(etThirdIntterface);
         //完成数
         Integer completeNum = getCompleteNum(etThirdIntterface);
-        Integer total=0;
-        List<EtThirdIntterface> etThirdIntterfaces=null;
+        Integer total = 0;
+        List<EtThirdIntterface> etThirdIntterfaces = null;
         etThirdIntterface.setRow(row);
-        if (isPmis==1){
+        if (!"null".equals(startDate) && !"null".equals(endDate) && !StringUtil.isEmptyOrNull(startDate) && !StringUtil.isEmptyOrNull(endDate)) {
+            etThirdIntterface.getMap().put("startDate", DateUtil.convertDateStringToTimestap(startDate));
+            etThirdIntterface.getMap().put("endDate", DateUtil.convertDateStringToTimestap(endDate));
+        }
+//        if(StringUtil.isEmpty(etThirdIntterface.getNoScopeCode())){
+//            etThirdIntterface.setIsScope(1);
+//        }else if("null".equalsIgnoreCase(etThirdIntterface.getNoScopeCode())){
+//            etThirdIntterface.setNoScopeCode(null);
+//        }
+        if (isPmis == 1) {
+            //pmis数据
             etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().selectPmisInterfacePaginatedList(etThirdIntterface);
             total = getFacade().getEtThirdIntterfaceService().selectPmisInterfaceCount(etThirdIntterface);
-        }else if(isPmis==0){
+        } else if (isPmis == 0) {
+            //非pmis数据
             etThirdIntterface.setSourceId(0L);
             //根据pmid获取所有分页接口数据
             etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().getEtThirdIntterfacePaginatedList(etThirdIntterface);

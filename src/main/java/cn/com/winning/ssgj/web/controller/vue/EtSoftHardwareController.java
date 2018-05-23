@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -99,12 +100,16 @@ public class EtSoftHardwareController extends BaseController {
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String, Object> list(Row row, EtSoftHardware etSoftHardware) {
+    public Map<String, Object> list(Row row, EtSoftHardware etSoftHardware,String startDate, String endDate) throws ParseException {
         Long pmId = etSoftHardware.getPmId();
         if (pmId == null) {
             return null;
         }
         etSoftHardware.setRow(row);
+        if (!"null".equals(startDate) && !"null".equals(endDate) && !StringUtil.isEmptyOrNull(startDate) && !StringUtil.isEmptyOrNull(endDate)) {
+            etSoftHardware.getMap().put("startDate", DateUtil.convertDateStringToTimestap(startDate));
+            etSoftHardware.getMap().put("endDate", DateUtil.convertDateStringToTimestap(endDate));
+        }
         List<EtSoftHardware> etSoftHardwarePaginatedList = getFacade().getEtSoftHardwareService().getEtSoftHardwarePaginatedList(etSoftHardware);
         int total = getFacade().getEtSoftHardwareService().getEtSoftHardwareCount(etSoftHardware);
         //根据项目Id
