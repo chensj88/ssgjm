@@ -31,10 +31,10 @@
         <if test="(modLevel != null and modLevel != '') or modLevel == 0">and t.MOD_LEVEL = #{modLevel}</if>
         <if test="modUrl != null and modUrl != ''">and t.MOD_URL = #{modUrl}</if>
         <if test="iconPath != null and iconPath != ''">and t.ICON_PATH = #{iconPath}</if>
-        <if test="(isLeaf != null and isLeaf != '') or isLeaf == 0">and t.IS_LEAF = #{isLeaf}</if>
+        <if test="(isLeaf != null  )  ">and t.IS_LEAF = #{isLeaf}</if>
         <if test="(isManager != null and isManager != '') or isManager == 0">and t.IS_MANAGER = #{isManager}</if>
         <if test="(orderValue != null and orderValue != '') or orderValue == 0">and t.ORDER_VALUE = #{orderValue}</if>
-        <if test="(isDel != null and isDel != '') or isDel == 0">and t.IS_DEL = #{isDel}</if>
+        <if test="(isDel != null  ) ">and t.IS_DEL = #{isDel}</if>
     </sql>
 
     <sql id="queryFuzzy">

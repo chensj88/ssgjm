@@ -104,6 +104,7 @@ public class SysModuleServiceImpl implements SysModuleService {
     private List<NodeTree> getChildNode(Long modId) {
         SysModule module = new SysModule();
         module.setParId(modId);
+        module.setIsDel(0);
         List<NodeTree> moduleTree = new ArrayList<NodeTree>();
         List<SysModule> moduleList = this.sysModuleDao.selectEntityList(module);
         for (SysModule sysModule : moduleList) {
