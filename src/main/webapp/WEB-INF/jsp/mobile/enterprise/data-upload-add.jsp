@@ -54,42 +54,12 @@
         </div>
     </c:if>
 
-
-
-
-    <%--<div class="datum-report padding-btm-20">--%>
-    <%--<div class="datum-report-item">--%>
-    <%--<span>资料类别</span>--%>
-    <%--<div class="select">--%>
-    <%--<input id="dataType" name="dataType" type="hidden" onchange=""/>--%>
-    <%--<a href="#"><span>--请选择--</span><i class="arrow"></i></a>--%>
-    <%--<ul>--%>
-    <%--<c:forEach var="dict" items="${dictInfos}">--%>
-    <%--<li data-val="${dict.dictValue}">${dict.dictLabel}</li>--%>
-    <%--</c:forEach>--%>
-    <%--</ul>--%>
-    <%--</div>--%>
-    <%--</div>--%>
-    <%--</div>--%>
-
-
     <form id="file" action="" method="post" enctype="multipart/form-data">
         <div  class="datum-upload">
             <div>
                 <i class="iconfont icon-plus"></i>
                 <input type="file" id="uploadFile" name="uploadFile" onchange="fileSelected2();" />
             </div>
-
-            <%--<c:if test="${onlineFiles.imgPath !=null && onlineFiles.imgPath !=''}">--%>
-                <%--<c:forEach var="img" items="${onlineFiles.imgs}">--%>
-                    <%--<div id="close_id">--%>
-                        <%--<img src="<%=basePathNuName%>shareFolder${img}" />--%>
-                        <%--<span class="iconfont icon-close" onclick="closeImg('${onlineFiles.id}','${img}');"></span>--%>
-                        <%--<input type="hidden" />--%>
-                    <%--</div>--%>
-                <%--</c:forEach>--%>
-            <%--</c:if>--%>
-
         </div>
     </form>
 

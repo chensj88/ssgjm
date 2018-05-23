@@ -136,9 +136,15 @@ public class OnlineFileController extends BaseController {
         }else{
             EtOnlineFile info = new EtOnlineFile();
             info.setSerialNo(serialNo);
+            if(fileType.equals("3")){
+                info.setFileType("3"); //上线可行性报告
+            }else{
+                info.setFileType("4");
+            }
+            info.setStatus(1);
             //info.setId(id);
             List<EtOnlineFile> onlineFiles =super.getFacade().getEtOnlineFileService().getEtOnlineFileList(info);
-            model.addAttribute("onlineFiles",info);
+            model.addAttribute("onlineFiles",onlineFiles);
             model.addAttribute("dataName","上线可行性报告");
         }
         model.addAttribute("serialNo",serialNo);
@@ -175,6 +181,8 @@ public class OnlineFileController extends BaseController {
         String serialNo = request.getParameter("serialNo");
         String userId = request.getParameter("userId");
         String fileType = request.getParameter("fileType");
+        String dataName = request.getParameter("dataName");
+        String dataType = request.getParameter("dataType");
         String id =request.getParameter("id");
         try{
             if(!uploadFile.isEmpty()) {
@@ -213,6 +221,7 @@ public class OnlineFileController extends BaseController {
                     }
                 }
                 if(ftpStatus){
+                    EtUserLookProject lastProject= super.getFacade().getEtUserLookProjectService().getLastUserLookProject(super.user_id(userId,"1"));
                     if(fileType.equals("1")){  //调研报告
                         EtBusinessProcess process = new EtBusinessProcess();
                         process.setId(Long.valueOf(id));
@@ -222,6 +231,7 @@ public class OnlineFileController extends BaseController {
                         }else{
                             process.setImgPath(remotePath);
                         }
+                        process.setFlowName(dataName);
                         process.setOperator(super.user_id(userId,"1"));
                         process.setOperatorTime(new Timestamp(new Date().getTime()));
                         super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
@@ -235,23 +245,24 @@ public class OnlineFileController extends BaseController {
                         }else{
                             report.setImgPath(remotePath+";");
                         }
+                        report.setReportName(dataName);
+                        report.setReportType(Integer.valueOf(dataType));
                         report.setOperator(super.user_id(userId,"1"));
                         report.setOperatorTime(new Timestamp(new Date().getTime()));
                         super.getFacade().getEtReportService().modifyEtReport(report);
 
                     }else{ //上线/切花审批
                         EtOnlineFile info = new EtOnlineFile();
-                        info.setId(Long.valueOf(id));
-                        info = super.getFacade().getEtOnlineFileService().getEtOnlineFile(info);
-                        if(StringUtils.isNotBlank(info.getImgPath())){
-                            info.setImgPath(info.getImgPath()+";"+ remotePath);//拼接图片路径
-                        }else{
-                            info.setImgPath(remotePath);
-                        }
-                        info.setOperator(super.user_id(userId,"1"));
-                        info.setOperatorTime(new Timestamp(new Date().getTime()));
-                        super.getFacade().getEtOnlineFileService().modifyEtOnlineFile(info);
-
+//                        info.setId(Long.valueOf(id));
+//                        info = super.getFacade().getEtOnlineFileService().getEtOnlineFile(info);
+//                        if(StringUtils.isNotBlank(info.getImgPath())){
+//                            info.setImgPath(info.getImgPath()+";"+ remotePath);//拼接图片路径
+//                        }else{
+//                            info.setImgPath(remotePath);
+//                        }
+//                        info.setOperator(super.user_id(userId,"1"));
+//                        info.setOperatorTime(new Timestamp(new Date().getTime()));
+//                        super.getFacade().getEtOnlineFileService().modifyEtOnlineFile(info);
 //                        EtOnlineFile info = new EtOnlineFile();
 //                        SysUserInfo userInfo = new SysUserInfo();
 //                        userInfo.setUserid(userId+"");//员工编码
@@ -259,14 +270,22 @@ public class OnlineFileController extends BaseController {
 //                        userInfo.setUserType("0");//0医院
 //                        List<SysUserInfo> userInfoList = super.getFacade().getSysUserInfoService().getSysUserInfoList(userInfo);
 //                        //上传资料 1.生成一条记录//2.修改原来图片路径
-//                        info.setId(ssgjHelper.createOnlineFileIdService());
-//                        info.setcId((long)-2);    //移动端
-//                        info.setPmId((long)-2);
-//                        info.setImgPath(remotePath);//图片路径
-//                        info.setCreator((long)super.user_id(userId,"1"));
-//                        info.setCreateTime(new Timestamp(new Date().getTime()));
-//                        info.setFileType(fileType);
-//                        super.getFacade().getEtOnlineFileService().createEtOnlineFile(info);
+                        info.setId(ssgjHelper.createEtOnlineFileIdService());
+                        info.setSerialNo(serialNo);
+                        if(lastProject !=null && !"".equals(lastProject)){
+                            info.setcId(lastProject.getCId());
+                            info.setPmId(lastProject.getPmId());
+                        }else{
+                            info.setcId((long)-2);
+                            info.setPmId((long)-2);
+                        }
+                        info.setImgPath(remotePath);//图片路径
+                        info.setFileType(fileType);
+                        info.setCreator((long)super.user_id(userId,"1"));
+                        info.setCreateTime(new Timestamp(new Date().getTime()));
+                        info.setOperator(super.user_id(userId,"1"));
+                        info.setOperatorTime(new Timestamp(new Date().getTime()));
+                        super.getFacade().getEtOnlineFileService().createEtOnlineFile(info);
                     }
 
                     map.put("status",true);
@@ -428,22 +447,6 @@ public class OnlineFileController extends BaseController {
                         info.setOperator(super.user_id(userId,"1"));
                         info.setOperatorTime(new Timestamp(new Date().getTime()));
                         super.getFacade().getEtOnlineFileService().modifyEtOnlineFile(info);
-
-//                        EtOnlineFile info = new EtOnlineFile();
-//                        SysUserInfo userInfo = new SysUserInfo();
-//                        userInfo.setUserid(userId+"");//员工编码
-//                        userInfo.setStatus(1);
-//                        userInfo.setUserType("0");//0医院
-//                        List<SysUserInfo> userInfoList = super.getFacade().getSysUserInfoService().getSysUserInfoList(userInfo);
-//                        //上传资料 1.生成一条记录//2.修改原来图片路径
-//                        info.setId(ssgjHelper.createOnlineFileIdService());
-//                        info.setcId((long)-2);    //移动端
-//                        info.setPmId((long)-2);
-//                        info.setImgPath(remotePath);//图片路径
-//                        info.setCreator((long)super.user_id(userId,"1"));
-//                        info.setCreateTime(new Timestamp(new Date().getTime()));
-//                        info.setFileType(fileType);
-//                        super.getFacade().getEtOnlineFileService().createEtOnlineFile(info);
                     }
 
                     map.put("status","true");
