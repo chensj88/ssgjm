@@ -20,8 +20,17 @@
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-treeview.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/common.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/uploader/css/jquery.dm-uploader.min.css"/>
     <base href="<%=basePath%>">
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
+    <style>
+
+        .demo{min-width:360px;margin:30px auto;padding:10px 20px}
+        .demo h3{line-height:40px; font-weight: bold;}
+        .file-item{float: left; position: relative; width: 110px;height: 110px; margin: 0 20px 20px 0; padding: 4px;}
+        .file-item .info{overflow: hidden;}
+        .uploader-list{width: 100%; overflow: hidden;}
+    </style>
 </head>
 <body>
 <div class="container">
@@ -32,6 +41,24 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div id="drag-and-drop-zone" class="dm-uploader p-5">
+             <div class="col-sm-3">
+                <ul class="list-unstyled p-2 d-flex flex-column col" id="files">
+                    <li class="text-muted text-center empty">请先选择文件</li>
+                </ul>
+             </div>
+            <div class="col-sm-2" style="width:120px;">
+                <div class="btn btn-primary btn-block mb-5" >
+                    <span>选择文件</span>
+                    <input type="file" title='Click to add Files' />
+                </div>
+             </div>
+
+        </div>
+
+
+    </div>
 </div>
 </body>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
@@ -41,8 +68,10 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrapValidator.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/language/zh_CN.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap-treeview.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/uploader/js/jquery.dm-uploader.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
 <script>
+
     $(function () {
         function initTreeView() {
             $.ajax({
@@ -71,7 +100,55 @@
                 }
             });
         }
-        initTreeView();
+//        initTreeView();
+
+        function initUploadComponent() {
+            var template = '<li class="text-muted text-center empty">请先选择文件</li>';
+            $('#files').find('li.empty').fadeOut();
+            $('#files').prepend(template);
+        }
+
+        $('#drag-and-drop-zone').dmUploader({
+            url:Common.getRootPath() + '/admin/upload/test.do',
+            onNewFile: function(id, file){
+                uploadFile(id, file);
+            },
+            onUploadSuccess: function(id, data){
+                changeFileStatus(id, 'success', '上传成功');
+            }
+        });
     });
+
+    function uploadFile(id, file) {
+        var template ='<li class="media">\n' +
+            '        <div class="media-body mb-1">\n' +
+            '        <p class="mb-2">\n' +
+            '           <strong>'+file.name+'</strong> - 当前状态: <span id="uploaderFile'+id+'" class="text-muted">正在上传</span>\n' +
+            '         </p> </div></li>';
+        $('#files').find('li.empty').fadeOut();
+        $('#files').prepend(template);
+    }
+    function changeFileStatus(id, status, message) {
+        console.log('#uploaderFile' + id);
+        $('#uploaderFile' + id).text(message).prop('class', 'text-' + status);
+    }
+
+</script>
+<script type="text/html" id="files-template">
+    <li class="media">
+        <div class="media-body mb-1">
+            <p class="mb-2">
+                <strong>%%filename%%</strong> - Status: <span class="text-muted">Waiting</span>
+            </p>
+            <div class="progress mb-2">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                     role="progressbar"
+                     style="width: 0%"
+                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                </div>
+            </div>
+            <hr class="mt-1 mb-1" />
+        </div>
+    </li>
 </script>
 </html>
