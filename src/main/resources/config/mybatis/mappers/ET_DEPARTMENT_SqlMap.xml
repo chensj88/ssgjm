@@ -28,6 +28,19 @@
 	   <if test="(isDel != null and isDel != '') or isDel == 0"> and t.IS_DEL = #{isDel} </if>
 	   <if test="deptLocation != null and deptLocation != ''">and t.DEPT_LOCATION = #{deptLocation}</if>
 	</sql>
+   <!--模糊查询使用动态SQL add chensj 2018-05-23-->
+	<sql id="query-etDepartment">
+		<if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
+		<if test="(serialNo != null and serialNo != '') or serialNo == 0"> and t.SERIAL_NO = #{serialNo} </if>
+		<if test="serialName != null and serialName != ''"> and t.SERIAL_NAME = #{serialName} </if>
+		<if test="deptType != null and deptType != ''"> and t.DEPT_TYPE = #{deptType} </if>
+		<if test="deptCode != null and deptCode != ''"> and t.DEPT_CODE = #{deptCode} </if>
+		<if test="typeName != null and typeName != '' and (deptName == null or deptName == '')"> and (t.TYPE_NAME LIKE '%${typeName}%')</if>
+		<if test="deptName != null and deptName != '' and (typeName == null or typeName == '')"> and (t.DEPT_NAME LIKE '%${deptName}%')</if>
+		<if test="typeName != null and typeName != '' and deptName != null and deptName != ''"> and (t.TYPE_NAME LIKE '%${typeName}%' OR t.DEPT_NAME LIKE '%${deptName}%' )</if>
+		<if test="(isDel != null and isDel != '') or isDel == 0"> and t.IS_DEL = #{isDel} </if>
+		<if test="deptLocation != null and deptLocation != ''">and t.DEPT_LOCATION = #{deptLocation}</if>
+	</sql>
 
 	<select id="selectEtDepartment" resultMap="etDepartmentResult" parameterType="etDepartment">
 		select * from ET_DEPARTMENT t where 1 = 1
@@ -45,14 +58,14 @@
 
 	<select id="selectEtDepartmentCount" resultType="int" parameterType="etDepartment">
 		select count(*) from ET_DEPARTMENT t where 1 = 1
-		<include refid="sf-etDepartment" />
+		<include refid="query-etDepartment" />
 	</select>
 
 	<select id="selectEtDepartmentPaginatedList" resultMap="etDepartmentResult" parameterType="etDepartment">
 		select * from (
 			select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
 				from ET_DEPARTMENT t where 1 = 1
-			<include refid="sf-etDepartment" />
+			<include refid="query-etDepartment" />
 			<!-- order by ID asc -->
 		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
 	</select>
