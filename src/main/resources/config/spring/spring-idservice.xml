@@ -379,7 +379,7 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
-    <!--上线人员信息ID-->
+    <!--线可行性报告和上线切换报告ID-->
     <bean id="createEtOnlineInfoIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
         <property name="table" ref="sequenceTable"/>
         <property name="type" value="EtOnline_ID"/>

@@ -41,6 +41,24 @@
         <if test="(isDel != null ) ">and t.IS_DEL = #{isDel}</if>
     </sql>
 
+    <sql id="query-etUserInfo">
+        <if test="(id != null) or id == 0">and t.ID = #{id}</if>
+        <if test="(pmId != null ) or pmId == 0">and t.PM_ID = #{pmId}</if>
+        <if test="(cId != null ) or cId == 0">and t.C_ID = #{cId}</if>
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="(userId != null ) or userId == 0">and t.USER_ID = #{userId}</if>
+        <if test="(userType != null ) or userType == 0">and t.USER_TYPE = #{userType}</if>
+        <if test="userCard != null and userCard != '' and ( cName == null or cName == '' )">and t.USER_CARD LIKE '%${userCard}%'</if>
+        <if test="cName != null and cName != '' and  ( userCard == null or userCard == '' )">and t.C_NAME LIKE '%${cName}%'</if>
+        <if test="userCard != null and userCard != '' and cName != null and cName != ''">and (t.USER_CARD LIKE '%${userCard}%' OR t.C_NAME LIKE '%${cName}%') </if>
+        <if test="orgName != null and orgName != ''">and t.ORG_NAME = #{orgName}</if>
+        <if test="positionName != null and positionName != ''">and t.POSITION_NAME = #{positionName}</if>
+        <if test="telephone != null and telephone != ''">and t.TELEPHONE = #{telephone}</if>
+        <if test="email != null and email != ''">and t.EMAIL = #{email}</if>
+        <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
+        <if test="(isDel != null ) ">and t.IS_DEL = #{isDel}</if>
+    </sql>
+
     <select id="selectEtUserInfo" resultMap="etUserInfoResult" parameterType="etUserInfo">
         select * from ET_USER_INFO t where 1 = 1
         <include refid="sf-etUserInfo"/>
@@ -67,7 +85,7 @@
 
     <select id="selectEtUserInfoCount" resultType="int" parameterType="etUserInfo">
         select count(*) from ET_USER_INFO t where 1 = 1
-        <include refid="sf-etUserInfo"/>
+        <include refid="query-etUserInfo"/>
         <if test="(isDel != null ) ">and t.USER_ID != 100001 </if>
     </select>
 
@@ -82,7 +100,7 @@
             LEFT JOIN SYS_DICT_INFO A ON A.DICT_VALUE = t.USER_TYPE AND A.DICT_CODE='userType'
             LEFT JOIN SYS_DICT_INFO B ON t.POSITION_NAME = B.DICT_VALUE AND B.DICT_CODE='positionName'
             <where>
-                <include refid="sf-etUserInfo"/>
+                <include refid="query-etUserInfo"/>
                 <if test="(isDel != null ) ">and t.USER_ID != 100001 </if>
             </where>
         <!-- order by ID asc -->

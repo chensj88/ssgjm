@@ -69,10 +69,10 @@ public class EtContractTaskServiceImpl implements EtContractTaskService {
 	@Override
 	public void generateEtContractTask(EtContractTask task, String path) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		int total = this.etContractTaskDao.selectEtContractTaskMergeCount(task);
+		int total = (Integer) this.etContractTaskDao.selectEntityCount(task);;
 		Row row = new Row(0,total);
 		task.setRow(row);
-		List<EtContractTask> contractTaskList = this.etContractTaskDao.selectEtContractTaskMergePageList(task);
+		List<EtContractTask> contractTaskList = this.etContractTaskDao.selectEntityList(task);
 		List<String> colList = new ArrayList<String>();
 		colList.add("zxtmc");
 		colList.add("cpmc");

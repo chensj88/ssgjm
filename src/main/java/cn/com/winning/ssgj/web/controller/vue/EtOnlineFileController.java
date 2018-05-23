@@ -143,7 +143,7 @@ public class EtOnlineFileController extends BaseController {
 
     /**
      * 删除上线评估报告
-     * @param file
+     * @param file 删除文件，真删
      * @return
      */
     @RequestMapping(value = "/delete.do")
@@ -153,9 +153,7 @@ public class EtOnlineFileController extends BaseController {
         file = super.getFacade().getEtOnlineFileService().getEtOnlineFile(file);
         String source = file.getImgPath();
         CommonFtpUtils.removeUploadFile(source);
-        file.setImgPath("");
-        file.setStatus(Constants.STATUS_UNUSE);
-        super.getFacade().getEtOnlineFileService().modifyEtOnlineFile(file);
+        super.getFacade().getEtOnlineFileService().removeEtOnlineFile(file);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         return result;

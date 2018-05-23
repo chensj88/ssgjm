@@ -55,11 +55,13 @@
     </sql>
 
     <sql id="query-sysUserInfo">
-        <if test="userid != null and userid != ''">AND t.USERID LIKE '%${userid}%'</if>
-        <if test="yhmc != null and yhmc != ''">AND t.YHMC LIKE '%${yhmc}%'</if>
+        <if test="userid != null and userid != '' and (yhmc == null or yhmc == '') ">AND t.USERID LIKE '%${userid}%'</if>
+        <if test="yhmc != null and yhmc != '' and ( userid == null or userid == '' )">AND t.YHMC LIKE '%${yhmc}%'</if>
+        <if test="userid != null and userid != '' and yhmc != null and yhmc != ''">AND ( t.USERID LIKE '%${userid}%' OR t.YHMC LIKE '%${yhmc}%')</if>
         <if test="mobile != null ">AND t.MOBILE LIKE '%${mobile}%'</if>
         <if test="status != null ">AND t.STATUS = #{status}</if>
         <if test="ssgs != null ">AND t.SSGS = #{ssgs}</if>
+        <if test="userType != null and userType != ''"> and t.USER_TYPE = #{userType} </if>
     </sql>
 
     <select id="selectSysUserInfo" resultMap="sysUserInfoResult" parameterType="sysUserInfo">

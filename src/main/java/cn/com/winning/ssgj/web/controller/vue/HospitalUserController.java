@@ -50,14 +50,11 @@ public class HospitalUserController extends BaseController {
     @RequestMapping(value = "/list.do")
     @ResponseBody
     public Map<String, Object> queryHospitalUserInfo(SysUserInfo queryUser,Row row) {
-
-       /* SysUserInfo user = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
-        long c_id = (long) user.getMap().get("C_ID");*/
         queryUser.setRow(row);
         queryUser.setUserType(Constants.User.USER_TYPE_HOSPITAL);
         queryUser.setStatus(Constants.PMIS_STATUS_USE);
-        List<SysUserInfo> queryUserList = super.getFacade().getSysUserInfoService().getSysUserInfoPaginatedList(queryUser);
-        int total = super.getFacade().getSysUserInfoService().getSysUserInfoCount(queryUser);
+        List<SysUserInfo> queryUserList = super.getFacade().getSysUserInfoService().getSysUserInfoQueryPaginatedList(queryUser);
+        int total = super.getFacade().getSysUserInfoService().getSysUserInfoQueryCount(queryUser);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
