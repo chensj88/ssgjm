@@ -110,7 +110,7 @@
 				<ul class="datum-row-img clearfix">
                     <a href="<%=basePath%>mobile/implementData/details.do?fileType=4&serialNo=${serialNo}&userId=${userId}">
                     <li>
-							<h3>上线切换方案</h3>
+							<h3>上线切换资料</h3>
 							<div class="datum-middle">
 								<div>
 									<p>

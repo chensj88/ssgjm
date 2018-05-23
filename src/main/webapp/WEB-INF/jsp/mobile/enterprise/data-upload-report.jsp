@@ -58,9 +58,7 @@
 					</div>
 				</div>
 			</c:if>
-
-
-
+        <c:if test="${fileType == '1' || fileType == '2'}">
 			<form id="file" action="" method="post" enctype="multipart/form-data">
 			<div  class="datum-upload">
 				<div>
@@ -77,9 +75,30 @@
 				</div>
 				</c:forEach>
 				</c:if>
-
 			</div>
 			</form>
+        </c:if>
+        <c:if test="${fileType == '3' || fileType == '4'}">
+            <form id="file" action="" method="post" enctype="multipart/form-data">
+                <div  class="datum-upload">
+                    <div>
+                        <i class="iconfont icon-plus"></i>
+                        <input type="file" id="uploadFile_two" name="uploadFile" onchange="fileSelected();" />
+                    </div>
+
+                        <c:forEach var="img" items="${onlineFiles}">
+                            <div id="close_id">
+                                <img src="<%=basePathNuName%>shareFolder${img.imgPath}" />
+                                <span class="iconfont icon-close" onclick="closeImg('${img.id}','${img.imgPath}');"></span>
+                                <input type="hidden" />
+                            </div>
+                        </c:forEach>
+                </div>
+            </form>
+
+        </c:if>
+
+
 
 		</div>
 	</div>
@@ -101,22 +120,22 @@
 			//添加图片
             function fileSelected2(id){
 			    //获取文件的内容
-                //var dataName = $("#dataName").val();
-                //var dataType = $("#dataType").val();
-                // if(dataName == null || dataName ==''){
-                //     mui.toast('名称不能为空',{ duration:'long(3500ms)', type:'div' });
-                //     return false;
-                // }
-                // if(dataType == null || dataType ==''){
-                //     mui.toast('请选择类型',{ duration:'long(3500ms)', type:'div' });
-                //     return false;
-                // }
+                var dataName = $("#dataName").val();
+                var dataType = $("#dataType").val();
+                if(dataName == null || dataName ==''){
+                    mui.toast('名称不能为空',{ duration:'long(3500ms)', type:'div' });
+                    return false;
+                }
+                if(dataType == null || dataType ==''){
+                    mui.toast('请选择类型',{ duration:'long(3500ms)', type:'div' });
+                    return false;
+                }
                 var fileType = $("#fileType").val();
                 var userId = $("#userId").val();
                 var serialNo = $("#serialNo").val();
                 var uploadFile = new FormData($("#file")[0]);
 				//判断上传的只能是图片
-                var f=document.getElementById("uploadFile").value;
+                var f= $("#uploadFile").val();
                 if(f=="") { alert("请上传图片");return false;}
                 else {
                     if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(f)) {
@@ -128,8 +147,61 @@
                 if("undefined" != typeof(uploadFile) && uploadFile != null && uploadFile != ""){
                     $.ajax({
                         type: "POST",
-                        url:"<%=basePath%>/mobile/implementData/uploadImgAjax.do?id="+id+"&fileType="+fileType+"&userId="+userId+"&serialNo="+serialNo,
+                        url:"<%=basePath%>/mobile/implementData/uploadImgAjax.do?id="+id+"&fileType="+fileType+"&userId="+userId+"&serialNo="+serialNo+"&dataName="+dataName+"&dataType="+dataType,
 						data:uploadFile,
+                        cache : false,
+                        async: false,
+                        contentType: false, //不设置内容类型
+                        processData: false, //不处理数据
+                        error: function(request) {
+                            mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                            console.log(request);
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            if(data.status) {
+                                //mui.toast('修改成功',{ duration:'long(3500ms)', type:'div' });
+                                //追加图片预览
+                                setTimeout("location.reload()",3500);
+                            } else {
+                                //mui.toast('修改失败',{ duration:'long(3500ms)', type:'div' });
+                                //追加图片预览
+                                setTimeout("location.reload()",3500);
+
+                            }
+                        }
+                    });
+
+
+                }else{
+                    alert("选择的文件无效！请重新选择");
+                }
+
+            }
+
+            //可行性报告  切换方案
+
+            function fileSelected(){
+
+                var fileType = $("#fileType").val();
+                var userId = $("#userId").val();
+                var serialNo = $("#serialNo").val();
+                var uploadFile = new FormData($("#file")[0]);
+                //判断上传的只能是图片
+                var f= $("#uploadFile_two").val();
+                if(f=="") { alert("请上传图片");return false;}
+                else {
+                    if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(f)) {
+                        mui.toast('图片类型必须是.gif,jpeg,jpg,png中的一种',{ duration:'long(3500ms)', type:'div' });
+                        return false;
+                    }
+                }
+
+                if("undefined" != typeof(uploadFile) && uploadFile != null && uploadFile != ""){
+                    $.ajax({
+                        type: "POST",
+                        url:"<%=basePath%>/mobile/implementData/uploadImgAjax.do?fileType="+fileType+"&userId="+userId+"&serialNo="+serialNo,
+                        data:uploadFile,
                         cache : false,
                         async: false,
                         contentType: false, //不设置内容类型
@@ -191,52 +263,9 @@
                     }
                 });
 
-
-
-
-
-
 			}
 
 
-
-            <%--function fileSelected(worknum,val_type) {--%>
-                <%--var dataName = $("#dataName").val();--%>
-                <%--var dataType = $("#dataType").val();--%>
-                <%--if(dataName == null || dataName ==''){--%>
-                    <%--mui.toast('名称不能为空',{ duration:'long(3500ms)', type:'div' });--%>
-                    <%--return false;--%>
-				<%--}--%>
-                <%--if(dataType == null || dataType ==''){--%>
-                    <%--mui.toast('请选择类型',{ duration:'long(3500ms)', type:'div' });--%>
-                    <%--return false;--%>
-                <%--}--%>
-                <%--&lt;%&ndash;var fileType = $("#fileType").val();&ndash;%&gt;--%>
-                <%--&lt;%&ndash;var userId = $("#userId").val();&ndash;%&gt;--%>
-                <%--&lt;%&ndash;var serialNo = $("#serialNo").val();&ndash;%&gt;--%>
-
-                <%--&lt;%&ndash;$.ajax({&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;type: "POST",&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;url:"<%=basePath%>/mobile/implementData/uploadImg.do",&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;data:{dataName:dataName,dataType:dataType,fileType:fileType,userId:userId,serialNo:serialNo},&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;dataType:"json",&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;cache : false,&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;error: function(request) {&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;console.log(request);&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;},&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;success: function(data) {&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;if(data.status) {&ndash;%&gt;--%>
-                            <%--&lt;%&ndash;mui.toast('修改成功',{ duration:'long(3500ms)', type:'div' });&ndash;%&gt;--%>
-                            <%--&lt;%&ndash;setTimeout("location.reload()",3500);&ndash;%&gt;--%>
-
-                        <%--&lt;%&ndash;} else {&ndash;%&gt;--%>
-                            <%--&lt;%&ndash;mui.toast('修改失败',{ duration:'long(3500ms)', type:'div' })&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;}&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;}&ndash;%&gt;--%>
-                <%--&lt;%&ndash;});&ndash;%&gt;--%>
-               <%--//document.getElementById("myForm").submit();--%>
-            <%--}--%>
 		</script>
 	</body>
 </html>
