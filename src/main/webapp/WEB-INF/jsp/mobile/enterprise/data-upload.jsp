@@ -57,6 +57,11 @@
 					<span>单据</span>
 				</div>
 				<ul class="datum-row-img clearfix">
+					<a href="<%=basePath%>mobile/implementData/addDetails.do?fileType=2&serialNo=${serialNo}&userId=${userId}">
+						<li class="datum-row-add">
+							<i class="iconfont icon-plus"></i>
+						</li>
+					</a>
 					<c:forEach var="vul" items="${onlineFileList_two}">
                     <a href="<%=basePath%>mobile/implementData/details.do?fileType=2&serialNo=${serialNo}&userId=${userId}&id=${vul.id}">
                     <li>
@@ -82,13 +87,13 @@
 				<ul class="datum-row-img clearfix">
 
 					<%--<c:forEach var="vul" items="${onlineFileList_three}">--%>
-                    <a href="<%=basePath%>mobile/implementData/details.do?fileType=3&serialNo=${serialNo}&userId=${userId}&id=${vul.id}">
+                    <a href="<%=basePath%>mobile/implementData/details.do?fileType=3&serialNo=${serialNo}&userId=${userId}">
 						<li>
 							<h3>可行性资料</h3>
 							<div class="datum-middle">
 								<div>
 									<p>
-										<span>${vul.dataName}</span>
+										<span>上传资料</span>
 									</p>
 								</div>
 							</div>
@@ -103,20 +108,18 @@
 					<span>上线切换方案</span>
 				</div>
 				<ul class="datum-row-img clearfix">
-					<c:forEach var="vul" items="${onlineFileList_four}">
-                    <a href="<%=basePath%>mobile/implementData/details.do?fileType=4&serialNo=${serialNo}&userId=${userId}&id=${vul.id}">
+                    <a href="<%=basePath%>mobile/implementData/details.do?fileType=4&serialNo=${serialNo}&userId=${userId}">
                     <li>
-							<h3>方案</h3>
+							<h3>上线切换方案</h3>
 							<div class="datum-middle">
 								<div>
 									<p>
-										<span>${vul.dataName}</span>
+										<span>上传资料</span>
 									</p>
 								</div>
 							</div>
 						</li>
                     </a>
-					</c:forEach>
 				</ul>
 			</div>
 		</div>

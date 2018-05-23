@@ -63,7 +63,7 @@
 		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
 		 * from ET_BUSINESS_PROCESS t where 1 = 1
 		<include refid="sf-etBusinessProcess" />
-		<!-- order by ID asc -->
+		 order by ID DESC
 	</select>
 
 	<select id="selectEtBusinessProcessCount" resultType="int" parameterType="etBusinessProcess">

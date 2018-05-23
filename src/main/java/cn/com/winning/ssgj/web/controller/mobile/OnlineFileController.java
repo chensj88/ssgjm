@@ -44,7 +44,7 @@ public class OnlineFileController extends BaseController {
     public String floorQuestionList(Model model, String parameter) {
 
         EtOnlineFile onlineFile = new  EtOnlineFile();
-        //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
+        parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
         try{
             byte[] byteArray = Base64Utils.decryptBASE64(parameter);
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
@@ -125,20 +125,21 @@ public class OnlineFileController extends BaseController {
                 List<String> lists= Arrays.asList(imgs);
                 report.setImgs(lists);
             }
+            SysDictInfo info1 = new SysDictInfo();
+            info1.setDictCode("paperType");
+            List<SysDictInfo> dictInfos =super.getFacade().getSysDictInfoService().getSysDictInfoList(info1);
+            model.addAttribute("dictInfos",dictInfos);
             model.addAttribute("onlineFiles",report);
             model.addAttribute("dataName",report.getReportName());
+            model.addAttribute("fileType",2);
 
         }else{
             EtOnlineFile info = new EtOnlineFile();
-            info.setId(id);
-            info= super.getFacade().getEtOnlineFileService().getEtOnlineFile(info);
-            if(StringUtils.isNotBlank(info.getImgPath())){
-                String[] imgs=info.getImgPath().split(";");
-                List<String> lists= Arrays.asList(imgs);
-                info.setImgs(lists);
-            }
+            info.setSerialNo(serialNo);
+            //info.setId(id);
+            List<EtOnlineFile> onlineFiles =super.getFacade().getEtOnlineFileService().getEtOnlineFileList(info);
             model.addAttribute("onlineFiles",info);
-            model.addAttribute("dataName",info.getDataName());
+            model.addAttribute("dataName","上线可行性报告");
         }
         model.addAttribute("serialNo",serialNo);
         model.addAttribute("userId",userId);
@@ -300,6 +301,7 @@ public class OnlineFileController extends BaseController {
         String userId = request.getParameter("userId");
         String fileType = request.getParameter("fileType");
         String dataName = request.getParameter("dataName");
+        String dataType = request.getParameter("dataType");
         String id = request.getParameter("id");
         try{
             if(!uploadFile.isEmpty()) {
@@ -373,18 +375,46 @@ public class OnlineFileController extends BaseController {
                             process.setOperator(super.user_id(userId,"1"));
                             process.setOperatorTime(new Timestamp(new Date().getTime()));
                             super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
+                            map.put("onlineId",String.valueOf(id));
 
                         }
 
-                    }else if(fileType.equals("2")){//单据报表
+                    }else if(fileType.equals("2")){//单据报表 新增
                         EtReport report = new EtReport();
-                        
-
-
-
-                        report.setOperator(super.user_id(userId,"1"));
-                        report.setOperatorTime(new Timestamp(new Date().getTime()));
-                        super.getFacade().getEtReportService().modifyEtReport(report);
+                        if(StringUtils.isBlank(id)){
+                            report.setId(ssgjHelper.createEtReportIdService());
+                            report.setSerialNo(serialNo);
+                            if(lastProject !=null && !"".equals(lastProject)){
+                                report.setcId(lastProject.getCId());
+                                report.setPmId(lastProject.getPmId());
+                            }else{
+                                report.setcId((long)-2);
+                                report.setPmId((long)-2);
+                            }
+                            report.setImgPath(remotePath+";");
+                            report.setReportName(dataName);
+                            report.setReportType(Integer.parseInt(dataType));
+                            report.setStatus(1);//未审核
+                            report.setSourceType(0);//自定义
+                            report.setCreator(super.user_id(userId,"1"));
+                            report.setCreateTime(new Timestamp(new Date().getTime()));
+                            report.setOperator(super.user_id(userId,"1"));
+                            report.setOperatorTime(new Timestamp(new Date().getTime()));
+                            super.getFacade().getEtReportService().createEtReport(report);
+                            map.put("onlineId",String.valueOf(report.getId()));
+                        }else{
+                            report.setId(Long.valueOf(id));
+                            report = super.getFacade().getEtReportService().getEtReport(report);
+                            if(StringUtils.isNotBlank(report.getImgPath())){
+                                report.setImgPath(report.getImgPath()+ remotePath+";");//拼接图片路径
+                            }else{
+                                report.setImgPath(remotePath+";");
+                            }
+                            report.setOperator(super.user_id(userId,"1"));
+                            report.setOperatorTime(new Timestamp(new Date().getTime()));
+                            super.getFacade().getEtReportService().modifyEtReport(report);
+                            map.put("onlineId",String.valueOf(id));
+                        }
 
                     }else{ //上线/切花审批
                         EtOnlineFile info = new EtOnlineFile();
@@ -422,6 +452,7 @@ public class OnlineFileController extends BaseController {
                     map.put("status","false");
 
                 }
+                map.put("path",remotePath);
             } else {
                 map.put("status","false");
             }

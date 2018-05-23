@@ -34,21 +34,31 @@
 				</div>
 			</div>
 
+		    <c:if test="${fileType =='2'}">
+				<div class="datum-report padding-btm-20">
+					<div class="datum-report-item">
+					<span>资料类别</span>
 
-			<%--<div class="datum-report padding-btm-20">--%>
-				<%--<div class="datum-report-item">--%>
-					<%--<span>资料类别</span>--%>
-					<%--<div class="select">--%>
-						<%--<input id="dataType" name="dataType" type="hidden" onchange=""/>--%>
-						<%--<a href="#"><span>--请选择--</span><i class="arrow"></i></a>--%>
-		                <%--<ul>--%>
-							<%--<c:forEach var="dict" items="${dictInfos}">--%>
-								<%--<li data-val="${dict.dictValue}">${dict.dictLabel}</li>--%>
-							<%--</c:forEach>--%>
-		                <%--</ul>--%>
-					<%--</div>--%>
-				<%--</div>--%>
-			<%--</div>--%>
+
+						<div class="select">
+							<c:if test="${onlineFiles.reportType != null}" >
+								<input id="dataType" name="dataType" value="${onlineFiles.reportType}" type="hidden" onchange=""/>
+								<a href="#"><span>${onlineFiles.map.get("type")}</span><i class="arrow"></i></a>
+							</c:if>
+							<c:if test="${onlineFiles.reportType == null}" >
+								<input id="dataType" name="dataType" type="hidden" onchange=""/>
+								<a href="#"><span>--请选择--</span><i class="arrow"></i></a>
+							</c:if>
+							<ul>
+							<c:forEach var="dict" items="${dictInfos}">
+							<li data-val="${dict.dictValue}">${dict.dictLabel}</li>
+							</c:forEach>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</c:if>
+
 
 
 			<form id="file" action="" method="post" enctype="multipart/form-data">

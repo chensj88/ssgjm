@@ -67,7 +67,7 @@ public class EtReport extends BaseDomain implements Serializable {
     private String require;
 
     /**
-     * @val 状态： 0 待审核（新增）1：通过 2:未通过
+     * @val 状态： 0：新增   1：待审核（提交）2：审核不通过 3~8：其他状态    9：审核（完结）
      */
     private Integer status;
 
