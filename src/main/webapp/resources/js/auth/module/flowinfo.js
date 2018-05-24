@@ -187,6 +187,7 @@ $(function () {
                     if(_result.data.flowType == "0"){
                         $('#flowParent').hide();
                         $('#uploadFileDiv').hide();
+                        $('#isModifyDiv').hide();
                     }else{
                         $('#flowParent').show();
                         $('#isModifyDiv').show();
@@ -251,6 +252,10 @@ $(function () {
             url = Common.getRootPath() + '/admin/flow/update.do';
         }
         if (bootstrapValidator.isValid()) {
+            console.log();
+            if($('#flowType').val() === '1'){
+                $('#uploadFile').fileinput('upload').fileinput('disable');
+            }
             $.ajax({
                 url: url,
                 data: $("#flowForm").serialize(),
@@ -262,9 +267,6 @@ $(function () {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
                         $('#vid').val(_result.data);
-                        if(selectedFlie){
-                            $("#uploadFile").fileinput("upload");
-                        }
                         $('#flowModal').modal('hide');
                         $("#infoTable").bootstrapTable('refresh');
                         location.reload();
@@ -309,22 +311,16 @@ $(function () {
             showBrowse: false,
             browseOnZoneClick: true,
             uploadExtraData:function (previewId, index) {
-                return {'id':$('#vid').val()};
+                // return {'id':$('#vid').val()};
             },
             slugCallback : function(filename) {
                 return filename.replace('(', '_').replace(']', '_');
             }
         }).on("filebatchselected",function(event, files){
-            selectedFlie = true;
         }).on('filepreupload', function(event, data, previewId, index) {     //上传中
         }).on('fileuploaded',function(event, data, previewId, index){    //一个文件上传成功
             var _data = data.response;
-            if(_data.status == Common.SUCCESS){
-                $("#infoTable").bootstrapTable('refresh');
-            }else{
-                Ewin.alert(_data.msg)
-            }
-            $('#vid').val('');
+            console.log(_data);
         });
     }
     //自动补全

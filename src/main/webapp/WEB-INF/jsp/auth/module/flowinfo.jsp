@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/fileinput.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/webuploader/webuploader.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/common.css"/>
     <base href="<%=basePath%>">
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
@@ -177,6 +178,7 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap3-typeahead.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/fileinput.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/fileinput_locale_zh.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/assets/webuploader/webuploader.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/auth/module/flowinfo.js"></script>
 </html>

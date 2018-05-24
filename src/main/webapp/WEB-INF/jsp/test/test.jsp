@@ -15,140 +15,138 @@
     <title>Insert title here</title>
     <meta name="author" content="卫宁实施工具">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css"/>
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css"/>
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css"/>
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-treeview.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/fileinput.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/upload/css/style.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/js/fileapi/css/jquery.Jcrop.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/common.css"/>
-    <link rel="stylesheet" href="<%=basePath%>resources/uploader/css/jquery.dm-uploader.min.css"/>
     <base href="<%=basePath%>">
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
-    <style>
-
-        .demo{min-width:360px;margin:30px auto;padding:10px 20px}
-        .demo h3{line-height:40px; font-weight: bold;}
-        .file-item{float: left; position: relative; width: 110px;height: 110px; margin: 0 20px 20px 0; padding: 4px;}
-        .file-item .info{overflow: hidden;}
-        .uploader-list{width: 100%; overflow: hidden;}
-    </style>
 </head>
 <body>
 <div class="container">
     <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-            <div class="col-sm-10">
-                <div id="tree" style="height: 300px;overflow:auto;"></div>
+        <div id="file-upload" class="file-api-bootstrap">
+                <div class="row" >
+                    <div id="uploadFile" style="display: none">
+                        <div class="row" >
+                            <span class="js-name b-upload__name" id="uploadFileName"></span>
+                        </div>
+                        <div class="row" >
+                            <button class="btn btn-info btn-small" id="downLoadFile">下载</button>
+                            <button class="btn btn-danger btn-small" id="deleteFile">删除</button>
+                        </div>
+                    </div>
+                    <div id="fileInfo">
+
+                    </div>
+                    <div class="col-sm-5" id="jsInfo">
+                         <span class="js-info">
+                             <span class="js-name b-upload__name" id="fileName" style="width: 150px;overflow:hidden;text-overflow:ellipsis;"></span>
+                             <span class="b-upload__size">(<span id="fileSize" class="js-size"></span>) 正在上传</span>
+                        </span>
+                    </div>
+                </div>
+                <br/>
+            <div class="row" id="fileUploadDiv">
+                <div class="col-sm-3">
+                    <div class="btn btn-success btn-small js-fileapi-wrapper" id="fileUpload">
+                        <span>选择文件</span>
+                        <input type="file" name="file">
+                    </div>
+                    <button class="js-reset btn-small btn btn-warning" id="reset" type="reset">重置</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div id="drag-and-drop-zone" class="dm-uploader p-5">
-             <div class="col-sm-3">
-                <ul class="list-unstyled p-2 d-flex flex-column col" id="files">
-                    <li class="text-muted text-center empty">请先选择文件</li>
-                </ul>
-             </div>
-            <div class="col-sm-2" style="width:120px;">
-                <div class="btn btn-primary btn-block mb-5" >
-                    <span>选择文件</span>
-                    <input type="file" title='Click to add Files' />
-                </div>
-             </div>
-
-        </div>
-
-
     </div>
 </div>
 </body>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap-table.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap-table-zh-CN.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrapValidator.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/language/zh_CN.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap-treeview.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/uploader/js/jquery.dm-uploader.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/assets/js/fileapi/FileAPI/FileAPI.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/assets/js/fileapi/FileAPI/FileAPI.exif.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/assets/js/fileapi/jquery.fileapi.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
-<script>
+<%--<script type="text/javascript" src="<%=basePath%>resources/js/test/test.js"></script>--%>
+<script type="text/javascript">
+    jQuery(function ($){
 
-    $(function () {
-        function initTreeView() {
-            $.ajax({
-                type: "post",
-                url: Common.getRootPath() + "/test/menu.do",
-                dataType: "json",
-                cache : false,
-                async: false,
-                success: function (result) {
-                    $('#tree').treeview({
-                        data: result.data,         // 数据源
-                        showCheckbox: true,   //是否显示复选框
-                        highlightSelected: true,    //是否高亮选中
-                        icon:'',                                  //列表树节点上的图标，通常是节点左边的图标。
-                        uncheckedIcon:"",                         //设置图标为未选择状态的checkbox图标。
-                        nodeIcon:'glyphicon glyphicon-unchecked', //设置所有列表树节点上的默认图标。
-                        selectedIcon:"glyphicon glyphicon-check", //设置所有被选择的节点上的默认图标。
-                        color:"#000000",
-                        backColor:"#FFFFFF",
-                        emptyIcon: '',    //设置列表树中没有子节点的节点的图标。
-                        multiSelect: true     //多选
-                    });
+        initFileApiUpload('file-upload','/admin/upload/test.do');
+        function initFileApiUpload(ele,url) {
+            var $ele = $('#'+ele);
+            $ele.fileapi({
+                clearOnComplete: true,
+                url:Common.getRootPath() + url,
+                autoUpload: true,
+                multiple:false,
+                paramName:'file',
+                maxSize: FileAPI.MB*10, // max file size
+                maxFiles:1,
+                elements: {
+                    ctrl: {  reset: '#reset' },
+                    name: '#fileName',
+                    size: '#fileSize',
+                    empty: { hide: '#jsInfo' }
                 },
-                error: function () {
-                    alert("树形结构加载失败！")
+                onSelect:function (evt, data) {
+                    $('#fileInfo').html('');
+                    var fileInfo = data.all;
+                    var fileName = data.all[0].name;
+                    var suffix = fileName.substring(fileName.lastIndexOf('.'));
+                    var isAllow = /(\.|\/)(xls?x|doc?x|pdf)$/i.test(suffix);
+                    if(!isAllow){
+                        data.all = [];
+                        data.files = [];
+                        $('#fileInfo').html('当前文件【'+fileName+'】文件格式不支持，<br>只支持doc,docx,xls,xlsx,pdf').css('color','red');
+                        return ;
+                    }
+                    $('#reset').show();
+                    $('#fileUpload').hide();
+                },
+                onFileComplete: function (evt, uiEvt){
+                    var file = uiEvt.file;
+                    var json = uiEvt.result;
+                    var index = Common.getRootPath().lastIndexOf('/');
+                    console.log(json);
+                    var url = json.url + json.path;
+                    $('#uploadFileName').text(file.name);
+                    $('#downLoadFile').attr('path',url);
+                    $('#deleteFile').attr('path',url);
+                    hideUploadDiv();
                 }
             });
-        }
-//        initTreeView();
-
-        function initUploadComponent() {
-            var template = '<li class="text-muted text-center empty">请先选择文件</li>';
-            $('#files').find('li.empty').fadeOut();
-            $('#files').prepend(template);
+            showUploadDiv();
         }
 
-        $('#drag-and-drop-zone').dmUploader({
-            url:Common.getRootPath() + '/admin/upload/test.do',
-            onNewFile: function(id, file){
-                uploadFile(id, file);
-            },
-            onUploadSuccess: function(id, data){
-                changeFileStatus(id, 'success', '上传成功');
-            }
+        $('#downLoadFile').on('click',function () {
+            window.open($(this).attr('path'));
         });
+        
+        $('#deleteFile').on('click',function () {
+            $('#uploadFileName').text('');
+            $('#downLoad').attr('path','');
+            $('#delete').attr('path','');
+            showUploadDiv();
+        });
+
+        $('#reset').on('click',function () {
+            $('#fileUpload').show();
+            $('#reset').hide();
+        });
+
+        $('#reset').hide();
+
+        function hideUploadDiv() {
+            $('#uploadFile').show();
+            $('#fileUploadDiv').hide();
+        }
+
+        function showUploadDiv() {
+            $('#fileUploadDiv').show();
+            $('#uploadFile').hide();
+            $('#reset').hide();
+            $('#fileUpload').show();
+        }
     });
-
-    function uploadFile(id, file) {
-        var template ='<li class="media">\n' +
-            '        <div class="media-body mb-1">\n' +
-            '        <p class="mb-2">\n' +
-            '           <strong>'+file.name+'</strong> - 当前状态: <span id="uploaderFile'+id+'" class="text-muted">正在上传</span>\n' +
-            '         </p> </div></li>';
-        $('#files').find('li.empty').fadeOut();
-        $('#files').prepend(template);
-    }
-    function changeFileStatus(id, status, message) {
-        console.log('#uploaderFile' + id);
-        $('#uploaderFile' + id).text(message).prop('class', 'text-' + status);
-    }
-
-</script>
-<script type="text/html" id="files-template">
-    <li class="media">
-        <div class="media-body mb-1">
-            <p class="mb-2">
-                <strong>%%filename%%</strong> - Status: <span class="text-muted">Waiting</span>
-            </p>
-            <div class="progress mb-2">
-                <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
-                     role="progressbar"
-                     style="width: 0%"
-                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                </div>
-            </div>
-            <hr class="mt-1 mb-1" />
-        </div>
-    </li>
+//
 </script>
 </html>
