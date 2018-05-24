@@ -36,7 +36,7 @@
         <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
         <if test="(plId != null and plId != '') or plId == 0">and t.PL_ID = #{plId}</if>
-        <if test="interfaceName != null and interfaceName != ''">and t.INTERFACE_NAME = #{interfaceName}</if>
+        <if test="interfaceName != null and interfaceName != ''">and t.INTERFACE_NAME LIKE '%#{interfaceName}%'</if>
         <if test="(isScope != null and isScope != '') or isScope == 0">and t.IS_SCOPE = #{isScope}</if>
         <if test="noScopeCode != null and noScopeCode != ''">and t.NO_SCOPE_CODE = #{noScopeCode}</if>
         <if test="contentType != null and contentType != ''">and t.CONTENT_TYPE = #{contentType}</if>
@@ -51,6 +51,32 @@
         <if test="moduleDetail != null and moduleDetail != ''">and t.MODULE_DETAIL = #{moduleDetail}</if>
         <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
         <if test="(sourceId != null and sourceId != '') or sourceId == 0">and t.SOURCE_ID = #{sourceId}</if>
+    </sql>
+
+    <sql id="selectSql">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(cId != null and cId != '') or cId == 0">and t.C_ID = #{cId}</if>
+        <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="(plId != null and plId != '') or plId == 0">and t.PL_ID = #{plId}</if>
+        <if test="interfaceName != null and interfaceName != ''">and t.INTERFACE_NAME LIKE '%${interfaceName}%'</if>
+        <if test="(isScope != null and isScope != '') or isScope == 0">and t.IS_SCOPE = #{isScope}</if>
+        <if test="noScopeCode != null and noScopeCode != ''">and t.NO_SCOPE_CODE = #{noScopeCode}</if>
+        <if test="contentType != null and contentType != ''">and t.CONTENT_TYPE = #{contentType}</if>
+        <if test="(status != null )">and t.STATUS = #{status}</if>
+        <if test="message != null and message != ''">and t.MESSAGE = #{message}</if>
+        <if test="(sourceType != null and sourceType != '') or sourceType == 0">and t.SOURCE_TYPE = #{sourceType}</if>
+        <if test="(creator != null and creator != '') or creator == 0">and t.CREATOR = #{creator}</if>
+        <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
+        <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
+        <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
+        <if test="productName != null and productName != ''">and t.PRODUCT_NAME = #{productName}</if>
+        <if test="moduleDetail != null and moduleDetail != ''">and t.MODULE_DETAIL = #{moduleDetail}</if>
+        <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
+        <if test="(sourceId != null and sourceId != '') or sourceId == 0">and t.SOURCE_ID = #{sourceId}</if>
+        <if test="map.startDate != null and map.endDate != null ">and t.CREATE_TIME
+            BETWEEN #{map.startDate} AND dateadd(day,1,#{map.endDate})
+        </if>
     </sql>
 
     <select id="selectEtThirdIntterface" resultMap="etThirdIntterfaceResult" parameterType="etThirdIntterface">
@@ -69,7 +95,7 @@
 
     <select id="selectEtThirdIntterfaceCount" resultType="int" parameterType="etThirdIntterface">
         select count(*) from ET_THIRD_INTTERFACE t where 1 = 1
-        <include refid="sf-etThirdIntterface"/>
+        <include refid="selectSql"/>
     </select>
 
     <select id="selectEtThirdIntterfacePaginatedList" resultMap="etThirdIntterfaceResult"
@@ -77,7 +103,7 @@
         select * from (
         select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
         from ET_THIRD_INTTERFACE t where 1 = 1
-        <include refid="sf-etThirdIntterface"/>
+        <include refid="selectSql"/>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
@@ -122,8 +148,7 @@
             <if test="contentType != null">#{contentType, jdbcType=VARCHAR},</if>
             <if test="(status != null )">#{status, jdbcType=INTEGER},</if>
             <if test="message != null and message != ''">#{message, jdbcType=LONGVARCHAR},</if>
-            <if test="(sourceType != null and sourceType != '') or sourceType == 0">#{sourceType, jdbcType=INTEGER},
-            </if>
+            <if test="(sourceType != null and sourceType != '') or sourceType == 0">#{sourceType, jdbcType=INTEGER},</if>
             <if test="(creator != null and creator != '') or creator == 0">#{creator, jdbcType=BIGINT},</if>
             <if test="createTime != null ">#{createTime, jdbcType=TIMESTAMP},</if>
             <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
@@ -355,7 +380,7 @@
     <select id="selectPmisInterfaceCount" resultType="int" parameterType="etThirdIntterface">
         select count(*) from ET_THIRD_INTTERFACE t where 1 = 1
         AND SOURCE_ID != 0
-        <include refid="sf-etThirdIntterface"/>
+        <include refid="selectSql"/>
     </select>
 
     <!---->
@@ -364,7 +389,7 @@
         select * from (
         select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
         from ET_THIRD_INTTERFACE t where 1 = 1
-        <include refid="sf-etThirdIntterface"/>
+        <include refid="selectSql"/>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
         and SOURCE_ID != 0

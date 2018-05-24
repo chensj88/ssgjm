@@ -267,6 +267,7 @@ $(function () {
                         }
                         $('#flowModal').modal('hide');
                         $("#infoTable").bootstrapTable('refresh');
+                        location.reload();
                     }
                 }
             });

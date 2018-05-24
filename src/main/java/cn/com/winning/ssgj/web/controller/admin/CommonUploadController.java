@@ -233,4 +233,33 @@ public class CommonUploadController extends BaseController {
         }
         return result;
     }
+
+
+    @RequestMapping(value = "/test.do")
+    @ResponseBody
+    @ILog
+    public Map<String, Object> testUpload(HttpServletRequest request,
+                                              MultipartFile file) throws IOException {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        //如果文件不为空，写入上传路径
+        if (!file.isEmpty()) {
+            String filename = file.getOriginalFilename();
+            String msg = "";
+            try {
+                String remotePath = Constants.UPLOAD_PC_PREFIX+"/template/" + DateUtil.getTimstamp() + "/" + filename;
+                boolean ftpStatus =CommonFtpUtils.commonUploadInfo(request,msg,remotePath,file);
+                result.put("status", "success");
+                result.put("path", remotePath);
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.put("status", "error");
+                result.put("msg", "上传文件失败,原因是："+e.getMessage());
+            }
+        } else {
+            result.put("status", "error");
+            result.put("msg", "上传文件失败,原因是：上传文件为空");
+        }
+        return result;
+    }
 }

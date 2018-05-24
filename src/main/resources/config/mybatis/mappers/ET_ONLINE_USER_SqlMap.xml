@@ -45,6 +45,26 @@
         <if test="(status != null )">and t.STATUS = #{status}</if>
     </sql>
 
+    <sql id="selectSql">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
+        <if test="(cId != null and cId != '') or cId == 0">and t.C_ID = #{cId}</if>
+        <if test="userCode != null and userCode != ''">and t.USER_CODE LIKE '%${userCode}%'</if>
+        <if test="cName != null and cName != ''">and t.C_NAME LIKE '%${cName}%'</if>
+        <if test="roleName != null and roleName != ''">and t.ROLE_NAME LIKE '%${roleName}%'</if>
+        <if test="responseDept != null and responseDept != ''">and t.RESPONSE_DEPT = #{responseDept}</if>
+        <if test="responseSite != null and responseSite != ''">and t.RESPONSE_SITE = #{responseSite}</if>
+        <if test="telephone != null and telephone != ''">and t.TELEPHONE LIKE '%${telephone}%'</if>
+        <if test="wechatNo != null and wechatNo != ''">and t.WECHAT_NO = #{wechatNo}</if>
+        <if test="email != null and email != ''">and t.EMAIL = #{email}</if>
+        <if test="lodging != null and lodging != ''">and t.LODGING = #{lodging}</if>
+        <if test="(creator != null and creator != '') or creator == 0">and t.CREATOR = #{creator}</if>
+        <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
+        <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
+        <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
+        <if test="(status != null )">and t.STATUS = #{status}</if>
+    </sql>
+
     <select id="selectEtOnlineUser" resultMap="etOnlineUserResult" parameterType="etOnlineUser">
         select * from ET_ONLINE_USER t where 1 = 1
         <include refid="sf-etOnlineUser"/>
@@ -60,14 +80,14 @@
 
     <select id="selectEtOnlineUserCount" resultType="int" parameterType="etOnlineUser">
         select count(*) from ET_ONLINE_USER t where 1 = 1
-        <include refid="sf-etOnlineUser"/>
+        <include refid="selectSql"/>
     </select>
 
     <select id="selectEtOnlineUserPaginatedList" resultMap="etOnlineUserResult" parameterType="etOnlineUser">
         select * from (
         select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
         from ET_ONLINE_USER t where 1 = 1
-        <include refid="sf-etOnlineUser"/>
+        <include refid="selectSql"/>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>

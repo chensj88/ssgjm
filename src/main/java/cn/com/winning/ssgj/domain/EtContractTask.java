@@ -44,6 +44,8 @@ public class EtContractTask extends BaseDomain implements Serializable {
 	private Long operator;
 	
 	private Date operatorTime;
+
+	private Long sourceId;
 	
 	public EtContractTask() {
 
@@ -56,15 +58,15 @@ public class EtContractTask extends BaseDomain implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	public Long getCId() {
+
+	public Long getcId() {
 		return cId;
 	}
-	
-	public void setCId(Long cId) {
+
+	public void setcId(Long cId) {
 		this.cId = cId;
 	}
-	
+
 	public Long getPmId() {
 		return pmId;
 	}
@@ -160,5 +162,12 @@ public class EtContractTask extends BaseDomain implements Serializable {
 	public void setOperatorTime(Date operatorTime) {
 		this.operatorTime = operatorTime;
 	}
-	
+
+	public Long getSourceId() {
+		return sourceId;
+	}
+
+	public void setSourceId(Long sourceId) {
+		this.sourceId = sourceId;
+	}
 }

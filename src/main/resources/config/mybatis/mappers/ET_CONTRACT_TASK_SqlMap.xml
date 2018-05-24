@@ -17,6 +17,7 @@
 		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="OPERATOR" property="operator" jdbcType="BIGINT" />
 		<result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP" />
+		<result column="SOURCE_ID" property="sourceId" jdbcType="BIGINT" />
 	</resultMap>
 
 	<resultMap id="etContractTaskResult" type="etContractTask" extends="etContractTaskResultForList">
@@ -37,6 +38,26 @@
 	   <if test="createTime != null "> and t.CREATE_TIME = #{createTime} </if>
 	   <if test="(operator != null and operator != '') or operator == 0"> and t.OPERATOR = #{operator} </if>
 	   <if test="operatorTime != null "> and t.OPERATOR_TIME = #{operatorTime} </if>
+		<if test="sourceId != null "> and t.SOURCE_ID = #{sourceId} </if>
+	</sql>
+
+	<sql id="query-etContractTask">
+		<if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
+		<if test="(cId != null and cId != '') or cId == 0"> and t.C_ID = #{cId} </if>
+		<if test="(pmId != null ) or pmId == 0"> and t.PM_ID = #{pmId} </if>
+		<if test="serialNo != null and serialNo != ''"> and t.SERIAL_NO = #{serialNo} </if>
+		<if test="(cpzxt != null and cpzxt != '') or cpzxt == 0"> and t.CPZXT = #{cpzxt} </if>
+		<if test="zxtmc != null and zxtmc != '' and (cpmc == null or cpmc == '')"> and t.ZXTMC LIKE '%${zxtmc}%' </if>
+		<if test="cpmc != null and cpmc != '' and (zxtmc == null or zxtmc == '')"> and t.CPMC LIKE '%${cpmc}%' </if>
+		<if test="cpmc != null and cpmc != '' and zxtmc != null and zxtmc != ''"> and ( t.ZXTMC LIKE '%${zxtmc}%' OR t.CPMC LIKE '%${cpmc}%') </if>
+		<if test="(cpxx != null and cpxx != '') or cpxx == 0"> and t.CPXX = #{cpxx} </if>
+		<if test="mx != null and mx != ''"> and t.MX = #{mx} </if>
+		<if test="bz != null and bz != ''"> and t.BZ = #{bz} </if>
+		<if test="(creator != null and creator != '') or creator == 0"> and t.CREATOR = #{creator} </if>
+		<if test="createTime != null "> and t.CREATE_TIME = #{createTime} </if>
+		<if test="(operator != null and operator != '') or operator == 0"> and t.OPERATOR = #{operator} </if>
+		<if test="operatorTime != null "> and t.OPERATOR_TIME = #{operatorTime} </if>
+		<if test="sourceId != null "> and t.SOURCE_ID = #{sourceId} </if>
 	</sql>
 
 	<select id="selectEtContractTask" resultMap="etContractTaskResult" parameterType="etContractTask">
@@ -54,14 +75,14 @@
 
 	<select id="selectEtContractTaskCount" resultType="int" parameterType="etContractTask">
 		select count(*) from ET_CONTRACT_TASK t where 1 = 1
-		<include refid="sf-etContractTask" />
+		<include refid="query-etContractTask" />
 	</select>
 
 	<select id="selectEtContractTaskPaginatedList" resultMap="etContractTaskResult" parameterType="etContractTask">
 		select * from (
 			select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
 				from ET_CONTRACT_TASK t where 1 = 1
-			<include refid="sf-etContractTask" />
+			<include refid="query-etContractTask" />
 			<!-- order by ID asc -->
 		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
 	</select>
@@ -83,6 +104,7 @@
 		   <if test="createTime != null "> CREATE_TIME, </if>
 	       <if test="(operator != null and operator != '') or operator == 0"> OPERATOR, </if>
 		   <if test="operatorTime != null "> OPERATOR_TIME, </if>
+			<if test="sourceId != null "> SOURCE_ID,</if>
 		</trim>
 		values
 		<trim prefix="(" suffix=")" suffixOverrides=",">
@@ -100,6 +122,7 @@
 		   <if test="createTime != null "> #{createTime, jdbcType=TIMESTAMP}, </if>
 	       <if test="(operator != null and operator != '') or operator == 0"> #{operator, jdbcType=BIGINT}, </if>
 		   <if test="operatorTime != null "> #{operatorTime, jdbcType=TIMESTAMP}, </if>
+			<if test="sourceId != null "> #{sourceId, jdbcType=BIGINT},</if>
 		</trim>
 	</insert>
 
@@ -120,7 +143,8 @@
 			   <if test="(creator != null and creator != '') or creator == 0"> CREATOR = #{creator, jdbcType=BIGINT}, </if>
 			   <if test="createTime != null "> CREATE_TIME = #{createTime, jdbcType=TIMESTAMP}, </if>
 			   <if test="(operator != null and operator != '') or operator == 0"> OPERATOR = #{operator, jdbcType=BIGINT}, </if>
-			   <if test="operatorTime != null "> OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP}, </if>
+			   <if test="operatorTime != null "> OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP},</if>
+               <if test="sourceId != null ">SOURCE_ID = #{sourceId, jdbcType=BIGINT} ,</if>
 			</trim>
 		</set>
 		where

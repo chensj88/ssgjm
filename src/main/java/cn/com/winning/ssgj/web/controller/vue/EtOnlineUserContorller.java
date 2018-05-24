@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cn.com.winning.ssgj.base.util.NumberParseUtil;
+import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.EtDepartment;
 import cn.com.winning.ssgj.domain.EtProcessManager;
 import cn.com.winning.ssgj.domain.EtSiteInstallDetail;
@@ -32,8 +33,6 @@ import org.springframework.web.multipart.MultipartFile;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
-import cn.com.winning.ssgj.base.util.ExcelUtil;
-import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.domain.EtOnlineUser;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -53,10 +52,14 @@ public class EtOnlineUserContorller extends BaseController {
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String, Object> rtOnlineUserList(EtOnlineUser etOnlineUser, Long serialNo, Row row) {
+    public Map<String, Object> rtOnlineUserList(EtOnlineUser etOnlineUser, Long serialNo, Row row,String startDate, String endDate) throws ParseException {
         Long pmId = etOnlineUser.getPmId();
         etOnlineUser.setRow(row);
         etOnlineUser.setStatus(Constants.PMIS_STATUS_USE);
+        if (!"null".equals(startDate) && !"null".equals(endDate) && !StringUtil.isEmptyOrNull(startDate) && !StringUtil.isEmptyOrNull(endDate)) {
+            etOnlineUser.getMap().put("startDate", DateUtil.convertDateStringToTimestap(startDate));
+            etOnlineUser.getMap().put("endDate", DateUtil.convertDateStringToTimestap(endDate));
+        }
         List<EtOnlineUser> etOnlineUserList = super.getFacade().getEtOnlineUserService().getEtOnlineUserPaginatedList(etOnlineUser);
         Long deptId = null;
         Long siteId = null;

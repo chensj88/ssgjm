@@ -114,6 +114,7 @@ public class SysModuleController extends BaseController {
     @RequestMapping("/tree.do")
     @ResponseBody
     public Map<String, Object> getModuleTree(SysModule module) {
+        module.setIsDel(Constants.STATUS_UNUSE);
         List<NodeTree> treeList = super.getFacade().getSysModuleService().getSysModuleNodeTree(module);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("data", treeList);

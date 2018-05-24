@@ -63,6 +63,8 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     private EtUserInfoService etUserInfoService;
     @Autowired
     private SysOrganizationService sysOrganizationService;
+    @Autowired
+    private EtContractTaskService etContractTaskService;
 
     @Override
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId) {
@@ -471,6 +473,41 @@ public class CommonQueryServiceImpl implements CommonQueryService {
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    public void generateEtContractTaskFromPmisContractProductInfo(Long pmId) {
+        PmisContractProductInfo info = new PmisContractProductInfo();
+        info.setXmlcb(pmId);
+        info.setHtcplb(1);
+        info.setZt(1);
+        List<PmisContractProductInfo> infoList = pmisContractProductInfoDao.selectEntityList(info);
+        if(infoList != null && infoList.size() > 0){
+            for (PmisContractProductInfo pInfo : infoList) {
+                EtContractTask task = new EtContractTask();
+                task.setSourceId(pInfo.getId());
+                task.setPmId(pInfo.getXmlcb());
+                task.setcId(pInfo.getHtxx());
+                task.setSerialNo(pInfo.getKhxx()+"");
+                task = etContractTaskService.getEtContractTask(task);
+                if(task == null){
+                    task = new EtContractTask();
+                    task.setId(ssgjHelper.createEtContractTaskIdService());
+                    task.setPmId(pInfo.getXmlcb());
+                    task.setcId(pInfo.getHtxx());
+                    task.setSerialNo(pInfo.getKhxx()+"");
+                    task.setZxtmc(pInfo.getZxtmc());
+                    task.setCpzxt(Long.valueOf(pInfo.getCpzxt()));
+                    task.setCpmc(pInfo.getCpmc());
+                    task.setCpxx(pInfo.getCpxx());
+                    task.setSourceId(pInfo.getId());
+                    task.setCreator(100001L);
+                    task.setCreateTime(new Timestamp(new Date().getTime()));
+                    etContractTaskService.createEtContractTask(task);
+                }
+            }
+
         }
     }
 

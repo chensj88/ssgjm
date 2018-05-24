@@ -39,23 +39,21 @@ public class EtContractProjectController extends BaseController {
 
     /**
      * 查询项目产品信息
-     *
-     * @param productInfo
+     * @param task
      * @param row
      * @return
      */
     @RequestMapping(value = "/initData.do")
     @ResponseBody
-    public Map<String, Object> listProductOfProject(PmisContractProductInfo productInfo, Row row) {
-        EtContractTask task = new EtContractTask();
-        task.setPmId(productInfo.getXmlcb());
+    public Map<String, Object> listProductOfProject(EtContractTask task, Row row) {
+        super.getFacade().getCommonQueryService().generateEtContractTaskFromPmisContractProductInfo(task.getPmId());
         task.setRow(row);
-        List<EtContractTask> productInfoList = super.getFacade().getEtContractTaskService().getEtContractTaskPageMergeList(task);
-        int total = super.getFacade().getEtContractTaskService().getEtContractTaskMergeCount(task);
+        List<EtContractTask> taskList = super.getFacade().getEtContractTaskService().getEtContractTaskPaginatedList(task);
+        int total = super.getFacade().getEtContractTaskService().getEtContractTaskCount(task);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
-        result.put("rows", productInfoList);
+        result.put("rows", taskList);
         return result;
     }
 

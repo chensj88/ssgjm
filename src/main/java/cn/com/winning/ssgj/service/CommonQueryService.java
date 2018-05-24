@@ -89,4 +89,10 @@ public interface CommonQueryService {
      * @param pmId
      */
     void generateEtUserInfoFromPmisProjectUser(Long pmId);
+
+    /**
+     *
+     * @param pmId
+     */
+    void generateEtContractTaskFromPmisContractProductInfo(Long pmId);
 }

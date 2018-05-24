@@ -48,6 +48,29 @@
         <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
     </sql>
 
+    <sql id="selectSql">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(cId != null and cId != '') or cId == 0">and t.C_ID = #{cId}</if>
+        <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="(reportType != null and reportType != '') or reportType == 0">and t.REPORT_TYPE = #{reportType}</if>
+        <if test="reportName != null and reportName != ''">and t.REPORT_NAME LIKE '%${reportName}%'</if>
+        <if test="(isScope != null and isScope != '') or isScope == 0">and t.IS_SCOPE = #{isScope}</if>
+        <if test="noScopeCode != null and noScopeCode != ''">and t.NO_SCOPE_CODE = #{noScopeCode}</if>
+        <if test="require != null and require != ''">and t.REQUIRE = #{require}</if>
+        <if test="(status != null )">and t.STATUS = #{status}</if>
+        <if test="imgPath != null and imgPath != ''">and t.IMG_PATH = #{imgPath}</if>
+        <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
+        <if test="(sourceType != null and sourceType != '') or sourceType == 0">and t.SOURCE_TYPE = #{sourceType}</if>
+        <if test="(creator != null and creator != '') or creator == 0">and t.CREATOR = #{creator}</if>
+        <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
+        <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
+        <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
+        <if test="map.startDate != null and map.endDate != null ">and t.CREATE_TIME
+            BETWEEN #{map.startDate} AND dateadd(day,1,#{map.endDate})
+        </if>
+    </sql>
+
     <select id="selectEtReport" resultMap="etReportResult" parameterType="etReport">
         select t.*,t1.DICT_LABEL AS R_TYPE from ET_REPORT t
         LEFT JOIN SYS_DICT_INFO t1 ON t.REPORT_TYPE = CAST(t1.DICT_VALUE AS INT) AND t1.DICT_CODE ='paperType'
@@ -65,7 +88,7 @@
 
     <select id="selectEtReportCount" resultType="int" parameterType="etReport">
         select count(*) from ET_REPORT t where 1 = 1
-        <include refid="sf-etReport"/>
+        <include refid="selectSql"/>
     </select>
 
     <select id="selectEtReportPaginatedList" resultMap="etReportResult" parameterType="etReport">
@@ -79,7 +102,7 @@
         LEFT JOIN SYS_DICT_INFO t1 ON t.REPORT_TYPE = CAST(t1.DICT_VALUE AS INT) AND t1.DICT_CODE ='paperType'
         LEFT JOIN SYS_USER_INFO t2 ON t.CREATOR = t2.ID
         where 1 = 1
-        <include refid="sf-etReport"/>
+        <include refid="selectSql"/>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
