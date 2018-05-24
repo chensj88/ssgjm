@@ -41,7 +41,7 @@
         <if test="(cId != null and cId != '') or cId == 0">and t.C_ID = #{cId}</if>
         <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
-        <if test="deptName != null and deptName != ''">and t.DEPT_NAME = #{deptName}</if>
+        <if test="deptName != null and deptName != ''">and t.DEPT_NAME LIKE '%${deptName}%'</if>
         <if test="pdId != null and pdId != ''">and t.PD_ID = #{pdId}</if>
         <if test="hwId != null and hwId != ''">and t.HW_ID = #{hwId}</if>
         <if test="(isScope != null and isScope != '') or isScope == 0">and t.IS_SCOPE = #{isScope}</if>

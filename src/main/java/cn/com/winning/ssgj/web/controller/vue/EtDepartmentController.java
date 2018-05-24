@@ -102,6 +102,7 @@ public class EtDepartmentController extends BaseController {
         } else {
             EtDepartment unique_old = new EtDepartment();
             unique_old.setIsDel(1);
+            unique_old.setSerialNo(depart.getSerialNo());
             unique_old.setTypeName(depart.getTypeName());
             unique_old.setDeptName(depart.getDeptName());
             unique_old.getMap().put("not_id",depart.getId());
