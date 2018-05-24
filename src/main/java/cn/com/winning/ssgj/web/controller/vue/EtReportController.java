@@ -114,6 +114,11 @@ public class EtReportController extends BaseController {
         Integer completeNum = getCompleteNum(etReport);
 
         etReport.setRow(row);
+        String noScopeCode=etReport.getNoScopeCode();
+        if("1".equals(noScopeCode)){
+            etReport.setIsScope(1);
+            etReport.setNoScopeCode(null);
+        }
         List<EtReport> etReports = super.getFacade().getEtReportService().getEtReportPaginatedList(etReport);
         int total = super.getFacade().getEtReportService().getEtReportCount(etReport);
         for (EtReport report : etReports) {

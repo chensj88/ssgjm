@@ -106,6 +106,11 @@ public class EtSoftHardwareController extends BaseController {
             return null;
         }
         etSoftHardware.setRow(row);
+        String noScopeCode=etSoftHardware.getNoScopeCode();
+        if("1".equals(noScopeCode)){
+            etSoftHardware.setIsScope(1);
+            etSoftHardware.setNoScopeCode(null);
+        }
         if (!"null".equals(startDate) && !"null".equals(endDate) && !StringUtil.isEmptyOrNull(startDate) && !StringUtil.isEmptyOrNull(endDate)) {
             etSoftHardware.getMap().put("startDate", DateUtil.convertDateStringToTimestap(startDate));
             etSoftHardware.getMap().put("endDate", DateUtil.convertDateStringToTimestap(endDate));

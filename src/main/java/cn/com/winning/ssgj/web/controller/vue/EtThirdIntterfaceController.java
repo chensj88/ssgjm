@@ -128,15 +128,15 @@ public class EtThirdIntterfaceController extends BaseController {
         Integer total = 0;
         List<EtThirdIntterface> etThirdIntterfaces = null;
         etThirdIntterface.setRow(row);
+        String noScopeCode=etThirdIntterface.getNoScopeCode();
+        if("1".equals(noScopeCode)){
+            etThirdIntterface.setIsScope(1);
+            etThirdIntterface.setNoScopeCode(null);
+        }
         if (!"null".equals(startDate) && !"null".equals(endDate) && !StringUtil.isEmptyOrNull(startDate) && !StringUtil.isEmptyOrNull(endDate)) {
             etThirdIntterface.getMap().put("startDate", DateUtil.convertDateStringToTimestap(startDate));
             etThirdIntterface.getMap().put("endDate", DateUtil.convertDateStringToTimestap(endDate));
         }
-//        if(StringUtil.isEmpty(etThirdIntterface.getNoScopeCode())){
-//            etThirdIntterface.setIsScope(1);
-//        }else if("null".equalsIgnoreCase(etThirdIntterface.getNoScopeCode())){
-//            etThirdIntterface.setNoScopeCode(null);
-//        }
         if (isPmis == 1) {
             //pmis数据
             etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().selectPmisInterfacePaginatedList(etThirdIntterface);
