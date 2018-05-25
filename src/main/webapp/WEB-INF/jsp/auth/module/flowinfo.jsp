@@ -176,7 +176,6 @@
                                                         <span>选择文件</span>
                                                         <input type="file" name="file">
                                                     </div>
-                                                   <%-- <button class="js-reset btn-small btn btn-warning" id="reset" type="reset">重置</button>--%>
                                                 </div>
                                             </div>
                                         </div>
