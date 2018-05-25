@@ -129,12 +129,20 @@
     <logger name="java.sql.PreparedStatement">
         <level value="DEBUG"/>
     </logger>
-    <logger name="com.alibaba.druid.sql">
-        <level value="DEBUG"/>
+    <logger name="druid.sql">
+        <level value="WARN"/>
     </logger>
-
-    <logger name="com.alibaba.druid.sql.Statement">
-        <level value="DEBUG"/>
+    <logger name="druid.sql.DataSource">
+        <level value="WARN"/>
+    </logger>
+    <logger name="druid.sql.Connection">
+        <level value="WARN"/>
+    </logger>
+    <logger name="druid.sql.Statement">
+        <level value="WARN"/>
+    </logger>
+    <logger name="druid.sql.ResultSet">
+        <level value="WARN"/>
     </logger>
     <!-- Root Logger -->
     <root>
