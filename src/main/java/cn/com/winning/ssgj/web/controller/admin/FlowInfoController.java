@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.web.controller.admin;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.CommonFtpUtils;
 import cn.com.winning.ssgj.domain.SysFlowInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
@@ -145,7 +146,21 @@ public class FlowInfoController extends BaseController {
     @ILog
     public Map<String, Object> deleteFlowById(SysFlowInfo flow) {
         flow.setStatus(Constants.STATUS_UNUSE);
-        super.getFacade().getSysFlowInfoService().removeSysFlowInfo(flow);
+        super.getFacade().getSysFlowInfoService().modifySysFlowInfo(flow);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+
+    }
+    @RequestMapping(value = "/deleteFile.do")
+    @ResponseBody
+    @Transactional
+    @ILog
+    public Map<String, Object> deleteFile(SysFlowInfo flow) {
+        flow = super.getFacade().getSysFlowInfoService().getSysFlowInfo(flow);
+        CommonFtpUtils.removeUploadFile(flow.getRemotePath());
+        flow.setRemotePath("");
+        super.getFacade().getSysFlowInfoService().modifySysFlowInfo(flow);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;

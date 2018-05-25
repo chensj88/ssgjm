@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.web.controller.common;
 
+import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.RequestUtil;
 import cn.com.winning.ssgj.domain.SysDictInfo;
@@ -18,7 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Controller
+@RequestMapping(value = "/admin/common")
 public class CommonQueryController {
 
     @Autowired
@@ -33,5 +35,14 @@ public class CommonQueryController {
         return dictInfos;
     }
 
+    @RequestMapping(value = "/getShareURL.do")
+    @ResponseBody
+    public Map<String,Object> getFTPShareURL(){
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("url", Constants.FTP_SHARE_FLODER);
+        return result;
+
+    }
 
 }

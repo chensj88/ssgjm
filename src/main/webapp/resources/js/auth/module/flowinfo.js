@@ -4,7 +4,11 @@
  * 2018-01-25
  */
 $(function () {
-    var selectedFlie = false;
+    toastr.options.positionClass = 'toast-top-center';
+    toastr.options.timeOut = 30;
+    toastr.options.extendedTimeOut = 60;
+    var uploadStatus = '0'; //0 初始化  1 上传  2 完成
+    var url = Common.getShareURL();
     /**
      * 查询
      * @constructor
@@ -147,11 +151,11 @@ $(function () {
         $('#id').val('');
         $('#flowPid').val('');
         $('#vid').val('');
+        $('#remotePath').val('');
         //清空验证信息
         $('#flowForm').bootstrapValidator("destroy");
-       /* $('#flowForm').bootstrapValidator(null);*/
         validateForm();
-        initFileInput();
+        initFileApiUpload('file-upload','/admin/upload/test.do');
         $('#flowParent').show();
         $('#flowCodeDiv').show();
         $('#uploadFileDiv').show();
@@ -165,7 +169,8 @@ $(function () {
      */
     $('#infoTable').on('click', 'a[name="edit"]', function (e) {
         e.preventDefault();
-        $('#isModify').val('');
+        $('#isModify').val('0');
+        $('#remotePath').val('');
         //清空验证信息
         $('#flowForm').bootstrapValidator("destroy");
         /*$('#flowForm').bootstrapValidator(null);*/
@@ -184,6 +189,7 @@ $(function () {
                     $('#flowForm').initForm(_result.data);
                     $('#flowCode').attr('readonly','true');
                     $('#isMust').val(_result.data.isMust);
+                    $('#remotePath').val(_result.data.remotePath);
                     if(_result.data.flowType == "0"){
                         $('#flowParent').hide();
                         $('#uploadFileDiv').hide();
@@ -193,7 +199,7 @@ $(function () {
                         $('#isModifyDiv').show();
                         $('#uploadFileDiv').hide();
                     }
-                    initFileInput();
+                    //initFileInput();
                     $('#vid').val(_result.data.id);
                     $('#flowModal').modal('show');
                 }
@@ -245,6 +251,11 @@ $(function () {
         if (bootstrapValidator) {
             bootstrapValidator.validate();
         }
+
+        if(!checkUploadStatus()){
+            toastr.info('文件正在上传,请稍候！');
+            return false;
+        }
         var url = '';
         if ($('#id').val().length == 0) {
             url = Common.getRootPath() + '/admin/flow/add.do';
@@ -252,10 +263,6 @@ $(function () {
             url = Common.getRootPath() + '/admin/flow/update.do';
         }
         if (bootstrapValidator.isValid()) {
-            console.log();
-            if($('#flowType').val() === '1'){
-                $('#uploadFile').fileinput('upload').fileinput('disable');
-            }
             $.ajax({
                 url: url,
                 data: $("#flowForm").serialize(),
@@ -269,7 +276,6 @@ $(function () {
                         $('#vid').val(_result.data);
                         $('#flowModal').modal('hide');
                         $("#infoTable").bootstrapTable('refresh');
-                        location.reload();
                     }
                 }
             });
@@ -278,7 +284,6 @@ $(function () {
     //流程类型切换
     $('#flowType').on('change',function () {
         var selEle = $(this).val();
-        console.log(selEle);
         if(selEle == '1'){
             $('#flowParent').show();
             $('#flowCodeDiv').show();
@@ -290,39 +295,6 @@ $(function () {
         }
     });
 
-    function initFileInput() {
-        $('#uploadFile').fileinput({
-            language: "zh",//配置语言
-            uploadUrl: Common.getRootPath() +"/admin/upload/flow.do",
-            showUpload : false,
-            showRemove : true,
-            showPreview : false,
-            showCaption: true,//是否显示标题
-            uploadAsync: true,
-            dropZoneEnabled:false,
-            uploadLabel: "上传",//设置上传按钮的汉字
-            uploadClass: "btn btn-primary",//设置上传按钮样式
-            maxFileSize : 0,
-            maxFileCount: 1,/*允许最大上传数，可以多个，当前设置单个*/
-            enctype: 'multipart/form-data',
-            /*allowedPreviewTypes : [ 'video' ],*/
-            allowedFileExtensions : ["doc", "docx","xls","xlsx"],/*上传文件格式*/
-            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
-            showBrowse: false,
-            browseOnZoneClick: true,
-            uploadExtraData:function (previewId, index) {
-                // return {'id':$('#vid').val()};
-            },
-            slugCallback : function(filename) {
-                return filename.replace('(', '_').replace(']', '_');
-            }
-        }).on("filebatchselected",function(event, files){
-        }).on('filepreupload', function(event, data, previewId, index) {     //上传中
-        }).on('fileuploaded',function(event, data, previewId, index){    //一个文件上传成功
-            var _data = data.response;
-            console.log(_data);
-        });
-    }
     //自动补全
     $('#flowParentCode').typeahead({
         source : function (query,process) {
@@ -419,8 +391,131 @@ $(function () {
         var selectedOption = $(this).val();
         if(selectedOption == "1"){
             $('#uploadFileDiv').show();
+            var fileInfo = Common.getFileInfo($('#remotePath').val());
+            console.log(fileInfo);
+            if(fileInfo){
+                showFlowFileInfo(fileInfo.name,fileInfo.url);
+                hideUploadDiv();
+            }else{
+                showFlowFileInfo('','');
+                showUploadDiv();
+            }
         }else {
             $('#uploadFileDiv').hide();
         }
     });
+
+    //================================== 文件上传框处理 =====================================================//
+    initFileApiUpload('file-upload','/admin/upload/test.do');
+
+    function initFileApiUpload(ele,url) {
+        uploadStatus = '0';
+        var $ele = $('#'+ele);
+        $ele.fileapi({
+            clearOnComplete: false,
+            url:Common.getRootPath() + url,
+            autoUpload: true,
+            multiple:false,
+            paramName:'file',
+            maxSize: FileAPI.MB*10, // max file size
+            maxFiles:1,
+            elements: {
+                name: '#fileName',
+                size: '#fileSize',
+                empty: { hide: '#jsInfo' }
+            },
+            onSelect:function (evt, data) {
+                $('#fileInfo').html('');
+                var fileInfo = data.all;
+                var fileName = data.all[0].name;
+                var suffix = fileName.substring(fileName.lastIndexOf('.'));
+                var isAllow = /(\.|\/)(xls?x|doc?x|pdf)$/i.test(suffix);
+                if(!isAllow){
+                    data.all = [];
+                    data.files = [];
+                    $('#fileInfo').html('当前文件【'+fileName+'】文件格式不支持，<br>只支持doc,docx,xls,xlsx,pdf').css('color','red');
+                    return ;
+                }
+                uploadStatus = '1';
+                /*$('#reset').show();*/
+                $('#fileUpload').hide();
+            },
+            onFileComplete: function (evt, uiEvt){
+                var file = uiEvt.file;
+                var json = uiEvt.result;
+                var url = json.url + json.path;
+                $('#uploadFileName').text(file.name);
+                $('#downLoadFile').attr('path',url);
+                $('#deleteFile').attr('path',url);
+                $('#jsInfo').html('');
+                hideUploadDiv();
+                uploadStatus = '2';
+                $('#remotePath').val(json.path);
+            }
+        });
+        showUploadDiv();
+    }
+
+    $('#downLoadFile').on('click',function () {
+        window.open($(this).attr('path'));
+    });
+
+    $('#deleteFile').on('click',function (e)  {
+        //阻止默认行为
+        e.preventDefault();
+        $('#uploadFileName').text('');
+        $('#downLoad').attr('path','');
+        $('#delete').attr('path','');
+        $.ajax({
+            url: Common.getRootPath() +'/admin/flow/deleteFile.do',
+            data: {'id':$('#vid').val()},
+            type: "post",
+            dataType: 'json',
+            async: false,
+            cache : false,
+            success: function (result) {
+                var _result = eval(result);
+                if (_result.status == Common.SUCCESS) {
+                    $('#remotePath').val('');
+                    showFlowFileInfo('','');
+                    showUploadDiv();
+                }
+            }
+        });
+        showUploadDiv();
+    });
+
+    $('#reset').on('click',function () {
+        $('#fileUpload').show();
+        $('#reset').hide();
+    });
+
+
+    function showFlowFileInfo(name,url) {
+        $('#uploadFileName').text(name);
+        $('#downLoadFile').attr('path',url);
+        $('#deleteFile').attr('path',url);
+        hideUploadDiv();
+    }
+    function hideUploadDiv() {
+        uploadStatus = '2';
+        $('#uploadFile').show();
+        $('#fileUploadDiv').hide();
+    }
+
+    function showUploadDiv() {
+        uploadStatus = '0';
+        $('#fileUploadDiv').show();
+        $('#uploadFile').hide();
+        $('#reset').hide();
+        $('#fileUpload').show();
+    }
+
+    function checkUploadStatus(){
+        if(uploadStatus === '0' || uploadStatus === '2'){
+            return true;
+        }else {
+            return false;
+        }
+    }
 });
