@@ -167,6 +167,15 @@ public class FlowInfoController extends BaseController {
 
     }
 
+    @RequestMapping(value = "/existName.do")
+    @ResponseBody
+    public Map<String, Object> existName(SysFlowInfo info) {
+        boolean isValid = super.getFacade().getSysFlowInfoService().existFlowName(info);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("valid", isValid);
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
     @RequestMapping(value = "/listNoPage.do")
     @ResponseBody
     public Map<String, Object> queryFlowListNoPage(SysFlowInfo flowInfo) {

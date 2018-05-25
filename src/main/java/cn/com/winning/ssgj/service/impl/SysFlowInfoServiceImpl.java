@@ -124,14 +124,12 @@ public class SysFlowInfoServiceImpl implements SysFlowInfoService {
     }
 
     @Override
-
     public Integer getSysFlowInfoCountForSelectiveKey(SysFlowInfo flowInfo) {
 
         return this.sysFlowInfoDao.selectSysFlowInfoCountForSelectiveKey(flowInfo);
     }
 
     @Override
-
     public List<String> getFlowInfoId(List<SysProductFlowInfo> flowInfoList) {
         List<String> idList = new ArrayList<String>();
         StringBuilder stringBuilder = new StringBuilder();
@@ -146,6 +144,14 @@ public class SysFlowInfoServiceImpl implements SysFlowInfoService {
         return this.sysFlowInfoDao.selectSysFlowInfoListById(flowInfo);
     }
 
+    @Override
+    public boolean existFlowName(SysFlowInfo info) {
+        Integer count = (Integer) this.sysFlowInfoDao.selectEntityCount(info);
+        if (count.intValue() > 0) {
+            return false;
+        }
+        return true;
+    }
 
 
 }

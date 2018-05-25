@@ -49,4 +49,11 @@ public interface SysFlowInfoService {
     List<String> getFlowInfoId(List<SysProductFlowInfo> flowInfoList);
 
     List<SysFlowInfo> getSysFlowInfoListById(SysFlowInfo flowInfo);
+
+    /**
+     * 判断流程名称是否存在
+     * @param info
+     * @return
+     */
+    boolean existFlowName(SysFlowInfo info);
 }

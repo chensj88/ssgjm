@@ -7,8 +7,6 @@ $(function () {
     toastr.options.positionClass = 'toast-top-center';
     toastr.options.timeOut = 30;
     toastr.options.extendedTimeOut = 60;
-    var uploadStatus = '0'; //0 初始化  1 上传  2 完成
-    var url = Common.getShareURL();
     /**
      * 查询
      * @constructor
@@ -140,8 +138,7 @@ $(function () {
         var that = this;
         setTimeout(function () { that.hide() }, 250);
     };
-    var objMap = {};//定义一个空的js对象
-
+    var objMap = {};//定义一个空的js对象，主要用于记录查询的上级流程信息
     /**
      * 新增流程
      * 需要清理表格数据
@@ -251,7 +248,6 @@ $(function () {
         if (bootstrapValidator) {
             bootstrapValidator.validate();
         }
-
         if(!checkUploadStatus()){
             toastr.info('文件正在上传,请稍候！');
             return false;
@@ -351,7 +347,9 @@ $(function () {
         },
         items : 8,
     });
-
+    /**
+     * 表单校验规则
+     */
     function validateForm() {
         $('#flowForm').bootstrapValidator({
             message: '输入的值不符合规格',
@@ -366,6 +364,13 @@ $(function () {
                     validators: {
                         notEmpty: {
                             message: '流程名称不能为空'
+                        },
+                        threshold: 6, //有1字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
+                        remote: {
+                            url: Common.getRootPath() + Common.url.flow.existName,//验证地址
+                            message: '流程名称已存在',//提示消息
+                            delay: 2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+                            type: 'POST'//请求方式
                         }
                     }
                 },
@@ -380,13 +385,13 @@ $(function () {
             }
         });
     }
-
     /**
      * 查询按钮
      */
     $('#query').on('click',SearchData);
-
-
+    /**
+     * 是否变更文件
+     */
     $('#isModify').on('change',function () {
         var selectedOption = $(this).val();
         if(selectedOption == "1"){
@@ -406,10 +411,18 @@ $(function () {
     });
 
     //================================== 文件上传框处理 =====================================================//
-    initFileApiUpload('file-upload','/admin/upload/test.do');
+    var uploadStatus =  Common.STATUS_BEFORE_UPLOAD; //0 初始化  1 上传  2 完成
+    var url = Common.getShareURL();
 
-    function initFileApiUpload(ele,url) {
-        uploadStatus = '0';
+    initFileApiUpload('file-upload',Common.url.commonUploadURL,Common.UPLOAD_TYPE_FLOW);
+    /**
+     * 初始化上传
+     * @param ele 元素
+     * @param url 远程URL
+     * @param uploadType 上传文件类型 Common.UPLOAD_TYPE_*
+     */
+    function initFileApiUpload(ele,url,uploadType) {
+        uploadStatus = Common.STATUS_BEFORE_UPLOAD;
         var $ele = $('#'+ele);
         $ele.fileapi({
             clearOnComplete: false,
@@ -436,7 +449,7 @@ $(function () {
                     $('#fileInfo').html('当前文件【'+fileName+'】文件格式不支持，<br>只支持doc,docx,xls,xlsx,pdf').css('color','red');
                     return ;
                 }
-                uploadStatus = '1';
+                uploadStatus = Common.STATUS_PROCESS_UPLOAD;
                 /*$('#reset').show();*/
                 $('#fileUpload').hide();
             },
@@ -449,7 +462,7 @@ $(function () {
                 $('#deleteFile').attr('path',url);
                 $('#jsInfo').html('');
                 hideUploadDiv();
-                uploadStatus = '2';
+                uploadStatus = Common.STATUS_FINISH_UPLOAD;
                 $('#remotePath').val(json.path);
             }
         });
@@ -490,29 +503,43 @@ $(function () {
         $('#reset').hide();
     });
 
-
+    /**
+     * 已经上传的文件展示
+     * @param name
+     * @param url
+     */
     function showFlowFileInfo(name,url) {
         $('#uploadFileName').text(name);
         $('#downLoadFile').attr('path',url);
         $('#deleteFile').attr('path',url);
         hideUploadDiv();
     }
+
+    /**
+     * 隐藏上传区域
+     */
     function hideUploadDiv() {
-        uploadStatus = '2';
+        uploadStatus = Common.STATUS_FINISH_UPLOAD;
         $('#uploadFile').show();
         $('#fileUploadDiv').hide();
     }
-
+    /**
+     * 显示上传区域
+     */
     function showUploadDiv() {
-        uploadStatus = '0';
+        uploadStatus = Common.STATUS_BEFORE_UPLOAD ;
         $('#fileUploadDiv').show();
         $('#uploadFile').hide();
         $('#reset').hide();
         $('#fileUpload').show();
     }
 
+    /**
+     * 检查上传的状态
+     * @returns {boolean}
+     */
     function checkUploadStatus(){
-        if(uploadStatus === '0' || uploadStatus === '2'){
+        if(uploadStatus === Common.STATUS_BEFORE_UPLOAD  || uploadStatus === Common.STATUS_FINISH_UPLOAD){
             return true;
         }else {
             return false;

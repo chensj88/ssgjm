@@ -20,6 +20,22 @@
     Common.VIDEO_TYPE_CUSTOMER = "99";
     Common.FTP_SHARE_URL = '';
 
+    Common.STATUS_BEFORE_UPLOAD = '0'; //初始化状态
+    Common.STATUS_PROCESS_UPLOAD = '1'; //上传中
+    Common.STATUS_FINISH_UPLOAD = '2'; //完成中
+    Common.UPLOAD_TYPE_FLOW = '1';  //流程文件上传
+    Common.UPLOAD_TYPE_VIDEO = '2'; //视频文件上传
+    Common.UPLOAD_TYPE_SCRIPT = '3'; //脚本文件上传
+    /**
+     * 访问路径
+     * @type {{commonUploadURL: string, flow: {existName: string}}}
+     */
+    Common.url ={
+        commonUploadURL: '/admin/upload/upload.do',
+        flow:{
+            existName:'/admin/flow/existName.do'
+        }
+    };
 
     /**
      * 截取时间
