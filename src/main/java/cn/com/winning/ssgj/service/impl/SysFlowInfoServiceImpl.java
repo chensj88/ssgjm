@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 
+import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.domain.SysProductFlowInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import org.springframework.stereotype.Service;
@@ -146,8 +147,9 @@ public class SysFlowInfoServiceImpl implements SysFlowInfoService {
 
     @Override
     public boolean existFlowName(SysFlowInfo info) {
+        info.setStatus(Constants.STATUS_USE);
         Integer count = (Integer) this.sysFlowInfoDao.selectEntityCount(info);
-        if (count.intValue() > 0) {
+        if (count.intValue() > 1) {
             return false;
         }
         return true;

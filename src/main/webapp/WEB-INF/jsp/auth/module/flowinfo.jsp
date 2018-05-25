@@ -115,6 +115,9 @@
                                         <input type="text" class="form-control" id="flowName" name="flowName"
                                                placeholder="请输入流程名称">
                                     </div>
+                                    <span id="flowNameValid" style="margin-left:160px;font-weight: bold;color: red;display: none">
+                                        流程名称已经存在
+                                    </span>
                                 </div>
 
                                 <div class="form-group">
@@ -188,7 +191,7 @@
                                 <input type="hidden" name="remotePath" id="remotePath">
                                 <input type="reset" style="display:none;"/>
                                 <div class="col-sm-8 text-center">
-                                    <button class="btn btn-primary" id="saveFlow" type="submit">保存</button>
+                                    <button class="btn btn-primary" id="saveFlow" type="button">保存</button>
                                     <button class="btn btn-danger" data-dismiss="modal">取消</button>
                                 </div>
                             </form>

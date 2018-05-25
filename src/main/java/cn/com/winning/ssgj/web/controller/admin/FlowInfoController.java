@@ -81,7 +81,6 @@ public class FlowInfoController extends BaseController {
     @ILog
     public Map<String, Object> addFlowInfo(SysFlowInfo flow) {
         flow.setId(ssgjHelper.createFlowId());
-
         if (Constants.Flow.FLOW_TYPE_SMALL.equals(flow.getFlowType())) {
             System.out.println(flow.getFlowCode());
         } else {

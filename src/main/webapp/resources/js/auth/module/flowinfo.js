@@ -250,7 +250,7 @@ $(function () {
         }
         if(!checkUploadStatus()){
             toastr.info('文件正在上传,请稍候！');
-            return false;
+            return ;
         }
         var url = '';
         if ($('#id').val().length == 0) {
@@ -370,7 +370,13 @@ $(function () {
                             url: Common.getRootPath() + Common.url.flow.existName,//验证地址
                             message: '流程名称已存在',//提示消息
                             delay: 2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
-                            type: 'POST'//请求方式
+                            type: 'POST'/*,//请求方式
+                            data: function (validator) { //自定义提交数据，默认值提交当前input value
+                                return {
+                                    flowName: $('#flowName').val(),
+                                    id: $('#vid').val()
+                                };
+                            }*/
                         }
                     }
                 },
@@ -414,7 +420,7 @@ $(function () {
     var uploadStatus =  Common.STATUS_BEFORE_UPLOAD; //0 初始化  1 上传  2 完成
     var url = Common.getShareURL();
 
-    initFileApiUpload('file-upload',Common.url.commonUploadURL,Common.UPLOAD_TYPE_FLOW);
+    initFileApiUpload('file-upload',Common.url.flow.uploadURL,Common.UPLOAD_TYPE_FLOW);
     /**
      * 初始化上传
      * @param ele 元素
@@ -429,7 +435,7 @@ $(function () {
             url:Common.getRootPath() + url,
             autoUpload: true,
             multiple:false,
-            paramName:'file',
+            paramName:'uploadFile',
             maxSize: FileAPI.MB*10, // max file size
             maxFiles:1,
             elements: {
@@ -463,6 +469,7 @@ $(function () {
                 $('#jsInfo').html('');
                 hideUploadDiv();
                 uploadStatus = Common.STATUS_FINISH_UPLOAD;
+
                 $('#remotePath').val(json.path);
             }
         });

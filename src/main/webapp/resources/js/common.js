@@ -31,9 +31,10 @@
      * @type {{commonUploadURL: string, flow: {existName: string}}}
      */
     Common.url ={
-        commonUploadURL: '/admin/upload/upload.do',
+        commonUploadURL: '/admin/upload/test.do',
         flow:{
-            existName:'/admin/flow/existName.do'
+            existName:'/admin/flow/existName.do',
+            uploadURL:'/admin/upload/flow.do'
         }
     };
 
