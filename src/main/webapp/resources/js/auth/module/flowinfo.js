@@ -152,7 +152,7 @@ $(function () {
         //清空验证信息
         $('#flowForm').bootstrapValidator("destroy");
         validateForm();
-        initFileApiUpload('file-upload','/admin/upload/test.do');
+        initFileApiUpload('file-upload');
         $('#flowParent').show();
         $('#flowCodeDiv').show();
         $('#uploadFileDiv').show();
@@ -420,19 +420,19 @@ $(function () {
     var uploadStatus =  Common.STATUS_BEFORE_UPLOAD; //0 初始化  1 上传  2 完成
     var url = Common.getShareURL();
 
-    initFileApiUpload('file-upload',Common.url.flow.uploadURL,Common.UPLOAD_TYPE_FLOW);
+    initFileApiUpload('file-upload');
     /**
      * 初始化上传
      * @param ele 元素
      * @param url 远程URL
      * @param uploadType 上传文件类型 Common.UPLOAD_TYPE_*
      */
-    function initFileApiUpload(ele,url,uploadType) {
+    function initFileApiUpload(ele) {
         uploadStatus = Common.STATUS_BEFORE_UPLOAD;
         var $ele = $('#'+ele);
         $ele.fileapi({
             clearOnComplete: false,
-            url:Common.getRootPath() + url,
+            url:Common.getRootPath() + Common.url.flow.uploadURL,
             autoUpload: true,
             multiple:false,
             paramName:'uploadFile',
