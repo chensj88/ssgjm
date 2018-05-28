@@ -62,6 +62,11 @@
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
 
+    <!-- 移动端获取产品条线 2018年5月28日14:57:43  -->
+    <select id="selectPmisProductLineInfoMobileList" resultMap="pmisProductLineInfoResult" parameterType="string">
+        select * from PMIS_PRODUCT_LINE_INFO t where 1 = 1 AND t.ID IN (${pdId})
+    </select>
+
     <insert id="insertPmisProductLineInfo" parameterType="pmisProductLineInfo">
 
         insert into PMIS_PRODUCT_LINE_INFO

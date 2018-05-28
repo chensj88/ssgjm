@@ -26,4 +26,5 @@ public interface PmisProductLineInfoDao extends EntityDao<PmisProductLineInfo> {
 
     List<PmisProductLineInfo>selectPmisProductLineInfoByPmidAndType(PmisContractProductInfo pmisContractProductInfo);
 
+    List<PmisProductLineInfo> selectPmisProductLineInfoMobileList(String pdId);
 }

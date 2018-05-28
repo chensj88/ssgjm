@@ -87,7 +87,7 @@ public class EtSiteInstallController extends BaseController {
             //所需要的 硬件
             result.put("hardList",super.getHardWareList(info.getPmId()));
             result.put("userList",super.getEtUserInfo(info.getPmId()));
-            result.put("total", installList.size());
+            result.put("total", super.getFacade().getEtSiteInstallService().getEtSiteInstallCount(info));
             result.put("status", Constants.SUCCESS);
             result.put("rows", installList);
             return result;

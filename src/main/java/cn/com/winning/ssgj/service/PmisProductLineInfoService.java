@@ -30,4 +30,6 @@ public interface PmisProductLineInfoService {
     List<PmisProductLineInfo> getPmisProductLineInfoPaginatedListByName(PmisProductLineInfo t);
 
     List<PmisProductLineInfo> selectPmisProductLineInfoByPmidAndType(PmisContractProductInfo pmisContractProductInfo);
+
+    List<PmisProductLineInfo> getPmisProductLineInfoMobileList(String pdId);
 }

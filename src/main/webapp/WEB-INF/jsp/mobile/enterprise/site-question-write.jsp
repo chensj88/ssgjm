@@ -184,20 +184,20 @@
 					var siteName='${siteQuestionInfo.siteName}';
 					if(siteName != null || siteName != ''){  //不为空时 比较值是否真的改变
 						if(_val==siteName){
-						    return false;
+
+						}else{
+                            $("#productName").val("");
+                            $("#productId a").find("span").text("--请选择--") ;
+                            $("#ul2").empty();
+                            $("#menuName").val("");
 						}
-						$("#productName").val("");
-                        $("#productId a").find("span").text("--请选择--") ;
-                        $("#menuName").val("");
-                        $("#menuId a").find("span").text("--请选择--") ;
-                        $("#ul2").empty();
-
-
+                        //$("#menuId a").find("span").text("--请选择--") ;
+                        //alert(_val);
                         //加载菜单数据
                         $.ajax({
                             type: "POST",
                             url:"<%=basePath%>/mobile/siteQuestionInfo/loadData.do",
-                            data:{type:1,name:siteName,serialNo:serialNo},
+                            data:{type:1,name:_val,serialNo:serialNo},
                             dataType:"json",
                             cache : false,
                             error: function(request) {
@@ -210,7 +210,8 @@
                                 console.log(data);
                                 var json=eval(data.xtJsons);
                                 $.each(json,function(i,item){
-                                    str_html=str_html+"<li data-val='"+json[i].map['zxtmc']+"'>"+json[i].map['zxtmc']+"</li>";
+                                    console.log("sss=="+json[i])
+                                    str_html=str_html+"<li data-val='"+json[i]+"'>"+json[i]+"</li>";
 
                                 });
                                 $("#ul2").html(str_html);

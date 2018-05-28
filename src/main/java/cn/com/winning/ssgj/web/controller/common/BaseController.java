@@ -211,7 +211,7 @@ public class BaseController extends BaseSpringMvcMybatisController {
      */
     public List<EtUserInfo> getEtUserInfo(long pmId){
         EtUserInfo userInfo = new EtUserInfo();
-        userInfo.getMap().put("position","'1'");
+        userInfo.getMap().put("position","1,0");
         userInfo.setUserType(1);
         userInfo.setPmId(pmId);
         userInfo.getMap().put("admin","100001");
