@@ -80,15 +80,17 @@ public class EtEasyDataCheckController extends BaseController {
         //根据pmId获取易用数据校验数据
         List<EtEasyDataCheck> etEasyDataChecks = getFacade().getEtEasyDataCheckService().selectEtEasyDataCheckListByPmIdAndDataType(etEasyDataCheck);
         EtEasyDataCheck etEasyDataCheckTemp = null;
-        for (EtEasyDataCheck easyDataCheck : etEasyDataChecks) {
-            etEasyDataCheckTemp = new EtEasyDataCheck();
-            etEasyDataCheckTemp.setPmId(easyDataCheck.getPmId());
-            etEasyDataCheckTemp.setPlId(easyDataCheck.getPlId());
-            etEasyDataCheckTemp = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(etEasyDataCheckTemp);
-            if (etEasyDataCheckTemp == null) {
-                //不存在则插入
-                easyDataCheck.setId(ssgjHelper.createEtEasyDataCheckId());
-                getFacade().getEtEasyDataCheckService().createEtEasyDataCheck(easyDataCheck);
+        synchronized (this) {
+            for (EtEasyDataCheck easyDataCheck : etEasyDataChecks) {
+                etEasyDataCheckTemp = new EtEasyDataCheck();
+                etEasyDataCheckTemp.setPmId(easyDataCheck.getPmId());
+                etEasyDataCheckTemp.setPlId(easyDataCheck.getPlId());
+                etEasyDataCheckTemp = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(etEasyDataCheckTemp);
+                if (etEasyDataCheckTemp == null) {
+                    //不存在则插入
+                    easyDataCheck.setId(ssgjHelper.createEtEasyDataCheckId());
+                    getFacade().getEtEasyDataCheckService().createEtEasyDataCheck(easyDataCheck);
+                }
             }
         }
         map.put("status", Constants.SUCCESS);
@@ -190,7 +192,7 @@ public class EtEasyDataCheckController extends BaseController {
         //根据id获取表属性
         EtEasyDataCheck etEasyDataCheck = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(t);
         //根据应用数据id删除detail表数据
-        EtEasyDataCheckDetail etEasyDataCheckDetail=new EtEasyDataCheckDetail();
+        EtEasyDataCheckDetail etEasyDataCheckDetail = new EtEasyDataCheckDetail();
         etEasyDataCheckDetail.setSourceId(t.getId());
         getFacade().getEtEasyDataCheckDetailService().removeEtEasyDataCheckDetail(etEasyDataCheckDetail);
         //获取产品条线名称
@@ -335,7 +337,7 @@ public class EtEasyDataCheckController extends BaseController {
                 EtEasyDataCheckDetail etEasyDataCheckDetail = new EtEasyDataCheckDetail();
                 etEasyDataCheckDetail.setId(ssgjHelper.createEtEasyDataCheckDetailId());
                 etEasyDataCheckDetail.setSourceId(sourceId);
-                etEasyDataCheckDetail.setDeptDoctorCode(row.getCell(0) == null ? null : (int)Double.parseDouble(row.getCell(0).toString())+"");
+                etEasyDataCheckDetail.setDeptDoctorCode(row.getCell(0) == null ? null : (int) Double.parseDouble(row.getCell(0).toString()) + "");
                 etEasyDataCheckDetail.setDeptDoctorName(row.getCell(1) == null ? null : row.getCell(1).toString());
                 service.createEtEasyDataCheckDetail(etEasyDataCheckDetail);
                 doctorNotMaintainNum++;
@@ -347,7 +349,7 @@ public class EtEasyDataCheckController extends BaseController {
                 EtEasyDataCheckDetail etEasyDataCheckDetail = new EtEasyDataCheckDetail();
                 etEasyDataCheckDetail.setId(ssgjHelper.createEtEasyDataCheckDetailId());
                 etEasyDataCheckDetail.setSourceId(sourceId);
-                etEasyDataCheckDetail.setDeptDoctorCode(row.getCell(0) == null ? null : (int)Double.parseDouble(row.getCell(0).toString())+"");
+                etEasyDataCheckDetail.setDeptDoctorCode(row.getCell(0) == null ? null : (int) Double.parseDouble(row.getCell(0).toString()) + "");
                 etEasyDataCheckDetail.setDeptDoctorName(row.getCell(1) == null ? null : row.getCell(1).toString());
                 service.createEtEasyDataCheckDetail(etEasyDataCheckDetail);
                 deptNotMaintainNum++;

@@ -75,13 +75,15 @@ public class EtSoftHardwareController extends BaseController {
             etSoftHardwares = getFacade().getEtSoftHardwareService().selectEtSoftHardwareByProductInfo(etSoftHardware);
             //循环查询是否数据师傅存在，不存在则插入
             EtSoftHardware softHardwareTemp = null;
-            for (EtSoftHardware softHardware : etSoftHardwares) {
-                //查询数据是否入库
-                softHardwareTemp = getFacade().getEtSoftHardwareService().getEtSoftHardware(softHardware);
-                if (softHardwareTemp == null) {
-                    softHardware.setId(ssgjHelper.createEtSoftHardwareIdService());
-                    softHardware.setContent("0");
-                    getFacade().getEtSoftHardwareService().createEtSoftHardware(softHardware);
+            synchronized (this) {
+                for (EtSoftHardware softHardware : etSoftHardwares) {
+                    //查询数据是否入库
+                    softHardwareTemp = getFacade().getEtSoftHardwareService().getEtSoftHardware(softHardware);
+                    if (softHardwareTemp == null) {
+                        softHardware.setId(ssgjHelper.createEtSoftHardwareIdService());
+                        softHardware.setContent("0");
+                        getFacade().getEtSoftHardwareService().createEtSoftHardware(softHardware);
+                    }
                 }
             }
         }
@@ -100,14 +102,14 @@ public class EtSoftHardwareController extends BaseController {
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String, Object> list(Row row, EtSoftHardware etSoftHardware,String startDate, String endDate) throws ParseException {
+    public Map<String, Object> list(Row row, EtSoftHardware etSoftHardware, String startDate, String endDate) throws ParseException {
         Long pmId = etSoftHardware.getPmId();
         if (pmId == null) {
             return null;
         }
         etSoftHardware.setRow(row);
-        String noScopeCode=etSoftHardware.getNoScopeCode();
-        if("1".equals(noScopeCode)){
+        String noScopeCode = etSoftHardware.getNoScopeCode();
+        if ("1".equals(noScopeCode)) {
             etSoftHardware.setIsScope(1);
             etSoftHardware.setNoScopeCode(null);
         }

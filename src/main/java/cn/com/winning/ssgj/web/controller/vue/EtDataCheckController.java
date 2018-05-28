@@ -79,15 +79,17 @@ public class EtDataCheckController extends BaseController {
         List<EtDataCheck> etDataCheckList = getFacade().getEtDataCheckService().selectEtDataCheckListByPmIdAndDataType(etDataCheck);
         List<EtDataCheck> list = null;
         EtDataCheck etDataCheckTemp = null;
-        for (EtDataCheck dataCheck : etDataCheckList) {
-            etDataCheckTemp = new EtDataCheck();
-            etDataCheckTemp.setPmId(dataCheck.getPmId());
-            etDataCheckTemp.setPlId(dataCheck.getPlId());
-            list = getFacade().getEtDataCheckService().getEtDataCheckList(etDataCheckTemp);
-            if (list.size() == 0) {
-                //不存在则插入
-                dataCheck.setId(ssgjHelper.createEtDataCheckId());
-                getFacade().getEtDataCheckService().createEtDataCheck(dataCheck);
+        synchronized (this) {
+            for (EtDataCheck dataCheck : etDataCheckList) {
+                etDataCheckTemp = new EtDataCheck();
+                etDataCheckTemp.setPmId(dataCheck.getPmId());
+                etDataCheckTemp.setPlId(dataCheck.getPlId());
+                list = getFacade().getEtDataCheckService().getEtDataCheckList(etDataCheckTemp);
+                if (list.size() == 0) {
+                    //不存在则插入
+                    dataCheck.setId(ssgjHelper.createEtDataCheckId());
+                    getFacade().getEtDataCheckService().createEtDataCheck(dataCheck);
+                }
             }
         }
         map.put("status", Constants.SUCCESS);
