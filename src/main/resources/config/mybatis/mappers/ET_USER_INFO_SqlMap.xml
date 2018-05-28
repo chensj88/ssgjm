@@ -78,6 +78,9 @@
         <if test="( map.position != null and map.position != '' )">
             AND t.POSITION_NAME IN (${map.position})
         </if>
+        <if test="( map.admin != null and map.admin != '' )">
+            AND t.USER_ID NOT IN ('100001')
+        </if>
         <if test="(isDel != null ) ">and t.USER_ID != 100001 </if>
         <!-- order by ID asc -->
     </select>

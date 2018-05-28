@@ -214,6 +214,7 @@ public class BaseController extends BaseSpringMvcMybatisController {
         userInfo.getMap().put("position","'1'");
         userInfo.setUserType(1);
         userInfo.setPmId(pmId);
+        userInfo.getMap().put("admin","100001");
         return getFacade().getEtUserInfoService().getEtUserInfoList(userInfo);
     }
 }
