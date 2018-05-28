@@ -75,4 +75,9 @@ public class PmisProductLineInfoServiceImpl implements PmisProductLineInfoServic
         return this.pmisProductLineInfoDao.selectPmisProductLineInfoByPmidAndType(pmisContractProductInfo);
     }
 
+    @Override
+    public List<PmisProductLineInfo> getPmisProductLineInfoMobileList(String pdId) {
+        return this.pmisProductLineInfoDao.selectPmisProductLineInfoMobileList(pdId);
+    }
+
 }

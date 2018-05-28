@@ -38,4 +38,9 @@ public class PmisProductLineInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<PmisPr
     public List<PmisProductLineInfo> selectPmisProductLineInfoByPmidAndType(PmisContractProductInfo pmisContractProductInfo) {
         return this.getSqlSession().selectList("selectPmisProductLineInfoByPmidAndType", pmisContractProductInfo);
     }
+
+    @Override
+    public List<PmisProductLineInfo> selectPmisProductLineInfoMobileList(String pdId) {
+        return this.getSqlSession().selectList("selectPmisProductLineInfoMobileList",pdId);
+    }
 }

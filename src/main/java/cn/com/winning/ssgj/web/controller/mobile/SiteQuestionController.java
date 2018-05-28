@@ -67,7 +67,8 @@ public class SiteQuestionController extends BaseController {
             //获取项目成员信息
             EtUserInfo userInfo = new EtUserInfo();
             //项目少于15人注销
-            //userInfo.setPositionName("1");
+            //userInfo.setPositionName("1");//项目经理+主力工程师
+            userInfo.getMap().put("position","1,0");//项目经理+主力工程师
             userInfo.setSerialNo(hospcode);
             userInfo.setUserType(1);
             List<EtUserInfo> infos = super.getFacade().getEtUserInfoService().getEtUserInfoList(userInfo);
@@ -337,8 +338,11 @@ public class SiteQuestionController extends BaseController {
                 EtSiteInstall info = new EtSiteInstall();
                 info.setDeptName(name);
                 info.setSerialNo(serialNo);
-                List<EtSiteInstall> infoList = super.getFacade().getEtSiteInstallService().getEtSiteInstallNameList(info);
-                JSONArray xtJsons = JSONArray.fromObject( infoList );
+                List<EtSiteInstall> infoList = super.getFacade().getEtSiteInstallService().getEtSiteInstallList(info);
+                //List<EtSiteInstall> infoList = super.getFacade().getEtSiteInstallService().getEtSiteInstallNameList(info);
+                //List<PmisProductLineInfo> infos = super.getFacade().getPmisProductLineInfoService().getPmisProductLineInfoMobileList(infoList.get(0).getPdId());
+                String [] strs = infoList.get(0).getPdName().split(";");
+                JSONArray xtJsons = JSONArray.fromObject(strs);
                 map.put("xtJsons",xtJsons);
             }else{
                 contractProductInfo.setKhxx(Long.parseLong(serialNo));
@@ -350,7 +354,7 @@ public class SiteQuestionController extends BaseController {
 
             }
         }catch (Exception e){
-
+            e.printStackTrace();
         }
         return map;
     }
