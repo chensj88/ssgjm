@@ -57,7 +57,7 @@ public class EtBusinessProcessController extends BaseController {
     @ILog
     public Map<String,Object> queryFlowInfoByPmId(EtBusinessProcess process, Row row,String startDate,String endDate) throws ParseException {
         //生成业务流程信息
-        super.getFacade().getCommonQueryService().generateEtBusinessProcessByProject(process);
+        initData(process);
         process.setRow(row);
         if(!"null".equals(startDate) && !"null".equals(endDate) && !StringUtil.isEmptyOrNull(startDate) && !StringUtil.isEmptyOrNull(endDate)){
             Map<String,Object> param = process.getMap();
@@ -80,6 +80,10 @@ public class EtBusinessProcessController extends BaseController {
         result.put("sumNum", sumBussinessProcessNum);
         result.put("comNum", completeBPNum);
         return result;
+    }
+
+    private synchronized void initData(EtBusinessProcess process){
+        super.getFacade().getCommonQueryService().generateEtBusinessProcessByProject(process);
     }
 
     /**
