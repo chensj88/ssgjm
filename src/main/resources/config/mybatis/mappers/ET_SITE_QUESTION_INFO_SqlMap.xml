@@ -55,6 +55,8 @@
         <result column="POSITION_NAME" property="map.position_name" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME_STRING" property="map.createTimeString" jdbcType="VARCHAR"/>
         <result column="OPERATOR_TIME_STRING" property="map.operatorTimeString" jdbcType="VARCHAR"/>
+        <result column="operTypeString" property="map.operTypeString" jdbcType="VARCHAR"/>
+        <result column="priorityString" property="map.priorityString" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="sf-etSiteQuestionInfo">
@@ -122,11 +124,17 @@
             parameterType="etSiteQuestionInfo">
         select
         <if test="row.count != null and row.count != ''">top ${row.count}</if>
-        t.*,i.YHMC as create_name,ii.YHMC as allocate_name,d.DICT_LABEL
+        t.*,i.YHMC as create_name,i.USERID AS createUser,i.NAME AS createUserName,ii.YHMC as allocate_name,d.DICT_LABEL,
+        e.DICT_LABEL AS operTypeString,f.DICT_LABEL AS  priorityString,
+        CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END AS CREATE_TIME_STRING,
+        CASE WHEN ( IS_OPERATION = 1 AND OPERATOR_TIME IS NOT NULL ) THEN CONVERT(VARCHAR(32),OPERATOR_TIME,111) ELSE ''
+        END AS OPERATOR_TIME_STRING
         from ET_SITE_QUESTION_INFO t
         LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
         LEFT JOIN SYS_USER_INFO ii ON t.ALLOCATE_USER=ii.ID
         LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
+        LEFT JOIN SYS_DICT_INFO e ON t.OPER_TYPE=e.DICT_VALUE AND e.DICT_CODE='operType'
+        LEFT JOIN SYS_DICT_INFO f ON t.PRIORITY=f.DICT_VALUE AND f.DICT_CODE='priorityType'
         where 1 = 1
         <include refid="sf-etSiteQuestionInfo"/>  order by ID DESC
         <!-- order by ID asc -->

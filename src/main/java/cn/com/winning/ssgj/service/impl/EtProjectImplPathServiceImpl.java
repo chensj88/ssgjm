@@ -60,7 +60,7 @@ public class EtProjectImplPathServiceImpl implements EtProjectImplPathService {
 	public void generateEtProjectImplPathInfo(String path) {
 		EtProjectImplPath etProjectImplPath = new EtProjectImplPath();
 		List<EtProjectImplPath> queryUserList = this.etProjectImplPathDao.selectEntityList(etProjectImplPath);
-		int total = (Integer) this.etProjectImplPathDao.selectEntityCount(etProjectImplPath);
+		//int total = (Integer) this.etProjectImplPathDao.selectEntityCount(etProjectImplPath);
 		List<String> colList = new ArrayList<String>();
 		colList.add("milepost");
 		colList.add("mainStep");

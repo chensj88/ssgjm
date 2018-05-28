@@ -29,4 +29,11 @@ public interface EtSiteQuestionInfoService {
     void updateEtSiteQuestionInfoImg(EtSiteQuestionInfo info);
 
     List<EtSiteQuestionInfo> getEtSiteQuestionInfoUserTotal(EtSiteQuestionInfo info);
+
+    /**
+     * 生成站点问题信息
+     * @param info
+     * @param path
+     */
+    void generateEtSiteQuestionInfo(EtSiteQuestionInfo info, String path);
 }
