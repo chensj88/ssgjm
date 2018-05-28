@@ -35,8 +35,12 @@
         flow:{
             existName:'/admin/flow/existName.do',
             uploadURL:'/admin/upload/flow.do'
+        },
+        video:{
+            uploadURL:'/admin/upload/tvideo.do'
         }
     };
+
 
     /**
      * 截取时间

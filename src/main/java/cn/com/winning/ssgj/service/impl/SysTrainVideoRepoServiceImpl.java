@@ -91,7 +91,7 @@ public class SysTrainVideoRepoServiceImpl implements SysTrainVideoRepoService {
 
     public boolean existVideoName(SysTrainVideoRepo repo) {
         int count = this.sysTrainVideoRepoDao.selectCountByVideoName(repo);
-        if (count > 0) {
+        if (count > 1) {
             return false;
         }
         return true;

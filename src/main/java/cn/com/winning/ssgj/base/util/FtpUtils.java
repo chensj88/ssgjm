@@ -74,9 +74,14 @@ public class FtpUtils {
 				success = true;// 表示上传成功
 				logger.info("====FTP服务器上传文件成功,dir:[{}] name:[{}]", dir, filename);
 			} catch (IOException e) {
+				ftp.logout();// 退出ftp
 				e.printStackTrace();
 				throw e;
 			} finally {
+				if(is !=null){
+					is.close();
+				}
+
 				if (ftp.isConnected()) {
 					try {
 						ftp.disconnect();
