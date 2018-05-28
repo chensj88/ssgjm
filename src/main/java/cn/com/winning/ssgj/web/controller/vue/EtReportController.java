@@ -74,16 +74,18 @@ public class EtReportController extends BaseController {
             //根据产品集合获取硬件集合
             etReports = getFacade().getEtReportService().selectEtReportByProductInfo(etReport);
             //循环查询是否数据师傅存在，不存在则插入
-            for (EtReport report : etReports) {
-                EtReport etReportTemp= new EtReport();
-                etReportTemp.setPmId(pmId);
-                etReportTemp.setSourceType(report.getSourceType());
-                etReportTemp = getFacade().getEtReportService().getEtReport(etReportTemp);
-                if (etReportTemp == null) {
-                    report.setId(ssgjHelper.createEtReportIdService());
-                    report.setCreator(100001L);
-                    report.setCreateTime(new Timestamp(new Date().getTime()));
-                    getFacade().getEtReportService().createEtReport(report);
+            synchronized (this) {
+                for (EtReport report : etReports) {
+                    EtReport etReportTemp = new EtReport();
+                    etReportTemp.setPmId(pmId);
+                    etReportTemp.setSourceType(report.getSourceType());
+                    etReportTemp = getFacade().getEtReportService().getEtReport(etReportTemp);
+                    if (etReportTemp == null) {
+                        report.setId(ssgjHelper.createEtReportIdService());
+                        report.setCreator(100001L);
+                        report.setCreateTime(new Timestamp(new Date().getTime()));
+                        getFacade().getEtReportService().createEtReport(report);
+                    }
                 }
             }
         }
@@ -114,8 +116,8 @@ public class EtReportController extends BaseController {
         Integer completeNum = getCompleteNum(etReport);
 
         etReport.setRow(row);
-        String noScopeCode=etReport.getNoScopeCode();
-        if("1".equals(noScopeCode)){
+        String noScopeCode = etReport.getNoScopeCode();
+        if ("1".equals(noScopeCode)) {
             etReport.setIsScope(1);
             etReport.setNoScopeCode(null);
         }

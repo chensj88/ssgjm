@@ -61,16 +61,18 @@ public class EtThirdIntterfaceController extends BaseController {
         //根据pmid获取所有接口信息
         List<EtThirdIntterface> etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().selectPmisInterfaceList(etThirdIntterface);
         EtThirdIntterface temp = null;
-        for (EtThirdIntterface intterface : etThirdIntterfaces) {
-            temp = new EtThirdIntterface();
-            temp.setPmId(pmId);
-            temp.setSourceId(intterface.getSourceId());
-            //查询数据是否入库
-            temp = getFacade().getEtThirdIntterfaceService().getEtThirdIntterface(temp);
-            if (temp == null) {
-                //不存在则将数据插入
-                intterface.setId(ssgjHelper.createThirdInterfaceId());
-                getFacade().getEtThirdIntterfaceService().createEtThirdIntterface(intterface);
+        synchronized (this) {
+            for (EtThirdIntterface intterface : etThirdIntterfaces) {
+                temp = new EtThirdIntterface();
+                temp.setPmId(pmId);
+                temp.setSourceId(intterface.getSourceId());
+                //查询数据是否入库
+                temp = getFacade().getEtThirdIntterfaceService().getEtThirdIntterface(temp);
+                if (temp == null) {
+                    //不存在则将数据插入
+                    intterface.setId(ssgjHelper.createThirdInterfaceId());
+                    getFacade().getEtThirdIntterfaceService().createEtThirdIntterface(intterface);
+                }
             }
         }
         map.put("status", Constants.SUCCESS);
@@ -128,8 +130,8 @@ public class EtThirdIntterfaceController extends BaseController {
         Integer total = 0;
         List<EtThirdIntterface> etThirdIntterfaces = null;
         etThirdIntterface.setRow(row);
-        String noScopeCode=etThirdIntterface.getNoScopeCode();
-        if("1".equals(noScopeCode)){
+        String noScopeCode = etThirdIntterface.getNoScopeCode();
+        if ("1".equals(noScopeCode)) {
             etThirdIntterface.setIsScope(1);
             etThirdIntterface.setNoScopeCode(null);
         }
