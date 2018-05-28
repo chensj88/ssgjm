@@ -63,7 +63,7 @@ public class SysDataInfoBufferController extends BaseController {
      */
     @RequestMapping("/list.do")
     @ResponseBody
-    public Map<String, Object> list(Row row, Long pmId, Integer dataType) {
+    public Map<String, Object> list(Row row, Long pmId, Integer dataType,SysDataInfo sysDataInfo) {
         //项目id
         if (pmId == null) {
             return null;
@@ -73,8 +73,6 @@ public class SysDataInfoBufferController extends BaseController {
 //        //pks为mapping xml中设定的属性名
 //        propMap.put("pmId", pmId);
 
-        SysDataInfo sysDataInfo = new SysDataInfo();
-        sysDataInfo.setDataType(dataType);
         sysDataInfo.setRow(row);
 //        sysDataInfo.setMap(propMap);
         //根据产品id和dataType获取基础数据 dataType:0 国标数据;1 行标数据；2 共享数据；3 易用数据；

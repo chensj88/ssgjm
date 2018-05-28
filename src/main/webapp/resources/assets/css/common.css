@@ -44,3 +44,21 @@
 .hr-dotted {
     border-top-style: dotted
 }
+
+.file-api-bootstrap .btn {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+}
+
+.file-api-bootstrap .btn input {
+    top: -10px;
+    right: -40px;
+    z-index: 2;
+    position: absolute;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    font-size: 50px;
+}

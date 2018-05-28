@@ -1,6 +1,8 @@
 package cn.com.winning.ssgj.base.util;
 
 import cn.com.winning.ssgj.base.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +18,7 @@ import java.io.IOException;
  */
 public class CommonFtpUtils {
 
+   private static Logger logger = LoggerFactory.getLogger(CommonFtpUtils.class);
     /**
      * 通用上传处理
      * @param remotePath 文件存储在远程的全路径
@@ -53,6 +56,8 @@ public class CommonFtpUtils {
      * @return
      */
     public static boolean removeUploadFile(String source) {
+        logger.info("====开启FTP服务器删除文件功能====");
+        logger.info("删除FTP文件：[{}]",source);
         boolean ftpStatus = false;
         if (Constants.FTP_PORT == 21) {
             try {
@@ -71,6 +76,7 @@ public class CommonFtpUtils {
                 ftpStatus = false;
             }
         }
+        logger.info("删除FTP文件状态：[{}]",ftpStatus);
         return  ftpStatus;
     }
 

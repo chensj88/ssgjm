@@ -115,7 +115,6 @@ public class CommonUploadController extends BaseController {
      * 流程问卷上传
      *
      * @param request
-     * @param flowInfo
      * @param uploadFile
      * @return
      * @throws IOException
@@ -123,23 +122,17 @@ public class CommonUploadController extends BaseController {
     @RequestMapping(value = "/flow.do")
     @ResponseBody
     @ILog
-    public Map<String, Object> uploadFlowTemplate(HttpServletRequest request,
-                                                  SysFlowInfo flowInfo,
-                                                  MultipartFile uploadFile) throws IOException {
-        flowInfo = super.getFacade().getSysFlowInfoService().getSysFlowInfo(flowInfo);
-        String parentFile = flowInfo.getFlowName();
+    public Map<String, Object> uploadFlowTemplate(HttpServletRequest request, MultipartFile uploadFile) throws IOException {
         Map<String, Object> result = new HashMap<String, Object>();
         //如果文件不为空，写入上传路径
         if (!uploadFile.isEmpty()) {
-            /*String filename = FileUtis.generateFileName(uploadFile.getOriginalFilename());*/
             String filename = uploadFile.getOriginalFilename();
-            String remotePath = "/template/" + parentFile + "/" + filename;
+            String remotePath = Constants.UPLOAD_PC_PREFIX + "web/template/flow/" + DateUtil.getTimstamp()  + "/" + filename;
             String msg = "";
             boolean ftpStatus =CommonFtpUtils.commonUploadInfo(request,msg,remotePath,uploadFile);
             if (ftpStatus) {
                 result.put("status", "success");
-                flowInfo.setRemotePath(remotePath);
-                super.getFacade().getSysFlowInfoService().modifySysFlowInfo(flowInfo);
+                result.put("path", remotePath);
             } else if (!StringUtil.isEmptyOrNull(msg)) {
                 result.put("status", "error");
                 result.put("msg", "上传文件失败,原因是：" + msg);
@@ -173,7 +166,7 @@ public class CommonUploadController extends BaseController {
         if (!uploadFile.isEmpty()) {
             // String filename = FileUtis.generateFileName(uploadFile.getOriginalFilename());
             String filename = uploadFile.getOriginalFilename();
-            String remotePath = "/script/" + parentFile + "/" + filename;
+            String remotePath =  Constants.UPLOAD_PC_PREFIX + "/web/script/" + parentFile + "/" + filename;
             String msg = "";
             boolean ftpStatus =CommonFtpUtils.commonUploadInfo(request,msg,remotePath,uploadFile);
             if (ftpStatus) {
@@ -240,17 +233,17 @@ public class CommonUploadController extends BaseController {
     @ILog
     public Map<String, Object> testUpload(HttpServletRequest request,
                                               MultipartFile file) throws IOException {
-
         Map<String, Object> result = new HashMap<String, Object>();
         //如果文件不为空，写入上传路径
         if (!file.isEmpty()) {
             String filename = file.getOriginalFilename();
             String msg = "";
             try {
-                String remotePath = Constants.UPLOAD_PC_PREFIX+"/template/" + DateUtil.getTimstamp() + "/" + filename;
+                String remotePath = Constants.UPLOAD_PC_PREFIX+"web/template/" + DateUtil.getTimstamp() + "/" + filename;
                 boolean ftpStatus =CommonFtpUtils.commonUploadInfo(request,msg,remotePath,file);
                 result.put("status", "success");
                 result.put("path", remotePath);
+                result.put("url", Constants.FTP_SHARE_FLODER);
             } catch (Exception e) {
                 e.printStackTrace();
                 result.put("status", "error");

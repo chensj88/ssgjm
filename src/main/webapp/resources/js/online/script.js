@@ -362,6 +362,7 @@ $(function () {
                         }
                         $('#scriptModal').modal('hide');
                         $("#infoTable").bootstrapTable('refresh');
+                        location.reload();
                     }
                 }
             });

@@ -40,6 +40,13 @@
         <if test="lastUpdateName != null ">and t.LAST_UPDATE_NAME = #{lastUpdateName}</if>
     </sql>
 
+    <!--基础数据维护和易用数据维护数据查询-->
+    <sql id="selectSql">
+        <if test="tableName != null and tableName != ''">and t.TABLE_NAME LIKE '%${tableName}%'</if>
+        <if test="standardCode != null and standardCode != ''">and t.STANDARD_CODE LIKE '%${standardCode}%'</if>
+
+    </sql>
+
     <sql id="query-sysDataInfo">
         <if test="dbName != null and dbName != ''">and t.DB_NAME LIKE '%${dbName}%'</if>
         <if test="tableName != null and tableName != ''">and t.TABLE_NAME LIKE '%${tableName}%'</if>
@@ -383,12 +390,13 @@
     <!--根据dataType获取分页基础数据-->
     <select id="selectSysDataInfoPaginatedListByDataType" resultMap="sysDataInfoResult" parameterType="sysDataInfo">
         select * from (
-        select s.*, ROW_NUMBER() OVER ( order by s.ID desc ) as _rn
+        select t.*, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
         FROM
-        SYS_DATA_INFO s
+        SYS_DATA_INFO t
         WHERE
-        s.STATUS = 1
-        AND s.DATA_TYPE = #{dataType}
+        t.STATUS = 1
+        AND t.DATA_TYPE = #{dataType}
+        <include refid="selectSql"/>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
@@ -398,10 +406,11 @@
         select
         COUNT (*)
         FROM
-        SYS_DATA_INFO s
+        SYS_DATA_INFO t
         WHERE
-        s.STATUS = 1
-        AND s.DATA_TYPE = #{dataType}
+        t.STATUS = 1
+        AND t.DATA_TYPE = #{dataType}
+        <include refid="selectSql"/>
     </select>
 
 </mapper>

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/fileinput.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/js/fileapi/css/jquery.Jcrop.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/common.css"/>
     <base href="<%=basePath%>">
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
@@ -114,6 +115,9 @@
                                         <input type="text" class="form-control" id="flowName" name="flowName"
                                                placeholder="请输入流程名称">
                                     </div>
+                                    <span id="flowNameValid" style="margin-left:160px;font-weight: bold;color: red;display: none">
+                                        流程名称已经存在
+                                    </span>
                                 </div>
 
                                 <div class="form-group">
@@ -142,9 +146,39 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="uploadFileDiv">
-                                    <label class="col-sm-3 control-label" for="uploadFile">调研问卷</label>
+                                    <label class="col-sm-3 control-label" for="remotePath">调研问卷</label>
                                     <div class="col-sm-6">
-                                        <input id="uploadFile" name="uploadFile" type="file">
+                                        <div id="file-upload" class="file-api-bootstrap" style="margin-left: 20px;">
+                                            <div class="row" >
+                                                <div id="uploadFile" style="display: none">
+                                                    <div class="row" >
+                                                        <span class="js-name b-upload__name" id="uploadFileName"></span>
+                                                    </div>
+                                                    <div class="row" >
+                                                        <button class="btn btn-info btn-small" id="downLoadFile">下载</button>
+                                                        <button class="btn btn-danger btn-small" id="deleteFile">删除</button>
+                                                    </div>
+                                                </div>
+                                                <div id="fileInfo">
+
+                                                </div>
+                                                <div class="col-sm-8" id="jsInfo">
+                                                     <span class="js-info">
+                                                         <span class="js-name b-upload__name" id="fileName" style="width: 200px;overflow:hidden;text-overflow:ellipsis;"></span>
+                                                         <span class="b-upload__size">(<span id="fileSize" class="js-size"></span>) 正在上传</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <div class="row" id="fileUploadDiv">
+                                                <div class="col-sm-3">
+                                                    <div class="btn btn-success btn-small js-fileapi-wrapper" id="fileUpload">
+                                                        <span>选择文件</span>
+                                                        <input type="file" name="file">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <span style="margin-left:160px;font-weight: bold;color: red;">
                                      上传文件格式支持:doc,docx,xls,xlsx
@@ -153,9 +187,10 @@
                                 <input type="hidden" name="id" id="id">
                                 <input type="hidden" name="vid" id="vid">
                                 <input type="hidden" name="flowPid" id="flowPid">
+                                <input type="hidden" name="remotePath" id="remotePath">
                                 <input type="reset" style="display:none;"/>
                                 <div class="col-sm-8 text-center">
-                                    <button class="btn btn-primary" id="saveFlow" type="submit">保存</button>
+                                    <button class="btn btn-primary" id="saveFlow" type="button">保存</button>
                                     <button class="btn btn-danger" data-dismiss="modal">取消</button>
                                 </div>
                             </form>
@@ -177,6 +212,9 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap3-typeahead.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/fileinput.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/fileinput_locale_zh.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/assets/js/fileapi/FileAPI/FileAPI.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/assets/js/fileapi/FileAPI/FileAPI.exif.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/assets/js/fileapi/jquery.fileapi.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/auth/module/flowinfo.js"></script>
 </html>

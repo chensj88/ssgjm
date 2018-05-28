@@ -18,7 +18,25 @@
     /**成功标志*/
     Common.SUCCESS = "success";
     Common.VIDEO_TYPE_CUSTOMER = "99";
+    Common.FTP_SHARE_URL = '';
 
+    Common.STATUS_BEFORE_UPLOAD = '0'; //初始化状态
+    Common.STATUS_PROCESS_UPLOAD = '1'; //上传中
+    Common.STATUS_FINISH_UPLOAD = '2'; //完成中
+    Common.UPLOAD_TYPE_FLOW = '1';  //流程文件上传
+    Common.UPLOAD_TYPE_VIDEO = '2'; //视频文件上传
+    Common.UPLOAD_TYPE_SCRIPT = '3'; //脚本文件上传
+    /**
+     * 访问路径
+     * @type {{commonUploadURL: string, flow: {existName: string}}}
+     */
+    Common.url ={
+        commonUploadURL: '/admin/upload/test.do',
+        flow:{
+            existName:'/admin/flow/existName.do',
+            uploadURL:'/admin/upload/flow.do'
+        }
+    };
 
     /**
      * 截取时间
@@ -49,6 +67,39 @@
 
     };
 
+    Common.getFileInfo = function (remotePath) {
+      if(!remotePath){
+          return ;
+      }
+      var name = remotePath.substring(remotePath.lastIndexOf('/')+1);
+      var url = Common.getShareURL() + remotePath;
+      return {
+          name: name,
+          url:url
+      };
+
+    };
+    Common.getShareURL = function () {
+        if(Common.FTP_SHARE_URL === ''){
+            $.ajax({
+                url: Common.getRootPath() + "/admin/common/getShareURL.do",
+                data: {},
+                type: "post",
+                dataType: 'json',
+                cache:false,
+                async: false,
+                success: function (result) {
+                    if(result.status === 'success'){
+                        Common.FTP_SHARE_URL = result.url;
+                    }
+                    return  Common.FTP_SHARE_URL;
+                }
+            });
+        }else {
+            return  Common.FTP_SHARE_URL;
+        }
+
+    };
     /**登录页面*/
     Common.LOGIN_URL = Common.getRootPath() + "/login/login.do";
     /**
