@@ -45,7 +45,7 @@ public class EtContractProjectController extends BaseController {
      */
     @RequestMapping(value = "/initData.do")
     @ResponseBody
-    public Map<String, Object> listProductOfProject(EtContractTask task, Row row) {
+    public Map<String, Object>  listProductOfProject(EtContractTask task, Row row) {
         super.getFacade().getCommonQueryService().generateEtContractTaskFromPmisContractProductInfo(task.getPmId());
         task.setRow(row);
         List<EtContractTask> taskList = super.getFacade().getEtContractTaskService().getEtContractTaskPaginatedList(task);
@@ -56,6 +56,7 @@ public class EtContractProjectController extends BaseController {
         result.put("rows", taskList);
         return result;
     }
+
 
     /**
      * 查询产品信息

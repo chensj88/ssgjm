@@ -324,7 +324,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     }
 
     @Override
-    public void generateEtBusinessProcessByProject(EtBusinessProcess process) {
+    public synchronized void generateEtBusinessProcessByProject(EtBusinessProcess process) {
        /*
         根据流程是否必须来获取是否需要展示
         List<Long> pdIds = this.queryProductIdByProjectIdAndType(process.getPmId(), Constants.PMIS.CPLB_1);
@@ -418,7 +418,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     }
 
     @Override
-    public void generateEtUserInfoFromPmisProjectUser(Long pmId) {
+    public synchronized void generateEtUserInfoFromPmisProjectUser(Long pmId) {
         PmisProjctUser projctUser = new PmisProjctUser();
         projctUser.setXmlcb(pmId);
         //查询当前项目下的人员信息
@@ -477,7 +477,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     }
 
     @Override
-    public void generateEtContractTaskFromPmisContractProductInfo(Long pmId) {
+    public synchronized void generateEtContractTaskFromPmisContractProductInfo(Long pmId) {
         PmisContractProductInfo info = new PmisContractProductInfo();
         info.setXmlcb(pmId);
         info.setHtcplb(1);

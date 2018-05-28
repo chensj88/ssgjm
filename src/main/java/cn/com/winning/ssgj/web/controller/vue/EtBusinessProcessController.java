@@ -55,7 +55,7 @@ public class EtBusinessProcessController extends BaseController {
     @ResponseBody
     @Transactional
     @ILog
-    public Map<String,Object> queryFlowInfoByPmId(EtBusinessProcess process, Row row,String startDate,String endDate) throws ParseException {
+    public  Map<String,Object> queryFlowInfoByPmId(EtBusinessProcess process, Row row,String startDate,String endDate) throws ParseException {
         //生成业务流程信息
         super.getFacade().getCommonQueryService().generateEtBusinessProcessByProject(process);
         process.setRow(row);
