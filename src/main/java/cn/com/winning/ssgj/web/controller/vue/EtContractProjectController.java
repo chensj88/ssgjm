@@ -46,8 +46,7 @@ public class EtContractProjectController extends BaseController {
     @RequestMapping(value = "/initData.do")
     @ResponseBody
     public Map<String, Object>  listProductOfProject(EtContractTask task, Row row) {
-      /*  super.getFacade().getCommonQueryService().generateEtContractTaskFromPmisContractProductInfo(task.getPmId());*/
-        initData(task.getPmId());
+        super.getFacade().getCommonQueryService().generateEtContractTaskFromPmisContractProductInfo(task.getPmId());
         task.setRow(row);
         List<EtContractTask> taskList = super.getFacade().getEtContractTaskService().getEtContractTaskPaginatedList(task);
         int total = super.getFacade().getEtContractTaskService().getEtContractTaskCount(task);
@@ -58,9 +57,6 @@ public class EtContractProjectController extends BaseController {
         return result;
     }
 
-    private  synchronized void initData(Long pmId){
-        super.getFacade().getCommonQueryService().generateEtContractTaskFromPmisContractProductInfo(pmId);
-    }
 
     /**
      * 查询产品信息
