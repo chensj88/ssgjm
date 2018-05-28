@@ -212,30 +212,10 @@
 		   <if test="createNo != null and createNo != ''"> CREATE_NO, </if>
 	       <if test="(pmisStatus != null and pmisStatus != '') or pmisStatus == 0"> PMIS_STATUS, </if>
             <if test="workLoad != null and workLoad != ''"> WORK_LOAD, </if>
-            <if test="operatorTime != null and operatorTime != ''">OPERATOR_TIME,</if>
-            <if test="batchNo != null and batchNo != ''">BATCH_NO,</if>
-            <if test="(reasonType != null and reasonType != '') or reasonType == 0">REASON_TYPE,</if>
-            <if test="(manuscriptStatus != null and manuscriptStatus != '') or manuscriptStatus == 0">
-                MANUSCRIPT_STATUS,
-            </if>
-            <if test="devUser != null and devUser != ''">DEV_USER,</if>
-            <if test="devUserName != null and devUserName != ''">DEV_USER_NAME,</if>
-            <if test="linkman != null and linkman != ''">LINKMAN,</if>
-            <if test="mobile != null and mobile != ''">MOBILE,</if>
-            <if test="hopeFinishDate != null and hopeFinishDate != ''">HOPE_FINISH_DATE,</if>
-            <if test="resolveDate != null and resolveDate != ''">RESOLVE_DATE,</if>
-            <if test="(solutionType != null and solutionType != '') or solutionType == 0">SOLUTION_TYPE,</if>
-            <if test="solutionResult != null and solutionResult != ''">SOLUTION_RESULT,</if>
-            <if test="(diffcultLevel != null and diffcultLevel != '') or diffcultLevel == 0">DIFFCULT_LEVEL,</if>
-            <if test="userMessage != null and userMessage != ''">USER_MESSAGE,</if>
-            <if test="createNo != null and createNo != ''">CREATE_NO,</if>
-            <if test="(pmisStatus != null and pmisStatus != '') or pmisStatus == 0">PMIS_STATUS,</if>
-            <if test="workLoad != null and workLoad != ''">WORK_LOAD,</if>
             <if test="introducer != null and introducer != ''">INTRODUCER ,</if>
             <if test="introducerName != null and introducerName != ''">INTRODUCER_NAME,</if>
             <if test="introducerDate != null and introducerDate != ''">INTRODUCER_DATE,</if>
             <if test="requirementNo != null and requirementNo != ''"> REQUIREMENT_NO,</if>
-
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -290,7 +270,6 @@
             <if test="introducerName != null and introducerName != ''">#{introducerName, jdbcType=VARCHAR},</if>
             <if test="introducerDate != null and introducerDate != ''">#{introducerDate, jdbcType=VARCHAR} ,</if>
             <if test="requirementNo != null and requirementNo != ''"> #{requirementNo,jdbcType=VARCHAR},</if>
-
         </trim>
     </insert>
 
