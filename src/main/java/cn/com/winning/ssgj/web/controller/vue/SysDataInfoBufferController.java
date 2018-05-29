@@ -339,6 +339,7 @@ public class SysDataInfoBufferController extends BaseController {
         OutputStream toClient = response.getOutputStream();
         wb.write(toClient);
         toClient.flush();
+        toClient.close();
         map.put("status", Constants.SUCCESS);
         return map;
     }
