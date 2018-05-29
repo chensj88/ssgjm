@@ -153,13 +153,18 @@ public class BaseController extends BaseSpringMvcMybatisController {
      * @param pmId
      * @return
      */
-    public List<PmisProductLineInfo> getProductLineList(Long pmId) {
-        PmisContractProductInfo pmisContractProductInfo = new PmisContractProductInfo();
-        pmisContractProductInfo.setXmlcb(pmId);
-        pmisContractProductInfo.setHtcplb(1);
+    public List<PmisProductLineInfo> getProductLineList() {
+        //PmisContractProductInfo pmisContractProductInfo = new PmisContractProductInfo();
+        //pmisContractProductInfo.setXmlcb(pmId);
+        //pmisContractProductInfo.setHtcplb(1);
         //根据产品获取产品条线
-        List<PmisProductLineInfo> pmisProductLineInfos = getFacade().getPmisProductLineInfoService().selectPmisProductLineInfoByPmidAndType(pmisContractProductInfo);
-        return pmisProductLineInfos;
+        //List<PmisProductLineInfo> pmisProductLineInfos = getFacade().getPmisProductLineInfoService().selectPmisProductLineInfoByPmidAndType(pmisContractProductInfo);
+        PmisProductLineInfo lineInfo = new PmisProductLineInfo();
+        lineInfo.setLx(1);
+        lineInfo.setZt(1);
+        lineInfo.setCpdl("1");
+        List<PmisProductLineInfo> pmisProductLineInfoList = getFacade().getPmisProductLineInfoService().getPmisProductLineInfoList(lineInfo);
+        return pmisProductLineInfoList;
     }
 
     /**

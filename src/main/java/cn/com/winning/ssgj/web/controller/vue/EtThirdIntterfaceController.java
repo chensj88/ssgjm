@@ -207,7 +207,7 @@ public class EtThirdIntterfaceController extends BaseController {
             user = super.getFacade().getPmisProjctUserService().getPmisProjctUser(user);
         }
         //根据项目Id
-        List<PmisProductLineInfo> pmisProductLineInfoList = this.getProductLineList(pmId);
+        List<PmisProductLineInfo> pmisProductLineInfoList = this.getProductLineList();
         //当无法根据pmid找到产品条线时，给出所有产品条线
         if (pmisProductLineInfoList == null || pmisProductLineInfoList.size() == 0) {
             PmisProductLineInfo temp = new PmisProductLineInfo();

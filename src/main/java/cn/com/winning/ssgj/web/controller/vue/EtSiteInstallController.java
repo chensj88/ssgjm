@@ -83,7 +83,7 @@ public class EtSiteInstallController extends BaseController {
                 }
             }
             //所需要的 软件
-            result.put("productLineList", super.getProductLineList(info.getPmId()));
+            result.put("productLineList", super.getProductLineList());
             //所需要的 硬件
             result.put("hardList",super.getHardWareList(info.getPmId()));
             result.put("userList",super.getEtUserInfo(info.getPmId()));
@@ -105,7 +105,7 @@ public class EtSiteInstallController extends BaseController {
             result.put("deptTypeList", super.getDepartmentTypeList(serialNo));
             result.put("deptList", super.getDepartmentList(serialNo,deptType));
             //产品条线
-            result.put("productLineList", super.getProductLineList(info.getPmId()));
+            result.put("productLineList", super.getProductLineList());
             return result;
         }
 

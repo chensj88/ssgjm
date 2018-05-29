@@ -120,7 +120,7 @@ public class EtSoftHardwareController extends BaseController {
         List<EtSoftHardware> etSoftHardwarePaginatedList = getFacade().getEtSoftHardwareService().getEtSoftHardwarePaginatedList(etSoftHardware);
         int total = getFacade().getEtSoftHardwareService().getEtSoftHardwareCount(etSoftHardware);
         //根据项目Id
-        List<PmisProductLineInfo> pmisProductLineInfoList = this.getProductLineList(pmId);
+        List<PmisProductLineInfo> pmisProductLineInfoList = this.getProductLineList();
         //当无法根据pmid找到产品条线时，给出所有产品条线
         if (pmisProductLineInfoList == null || pmisProductLineInfoList.size() == 0) {
             PmisProductLineInfo temp = new PmisProductLineInfo();
