@@ -150,7 +150,7 @@ public class BaseController extends BaseSpringMvcMybatisController {
 
     /**
      * 根据项目获取软硬件产品条线的系统集合
-     * @param pmId
+     * @param
      * @return
      */
     public List<PmisProductLineInfo> getProductLineList() {
@@ -173,13 +173,19 @@ public class BaseController extends BaseSpringMvcMybatisController {
      * @return
      */
     public List<PmisProductLineInfo> getPdNameList(Long pmId,String pdId) {
-        PmisContractProductInfo pmisContractProductInfo = new PmisContractProductInfo();
-        pmisContractProductInfo.setHtcplb(1);
-        pmisContractProductInfo.setXmlcb(pmId);
-        pmisContractProductInfo.getMap().put("softNameList",pdId);
+//        PmisContractProductInfo pmisContractProductInfo = new PmisContractProductInfo();
+//        pmisContractProductInfo.setHtcplb(1);
+//        pmisContractProductInfo.setXmlcb(pmId);
+       // pmisContractProductInfo.getMap().put("softNameList",pdId);
+        PmisProductLineInfo lineInfo = new PmisProductLineInfo();
+        lineInfo.setLx(1);
+        lineInfo.setZt(1);
+        lineInfo.setCpdl("1");
+        lineInfo.getMap().put("softNameList",pdId);
+        List<PmisProductLineInfo> pmisProductLineInfoList = getFacade().getPmisProductLineInfoService().getPmisProductLineInfoList(lineInfo);
         //根据产品获取产品条线
-        List<PmisProductLineInfo> pmisProductLineInfos = getFacade().getPmisProductLineInfoService().selectPmisProductLineInfoByPmidAndType(pmisContractProductInfo);
-        return pmisProductLineInfos;
+        //List<PmisProductLineInfo> pmisProductLineInfos = getFacade().getPmisProductLineInfoService().selectPmisProductLineInfoByPmidAndType(pmisContractProductInfo);
+        return pmisProductLineInfoList;
     }
 
 
