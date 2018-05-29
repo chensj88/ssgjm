@@ -67,7 +67,7 @@ public class siteInstallSetController  extends BaseController {
             //获取项目成员信息
             EtUserInfo userInfo = new EtUserInfo();
             //项目少于15人注销
-            userInfo.getMap().put("position","1,0");//项目经理+主力工程师
+            userInfo.getMap().put("position","'1','0'");//项目经理+主力工程师
             userInfo.setSerialNo(hospcode);
             userInfo.setUserType(1);
             List<EtUserInfo> infos = super.getFacade().getEtUserInfoService().getEtUserInfoList(userInfo);

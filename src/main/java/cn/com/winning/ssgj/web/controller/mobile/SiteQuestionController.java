@@ -46,7 +46,7 @@ public class SiteQuestionController extends BaseController {
     public String SiteQuestionList(Model model, String parameter) {
         //String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9"; //工号
         //String hospcode="11980";  //客户号
-        //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
+        //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMjExOTQifQ==";
         EtSiteQuestionInfo entity = new EtSiteQuestionInfo();
         try{
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
@@ -68,7 +68,7 @@ public class SiteQuestionController extends BaseController {
             EtUserInfo userInfo = new EtUserInfo();
             //项目少于15人注销
             //userInfo.setPositionName("1");//项目经理+主力工程师
-            userInfo.getMap().put("position","1,0");//项目经理+主力工程师
+            userInfo.getMap().put("position","'1','0'");//项目经理+主力工程师
             userInfo.setSerialNo(hospcode);
             userInfo.setUserType(1);
             List<EtUserInfo> infos = super.getFacade().getEtUserInfoService().getEtUserInfoList(userInfo);
