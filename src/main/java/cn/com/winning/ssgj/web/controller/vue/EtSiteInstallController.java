@@ -68,6 +68,9 @@ public class EtSiteInstallController extends BaseController {
                             pppId[j]=jjj;
                         }
                         installList.get(i).setPppId(pppId);
+                    }else{
+                        int[] pppId=new int[0];
+                        installList.get(i).setPppId(pppId);
                     }
                     //硬件
                     if(StringUtils.isNotBlank(installList.get(i).getHwId())){
@@ -78,6 +81,9 @@ public class EtSiteInstallController extends BaseController {
                             int jjj = Integer.parseInt(jj);
                             hhhId[j]=jjj;
                         }
+                        installList.get(i).setHhhId(hhhId);
+                    }else{
+                        int[] hhhId=new int[0];
                         installList.get(i).setHhhId(hhhId);
                     }
                 }
