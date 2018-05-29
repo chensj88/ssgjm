@@ -148,7 +148,6 @@ public class CommonUploadController extends BaseController {
      * 数据校验脚本
      *
      * @param request
-     * @param script
      * @param uploadFile
      * @return
      * @throws IOException
@@ -157,22 +156,18 @@ public class CommonUploadController extends BaseController {
     @ResponseBody
     @ILog
     public Map<String, Object> uploadScriptTemplate(HttpServletRequest request,
-                                                    SysDataCheckScript script,
                                                     MultipartFile uploadFile) throws IOException {
-        script = super.getFacade().getSysDataCheckScriptService().getSysDataCheckScript(script);
-        String parentFile = script.getAppName();
         Map<String, Object> result = new HashMap<String, Object>();
         //如果文件不为空，写入上传路径
         if (!uploadFile.isEmpty()) {
             // String filename = FileUtis.generateFileName(uploadFile.getOriginalFilename());
             String filename = uploadFile.getOriginalFilename();
-            String remotePath =  Constants.UPLOAD_PC_PREFIX + "/web/script/" + parentFile + "/" + filename;
+            String remotePath =  Constants.UPLOAD_PC_PREFIX + "/web/script/" + DateUtil.getTimstamp() + "/" + filename;
             String msg = "";
             boolean ftpStatus =CommonFtpUtils.commonUploadInfo(request,msg,remotePath,uploadFile);
             if (ftpStatus) {
                 result.put("status", "success");
-                script.setRemotePath(remotePath);
-                super.getFacade().getSysDataCheckScriptService().modifySysDataCheckScript(script);
+                result.put("path", remotePath);
             } else if (!StringUtil.isEmptyOrNull(msg)) {
                 result.put("status", "error");
                 result.put("msg", "上传文件失败,原因是：" + msg);
