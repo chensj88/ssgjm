@@ -51,4 +51,9 @@ public class EtBusinessProcessServiceImpl implements EtBusinessProcessService {
 		return this.etBusinessProcessDao.selectEntityPaginatedList(t);
 	}
 
+	@Override
+	public List<Long> getUnInitEtBusinessProcess(EtBusinessProcess process) {
+		return this.etBusinessProcessDao.selectUnInitEtBusinessProcess(process);
+	}
+
 }

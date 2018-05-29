@@ -155,5 +155,12 @@ public class SysFlowInfoServiceImpl implements SysFlowInfoService {
         return true;
     }
 
+    @Override
+    public SysFlowInfo getSysFlowInfoById(Long id) {
+        SysFlowInfo flowInfo = new SysFlowInfo();
+        flowInfo.setId(id);
+        return this.sysFlowInfoDao.selectEntity(flowInfo);
+    }
+
 
 }

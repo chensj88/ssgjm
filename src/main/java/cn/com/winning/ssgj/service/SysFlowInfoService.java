@@ -56,4 +56,11 @@ public interface SysFlowInfoService {
      * @return
      */
     boolean existFlowName(SysFlowInfo info);
+
+    /**
+     * 根据ID获取流程信息
+     * @param id
+     * @return
+     */
+    SysFlowInfo getSysFlowInfoById(Long id);
 }

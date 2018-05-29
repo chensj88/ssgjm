@@ -26,4 +26,10 @@ public interface EtBusinessProcessService {
 
 	List<EtBusinessProcess> getEtBusinessProcessPaginatedList(EtBusinessProcess t);
 
+	/**
+	 * 查询未初始化的流程ID信息
+	 * @param process
+	 * @return
+	 */
+    List<Long> getUnInitEtBusinessProcess(EtBusinessProcess process);
 }

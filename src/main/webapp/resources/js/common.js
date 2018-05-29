@@ -38,6 +38,9 @@
         },
         video:{
             uploadURL:'/admin/upload/tvideo.do'
+        },
+        script:{
+            uploadURL:'/admin/upload/script.do'
         }
     };
 

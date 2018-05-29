@@ -346,29 +346,26 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         long pmId = process.getPmId();
         long cId = process.getcId();
         String serialNo = process.getSerialNo();
-        List<SysFlowInfo> flowInfoList = null;
         SysFlowInfo flowInfo = new SysFlowInfo();
-        flowInfo.setStatus(Constants.STATUS_USE);
-        flowInfo.setIsMust(Constants.STATUS_USE);
-        flowInfo.setFlowType(Constants.Flow.FLOW_TYPE_SMALL);
-        flowInfoList = this.sysFlowInfoService.getSysFlowInfoList(flowInfo);
-        if (flowInfoList != null && flowInfoList.size() > 0) {
-            for (SysFlowInfo info : flowInfoList) {
+        List<Long> idList = this.etBusinessProcessService.getUnInitEtBusinessProcess(process);
+        if (idList != null && idList.size() > 0) {
+            for (Long id : idList) {
                 EtBusinessProcess queryProcess = new EtBusinessProcess();
-                queryProcess.setFlowId(info.getId());
+                queryProcess.setFlowId(id);
                 queryProcess.setcId(cId);
                 queryProcess.setPmId(pmId);
                 queryProcess.setSerialNo(serialNo);
                 queryProcess = this.etBusinessProcessService.getEtBusinessProcess(queryProcess);
                 if (queryProcess == null) {
+                    flowInfo = sysFlowInfoService.getSysFlowInfoById(id);
                     queryProcess = new EtBusinessProcess();
                     queryProcess.setId(ssgjHelper.createEtBusinessProcessIdService());
                     queryProcess.setPmId(pmId);
                     queryProcess.setcId(cId);
                     queryProcess.setSerialNo(serialNo);
-                    queryProcess.setFlowId(info.getId());
-                    queryProcess.setFlowCode(info.getFlowCode());
-                    queryProcess.setFlowName(info.getFlowName());
+                    queryProcess.setFlowId(flowInfo.getId());
+                    queryProcess.setFlowCode(flowInfo.getFlowCode());
+                    queryProcess.setFlowName(flowInfo.getFlowName());
                     queryProcess.setIsScope(Constants.STATUS_USE);
                     queryProcess.setStatus(Constants.STATUS_USE);
                     queryProcess.setCreator(100001L);

@@ -155,7 +155,6 @@ $(function () {
         return data;
     }
 
-
     $('#infoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/script/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
@@ -255,12 +254,12 @@ $(function () {
         $('#id').val('');
         $('#vid').val('');
         $('#appId').val('');
-        $('#videoNameDiv').hide();
+        $('#videoNameDiv').show();
         $('#isModifyDiv').hide();
         //清空验证信息
         $('#scriptForm').bootstrapValidator("destroy");
         validateForm();
-        initFileInput($('#uploadFile'));
+        initFileApiUpload('file-upload');
         $('#uploadFileDiv').show();
         $('#scriptModal').modal('show');
     });
@@ -277,15 +276,18 @@ $(function () {
         validateForm();
         var vid = $(this).attr('aid');
         var data = queryInfoByDataId(vid);
-        initFileInput($('#uploadFile'));
+        $('#remotePath').val(data.remotePath);
+        initFileApiUpload('file-upload');
         //取消默认选中
+        $('#isModifyDiv').val('0');
         $('#isModifyDiv').show();
         $('#uploadFileDiv').hide();
-        $('#videoNameDiv').hide();
+        $('#videoNameDiv').show();
         //赋值
         $('#scriptForm').initForm(data);
         $('#appId').val(data.appId);
         $('#scriptModal').modal('show');
+
     });
     /**
      * 列表中按钮
@@ -357,12 +359,8 @@ $(function () {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
                         $('#vid').val(_result.data);
-                        if(selectedFlie){
-                            $("#uploadFile").fileinput("upload");
-                        }
                         $('#scriptModal').modal('hide');
                         $("#infoTable").bootstrapTable('refresh');
-                        location.reload();
                     }
                 }
             });
@@ -413,10 +411,149 @@ $(function () {
     $('#isModify').on('change',function () {
         var selectedOption = $(this).val();
         if(selectedOption == "1"){
+            var fileInfo = Common.getFileInfo($('#remotePath').val());
+            if(fileInfo){
+                showFlowFileInfo(fileInfo.name,fileInfo.url);
+                hideUploadDiv();
+            }else{
+                showFlowFileInfo('','');
+                showUploadDiv();
+            }
             $('#uploadFileDiv').show();
         }else {
             $('#uploadFileDiv').hide();
         }
     });
 
+
+    var uploadStatus =  Common.STATUS_BEFORE_UPLOAD; //0 初始化  1 上传  2 完成
+    var url = Common.getShareURL();
+
+    function initFileApiUpload(ele) {
+        uploadStatus = Common.STATUS_BEFORE_UPLOAD;
+        var $ele = $('#'+ele);
+        $ele.fileapi({
+            clearOnComplete: false,
+            url:Common.getRootPath() + Common.url.script.uploadURL,
+            autoUpload: true,
+            multiple:false,
+            /*paramName:'uploadFile',*/
+            paramName:'file',
+            maxSize: FileAPI.MB*10, // max file size
+            maxFiles:1,
+            elements: {
+                name: '#fileName',
+                size: '#fileSize',
+                empty: { hide: '#jsInfo' }
+            },
+            onSelect:function (evt, data) {
+                $('#fileInfo').html('');
+                var fileInfo = data.all;
+                var fileName = data.all[0].name;
+                var suffix = fileName.substring(fileName.lastIndexOf('.'));
+                var isAllow = /(\.|\/)(sql|txt)$/i.test(suffix);
+                if(!isAllow){
+                    data.all = [];
+                    data.files = [];
+                    $('#fileInfo').html('当前文件【'+fileName+'】文件格式不支持，<br>只支持sql,txt').css('color','red');
+                    return ;
+                }
+                uploadStatus = Common.STATUS_PROCESS_UPLOAD;
+                /*$('#reset').show();*/
+                $('#fileUpload').hide();
+                $('#save').attr('disabled',true);
+            },
+            onFileComplete: function (evt, uiEvt){
+                var file = uiEvt.file;
+                var json = uiEvt.result;
+                var url = json.url + json.path;
+                $('#uploadFileName').text(file.name);
+                $('#downLoadFile').attr('path',url);
+                $('#deleteFile').attr('path',url);
+                $('#jsInfo').html('');
+                hideUploadDiv();
+                uploadStatus = Common.STATUS_FINISH_UPLOAD;
+                $('#remotePath').val(json.path);
+                $('#save').attr('disabled',false);
+            }
+        });
+        showUploadDiv();
+    }
+
+    $('#downLoadFile').on('click',function () {
+        window.open($(this).attr('path'));
+    });
+
+    $('#deleteFile').on('click',function (e)  {
+        //阻止默认行为
+        e.preventDefault();
+        $('#uploadFileName').text('');
+        $('#downLoad').attr('path','');
+        $('#delete').attr('path','');
+        $.ajax({
+            url: Common.getRootPath() +'/admin/flow/deleteFile.do',
+            data: {'id':$('#vid').val()},
+            type: "post",
+            dataType: 'json',
+            async: false,
+            cache : false,
+            success: function (result) {
+                var _result = eval(result);
+                if (_result.status == Common.SUCCESS) {
+                    $('#remotePath').val('');
+                    showFlowFileInfo('','');
+                    showUploadDiv();
+                }
+            }
+        });
+        showUploadDiv();
+    });
+
+    $('#reset').on('click',function () {
+        $('#fileUpload').show();
+        $('#reset').hide();
+    });
+
+    /**
+     * 已经上传的文件展示
+     * @param name
+     * @param url
+     */
+    function showFlowFileInfo(name,url) {
+        $('#uploadFileName').text(name);
+        $('#downLoadFile').attr('path',url);
+        $('#deleteFile').attr('path',url);
+        hideUploadDiv();
+    }
+
+    /**
+     * 隐藏上传区域
+     */
+    function hideUploadDiv() {
+        uploadStatus = Common.STATUS_FINISH_UPLOAD;
+        $('#uploadFile').show();
+        $('#fileUploadDiv').hide();
+    }
+    /**
+     * 显示上传区域
+     */
+    function showUploadDiv() {
+        uploadStatus = Common.STATUS_BEFORE_UPLOAD ;
+        $('#fileUploadDiv').show();
+        $('#uploadFile').hide();
+        $('#reset').hide();
+        $('#fileUpload').show();
+    }
+
+    /**
+     * 检查上传的状态
+     * @returns {boolean}
+     */
+    function checkUploadStatus(){
+        if(uploadStatus === Common.STATUS_BEFORE_UPLOAD  || uploadStatus === Common.STATUS_FINISH_UPLOAD){
+            return true;
+        }else {
+            return false;
+        }
+    }
 });
