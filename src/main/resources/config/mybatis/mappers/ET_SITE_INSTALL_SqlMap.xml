@@ -56,7 +56,7 @@
         <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
         <if test="deptCode != null and deptCode != ''"> and t.DEPT_CODE = #{deptCode} </if>
         <if test="cpzxt != null and cpzxt != ''"> and t.CPZXT = #{cpzxt} </if>
-        <if test="pdName != null and pdName != ''"> and t.PD_NAME = #{pdName} </if>
+        <if test="pdName != null and pdName != ''" > and t.PD_NAME = #{pdName} </if>
         <if test="hdName != null and hdName != ''"> and t.HD_NAME = #{hdName} </if>
     </sql>
 
@@ -201,8 +201,8 @@
                 <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID = #{pmId, jdbcType=BIGINT},</if>
                 <if test="serialNo != null and serialNo != ''">SERIAL_NO = #{serialNo, jdbcType=VARCHAR},</if>
                 <if test="deptName != null and deptName != ''">DEPT_NAME = #{deptName, jdbcType=VARCHAR},</if>
-                <if test="pdId != null and pdId != ''">PD_ID = #{pdId, jdbcType=VARCHAR},</if>
-                <if test="hwId != null and hwId != ''">HW_ID = #{hwId, jdbcType=LONGVARCHAR},</if>
+                <if test="pdId != null">PD_ID = #{pdId, jdbcType=VARCHAR},</if>
+                <if test="hwId != null">HW_ID = #{hwId, jdbcType=LONGVARCHAR},</if>
                 <if test="(isScope != null and isScope != '') or isScope == 0">IS_SCOPE =
                     #{isScope, jdbcType=INTEGER},
                 </if>
@@ -224,8 +224,8 @@
                 <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
                 <if test="deptCode != null and deptCode != ''"> DEPT_CODE = #{deptCode, jdbcType=VARCHAR}, </if>
                 <if test="cpzxt != null and cpzxt != ''"> CPZXT = #{cpzxt, jdbcType=VARCHAR}, </if>
-                <if test="pdName != null and pdName != ''"> PD_NAME = #{pdName, jdbcType=VARCHAR}, </if>
-                <if test="hdName != null and hdName != ''"> HD_NAME = #{hdName, jdbcType=VARCHAR}, </if>
+                <if test="pdName != null"> PD_NAME = #{pdName, jdbcType=VARCHAR}, </if>
+                <if test="hdName != null"> HD_NAME = #{hdName, jdbcType=VARCHAR}, </if>
             </trim>
         </set>
         <where>

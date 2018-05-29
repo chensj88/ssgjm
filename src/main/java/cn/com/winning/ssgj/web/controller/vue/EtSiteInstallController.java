@@ -88,6 +88,7 @@ public class EtSiteInstallController extends BaseController {
                     }
                 }
             }
+
             //所需要的 软件
             result.put("productLineList", super.getProductLineList());
             //所需要的 硬件
@@ -95,6 +96,7 @@ public class EtSiteInstallController extends BaseController {
             result.put("userList",super.getEtUserInfo(info.getPmId()));
             result.put("total", super.getFacade().getEtSiteInstallService().getEtSiteInstallCount(info));
             result.put("status", Constants.SUCCESS);
+            result.put("process",getProcessManager(info.getPmId()));
             result.put("rows", installList);
             return result;
         }
@@ -155,6 +157,7 @@ public class EtSiteInstallController extends BaseController {
             info.setDeptCode(info.getDeptCode());
             info.setStatus(1);
             info.setNum(0);
+            //info.setPppId(new int[Integer.parseInt(info.getPdId())]);
             info.setCreator(info.getOperator());
             info.setCreateTime(new Timestamp(new Date().getTime()));
             info.setOperatorTime(new Timestamp(new Date().getTime()));
@@ -254,8 +257,11 @@ public class EtSiteInstallController extends BaseController {
             }
             hwName=hwName.substring(0,hwName.length()-1);
             info.setHdName(hwName);
-            super.getFacade().getEtSiteInstallService().modifyEtSiteInstall(info);
+        }else{
+            info.setHwId("");
+            info.setHdName("");
         }
+        super.getFacade().getEtSiteInstallService().modifyEtSiteInstall(info);
         map.put("type", Constants.SUCCESS);
         map.put("msg", "硬件修改成功！");
         return map;
@@ -278,8 +284,11 @@ public class EtSiteInstallController extends BaseController {
             }
             sfName=sfName.substring(0,sfName.length()-1);
             info.setPdName(sfName);
-            super.getFacade().getEtSiteInstallService().modifyEtSiteInstall(info);
+        }else{
+            info.setPdId("");
+            info.setPdName("");
         }
+        super.getFacade().getEtSiteInstallService().modifyEtSiteInstall(info);
         map.put("type", Constants.SUCCESS);
         map.put("msg", "硬件修改成功！");
         return map;
