@@ -50,10 +50,15 @@ public class EtContractProjectController extends BaseController {
         task.setRow(row);
         List<EtContractTask> taskList = super.getFacade().getEtContractTaskService().getEtContractTaskPaginatedList(task);
         int total = super.getFacade().getEtContractTaskService().getEtContractTaskCount(task);
+        //根据pmid获取项目进程
+        EtProcessManager etProcessManager = new EtProcessManager();
+        etProcessManager.setPmId(task.getPmId());
+        etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows", taskList);
+        result.put("process", etProcessManager);
         return result;
     }
 
