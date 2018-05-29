@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.dao;
 import cn.com.winning.ssgj.domain.EtBusinessProcess;
 import cn.com.winning.ssgj.dao.EntityDao;
 
+import java.util.List;
+
 /**
  * Coder AutoGenerator generate.
  *
@@ -11,4 +13,5 @@ import cn.com.winning.ssgj.dao.EntityDao;
  */
 public interface EtBusinessProcessDao extends EntityDao<EtBusinessProcess> {
 
+    List<Long> selectUnInitEtBusinessProcess(EtBusinessProcess process);
 }

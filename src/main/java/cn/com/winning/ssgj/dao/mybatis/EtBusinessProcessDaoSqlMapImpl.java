@@ -6,6 +6,8 @@ import cn.com.winning.ssgj.dao.EtBusinessProcessDao;
 import cn.com.winning.ssgj.domain.EtBusinessProcess;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.List;
+
 /**
  * Coder AutoGenerator generate.
  *
@@ -15,4 +17,9 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 @Service
 public class EtBusinessProcessDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtBusinessProcess> implements EtBusinessProcessDao {
 
+
+    @Override
+    public List<Long> selectUnInitEtBusinessProcess(EtBusinessProcess process) {
+        return super.getSqlSession().selectList("selectUnInitEtBusinessProcess",process);
+    }
 }

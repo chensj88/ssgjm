@@ -207,4 +207,15 @@
 		</if>
 	</delete>
 
+	<!--查询未初始化的流程信息-->
+	<select id="selectUnInitEtBusinessProcess" parameterType="etBusinessProcess" resultType="long">
+		SELECT B.ID  FROM dbo.SYS_FLOW_INFO B WHERE B.FLOW_TYPE=1 AND B.STATUS =1 AND B.IS_MUST=1
+		EXCEPT
+		SELECT  DISTINCT A.FLOW_ID FROM dbo.ET_BUSINESS_PROCESS A
+		<where>
+			<if test="(cId != null and cId != '') or cId == 0"> AND A.C_ID = #{cId, jdbcType=BIGINT} </if>
+			<if test="(pmId != null and pmId != '') or pmId == 0"> AND A.PM_ID = #{pmId, jdbcType=BIGINT} </if>
+			<if test="serialNo != null and serialNo != ''"> AND A.SERIAL_NO = #{serialNo, jdbcType=VARCHAR} </if>
+		</where>
+	</select>
 </mapper>
