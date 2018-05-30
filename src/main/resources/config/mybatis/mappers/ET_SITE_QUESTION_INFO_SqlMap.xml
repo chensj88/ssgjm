@@ -59,6 +59,9 @@
         <result column="priorityString" property="map.priorityString" jdbcType="VARCHAR"/>
         <result column="DEPT_NAME" property="map.deptName" jdbcType="VARCHAR"/>
         <result column="PL_NAME" property="map.plName" jdbcType="VARCHAR"/>
+        <result column="reasonString" property="map.reasonString" jdbcType="VARCHAR"/>
+        <result column="mstatusString" property="map.mstatusString" jdbcType="VARCHAR"/>
+        <result column="diffString" property="map.diffString" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="sf-etSiteQuestionInfo">
@@ -163,6 +166,7 @@
         <if test="row.count != null and row.count != ''">top ${row.count}</if>
         t.*,i.YHMC as create_name,i.USERID AS createUser,i.NAME AS createUserName,ii.YHMC as allocate_name,d.DICT_LABEL,
         e.DICT_LABEL AS operTypeString,f.DICT_LABEL AS  priorityString,
+        j.DICT_LABEL AS reasonString,k.DICT_LABEL AS mstatusString,l.DICT_LABEL AS  diffString,
         CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END AS CREATE_TIME_STRING,
         CASE WHEN ( IS_OPERATION = 1 AND OPERATOR_TIME IS NOT NULL ) THEN CONVERT(VARCHAR(32),OPERATOR_TIME,111) ELSE ''
         END AS OPERATOR_TIME_STRING,g.DEPT_NAME as DEPT_NAME,h.NAME AS PL_NAME
@@ -174,6 +178,9 @@
         LEFT JOIN SYS_DICT_INFO f ON t.PRIORITY=f.DICT_VALUE AND f.DICT_CODE='priorityType'
         LEFT JOIN ET_DEPARTMENT g ON  CAST(t.SITE_NAME AS INT) = g.ID
         LEFT JOIN PMIS_PRODUCT_LINE_INFO h ON CAST(t.PRODUCT_NAME AS INT) = h.ID
+        LEFT JOIN SYS_DICT_INFO j ON t.REASON_TYPE = j.DICT_VALUE AND j.DICT_CODE='reasonType'
+        LEFT JOIN SYS_DICT_INFO k ON t.MANUSCRIPT_STATUS = k.DICT_VALUE AND k.DICT_CODE='manuscriptStatus'
+        LEFT JOIN SYS_DICT_INFO l ON t.DIFFCULT_LEVEL=l.DICT_VALUE AND l.DICT_CODE='diffcultLevel'
         where 1 = 1
         <include refid="sf-etSiteQuestionInfo"/>  order by ID DESC
         <!-- order by ID asc -->
@@ -189,6 +196,7 @@
         select * from (
         select t.*,i.YHMC as create_name,i.USERID AS createUser,i.NAME AS createUserName,ii.YHMC as
         allocate_name,d.DICT_LABEL, e.DICT_LABEL AS operTypeString,f.DICT_LABEL AS  priorityString,
+        j.DICT_LABEL AS reasonString,k.DICT_LABEL AS mstatusString,l.DICT_LABEL AS  diffString,
         CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END AS CREATE_TIME_STRING,
         CASE WHEN ( IS_OPERATION = 1 AND OPERATOR_TIME IS NOT NULL ) THEN CONVERT(VARCHAR(32),OPERATOR_TIME,111) ELSE ''
         END AS OPERATOR_TIME_STRING,g.DEPT_NAME as DEPT_NAME,h.NAME AS PL_NAME,
@@ -201,6 +209,9 @@
         LEFT JOIN SYS_DICT_INFO f ON t.PRIORITY=f.DICT_VALUE AND f.DICT_CODE='priorityType'
         LEFT JOIN ET_DEPARTMENT g ON  CAST(t.SITE_NAME AS INT) = g.ID
         LEFT JOIN PMIS_PRODUCT_LINE_INFO h ON CAST(t.PRODUCT_NAME AS INT) = h.ID
+        LEFT JOIN SYS_DICT_INFO j ON t.REASON_TYPE = j.DICT_VALUE AND j.DICT_CODE='reasonType'
+        LEFT JOIN SYS_DICT_INFO k ON t.MANUSCRIPT_STATUS = k.DICT_VALUE AND k.DICT_CODE='manuscriptStatus'
+        LEFT JOIN SYS_DICT_INFO l ON t.DIFFCULT_LEVEL=l.DICT_VALUE AND l.DICT_CODE='diffcultLevel'
         where 1 = 1
         <include refid="query-etSiteQuestionInfo"/>
         <!-- order by ID asc -->
