@@ -57,6 +57,8 @@
         <result column="OPERATOR_TIME_STRING" property="map.operatorTimeString" jdbcType="VARCHAR"/>
         <result column="operTypeString" property="map.operTypeString" jdbcType="VARCHAR"/>
         <result column="priorityString" property="map.priorityString" jdbcType="VARCHAR"/>
+        <result column="DEPT_NAME" property="map.deptName" jdbcType="VARCHAR"/>
+        <result column="PL_NAME" property="map.plName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="sf-etSiteQuestionInfo">
