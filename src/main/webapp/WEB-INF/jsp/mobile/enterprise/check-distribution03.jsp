@@ -5,7 +5,7 @@
 
 	<head>
 		<meta charset="UTF-8" />
-		<title>胸外科病区护士工作站</title>
+		<title>站点问题统计</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/normalize.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />

@@ -40,7 +40,7 @@
 						</c:if>
 						<ul>
 							<c:forEach var="vwr" items="${installList}">
-								<li data-val="${vwr.deptName}">${vwr.deptName}</li>
+								<li data-val="${vwr.deptCode}">${vwr.deptName}</li>
 							</c:forEach>
 		                </ul>
 					</div>
@@ -197,7 +197,7 @@
                         $.ajax({
                             type: "POST",
                             url:"<%=basePath%>/mobile/siteQuestionInfo/loadData.do",
-                            data:{type:1,name:_val,serialNo:serialNo},
+                            data:{type:1,deptCode:_val,serialNo:serialNo},
                             dataType:"json",
                             cache : false,
                             error: function(request) {
@@ -211,7 +211,7 @@
                                 var json=eval(data.xtJsons);
                                 $.each(json,function(i,item){
                                     console.log("sss=="+json[i])
-                                    str_html=str_html+"<li data-val='"+json[i]+"'>"+json[i]+"</li>";
+                                    str_html=str_html+"<li data-val='"+json[i].productName+"'>"+json[i].get("")+"</li>";
 
                                 });
                                 $("#ul2").html(str_html);
@@ -239,26 +239,26 @@
                         $("#ul3").html("");
 
                         //加载菜单数据
-                        $.ajax({
-                            type: "POST",
-                            url:"<%=basePath%>/mobile/siteQuestionInfo/loadData.do",
-                            data:{type:2,name:productName,serialNo:serialNo},
-                            dataType:"json",
-                            cache : false,
-                            error: function(request) {
-                                mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
-                                console.log(request);
-                            },
-                            success: function(data) {
-                                console.log(data);
-                                var json=eval(data.xtJsons);
-                                $.each(json,function(i,item){
-                                    str_html3=str_html3+"<li data-val='"+json[i].cpmc+"'>"+json[i].cpmc+"</li>";
+                        <%--$.ajax({--%>
+                            <%--type: "POST",--%>
+                            <%--url:"<%=basePath%>/mobile/siteQuestionInfo/loadData.do",--%>
+                            <%--data:{type:2,name:productName,serialNo:serialNo},--%>
+                            <%--dataType:"json",--%>
+                            <%--cache : false,--%>
+                            <%--error: function(request) {--%>
+                                <%--mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })--%>
+                                <%--console.log(request);--%>
+                            <%--},--%>
+                            <%--success: function(data) {--%>
+                                <%--console.log(data);--%>
+                                <%--var json=eval(data.xtJsons);--%>
+                                <%--$.each(json,function(i,item){--%>
+                                    <%--str_html3=str_html3+"<li data-val='"+json[i].cpmc+"'>"+json[i].cpmc+"</li>";--%>
 
-                                });
-                                $("#ul3").html(str_html3);
-                            }
-                        });
+                                <%--});--%>
+                                <%--$("#ul3").html(str_html3);--%>
+                            <%--}--%>
+                        <%--});--%>
                     }
                 });
 
