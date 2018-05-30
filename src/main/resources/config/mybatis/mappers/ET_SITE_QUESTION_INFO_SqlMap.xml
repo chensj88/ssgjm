@@ -107,8 +107,8 @@
         <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
         <if test="(cId != null and cId != '') or cId == 0">and t.C_ID = #{cId}</if>
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="siteName != null and siteName != ''">and t.SITE_NAME = #{siteName}</if>
         <if test="productName != null and productName != ''">and t.PRODUCT_NAME = #{productName}</if>
-        <if test="menuName != null and menuName != ''">and t.MENU_NAME = #{menuName}</if>
         <if test="(menuName != null and menuName != '') and ( questionDesc == null or questionDesc == '' ) ">and t.MENU_NAME LIKE '%${menuName}%'</if>
         <if test="(questionDesc != null and questionDesc != '') and ( menuName == null or menuName == '') ">and t.QUESTION_DESC LIKE '%${questionDesc}%'</if>
         <if test="(questionDesc != null and questionDesc != '') and ( menuName != null and menuName != '') ">and ( t.MENU_NAME LIKE '%${menuName}%' OR t.QUESTION_DESC LIKE '%${questionDesc}%')</if>
