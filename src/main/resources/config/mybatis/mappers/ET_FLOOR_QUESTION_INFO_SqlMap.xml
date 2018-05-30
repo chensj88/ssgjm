@@ -26,7 +26,7 @@
         <result column="num_no" property="map.num_no" jdbcType="VARCHAR"/>
         <result column="num_use" property="map.num_use" jdbcType="VARCHAR"/>
         <result column="NAME" property="map.name" jdbcType="VARCHAR"/>
-        <result column="DICT_LABEL" property="map.dict_label" jdbcType="VARCHAR" />
+        <result column="DICT_LABEL" property="map.dict_label" jdbcType="VARCHAR"/>
         <result column="operator_name" property="map.operator_name" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME_STR" property="map.createTime" jdbcType="VARCHAR"/>
         <result column="OPERATOR_TIME_STR" property="map.operatorTime" jdbcType="VARCHAR"/>
@@ -51,13 +51,16 @@
         <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
         <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
         <if test="cause != null and cause != ''">and t.CAUSE = #{cause}</if>
-
+        <if test="map.f_name != null and map.f_name != ''">and r.FLOOR_NAME LIKE '%${map.f_name}%'</if>
+        <if test="map.startDate != null and map.endDate != null ">and t.CREATE_TIME
+            BETWEEN #{map.startDate} AND dateadd(day,1,#{map.endDate})
+        </if>
     </sql>
 
     <select id="selectEtFloorQuestionInfo" resultMap="etFloorQuestionInfoResult" parameterType="etFloorQuestionInfo">
         select t.*,d.DICT_LABEL,f.FLOOR_NAME as f_name from ET_FLOOR_QUESTION_INFO t
         LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
-        LEFT JOIN SYS_FLOORS f ON  t.FLOOR_NAME = f.FLOOR_CODE AND f.IS_DEL=1
+        LEFT JOIN SYS_FLOORS f ON t.FLOOR_NAME = f.FLOOR_CODE AND f.IS_DEL=1
         where 1 = 1
         <include refid="sf-etFloorQuestionInfo"/>
     </select>
@@ -68,16 +71,19 @@
         <if test="row.count != null and row.count != ''">top ${row.count}</if>
         t.*,i.YHMC,ii.YHMC AS operator_name,d.DICT_LABEL,f.FLOOR_NAME as f_name from ET_FLOOR_QUESTION_INFO t
         LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
-        LEFT JOIN SYS_USER_INFO ii ON  t.OPERATOR=ii.ID
+        LEFT JOIN SYS_USER_INFO ii ON t.OPERATOR=ii.ID
         LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
         LEFT JOIN SYS_FLOORS f ON f.FLOOR_CODE=t.FLOOR_NAME AND f.IS_DEL = 1
         where 1 = 1
-        <include refid="sf-etFloorQuestionInfo"/> order by t.OPERATOR_TIME DESC
+        <include refid="sf-etFloorQuestionInfo"/>
+        order by t.OPERATOR_TIME DESC
         <!-- order by ID asc -->
     </select>
 
     <select id="selectEtFloorQuestionInfoCount" resultType="int" parameterType="etFloorQuestionInfo">
-        select count(*) from ET_FLOOR_QUESTION_INFO t where 1 = 1
+        select count(*) from
+        ET_FLOOR_QUESTION_INFO t LEFT JOIN SYS_FLOORS r
+        ON t.FLOOR_NAME = r.FLOOR_CODE where 1 = 1
         <include refid="sf-etFloorQuestionInfo"/>
     </select>
 
@@ -85,13 +91,14 @@
             parameterType="etFloorQuestionInfo">
         select * from (
         select t.*,r.FLOOR_NAME as F_NAME, i.YHMC,ii.YHMC AS operator_name,d.DICT_LABEL,
-        CASE WHEN ( CREATE_TIME IS  NOT  NULL ) THEN CONVERT(VARCHAR(32),CREATE_TIME,120) ELSE '' END AS CREATE_TIME_STR,
-        CASE WHEN ( OPERATOR_TIME IS  NOT  NULL ) THEN CONVERT(VARCHAR(32),OPERATOR_TIME,120) ELSE '' END AS OPERATOR_TIME_STR,
+        CASE WHEN ( CREATE_TIME IS NOT NULL ) THEN CONVERT(VARCHAR(32),CREATE_TIME,120) ELSE '' END AS CREATE_TIME_STR,
+        CASE WHEN ( OPERATOR_TIME IS NOT NULL ) THEN CONVERT(VARCHAR(32),OPERATOR_TIME,120) ELSE '' END AS
+        OPERATOR_TIME_STR,
         ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
         from ET_FLOOR_QUESTION_INFO t
         LEFT JOIN SYS_FLOORS r ON t.FLOOR_NAME = r.FLOOR_CODE
         LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
-        LEFT JOIN SYS_USER_INFO ii ON  t.OPERATOR=ii.ID
+        LEFT JOIN SYS_USER_INFO ii ON t.OPERATOR=ii.ID
         LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
         where 1 = 1
         <include refid="sf-etFloorQuestionInfo"/>
@@ -99,7 +106,8 @@
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
 
-    <select id="selectEtFloorQuestionInfoName" resultMap="etFloorQuestionInfoResult" parameterType="etFloorQuestionInfo">
+    <select id="selectEtFloorQuestionInfoName" resultMap="etFloorQuestionInfoResult"
+            parameterType="etFloorQuestionInfo">
         select * from ET_FLOOR_QUESTION_INFO t where 1 = 1
         <include refid="sf-etFloorQuestionInfo"/>
 
@@ -116,7 +124,7 @@
         LEFT JOIN SYS_FLOORS f ON f.ID = t.FLOOR_NAME
         where 1 = 1
         <include refid="sf-etFloorQuestionInfo"/>
-        <if test="questionDesc != null and questionDesc != ''">and t.QUESTION_DESC LIKE '%${questionDesc}%' </if>
+        <if test="questionDesc != null and questionDesc != ''">and t.QUESTION_DESC LIKE '%${questionDesc}%'</if>
 
     </select>
 
