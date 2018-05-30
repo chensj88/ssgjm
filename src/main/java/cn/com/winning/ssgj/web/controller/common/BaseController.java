@@ -228,4 +228,19 @@ public class BaseController extends BaseSpringMvcMybatisController {
         userInfo.getMap().put("admin","100001");
         return getFacade().getEtUserInfoService().getEtUserInfoList(userInfo);
     }
+
+    /**
+     * 获取流程节点的情况
+     * Chen,Kuai
+     * @param pmId
+     * @return
+     */
+    public EtProcessManager getProcessManager(long pmId){
+        EtProcessManager etProcessManager = new EtProcessManager();
+        etProcessManager.setPmId(pmId);
+        etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
+        return etProcessManager;
+    }
+
+
 }
