@@ -17,15 +17,15 @@
 		<div class="mui-content datum gray site-question-write">
 		    <!--header-->
 			<div class="header">
-				<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
-				<div>${siteQuestionInfo.siteName}</div>
+				<span class="mui-icon mui-icon-arrowleft" onclick="javascript:history.go(-1)"></span>
+				<div>${siteQuestionInfo.map.get("deptName")}</div>
 				<span class="mui-icon mui-icon-more"></span>
 			</div>
 			<div class="hole"></div>
 			<div class="datum-report padding-btm-20 padding-top-15">
 				<div class="datum-report-item">
 					<span>处理人</span>
-					<a href="<%=basePath%>mobile/siteInstallSet/setPerson.do?id=${siteQuestionInfo.id}&serialNo=${hospcode}&userId=${work_num}&siteName=${siteQuestionInfo.siteName}">
+					<a href="<%=basePath%>mobile/siteInstallSet/setPerson.do?id=${siteQuestionInfo.id}&serialNo=${hospcode}&userId=${work_num}&siteName=${siteQuestionInfo.map.get("deptName")}">
 							<span>${siteQuestionInfo.map.get("allocate_name")==null?"待分配":siteQuestionInfo.map.get("allocate_name")}</span>
 							<i class="iconfont icon-fanhui"></i></a>
 				</div>
@@ -49,7 +49,7 @@
 					<span>系统名称</span>
 					<div class="select">
 						<input type="hidden"/>
-						<a href="#"><span>${siteQuestionInfo.siteName}</span></a>
+						<a href="#"><span>${siteQuestionInfo.map.get("plName")}</span></a>
 					</div>
 				</div>
 			</div>

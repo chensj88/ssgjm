@@ -151,10 +151,12 @@
         </if>
     </sql>
     <select id="selectEtSiteQuestionInfo" resultMap="etSiteQuestionInfoResult" parameterType="etSiteQuestionInfo">
-        select t.*,d.DICT_LABEL,i.YHMC as create_name,ii.YHMC as allocate_name from ET_SITE_QUESTION_INFO t
+        select t.*,d.DICT_LABEL,i.YHMC as create_name,ii.YHMC as allocate_name,g.DEPT_NAME as DEPT_NAME,h.NAME AS PL_NAME from ET_SITE_QUESTION_INFO t
         LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
         LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
         LEFT JOIN SYS_USER_INFO ii ON t.ALLOCATE_USER=ii.ID
+        LEFT JOIN ET_DEPARTMENT g ON  CAST(t.SITE_NAME AS INT) = g.ID
+        LEFT JOIN PMIS_PRODUCT_LINE_INFO h ON CAST(t.PRODUCT_NAME AS INT) = h.ID
         where 1 = 1
         <include refid="sf-etSiteQuestionInfo"/>
 
@@ -222,7 +224,7 @@
     <!-- Chen,Kuai 2018年3月24日16:50:08   统计分配人员 -->
     <select id="selectEtSiteQuestionInfoUserTotal" resultMap="etSiteQuestionInfoResult"
             parameterType="etSiteQuestionInfo">
-        SELECT ALLOCATE_USER,i.C_NAME,i.POSITION_NAME,tt.NUM from (
+        SELECT ALLOCATE_USER,ISNULL(i.C_NAME, '未分配') as C_NAME,i.POSITION_NAME,tt.NUM from (
         SELECT t.ALLOCATE_USER,count(*) as NUM FROM ET_SITE_QUESTION_INFO t where 1 = 1
         <include refid="sf-etSiteQuestionInfo"/>
         GROUP BY ALLOCATE_USER)AS tt LEFT JOIN ET_USER_INFO i ON tt.ALLOCATE_USER=i.USER_ID AND i.USER_TYPE = 1 AND
