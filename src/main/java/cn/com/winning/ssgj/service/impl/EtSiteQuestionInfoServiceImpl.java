@@ -92,8 +92,8 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
 
         for (EtSiteQuestionInfo qinfo : infoList) {
             Map<String, String> dataMap = new HashMap<>();
-            dataMap.put("deptName",qinfo.getSiteName());
-            dataMap.put("sysName",qinfo.getProductName());
+            dataMap.put("deptName",qinfo.getMap().get("deptName").toString());
+            dataMap.put("sysName",qinfo.getMap().get("plName").toString());
             dataMap.put("menuName",qinfo.getMenuName());
             dataMap.put("requireNo",qinfo.getRequirementNo());
             dataMap.put("questionType",qinfo.getMap().get("dict_label").toString());

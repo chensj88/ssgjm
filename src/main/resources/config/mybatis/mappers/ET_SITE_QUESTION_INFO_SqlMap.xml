@@ -107,8 +107,8 @@
         <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
         <if test="(cId != null and cId != '') or cId == 0">and t.C_ID = #{cId}</if>
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="siteName != null and siteName != ''">and t.SITE_NAME = #{siteName}</if>
         <if test="productName != null and productName != ''">and t.PRODUCT_NAME = #{productName}</if>
-        <if test="menuName != null and menuName != ''">and t.MENU_NAME = #{menuName}</if>
         <if test="(menuName != null and menuName != '') and ( questionDesc == null or questionDesc == '' ) ">and t.MENU_NAME LIKE '%${menuName}%'</if>
         <if test="(questionDesc != null and questionDesc != '') and ( menuName == null or menuName == '') ">and t.QUESTION_DESC LIKE '%${questionDesc}%'</if>
         <if test="(questionDesc != null and questionDesc != '') and ( menuName != null and menuName != '') ">and ( t.MENU_NAME LIKE '%${menuName}%' OR t.QUESTION_DESC LIKE '%${questionDesc}%')</if>
@@ -190,7 +190,7 @@
             parameterType="etSiteQuestionInfo">
         select * from (
         select t.*,i.YHMC as create_name,i.USERID AS createUser,i.NAME AS createUserName,ii.YHMC as
-        allocate_name,d.DICT_LABEL,
+        allocate_name,d.DICT_LABEL, e.DICT_LABEL AS operTypeString,f.DICT_LABEL AS  priorityString,
         CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END AS CREATE_TIME_STRING,
         CASE WHEN ( IS_OPERATION = 1 AND OPERATOR_TIME IS NOT NULL ) THEN CONVERT(VARCHAR(32),OPERATOR_TIME,111) ELSE ''
         END AS OPERATOR_TIME_STRING,g.DEPT_NAME as DEPT_NAME,h.NAME AS PL_NAME,

@@ -3,6 +3,8 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.exception.SSGJException;
+import cn.com.winning.ssgj.base.util.DateUtil;
+import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
 import cn.com.winning.ssgj.domain.EtUserInfo;
 import cn.com.winning.ssgj.domain.PmisProjectBasicInfo;
@@ -24,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -50,13 +53,22 @@ public class EtSiteQuestionInfoController extends BaseController {
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String,Object> listSiteQuestionInfo(EtSiteQuestionInfo info, Row row){
+    public Map<String,Object> listSiteQuestionInfo(EtSiteQuestionInfo info, Row row,String startDate,String endDate) throws ParseException {
         long pmid = info.getPmId();
+        String serialNo = info.getSerialNo();
         info.setPmId(null);
         info.setRow(row);
+        //前端传输时间处理
+        if(!"null".equals(startDate) && !"null".equals(endDate) && !StringUtil.isEmptyOrNull(startDate) && !StringUtil.isEmptyOrNull(endDate)){
+            Map<String,Object> param = info.getMap();
+            param.put("startDate", DateUtil.convertDateStringToTimestap(startDate));
+            param.put("endDate",DateUtil.convertDateStringToTimestap(endDate));
+        }
         //站点问题分页显示
         List<EtSiteQuestionInfo> questionInfoList = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoPaginatedList(info);
         int total = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoCount(info);
+        info = new EtSiteQuestionInfo();
+        info.setSerialNo(serialNo);
         List<EtSiteQuestionInfo> infoList = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoUserTotal(info);
         //人员信息
         List<String> nameList= new ArrayList<String>();
@@ -75,6 +87,8 @@ public class EtSiteQuestionInfoController extends BaseController {
         result.put("data",this.getEtUserInfo(pmid));
         result.put("nameList",nameList);
         result.put("numList",numList);
+        result.put("plList",this.getProductLineList());
+        result.put("deptList",this.getDepartmentList(Long.valueOf(serialNo),null));
         return result;
     }
 
