@@ -46,7 +46,7 @@ public class SiteQuestionController extends BaseController {
     public String SiteQuestionList(Model model, String parameter) {
         //String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9"; //工号
         //String hospcode="11980";  //客户号
-        //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMjExOTQifQ==";
+        parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
         EtSiteQuestionInfo entity = new EtSiteQuestionInfo();
         try{
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
@@ -111,6 +111,7 @@ public class SiteQuestionController extends BaseController {
         SysDictInfo info1 = new SysDictInfo();
         info1.setDictCode("questionType");
         List<SysDictInfo> dictInfos =super.getFacade().getSysDictInfoService().getSysDictInfoList(info1);
+        //获取站点科室
         model.addAttribute("dictInfos",dictInfos);
         model.addAttribute("installList",installList);
         model.addAttribute("userId",userId);
@@ -328,7 +329,7 @@ public class SiteQuestionController extends BaseController {
     @RequestMapping("/loadData.do")
     @ResponseBody
     @ILog
-    public Map<String,Object> loadData(String type,String name,String serialNo){
+    public Map<String,Object> loadData(String type,String deptCode,String serialNo){
         Map<String,Object> map = new HashMap<String,Object>();
         PmisContractProductInfo contractProductInfo = new PmisContractProductInfo();
         try{
@@ -336,17 +337,17 @@ public class SiteQuestionController extends BaseController {
                 //获取合同/任务单(系统名称，菜单名称)
                 //从工作站点安装中直接获取使用系统
                 EtSiteInstall info = new EtSiteInstall();
-                info.setDeptName(name);
+                info.setDeptCode(deptCode);
                 info.setSerialNo(serialNo);
                 List<EtSiteInstall> infoList = super.getFacade().getEtSiteInstallService().getEtSiteInstallList(info);
                 //List<EtSiteInstall> infoList = super.getFacade().getEtSiteInstallService().getEtSiteInstallNameList(info);
                 //List<PmisProductLineInfo> infos = super.getFacade().getPmisProductLineInfoService().getPmisProductLineInfoMobileList(infoList.get(0).getPdId());
-                String [] strs = infoList.get(0).getPdName().split(";");
-                JSONArray xtJsons = JSONArray.fromObject(strs);
+                //String [] strs = infoList.get(0).getPdName().split(";");
+                JSONArray xtJsons = JSONArray.fromObject(infoList);
                 map.put("xtJsons",xtJsons);
-            }else{
+            }else{ //已停用
                 contractProductInfo.setKhxx(Long.parseLong(serialNo));
-                contractProductInfo.setZxtmc(name);
+                contractProductInfo.setZxtmc(deptCode);
                 List<PmisContractProductInfo> contractProductInfos = super.getFacade().getPmisContractProductInfoService()
                         .getPmisContractProductInfoMkList(contractProductInfo);
                 JSONArray xtJsons = JSONArray.fromObject( contractProductInfos );
