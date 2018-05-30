@@ -188,7 +188,7 @@
             parameterType="etSiteQuestionInfo">
         select * from (
         select t.*,i.YHMC as create_name,i.USERID AS createUser,i.NAME AS createUserName,ii.YHMC as
-        allocate_name,d.DICT_LABEL,
+        allocate_name,d.DICT_LABEL, e.DICT_LABEL AS operTypeString,f.DICT_LABEL AS  priorityString,
         CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END AS CREATE_TIME_STRING,
         CASE WHEN ( IS_OPERATION = 1 AND OPERATOR_TIME IS NOT NULL ) THEN CONVERT(VARCHAR(32),OPERATOR_TIME,111) ELSE ''
         END AS OPERATOR_TIME_STRING,g.DEPT_NAME as DEPT_NAME,h.NAME AS PL_NAME,
