@@ -72,11 +72,8 @@
         <if test="imgPath != null and imgPath != ''">and t.IMG_PATH = #{imgPath}</if>
         <if test="(operType != null and operType != '') or operType == 0">and t.OPER_TYPE = #{operType}</if>
         <if test="(priority != null and priority != '') or priority == 0">and t.PRIORITY = #{priority}</if>
-        <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0">and t.ALLOCATE_USER =
-            #{allocateUser}
-        </if>
-        <if test="(isOperation != null and isOperation != '') or isOperation == 0">and t.IS_OPERATION = #{isOperation}
-        </if>
+        <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0">and t.ALLOCATE_USER = #{allocateUser}</if>
+        <if test="(isOperation != null and isOperation != '') or isOperation == 0">and t.IS_OPERATION = #{isOperation}</if>
         <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
         <if test="(creator != null and creator != '') or creator == 0">and t.CREATOR = #{creator}</if>
         <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
@@ -84,22 +81,16 @@
         <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
         <if test="batchNo != null and batchNo != ''">and t.BATCH_NO = #{batchNo}</if>
         <if test="(reasonType != null and reasonType != '') or reasonType == 0">and t.REASON_TYPE = #{reasonType}</if>
-        <if test="(manuscriptStatus != null and manuscriptStatus != '') or manuscriptStatus == 0">and
-            t.MANUSCRIPT_STATUS = #{manuscriptStatus}
-        </if>
+        <if test="(manuscriptStatus != null and manuscriptStatus != '') or manuscriptStatus == 0">andt.MANUSCRIPT_STATUS = #{manuscriptStatus}</if>
         <if test="devUser != null and devUser != ''">and t.DEV_USER = #{devUser}</if>
         <if test="devUserName != null and devUserName != ''">and t.DEV_USER_NAME = #{devUserName}</if>
         <if test="linkman != null and linkman != ''">and t.LINKMAN = #{linkman}</if>
         <if test="mobile != null and mobile != ''">and t.MOBILE = #{mobile}</if>
         <if test="hopeFinishDate != null and hopeFinishDate != ''">and t.HOPE_FINISH_DATE = #{hopeFinishDate}</if>
         <if test="resolveDate != null and resolveDate != ''">and t.RESOLVE_DATE = #{resolveDate}</if>
-        <if test="(solutionType != null and solutionType != '') or solutionType == 0">and t.SOLUTION_TYPE =
-            #{solutionType}
-        </if>
+        <if test="(solutionType != null and solutionType != '') or solutionType == 0">and t.SOLUTION_TYPE =#{solutionType}</if>
         <if test="solutionResult != null and solutionResult != ''">and t.SOLUTION_RESULT = #{solutionResult}</if>
-        <if test="(diffcultLevel != null and diffcultLevel != '') or diffcultLevel == 0">and t.DIFFCULT_LEVEL =
-            #{diffcultLevel}
-        </if>
+        <if test="(diffcultLevel != null and diffcultLevel != '') or diffcultLevel == 0">and t.DIFFCULT_LEVEL =#{diffcultLevel}</if>
         <if test="userMessage != null and userMessage != ''">and t.USER_MESSAGE = #{userMessage}</if>
         <if test="createNo != null and createNo != ''">and t.CREATE_NO = #{createNo}</if>
         <if test="(pmisStatus != null and pmisStatus != '') or pmisStatus == 0">and t.PMIS_STATUS = #{pmisStatus}</if>
@@ -110,6 +101,50 @@
         <if test="requirementNo != null and requirementNo != ''">and t.REQUIREMENT_NO = #{requirementNo}</if>
     </sql>
 
+    <sql id="query-etSiteQuestionInfo">
+        <if test="(pmId != null and pmId != '') or pmId == 0">and t.PM_ID = #{pmId}</if>
+        <if test="(cId != null and cId != '') or cId == 0">and t.C_ID = #{cId}</if>
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="productName != null and productName != ''">and t.PRODUCT_NAME = #{productName}</if>
+        <if test="menuName != null and menuName != ''">and t.MENU_NAME = #{menuName}</if>
+        <if test="(menuName != null and menuName != '') and ( questionDesc == null or questionDesc == '' ) ">and t.MENU_NAME LIKE '%${menuName}%'</if>
+        <if test="(questionDesc != null and questionDesc != '') and ( menuName == null or menuName == '') ">and t.QUESTION_DESC LIKE '%${questionDesc}%'</if>
+        <if test="(questionDesc != null and questionDesc != '') and ( menuName != null and menuName != '') ">and ( t.MENU_NAME LIKE '%${menuName}%' OR t.QUESTION_DESC LIKE '%${questionDesc}%')</if>
+        <if test="questionType != null and questionType != ''">and t.QUESTION_TYPE = #{questionType}</if>
+        <if test="imgPath != null and imgPath != ''">and t.IMG_PATH = #{imgPath}</if>
+        <if test="(operType != null and operType != '') or operType == 0">and t.OPER_TYPE = #{operType}</if>
+        <if test="(priority != null and priority != '') or priority == 0">and t.PRIORITY = #{priority}</if>
+        <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0">and t.ALLOCATE_USER = #{allocateUser}</if>
+        <if test="(isOperation != null and isOperation != '') or isOperation == 0">and t.IS_OPERATION = #{isOperation}</if>
+        <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
+        <if test="(creator != null and creator != '') or creator == 0">and t.CREATOR = #{creator}</if>
+        <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
+        <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
+        <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
+        <if test="batchNo != null and batchNo != ''">and t.BATCH_NO = #{batchNo}</if>
+        <if test="(reasonType != null and reasonType != '') or reasonType == 0">and t.REASON_TYPE = #{reasonType}</if>
+        <if test="(manuscriptStatus != null and manuscriptStatus != '') or manuscriptStatus == 0">andt.MANUSCRIPT_STATUS = #{manuscriptStatus}</if>
+        <if test="devUser != null and devUser != ''">and t.DEV_USER = #{devUser}</if>
+        <if test="devUserName != null and devUserName != ''">and t.DEV_USER_NAME = #{devUserName}</if>
+        <if test="linkman != null and linkman != ''">and t.LINKMAN = #{linkman}</if>
+        <if test="mobile != null and mobile != ''">and t.MOBILE = #{mobile}</if>
+        <if test="hopeFinishDate != null and hopeFinishDate != ''">and t.HOPE_FINISH_DATE = #{hopeFinishDate}</if>
+        <if test="resolveDate != null and resolveDate != ''">and t.RESOLVE_DATE = #{resolveDate}</if>
+        <if test="(solutionType != null and solutionType != '') or solutionType == 0">and t.SOLUTION_TYPE =#{solutionType}</if>
+        <if test="solutionResult != null and solutionResult != ''">and t.SOLUTION_RESULT = #{solutionResult}</if>
+        <if test="(diffcultLevel != null and diffcultLevel != '') or diffcultLevel == 0">and t.DIFFCULT_LEVEL =#{diffcultLevel}</if>
+        <if test="userMessage != null and userMessage != ''">and t.USER_MESSAGE = #{userMessage}</if>
+        <if test="createNo != null and createNo != ''">and t.CREATE_NO = #{createNo}</if>
+        <if test="(pmisStatus != null and pmisStatus != '') or pmisStatus == 0">and t.PMIS_STATUS = #{pmisStatus}</if>
+        <if test="workLoad != null and workLoad != ''">and t.WORK_LOAD = #{workLoad}</if>
+        <if test="introducer != null and introducer != ''">and t.INTRODUCER = #{introducer}</if>
+        <if test="introducerName != null and introducerName != ''">and t.INTRODUCER_NAME = #{introducerName}</if>
+        <if test="introducerDate != null and introducerDate != ''">and t.INTRODUCER_DATE = #{introducerDate}</if>
+        <if test="requirementNo != null and requirementNo != ''">and t.REQUIREMENT_NO = #{requirementNo}</if>
+        <if test="map.startDate != null and map.endDate != null "> and t.CREATE_TIME
+            BETWEEN  #{map.startDate} AND  dateadd(day,1,#{map.endDate})
+        </if>
+    </sql>
     <select id="selectEtSiteQuestionInfo" resultMap="etSiteQuestionInfoResult" parameterType="etSiteQuestionInfo">
         select t.*,d.DICT_LABEL,i.YHMC as create_name,ii.YHMC as allocate_name from ET_SITE_QUESTION_INFO t
         LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
@@ -128,13 +163,15 @@
         e.DICT_LABEL AS operTypeString,f.DICT_LABEL AS  priorityString,
         CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END AS CREATE_TIME_STRING,
         CASE WHEN ( IS_OPERATION = 1 AND OPERATOR_TIME IS NOT NULL ) THEN CONVERT(VARCHAR(32),OPERATOR_TIME,111) ELSE ''
-        END AS OPERATOR_TIME_STRING
+        END AS OPERATOR_TIME_STRING,g.DEPT_NAME as DEPT_NAME,h.NAME AS PL_NAME
         from ET_SITE_QUESTION_INFO t
         LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
         LEFT JOIN SYS_USER_INFO ii ON t.ALLOCATE_USER=ii.ID
         LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
         LEFT JOIN SYS_DICT_INFO e ON t.OPER_TYPE=e.DICT_VALUE AND e.DICT_CODE='operType'
         LEFT JOIN SYS_DICT_INFO f ON t.PRIORITY=f.DICT_VALUE AND f.DICT_CODE='priorityType'
+        LEFT JOIN ET_DEPARTMENT g ON  CAST(t.SITE_NAME AS INT) = g.ID
+        LEFT JOIN PMIS_PRODUCT_LINE_INFO h ON CAST(t.PRODUCT_NAME AS INT) = h.ID
         where 1 = 1
         <include refid="sf-etSiteQuestionInfo"/>  order by ID DESC
         <!-- order by ID asc -->
@@ -142,7 +179,7 @@
 
     <select id="selectEtSiteQuestionInfoCount" resultType="int" parameterType="etSiteQuestionInfo">
         select count(*) from ET_SITE_QUESTION_INFO t where 1 = 1
-        <include refid="sf-etSiteQuestionInfo"/>
+        <include refid="query-etSiteQuestionInfo"/>
     </select>
 
     <select id="selectEtSiteQuestionInfoPaginatedList" resultMap="etSiteQuestionInfoResult"
@@ -152,14 +189,18 @@
         allocate_name,d.DICT_LABEL,
         CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END AS CREATE_TIME_STRING,
         CASE WHEN ( IS_OPERATION = 1 AND OPERATOR_TIME IS NOT NULL ) THEN CONVERT(VARCHAR(32),OPERATOR_TIME,111) ELSE ''
-        END AS OPERATOR_TIME_STRING,
+        END AS OPERATOR_TIME_STRING,g.DEPT_NAME as DEPT_NAME,h.NAME AS PL_NAME,
         ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
         from ET_SITE_QUESTION_INFO t
         LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
         LEFT JOIN SYS_USER_INFO ii ON t.ALLOCATE_USER=ii.ID
         LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
+        LEFT JOIN SYS_DICT_INFO e ON t.OPER_TYPE=e.DICT_VALUE AND e.DICT_CODE='operType'
+        LEFT JOIN SYS_DICT_INFO f ON t.PRIORITY=f.DICT_VALUE AND f.DICT_CODE='priorityType'
+        LEFT JOIN ET_DEPARTMENT g ON  CAST(t.SITE_NAME AS INT) = g.ID
+        LEFT JOIN PMIS_PRODUCT_LINE_INFO h ON CAST(t.PRODUCT_NAME AS INT) = h.ID
         where 1 = 1
-        <include refid="sf-etSiteQuestionInfo"/>
+        <include refid="query-etSiteQuestionInfo"/>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
