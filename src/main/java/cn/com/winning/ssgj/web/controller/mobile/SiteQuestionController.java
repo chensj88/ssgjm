@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import net.sf.json.JSONArray;
 import org.apache.commons.lang.StringUtils;
+import org.apache.pdfbox.pdmodel.font.CIDSystemInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -342,8 +343,10 @@ public class SiteQuestionController extends BaseController {
                 List<EtSiteInstall> infoList = super.getFacade().getEtSiteInstallService().getEtSiteInstallList(info);
                 //List<EtSiteInstall> infoList = super.getFacade().getEtSiteInstallService().getEtSiteInstallNameList(info);
                 //List<PmisProductLineInfo> infos = super.getFacade().getPmisProductLineInfoService().getPmisProductLineInfoMobileList(infoList.get(0).getPdId());
-                //String [] strs = infoList.get(0).getPdName().split(";");
-                JSONArray xtJsons = JSONArray.fromObject(infoList);
+                PmisProductLineInfo lineInfo = new PmisProductLineInfo();
+                lineInfo.getMap().put("softNameList",infoList.get(0).getPdId());
+                List<PmisProductLineInfo> lineInfoList = super.getFacade().getPmisProductLineInfoService().getPmisProductLineInfoList(lineInfo);
+                JSONArray xtJsons = JSONArray.fromObject(lineInfoList);
                 map.put("xtJsons",xtJsons);
             }else{ //已停用
                 contractProductInfo.setKhxx(Long.parseLong(serialNo));

@@ -33,7 +33,7 @@
 					<div id="siteId" class="select">
 						<input id="siteName" name="siteName" value="${siteQuestionInfo.siteName}" type="hidden" />
 						<c:if test="${siteQuestionInfo.siteName != null}" >
-							<a href="#"><span>${siteQuestionInfo.siteName}</span><i class="arrow"></i></a>
+							<a href="#"><span>${siteQuestionInfo.map.get("deptName")}</span><i class="arrow"></i></a>
 						</c:if>
 						<c:if test="${siteQuestionInfo.siteName == null}" >
 							<a href="#"><span>--请选择--</span><i class="arrow"></i></a>
@@ -52,7 +52,7 @@
 					<div id="productId" class="select">
 						<input id="productName" name="productName" value="${siteQuestionInfo.productName}" type="hidden"/>
 						<c:if test="${siteQuestionInfo.productName != null}" >
-							<a href="#"><span>${siteQuestionInfo.productName}</span><i class="arrow"></i></a>
+							<a href="#"><span>${siteQuestionInfo.map.get("plName")}</span><i class="arrow"></i></a>
 						</c:if>
 						<c:if test="${siteQuestionInfo.productName == null}" >
 							<a href="#"><span>--请选择--</span><i class="arrow"></i></a>
@@ -211,7 +211,7 @@
                                 var json=eval(data.xtJsons);
                                 $.each(json,function(i,item){
                                     console.log("sss=="+json[i])
-                                    str_html=str_html+"<li data-val='"+json[i].productName+"'>"+json[i].get("")+"</li>";
+                                    str_html=str_html+"<li data-val='"+json[i].id+"'>"+json[i].name+"</li>";
 
                                 });
                                 $("#ul2").html(str_html);

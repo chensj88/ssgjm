@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/commons/header.jsp" %>
+<%String ref = request.getHeader("REFERER");%>
 <!DOCTYPE html>
 <html>
 
@@ -19,7 +20,7 @@
 		<div class="mui-content check-distribuion-chart">
 			<!--header-->
 			<div class="header">
-				<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
+				<span class="mui-icon mui-icon-arrowleft" onclick="javascript:history.go(-1)"></span>
 				<div>${siteName}</div>
 				<span class="mui-icon mui-icon-more"></span>
 			</div>

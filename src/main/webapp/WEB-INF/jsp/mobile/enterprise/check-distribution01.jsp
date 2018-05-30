@@ -30,13 +30,13 @@
 			<div class="tab">
 				<div class="tab-nav">
 					<div class="active">
-						<a href="#">全部(${size})</a>
+						<a href="#">全部(${size ==null ?0:size})</a>
 					</div>
 					<div>
-						<a href="#">未解决(${size-num})</a>
+						<a href="#">未解决(${size-num ==null ?0:size-num})</a>
 					</div>
 					<div>
-						<a href="#">已解决(${num})</a>
+						<a href="#">已解决(${num ==null ?0: num})</a>
 					</div>
 				</div>
 				<div class="tab-cnt">
@@ -46,7 +46,7 @@
 							<div class="site-item" onclick="detail(${vwr.id})">
 								<div class="top">
 									<div class="top-left">
-										<div>${vwr.siteName}<span>${vwr.productName}</span></div>
+										<div>${vwr.map.get("deptName")}<span>${vwr.map.get("plName")}</span></div>
 										<span>${vwr.menuName}</span>
 									</div>
 									<div class="top-right">
