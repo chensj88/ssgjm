@@ -45,24 +45,26 @@ public class EtSiteQuestionInfoController extends BaseController {
     private PmisWebServiceClient pmisWebServiceClient;
     @Autowired
     private PmisWorkingPaperService pmisWorkingPaperService;
+
     /**
      * 站点问题初始化显示
+     *
      * @param info
      * @param row
      * @return
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String,Object> listSiteQuestionInfo(EtSiteQuestionInfo info, Row row,String startDate,String endDate) throws ParseException {
+    public Map<String, Object> listSiteQuestionInfo(EtSiteQuestionInfo info, Row row, String startDate, String endDate) throws ParseException {
         long pmid = info.getPmId();
         String serialNo = info.getSerialNo();
         info.setPmId(null);
         info.setRow(row);
         //前端传输时间处理
-        if(!"null".equals(startDate) && !"null".equals(endDate) && !StringUtil.isEmptyOrNull(startDate) && !StringUtil.isEmptyOrNull(endDate)){
-            Map<String,Object> param = info.getMap();
+        if (!"null".equals(startDate) && !"null".equals(endDate) && !StringUtil.isEmptyOrNull(startDate) && !StringUtil.isEmptyOrNull(endDate)) {
+            Map<String, Object> param = info.getMap();
             param.put("startDate", DateUtil.convertDateStringToTimestap(startDate));
-            param.put("endDate",DateUtil.convertDateStringToTimestap(endDate));
+            param.put("endDate", DateUtil.convertDateStringToTimestap(endDate));
         }
         //站点问题分页显示
         List<EtSiteQuestionInfo> questionInfoList = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoPaginatedList(info);
@@ -71,54 +73,56 @@ public class EtSiteQuestionInfoController extends BaseController {
         info.setSerialNo(serialNo);
         List<EtSiteQuestionInfo> infoList = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoUserTotal(info);
         //人员信息
-        List<String> nameList= new ArrayList<String>();
-        List<Integer> numList= new ArrayList<Integer>();
-        if(infoList != null && infoList.size() > 0){
-            for (EtSiteQuestionInfo en:infoList) {
+        List<String> nameList = new ArrayList<String>();
+        List<Integer> numList = new ArrayList<Integer>();
+        if (infoList != null && infoList.size() > 0) {
+            for (EtSiteQuestionInfo en : infoList) {
                 nameList.add((String) en.getMap().get("c_name"));
                 numList.add((Integer) en.getMap().get("num"));
             }
         }
         //可分配人员信息
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
-        result.put("rows",questionInfoList);
-        result.put("data",this.getEtUserInfo(pmid));
-        result.put("nameList",nameList);
-        result.put("numList",numList);
-        result.put("plList",this.getProductLineList());
-        result.put("deptList",this.getDepartmentList(Long.valueOf(serialNo),null));
+        result.put("rows", questionInfoList);
+        result.put("data", this.getEtUserInfo(pmid));
+        result.put("nameList", nameList);
+        result.put("numList", numList);
+        result.put("plList", this.getProductLineList());
+        result.put("deptList", this.getDepartmentList(Long.valueOf(serialNo), null));
         return result;
     }
 
     /**
      * 柱状图更新
+     *
      * @param info
      * @return
      */
     @RequestMapping(value = "/updateChart.do")
     @ResponseBody
-    public Map<String,Object> updateChart(EtSiteQuestionInfo info){
+    public Map<String, Object> updateChart(EtSiteQuestionInfo info) {
         List<EtSiteQuestionInfo> infoList = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoUserTotal(info);
         //人员信息
-        List<String> nameList= new ArrayList<String>();
-        List<Integer> numList= new ArrayList<Integer>();
-        if(infoList != null && infoList.size() > 0){
-            for (EtSiteQuestionInfo en:infoList) {
+        List<String> nameList = new ArrayList<String>();
+        List<Integer> numList = new ArrayList<Integer>();
+        if (infoList != null && infoList.size() > 0) {
+            for (EtSiteQuestionInfo en : infoList) {
                 nameList.add((String) en.getMap().get("c_name"));
                 numList.add((Integer) en.getMap().get("num"));
             }
         }
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
-        result.put("nameList",nameList);
-        result.put("numList",numList);
+        result.put("nameList", nameList);
+        result.put("numList", numList);
         return result;
     }
 
     /**
      * 处理方式修改/优先级修改/分配人修改
+     *
      * @param info
      * @return
      */
@@ -126,40 +130,52 @@ public class EtSiteQuestionInfoController extends BaseController {
     @ResponseBody
     @ILog
     @Transactional
-    public Map<String,Object> updateOperate(EtSiteQuestionInfo info){
+    public Map<String, Object> updateOperate(EtSiteQuestionInfo info) {
         info.setOperatorTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }
 
-
-    @RequestMapping(value = "/exportPmisData.do",method = {RequestMethod.POST})
+    /**
+     * 单条导入PMIS
+     *
+     * @param info
+     * @return
+     */
+    @RequestMapping(value = "/exportPmisData.do", method = {RequestMethod.POST})
     @ResponseBody
     @ILog
     @Transactional
-    public Map<String,Object> exportPmisData(EtSiteQuestionInfo info){
+    public Map<String, Object> exportPmisData(EtSiteQuestionInfo info) {
         info.setOperatorTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
         EtSiteQuestionInfo oldInfo = new EtSiteQuestionInfo();
         oldInfo.setId(info.getId());
         oldInfo = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(oldInfo);
         importData(oldInfo);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }
 
+    /**
+     * 批量导入PMIS
+     *
+     * @param info
+     * @param idList
+     * @return
+     */
     @RequestMapping(value = "/exportBatchPmisData.do")
     @ResponseBody
-    public Map<String,Object> exportBatchPmisData(EtSiteQuestionInfo info,Long[] idList){
+    public Map<String, Object> exportBatchPmisData(EtSiteQuestionInfo info, Long[] idList) {
         EtSiteQuestionInfo oldInfo = null;
-        for (int i=0 ;i<idList.length;i++) {
+        for (int i = 0; i < idList.length; i++) {
             oldInfo = new EtSiteQuestionInfo();
             oldInfo.setId(idList[i]);
             oldInfo = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(oldInfo);
-            if(oldInfo.getPmisStatus() == 2 ){
+            if (oldInfo.getPmisStatus() == 2) {
                 oldInfo.setPmId(info.getPmId());
                 oldInfo.setBatchNo(info.getBatchNo());
                 oldInfo.setQuestionType(info.getQuestionType());
@@ -187,16 +203,24 @@ public class EtSiteQuestionInfoController extends BaseController {
                 importData(oldInfo);
             }
         }
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }
 
+    /**
+     * 导出工作底稿功能
+     *
+     * @param info
+     * @param response
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/exportExcel.do")
-    public HttpServletResponse writeExcel(EtSiteQuestionInfo info,HttpServletResponse response) throws IOException {
+    public HttpServletResponse writeExcel(EtSiteQuestionInfo info, HttpServletResponse response) throws IOException {
         String fileName = "EtSiteQuestion.xls";
         String path = getClass().getClassLoader().getResource("/template").getPath() + fileName;
-        super.getFacade().getEtSiteQuestionInfoService().generateEtSiteQuestionInfo(info,path);
+        super.getFacade().getEtSiteQuestionInfoService().generateEtSiteQuestionInfo(info, path);
         try {
             // path是指欲下载的文件的路径。
             File file = new File(path);
@@ -212,7 +236,7 @@ public class EtSiteQuestionInfoController extends BaseController {
             // 清空response
             response.reset();
             // 设置response的Header
-            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("站点问题汇总.xls","UTF-8"));
+            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("站点问题汇总.xls", "UTF-8"));
             response.addHeader("Content-Length", "" + file.length());
             OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/octet-stream");
@@ -226,34 +250,56 @@ public class EtSiteQuestionInfoController extends BaseController {
         return response;
     }
 
-
-    private void importData(EtSiteQuestionInfo info){
-        //TODO 生产环境工作底稿导入功能
+    /**
+     * 导入PMIS底稿功能
+     *
+     * @param info
+     */
+    private void importData(EtSiteQuestionInfo info) {
+        //TODO 生产环境工作底稿导入功能 从返回的额外参数中获取需求编号
         BizProcessResult bizResult = null;
         if(info.getPmisStatus() == 2){
             //使用WS_TEST_URL 为测试环境  WS_URL为生产环境
-             bizResult =  pmisWebServiceClient.importWorkDataToPmis(Constants.PmisWSConstants.WS_URL,info);
+             bizResult =  pmisWebServiceClient.importWorkDataToPmis(info);
             if(bizResult.getResult() != -1){
-                info.setRequirementNo(bizResult.getResult()+"");
+                info.setRequirementNo(bizResult.getOutputVariables().get(1).getValue());
             }else{
                 throw new SSGJException(bizResult.getMessage(),"PMIS-WS-E0001","错误原因:"+bizResult.getMessage());
             }
         }
-        //TODO 测试环境工作底稿导入功能
+        //TODO 测试环境工作底稿导入功能  从返回的额外参数中获取需求编号
 //        cn.com.winning.ssgj.ws.work.client.BizProcessResult bizResult = null;
-//        if(info.getPmisStatus() == 2){
-//            //使用WS_TEST_URL 为测试环境  WS_URL为生产环境
-//            bizResult =  pmisWorkingPaperService.importWorkReport(info);
-//            if(bizResult.getResult() != -1){
-//                info.setRequirementNo(bizResult.getResult()+"");
-//            }else{
-//                throw new SSGJException(bizResult.getMessage(),"PMIS-WS-E0001","错误原因:"+bizResult.getMessage());
+//        if (info.getPmisStatus() == 2) {
+//            bizResult = pmisWorkingPaperService.importWorkReport(info);
+//            if (bizResult.getResult() != -1) {
+//                info.setRequirementNo(bizResult.getOutputVariables().get(1).getValue());
+//            } else {
+//                throw new SSGJException(bizResult.getMessage(), "PMIS-WS-E0001", "错误原因:" + bizResult.getMessage());
 //            }
 //        }
         info.setPmisStatus(Constants.STATUS_USE);
         super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
     }
 
-
+    @RequestMapping(value = "/queryWrokreportStatus.do")
+    @ResponseBody
+    public Map<String, Object> queryWrokreportStatus(EtSiteQuestionInfo info) {
+        info = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info);
+        String[] attrs = new String[2];
+        if (info.getPmisStatus() == 1) {
+            //TODO 测试环境
+            //attrs = pmisWorkingPaperService.queryWorkReport(info.getRequirementNo());
+            //TODO 生产环境
+            attrs = pmisWebServiceClient.queryReportWorkStatus(info.getRequirementNo());
+        }
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        if (!StringUtil.isEmptyOrNull(attrs[1])) {
+            info.setManuscriptStatus(Integer.parseInt(attrs[1]));
+            super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+            result.put("data", attrs[1]);
+        }
+        return result;
+    }
 
 }

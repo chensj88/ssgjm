@@ -6,6 +6,9 @@ import cn.com.winning.ssgj.domain.PmisProductInfo;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import cn.com.winning.ssgj.ws.work.client.BizProcessResult;
+import cn.com.winning.ssgj.ws.work.service.PmisWorkingPaperService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +27,9 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/test")
 public class TestController extends BaseController{
+
+    @Autowired
+    private PmisWorkingPaperService pmisWorkingPaperService;
 
     @RequestMapping(value = "/page.do")
     public String pageInfo(){
@@ -89,6 +95,16 @@ public class TestController extends BaseController{
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data",nodeTrees);
+        return result;
+
+    }
+
+    @RequestMapping(value = "/query.do")
+    @ResponseBody
+    public Map<String,Object> qyeryWorkreportInfo(String code){
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data",pmisWorkingPaperService.queryWorkReport(code));
         return result;
 
     }
