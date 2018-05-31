@@ -37,6 +37,7 @@ public class WxController extends BaseController {
             }
             //获取access_token
             JSONObject firstWx = JSONObject.parseObject(bs.toString());
+            String ss = (String)firstWx.get("access_token");
             System.out.println(firstWx);
 
 

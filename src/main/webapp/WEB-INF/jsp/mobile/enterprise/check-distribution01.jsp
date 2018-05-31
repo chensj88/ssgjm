@@ -83,7 +83,7 @@
 							<div class="site-item" onclick="detail(${vwr.id})">
 								<div class="top">
 									<div class="top-left">
-										<div>${vwr.siteName}<span>${vwr.productName}</span></div>
+										<div>${vwr.map.get("deptName")}<span>${vwr.map.get("plName")}</span></div>
 										<span>${vwr.menuName}</span>
 									</div>
 									<div class="top-right">
