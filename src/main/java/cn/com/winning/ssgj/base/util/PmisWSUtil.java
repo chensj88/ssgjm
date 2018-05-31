@@ -27,9 +27,9 @@ public class PmisWSUtil {
      * 获取登录结果，主要提取结果中sessionId用户后续查询使用
      * @return
      */
-    public static LoginResult createLoginResult(String wsUrl) {
+    public static LoginResult createLoginResult() {
 
-        LoginResult result = createLBEBusinessService(wsUrl).login(Constants.PmisWSConstants.WS_USER,
+        LoginResult result = createLBEBusinessService().login(Constants.PmisWSConstants.WS_USER,
                             Constants.PmisWSConstants.WS_PASSWORD,
                             "",
                             Constants.PmisWSConstants.WS_ALGORITHM,
@@ -42,9 +42,9 @@ public class PmisWSUtil {
     /**
      * 退出登录解决超时问题
      */
-    public static void createLogoutResult(String wsUrl,LoginResult result) {
+    public static void createLogoutResult(LoginResult result) {
 
-       LogoutResult logoutResult = createLBEBusinessService(wsUrl).logout(result.getSessionId());
+       LogoutResult logoutResult = createLBEBusinessService().logout(result.getSessionId());
        LOGGER.info("WebService用户"+Constants.PmisWSConstants.WS_USER+"退出登录："+logoutResult.getMessage());
 
 
@@ -52,14 +52,13 @@ public class PmisWSUtil {
 
     /**
      * 获取WS服务 LBEBusinessService
-     * @param wsUrl 请求WebService服务的地址信息
      * @return
      */
-    public static LBEBusinessService createLBEBusinessService(String wsUrl) {
+    public static LBEBusinessService createLBEBusinessService() {
         if (lbeBusinessService == null) {
             JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
             factory.setServiceClass(LBEBusinessService.class);
-            factory.setAddress(wsUrl);
+            factory.setAddress(Constants.PmisWSConstants.WS_URL);
             lbeBusinessService = factory.create(LBEBusinessService.class);
         }
         return lbeBusinessService;
@@ -78,6 +77,22 @@ public class PmisWSUtil {
         params.add(param);
         return params;
     }
+
+    /**
+     *  根据queryName创建查询参数
+     * @param queryName
+     * @param quertType
+     * @return
+     */
+    public static List<LbParameter> createQueryLbParameter(String queryName,String quertType){
+        LbParameter param = new LbParameter();
+        param.setName(queryName);
+        param.setValue(quertType);
+        List<LbParameter> params = new ArrayList<LbParameter>();
+        params.add(param);
+        return params;
+    }
+
 
     /**
      *  第一次查询的QueryOption
@@ -220,6 +235,19 @@ public class PmisWSUtil {
         return  params;
     }
 
+    /**
+     * 创建测试环境查询参数，用于在测试环境
+     * @param code
+     * @return
+     */
+    public static List<cn.com.winning.ssgj.ws.work.client.LbParameter> createTestQueryLbParameter(String code) {
+        List<cn.com.winning.ssgj.ws.work.client.LbParameter> params = new ArrayList<cn.com.winning.ssgj.ws.work.client.LbParameter>();
+        cn.com.winning.ssgj.ws.work.client.LbParameter param = new cn.com.winning.ssgj.ws.work.client.LbParameter();
+        param.setName("code"); //项目ID
+        param.setValue(code);
+        params.add(param);
+        return params;
+    }
     /**
      * 创建测试工作底稿参数
      * @param info

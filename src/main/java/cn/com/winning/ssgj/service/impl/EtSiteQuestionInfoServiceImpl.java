@@ -121,4 +121,10 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
         ExcelUtil.writeExcel(dataList, colList, colList.size(), path);
     }
 
+    @Override
+    public List<Map<String, Object>> getEtSiteQuestionCountInfo(EtSiteQuestionInfo info) {
+
+        return this.etSiteQuestionInfoDao.selectEtSiteQuestionCountInfo(info);
+    }
+
 }

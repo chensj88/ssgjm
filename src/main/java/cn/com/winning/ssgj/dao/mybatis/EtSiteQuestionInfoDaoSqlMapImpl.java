@@ -7,6 +7,7 @@ import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -25,6 +26,11 @@ public class EtSiteQuestionInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtSiteQ
     @Override
     public List<EtSiteQuestionInfo> selectEtSiteQuestionInfoUserTotal(EtSiteQuestionInfo t) {
         return this.getSqlSession().selectList("selectEtSiteQuestionInfoUserTotal",t);
+    }
+
+    @Override
+    public List<Map<String, Object>> selectEtSiteQuestionCountInfo(EtSiteQuestionInfo info) {
+        return this.getSqlSession().selectList("selectEtSiteQuestionCountInfo",info);
     }
 
 }

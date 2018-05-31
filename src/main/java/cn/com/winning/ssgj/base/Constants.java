@@ -351,6 +351,10 @@ public class Constants implements Serializable {
          */
         public static final String WORK_WS_SERVICE_OBJECT_NAME = "PM_GZDG_WSXZ";
         /**
+         * 查询底稿状态
+         */
+        public static final String QUERY_WORK_WS_SERVICE_OBJECT_NAME = "WS_DS_CXDGZT";
+        /**
          * PMIS WS 服务类型  1 用户
          */
         public static final String WS_SERVICE_QUERY_USER = "1";
@@ -401,6 +405,10 @@ public class Constants implements Serializable {
          * PMIS WS 查询类别名称
          */
         public static final String QUERY_TYPE_NAME = "Ptype";
+        /**
+         * 底稿状态查询
+         */
+        public static final String QUERY_TYPE_NAME_FOR_REPORT = "code";
 
         /**
          * PMIS WS 第一次查询的数量

@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.service;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
 
@@ -36,4 +37,6 @@ public interface EtSiteQuestionInfoService {
      * @param path
      */
     void generateEtSiteQuestionInfo(EtSiteQuestionInfo info, String path);
+
+    List<Map<String,Object>> getEtSiteQuestionCountInfo(EtSiteQuestionInfo info);
 }
