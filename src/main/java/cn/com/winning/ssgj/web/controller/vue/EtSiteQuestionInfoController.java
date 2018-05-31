@@ -302,4 +302,56 @@ public class EtSiteQuestionInfoController extends BaseController {
         return result;
     }
 
+
+
+    @RequestMapping(value = "/countInfo.do")
+    @ResponseBody
+    public Map<String,Object> countInfo(EtSiteQuestionInfo info,String columns){
+        Map<String,Object> queryCol = info.getMap();
+        convertStringToMap(queryCol,columns);
+        List<Map<String,Object>> param = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionCountInfo(info);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data",param );
+        return result;
+
+    }
+
+    public Map<String,Object> convertStringToMap(Map<String,Object> map,String columns){
+        String[] column = columns.split(",");
+        for( int i =0 ; i< column.length ;i++){
+            int key = Integer.parseInt(column[i]);
+            switch (key){
+                case 1 : map.put("isDeptName","1"); break;
+                case 2 : map.put("isPlName","1"); break;
+                case 3 : map.put("isMenu","1"); break;
+                case 4 : map.put("isRNO","1"); break;
+                case 5 : map.put("isQType","1"); break;
+                case 6 : map.put("isQDesc","1"); break;
+                case 7 : map.put("isOType","1"); break;
+                case 8 : map.put("isPType","1"); break;
+                case 9 : map.put("isAName","1"); break;
+                case 10 : map.put("isRString","1"); break;
+                case 11 : map.put("isMString","1"); break;
+                case 12 : map.put("isDString","1"); break;
+                case 13 : map.put("isDevUser","1"); break;
+                case 14 : map.put("isDevName","1"); break;
+                case 15 : map.put("isLinkman","1"); break;
+                case 16 : map.put("isMobile","1"); break;
+                case 17 : map.put("isintroName","1"); break;
+                case 18 : map.put("isintroDate","1"); break;
+                case 19 : map.put("isHopeFD","1"); break;
+                case 20 : map.put("isResolveDate","1"); break;
+                case 21 : map.put("isSoluRes","1"); break;
+                case 22 : map.put("isWorkload ","1"); break;
+                case 23 : map.put("isUserMessage","1"); break;
+                case 24 : map.put("isCreator","1"); break;
+                case 25 : map.put("isCreateTime ","1"); break;
+                case 26 : map.put("isOperation","1"); break;
+            }
+        }
+        System.out.println(map);
+        return  map;
+
+    }
 }

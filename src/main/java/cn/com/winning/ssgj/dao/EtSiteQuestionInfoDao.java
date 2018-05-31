@@ -4,6 +4,7 @@ import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
 import cn.com.winning.ssgj.dao.EntityDao;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -16,4 +17,6 @@ public interface EtSiteQuestionInfoDao extends EntityDao<EtSiteQuestionInfo> {
     void updateEtSiteQuestionInfoImg(EtSiteQuestionInfo t);
 
     List<EtSiteQuestionInfo> selectEtSiteQuestionInfoUserTotal(EtSiteQuestionInfo t);
+
+    List<Map<String,Object>> selectEtSiteQuestionCountInfo(EtSiteQuestionInfo info);
 }
