@@ -224,11 +224,11 @@
     <!-- Chen,Kuai 2018年3月24日16:50:08   统计分配人员 -->
     <select id="selectEtSiteQuestionInfoUserTotal" resultMap="etSiteQuestionInfoResult"
             parameterType="etSiteQuestionInfo">
-        SELECT ALLOCATE_USER,ISNULL(i.C_NAME, '未分配') as C_NAME,i.POSITION_NAME,tt.NUM from (
+        SELECT ALLOCATE_USER,ISNULL(i.C_NAME, '未分配') as C_NAME,ISNULL(d.DICT_LABEL, '无') as POSITION_NAME,tt.NUM from (
         SELECT t.ALLOCATE_USER,count(*) as NUM FROM ET_SITE_QUESTION_INFO t where 1 = 1
         <include refid="sf-etSiteQuestionInfo"/>
         GROUP BY ALLOCATE_USER)AS tt LEFT JOIN ET_USER_INFO i ON tt.ALLOCATE_USER=i.USER_ID AND i.USER_TYPE = 1 AND
-        i.IS_DEL = 1
+        i.IS_DEL = 1 LEFT JOIN SYS_DICT_INFO d ON d.DICT_CODE='positionName' AND i.POSITION_NAME = d.DICT_VALUE
         <where>
             <if test="serialNo != null and serialNo != ''">and i.SERIAL_NO = #{serialNo}</if>
             <if test="serialNo != null and serialNo != ''">and i.USER_ID != 100001</if>

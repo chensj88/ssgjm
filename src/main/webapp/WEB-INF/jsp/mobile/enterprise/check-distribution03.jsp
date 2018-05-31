@@ -30,7 +30,7 @@
 				<c:forEach var="vwr" items="${infoList}">
 		    	<div class="mui-input-row mui-radio">
 					<label>
-						<strong>${vwr.map.get("c_name")} </strong><span>${vwr.map.get("position_name")}  处理问题数</span><i>${vwr.map.get("num")}</i>
+						<strong>${vwr.map.get("c_name")} </strong><span style="margin-left: 20px;">${vwr.map.get("position_name")}&nbsp;&nbsp;  处理问题数</span><i>${vwr.map.get("num")}</i>
 					</label>
 					<input name="radio1" type="radio" value="${vwr.allocateUser}">
 				</div>
