@@ -48,10 +48,10 @@ public class SysModuleController extends BaseController {
 
     @RequestMapping(value = "/queryModule.do")
     @ResponseBody
-    public Map<String, Object> queryModule(String modName, int matchCount) {
+    public Map<String, Object> queryModule(String modName,int modLevel, int matchCount) {
         SysModule module = new SysModule();
         module.setModName(modName);
-        module.setModLevel(1);
+        module.setModLevel(modLevel);
         module.setIsDel(Constants.STATUS_UNUSE);
         Row row = new Row(0, matchCount);
         module.setRow(row);

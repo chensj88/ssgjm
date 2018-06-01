@@ -154,8 +154,10 @@ $(function () {
             formatter: function (value) {
                 if (value == '1') {
                     return '一级模块';
-                } else {
+                } else if (value == '2') {
                     return '二级模块';
+                } else {
+                    return '三级模块';
                 }
             }
 
@@ -238,12 +240,13 @@ $(function () {
     $('#modPName').typeahead({
         source : function (query,process) {
             var matchCount =this.options.items;//允许返回结果集最大数量
+            var modLevel = $('#modLevel').val() - 1;
             $.ajax({
                 url : Common.getRootPath() + '/admin/module/queryModule.do',
                 type: "post",
                 dataType: 'json',
                 async: false,
-                data: {'modName':query,'matchCount':matchCount},
+                data: {'modName':query,'modLevel':modLevel,'matchCount':matchCount},
                 success: function (result) {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
