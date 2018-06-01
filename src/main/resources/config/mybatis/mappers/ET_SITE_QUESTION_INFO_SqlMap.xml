@@ -445,7 +445,7 @@
         </where>
     </delete>
 
-    <select id="selectEtSiteQuestionCountInfo" resultMap="etSiteQuestionInfoResult" parameterType="etSiteQuestionInfo">
+    <select id="selectEtSiteQuestionCountInfo" resultType="map" parameterType="etSiteQuestionInfo">
 
         SELECT
         <trim suffixOverrides=",">
@@ -464,7 +464,7 @@
             <if test="map.isWorkload != null">t.WORK_LOAD, </if>
             <if test="map.isUserMessage!= null">t.USER_MESSAGE, </if>
             <if test="map.isOperation!= null">t.IS_OPERATION, </if>
-            <if test="map.isCreateTime != null"> CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END  , </if>
+            <if test="map.isCreateTime != null"> CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END  CREATE_TIME_STRING, </if>
             <if test="map.isCreator!= null">
                 i.YHMC as create_name,i.USERID AS createUser,i.NAME AS createUserName,
             </if>
