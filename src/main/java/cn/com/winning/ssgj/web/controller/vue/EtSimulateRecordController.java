@@ -66,7 +66,6 @@ public class EtSimulateRecordController extends BaseController {
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
     @Transactional
-    @ILog
     public Map<String,Object> addEtSimulateRecord(EtSimulateRecord record){
         EtProcessManager manager = new EtProcessManager();
         manager.setPmId(record.getPmId());
@@ -99,7 +98,6 @@ public class EtSimulateRecordController extends BaseController {
     @RequestMapping(value = "/delete.do")
     @ResponseBody
     @Transactional
-    @ILog
     public Map<String,Object> deleteEtSimulateRecord(EtSimulateRecord record){
         record.setStatus(Constants.STATUS_UNUSE);
         record.setOperatorTime(new Timestamp(new Date().getTime()));
@@ -117,7 +115,6 @@ public class EtSimulateRecordController extends BaseController {
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
     @Transactional
-    @ILog
     public Map<String,Object> confirmEtSimulateRecord(EtSimulateRecord record){
         EtProcessManager processManager = new EtProcessManager();
         processManager.setPmId(record.getPmId());
@@ -139,7 +136,6 @@ public class EtSimulateRecordController extends BaseController {
      */
     @RequestMapping(value = "/upload.do")
     @ResponseBody
-    @ILog
     public Map<String,Object> uploadEtSimulateRecord(HttpServletRequest request,EtSimulateRecord record,MultipartFile file) throws IOException {
         Map<String, Object> result = new HashMap<String, Object>();
         if (!file.isEmpty()) {
@@ -207,7 +203,6 @@ public class EtSimulateRecordController extends BaseController {
      */
     @RequestMapping(value = "/deleteFile.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String,Object> deleteUploadFile(UrlContent content){
         EtSimulateRecord record = new EtSimulateRecord();

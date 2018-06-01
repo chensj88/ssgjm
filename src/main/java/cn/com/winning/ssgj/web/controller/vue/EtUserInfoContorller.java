@@ -71,7 +71,6 @@ public class EtUserInfoContorller extends BaseController {
 
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> addOrModifyHospitalUserInfo(EtUserInfo etUserInfo) {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -100,7 +99,6 @@ public class EtUserInfoContorller extends BaseController {
     }
 
     @RequestMapping(value = "/exportExcel.do")
-    @ILog
     public HttpServletResponse wiriteExcel(EtUserInfo etUserInfo, HttpServletResponse response) throws IOException {
         etUserInfo.setIsDel(Constants.STATUS_USE);
         String fileName = "EtUserInfo.xls";
@@ -137,7 +135,6 @@ public class EtUserInfoContorller extends BaseController {
 
     @RequestMapping(value = "/upload.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> uploadHospitalUserTemplate(EtUserInfo userInfo, HttpServletRequest request,
                                                           MultipartFile file) throws IOException {
@@ -180,7 +177,6 @@ public class EtUserInfoContorller extends BaseController {
 
     @RequestMapping(value = "/delete.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> deleteHospitalUser(EtUserInfo userInfo) {
         userInfo = super.getFacade().getEtUserInfoService().getEtUserInfo(userInfo);
@@ -201,7 +197,6 @@ public class EtUserInfoContorller extends BaseController {
      */
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> confirm(EtProcessManager etProcessManager) {
         EtProcessManager temp = new EtProcessManager();

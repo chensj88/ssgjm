@@ -54,7 +54,6 @@ public class EtBusinessProcessController extends BaseController {
     @RequestMapping(value = "/list.do")
     @ResponseBody
     @Transactional
-    @ILog
     public  Map<String,Object> queryFlowInfoByPmId(EtBusinessProcess process, Row row,String startDate,String endDate) throws ParseException {
         //生成业务流程信息
         super.getFacade().getCommonQueryService().generateEtBusinessProcessByProject(process);
@@ -90,7 +89,6 @@ public class EtBusinessProcessController extends BaseController {
     @RequestMapping(value = "/changeScope.do")
     @ResponseBody
     @Transactional
-    @ILog
     public Map<String,Object> changeScope(EtBusinessProcess process){
         process.setOperatorTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
@@ -128,7 +126,6 @@ public class EtBusinessProcessController extends BaseController {
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
     @Transactional
-    @ILog
     public Map<String,Object> addOrModifyProcessInfo(EtBusinessProcess process){
         if (process.getId() == 0L) {
             process.setId(ssgjHelper.createEtBusinessProcessIdService());
@@ -156,7 +153,6 @@ public class EtBusinessProcessController extends BaseController {
     @RequestMapping(value = "/delete.do")
     @ResponseBody
     @Transactional
-    @ILog
     public Map<String,Object> deleteBusinessProcess(EtBusinessProcess process){
         super.getFacade().getEtBusinessProcessService().removeEtBusinessProcess(process);
         Map<String,Object> result = new HashMap<String,Object>();
@@ -167,7 +163,6 @@ public class EtBusinessProcessController extends BaseController {
     @RequestMapping(value = "/deleteFile.do")
     @ResponseBody
     @Transactional
-    @ILog
     public Map<String,Object> deleteFile(EtBusinessProcess process){
         long operator = process.getOperator();
         process.setOperator(null);
@@ -194,7 +189,6 @@ public class EtBusinessProcessController extends BaseController {
     @RequestMapping(value = "/confirmFlowNum.do")
     @ResponseBody
     @Transactional
-    @ILog
     public Map<String,Object> comfirmBusinessProcess(EtProcessManager manager){
         int status = manager.getIsFlowAffirm();
         manager.setIsFlowAffirm(null);
@@ -214,7 +208,6 @@ public class EtBusinessProcessController extends BaseController {
     @RequestMapping(value = "/confirmFlowConfig.do")
     @ResponseBody
     @Transactional
-    @ILog
     public Map<String,Object> confirmFlowConfig(EtProcessManager manager){
         int status = manager.getIsFlowConfig();
         manager.setIsFlowConfig(null);
@@ -269,7 +262,6 @@ public class EtBusinessProcessController extends BaseController {
      */
     @RequestMapping(value = "/upload.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String,Object> uploadFile(EtBusinessProcess process, HttpServletRequest request, MultipartFile file) throws IOException {
         Map<String,Object> result = new HashMap<String,Object>();

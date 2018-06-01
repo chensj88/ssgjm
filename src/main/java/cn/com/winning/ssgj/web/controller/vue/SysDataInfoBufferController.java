@@ -99,7 +99,6 @@ public class SysDataInfoBufferController extends BaseController {
      */
     @RequestMapping("/detail.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> detail(SysDataInfo t) {
         //根据id获取表属性
         SysDataInfo sysDataInfo = getFacade().getSysDataInfoService().getSysDataInfo(t);
@@ -175,7 +174,6 @@ public class SysDataInfoBufferController extends BaseController {
      */
     @RequestMapping(value = "/upload.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> upload(HttpServletRequest request, MultipartFile file) throws IOException {
         Map<String, Object> result = new HashMap<String, Object>();
         //如果文件不为空，写入上传路径
@@ -222,7 +220,6 @@ public class SysDataInfoBufferController extends BaseController {
      * @param dataType
      */
     @RequestMapping(value = "/exportExcel.do")
-    @ILog
     public void wiriteExcel(HttpServletResponse response, Long pmId, Integer dataType) {
         if (pmId == null) {
             return;
@@ -278,7 +275,6 @@ public class SysDataInfoBufferController extends BaseController {
      */
     @RequestMapping(value = "/exportDataInfo.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> exportDataInfo(HttpServletResponse response, SysDataInfo t) throws IOException {
         //根据id获取表属性
         SysDataInfo sysDataInfo = getFacade().getSysDataInfoService().getSysDataInfo(t);
@@ -352,7 +348,6 @@ public class SysDataInfoBufferController extends BaseController {
      */
     @RequestMapping(value = "/exportSql.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> exportSql(HttpServletResponse response, SysDataInfo t) throws IOException {
         //获取数据信息
         SysDataInfo sysDataInfo = getFacade().getSysDataInfoService().getSysDataInfo(t);
@@ -437,7 +432,6 @@ public class SysDataInfoBufferController extends BaseController {
      */
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> addOrModify(SysDataInfo sysDataInfo) {
         if (sysDataInfo.getId() == 0L || sysDataInfo.getId() == null) {
             //不存在id或id为初始值，则为新增数据
@@ -462,7 +456,6 @@ public class SysDataInfoBufferController extends BaseController {
      */
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> confirm(Long pmId, Integer dataType) {
         //项目id
         if (pmId == null) {

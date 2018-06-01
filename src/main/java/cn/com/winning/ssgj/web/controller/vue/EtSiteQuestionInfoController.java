@@ -128,7 +128,6 @@ public class EtSiteQuestionInfoController extends BaseController {
      */
     @RequestMapping(value = "/update.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> updateOperate(EtSiteQuestionInfo info) {
         info.setOperatorTime(new Timestamp(new Date().getTime()));
@@ -146,7 +145,6 @@ public class EtSiteQuestionInfoController extends BaseController {
      */
     @RequestMapping(value = "/exportPmisData.do", method = {RequestMethod.POST})
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> exportPmisData(EtSiteQuestionInfo info) {
         info.setOperatorTime(new Timestamp(new Date().getTime()));

@@ -91,7 +91,6 @@ public class EtContractProjectController extends BaseController {
      */
     @RequestMapping(value = "/addOrModifyProduct.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> addOrModifyProduct(EtContractTask task) {
         EtContractTask oldTask = new EtContractTask();
         oldTask.setId(task.getId());
@@ -124,7 +123,6 @@ public class EtContractProjectController extends BaseController {
      */
     @RequestMapping(value = "/deleteProduct.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> deleteProduct(EtContractTask task) {
         super.getFacade().getEtContractTaskService().removeEtContractTask(task);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -141,7 +139,6 @@ public class EtContractProjectController extends BaseController {
      * @throws IOException
      */
     @RequestMapping(value = "/exportExcel.do")
-    @ILog
     public HttpServletResponse wiriteExcel(EtContractTask task, HttpServletResponse response) throws IOException {
         String fileName = "ContractTask.xls";
         String path = getClass().getClassLoader().getResource("/template").getPath() + fileName;
@@ -177,7 +174,6 @@ public class EtContractProjectController extends BaseController {
 
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> confirmTask(EtProcessManager etProcessManager) {
         EtProcessManager temp = new EtProcessManager();
         temp.setPmId(etProcessManager.getPmId());
