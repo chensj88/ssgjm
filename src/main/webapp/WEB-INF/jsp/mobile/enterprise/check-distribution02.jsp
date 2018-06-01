@@ -10,7 +10,6 @@
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css" />
-		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_lfzo7jv66zjjor.css"/>
 		<script src="<%=basePath%>resources/js/common.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 	<body>
@@ -19,7 +18,7 @@
 			<div class="header">
 				<span class="mui-icon mui-icon-arrowleft" onclick="javascript:history.go(-1)"></span>
 				<div>${siteQuestionInfo.map.get("deptName")}</div>
-				<span class="mui-icon mui-icon-more"></span>
+				<span ><a style="color:#FFFFFF" href="<%=basePath%>mobile/siteInstallSet/setPerson.do?id=${siteQuestionInfo.id}&serialNo=${hospcode}&userId=${work_num}&siteName=${siteQuestionInfo.map.get("deptName")}">查看分配</a></span>
 			</div>
 			<div class="hole"></div>
 			<div class="datum-report padding-btm-20 padding-top-15">

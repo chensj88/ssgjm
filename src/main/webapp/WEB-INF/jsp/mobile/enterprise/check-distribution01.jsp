@@ -12,7 +12,6 @@
 		<link rel="stylesheet" href="<%=basePath%>resources/mobile/css/mui.min.css">
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css" />
-		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_o710wavlb78n0zfr.css" />
         <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js"></script>
         <script src="<%=basePath%>resources/js/common.js" type="text/javascript" charset="utf-8"></script>
 	</head>
