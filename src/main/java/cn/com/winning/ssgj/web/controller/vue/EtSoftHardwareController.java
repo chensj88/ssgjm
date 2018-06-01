@@ -149,7 +149,6 @@ public class EtSoftHardwareController extends BaseController {
      */
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> addOrModify(EtSoftHardware etSoftHardware) {
         String noScopeCode = etSoftHardware.getNoScopeCode();
@@ -193,7 +192,6 @@ public class EtSoftHardwareController extends BaseController {
      */
     @RequestMapping(value = "/delete.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> delete(EtSoftHardware etSoftHardware) {
         super.getFacade().getEtSoftHardwareService().removeEtSoftHardware(etSoftHardware);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -357,7 +355,6 @@ public class EtSoftHardwareController extends BaseController {
      */
     @RequestMapping(value = "/numChange.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> numChange(EtSoftHardware etSoftHardware) {
         etSoftHardware.setOperatorTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtSoftHardwareService().modifyEtSoftHardware(etSoftHardware);
@@ -375,7 +372,6 @@ public class EtSoftHardwareController extends BaseController {
      */
     @RequestMapping(value = "/changeScope.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> changeScope(EtSoftHardware etSoftHardware) {
         String noScopeCode = etSoftHardware.getNoScopeCode();
@@ -400,7 +396,6 @@ public class EtSoftHardwareController extends BaseController {
      */
     @RequestMapping(value = "/changeContent.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> changeContent(EtSoftHardware etSoftHardware) {
         etSoftHardware.setOperatorTime(new Timestamp(new Date().getTime()));

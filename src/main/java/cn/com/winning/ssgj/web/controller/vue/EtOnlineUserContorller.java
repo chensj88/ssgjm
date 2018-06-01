@@ -110,7 +110,6 @@ public class EtOnlineUserContorller extends BaseController {
 
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> addOrModifyHospitalUserInfo(EtOnlineUser etOnlineUser) {
         etOnlineUser.setStatus(Constants.STATUS_USE);
@@ -151,7 +150,6 @@ public class EtOnlineUserContorller extends BaseController {
     }
 
     @RequestMapping(value = "/exportExcel.do")
-    @ILog
     public HttpServletResponse wiriteExcel(EtOnlineUser etOnlineUser, HttpServletResponse response) throws IOException {
         etOnlineUser.setStatus(Constants.STATUS_USE);
         String fileName = "EtOnLineUserInfo.xls";
@@ -189,7 +187,6 @@ public class EtOnlineUserContorller extends BaseController {
 
     @RequestMapping(value = "/upload.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> uploadHospitalUserTemplate(EtOnlineUser etOnlineUser, Long serialNo, HttpServletRequest request,
                                                           MultipartFile file) throws IOException {
@@ -232,7 +229,6 @@ public class EtOnlineUserContorller extends BaseController {
 
     @RequestMapping(value = "/delete.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> deleteEtOnlineUser(EtOnlineUser etOnlineUser) {
         etOnlineUser.setStatus(Constants.STATUS_UNUSE);
@@ -245,7 +241,6 @@ public class EtOnlineUserContorller extends BaseController {
 
     @RequestMapping(value = "/confirm.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> confirmEtOnlineUser(EtProcessManager etProcessManager) {
         EtProcessManager temp = new EtProcessManager();

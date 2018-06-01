@@ -66,7 +66,6 @@ public class EtDepartmentController extends BaseController {
      */
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> addOrModify(EtDepartment depart) {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -125,7 +124,6 @@ public class EtDepartmentController extends BaseController {
      * @throws IOException
      */
     @RequestMapping(value = "/exportExcel.do")
-    @ILog
     public HttpServletResponse wiriteExcel(EtDepartment department, HttpServletResponse response) throws IOException {
         department.setIsDel(Constants.PMIS_STATUS_USE);
         String fileName = "department.xls";
@@ -172,7 +170,6 @@ public class EtDepartmentController extends BaseController {
      */
     @RequestMapping(value = "/upload.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> uploadDept(HttpServletRequest request, EtDepartment department,
                                                           MultipartFile file) throws IOException {
@@ -219,7 +216,6 @@ public class EtDepartmentController extends BaseController {
      */
     @RequestMapping(value = "/delete.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> deleteDept(EtDepartment department){
         department.setIsDel(0);

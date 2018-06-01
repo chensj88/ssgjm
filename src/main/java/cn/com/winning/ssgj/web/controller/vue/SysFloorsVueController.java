@@ -73,7 +73,6 @@ public class SysFloorsVueController extends BaseController {
      */
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> addOrModify(SysFloors sysFloors) {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -123,7 +122,6 @@ public class SysFloorsVueController extends BaseController {
      */
     @RequestMapping(value = "/delete.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> delete(SysFloors sysFloors) {
         super.getFacade().getSysFloorsService().removeSysFloors(sysFloors);

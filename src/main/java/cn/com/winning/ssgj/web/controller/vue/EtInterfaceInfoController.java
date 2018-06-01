@@ -67,7 +67,6 @@ public class EtInterfaceInfoController extends BaseController {
      */
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> addOrModify(EtInterfaceInfo etInterfaceInfo) {
         //创建临时变量
@@ -102,7 +101,6 @@ public class EtInterfaceInfoController extends BaseController {
      */
     @RequestMapping(value = "/delete.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> delete(EtInterfaceInfo etInterfaceInfo) {
         super.getFacade().getEtInterfaceInfoService().removeEtInterfaceInfo(etInterfaceInfo);
@@ -118,7 +116,6 @@ public class EtInterfaceInfoController extends BaseController {
      * @throws IOException
      */
     @RequestMapping(value = "/exportExcel.do")
-    @ILog
     public void wiriteExcel(HttpServletResponse response, EtInterfaceInfo etInterfaceInfo) throws IOException {
         //根据pmid获取所有接口数据
         List<EtInterfaceInfo> etInterfaceInfos = getFacade().getEtInterfaceInfoService().selectEtInterfaceInfoMergeList(etInterfaceInfo);

@@ -70,7 +70,6 @@ public class HospitalUserController extends BaseController {
      */
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> addOrModifyHospitalUserInfo(SysUserInfo userInfo) {
         //用户重复性校验
@@ -105,7 +104,6 @@ public class HospitalUserController extends BaseController {
      * @throws IOException
      */
     @RequestMapping(value = "/exportExcel.do")
-    @ILog
     public HttpServletResponse wiriteExcel(SysUserInfo queryUser, HttpServletResponse response) throws IOException {
         queryUser.setStatus(Constants.PMIS_STATUS_USE);
         queryUser.setUserType(Constants.User.USER_TYPE_HOSPITAL);
@@ -152,7 +150,6 @@ public class HospitalUserController extends BaseController {
      */
     @RequestMapping(value = "/upload.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> uploadHospitalUserTemplate(HttpServletRequest request,SysUserInfo userInfo,
                                                           MultipartFile file) throws IOException {
@@ -199,7 +196,6 @@ public class HospitalUserController extends BaseController {
      */
     @RequestMapping(value = "/delete.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> deleteHospitalUser(SysUserInfo userInfo){
         userInfo.setStatus(Constants.PMIS_STATUS_UNUSE);

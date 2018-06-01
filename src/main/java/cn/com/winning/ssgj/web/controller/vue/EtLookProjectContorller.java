@@ -43,7 +43,6 @@ public class EtLookProjectContorller extends BaseController {
     @RequestMapping(value = "/add.do")
     @ResponseBody
     @Transactional
-    @ILog
     public Map<String,Object> addLookProject(Long projectId,long userid){
         SysUserInfo userInfo = super.getFacade().getSysUserInfoService().getSysUserInfoById(userid);
         PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();

@@ -48,7 +48,6 @@ public class EtCustomerDetailContorller extends BaseController {
      */
     @RequestMapping("/add")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> addEtCustomerDetail(EtCustomerDetail etCustomerDetail) {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -64,7 +63,6 @@ public class EtCustomerDetailContorller extends BaseController {
      */
     @RequestMapping("/etCustomerDetailUpdate")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> updateEtCustomerDetail(EtCustomerDetail etCustomerDetail) {
         Map<String, Object> result = new HashMap<String, Object>();

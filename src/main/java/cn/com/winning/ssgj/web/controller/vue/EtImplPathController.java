@@ -47,7 +47,6 @@ public class EtImplPathController extends BaseController {
     }
 
     @RequestMapping(value = "/exportExcel.do")
-    @ILog
     public HttpServletResponse wiriteExcel(SysUserInfo queryUser, HttpServletResponse response) throws IOException {
 
         String fileName = "EtImplPath.xls";

@@ -95,7 +95,6 @@ public class EtDevEnvHardwareController extends BaseController {
      */
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> addOrModify(EtDevEnvHardware etDevEnvHardware) {
         //创建临时变量
@@ -131,7 +130,6 @@ public class EtDevEnvHardwareController extends BaseController {
      */
     @RequestMapping(value = "/delete.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> delete(EtDevEnvHardware etDevEnvHardware) {
         super.getFacade().getEtDevEnvHardwareService().removeEtDevEnvHardware(etDevEnvHardware);
         Map<String, Object> result = new HashMap<String, Object>();
