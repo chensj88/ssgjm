@@ -10,6 +10,7 @@
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css" />
+		<link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_575705_lfzo7jv66zjjor.css"/>
 		<script src="<%=basePath%>resources/js/common.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 	<body>
