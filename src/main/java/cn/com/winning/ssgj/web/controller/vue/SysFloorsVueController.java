@@ -20,10 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
@@ -202,6 +199,54 @@ public class SysFloorsVueController extends BaseController {
             result.put("msg", "上传文件失败,原因是：上传文件为空");
         }
         return result;
+    }
+
+    /**
+     * @param response
+     * @return
+     * @throws IOException
+     * @description 导出sql
+     */
+    @RequestMapping(value = "/exportModel.do")
+    @ResponseBody
+    public Map<String, Object> exportModel(HttpServletResponse response) throws IOException {
+
+        String realPath = Thread.currentThread().getContextClassLoader().getResource("/template").getPath();
+        //获取文件名
+        String filename = realPath + "\\FloorModel.xlsx";
+        File file = new File(filename);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        InputStream inputStream = new BufferedInputStream(fileInputStream);
+        String excelName = "楼层导入模板" + DateUtil.format(DateUtil.PATTERN_14) + ".xlsx";
+        byte[] bytes = new byte[inputStream.available()];
+        inputStream.read(bytes);
+        response.setCharacterEncoding("utf-8");
+        //设置响应内容的类型
+        response.setContentType("text/plain");
+        //设置文件的名称和格式
+        response.addHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode(excelName, "UTF-8"))));
+        BufferedOutputStream buff = null;
+        OutputStream outStr = null;
+        try {
+            outStr = response.getOutputStream();
+            buff = new BufferedOutputStream(outStr);
+            buff.write(bytes);
+            buff.flush();
+            buff.close();
+        } catch (Exception e) {
+            logger.error("导出模板出错，e:{}", e);
+        } finally {
+            try {
+                buff.close();
+                outStr.close();
+            } catch (Exception e) {
+                logger.error("关闭流对象出错 e:{}", e);
+            }
+        }
+        Map map = new HashMap();
+        map.put("status", Constants.SUCCESS);
+        return map;
+
     }
 
 }
