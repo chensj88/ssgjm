@@ -311,6 +311,7 @@ public class EtSiteQuestionInfoController extends BaseController {
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data",param );
+        result.put("columns",columns);
         return result;
 
     }
