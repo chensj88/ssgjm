@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.winning.ssgj.dao.EtTempQuestionInfoDao">
+
+    <resultMap id="etTempQuestionInfoResultForList" type="etTempQuestionInfo">
+        <result column="ID" property="id" jdbcType="BIGINT" />
+        <result column="C_ID" property="cId" jdbcType="BIGINT" />
+        <result column="PM_ID" property="pmId" jdbcType="BIGINT" />
+        <result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR" />
+        <result column="PRIORITY_TYPE" property="priorityType" jdbcType="VARCHAR" />
+        <result column="PRIORITY" property="priority" jdbcType="INTEGER" />
+        <result column="SITE_NAME" property="siteName" jdbcType="VARCHAR" />
+        <result column="SITE_ID" property="siteId" jdbcType="VARCHAR" />
+        <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR" />
+        <result column="PRODUCT_ID" property="productId" jdbcType="VARCHAR" />
+        <result column="MENU_NAME" property="menuName" jdbcType="VARCHAR" />
+        <result column="QUESTION_DESC" property="questionDesc" jdbcType="OTHER" />
+        <result column="QUESTION_VAR" property="questionVar" jdbcType="VARCHAR" />
+        <result column="QUESTION_TYPE" property="questionType" jdbcType="INTEGER" />
+        <result column="REASON_VAR" property="reasonVar" jdbcType="VARCHAR" />
+        <result column="REASON_TYPE" property="reasonType" jdbcType="INTEGER" />
+        <result column="MANUSCRIPT_VAR" property="manuscriptVar" jdbcType="VARCHAR" />
+        <result column="MANUSCRIPT_STATUS" property="manuscriptStatus" jdbcType="INTEGER" />
+        <result column="DIFFCULT_VAR" property="diffcultVar" jdbcType="VARCHAR" />
+        <result column="DIFFCULT_LEVEL" property="diffcultLevel" jdbcType="INTEGER" />
+        <result column="DEV_USER" property="devUser" jdbcType="VARCHAR" />
+        <result column="DEV_USER_NAME" property="devUserName" jdbcType="VARCHAR" />
+        <result column="INTRODUCER" property="introducer" jdbcType="VARCHAR" />
+        <result column="INTRODUCER_NAME" property="introducerName" jdbcType="VARCHAR" />
+        <result column="INTRODUCER_DATE" property="introducerDate" jdbcType="VARCHAR" />
+        <result column="LINKMAN" property="linkman" jdbcType="VARCHAR" />
+        <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+        <result column="OPER_VAR" property="operVar" jdbcType="VARCHAR" />
+        <result column="OPER_TYPE" property="operType" jdbcType="INTEGER" />
+        <result column="HOPE_FINISH_DATE" property="hopeFinishDate" jdbcType="VARCHAR" />
+        <result column="USER_MESSAGE" property="userMessage" jdbcType="VARCHAR" />
+        <result column="REQUIREMENT_NO" property="requirementNo" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="etTempQuestionInfoResult" type="etTempQuestionInfo" extends="etTempQuestionInfoResultForList">
+
+    </resultMap>
+
+    <sql id="sql-etTempQuestionInfo">
+        <if test="(id != null and id != '')"> and t.ID = #{id} </if>
+        <if test="(cId != null and cId != '')"> and t.C_ID = #{cId} </if>
+        <if test="(pmId != null and pmId != '')"> and t.PM_ID = #{pmId} </if>
+        <if test="(serialNo != null and serialNo != '')"> and t.SERIAL_NO = #{serialNo} </if>
+        <if test="(priorityType != null and priorityType != '')"> and t.PRIORITY_TYPE = #{priorityType} </if>
+        <if test="(priority != null and priority != '')"> and t.PRIORITY = #{priority} </if>
+        <if test="(siteName != null and siteName != '')"> and t.SITE_NAME = #{siteName} </if>
+        <if test="(siteId != null and siteId != '')"> and t.SITE_ID = #{siteId} </if>
+        <if test="(productName != null and productName != '')"> and t.PRODUCT_NAME = #{productName} </if>
+        <if test="(productId != null and productId != '')"> and t.PRODUCT_ID = #{productId} </if>
+        <if test="(menuName != null and menuName != '')"> and t.MENU_NAME = #{menuName} </if>
+        <if test="(questionDesc != null and questionDesc != '')"> and t.QUESTION_DESC = #{questionDesc} </if>
+        <if test="(questionVar != null and questionVar != '')"> and t.QUESTION_VAR = #{questionVar} </if>
+        <if test="(questionType != null and questionType != '')"> and t.QUESTION_TYPE = #{questionType} </if>
+        <if test="(reasonVar != null and reasonVar != '')"> and t.REASON_VAR = #{reasonVar} </if>
+        <if test="(reasonType != null and reasonType != '')"> and t.REASON_TYPE = #{reasonType} </if>
+        <if test="(manuscriptVar != null and manuscriptVar != '')"> and t.MANUSCRIPT_VAR = #{manuscriptVar} </if>
+        <if test="(manuscriptStatus != null and manuscriptStatus != '')"> and t.MANUSCRIPT_STATUS = #{manuscriptStatus} </if>
+        <if test="(diffcultVar != null and diffcultVar != '')"> and t.DIFFCULT_VAR = #{diffcultVar} </if>
+        <if test="(diffcultLevel != null and diffcultLevel != '')"> and t.DIFFCULT_LEVEL = #{diffcultLevel} </if>
+        <if test="(devUser != null and devUser != '')"> and t.DEV_USER = #{devUser} </if>
+        <if test="(devUserName != null and devUserName != '')"> and t.DEV_USER_NAME = #{devUserName} </if>
+        <if test="(introducer != null and introducer != '')"> and t.INTRODUCER = #{introducer} </if>
+        <if test="(introducerName != null and introducerName != '')"> and t.INTRODUCER_NAME = #{introducerName} </if>
+        <if test="(introducerDate != null and introducerDate != '')"> and t.INTRODUCER_DATE = #{introducerDate} </if>
+        <if test="(linkman != null and linkman != '')"> and t.LINKMAN = #{linkman} </if>
+        <if test="(mobile != null and mobile != '')"> and t.MOBILE = #{mobile} </if>
+        <if test="(operVar != null and operVar != '')"> and t.OPER_VAR = #{operVar} </if>
+        <if test="(operType != null and operType != '')"> and t.OPER_TYPE = #{operType} </if>
+        <if test="(hopeFinishDate != null and hopeFinishDate != '')"> and t.HOPE_FINISH_DATE = #{hopeFinishDate} </if>
+        <if test="(userMessage != null and userMessage != '')"> and t.USER_MESSAGE = #{userMessage} </if>
+        <if test="(requirementNo != null and requirementNo != '')"> and t.REQUIREMENT_NO = #{requirementNo} </if>
+    </sql>
+
+    <insert id="insertEtTempQuestionInfo" parameterType="etTempQuestionInfo">
+        INSERT INTO ET_TEMP_QUESTION_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '')"> ID , </if>
+            <if test="(cId != null and cId != '')"> C_ID , </if>
+            <if test="(pmId != null and pmId != '')"> PM_ID , </if>
+            <if test="(serialNo != null and serialNo != '')"> SERIAL_NO , </if>
+            <if test="(priorityType != null and priorityType != '')"> PRIORITY_TYPE , </if>
+            <if test="(priority != null and priority != '')"> PRIORITY , </if>
+            <if test="(siteName != null and siteName != '')"> SITE_NAME , </if>
+            <if test="(siteId != null and siteId != '')"> SITE_ID , </if>
+            <if test="(productName != null and productName != '')"> PRODUCT_NAME , </if>
+            <if test="(productId != null and productId != '')"> PRODUCT_ID , </if>
+            <if test="(menuName != null and menuName != '')"> MENU_NAME , </if>
+            <if test="(questionDesc != null and questionDesc != '')"> QUESTION_DESC , </if>
+            <if test="(questionVar != null and questionVar != '')"> QUESTION_VAR , </if>
+            <if test="(questionType != null and questionType != '')"> QUESTION_TYPE , </if>
+            <if test="(reasonVar != null and reasonVar != '')"> REASON_VAR , </if>
+            <if test="(reasonType != null and reasonType != '')"> REASON_TYPE , </if>
+            <if test="(manuscriptVar != null and manuscriptVar != '')"> MANUSCRIPT_VAR , </if>
+            <if test="(manuscriptStatus != null and manuscriptStatus != '')"> MANUSCRIPT_STATUS , </if>
+            <if test="(diffcultVar != null and diffcultVar != '')"> DIFFCULT_VAR , </if>
+            <if test="(diffcultLevel != null and diffcultLevel != '')"> DIFFCULT_LEVEL , </if>
+            <if test="(devUser != null and devUser != '')"> DEV_USER , </if>
+            <if test="(devUserName != null and devUserName != '')"> DEV_USER_NAME , </if>
+            <if test="(introducer != null and introducer != '')"> INTRODUCER , </if>
+            <if test="(introducerName != null and introducerName != '')"> INTRODUCER_NAME , </if>
+            <if test="(introducerDate != null and introducerDate != '')"> INTRODUCER_DATE , </if>
+            <if test="(linkman != null and linkman != '')"> LINKMAN , </if>
+            <if test="(mobile != null and mobile != '')"> MOBILE , </if>
+            <if test="(operVar != null and operVar != '')"> OPER_VAR , </if>
+            <if test="(operType != null and operType != '')"> OPER_TYPE , </if>
+            <if test="(hopeFinishDate != null and hopeFinishDate != '')"> HOPE_FINISH_DATE , </if>
+            <if test="(userMessage != null and userMessage != '')"> USER_MESSAGE , </if>
+            <if test="(requirementNo != null and requirementNo != '')"> REQUIREMENT_NO , </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '')"> #{id , jdbcType= BIGINT },  </if>
+            <if test="(cId != null and cId != '')"> #{cId , jdbcType= BIGINT },  </if>
+            <if test="(pmId != null and pmId != '')"> #{pmId , jdbcType= BIGINT },  </if>
+            <if test="(serialNo != null and serialNo != '')"> #{serialNo , jdbcType= VARCHAR },  </if>
+            <if test="(priorityType != null and priorityType != '')"> #{priorityType , jdbcType= VARCHAR },  </if>
+            <if test="(priority != null and priority != '')"> #{priority , jdbcType= INTEGER },  </if>
+            <if test="(siteName != null and siteName != '')"> #{siteName , jdbcType= VARCHAR },  </if>
+            <if test="(siteId != null and siteId != '')"> #{siteId , jdbcType= VARCHAR },  </if>
+            <if test="(productName != null and productName != '')"> #{productName , jdbcType= VARCHAR },  </if>
+            <if test="(productId != null and productId != '')"> #{productId , jdbcType= VARCHAR },  </if>
+            <if test="(menuName != null and menuName != '')"> #{menuName , jdbcType= VARCHAR },  </if>
+            <if test="(questionDesc != null and questionDesc != '')"> #{questionDesc , jdbcType= OTHER },  </if>
+            <if test="(questionVar != null and questionVar != '')"> #{questionVar , jdbcType= VARCHAR },  </if>
+            <if test="(questionType != null and questionType != '')"> #{questionType , jdbcType= INTEGER },  </if>
+            <if test="(reasonVar != null and reasonVar != '')"> #{reasonVar , jdbcType= VARCHAR },  </if>
+            <if test="(reasonType != null and reasonType != '')"> #{reasonType , jdbcType= INTEGER },  </if>
+            <if test="(manuscriptVar != null and manuscriptVar != '')"> #{manuscriptVar , jdbcType= VARCHAR },  </if>
+            <if test="(manuscriptStatus != null and manuscriptStatus != '')"> #{manuscriptStatus , jdbcType= INTEGER },  </if>
+            <if test="(diffcultVar != null and diffcultVar != '')"> #{diffcultVar , jdbcType= VARCHAR },  </if>
+            <if test="(diffcultLevel != null and diffcultLevel != '')"> #{diffcultLevel , jdbcType= INTEGER },  </if>
+            <if test="(devUser != null and devUser != '')"> #{devUser , jdbcType= VARCHAR },  </if>
+            <if test="(devUserName != null and devUserName != '')"> #{devUserName , jdbcType= VARCHAR },  </if>
+            <if test="(introducer != null and introducer != '')"> #{introducer , jdbcType= VARCHAR },  </if>
+            <if test="(introducerName != null and introducerName != '')"> #{introducerName , jdbcType= VARCHAR },  </if>
+            <if test="(introducerDate != null and introducerDate != '')"> #{introducerDate , jdbcType= VARCHAR },  </if>
+            <if test="(linkman != null and linkman != '')"> #{linkman , jdbcType= VARCHAR },  </if>
+            <if test="(mobile != null and mobile != '')"> #{mobile , jdbcType= VARCHAR },  </if>
+            <if test="(operVar != null and operVar != '')"> #{operVar , jdbcType= VARCHAR },  </if>
+            <if test="(operType != null and operType != '')"> #{operType , jdbcType= INTEGER },  </if>
+            <if test="(hopeFinishDate != null and hopeFinishDate != '')"> #{hopeFinishDate , jdbcType= VARCHAR },  </if>
+            <if test="(userMessage != null and userMessage != '')"> #{userMessage , jdbcType= VARCHAR },  </if>
+            <if test="(requirementNo != null and requirementNo != '')"> #{requirementNo , jdbcType= VARCHAR },  </if>
+        </trim>
+    </insert>
+
+    <update id="updateEtTempQuestionInfo" parameterType="etTempQuestionInfo">
+        UPDATE ET_TEMP_QUESTION_INFO
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '')"> ID , </if>
+                <if test="(cId != null and cId != '')"> C_ID , </if>
+                <if test="(pmId != null and pmId != '')"> PM_ID , </if>
+                <if test="(serialNo != null and serialNo != '')"> SERIAL_NO , </if>
+                <if test="(priorityType != null and priorityType != '')"> PRIORITY_TYPE , </if>
+                <if test="(priority != null and priority != '')"> PRIORITY , </if>
+                <if test="(siteName != null and siteName != '')"> SITE_NAME , </if>
+                <if test="(siteId != null and siteId != '')"> SITE_ID , </if>
+                <if test="(productName != null and productName != '')"> PRODUCT_NAME , </if>
+                <if test="(productId != null and productId != '')"> PRODUCT_ID , </if>
+                <if test="(menuName != null and menuName != '')"> MENU_NAME , </if>
+                <if test="(questionDesc != null and questionDesc != '')"> QUESTION_DESC , </if>
+                <if test="(questionVar != null and questionVar != '')"> QUESTION_VAR , </if>
+                <if test="(questionType != null and questionType != '')"> QUESTION_TYPE , </if>
+                <if test="(reasonVar != null and reasonVar != '')"> REASON_VAR , </if>
+                <if test="(reasonType != null and reasonType != '')"> REASON_TYPE , </if>
+                <if test="(manuscriptVar != null and manuscriptVar != '')"> MANUSCRIPT_VAR , </if>
+                <if test="(manuscriptStatus != null and manuscriptStatus != '')"> MANUSCRIPT_STATUS , </if>
+                <if test="(diffcultVar != null and diffcultVar != '')"> DIFFCULT_VAR , </if>
+                <if test="(diffcultLevel != null and diffcultLevel != '')"> DIFFCULT_LEVEL , </if>
+                <if test="(devUser != null and devUser != '')"> DEV_USER , </if>
+                <if test="(devUserName != null and devUserName != '')"> DEV_USER_NAME , </if>
+                <if test="(introducer != null and introducer != '')"> INTRODUCER , </if>
+                <if test="(introducerName != null and introducerName != '')"> INTRODUCER_NAME , </if>
+                <if test="(introducerDate != null and introducerDate != '')"> INTRODUCER_DATE , </if>
+                <if test="(linkman != null and linkman != '')"> LINKMAN , </if>
+                <if test="(mobile != null and mobile != '')"> MOBILE , </if>
+                <if test="(operVar != null and operVar != '')"> OPER_VAR , </if>
+                <if test="(operType != null and operType != '')"> OPER_TYPE , </if>
+                <if test="(hopeFinishDate != null and hopeFinishDate != '')"> HOPE_FINISH_DATE , </if>
+                <if test="(userMessage != null and userMessage != '')"> USER_MESSAGE , </if>
+                <if test="(requirementNo != null and requirementNo != '')"> REQUIREMENT_NO , </if>
+            </trim>
+        </set>
+        <where>
+            <if test="(id != null and id != '')"> and ID = #{ id }   </if>
+            <if test="(id !=null or id!='') and (map.pks != null and map.pks != '')">
+                and (ID) in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")"> #{item}</foreach>
+            </if>
+        </where>
+    </update>
+
+    <delete id="deleteEtTempQuestionInfo" parameterType="etTempQuestionInfo">
+        delete from  ET_TEMP_QUESTION_INFO
+        <where>
+            <if test="(id != null and id != '')"> and ID = #{ id }   </if>
+            <if test="(id !=null or id!='') and (map.pks != null and map.pks != '')">
+                and (ID) in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")"> #{item}</foreach>
+            </if>
+        </where>
+    </delete>
+
+
+    <select id="selectEtTempQuestionInfo" resultMap="etTempQuestionInfoResult" parameterType="etTempQuestionInfo">
+        SELECT * FROM ET_TEMP_QUESTION_INFO t
+        <where>
+            <include refid="sql-etTempQuestionInfo" />
+        </where>
+    </select>
+
+    <select id="selectEtTempQuestionInfoList" resultMap="etTempQuestionInfoResultForList" parameterType="etTempQuestionInfo">
+        SELECT
+        <if test="row.count != null and row.count != ''"> top ${row.count} </if>
+        * FROM ET_TEMP_QUESTION_INFO t
+        <where>
+            <include refid="sql-etTempQuestionInfo" />
+        </where>
+        ORDER BY t.ID DESC
+    </select>
+
+    <select id="selectEtTempQuestionInfoCount" resultType="int" parameterType="etTempQuestionInfo">
+        select count(1) from  ET_TEMP_QUESTION_INFO t
+        <where>
+            <include refid="sql-etTempQuestionInfo" />
+        </where>
+    </select>
+
+    <select id="selectEtTempQuestionInfoPageList" resultMap="etTempQuestionInfoResult" parameterType="etTempQuestionInfo">
+        SELECT * FROM (
+        SELECT t.* ,
+        ROW_NUMBER() OVER ( ORDER BY t.ID DESC ) AS _RN
+        FROM ET_TEMP_QUESTION_INFO t
+        <where>
+            <include refid="sql-etTempQuestionInfo" />
+        </where>
+        <!-- order by t.ID asc -->
+        ) TEMP_TABLE WHERE _RN BETWEEN  #{row.first} + 1 AND #{row.first} + #{row.count}
+    </select>
+
+    <update id="updateEtTempQuestionInfoDictValue" parameterType="etTempQuestionInfo">
+        UPDATE  ET_TEMP_QUESTION_INFO SET DIFFCULT_LEVEL =
+        (SELECT  DICT_VALUE  FROM SYS_DICT_INFO WHERE A.DIFFCULT_VAR = DICT_LABEL  AND DICT_CODE='diffcultLevel' ),
+        MANUSCRIPT_STATUS =
+        (SELECT  DICT_VALUE  FROM SYS_DICT_INFO WHERE A.MANUSCRIPT_VAR = DICT_LABEL  AND DICT_CODE='manuscriptStatus' ),
+        REASON_TYPE =
+        (SELECT  DICT_VALUE  FROM SYS_DICT_INFO WHERE A.REASON_VAR = DICT_LABEL  AND DICT_CODE='reasonType' ),
+        QUESTION_TYPE =
+        (SELECT  DICT_VALUE  FROM SYS_DICT_INFO WHERE A.QUESTION_VAR = DICT_LABEL  AND DICT_CODE='questionType' ),
+        PRIORITY =
+        (SELECT  DICT_VALUE  FROM SYS_DICT_INFO WHERE A.PRIORITY_TYPE = DICT_LABEL AND DICT_CODE='priorityType' ),
+        OPER_TYPE =
+        (SELECT  DICT_VALUE  FROM SYS_DICT_INFO WHERE A.OPER_VAR = DICT_LABEL AND DICT_CODE='operType' ),
+        SITE_ID =
+        (SELECT  ID  FROM ET_DEPARTMENT WHERE  A.SITE_NAME = DEPT_NAME AND  A.SERIAL_NO = SERIAL_NO    ),
+        PRODUCT_ID =
+        (SELECT  ID  FROM PMIS_PRODUCT_LINE_INFO WHERE A.PRODUCT_NAME = NAME) FROM ET_TEMP_QUESTION_INFO A
+        <where>
+            <if test="(serialNo != null and serialNo != '')"> and A.SERIAL_NO = #{serialNo} </if>
+        </where>
+    </update>
+
+    <delete id="deleteEtTempQuestionInfoBySerialNo" parameterType="etTempQuestionInfo">
+        delete from  ET_TEMP_QUESTION_INFO
+        <where>
+            <if test="(serialNo != null and serialNo != '')"> and SERIAL_NO = #{serialNo} </if>
+        </where>
+    </delete>
+</mapper>

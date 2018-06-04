@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.service;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -39,4 +40,11 @@ public interface EtSiteQuestionInfoService {
     void generateEtSiteQuestionInfo(EtSiteQuestionInfo info, String path);
 
     List<Map<String,Object>> getEtSiteQuestionCountInfo(EtSiteQuestionInfo info);
+
+    /**
+     * 根据Excel读取内容生成类
+     * @param questionList
+     * @param info
+     */
+    void createEtSiteQuestionInfo(List<List<Object>> questionList, EtSiteQuestionInfo info) throws ParseException;
 }

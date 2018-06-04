@@ -502,4 +502,11 @@
         <property name="format" value="WN-YWLC-{########}"/>
         <property name="dateCutOff" value="false"/>
     </bean>
+    <!--导入底稿临时表ID-->
+    <bean id="tempWorkReportGenerateService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="TEMP_WROK_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
 </beans>

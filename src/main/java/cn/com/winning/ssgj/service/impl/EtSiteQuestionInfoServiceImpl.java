@@ -1,14 +1,23 @@
 package cn.com.winning.ssgj.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.annotation.Resource;
 
 
+import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.DateUtil;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
+import cn.com.winning.ssgj.base.util.StringUtil;
+import cn.com.winning.ssgj.dao.EtTempQuestionInfoDao;
+import cn.com.winning.ssgj.domain.EtTempQuestionInfo;
+import cn.com.winning.ssgj.domain.SysUserInfo;
+import cn.com.winning.ssgj.service.SysUserInfoService;
+import org.omg.CORBA.OMGVMCID;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.EtSiteQuestionInfoDao;
@@ -24,7 +33,12 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
 
     @Resource
     private EtSiteQuestionInfoDao etSiteQuestionInfoDao;
-
+    @Autowired
+    private EtTempQuestionInfoDao etTempQuestionInfoDao;
+    @Autowired
+    private SSGJHelper ssgjHelper;
+    @Autowired
+    private SysUserInfoService sysUserInfoService;
 
 
     public Integer createEtSiteQuestionInfo(EtSiteQuestionInfo t) {
@@ -125,6 +139,87 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
     public List<Map<String, Object>> getEtSiteQuestionCountInfo(EtSiteQuestionInfo info) {
 
         return this.etSiteQuestionInfoDao.selectEtSiteQuestionCountInfo(info);
+    }
+
+    @Override
+    public void createEtSiteQuestionInfo(List<List<Object>> questionList, EtSiteQuestionInfo info) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        for (List<Object> list : questionList) {
+            EtTempQuestionInfo tempInfo = new EtTempQuestionInfo();
+            tempInfo.setId(ssgjHelper.createtempWorkReportGenerateService());
+            tempInfo.setPmId(info.getPmId());
+            tempInfo.setCId(info.getCId());
+            tempInfo.setSerialNo(info.getSerialNo());
+            tempInfo.setPriorityType(list.get(0).toString());
+            tempInfo.setSiteName(list.get(1).toString());
+            tempInfo.setProductName(list.get(2).toString());
+            tempInfo.setMenuName(list.get(3).toString());
+            tempInfo.setQuestionDesc(list.get(4).toString());
+            tempInfo.setQuestionVar(list.get(5).toString());
+            tempInfo.setReasonVar(list.get(6).toString());
+            tempInfo.setManuscriptVar(list.get(7).toString());
+            tempInfo.setDiffcultVar(list.get(8).toString());
+            tempInfo.setDevUser(list.get(9).toString());
+            tempInfo.setDevUserName(list.get(10).toString());
+            tempInfo.setIntroducer(list.get(11).toString());
+            tempInfo.setIntroducerName(list.get(12).toString());
+            tempInfo.setIntroducerDate(list.get(13).toString());
+            tempInfo.setLinkman(list.get(14).toString());
+            tempInfo.setMobile(list.get(15).toString());
+            tempInfo.setOperVar(list.get(16).toString());
+            tempInfo.setHopeFinishDate(list.get(17).toString());
+            String userMsg  = "";
+            if(list.size() >= 19 && !StringUtil.isEmptyOrNull(list.get(18).toString())){
+                userMsg = list.get(18).toString();
+            }
+            tempInfo.setUserMessage(userMsg);
+            String requireNo  = "";
+            if(list.size() >= 20 && !StringUtil.isEmptyOrNull(list.get(19).toString())){
+                requireNo = list.get(19).toString();
+            }
+            tempInfo.setRequirementNo(requireNo);
+            etTempQuestionInfoDao.insertEntity(tempInfo);
+        }
+        EtTempQuestionInfo tempQuestionInfo = new EtTempQuestionInfo();
+        tempQuestionInfo.setSerialNo(info.getSerialNo());
+        etTempQuestionInfoDao.updateEtTempQuestionInfoDictValue(tempQuestionInfo);
+        SysUserInfo user = sysUserInfoService.getSysUserInfoById(info.getCreator());
+        List<EtTempQuestionInfo> etTempQuestionInfos = etTempQuestionInfoDao.selectEntityList(tempQuestionInfo);
+        for (EtTempQuestionInfo tinfo : etTempQuestionInfos) {
+            EtSiteQuestionInfo qinfo = new EtSiteQuestionInfo();
+            qinfo.setId(ssgjHelper.createSiteQuestionIdService());
+            qinfo.setPmId(info.getPmId());
+            qinfo.setCId(info.getCId());
+            qinfo.setSerialNo(info.getSerialNo());
+            qinfo.setSiteName(tinfo.getSiteId());
+            qinfo.setProductName(tinfo.getProductId());
+            qinfo.setMenuName(tinfo.getMenuName());
+            qinfo.setQuestionType(tinfo.getQuestionType());
+            qinfo.setQuestionDesc(tinfo.getQuestionDesc());
+            qinfo.setOperType(tinfo.getOperType());
+            qinfo.setPriority(tinfo.getPriority());
+            qinfo.setReasonType(tinfo.getReasonType());
+            qinfo.setManuscriptStatus(tinfo.getManuscriptStatus());
+            qinfo.setDevUser(tinfo.getDevUser());
+            qinfo.setDevUserName(tinfo.getDevUserName());
+            qinfo.setIntroducer(tinfo.getIntroducer());
+            qinfo.setIntroducerName(tinfo.getIntroducerName());
+            qinfo.setIntroducerDate(tinfo.getIntroducerDate());
+            qinfo.setLinkman(tinfo.getLinkman());
+            qinfo.setMobile(tinfo.getMobile());
+            qinfo.setCreateTime(new Timestamp(new Date().getTime()));
+            qinfo.setCreator(info.getCreator());
+            if(tinfo.getRequirementNo() != null && !StringUtil.isEmptyOrNull(tinfo.getRequirementNo())){
+                qinfo.setRequirementNo(tinfo.getRequirementNo());
+                qinfo.setPmisStatus(1);
+            }else{
+                qinfo.setPmisStatus(2);
+            }
+            qinfo.setCreateNo(user.getUserid());
+            qinfo.setIsOperation(0);
+            etSiteQuestionInfoDao.insertEntity(qinfo);
+        }
+
     }
 
 }

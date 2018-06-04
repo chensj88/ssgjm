@@ -246,7 +246,17 @@ public class SSGJHelper {
     @Qualifier(value = "cutomerFlowCodeGenerateService")
     private StepSequenceFactory  cutomerFlowCodeGenerateService;
 
+    @Autowired
+    @Qualifier(value = "tempWorkReportGenerateService")
+    private StepSequenceFactory  tempWorkReportGenerateService;
 
+    /**
+     * 导入站点问题临时表ID
+     * @return
+     */
+    public long createtempWorkReportGenerateService(){
+        return (long) tempWorkReportGenerateService.create();
+    }
     public long createSysUserVideoAuthTempIdService(){
         return (long) sysUserVideoAuthTempIdService.create();
     }

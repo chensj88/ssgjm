@@ -13,10 +13,7 @@ import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.ResolverStyle;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author chenshijie
@@ -235,11 +232,15 @@ public class ExcelUtil {
                 value = cell.getRichStringCellValue().getString();
                 break;
             case Cell.CELL_TYPE_NUMERIC:
-                if ("General".equals(cell.getCellStyle().getDataFormatString())) {
+                short format = cell.getCellStyle().getDataFormat();
+                if (format == 14 || format == 31 || format == 57 || format == 58
+                        || (176<=format && format<=178) || (182<=format && format<=196)
+                        || (210<=format && format<=213) || (208==format ) ) { // 日期
+                    sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    value =  sdf.format(org.apache.poi.ss.usermodel.DateUtil.getJavaDate(cell.getNumericCellValue()));
+                }else  if ("General".equals(cell.getCellStyle().getDataFormatString())) {
                     value = df.format(cell.getNumericCellValue());
-                } else if ("m/d/yy".equals(cell.getCellStyle().getDataFormatString())) {
-                    value = sdf.format(cell.getDateCellValue());
-                } else {
+                }else {
                     value = df2.format(cell.getNumericCellValue());
                 }
                 break;
