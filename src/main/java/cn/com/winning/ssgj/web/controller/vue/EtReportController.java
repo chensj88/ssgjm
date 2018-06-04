@@ -107,7 +107,6 @@ public class EtReportController extends BaseController {
     @RequestMapping(value = "/list.do")
     @ResponseBody
     @Transactional
-    @ILog
     public Map<String, Object> list(EtReport etReport, Long userId, Row row) {
         Long pmId = etReport.getPmId();
         //统计总数
@@ -169,7 +168,6 @@ public class EtReportController extends BaseController {
     @RequestMapping(value = "/changeScope.do")
     @ResponseBody
     @Transactional
-    @ILog
     public Map<String, Object> changeScope(EtReport etReport) {
         String noScopeCode = etReport.getNoScopeCode();
         if (StringUtil.isEmptyOrNull(noScopeCode)) {
@@ -198,7 +196,6 @@ public class EtReportController extends BaseController {
      */
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> addOrModify(EtReport etReport) {
         String noScopeCode = etReport.getNoScopeCode();
@@ -242,7 +239,6 @@ public class EtReportController extends BaseController {
      */
     @RequestMapping(value = "/confirmNum.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> confirmNum(EtProcessManager etProcessManager) {
         EtProcessManager temp = new EtProcessManager();
@@ -265,7 +261,6 @@ public class EtReportController extends BaseController {
      */
     @RequestMapping(value = "/confirmDev.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> confirmDev(EtProcessManager etProcessManager) {
         EtProcessManager temp = new EtProcessManager();
@@ -292,7 +287,6 @@ public class EtReportController extends BaseController {
      */
     @RequestMapping(value = "/upload.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> upload(EtReport report, HttpServletRequest request, MultipartFile file, Long pmId) throws IOException {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -387,7 +381,6 @@ public class EtReportController extends BaseController {
      */
     @RequestMapping(value = "/changeStatus.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> changeStatus(EtReport etReport) {
         Map map = new HashMap();
@@ -409,7 +402,6 @@ public class EtReportController extends BaseController {
      */
     @RequestMapping(value = "/delete.do")
     @ResponseBody
-    @ILog
     public Map<String, Object> delete(EtReport etReport) {
         EtReport report = getFacade().getEtReportService().getEtReport(etReport);
         //删除数据

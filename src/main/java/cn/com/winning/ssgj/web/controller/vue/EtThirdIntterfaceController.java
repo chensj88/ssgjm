@@ -235,7 +235,6 @@ public class EtThirdIntterfaceController extends BaseController {
      */
     @RequestMapping(value = "/addOrModify.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> addOrModify(EtThirdIntterface etThirdIntterface) {
         //创建临时变量
@@ -280,7 +279,6 @@ public class EtThirdIntterfaceController extends BaseController {
      * @throws IOException
      */
     @RequestMapping(value = "/export.do")
-    @ILog
     public void export(HttpServletResponse response, EtThirdIntterface etThirdIntterface) throws IOException {
         //根据pmid获取所有接口数据
         List<EtThirdIntterface> etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().selectEtThirdIntterfaceMergeList(etThirdIntterface);
@@ -315,7 +313,6 @@ public class EtThirdIntterfaceController extends BaseController {
      * @throws IOException
      */
     @RequestMapping(value = "/exportExcel.do")
-    @ILog
     public void wiriteExcel(HttpServletResponse response, EtThirdIntterface etThirdIntterface) throws IOException {
         //根据pmid获取所有接口数据
         List<EtThirdIntterface> etThirdIntterfaces = getFacade().getEtThirdIntterfaceService().selectEtThirdIntterfaceMergeList(etThirdIntterface);
@@ -345,7 +342,6 @@ public class EtThirdIntterfaceController extends BaseController {
      */
     @RequestMapping(value = "/delete.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> delete(EtThirdIntterface etThirdIntterface) {
         //获取接口
@@ -368,7 +364,6 @@ public class EtThirdIntterfaceController extends BaseController {
      */
     @RequestMapping(value = "/confirmNum.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> confirmNum(EtProcessManager etProcessManager) {
         EtProcessManager temp = new EtProcessManager();
@@ -391,7 +386,6 @@ public class EtThirdIntterfaceController extends BaseController {
      */
     @RequestMapping(value = "/confirmDev.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> confirmDev(EtProcessManager etProcessManager) {
         EtProcessManager temp = new EtProcessManager();
@@ -415,7 +409,6 @@ public class EtThirdIntterfaceController extends BaseController {
      */
     @RequestMapping(value = "/changeScope.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> changeScope(EtThirdIntterface etThirdIntterface) {
         Map map = new HashMap();
@@ -446,7 +439,6 @@ public class EtThirdIntterfaceController extends BaseController {
      */
     @RequestMapping(value = "/changeContent.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> changeContent(EtThirdIntterface etThirdIntterface) {
         EtThirdIntterface thirdIntterface = new EtThirdIntterface();
@@ -467,7 +459,6 @@ public class EtThirdIntterfaceController extends BaseController {
      */
     @RequestMapping(value = "/changeStatus.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> changeStatus(EtThirdIntterface etThirdIntterface) {
         Map map = new HashMap();
@@ -528,7 +519,6 @@ public class EtThirdIntterfaceController extends BaseController {
      */
     @RequestMapping(value = "/upload.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> upload(EtThirdIntterface etThirdIntterface, HttpServletRequest request, MultipartFile file, Long pmId) throws IOException {
         Map<String, Object> result = new HashMap<String, Object>();

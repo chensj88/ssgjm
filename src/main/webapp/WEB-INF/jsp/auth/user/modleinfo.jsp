@@ -87,6 +87,7 @@
                                     <select class="form-control" name="modLevel" id="modLevel">
                                         <option value="1">一级模块</option>
                                         <option value="2">二级模块</option>
+                                        <option value="3">三级模块</option>
                                     </select>
                                 </div>
                             </div>

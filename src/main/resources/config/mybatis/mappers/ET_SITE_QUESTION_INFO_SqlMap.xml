@@ -445,54 +445,54 @@
         </where>
     </delete>
 
-    <select id="selectEtSiteQuestionCountInfo" resultMap="etSiteQuestionInfoResult" parameterType="etSiteQuestionInfo">
+    <select id="selectEtSiteQuestionCountInfo" resultType="map" parameterType="etSiteQuestionInfo">
 
         SELECT
         <trim suffixOverrides=",">
-            <if test="map.isMenu != null"> t.MENU_NAME, </if>
-            <if test="map.isRNO!= null">t.REQUIREMENT_NO,</if>
-            <if test="map.isQDesc!= null"> t.QUESTION_DESC,</if>
-            <if test="map.isDevUser!= null">t.DEV_USER, </if>
-            <if test="map.isDevName!= null">t.DEV_USER_NAME, </if>
-            <if test="map.isLinkman!= null">t.LINKMAN, </if>
-            <if test="map.isMobile != null">t.MOBILE, </if>
-            <if test="map.isintroName!= null">t.INTRODUCER_NAME, </if>
-            <if test="map.isintroDate!= null">t.INTRODUCER_DATE, </if>
-            <if test="map.isHopeFD != null">t.HOPE_FINISH_DATE, </if>
-            <if test="map.isResolveDate!= null">t.RESOLVE_DATE, </if>
-            <if test="map.isSoluRes!= null">t.SOLUTION_RESULT, </if>
-            <if test="map.isWorkload != null">t.WORK_LOAD, </if>
-            <if test="map.isUserMessage!= null">t.USER_MESSAGE, </if>
-            <if test="map.isOperation!= null">t.IS_OPERATION, </if>
-            <if test="map.isCreateTime != null"> CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END  , </if>
-            <if test="map.isCreator!= null">
+            <if test="map.is3 != null"> t.MENU_NAME, </if>
+            <if test="map.is4 != null">t.REQUIREMENT_NO,</if>
+            <if test="map.is6 != null"> t.QUESTION_DESC,</if>
+            <if test="map.is13 != null">t.DEV_USER, </if>
+            <if test="map.is14 != null">t.DEV_USER_NAME, </if>
+            <if test="map.is15 != null">t.LINKMAN, </if>
+            <if test="map.is16 != null">t.MOBILE, </if>
+            <if test="map.is17 != null">t.INTRODUCER_NAME, </if>
+            <if test="map.is18 != null">t.INTRODUCER_DATE, </if>
+            <if test="map.is19 != null">t.HOPE_FINISH_DATE, </if>
+            <if test="map.is20 != null">t.RESOLVE_DATE, </if>
+            <if test="map.is21 != null">t.SOLUTION_RESULT, </if>
+            <if test="map.is22 != null">t.WORK_LOAD, </if>
+            <if test="map.is23 != null">t.USER_MESSAGE, </if>
+            <if test="map.is26 != null">t.IS_OPERATION, </if>
+            <if test="map.is25 != null"> CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END  CREATE_TIME_STRING, </if>
+            <if test="map.is24!= null">
                 i.YHMC as create_name,i.USERID AS createUser,i.NAME AS createUserName,
             </if>
-            <if test="map.isAName!= null">
+            <if test="map.is9 != null">
                 ii.YHMC as allocate_name,
             </if>
-            <if test="map.isQType!= null">
+            <if test="map.is5 != null">
                 d.DICT_LABEL,
             </if>
-            <if test="map.isOType!= null">
+            <if test="map.is7 != null">
                 e.DICT_LABEL AS operTypeString,
             </if>
-            <if test="map.isPType!= null">
+            <if test="map.is8 != null">
                 f.DICT_LABEL AS  priorityString,
             </if>
-            <if test="map.isDeptName!= null">
+            <if test="map.is1 != null">
                 g.DEPT_NAME as DEPT_NAME,
             </if>
-            <if test="map.isPlName!= null">
+            <if test="map.is2 != null">
                 h.NAME AS PL_NAME,
             </if>
-            <if test="map.isRString!= null">
+            <if test="map.is10!= null">
                 j.DICT_LABEL AS reasonString,
             </if>
-            <if test="map.isMString!= null">
+            <if test="map.isQ11 != null">
                 k.DICT_LABEL AS mstatusString,
             </if>
-            <if test="map.isDString!= null">
+            <if test="map.isQ12 != null">
                 l.DICT_LABEL AS  diffString,
             </if>
         </trim>
@@ -500,94 +500,94 @@
         FROM  (
             SELECT
             <trim suffixOverrides=",">
-                <if test="map.isDeptName!= null ">t.SITE_NAME , </if>
-                <if test="map.isPlName != null">t.PRODUCT_NAME , </if>
-                <if test="map.isMenu != null"> t.MENU_NAME, </if>
-                <if test="map.isRNO!= null">t.REQUIREMENT_NO,</if>
-                <if test="map.isQType!= null"> t.QUESTION_TYPE,</if>
-                <if test="map.isQDesc!= null"> t.QUESTION_DESC,</if>
-                <if test="map.isOType!= null"> t.OPER_TYPE  , </if>
-                <if test="map.isPType!= null"> t.PRIORITY ,</if>
-                <if test="map.isAName!= null"> t.ALLOCATE_USER  ,</if>
-                <if test="map.isRString!= null">t.REASON_TYPE  , </if>
-                <if test="map.isMString!= null">t.MANUSCRIPT_STATUS , </if>
-                <if test="map.isDString!= null">t.DIFFCULT_LEVEL  , </if>
-                <if test="map.isDevUser!= null">t.DEV_USER, </if>
-                <if test="map.isDevName!= null">t.DEV_USER_NAME, </if>
-                <if test="map.isLinkman!= null">t.LINKMAN, </if>
-                <if test="map.isMobile != null">t.MOBILE, </if>
-                <if test="map.isintroName!= null">t.INTRODUCER_NAME, </if>
-                <if test="map.isintroDate!= null">t.INTRODUCER_DATE, </if>
-                <if test="map.isHopeFD != null">t.HOPE_FINISH_DATE, </if>
-                <if test="map.isResolveDate!= null">t.RESOLVE_DATE, </if>
-                <if test="map.isSoluRes!= null">t.SOLUTION_RESULT, </if>
-                <if test="map.isWorkload != null">t.WORK_LOAD, </if>
-                <if test="map.isUserMessage!= null">t.USER_MESSAGE, </if>
-                <if test="map.isCreator!= null">t.CREATOR, </if>
-                <if test="map.isCreateTime != null"> CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END  , </if>
-                <if test="map.isOperation!= null">t.IS_OPERATION, </if>
+                <if test="map.isQ1 != null ">t.SITE_NAME , </if>
+                <if test="map.isQ2 != null">t.PRODUCT_NAME , </if>
+                <if test="map.isQ3 != null"> t.MENU_NAME, </if>
+                <if test="map.isQ4 != null">t.REQUIREMENT_NO,</if>
+                <if test="map.isQ5 != null"> t.QUESTION_TYPE,</if>
+                <if test="map.isQ6 != null"> t.QUESTION_DESC,</if>
+                <if test="map.isQ7 != null"> t.OPER_TYPE  , </if>
+                <if test="map.isQ8 != null"> t.PRIORITY ,</if>
+                <if test="map.isQ9 != null"> t.ALLOCATE_USER  ,</if>
+                <if test="map.isQ10 != null">t.REASON_TYPE  , </if>
+                <if test="map.isQ11 != null">t.MANUSCRIPT_STATUS , </if>
+                <if test="map.isQ12 != null">t.DIFFCULT_LEVEL  , </if>
+                <if test="map.isQ13 != null">t.DEV_USER, </if>
+                <if test="map.isQ14 != null">t.DEV_USER_NAME, </if>
+                <if test="map.isQ15 != null">t.LINKMAN, </if>
+                <if test="map.isQ16 != null">t.MOBILE, </if>
+                <if test="map.isQ17 != null">t.INTRODUCER_NAME, </if>
+                <if test="map.isQ18 != null">t.INTRODUCER_DATE, </if>
+                <if test="map.isQ19 != null">t.HOPE_FINISH_DATE, </if>
+                <if test="map.isQ20 != null">t.RESOLVE_DATE, </if>
+                <if test="map.isQ21 != null">t.SOLUTION_RESULT, </if>
+                <if test="map.isQ22 != null">t.WORK_LOAD, </if>
+                <if test="map.isQ23 != null">t.USER_MESSAGE, </if>
+                <if test="map.isQ24 != null">t.CREATOR, </if>
+                <if test="map.isQ25 != null"> CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END  , </if>
+                <if test="map.isQ26 != null">t.IS_OPERATION, </if>
             </trim>
             ,count(1) countNum
             FROM   ET_SITE_QUESTION_INFO t
             WHERE t.SERIAL_NO = #{serialNo}
             GROUP BY
             <trim suffixOverrides=",">
-                <if test="map.isDeptName!= null ">t.SITE_NAME , </if>
-                <if test="map.isPlName != null">t.PRODUCT_NAME , </if>
-                <if test="map.isMenu != null"> t.MENU_NAME, </if>
-                <if test="map.isRNO!= null">t.REQUIREMENT_NO,</if>
-                <if test="map.isQType!= null"> t.QUESTION_TYPE,</if>
-                <if test="map.isQDesc!= null"> t.QUESTION_DESC,</if>
-                <if test="map.isOType!= null"> t.OPER_TYPE  , </if>
-                <if test="map.isPType!= null"> t.PRIORITY ,</if>
-                <if test="map.isAName!= null"> t.ALLOCATE_USER  ,</if>
-                <if test="map.isRString!= null">t.REASON_TYPE  , </if>
-                <if test="map.isMString!= null">t.MANUSCRIPT_STATUS , </if>
-                <if test="map.isDString!= null">t.DIFFCULT_LEVEL  , </if>
-                <if test="map.isDevUser!= null">t.DEV_USER, </if>
-                <if test="map.isDevName!= null">t.DEV_USER_NAME, </if>
-                <if test="map.isLinkman!= null">t.LINKMAN, </if>
-                <if test="map.isMobile != null">t.MOBILE, </if>
-                <if test="map.isintroName!= null">t.INTRODUCER_NAME, </if>
-                <if test="map.isintroDate!= null">t.INTRODUCER_DATE, </if>
-                <if test="map.isHopeFD != null">t.HOPE_FINISH_DATE, </if>
-                <if test="map.isResolveDate!= null">t.RESOLVE_DATE, </if>
-                <if test="map.isSoluRes!= null">t.SOLUTION_RESULT, </if>
-                <if test="map.isWorkload != null">t.WORK_LOAD, </if>
-                <if test="map.isUserMessage!= null">t.USER_MESSAGE, </if>
-                <if test="map.isCreator!= null">t.CREATOR, </if>
-                <if test="map.isCreateTime != null"> CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END  , </if>
-                <if test="map.isOperation!= null">t.IS_OPERATION, </if>
+                <if test="map.isQ1 != null ">t.SITE_NAME , </if>
+                <if test="map.isQ2 != null">t.PRODUCT_NAME , </if>
+                <if test="map.isQ3 != null"> t.MENU_NAME, </if>
+                <if test="map.isQ4 != null">t.REQUIREMENT_NO,</if>
+                <if test="map.isQ5 != null"> t.QUESTION_TYPE,</if>
+                <if test="map.isQ6 != null"> t.QUESTION_DESC,</if>
+                <if test="map.isQ7 != null"> t.OPER_TYPE  , </if>
+                <if test="map.isQ8 != null"> t.PRIORITY ,</if>
+                <if test="map.isQ9 != null"> t.ALLOCATE_USER  ,</if>
+                <if test="map.isQ10 != null">t.REASON_TYPE  , </if>
+                <if test="map.isQ11 != null">t.MANUSCRIPT_STATUS , </if>
+                <if test="map.isQ12 != null">t.DIFFCULT_LEVEL  , </if>
+                <if test="map.isQ13 != null">t.DEV_USER, </if>
+                <if test="map.isQ14 != null">t.DEV_USER_NAME, </if>
+                <if test="map.isQ15 != null">t.LINKMAN, </if>
+                <if test="map.isQ16 != null">t.MOBILE, </if>
+                <if test="map.isQ17 != null">t.INTRODUCER_NAME, </if>
+                <if test="map.isQ18 != null">t.INTRODUCER_DATE, </if>
+                <if test="map.isQ19 != null">t.HOPE_FINISH_DATE, </if>
+                <if test="map.isQ20 != null">t.RESOLVE_DATE, </if>
+                <if test="map.isQ21 != null">t.SOLUTION_RESULT, </if>
+                <if test="map.isQ22 != null">t.WORK_LOAD, </if>
+                <if test="map.isQ23 != null">t.USER_MESSAGE, </if>
+                <if test="map.isQ24 != null">t.CREATOR, </if>
+                <if test="map.isQ25 != null"> CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END  , </if>
+                <if test="map.isQ26 != null">t.IS_OPERATION, </if>
             </trim>
         ) t
-        <if test="map.isCreator!= null">
+        <if test="map.isQ24 != null">
           LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
         </if>
-        <if test="map.isAName!= null">
+        <if test="map.isQ9 != null">
           LEFT JOIN SYS_USER_INFO ii ON t.ALLOCATE_USER=ii.ID
         </if>
-        <if test="map.isQType!= null">
+        <if test="map.isQ5!= null">
           LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
         </if>
-        <if test="map.isOType!= null">
+        <if test="map.isQ7!= null">
           LEFT JOIN SYS_DICT_INFO e ON t.OPER_TYPE=e.DICT_VALUE AND e.DICT_CODE='operType'
         </if>
-        <if test="map.isPType!= null">
+        <if test="map.isQ8!= null">
          LEFT JOIN SYS_DICT_INFO f ON t.PRIORITY=f.DICT_VALUE AND f.DICT_CODE='priorityType'
         </if>
-        <if test="map.isDeptName!= null">
+        <if test="map.isQ1!= null">
           LEFT JOIN ET_DEPARTMENT g ON  CAST(t.SITE_NAME AS INT) = g.ID
         </if>
-        <if test="map.isPlName!= null">
+        <if test="map.isQ2!= null">
           LEFT JOIN PMIS_PRODUCT_LINE_INFO h ON CAST(t.PRODUCT_NAME AS INT) = h.ID
         </if>
-        <if test="map.isRString!= null">
+        <if test="map.isQ10!= null">
           LEFT JOIN SYS_DICT_INFO j ON t.REASON_TYPE = j.DICT_VALUE AND j.DICT_CODE='reasonType'
         </if>
-        <if test="map.isMString!= null">
+        <if test="map.isQ11!= null">
           LEFT JOIN SYS_DICT_INFO k ON t.MANUSCRIPT_STATUS = k.DICT_VALUE AND k.DICT_CODE='manuscriptStatus'
         </if>
-        <if test="map.isDString!= null">
+        <if test="map.isQ12!= null">
           LEFT JOIN SYS_DICT_INFO l ON t.DIFFCULT_LEVEL=l.DICT_VALUE AND l.DICT_CODE='diffcultLevel'
         </if>
 
