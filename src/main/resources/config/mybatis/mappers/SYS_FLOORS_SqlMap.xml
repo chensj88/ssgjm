@@ -2,128 +2,128 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.winning.ssgj.dao.SysFloorsDao">
 
-	<resultMap id="sysFloorsResultForList" type="sysFloors">
-		<result column="ID" property="id" jdbcType="BIGINT" />
-		<result column="SERIAL_NO" property="serialNo" jdbcType="BIGINT" />
-		<result column="SERIAL_NAME" property="serialName" jdbcType="VARCHAR" />
-		<result column="FLOOR_CODE" property="floorCode" jdbcType="VARCHAR" />
-		<result column="FLOOR_NAME" property="floorName" jdbcType="VARCHAR" />
-		<result column="IS_DEL" property="isDel" jdbcType="INTEGER" />
-	</resultMap>
+    <resultMap id="sysFloorsResultForList" type="sysFloors">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="SERIAL_NO" property="serialNo" jdbcType="BIGINT"/>
+        <result column="SERIAL_NAME" property="serialName" jdbcType="VARCHAR"/>
+        <result column="FLOOR_CODE" property="floorCode" jdbcType="VARCHAR"/>
+        <result column="FLOOR_NAME" property="floorName" jdbcType="VARCHAR"/>
+        <result column="IS_DEL" property="isDel" jdbcType="INTEGER"/>
+    </resultMap>
 
-	<resultMap id="sysFloorsResult" type="sysFloors" extends="sysFloorsResultForList">
-	</resultMap>
+    <resultMap id="sysFloorsResult" type="sysFloors" extends="sysFloorsResultForList">
+    </resultMap>
 
-	<sql id="sf-sysFloors">
-	   <if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
-	   <if test="(serialNo != null )"> and t.SERIAL_NO = #{serialNo} </if>
-	   <if test="serialName != null and serialName != ''"> and t.SERIAL_NAME = #{serialName} </if>
-	   <if test="floorCode != null and floorCode != ''"> and t.FLOOR_CODE = #{floorCode} </if>
-	   <if test="floorName != null and floorName != ''"> and t.FLOOR_NAME = #{floorName} </if>
-	   <if test="(isDel != null )"> and t.IS_DEL = #{isDel} </if>
-	</sql>
-	<sql id="fuzzy">
+    <sql id="sf-sysFloors">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(serialNo != null )">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="serialName != null and serialName != ''">and t.SERIAL_NAME = #{serialName}</if>
+        <if test="floorCode != null and floorCode != ''">and t.FLOOR_CODE = #{floorCode}</if>
+        <if test="floorName != null and floorName != ''">and t.FLOOR_NAME LIKE '%${floorName}%'</if>
+        <if test="(isDel != null )">and t.IS_DEL = #{isDel}</if>
+    </sql>
+    <sql id="fuzzy">
 
-		<if test="serialName != null and serialName != ''"> and t.SERIAL_NAME LIKE '%${serialName}%' </if>
-		<if test="floorName != null and floorName != ''"> and t.FLOOR_NAME LIKE '%${floorName}%'  </if>
-	</sql>
+        <if test="serialName != null and serialName != ''">and t.SERIAL_NAME LIKE '%${serialName}%'</if>
+        <if test="floorName != null and floorName != ''">and t.FLOOR_NAME LIKE '%${floorName}%'</if>
+    </sql>
 
-	<select id="selectSysFloors" resultMap="sysFloorsResult" parameterType="sysFloors">
-		select * from SYS_FLOORS t where 1 = 1
-		<include refid="sf-sysFloors" />
-	</select>
+    <select id="selectSysFloors" resultMap="sysFloorsResult" parameterType="sysFloors">
+        select * from SYS_FLOORS t where 1 = 1
+        <include refid="sf-sysFloors"/>
+    </select>
 
-	<select id="selectSysFloorsList" resultMap="sysFloorsResultForList" parameterType="sysFloors">
-		select
-		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
-		 * from SYS_FLOORS t where 1 = 1
-		<include refid="sf-sysFloors" />
-		<!-- order by ID asc -->
-	</select>
+    <select id="selectSysFloorsList" resultMap="sysFloorsResultForList" parameterType="sysFloors">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from SYS_FLOORS t where 1 = 1
+        <include refid="sf-sysFloors"/>
+        <!-- order by ID asc -->
+    </select>
 
-	<select id="selectSysFloorsCount" resultType="int" parameterType="sysFloors">
-		select count(*) from SYS_FLOORS t where 1 = 1
-		<include refid="sf-sysFloors" />
-	</select>
+    <select id="selectSysFloorsCount" resultType="int" parameterType="sysFloors">
+        select count(*) from SYS_FLOORS t where 1 = 1
+        <include refid="sf-sysFloors"/>
+    </select>
 
-	<select id="selectSysFloorsPaginatedList" resultMap="sysFloorsResult" parameterType="sysFloors">
-		select * from (
-			select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
-				from SYS_FLOORS t where 1 = 1
-			<include refid="sf-sysFloors" />
-			<!-- order by ID asc -->
-		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
-	</select>
+    <select id="selectSysFloorsPaginatedList" resultMap="sysFloorsResult" parameterType="sysFloors">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from SYS_FLOORS t where 1 = 1
+        <include refid="sf-sysFloors"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
 
-	<select id="selectSysFloorsCountByFuzzy" resultType="int" parameterType="sysFloors">
-		select count(*) from SYS_FLOORS t where 1 = 1
-		<include refid="fuzzy" />
-	</select>
+    <select id="selectSysFloorsCountByFuzzy" resultType="int" parameterType="sysFloors">
+        select count(*) from SYS_FLOORS t where 1 = 1
+        <include refid="fuzzy"/>
+    </select>
 
-	<select id="selectSysFloorsPageListByFuzzy" resultMap="sysFloorsResult" parameterType="sysFloors">
-		select * from (
-		select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
-		from SYS_FLOORS t where 1 = 1
-		<include refid="fuzzy" />
-		<!-- order by ID asc -->
-		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
-	</select>
+    <select id="selectSysFloorsPageListByFuzzy" resultMap="sysFloorsResult" parameterType="sysFloors">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from SYS_FLOORS t where 1 = 1
+        <include refid="fuzzy"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
 
-	<insert id="insertSysFloors" parameterType="sysFloors">
-		insert into SYS_FLOORS 
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-	       <if test="(id != null and id != '') or id == 0"> ID, </if>
-	       <if test="(serialNo != null )"> SERIAL_NO, </if>
-		   <if test="serialName != null and serialName != ''"> SERIAL_NAME, </if>
-		   <if test="floorCode != null and floorCode != ''"> FLOOR_CODE, </if>
-		   <if test="floorName != null and floorName != ''"> FLOOR_NAME, </if>
-	       <if test="(isDel != null )"> IS_DEL, </if>
-		</trim>
-		values
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-	       <if test="(id != null and id != '') or id == 0"> #{id, jdbcType=BIGINT}, </if>
-	       <if test="(serialNo != null )"> #{serialNo, jdbcType=BIGINT}, </if>
-		   <if test="serialName != null and serialName != ''"> #{serialName, jdbcType=VARCHAR}, </if>
-		   <if test="floorCode != null and floorCode != ''"> #{floorCode, jdbcType=VARCHAR}, </if>
-		   <if test="floorName != null and floorName != ''"> #{floorName, jdbcType=VARCHAR}, </if>
-	       <if test="(isDel != null )"> #{isDel, jdbcType=INTEGER}, </if>
-		</trim>
-	</insert>
+    <insert id="insertSysFloors" parameterType="sysFloors">
+        insert into SYS_FLOORS
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="(serialNo != null )">SERIAL_NO,</if>
+            <if test="serialName != null and serialName != ''">SERIAL_NAME,</if>
+            <if test="floorCode != null and floorCode != ''">FLOOR_CODE,</if>
+            <if test="floorName != null and floorName != ''">FLOOR_NAME,</if>
+            <if test="(isDel != null )">IS_DEL,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="(serialNo != null )">#{serialNo, jdbcType=BIGINT},</if>
+            <if test="serialName != null and serialName != ''">#{serialName, jdbcType=VARCHAR},</if>
+            <if test="floorCode != null and floorCode != ''">#{floorCode, jdbcType=VARCHAR},</if>
+            <if test="floorName != null and floorName != ''">#{floorName, jdbcType=VARCHAR},</if>
+            <if test="(isDel != null )">#{isDel, jdbcType=INTEGER},</if>
+        </trim>
+    </insert>
 
-	<update id="updateSysFloors" parameterType="SysFloors">
-		update SYS_FLOORS
-		<set>
-			<trim suffixOverrides=",">
-			   <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>
-			   <if test="(serialNo != null )"> SERIAL_NO = #{serialNo, jdbcType=BIGINT}, </if>
-			   <if test="serialName != null and serialName != ''"> SERIAL_NAME = #{serialName, jdbcType=VARCHAR}, </if>
-			   <if test="floorCode != null and floorCode != ''"> FLOOR_CODE = #{floorCode, jdbcType=VARCHAR}, </if>
-			   <if test="floorName != null and floorName != ''"> FLOOR_NAME = #{floorName, jdbcType=VARCHAR}, </if>
-			   <if test="(isDel != null )"> IS_DEL = #{isDel, jdbcType=INTEGER}, </if>
-			</trim>
-		</set>
-		where
-		<if test="id != null and id != ''"> ID = #{id} </if>
-		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
-			ID in
-			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-		</if>
-	</update>
+    <update id="updateSysFloors" parameterType="SysFloors">
+        update SYS_FLOORS
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(serialNo != null )">SERIAL_NO = #{serialNo, jdbcType=BIGINT},</if>
+                <if test="serialName != null and serialName != ''">SERIAL_NAME = #{serialName, jdbcType=VARCHAR},</if>
+                <if test="floorCode != null and floorCode != ''">FLOOR_CODE = #{floorCode, jdbcType=VARCHAR},</if>
+                <if test="floorName != null and floorName != ''">FLOOR_NAME = #{floorName, jdbcType=VARCHAR},</if>
+                <if test="(isDel != null )">IS_DEL = #{isDel, jdbcType=INTEGER},</if>
+            </trim>
+        </set>
+        where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </update>
 
-	<delete id="deleteSysFloors" parameterType="SysFloors">
-		delete from SYS_FLOORS where
-		<if test="id != null and id != ''"> ID = #{id} </if>
-		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
-			ID in
-			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-		</if>
-	</delete>
+    <delete id="deleteSysFloors" parameterType="SysFloors">
+        delete from SYS_FLOORS where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </delete>
 
-   <select id="selectSysFloorsExistsFloorsName" resultType="int" parameterType="sysFloors">
-	   SELECT  count(1) FROM  SYS_FLOORS
-	   <where>
-		   <if test="serialNo!=null"> AND  SERIAL_NO = ${serialNo}</if>
-		   <if test="floorName!=null and floorName != ''">AND  FLOOR_NAME  = '${floorName}'</if>
-	   </where>
-   </select>
+    <select id="selectSysFloorsExistsFloorsName" resultType="int" parameterType="sysFloors">
+        SELECT count(1) FROM SYS_FLOORS
+        <where>
+            <if test="serialNo!=null">AND SERIAL_NO = ${serialNo}</if>
+            <if test="floorName!=null and floorName != ''">AND FLOOR_NAME = '${floorName}'</if>
+        </where>
+    </select>
 </mapper>
