@@ -126,6 +126,7 @@ public class SiteQuestionController extends BaseController {
      */
     @RequestMapping(value="/saveAndUpdate.do", method= RequestMethod.POST)
     @ResponseBody
+    @ILog
     public Map<String,Object> saveAndUpdate(HttpServletRequest request, @RequestParam MultipartFile uploadFile) {
         Map<String,Object> map = new HashMap<String,Object>();
         String serialNo = request.getParameter("serialNo");

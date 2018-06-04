@@ -93,7 +93,6 @@ public class siteInstallSetController  extends BaseController {
      * @Description: 新增站点问题
      */
     @RequestMapping(value = "/addAndUpdate.do")
-    @ILog
     public String addAndUpdate(Model model, String userId,String serialNo,Long id) {
         EtSiteQuestionInfo siteQuestionInfo = new EtSiteQuestionInfo();
         PmisContractProductInfo contractProductInfo = new PmisContractProductInfo();
