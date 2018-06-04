@@ -43,7 +43,6 @@ public class SiteQuestionController extends BaseController {
      * @Description: 站点问题信息
      */
     @RequestMapping(value = "/list.do")
-    @ILog
     public String SiteQuestionList(Model model, String parameter) {
         //String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9"; //工号
         //String hospcode="11980";  //客户号

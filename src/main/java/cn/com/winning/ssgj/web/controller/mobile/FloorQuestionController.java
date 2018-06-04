@@ -34,7 +34,6 @@ public class FloorQuestionController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/list.do")
-    @ILog
     public String floorQuestionList(Model model, String parameter) {
         //进行中的项目
         //parameter = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";

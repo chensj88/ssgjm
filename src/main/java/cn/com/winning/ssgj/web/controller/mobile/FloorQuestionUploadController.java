@@ -44,7 +44,6 @@ public class FloorQuestionUploadController extends BaseController {
      * @Description: 站点问题信息
      */
     @RequestMapping(value = "/list.do")
-    @ILog
     public String SiteQuestionList(Model model, String parameter) {
         //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
         EtFloorQuestionInfo info = new EtFloorQuestionInfo();

@@ -515,7 +515,6 @@ public class EtSiteInstallController extends BaseController {
      */
     @RequestMapping(value = "/upload.do")
     @ResponseBody
-    @ILog
     @Transactional
     public Map<String, Object> uploadExcel(HttpServletRequest request,EtSiteInstall info,
                                                           MultipartFile file) throws IOException {
@@ -562,7 +561,6 @@ public class EtSiteInstallController extends BaseController {
      * @throws IOException
      */
     @RequestMapping(value = "/exportExcel.do")
-    @ILog
     public HttpServletResponse wiriteExcel(EtSiteInstall info, HttpServletResponse response) throws IOException {
         String fileName = "siteInstall.xls";
         String path = getClass().getClassLoader().getResource("/template").getPath() + fileName;

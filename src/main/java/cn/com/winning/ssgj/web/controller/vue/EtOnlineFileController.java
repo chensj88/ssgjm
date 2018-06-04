@@ -148,7 +148,6 @@ public class EtOnlineFileController extends BaseController {
      */
     @RequestMapping(value = "/delete.do")
     @ResponseBody
-    @ILog
     public Map<String,Object> deleteOnlineFile(EtOnlineFile file){
         file = super.getFacade().getEtOnlineFileService().getEtOnlineFile(file);
         String source = file.getImgPath();

@@ -28,7 +28,6 @@ import java.util.List;
 public class siteInstallSetController  extends BaseController {
 
     @RequestMapping(value = "/list.do")
-    @ILog
     public String siteInstallSetList(Model model, String parameter) {
         //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
 
