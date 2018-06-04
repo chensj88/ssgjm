@@ -44,7 +44,6 @@ public class TrainVideoListController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/list.do")
-    @ILog
     public String TrainVideoTypeList(Model model, String parameter) {
 
         //绑定注册用户信息  parameter 后面base64解密结果是：

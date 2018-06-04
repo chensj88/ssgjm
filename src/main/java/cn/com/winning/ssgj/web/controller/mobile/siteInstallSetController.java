@@ -28,7 +28,6 @@ import java.util.List;
 public class siteInstallSetController  extends BaseController {
 
     @RequestMapping(value = "/list.do")
-    @ILog
     public String siteInstallSetList(Model model, String parameter) {
         //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
 
@@ -94,7 +93,6 @@ public class siteInstallSetController  extends BaseController {
      * @Description: 新增站点问题
      */
     @RequestMapping(value = "/addAndUpdate.do")
-    @ILog
     public String addAndUpdate(Model model, String userId,String serialNo,Long id) {
         EtSiteQuestionInfo siteQuestionInfo = new EtSiteQuestionInfo();
         PmisContractProductInfo contractProductInfo = new PmisContractProductInfo();
