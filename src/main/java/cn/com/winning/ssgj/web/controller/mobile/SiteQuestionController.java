@@ -43,7 +43,6 @@ public class SiteQuestionController extends BaseController {
      * @Description: 站点问题信息
      */
     @RequestMapping(value = "/list.do")
-    @ILog
     public String SiteQuestionList(Model model, String parameter) {
         //String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9"; //工号
         //String hospcode="11980";  //客户号
@@ -127,6 +126,7 @@ public class SiteQuestionController extends BaseController {
      */
     @RequestMapping(value="/saveAndUpdate.do", method= RequestMethod.POST)
     @ResponseBody
+    @ILog
     public Map<String,Object> saveAndUpdate(HttpServletRequest request, @RequestParam MultipartFile uploadFile) {
         Map<String,Object> map = new HashMap<String,Object>();
         String serialNo = request.getParameter("serialNo");

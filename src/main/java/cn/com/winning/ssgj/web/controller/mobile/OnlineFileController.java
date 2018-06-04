@@ -40,7 +40,6 @@ public class OnlineFileController extends BaseController {
 
 
     @RequestMapping(value = "/list.do")
-    @ILog
     public String floorQuestionList(Model model, String parameter) {
 
         EtOnlineFile onlineFile = new  EtOnlineFile();
