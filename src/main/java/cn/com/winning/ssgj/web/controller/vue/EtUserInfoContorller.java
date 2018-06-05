@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.com.winning.ssgj.domain.EtProcessManager;
+import cn.com.winning.ssgj.domain.SysUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -209,6 +210,18 @@ public class EtUserInfoContorller extends BaseController {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
+    }
+
+    @RequestMapping(value = "/queryUser.do")
+    @ResponseBody
+    public Map<String,Object> queryUserForUser(SysUserInfo user,Row row){
+        user.setRow(row);
+        List<SysUserInfo> userInfos = super.getFacade().getSysUserInfoService().getSysUserInfoQueryPaginatedList(user);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", userInfos);
+        return result;
+
     }
 
 }
