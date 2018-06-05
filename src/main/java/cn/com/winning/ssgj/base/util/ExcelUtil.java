@@ -58,13 +58,13 @@ public class ExcelUtil {
 
     /**
      * 导出Excel
-     *
      * @param dataList      数据Map
      * @param colList       Map中列名称
      * @param cloumnCount   列数
      * @param finalXlsxPath Excel放置位置
+     * @param sheetIndex   工作表下标
      */
-    public static void writeExcel(List<Map> dataList, List<String> colList, int cloumnCount, String finalXlsxPath) {
+    public static void writeExcel(List<Map> dataList, List<String> colList, int cloumnCount, String finalXlsxPath,int sheetIndex) {
         OutputStream out = null;
         try {
             // 获取总列数
@@ -73,7 +73,7 @@ public class ExcelUtil {
             File finalXlsxFile = new File(finalXlsxPath);
             Workbook workBook = getWorkbook(finalXlsxFile);
             // sheet 对应一个工作页
-            Sheet sheet = workBook.getSheetAt(0);
+            Sheet sheet = workBook.getSheetAt(sheetIndex);
             /**
              * 删除原有数据，除了属性列
              */
@@ -125,6 +125,16 @@ public class ExcelUtil {
             }
         }
         System.out.println("数据导出成功");
+    }
+    /**
+     * 导出Excel
+     * @param dataList      数据Map
+     * @param colList       Map中列名称
+     * @param cloumnCount   列数
+     * @param finalXlsxPath Excel放置位置
+     */
+    public static void writeExcel(List<Map> dataList, List<String> colList, int cloumnCount, String finalXlsxPath) {
+        writeExcel(dataList,colList,cloumnCount,finalXlsxPath,0);
     }
 
     /**
