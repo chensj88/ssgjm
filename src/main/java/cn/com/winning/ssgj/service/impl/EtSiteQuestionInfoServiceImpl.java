@@ -122,10 +122,10 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
             }else {
                 dataMap.put("priorityString",qinfo.getMap().get("priorityString").toString());
             }
-            if(qinfo.getMap().get("allocateUser") == null){
+            if(qinfo.getMap().get("allocate_name") == null){ // modify chensj 分配人map key 错误
                 dataMap.put("allocateUser","");
             }else {
-                dataMap.put("allocateUser",qinfo.getMap().get("allocateUser").toString());
+                dataMap.put("allocateUser",qinfo.getMap().get("allocate_name").toString());// modify chensj 分配人map key 错误
             }
             dataMap.put("create_name",qinfo.getMap().get("create_name").toString());
             dataMap.put("createTimeString",qinfo.getMap().get("createTimeString").toString());
