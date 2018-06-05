@@ -24,7 +24,7 @@ public class WxController extends BaseController {
 
     @RequestMapping(value = "/list.do")
     @ILog
-    public String list(Model model, String floorName, String serialNo, String userId) {
+    public String list(Model model,String code, String floorName, String serialNo, String userId) {
         try{
             URL url = new URL( "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=wxac9ca7b3c2c43e81&corpsecret=X8KHKKb0O3yR7qcnQSFDzBGiPhc8urJBK5sAnUE7-j8");
             HttpURLConnection urlcon = (HttpURLConnection)url.openConnection();
@@ -37,9 +37,10 @@ public class WxController extends BaseController {
             }
             //获取access_token
             JSONObject firstWx = JSONObject.parseObject(bs.toString());
-            String ss = (String)firstWx.get("access_token");
-            System.out.println(firstWx);
-
+            String access_token = (String)firstWx.get("access_token");
+            //缓存acctss_token
+            //获取登录成员信息
+            model.addAttribute("code",code);
 
         }catch (Exception e){
             e.printStackTrace();
