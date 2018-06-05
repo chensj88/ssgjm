@@ -207,9 +207,8 @@ public class EtSiteQuestionInfoController extends BaseController {
                 oldInfo.setResolveDate(info.getResolveDate());
                 oldInfo.setWorkLoad(info.getWorkLoad());
                 oldInfo.setUserMessage(info.getUserMessage());
-                oldInfo.setIntroducer(info.getIntroducer());
-                oldInfo.setIntroducerDate(info.getIntroducerDate());
-                oldInfo.setIntroducerName(info.getIntroducerName());
+                oldInfo.setOperType(info.getOperType());
+                oldInfo.setPriority(info.getPriority());
                 oldInfo.setOperator(info.getOperator());
                 oldInfo.setOperatorTime(new Timestamp(new Date().getTime()));
                 SysUserInfo user = new SysUserInfo();
