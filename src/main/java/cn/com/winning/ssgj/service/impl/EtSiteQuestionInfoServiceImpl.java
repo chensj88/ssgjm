@@ -207,8 +207,9 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
             qinfo.setIntroducerDate(tinfo.getIntroducerDate());
             qinfo.setLinkman(tinfo.getLinkman());
             qinfo.setMobile(tinfo.getMobile());
-            qinfo.setCreateTime(new Timestamp(new Date().getTime()));
+            qinfo.setHopeFinishDate(tinfo.getHopeFinishDate());
             qinfo.setCreator(info.getCreator());
+            qinfo.setCreateTime(new Timestamp(new Date().getTime()));
             if(tinfo.getRequirementNo() != null && !StringUtil.isEmptyOrNull(tinfo.getRequirementNo())){
                 qinfo.setRequirementNo(tinfo.getRequirementNo());
                 qinfo.setPmisStatus(1);
@@ -219,7 +220,7 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
             qinfo.setIsOperation(0);
             etSiteQuestionInfoDao.insertEntity(qinfo);
         }
-
+        etTempQuestionInfoDao.deleteEntity(tempQuestionInfo);
     }
 
 }
