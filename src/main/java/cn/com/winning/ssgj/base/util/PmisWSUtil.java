@@ -194,11 +194,11 @@ public class PmisWSUtil {
         params.add(param);
         param = new LbParameter();
         param.setName("tcr"); //提出人
-        param.setValue(info.getIntroducer()+"");
+        param.setValue(info.getCreateNo()+"");
         params.add(param);
         param = new LbParameter();
         param.setName("tcrq");//提出日期
-        param.setValue(info.getIntroducerDate()+"");
+        param.setValue(info.getMap().get("createTimeString").toString());
         params.add(param);
         param = new LbParameter();
         param.setName("xwwcrq"); //希望完成日期
@@ -210,7 +210,7 @@ public class PmisWSUtil {
         params.add(param);
         param = new LbParameter();
         param.setName("jjfs"); //解决方式
-        param.setValue(info.getSolutionType()+"");
+        param.setValue(info.getOperType()+"");
         params.add(param);
         param = new LbParameter();
         param.setName("jjjg"); //解决结果
@@ -309,11 +309,11 @@ public class PmisWSUtil {
         params.add(param);
         param = new cn.com.winning.ssgj.ws.work.client.LbParameter();
         param.setName("tcr"); //提出人
-        param.setValue(info.getIntroducer()+"");
+        param.setValue(info.getCreateNo()+"");
         params.add(param);
         param = new cn.com.winning.ssgj.ws.work.client.LbParameter();
         param.setName("tcrq");//提出日期
-        param.setValue(info.getIntroducerDate()+"");
+        param.setValue(info.getMap().get("createTimeString").toString());
         params.add(param);
         param = new cn.com.winning.ssgj.ws.work.client.LbParameter();
         param.setName("xwwcrq"); //希望完成日期
@@ -325,7 +325,7 @@ public class PmisWSUtil {
         params.add(param);
         param = new cn.com.winning.ssgj.ws.work.client.LbParameter();
         param.setName("jjfs"); //解决方式
-        param.setValue(info.getSolutionType()+"");
+        param.setValue(info.getOperType()+"");
         params.add(param);
         param = new cn.com.winning.ssgj.ws.work.client.LbParameter();
         param.setName("jjjg"); //解决结果
