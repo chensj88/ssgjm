@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 public class StringTest {
 
 
-    @Test
+   // @Test
     public void spilceString(){
         String idList = "156,1;156,2";
         String[] objectList = idList.split(";");
@@ -40,28 +40,28 @@ public class StringTest {
         System.out.println(idString);
     }
 
-    @Test
+   // @Test
     public void decodePassword() throws IOException {
         String password = "";
         final BASE64Decoder decoder = new BASE64Decoder();
         System.out.println(new String(decoder.decodeBuffer(password), "UTF-8"));
     }
 
-    @Test
+   // @Test
     public void enecodePassword() throws IOException {
         String password = "admin";
         final BASE64Encoder encoder = new BASE64Encoder();
         System.out.println(new String(encoder.encodeBuffer(password.getBytes("UTF-8"))));
     }
 
-    @Test
+   // @Test
     public void enecodeMD5() throws IOException {
         String password = "123456";
         String decryptP = MD5.stringMD5(password);
         System.out.println(decryptP);
     }
 
-    @Test
+   // @Test
     public void uriResolive(){
         String uri = "/vue/dataCheck/aaa.do";
         System.out.println(uri.substring(uri.lastIndexOf("/")+1));
@@ -90,7 +90,7 @@ public class StringTest {
 
     }
 
-    @Test
+   // @Test
     public void substringTest(){
         String remotePath = "/simulate/" + "aaa" + "/" + "aaa.xls";
         System.out.println(remotePath.substring(remotePath.lastIndexOf("/")));
@@ -98,7 +98,7 @@ public class StringTest {
         System.out.println(remotePath.substring(0,remotePath.lastIndexOf("/")+1));
     }
 
-    @Test
+   // @Test
     public  void  substringTest2(){
         String url = "http://47.97.170.21:8081/shareFolder/simulate/simulate_1523367948633/Bootstrap.docx";
         System.out.println(url.substring(Constants.FTP_SHARE_FLODER.length()));

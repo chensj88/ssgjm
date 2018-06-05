@@ -14,7 +14,7 @@ import org.junit.Test;
  */
 public class JsonTest {
 
-    @Test
+   // @Test
     public void convertJson(){
         UrlContent content = new UrlContent();
         content.setName("aaaaa");
@@ -23,7 +23,7 @@ public class JsonTest {
         System.out.println(cont);
     }
 
-    @Test
+   // @Test
     public void convertJsonArray(){
         UrlContent content = new UrlContent();
         content.setName("food.jpeg");
@@ -38,7 +38,7 @@ public class JsonTest {
         System.out.println(cont);
     }
 
-    @Test
+   // @Test
     public void testJsonArray(){
         String[] arr = new String[2];
         arr[0] = "基础HIS";

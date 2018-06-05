@@ -8,7 +8,7 @@ import java.sql.*;
 
 public class ConnectTest {
 
-    @Test
+   // @Test
     public void testConnection(){
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -26,13 +26,13 @@ public class ConnectTest {
 
     }
 
-    @Test
+   // @Test
     public void testMD5(){
         String md5 = MD5.stringMD5("admin");
         System.out.println(md5);
     }
 
-    @Test
+   // @Test
     public void testConnectionUtil(){
         System.out.println(ConnectionUtil.getConnection());
     }
