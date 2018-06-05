@@ -152,12 +152,24 @@
         </if>
     </sql>
     <select id="selectEtSiteQuestionInfo" resultMap="etSiteQuestionInfoResult" parameterType="etSiteQuestionInfo">
-        select t.*,d.DICT_LABEL,i.YHMC as create_name,ii.YHMC as allocate_name,g.DEPT_NAME as DEPT_NAME,h.NAME AS PL_NAME from ET_SITE_QUESTION_INFO t
-        LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
+        select
+        t.*,i.YHMC as create_name,i.USERID AS createUser,i.NAME AS createUserName,ii.YHMC as allocate_name,d.DICT_LABEL,
+        e.DICT_LABEL AS operTypeString,f.DICT_LABEL AS  priorityString,
+        j.DICT_LABEL AS reasonString,k.DICT_LABEL AS mstatusString,l.DICT_LABEL AS  diffString,
+        CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END AS CREATE_TIME_STRING,
+        CASE WHEN ( IS_OPERATION = 1 AND OPERATOR_TIME IS NOT NULL ) THEN CONVERT(VARCHAR(32),OPERATOR_TIME,111) ELSE ''
+        END AS OPERATOR_TIME_STRING,g.DEPT_NAME as DEPT_NAME,h.NAME AS PL_NAME
+        from ET_SITE_QUESTION_INFO t
         LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
         LEFT JOIN SYS_USER_INFO ii ON t.ALLOCATE_USER=ii.ID
+        LEFT JOIN SYS_DICT_INFO d ON t.QUESTION_TYPE=d.DICT_VALUE AND d.DICT_CODE='questionType'
+        LEFT JOIN SYS_DICT_INFO e ON t.OPER_TYPE=e.DICT_VALUE AND e.DICT_CODE='operType'
+        LEFT JOIN SYS_DICT_INFO f ON t.PRIORITY=f.DICT_VALUE AND f.DICT_CODE='priorityType'
         LEFT JOIN ET_DEPARTMENT g ON  CAST(t.SITE_NAME AS INT) = g.ID
         LEFT JOIN PMIS_PRODUCT_LINE_INFO h ON CAST(t.PRODUCT_NAME AS INT) = h.ID
+        LEFT JOIN SYS_DICT_INFO j ON t.REASON_TYPE = j.DICT_VALUE AND j.DICT_CODE='reasonType'
+        LEFT JOIN SYS_DICT_INFO k ON t.MANUSCRIPT_STATUS = k.DICT_VALUE AND k.DICT_CODE='manuscriptStatus'
+        LEFT JOIN SYS_DICT_INFO l ON t.DIFFCULT_LEVEL=l.DICT_VALUE AND l.DICT_CODE='diffcultLevel'
         where 1 = 1
         <include refid="sf-etSiteQuestionInfo"/>
 
@@ -489,13 +501,13 @@
             <if test="map.isQ19 != null">t.HOPE_FINISH_DATE, </if>
             <if test="map.isQ20 != null">t.RESOLVE_DATE, </if>
             <if test="map.isQ21 != null">t.SOLUTION_RESULT, </if>
-            <if test="map.isQ22 != null">t.WORK_LOAD, </if>
-            <if test="map.isQ23 != null">t.USER_MESSAGE, </if>
-            <if test="map.isQ24!= null">
+            <if test="map.isQ22 != null">t.IS_OPERATION, </if>
+            <if test="map.isQ23 != null">t.WORK_LOAD, </if>
+            <if test="map.isQ24 != null">t.USER_MESSAGE, </if>
+            <if test="map.isQ25 != null">
                 i.YHMC as create_name,i.USERID AS createUser,i.NAME AS createUserName,t.CREATOR,
             </if>
-            <if test="map.isQ25 != null"> CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END  CREATE_TIME_STRING, </if>
-            <if test="map.isQ26 != null">t.IS_OPERATION, </if>
+            <if test="map.isQ26 != null">  CONVERT(VARCHAR(32),t.CREATE_TIME,111) CREATE_TIME_STRING, </if>
         </trim>
         ,t.countNum
         FROM  (
@@ -522,11 +534,11 @@
                 <if test="map.isQ19 != null">t.HOPE_FINISH_DATE, </if>
                 <if test="map.isQ20 != null">t.RESOLVE_DATE, </if>
                 <if test="map.isQ21 != null">t.SOLUTION_RESULT, </if>
-                <if test="map.isQ22 != null">t.WORK_LOAD, </if>
-                <if test="map.isQ23 != null">t.USER_MESSAGE, </if>
-                <if test="map.isQ24 != null">t.CREATOR, </if>
-                <if test="map.isQ25 != null"> CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END  , </if>
-                <if test="map.isQ26 != null">t.IS_OPERATION, </if>
+                <if test="map.isQ22 != null">t.IS_OPERATION, </if>
+                <if test="map.isQ23 != null">t.WORK_LOAD, </if>
+                <if test="map.isQ24 != null">t.USER_MESSAGE, </if>
+                <if test="map.isQ25 != null">t.CREATOR, </if>
+                <if test="map.isQ26 != null"> CONVERT(VARCHAR(32),t.CREATE_TIME,111)  CREATE_TIME, </if>
             </trim>
             ,count(1) countNum
             FROM   ET_SITE_QUESTION_INFO t
@@ -554,14 +566,14 @@
                 <if test="map.isQ19 != null">t.HOPE_FINISH_DATE, </if>
                 <if test="map.isQ20 != null">t.RESOLVE_DATE, </if>
                 <if test="map.isQ21 != null">t.SOLUTION_RESULT, </if>
-                <if test="map.isQ22 != null">t.WORK_LOAD, </if>
-                <if test="map.isQ23 != null">t.USER_MESSAGE, </if>
-                <if test="map.isQ24 != null">t.CREATOR, </if>
-                <if test="map.isQ25 != null"> CASE WHEN CREATE_TIME IS NOT NULL THEN CONVERT(VARCHAR(32),CREATE_TIME,111) ELSE '' END  , </if>
-                <if test="map.isQ26 != null">t.IS_OPERATION, </if>
+                <if test="map.isQ22 != null">t.IS_OPERATION, </if>
+                <if test="map.isQ23 != null">t.WORK_LOAD, </if>
+                <if test="map.isQ24 != null">t.USER_MESSAGE, </if>
+                <if test="map.isQ25 != null">t.CREATOR, </if>
+                <if test="map.isQ26 != null"> CONVERT(VARCHAR(32),t.CREATE_TIME,111), </if>
             </trim>
         ) t
-        <if test="map.isQ24 != null">
+        <if test="map.isQ25 != null">
           LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
         </if>
         <if test="map.isQ9 != null">
