@@ -8,6 +8,7 @@ import java.util.*;
 import javax.annotation.Resource;
 
 
+import cn.com.winning.ssgj.base.exception.SSGJException;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.DateUtil;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
@@ -144,6 +145,11 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
     @Override
     public void createEtSiteQuestionInfo(List<List<Object>> questionList, EtSiteQuestionInfo info) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        for (List<Object> list : questionList) {
+            if (list.size() < 15) {
+                throw new SSGJException("上传文件中存在必填项未填写。");
+            }
+        }
         for (List<Object> list : questionList) {
             EtTempQuestionInfo tempInfo = new EtTempQuestionInfo();
             tempInfo.setId(ssgjHelper.createtempWorkReportGenerateService());

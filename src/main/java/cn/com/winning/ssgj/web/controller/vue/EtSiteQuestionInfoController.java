@@ -141,6 +141,21 @@ public class EtSiteQuestionInfoController extends BaseController {
     }
 
     /**
+     * 删除问题
+     * @param info
+     * @return
+     */
+    @RequestMapping(value = "/delete.do")
+    @ResponseBody
+    @Transactional
+    public Map<String, Object> deleteSiteQuestion(EtSiteQuestionInfo info) {
+        super.getFacade().getEtSiteQuestionInfoService().removeEtSiteQuestionInfo(info);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
+
+    /**
      * 单条导入PMIS
      *
      * @param info
