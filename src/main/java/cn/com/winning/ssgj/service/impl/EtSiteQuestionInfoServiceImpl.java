@@ -161,21 +161,18 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
             tempInfo.setDiffcultVar(list.get(8).toString());
             tempInfo.setDevUser(list.get(9).toString());
             tempInfo.setDevUserName(list.get(10).toString());
-            tempInfo.setIntroducer(list.get(11).toString());
-            tempInfo.setIntroducerName(list.get(12).toString());
-            tempInfo.setIntroducerDate(list.get(13).toString());
-            tempInfo.setLinkman(list.get(14).toString());
-            tempInfo.setMobile(list.get(15).toString());
-            tempInfo.setOperVar(list.get(16).toString());
-            tempInfo.setHopeFinishDate(list.get(17).toString());
+            tempInfo.setLinkman(list.get(11).toString());
+            tempInfo.setMobile(list.get(12).toString());
+            tempInfo.setOperVar(list.get(13).toString());
+            tempInfo.setHopeFinishDate(list.get(14).toString());
             String userMsg  = "";
-            if(list.size() >= 19 && !StringUtil.isEmptyOrNull(list.get(18).toString())){
-                userMsg = list.get(18).toString();
+            if(list.size() >= 16 && !StringUtil.isEmptyOrNull(list.get(15).toString())){
+                userMsg = list.get(15).toString();
             }
             tempInfo.setUserMessage(userMsg);
             String requireNo  = "";
-            if(list.size() >= 20 && !StringUtil.isEmptyOrNull(list.get(19).toString())){
-                requireNo = list.get(19).toString();
+            if(list.size() >= 17 && !StringUtil.isEmptyOrNull(list.get(16).toString())){
+                requireNo = list.get(16).toString();
             }
             tempInfo.setRequirementNo(requireNo);
             etTempQuestionInfoDao.insertEntity(tempInfo);
@@ -202,9 +199,6 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
             qinfo.setManuscriptStatus(tinfo.getManuscriptStatus());
             qinfo.setDevUser(tinfo.getDevUser());
             qinfo.setDevUserName(tinfo.getDevUserName());
-            qinfo.setIntroducer(tinfo.getIntroducer());
-            qinfo.setIntroducerName(tinfo.getIntroducerName());
-            qinfo.setIntroducerDate(tinfo.getIntroducerDate());
             qinfo.setLinkman(tinfo.getLinkman());
             qinfo.setMobile(tinfo.getMobile());
             qinfo.setHopeFinishDate(tinfo.getHopeFinishDate());
