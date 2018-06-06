@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/font-awesome-ie7.min.css" />
     <![endif]-->
     <!-- fonts -->
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+    <%--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />--%>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace.min.css" />
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace-rtl.min.css" />
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace-skins.min.css" />

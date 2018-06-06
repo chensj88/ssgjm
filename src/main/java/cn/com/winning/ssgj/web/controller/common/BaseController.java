@@ -242,5 +242,16 @@ public class BaseController extends BaseSpringMvcMybatisController {
         return etProcessManager;
     }
 
-
+    /**
+     * 获取产品名称字典
+     * @param productName 产品名称，可以为空，为空则查询全部产品，否则按照名称模糊查询
+     * @return dictInfos
+     */
+    public List<SysDictInfo> getProductDictInfo(String productName){
+       SysDictInfo dict = new SysDictInfo();
+       dict.setDictCode(Constants.DictInfo.PRODUCT_NAME);
+       dict.setDictLabel(productName);
+       List<SysDictInfo> dictInfos = getFacade().getSysDictInfoService().getSysDictInfoList(dict);
+       return dictInfos;
+    }
 }

@@ -187,33 +187,33 @@ public class EtSiteQuestionInfoController extends BaseController {
     @ResponseBody
     public Map<String, Object> exportBatchPmisData(EtSiteQuestionInfo info, Long[] idList) {
         EtSiteQuestionInfo oldInfo = null;
+        SysUserInfo user = new SysUserInfo();
+        user.setId(info.getOperator());
+        user = super.getFacade().getSysUserInfoService().getSysUserInfo(user);
         for (int i = 0; i < idList.length; i++) {
             oldInfo = new EtSiteQuestionInfo();
             oldInfo.setId(idList[i]);
             oldInfo = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(oldInfo);
             if (oldInfo.getPmisStatus() == 2) {
-                oldInfo.setPmId(info.getPmId());
-                oldInfo.setBatchNo(info.getBatchNo());
-                oldInfo.setQuestionType(info.getQuestionType());
-                oldInfo.setReasonType(info.getReasonType());
-                oldInfo.setManuscriptStatus(info.getManuscriptStatus());
-                oldInfo.setDiffcultLevel(info.getDiffcultLevel());
-                oldInfo.setDevUser(info.getDevUser());
-                oldInfo.setDevUserName(info.getDevUserName());
-                oldInfo.setLinkman(info.getLinkman());
-                oldInfo.setMobile(info.getMobile());
-                oldInfo.setSolutionResult(info.getSolutionResult());
-                oldInfo.setHopeFinishDate(info.getHopeFinishDate());
-                oldInfo.setResolveDate(info.getResolveDate());
-                oldInfo.setWorkLoad(info.getWorkLoad());
-                oldInfo.setUserMessage(info.getUserMessage());
-                oldInfo.setOperType(info.getOperType());
-                oldInfo.setPriority(info.getPriority());
+                oldInfo.setPmId(info.getPmId()); //项目ID
+                oldInfo.setBatchNo(info.getBatchNo()); //批次
+                oldInfo.setQuestionType(info.getQuestionType()); //问题类别
+                oldInfo.setReasonType(info.getReasonType());//原因分类
+                oldInfo.setManuscriptStatus(info.getManuscriptStatus()); //底稿状态
+                oldInfo.setDiffcultLevel(info.getDiffcultLevel()); //难度级别
+                oldInfo.setDevUser(user.getUserid()); //工程师工号
+                oldInfo.setDevUserName(user.getYhmc()); //公司接收人
+                oldInfo.setLinkman(info.getLinkman()); //联系人
+                oldInfo.setMobile(info.getMobile()); //联系电话
+                oldInfo.setSolutionResult(info.getSolutionResult()); //解决结果
+                oldInfo.setHopeFinishDate(info.getHopeFinishDate()); //期望完成时间
+                oldInfo.setResolveDate(info.getResolveDate()); //解决日期
+                oldInfo.setWorkLoad(info.getWorkLoad()); //工作量
+                oldInfo.setUserMessage(info.getUserMessage()); //用户意见
+                oldInfo.setOperType(oldInfo.getOperType() == null ? 3 : oldInfo.getOperType()); //处理方式
+                oldInfo.setPriority(oldInfo.getPriority() == null ? 4: oldInfo.getPriority()); //优先级 存在则为原先，反之为4 D级(暂缓)
                 oldInfo.setOperator(info.getOperator());
                 oldInfo.setOperatorTime(new Timestamp(new Date().getTime()));
-                SysUserInfo user = new SysUserInfo();
-                user.setId(oldInfo.getCreator());
-                user = super.getFacade().getSysUserInfoService().getSysUserInfo(user);
                 oldInfo.setCreateNo(user.getUserid());
                 importData(oldInfo);
             }

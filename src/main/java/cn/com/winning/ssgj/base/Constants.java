@@ -474,4 +474,103 @@ public class Constants implements Serializable {
         public static final int RP_BB = 2;
     }
 
+    public class DictInfo{
+        /**
+         * 地区信息
+         */
+        public static final String AREA_CODE = "areaCode";
+        /**
+         * 审核状态码
+         */
+        public static final String AUDI_TYPE = "audiType";
+        /**
+         *数据类型
+         */
+        public static final String DATA_TYPE = "dataType";
+        /**
+         *难度级别
+         */
+        public static final String DIFFCULT_LEVEL = "diffcultLevel";
+        /**
+         * 上传文件类型
+         */
+        public static final String FILE_TYPE = "FileType";
+        /**
+         * 流程分类
+         */
+        public static final String FLOW_TYPE = "flowType";
+        /**
+         * 医院等级
+         */
+        public static final String HOSPITAL_LEVEL = "hospitalLevel";
+        /**
+         * 医院类型
+         */
+        public static final String HOSPITAL_TYPE = "hospitalType";
+        /**
+         * 底稿状态
+         */
+        public static final String MANUSCRIPT_STATUS = "manuscriptStatus";
+        /**
+         * 底稿类型
+         */
+        public static final String MANUSCRIPT_TYPE = "manuscriptType";
+        /**
+         * 状态为否
+         */
+        public static final String NOT_INSCOPE = "NotInScope";
+        /**
+         * 解决方式
+         */
+        public static final String OPE_RTYPE = "operType";
+        /**
+         * 报表分类
+         */
+        public static final String PAPER_TYPE = "paperType";
+        /**
+         * 岗位信息
+         */
+        public static final String POSITION_NAME = "positionName";
+        /**
+         * 优先级
+         */
+        public static final String PRIORITY_TYPE = "priorityType";
+        /**
+         * 产品字典
+         */
+        public static final String PRODUCT_NAME = "productName";
+        /**
+         * PMIS问题类型
+         */
+        public static final String QUESTION_TYPE = "questionType";
+        /**
+         * 原因分类
+         */
+        public static final String REASON_TYPE = "reasonType";
+        /**
+         * 性别
+         */
+        public static final String SEX = "sex";
+        /**
+         * 模拟运行效果
+         */
+        public static final String SIMULATE_RESULT = "simulateResult";
+        /**
+         * 用户状态
+         */
+        public static final String USER_STATUS = "userStatus";
+        /**
+         * 用户类型
+         */
+        public static final String USER_TYPE = "userType";
+        /**
+         * 客户视频类型
+         */
+        public static final String VIDEO_CTYPE = "videoCType";
+        /**
+         * 视频类型
+         */
+        public static final String VIDEO_TYPE = "videoType";
+
+    }
 }
