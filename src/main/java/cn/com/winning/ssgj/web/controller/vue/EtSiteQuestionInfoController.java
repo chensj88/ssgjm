@@ -272,26 +272,26 @@ public class EtSiteQuestionInfoController extends BaseController {
      */
     private void importData(EtSiteQuestionInfo info) {
         //TODO 生产环境工作底稿导入功能 从返回的额外参数中获取需求编号
-//        BizProcessResult bizResult = null;
-//        if(info.getPmisStatus() == 2){
-//            //使用WS_TEST_URL 为测试环境  WS_URL为生产环境
-//             bizResult =  pmisWebServiceClient.importWorkDataToPmis(info);
-//            if(bizResult.getResult() != -1){
-//                info.setRequirementNo(bizResult.getOutputVariables().get(1).getValue());
-//            }else{
-//                throw new SSGJException(bizResult.getMessage(),"PMIS-WS-E0001","错误原因:"+bizResult.getMessage());
-//            }
-//        }
-        //TODO 测试环境工作底稿导入功能  从返回的额外参数中获取需求编号
-        cn.com.winning.ssgj.ws.work.client.BizProcessResult bizResult = null;
-        if (info.getPmisStatus() == 2) {
-            bizResult = pmisWorkingPaperService.importWorkReport(info);
-            if (bizResult.getResult() != -1) {
+        BizProcessResult bizResult = null;
+        if(info.getPmisStatus() == 2){
+            //使用WS_TEST_URL 为测试环境  WS_URL为生产环境
+             bizResult =  pmisWebServiceClient.importWorkDataToPmis(info);
+            if(bizResult.getResult() != -1){
                 info.setRequirementNo(bizResult.getOutputVariables().get(1).getValue());
-            } else {
-                throw new SSGJException(bizResult.getMessage(), "PMIS-WS-E0001", "错误原因:" + bizResult.getMessage());
+            }else{
+                throw new SSGJException(bizResult.getMessage(),"PMIS-WS-E0001","错误原因:"+bizResult.getMessage());
             }
         }
+        //TODO 测试环境工作底稿导入功能  从返回的额外参数中获取需求编号
+//        cn.com.winning.ssgj.ws.work.client.BizProcessResult bizResult = null;
+//        if (info.getPmisStatus() == 2) {
+//            bizResult = pmisWorkingPaperService.importWorkReport(info);
+//            if (bizResult.getResult() != -1) {
+//                info.setRequirementNo(bizResult.getOutputVariables().get(1).getValue());
+//            } else {
+//                throw new SSGJException(bizResult.getMessage(), "PMIS-WS-E0001", "错误原因:" + bizResult.getMessage());
+//            }
+//        }
         info.setPmisStatus(Constants.STATUS_USE);
         super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
     }
@@ -303,9 +303,9 @@ public class EtSiteQuestionInfoController extends BaseController {
         String[] attrs = new String[2];
         if (info.getPmisStatus() == 1) {
             //TODO 测试环境
-            attrs = pmisWorkingPaperService.queryWorkReport(info.getRequirementNo());
+            //attrs = pmisWorkingPaperService.queryWorkReport(info.getRequirementNo());
             //TODO 生产环境
-            //attrs = pmisWebServiceClient.queryReportWorkStatus(info.getRequirementNo());
+            attrs = pmisWebServiceClient.queryReportWorkStatus(info.getRequirementNo());
         }
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
