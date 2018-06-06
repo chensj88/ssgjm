@@ -8,6 +8,7 @@ import java.util.*;
 import javax.annotation.Resource;
 
 
+import cn.com.winning.ssgj.base.exception.SSGJException;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.DateUtil;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
@@ -122,10 +123,10 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
             }else {
                 dataMap.put("priorityString",qinfo.getMap().get("priorityString").toString());
             }
-            if(qinfo.getMap().get("allocateUser") == null){
+            if(qinfo.getMap().get("allocate_name") == null){ // modify chensj 分配人map key 错误
                 dataMap.put("allocateUser","");
             }else {
-                dataMap.put("allocateUser",qinfo.getMap().get("allocateUser").toString());
+                dataMap.put("allocateUser",qinfo.getMap().get("allocate_name").toString());// modify chensj 分配人map key 错误
             }
             dataMap.put("create_name",qinfo.getMap().get("create_name").toString());
             dataMap.put("createTimeString",qinfo.getMap().get("createTimeString").toString());
@@ -144,6 +145,11 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
     @Override
     public void createEtSiteQuestionInfo(List<List<Object>> questionList, EtSiteQuestionInfo info) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        for (List<Object> list : questionList) {
+            if (list.size() < 15) {
+                throw new SSGJException("上传文件中存在必填项未填写。");
+            }
+        }
         for (List<Object> list : questionList) {
             EtTempQuestionInfo tempInfo = new EtTempQuestionInfo();
             tempInfo.setId(ssgjHelper.createtempWorkReportGenerateService());

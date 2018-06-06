@@ -141,6 +141,21 @@ public class EtSiteQuestionInfoController extends BaseController {
     }
 
     /**
+     * 删除问题
+     * @param info
+     * @return
+     */
+    @RequestMapping(value = "/delete.do")
+    @ResponseBody
+    @Transactional
+    public Map<String, Object> deleteSiteQuestion(EtSiteQuestionInfo info) {
+        super.getFacade().getEtSiteQuestionInfoService().removeEtSiteQuestionInfo(info);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
+
+    /**
      * 单条导入PMIS
      *
      * @param info
@@ -192,9 +207,8 @@ public class EtSiteQuestionInfoController extends BaseController {
                 oldInfo.setResolveDate(info.getResolveDate());
                 oldInfo.setWorkLoad(info.getWorkLoad());
                 oldInfo.setUserMessage(info.getUserMessage());
-                oldInfo.setIntroducer(info.getIntroducer());
-                oldInfo.setIntroducerDate(info.getIntroducerDate());
-                oldInfo.setIntroducerName(info.getIntroducerName());
+                oldInfo.setOperType(info.getOperType());
+                oldInfo.setPriority(info.getPriority());
                 oldInfo.setOperator(info.getOperator());
                 oldInfo.setOperatorTime(new Timestamp(new Date().getTime()));
                 SysUserInfo user = new SysUserInfo();

@@ -126,7 +126,7 @@ public class EtUserInfoServiceImpl implements EtUserInfoService {
         dataMap.put("colList", colList);
         dataMap.put("colSize", colList.size());
         dataMap.put("data", dataList);
-        ExcelUtil.writeExcel(dataList, colList, colList.size(), path);
+        ExcelUtil.writeExcel(dataList, colList, colList.size(), path , 1);
 	}
 
     public void createEtUserInfoList(List<List<Object>> userList,EtUserInfo userInfo) {
