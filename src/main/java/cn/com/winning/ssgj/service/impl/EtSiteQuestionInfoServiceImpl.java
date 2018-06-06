@@ -146,10 +146,13 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
     public void createEtSiteQuestionInfo(List<List<Object>> questionList, EtSiteQuestionInfo info) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
         for (List<Object> list : questionList) {
-            if (list.size() < 15) {
+            if (list.size() < 13) {
                 throw new SSGJException("上传文件中存在必填项未填写。");
             }
         }
+        SysUserInfo user = new SysUserInfo();
+        user.setId(info.getCreator());
+        user = sysUserInfoService.getSysUserInfo(user);
         for (List<Object> list : questionList) {
             EtTempQuestionInfo tempInfo = new EtTempQuestionInfo();
             tempInfo.setId(ssgjHelper.createtempWorkReportGenerateService());
@@ -165,20 +168,20 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
             tempInfo.setReasonVar(list.get(6).toString());
             tempInfo.setManuscriptVar(list.get(7).toString());
             tempInfo.setDiffcultVar(list.get(8).toString());
-            tempInfo.setDevUser(list.get(9).toString());
-            tempInfo.setDevUserName(list.get(10).toString());
-            tempInfo.setLinkman(list.get(11).toString());
-            tempInfo.setMobile(list.get(12).toString());
-            tempInfo.setOperVar(list.get(13).toString());
-            tempInfo.setHopeFinishDate(list.get(14).toString());
+            tempInfo.setDevUser(user.getUserid());
+            tempInfo.setDevUserName(user.getYhmc());
+            tempInfo.setLinkman(list.get(9).toString());
+            tempInfo.setMobile(list.get(10).toString());
+            tempInfo.setOperVar(list.get(11).toString());
+            tempInfo.setHopeFinishDate(list.get(12).toString());
             String userMsg  = "";
-            if(list.size() >= 16 && !StringUtil.isEmptyOrNull(list.get(15).toString())){
-                userMsg = list.get(15).toString();
+            if(list.size() >= 14 && !StringUtil.isEmptyOrNull(list.get(13).toString())){
+                userMsg = list.get(13).toString();
             }
             tempInfo.setUserMessage(userMsg);
             String requireNo  = "";
-            if(list.size() >= 17 && !StringUtil.isEmptyOrNull(list.get(16).toString())){
-                requireNo = list.get(16).toString();
+            if(list.size() >= 15 && !StringUtil.isEmptyOrNull(list.get(14).toString())){
+                requireNo = list.get(14).toString();
             }
             tempInfo.setRequirementNo(requireNo);
             etTempQuestionInfoDao.insertEntity(tempInfo);
@@ -186,7 +189,6 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
         EtTempQuestionInfo tempQuestionInfo = new EtTempQuestionInfo();
         tempQuestionInfo.setSerialNo(info.getSerialNo());
         etTempQuestionInfoDao.updateEtTempQuestionInfoDictValue(tempQuestionInfo);
-        SysUserInfo user = sysUserInfoService.getSysUserInfoById(info.getCreator());
         List<EtTempQuestionInfo> etTempQuestionInfos = etTempQuestionInfoDao.selectEntityList(tempQuestionInfo);
         for (EtTempQuestionInfo tinfo : etTempQuestionInfos) {
             EtSiteQuestionInfo qinfo = new EtSiteQuestionInfo();
