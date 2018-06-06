@@ -377,6 +377,16 @@
             <artifactId>poi-ooxml</artifactId>
             <version>3.14</version>
         </dependency>
+
+		<!--微信api-->
+		<dependency>
+			<groupId>wxjar</groupId>
+			<artifactId>weixinaoi</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/weixinapi-1.0.jar</systemPath>
+		</dependency>
+
 		<!--<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
