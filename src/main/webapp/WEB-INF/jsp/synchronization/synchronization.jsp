@@ -205,57 +205,90 @@
     toastr.options.timeOut = 6000000;
     toastr.options.extendedTimeOut = 6000000;
 
-    function synchronization(tag, type) {
-        //缓存当前执行的同步
-        var arr = window.sessionStorage.getItem("activeButton")
-        if (arr == null) {
-            arr = [];
+    /**
+     * 删除某字符串
+     * @param baseStr 原字符串
+     * @param reg
+     */
+    function removeStr(baseStr, reg) {
+        reg = reg + "";
+        baseStr = baseStr.replace(reg, "");
+        var arr = baseStr.split(",");
+        baseStr = "";
+        if (arr.length == 1) {
+            baseStr = arr[0];
         }
-        toastr.options.closeButton = true;
-        toastr.clear();
-        toastr.info("正在同步...");
-        tag.disabled = true;
-        arr[arr.length] = type;
-        window.sessionStorage.setItem("activeButton", arr);
+        if (arr.length > 1) {
+            baseStr = arr[0];
+            for (var i = 1; i < arr.length; i++) {
+                if (arr[i] != "") {
+                    baseStr += "," + arr[i];
+                }
+            }
+        }
+        console.info("removeStr:" + baseStr);
+        return baseStr;
+    }
+
+
+    /**
+     * 增加字符串
+     * @param baseStr 原字符串
+     * @param reg
+     */
+    function addStr(baseStr, reg) {
+        reg = reg + "";
+        if (baseStr == null || baseStr == "") {
+            baseStr = reg;
+        } else {
+            baseStr += "," + reg;
+        }
+        console.info("addStr:" + baseStr);
+        return baseStr;
+    }
+
+    function doAjax(type) {
+        var defer = $.Deferred();
         $.ajax({
             type: "post",
             url: "${ctx}/admin/synchronization/synchronization.do",
             data: {type: type},
             success: function (data) {
-                toastr.clear();
-                tag.disabled = false;
-                if (data.msg = "success") {
-                    toastr.success("同步完成！");
-                    arr.slice(arr.indexOf(type), 1);
-                    window.sessionStorage.setItem("activeButton", arr);
-                }
+                defer.resolve(data);
             },
-            complete: function (XMLHttpRequest, textStatus) {
-                if (textStatus == "error") {
-                    toastr.clear();
-                    toastr.error("同步异常！", function () {
-                        tag.disabled = false;
-                        arr.slice(arr.indexOf(type), 1);
-                        window.sessionStorage.setItem("activeButton", arr);
-                    });
-                }
-            },
+        });
+        return defer.promise();
+
+    }
+
+    /**
+     * 数据同步方法
+     * @param tag 当前元素
+     * @param type 数据类型
+     */
+    function synchronization(tag, type) {
+        //缓存当前执行的同步
+        // var btnStr = window.sessionStorage.getItem("activeButton");
+        toastr.options.closeButton = true;
+        toastr.clear();
+        toastr.info("正在同步...");
+        tag.disabled = true;
+        // btnStr = addStr(btnStr, type);
+        // window.sessionStorage.setItem("activeButton", btnStr);
+        $.when(doAjax(type)).done(function (data) {
+            toastr.clear();
+            tag.disabled = false;
+            if (data.msg = "success") {
+                toastr.success("同步完成！");
+                // btnStr = removeStr(btnStr, type);
+                // window.sessionStorage.setItem("activeButton", btnStr);
+            }
         });
 
     }
 
     <%--久违的js，舒服--%>
     $(function () {
-        //获取当前作用按钮缓存
-        var arr = window.sessionStorage.getItem("activeButton");
-        if (arr != null && arr.length > 0) {
-            for (var i = 0; i < arr.length; i++) {
-                $("#btn_" + arr[i]).prop("disabled", true);
-            }
-            toastr.clear();
-            toastr.info("正在同步...");
-        }
-
     });
 </script>
 </html>
