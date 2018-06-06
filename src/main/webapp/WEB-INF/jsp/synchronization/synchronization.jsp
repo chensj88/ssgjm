@@ -45,6 +45,7 @@
 
                                 <div class="col-sm-1">
                                     <button class="btn btn-primary btn-sm tooltip-error" data-rel="tooltip"
+                                            id="btn_0"
                                             onclick="synchronization(this,0)"
                                             data-placement="同步"
                                             title="同步">同步
@@ -57,6 +58,7 @@
 
                                 <div class="col-sm-1">
                                     <button class="btn btn-primary btn-sm tooltip-error" data-rel="tooltip"
+                                            id="btn_1"
                                             onclick="synchronization(this,1)"
                                             data-placement="同步"
                                             title="同步">同步
@@ -72,6 +74,7 @@
 
                                 <div class="col-sm-1">
                                     <button class="btn btn-primary btn-sm tooltip-error" data-rel="tooltip"
+                                            id="btn_2"
                                             onclick="synchronization(this,2)"
                                             data-placement="同步"
                                             title="同步">同步
@@ -84,6 +87,7 @@
 
                                 <div class="col-sm-1">
                                     <button class="btn btn-primary btn-sm tooltip-error" data-rel="tooltip"
+                                            id="btn_3"
                                             onclick="synchronization(this,3)"
                                             data-placement="同步"
                                             title="同步">同步
@@ -99,6 +103,7 @@
 
                                 <div class="col-sm-1">
                                     <button class="btn btn-primary btn-sm tooltip-error" data-rel="tooltip"
+                                            id="btn_4"
                                             onclick="synchronization(this,4)"
                                             data-placement="同步"
                                             title="同步">同步
@@ -111,6 +116,7 @@
 
                                 <div class="col-sm-1">
                                     <button class="btn btn-primary btn-sm tooltip-error" data-rel="tooltip"
+                                            id="btn_5"
                                             onclick="synchronization(this,5)"
                                             data-placement="同步"
                                             title="同步">同步
@@ -126,6 +132,7 @@
 
                                 <div class="col-sm-1">
                                     <button class="btn btn-primary btn-sm tooltip-info" data-rel="tooltip"
+                                            id="btn_6"
                                             onclick="synchronization(this,6)"
                                             data-placement="同步"
                                             title="同步">同步
@@ -138,6 +145,7 @@
 
                                 <div class="col-sm-1">
                                     <button class="btn btn-primary btn-sm tooltip-error" data-rel="tooltip"
+                                            id="btn_7"
                                             onclick="synchronization(this,7)"
                                             data-placement="同步"
                                             title="同步">同步
@@ -153,6 +161,7 @@
 
                                 <div class="col-sm-1">
                                     <button class="btn btn-primary btn-sm tooltip-error" data-rel="tooltip"
+                                            id="btn_8"
                                             onclick="synchronization(this,8)"
                                             data-placement="同步"
                                             title="同步">同步
@@ -165,6 +174,7 @@
 
                                 <div class="col-sm-1">
                                     <button class="btn btn-primary btn-sm tooltip-error" data-rel="tooltip"
+                                            id="btn_9"
                                             onclick="synchronization(this,9)"
                                             data-placement="同步"
                                             title="同步">同步
@@ -190,31 +200,43 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/toastr.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
 <script type="text/javascript">
+    toastr.options.progressBar = false;
+    toastr.options.positionClass = 'toast-top-center';
+    toastr.options.timeOut = 6000000;
+    toastr.options.extendedTimeOut = 6000000;
+
     function synchronization(tag, type) {
-        toastr.options.progressBar = false;
-        toastr.options.positionClass = 'toast-top-center';
-        toastr.options.timeOut = 6000000;
-        toastr.options.extendedTimeOut = 6000000;
-        toastr.options.closeButton=true;
+        //缓存当前执行的同步
+        var arr = window.sessionStorage.getItem("activeButton")
+        if (arr == null) {
+            arr = [];
+        }
+        toastr.options.closeButton = true;
         toastr.clear();
         toastr.info("正在同步...");
         tag.disabled = true;
+        arr[arr.length] = type;
+        window.sessionStorage.setItem("activeButton", arr);
         $.ajax({
             type: "post",
             url: "${ctx}/admin/synchronization/synchronization.do",
             data: {type: type},
             success: function (data) {
                 toastr.clear();
-                tag.disabled=false;
+                tag.disabled = false;
                 if (data.msg = "success") {
                     toastr.success("同步完成！");
+                    arr.slice(arr.indexOf(type), 1);
+                    window.sessionStorage.setItem("activeButton", arr);
                 }
             },
-            complete:function (XMLHttpRequest,textStatus) {
-                if(textStatus=="error"){
+            complete: function (XMLHttpRequest, textStatus) {
+                if (textStatus == "error") {
                     toastr.clear();
-                    toastr.error("同步异常！",function () {
+                    toastr.error("同步异常！", function () {
                         tag.disabled = false;
+                        arr.slice(arr.indexOf(type), 1);
+                        window.sessionStorage.setItem("activeButton", arr);
                     });
                 }
             },
@@ -224,6 +246,15 @@
 
     <%--久违的js，舒服--%>
     $(function () {
+        //获取当前作用按钮缓存
+        var arr = window.sessionStorage.getItem("activeButton");
+        if (arr != null && arr.length > 0) {
+            for (var i = 0; i < arr.length; i++) {
+                $("#btn_" + arr[i]).prop("disabled", true);
+            }
+            toastr.clear();
+            toastr.info("正在同步...");
+        }
 
     });
 </script>
