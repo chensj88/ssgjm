@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.EtAccessTokenDao">
+
+	<resultMap id="etAccessTokenResultForList" type="etAccessToken">
+		<result column="ID" property="id" jdbcType="BIGINT" />
+		<result column="ACCESS_TOKEN" property="accessToken" jdbcType="VARCHAR" />
+		<result column="EXPIRES_IN" property="expiresIn" jdbcType="VARCHAR" />
+		<result column="DING_TIME" property="dingTime" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="LONGVARCHAR" />
+	</resultMap>
+
+	<resultMap id="etAccessTokenResult" type="etAccessToken" extends="etAccessTokenResultForList">
+	</resultMap>
+
+	<sql id="sf-etAccessToken">
+	   <if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
+	   <if test="accessToken != null and accessToken != ''"> and t.ACCESS_TOKEN = #{accessToken} </if>
+	   <if test="expiresIn != null and expiresIn != ''"> and t.EXPIRES_IN = #{expiresIn} </if>
+	   <if test="dingTime != null and dingTime != ''"> and t.DING_TIME = #{dingTime} </if>
+	   <if test="remark != null and remark != ''"> and t.REMARK = #{remark} </if>
+	</sql>
+
+	<select id="selectEtAccessToken" resultMap="etAccessTokenResult" parameterType="etAccessToken">
+		select * from ET_ACCESS_TOKEN t where 1 = 1
+		<include refid="sf-etAccessToken" />
+	</select>
+
+	<select id="selectEtAccessTokenList" resultMap="etAccessTokenResultForList" parameterType="etAccessToken">
+		select
+		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
+		 * from ET_ACCESS_TOKEN t where 1 = 1
+		<include refid="sf-etAccessToken" />
+		<!-- order by ID asc -->
+	</select>
+
+	<select id="selectEtAccessTokenCount" resultType="int" parameterType="etAccessToken">
+		select count(*) from ET_ACCESS_TOKEN t where 1 = 1
+		<include refid="sf-etAccessToken" />
+	</select>
+
+	<select id="selectEtAccessTokenPaginatedList" resultMap="etAccessTokenResult" parameterType="etAccessToken">
+		select * from (
+			select *, ROW_NUMBER() OVER ( order by id desc ) as _rn 
+				from ET_ACCESS_TOKEN t where 1 = 1
+			<include refid="sf-etAccessToken" />
+			<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
+
+	<insert id="insertEtAccessToken" parameterType="etAccessToken">
+	<selectKey resultType="String"  order="BEFORE"  keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID</selectKey>
+		insert into ET_ACCESS_TOKEN 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> ID, </if>
+		   <if test="accessToken != null and accessToken != ''"> ACCESS_TOKEN, </if>
+		   <if test="expiresIn != null and expiresIn != ''"> EXPIRES_IN, </if>
+		   <if test="dingTime != null and dingTime != ''"> DING_TIME, </if>
+		   <if test="remark != null and remark != ''"> REMARK, </if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> #{id, jdbcType=BIGINT}, </if>
+		   <if test="accessToken != null and accessToken != ''"> #{accessToken, jdbcType=VARCHAR}, </if>
+		   <if test="expiresIn != null and expiresIn != ''"> #{expiresIn, jdbcType=VARCHAR}, </if>
+		   <if test="dingTime != null and dingTime != ''"> #{dingTime, jdbcType=VARCHAR}, </if>
+		   <if test="remark != null and remark != ''"> #{remark, jdbcType=LONGVARCHAR}, </if>
+		</trim>
+	</insert>
+
+	<update id="updateEtAccessToken" parameterType="EtAccessToken">
+		update ET_ACCESS_TOKEN
+		<set>
+			<trim suffixOverrides=",">
+			   <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>
+			   <if test="accessToken != null and accessToken != ''"> ACCESS_TOKEN = #{accessToken, jdbcType=VARCHAR}, </if>
+			   <if test="expiresIn != null and expiresIn != ''"> EXPIRES_IN = #{expiresIn, jdbcType=VARCHAR}, </if>
+			   <if test="dingTime != null and dingTime != ''"> DING_TIME = #{dingTime, jdbcType=VARCHAR}, </if>
+			   <if test="remark != null and remark != ''"> REMARK = #{remark, jdbcType=LONGVARCHAR}, </if>
+			</trim>
+		</set>
+		where
+		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</update>
+
+	<delete id="deleteEtAccessToken" parameterType="EtAccessToken">
+		delete from ET_ACCESS_TOKEN where
+		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</delete>
+
+</mapper>
