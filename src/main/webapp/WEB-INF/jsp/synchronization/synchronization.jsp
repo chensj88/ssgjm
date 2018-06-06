@@ -67,7 +67,7 @@
                         <form class="form-horizontal" role="form">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">
-                                    同步用户信息库
+                                    同步客户信息
                                 </label>
 
                                 <div class="col-sm-1">
