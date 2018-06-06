@@ -203,6 +203,12 @@ public class FacadeImpl implements Facade {
     @Resource
     SysUserVideoAuthService sysUserVideoAuthService;
 
+    @Resource
+    EtAccessTokenService etAccessTokenService;
+
+    public EtAccessTokenService getEtAccessTokenService() {
+        return etAccessTokenService;
+    }
 
     public EtUserLookProjectService getEtUserLookProjectService() {
         return etUserLookProjectService;

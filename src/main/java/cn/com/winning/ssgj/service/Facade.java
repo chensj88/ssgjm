@@ -139,4 +139,6 @@ public interface Facade {
 
     SysUserVideoAuthService getSysUserVideoAuthService();
 
+    EtAccessTokenService getEtAccessTokenService();
+
 }
