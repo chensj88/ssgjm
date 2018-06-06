@@ -35,4 +35,8 @@ public interface SysDictInfoService {
     Integer getSysDictInfoCountForOr(SysDictInfo t);
 
     boolean existDictValue(SysDictInfo dictInfo);
+
+    List<SysDictInfo> getSysDictInfoListByType(SysDictInfo dict);
+
+    List<SysDictInfo> getSysDictInfoListByValue(List<String> valueList);
 }

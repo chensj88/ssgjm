@@ -204,6 +204,19 @@
     <select id="selectEtSiteQuestionInfoCount" resultType="int" parameterType="etSiteQuestionInfo">
         select count(*) from ET_SITE_QUESTION_INFO t where 1 = 1
         <include refid="query-etSiteQuestionInfo"/>
+        <if test="map.notAllocate != null ">
+            and t.ALLOCATE_USER IS  NULL
+        </if>
+    </select>
+
+    <select id="selectEtSiteQuestionInfoTotalCountByUser" resultMap="etSiteQuestionInfoResult"
+            parameterType="etSiteQuestionInfo">
+        SELECT ALLOCATE_USER,ISNULL(i.C_NAME, '未分配') as C_NAME,ISNULL(d.DICT_LABEL, '无') as POSITION_NAME,tt.NUM from (
+        SELECT t.ALLOCATE_USER,count(*) as NUM FROM ET_SITE_QUESTION_INFO t where 1 = 1
+        <include refid="sf-etSiteQuestionInfo"/>
+        GROUP BY ALLOCATE_USER)AS tt
+        LEFT JOIN ET_USER_INFO i ON tt.ALLOCATE_USER=i.USER_ID AND i.USER_TYPE = 1 AND i.IS_DEL = 1 and i.SERIAL_NO = #{serialNo} and i.USER_ID != 100001
+        LEFT JOIN SYS_DICT_INFO d ON d.DICT_CODE='positionName' AND i.POSITION_NAME = d.DICT_VALUE
     </select>
 
     <select id="selectEtSiteQuestionInfoPaginatedList" resultMap="etSiteQuestionInfoResult"
@@ -229,6 +242,10 @@
         LEFT JOIN SYS_DICT_INFO l ON t.DIFFCULT_LEVEL=l.DICT_VALUE AND l.DICT_CODE='diffcultLevel'
         where 1 = 1
         <include refid="query-etSiteQuestionInfo"/>
+        <if test="map.notAllocate != null ">
+            and t.ALLOCATE_USER IS  NULL
+        </if>
+
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>

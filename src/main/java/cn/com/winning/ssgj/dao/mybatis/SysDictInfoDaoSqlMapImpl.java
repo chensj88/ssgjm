@@ -40,4 +40,14 @@ public class SysDictInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysDictInfo> i
         String statement = "selectEntityCountBySelectiveKeyForOr";
         return  super.getSqlSession().selectOne(statement,dict);
     }
+
+    @Override
+    public List<SysDictInfo> selectSysDictInfoListByType(SysDictInfo dict) {
+        return  super.getSqlSession().selectList("selectSysDictInfoListByType",dict);
+    }
+
+    @Override
+    public List<SysDictInfo> selectSysDictInfoListByValue(SysDictInfo dict) {
+        return  super.getSqlSession().selectList("selectSysDictInfoListByValue",dict);
+    }
 }

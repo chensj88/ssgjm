@@ -17,10 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author chenshijie
@@ -37,28 +34,56 @@ public class EtContractProjectController extends BaseController {
     @Autowired
     private SSGJHelper ssgjHelper;
 
+    @RequestMapping(value = "/initData.do")
+    @ResponseBody
+    public Map<String, Object>  initProjectProduct(EtContractTask task,String idList) {
+        List<String> valueList = new ArrayList<>();
+        for( int i = 0 ; i< idList.split(",").length; i++){
+            valueList.add(idList.split(",")[i]);
+        }
+        List<SysDictInfo> dicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByValue(valueList);
+        for (SysDictInfo info : dicts) {
+            EtContractTask t = new EtContractTask();
+            t.setcId(task.getcId());
+            t.setPmId(task.getPmId());
+            t.setSerialNo(task.getSerialNo());
+            t.setSourceId(Long.parseLong(info.getDictSort()));
+            t = super.getFacade().getEtContractTaskService().getEtContractTask(t);
+            if(t == null){
+                t = new EtContractTask();
+                t.setId(ssgjHelper.createEtContractTaskIdService());
+                t.setcId(task.getcId());
+                t.setPmId(task.getPmId());
+                t.setSerialNo(task.getSerialNo());
+                t.setZxtmc(info.getDictLabel());
+                t.setSourceId(Long.parseLong(info.getDictSort()));
+                t.setCreator(task.getCreator());
+                t.setCreateTime(new Timestamp(new Date().getTime()));
+                getFacade().getEtContractTaskService().createEtContractTask(t);
+            }
+        }
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
     /**
      * 查询项目产品信息
      * @param task
      * @param row
      * @return
      */
-    @RequestMapping(value = "/initData.do")
+    @RequestMapping(value = "/list.do")
     @ResponseBody
     public Map<String, Object>  listProductOfProject(EtContractTask task, Row row) {
-        super.getFacade().getCommonQueryService().generateEtContractTaskFromPmisContractProductInfo(task.getPmId());
         task.setRow(row);
         List<EtContractTask> taskList = super.getFacade().getEtContractTaskService().getEtContractTaskPaginatedList(task);
         int total = super.getFacade().getEtContractTaskService().getEtContractTaskCount(task);
         //根据pmid获取项目进程
-        EtProcessManager etProcessManager = new EtProcessManager();
-        etProcessManager.setPmId(task.getPmId());
-        etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows", taskList);
-        result.put("process", etProcessManager);
+        result.put("process", this.getProcessManager(task.getPmId()));
         return result;
     }
 

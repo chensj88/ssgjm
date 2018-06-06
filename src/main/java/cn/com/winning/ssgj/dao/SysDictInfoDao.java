@@ -39,4 +39,8 @@ public interface SysDictInfoDao extends EntityDao<SysDictInfo> {
      * @return
      */
     public Integer selectEntityCountBySelectiveKeyForOr(SysDictInfo dict);
+
+    List<SysDictInfo> selectSysDictInfoListByType(SysDictInfo dict);
+
+    List<SysDictInfo> selectSysDictInfoListByValue(SysDictInfo dict);
 }

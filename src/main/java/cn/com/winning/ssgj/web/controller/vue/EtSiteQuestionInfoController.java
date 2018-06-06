@@ -52,13 +52,16 @@ public class EtSiteQuestionInfoController extends BaseController {
     /**
      * 站点问题初始化显示
      *
-     * @param info
-     * @param row
+     * @param info 前端传输的数据
+     * @param row 分页数据
+     * @param startDate 查询开始日期
+     * @param endDate 查询结束日期
+     * @param paramName echarts查询参数
      * @return
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String, Object> listSiteQuestionInfo(EtSiteQuestionInfo info, Row row, String startDate, String endDate) throws ParseException {
+    public Map<String, Object> listSiteQuestionInfo(EtSiteQuestionInfo info, Row row, String startDate, String endDate,String paramName) throws ParseException {
         long pmid = info.getPmId();
         String serialNo = info.getSerialNo();
         info.setPmId(null);
@@ -69,12 +72,24 @@ public class EtSiteQuestionInfoController extends BaseController {
             param.put("startDate", DateUtil.convertDateStringToTimestap(startDate));
             param.put("endDate", DateUtil.convertDateStringToTimestap(endDate));
         }
+        if ( !StringUtil.isEmptyOrNull(paramName) && !StringUtil.isEmptyOrNull(paramName)) {
+            if("未分配".equals(paramName)){
+                Map<String, Object> param = info.getMap();
+                param.put("notAllocate", true);
+             }else{
+                EtUserInfo userInfo = new EtUserInfo();
+                userInfo.setSerialNo(serialNo);
+                userInfo.setCName(paramName);
+                userInfo = super.getFacade().getEtUserInfoService().getEtUserInfo(userInfo);
+                info.setAllocateUser(userInfo.getUserId());
+            }
+        }
         //站点问题分页显示
         List<EtSiteQuestionInfo> questionInfoList = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoPaginatedList(info);
         int total = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoCount(info);
         info = new EtSiteQuestionInfo();
         info.setSerialNo(serialNo);
-        List<EtSiteQuestionInfo> infoList = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoUserTotal(info);
+        List<EtSiteQuestionInfo> infoList = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoTotalCountByUser(info);
         //人员信息
         List<String> nameList = new ArrayList<String>();
         List<Integer> numList = new ArrayList<Integer>();
@@ -106,7 +121,7 @@ public class EtSiteQuestionInfoController extends BaseController {
     @RequestMapping(value = "/updateChart.do")
     @ResponseBody
     public Map<String, Object> updateChart(EtSiteQuestionInfo info) {
-        List<EtSiteQuestionInfo> infoList = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoUserTotal(info);
+        List<EtSiteQuestionInfo> infoList = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoTotalCountByUser(info);
         //人员信息
         List<String> nameList = new ArrayList<String>();
         List<Integer> numList = new ArrayList<Integer>();

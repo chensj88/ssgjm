@@ -32,6 +32,10 @@ public class SysDictInfo extends BaseDomain implements Serializable {
      * 字典说明
      */
     private String dictDesc;
+    /**
+     * 拼音码
+     */
+    private String pyCode;
 
     public SysDictInfo() {
 
@@ -88,5 +92,13 @@ public class SysDictInfo extends BaseDomain implements Serializable {
 
     public void setDictV(Integer dictV) {
         this.dictV = dictV;
+    }
+
+    public String getPyCode() {
+        return pyCode;
+    }
+
+    public void setPyCode(String pyCode) {
+        this.pyCode = pyCode;
     }
 }

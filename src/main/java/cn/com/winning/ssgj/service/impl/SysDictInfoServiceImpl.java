@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 
+import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import org.springframework.stereotype.Service;
 
@@ -93,6 +94,19 @@ public class SysDictInfoServiceImpl implements SysDictInfoService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<SysDictInfo> getSysDictInfoListByType(SysDictInfo dict) {
+        return this.sysDictInfoDao.selectSysDictInfoListByType(dict);
+    }
+
+    @Override
+    public List<SysDictInfo> getSysDictInfoListByValue(List<String> valueList) {
+        SysDictInfo dict = new SysDictInfo();
+        dict.setDictCode(Constants.DictInfo.PRODUCT_NAME);
+        dict.getMap().put("pks",valueList);
+        return this.sysDictInfoDao.selectSysDictInfoListByValue(dict);
     }
 
     /**

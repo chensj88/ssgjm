@@ -251,7 +251,7 @@ public class BaseController extends BaseSpringMvcMybatisController {
        SysDictInfo dict = new SysDictInfo();
        dict.setDictCode(Constants.DictInfo.PRODUCT_NAME);
        dict.setDictLabel(productName);
-       List<SysDictInfo> dictInfos = getFacade().getSysDictInfoService().getSysDictInfoList(dict);
+       List<SysDictInfo> dictInfos = getFacade().getSysDictInfoService().getSysDictInfoPageForOr(dict);
        return dictInfos;
     }
 }

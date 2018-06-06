@@ -225,4 +225,9 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
         etTempQuestionInfoDao.deleteEntity(tempQuestionInfo);
     }
 
+    @Override
+    public List<EtSiteQuestionInfo> getEtSiteQuestionInfoTotalCountByUser(EtSiteQuestionInfo info) {
+        return this.etSiteQuestionInfoDao.selectEtSiteQuestionInfoTotalCountByUser(info);
+    }
+
 }

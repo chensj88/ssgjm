@@ -8,6 +8,7 @@
         <result column="DICT_LABEL" property="dictLabel" jdbcType="VARCHAR"/>
         <result column="DICT_SORT" property="dictSort" jdbcType="VARCHAR"/>
         <result column="DICT_DESC" property="dictDesc" jdbcType="VARCHAR"/>
+        <result column="PY_CODE" property="pyCode" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="sysDictInfoResult" type="sysDictInfo" extends="sysDictInfoResultForList">
@@ -19,6 +20,7 @@
         <if test="dictLabel != null and dictLabel != ''">and t.DICT_LABEL = #{dictLabel}</if>
         <if test="dictSort != null and dictSort != ''">and t.DICT_SORT = #{dictSort}</if>
         <if test="dictDesc != null and dictDesc != ''">and t.DICT_DESC = #{dictDesc}</if>
+        <if test="pyCode != null and pyCode != ''">and t.PY_CODE = #{pyCode}</if>
     </sql>
     <sql id="qyeryForAnd-sysDictInfo">
         <if test="dictCode != null and dictCode != ''">and t.DICT_CODE LIKE '%${dictCode}%'</if>
@@ -67,6 +69,7 @@
             <if test="dictLabel != null and dictLabel != ''">DICT_LABEL,</if>
             <if test="dictSort != null and dictSort != ''">DICT_SORT,</if>
             <if test="dictDesc != null and dictDesc != ''">DICT_DESC,</if>
+            <if test="pyCode != null and pyCode != ''">PY_CODE,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -75,6 +78,7 @@
             <if test="dictLabel != null and dictLabel != ''">#{dictLabel, jdbcType=VARCHAR},</if>
             <if test="dictSort != null and dictSort != ''">#{dictSort, jdbcType=VARCHAR},</if>
             <if test="dictDesc != null and dictDesc != ''">#{dictDesc, jdbcType=VARCHAR},</if>
+            <if test="pyCode != null and pyCode != ''">#{pyCode, jdbcType=VARCHAR},</if>
         </trim>
     </insert>
 
@@ -87,6 +91,7 @@
                 <if test="dictLabel != null and dictLabel != ''">DICT_LABEL = #{dictLabel, jdbcType=VARCHAR},</if>
                 <if test="dictSort != null and dictSort != ''">DICT_SORT = #{dictSort, jdbcType=VARCHAR},</if>
                 <if test="dictDesc != null and dictDesc != ''">DICT_DESC = #{dictDesc, jdbcType=VARCHAR},</if>
+                <if test="pyCode != null and pyCode != ''">PY_CODE = #{pyCode, jdbcType=VARCHAR},</if>
             </trim>
         </set>
         <where>
@@ -131,5 +136,36 @@
         select count(1)
         from SYS_DICT_INFO t where 1 = 1
         <include refid="qyeryForOr-sysDictInfo"/>
+    </select>
+
+
+    <select id="selectSysDictInfoListByType" resultMap="sysDictInfoResult" parameterType="sysDictInfo">
+        select *
+        from SYS_DICT_INFO t where 1 = 1
+        <include refid="sf-sysDictInfo"/>
+        <if test="map.type == 1">
+            AND  LEFT(t.PY_CODE,1) IN  ('a','b','c','d','e','f','g')
+        </if>
+        <if test="map.type == 2">
+            AND  LEFT(t.PY_CODE,1) IN  ('h','i','j','k','l','m','n')
+        </if>
+        <if test="map.type == 3">
+            AND  LEFT(t.PY_CODE,1) IN  ('o','p','q','r','s','t')
+        </if>
+        <if test="map.type == 4">
+            AND  LEFT(t.PY_CODE,1) IN  ('u','v','w','x','y','z')
+        </if>
+        ORDER BY t.PY_CODE ASC
+    </select>
+
+
+    <select id="selectSysDictInfoListByValue" resultMap="sysDictInfoResult" parameterType="sysDictInfo">
+        select *
+        from SYS_DICT_INFO t where 1 = 1
+        <include refid="sf-sysDictInfo"/>
+        <if test="(map.pks != null and map.pks.size >0)">
+            AND DICT_VALUE in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
     </select>
 </mapper>

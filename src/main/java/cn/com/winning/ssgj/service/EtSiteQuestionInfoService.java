@@ -47,4 +47,11 @@ public interface EtSiteQuestionInfoService {
      * @param info
      */
     void createEtSiteQuestionInfo(List<List<Object>> questionList, EtSiteQuestionInfo info) throws ParseException;
+
+    /**
+     * 统计用户任务信息
+     * @param info
+     * @return
+     */
+    List<EtSiteQuestionInfo> getEtSiteQuestionInfoTotalCountByUser(EtSiteQuestionInfo info);
 }

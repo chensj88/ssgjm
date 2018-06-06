@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.web.controller.admin;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
+import cn.com.winning.ssgj.base.util.PinyinTools;
 import cn.com.winning.ssgj.domain.SysDictInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -52,6 +53,7 @@ public class SysDictInfoController extends BaseController {
     @ResponseBody
     @ILog
     public Map<String, Object> addSysDictInfo(SysDictInfo sysDictInfo) {
+        sysDictInfo.setPyCode(PinyinTools.cn2FirstSpell(sysDictInfo.getDictLabel()));
         super.getFacade().getSysDictInfoService().createSysDictInfo(sysDictInfo);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
@@ -73,6 +75,7 @@ public class SysDictInfoController extends BaseController {
     @ResponseBody
     @ILog
     public Map<String, Object> updateSysDictInfo(SysDictInfo info) {
+        info.setPyCode(PinyinTools.cn2FirstSpell(info.getDictLabel()));
         super.getFacade().getSysDictInfoService().modifySysDictInfo(info);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
