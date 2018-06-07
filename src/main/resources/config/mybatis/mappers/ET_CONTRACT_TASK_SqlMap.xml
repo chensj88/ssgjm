@@ -10,7 +10,7 @@
 		<result column="ZXTMC" property="zxtmc" jdbcType="VARCHAR" />
 		<result column="CPZXT" property="cpzxt" jdbcType="BIGINT" />
 		<result column="CPMC" property="cpmc" jdbcType="VARCHAR" />
-		<result column="CPXX" property="cpxx" jdbcType="BIGINT" />
+		<result column="ALLOCATE_USER" property="allocateUser" jdbcType="BIGINT" />
 		<result column="MX" property="mx" jdbcType="VARCHAR" />
 		<result column="BZ" property="bz" jdbcType="LONGVARCHAR" />
 		<result column="CREATOR" property="creator" jdbcType="BIGINT" />
@@ -31,7 +31,7 @@
 	   <if test="zxtmc != null and zxtmc != ''"> and t.ZXTMC = #{zxtmc} </if>
 	   <if test="(cpzxt != null and cpzxt != '') or cpzxt == 0"> and t.CPZXT = #{cpzxt} </if>
 	   <if test="cpmc != null and cpmc != ''"> and t.CPMC = #{cpmc} </if>
-	   <if test="(cpxx != null and cpxx != '') or cpxx == 0"> and t.CPXX = #{cpxx} </if>
+	   <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0"> and t.ALLOCATE_USER = #{allocateUser} </if>
 	   <if test="mx != null and mx != ''"> and t.MX = #{mx} </if>
 	   <if test="bz != null and bz != ''"> and t.BZ = #{bz} </if>
 	   <if test="(creator != null and creator != '') or creator == 0"> and t.CREATOR = #{creator} </if>
@@ -47,10 +47,9 @@
 		<if test="(pmId != null ) or pmId == 0"> and t.PM_ID = #{pmId} </if>
 		<if test="serialNo != null and serialNo != ''"> and t.SERIAL_NO = #{serialNo} </if>
 		<if test="(cpzxt != null and cpzxt != '') or cpzxt == 0"> and t.CPZXT = #{cpzxt} </if>
-		<if test="zxtmc != null and zxtmc != '' and (cpmc == null or cpmc == '')"> and t.ZXTMC LIKE '%${zxtmc}%' </if>
-		<if test="cpmc != null and cpmc != '' and (zxtmc == null or zxtmc == '')"> and t.CPMC LIKE '%${cpmc}%' </if>
-		<if test="cpmc != null and cpmc != '' and zxtmc != null and zxtmc != ''"> and ( t.ZXTMC LIKE '%${zxtmc}%' OR t.CPMC LIKE '%${cpmc}%') </if>
-		<if test="(cpxx != null and cpxx != '') or cpxx == 0"> and t.CPXX = #{cpxx} </if>
+		<if test="zxtmc != null and zxtmc != ''"> and t.ZXTMC LIKE '%${zxtmc}%' </if>
+		<if test="cpmc != null and cpmc != '' "> and t.CPMC LIKE '%${cpmc}%' </if>
+		<if test="(allocateUser != null and allocateUser != '') or allocateUser == 0"> and t.ALLOCATE_USER = #{allocateUser} </if>
 		<if test="mx != null and mx != ''"> and t.MX = #{mx} </if>
 		<if test="bz != null and bz != ''"> and t.BZ = #{bz} </if>
 		<if test="(creator != null and creator != '') or creator == 0"> and t.CREATOR = #{creator} </if>
@@ -97,7 +96,7 @@
 		   <if test="zxtmc != null and zxtmc != ''"> ZXTMC, </if>
 	       <if test="(cpzxt != null and cpzxt != '') or cpzxt == 0"> CPZXT, </if>
 		   <if test="cpmc != null and cpmc != ''"> CPMC, </if>
-	       <if test="(cpxx != null and cpxx != '') or cpxx == 0"> CPXX, </if>
+	       <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0"> ALLOCATE_USER, </if>
 		   <if test="mx != null and mx != ''"> MX, </if>
 		   <if test="bz != null and bz != ''"> BZ, </if>
 	       <if test="(creator != null and creator != '') or creator == 0"> CREATOR, </if>
@@ -115,7 +114,7 @@
 		   <if test="zxtmc != null and zxtmc != ''"> #{zxtmc, jdbcType=VARCHAR}, </if>
 	       <if test="(cpzxt != null and cpzxt != '') or cpzxt == 0"> #{cpzxt, jdbcType=BIGINT}, </if>
 		   <if test="cpmc != null and cpmc != ''"> #{cpmc, jdbcType=VARCHAR}, </if>
-	       <if test="(cpxx != null and cpxx != '') or cpxx == 0"> #{cpxx, jdbcType=BIGINT}, </if>
+	       <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0"> #{allocateUser, jdbcType=BIGINT}, </if>
 		   <if test="mx != null and mx != ''"> #{mx, jdbcType=VARCHAR}, </if>
 		   <if test="bz != null and bz != ''"> #{bz, jdbcType=LONGVARCHAR}, </if>
 	       <if test="(creator != null and creator != '') or creator == 0"> #{creator, jdbcType=BIGINT}, </if>
@@ -137,7 +136,7 @@
 			   <if test="zxtmc != null and zxtmc != ''"> ZXTMC = #{zxtmc, jdbcType=VARCHAR}, </if>
 			   <if test="(cpzxt != null and cpzxt != '') or cpzxt == 0"> CPZXT = #{cpzxt, jdbcType=BIGINT}, </if>
 			   <if test="cpmc != null and cpmc != ''"> CPMC = #{cpmc, jdbcType=VARCHAR}, </if>
-			   <if test="(cpxx != null and cpxx != '') or cpxx == 0"> CPXX = #{cpxx, jdbcType=BIGINT}, </if>
+			   <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0"> ALLOCATE_USER = #{allocateUser, jdbcType=BIGINT}, </if>
 			   <if test="mx != null and mx != ''"> MX = #{mx, jdbcType=VARCHAR}, </if>
 			   <if test="bz != null and bz != ''"> BZ = #{bz, jdbcType=LONGVARCHAR}, </if>
 			   <if test="(creator != null and creator != '') or creator == 0"> CREATOR = #{creator, jdbcType=BIGINT}, </if>
@@ -199,7 +198,7 @@
 		t.ZXTMC AS  ZXTMC,
 		t.CPZXT AS  CPZXT,
 		t.CPMC AS  CPMC,
-		t.CPXX AS  CPXX,
+		t.ALLOCATE_USER AS  ALLOCATE_USER,
 		'' AS  MX,
 		'' AS  BZ,
 		0 AS  CREATOR,
@@ -215,5 +214,62 @@
 		) T
 		<!-- order by ID asc -->
 		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
+
+	<!--检查当前删除的系统是否被软硬件清单使用-->
+	<select id="selectEtContractTaskForEtSoftHardCount" resultType="int" parameterType="etContractTask">
+	SELECT COUNT(1) FROM ET_SOFT_HARDWARE
+			<where>
+				<if test="id != null ">
+					and PL_ID = #{id}
+				</if>
+				<if test="pmId != null ">
+					AND PM_ID = #{pmId}
+				</if>
+				<if test="serialNo != null ">
+					AND SERIAL_NO = #{serialNo}
+				</if>
+				<if test="cId != null ">
+					AND C_ID = #{cId}
+				</if>
+			</where>
+	</select>
+
+	<!--检查当前删除的系统是否被站点问题使用-->
+	<select id="selectEtContractTaskForEtSitemQuestionCount" resultType="int" parameterType="etContractTask">
+		SELECT COUNT(1) FROM ET_SITE_QUESTION_INFO
+		<where>
+			<if test="id != null ">
+				and PRODUCT_NAME = #{id}
+			</if>
+			<if test="serialNo != null ">
+				AND SERIAL_NO = #{serialNo}
+			</if>
+		</where>
+	</select>
+    <!--检查当前删除的系统是否被站点安装使用-->
+	<select id="selectEtContractTaskForSiteInstall" resultType="string" parameterType="etContractTask">
+		SELECT
+	   		stuff((
+			   SELECT ','+PD_ID
+			   FROM ET_SITE_INSTALL
+			   WHERE A.PM_ID= PM_ID AND A.C_ID = C_ID AND A.SERIAL_NO = SERIAL_NO
+			   AND PD_ID IS NOT NULL AND PD_ID != ''
+			   FOR XML PATH('')),1,1,'' )
+		   FROM ET_SITE_INSTALL AS A
+		   <where>
+			   <if test="pmId != null ">
+				   AND A.PM_ID = #{pmId}
+			   </if>
+			   <if test="serialNo != null ">
+				   AND A.SERIAL_NO = #{serialNo}
+			   </if>
+			   <if test="cId != null ">
+				   AND A.C_ID = #{cId}
+			   </if>
+		   </where>
+			AND A.PD_ID IS NOT NULL
+			AND A.PD_ID != ''
+			GROUP BY A.PM_ID,A.C_ID,A.SERIAL_NO
 	</select>
 </mapper>

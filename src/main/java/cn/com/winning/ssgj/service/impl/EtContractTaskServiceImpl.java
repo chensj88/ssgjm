@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import cn.com.winning.ssgj.base.exception.SSGJException;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.domain.support.Row;
 import org.springframework.stereotype.Service;
@@ -92,6 +93,35 @@ public class EtContractTaskServiceImpl implements EtContractTaskService {
 		dataMap.put("colSize", colList.size());
 		dataMap.put("data", dataList);
 		ExcelUtil.writeExcel(dataList, colList, colList.size(), path);
+	}
+
+	/**
+	 * 检查当前系统信息是否被使用
+	 * @param task
+	 * @return
+	 */
+	@Override
+	public String  checkEtContractTaskIsUse(EtContractTask task) {
+		int shCount = etContractTaskDao.selectEtContractTaskForEtSoftHardCount(task);
+		int sqCount = etContractTaskDao.selectEtContractTaskForEtSitemQuestionCount(task);
+		String pdIdStr = etContractTaskDao.selectEtContractTaskForSiteInstall(task);
+		boolean isSiteInstall = false;
+		for (int i = 0; i < pdIdStr.split(",").length; i++) {
+			if(task.getId() == Long.parseLong(pdIdStr.split(",")[i])){
+				isSiteInstall = true;
+			}
+		}
+		String msg = "";
+		if(shCount > 0){
+			msg += "系统在硬件清单中使用，";
+		}
+		if(sqCount > 0){
+			msg += "系统在站点问题中使用,";
+		}
+		if(isSiteInstall){
+			msg += "系统在站点安装中使用,";
+		}
+		return msg;
 	}
 
 }

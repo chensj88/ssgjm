@@ -497,7 +497,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
                     task.setZxtmc(pInfo.getZxtmc());
                     task.setCpzxt(Long.valueOf(pInfo.getCpzxt()));
                     task.setCpmc(pInfo.getCpmc());
-                    task.setCpxx(pInfo.getCpxx());
+                    task.setAllocateUser(-1L);
                     task.setSourceId(pInfo.getId());
                     task.setCreator(100001L);
                     task.setCreateTime(new Timestamp(new Date().getTime()));

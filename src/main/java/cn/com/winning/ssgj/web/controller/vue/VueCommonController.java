@@ -92,4 +92,19 @@ public class VueCommonController extends BaseController {
         return result;
 
     }
+
+    /**
+     * 根据项目ID查询可以分配的项目组成员信息
+     * @param pmId
+     * @return
+     */
+    @RequestMapping(value = "/queryWorkAssig.do" )
+    @ResponseBody
+    public Map<String,Object> queryWorkAssig(Long pmId){
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", this.getEtUserInfo(pmId));
+        return result;
+
+    }
 }

@@ -30,8 +30,10 @@ public class EtContractTask extends BaseDomain implements Serializable {
 	private Long cpzxt;
 	
 	private String cpmc;
-	
-	private Long cpxx;
+	/**
+	 * 主力工程师
+	 */
+	private Long allocateUser;
 	
 	private String mx;
 	
@@ -106,15 +108,15 @@ public class EtContractTask extends BaseDomain implements Serializable {
 	public void setCpmc(String cpmc) {
 		this.cpmc = cpmc;
 	}
-	
-	public Long getCpxx() {
-		return cpxx;
+
+	public Long getAllocateUser() {
+		return allocateUser;
 	}
-	
-	public void setCpxx(Long cpxx) {
-		this.cpxx = cpxx;
+
+	public void setAllocateUser(Long allocateUser) {
+		this.allocateUser = allocateUser;
 	}
-	
+
 	public String getMx() {
 		return mx;
 	}
