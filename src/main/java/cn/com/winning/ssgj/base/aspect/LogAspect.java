@@ -92,7 +92,8 @@ public class LogAspect {
         HttpSession session = request.getSession();
         String uri = request.getRequestURI();
         String requestName = uri.substring(uri.lastIndexOf("/"),uri.lastIndexOf(".do"));
-        if(requestName.equals("/login") || requestName.equals("/logout") || requestName.equals("/check")){
+        if(requestName.equals("/login") || requestName.equals("/logout") || requestName.equals("/check")
+                ||requestName.equals("/list")){
             return;
         }
         // 请求的IP
@@ -129,7 +130,7 @@ public class LogAspect {
             /*logger.info("方法描述:" + operationName);*/
             logger.info("请求人:"  +operator.getYhmc());
             logger.info("请求IP:" + ip);
-            String content = "[classs]{ "+targetName +"} [method]{"+ methodName  + "} [user] {" + operator.getYhmc() +"}";
+            String content = "[method]{ "+targetName +"."+ methodName  + "} [user] {" + operator.getYhmc() +"}";
             logger.info("访问内容："+content);
             // *========数据库日志=========*//
             SysLog log = new SysLog();
