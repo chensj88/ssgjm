@@ -90,7 +90,7 @@ public class EtSiteInstallController extends BaseController {
             }
 
             //所需要的 软件
-            result.put("productLineList", super.getProductLineList());
+            result.put("productLineList", super.getProductDictInfo(info.getSerialNo()));
             //所需要的 硬件
             result.put("hardList",super.getHardWareList(info.getPmId()));
             result.put("userList",super.getEtUserInfo(info.getPmId()));
@@ -143,7 +143,7 @@ public class EtSiteInstallController extends BaseController {
         EtSiteInstall install = new EtSiteInstall();
         install.setStatus(1);
         install.setDeptCode(info.getDeptCode());
-        List<EtSiteInstall> installList=super.getFacade().getEtSiteInstallService().getEtSiteInstallList(info);
+        List<EtSiteInstall> installList=super.getFacade().getEtSiteInstallService().getEtSiteInstallList(install);
         if(installList.size()>0){
             result.put("status",1);
         }else{
@@ -278,19 +278,102 @@ public class EtSiteInstallController extends BaseController {
         String sfName="";
         if(StringUtils.isNotBlank(info.getPdId())){
             //所需要的 软件
-            List<PmisProductLineInfo> softHardwareList = super.getPdNameList(info.getPmId(),info.getPdId());
-            for (PmisProductLineInfo s:softHardwareList){
-                sfName +=s.getName()+";";
+            EtContractTask task = new EtContractTask();
+            task.setSerialNo(info.getSerialNo());
+            //task.setId(info.getPdId());
+            task.getMap().put("softNameList",info.getPdId());
+            List<EtContractTask> softHardwareList = super.getFacade().getEtContractTaskService().getEtContractTaskList(task);
+            //软件&硬件明细
+            EtSiteInstall install = new EtSiteInstall();
+            install.setSerialNo(info.getSerialNo());
+            install.setId(info.getId());
+            install = super.getFacade().getEtSiteInstallService().getEtSiteInstall(install);
+            String[] pdId_list=info.getPdId().split(",");//[1,2,3]
+            if(install != null){ //是否存在pdId 不为空时新增 修改 删除 三种状态
+                if(StringUtils.isNotBlank(install.getPdId())){
+                    String[] pdId_list_old=install.getPdId().split(",");//[1,3]
+                    if(pdId_list.length < pdId_list_old.length){ //系统清单少于原有数据  出现了删除现象  判断是否已经安装
+                        for(int i = 0; i < pdId_list_old.length; i++){ //新产生的系统信息
+                            boolean is_exist = true;
+                            for(int j =0;j < pdId_list.length;j++){ //原有的PD_ID
+                                if(pdId_list_old[i].equals(pdId_list[j])){
+                                    //相等不做操作
+                                    is_exist = false;
+                                }
+                            }
+                            if(is_exist){
+                                EtSiteInstallDetail detail_old = new EtSiteInstallDetail();
+                                detail_old.setSourceId(info.getId());
+                                detail_old.setIp(pdId_list_old[i]);
+                                detail_old.setSiteName("1"); //软件
+                                detail_old = super.getFacade().getEtSiteInstallDetailService().getEtSiteInstallDetail(detail_old);
+                                if(detail_old != null){
+                                    if(detail_old.getInstall()==1){ //已安装不能删除
+                                        map.put("msg", "该软件已安装删除无效！");
+                                        return map;
+                                    }else {
+                                        super.getFacade().getEtSiteInstallDetailService().removeEtSiteInstallDetail(detail_old);
+                                    }
+                                }
+                            }
+                        }
+                }else{ //增加安装的软件
+                        for(int i = 0; i < pdId_list.length; i++){ //新产生的系统信息
+                            boolean is_exist = true;
+                            for(int j =0;j < pdId_list_old.length;j++){ //原有的PD_ID
+                                if(pdId_list_old[j].equals(pdId_list[i])){
+                                    is_exist = false;//相等不做操作
+                                }
+                            }
+                            if(is_exist){ //新增 明细数据
+                                EtSiteInstallDetail detail = new EtSiteInstallDetail();
+                                detail.setId(ssgjHelper.createSiteInstallDetailIdService());
+                                detail.setSourceId(info.getId());
+                                detail.setInstall(0);//未安装
+                                detail.setIp(pdId_list[i]);//系统编码
+                                detail.setSiteName("1");//1.软件 2.硬件
+                                super.getFacade().getEtSiteInstallDetailService().createEtSiteInstallDetail(detail);
+                            }
+                        }
+                    }
+
+                }else{ //新增状态
+                    for(int i = 0; i < pdId_list.length; i++) {
+                        EtSiteInstallDetail detail = new EtSiteInstallDetail();
+                        detail.setId(ssgjHelper.createSiteInstallDetailIdService());
+                        detail.setSourceId(info.getId());
+                        detail.setInstall(0);//未安装
+                        detail.setIp(pdId_list[i]);//系统编码
+                        detail.setSiteName("1");//1.软件 2.硬件
+                        super.getFacade().getEtSiteInstallDetailService().createEtSiteInstallDetail(detail);
+                    }
+                }
+            }
+
+            for (EtContractTask s:softHardwareList){
+                sfName +=s.getCpmc()+";";
             }
             sfName=sfName.substring(0,sfName.length()-1);
             info.setPdName(sfName);
         }else{
             info.setPdId("");
             info.setPdName("");
+            EtSiteInstallDetail detail_old = new EtSiteInstallDetail();
+            detail_old.setSourceId(info.getId());
+            detail_old.setSiteName("1"); //软件
+            detail_old = super.getFacade().getEtSiteInstallDetailService().getEtSiteInstallDetail(detail_old);
+            if(detail_old != null){
+                if(detail_old.getInstall()==1){ //已安装不能删除
+                    map.put("msg", "该软件已安装不能删除！");
+                    return map;
+                }else {
+                    super.getFacade().getEtSiteInstallDetailService().removeEtSiteInstallDetail(detail_old);
+                }
+            }
         }
         super.getFacade().getEtSiteInstallService().modifyEtSiteInstall(info);
         map.put("type", Constants.SUCCESS);
-        map.put("msg", "硬件修改成功！");
+        map.put("msg", "软件修改成功！");
         return map;
     }
 
@@ -345,26 +428,29 @@ public class EtSiteInstallController extends BaseController {
         installDetail.setSourceId(info.getId());
         List<EtSiteInstallDetail> siteInstallDetails=new ArrayList<EtSiteInstallDetail>();
         siteInstallDetails = super.getFacade().getEtSiteInstallDetailService().getEtSiteInstallDetailList(installDetail);
-        if((siteInstallDetails.size()==0 || siteInstallDetails==null) && info.getNum() > 0){
-            for(int i =0 ; i<info.getNum(); i++){
-                EtSiteInstallDetail detail = new EtSiteInstallDetail();
-                detail.setId(ssgjHelper.createSiteInstallDetailIdService());
-                detail.setSourceId(info.getId());
-                detail.setInstall(0);
-                detail.setFloorNum(1);//默认楼层为 1楼
-                super.getFacade().getEtSiteInstallDetailService().createEtSiteInstallDetail(detail);
-            }
-            //当为空的时候重新获取 初始化的安装明细信息
-            siteInstallDetails=super.getFacade().getEtSiteInstallDetailService().getEtSiteInstallDetailList(installDetail);
-        }else{//存在集合 获取图片信息
-            for (EtSiteInstallDetail detail: siteInstallDetails) {
-                if(StringUtils.isNotBlank(detail.getImgPath())){
-                    String[] imgs=detail.getImgPath().split(";");
-                    //List<String> lists= Arrays.asList(imgs); detail.setImgs(lists);
-                    detail.setImgsArray(imgs);
-                }
-            }
-        }
+
+
+
+//        if((siteInstallDetails.size()==0 || siteInstallDetails==null) && info.getNum() > 0){
+////            for(int i =0 ; i<info.getNum(); i++){
+////                EtSiteInstallDetail detail = new EtSiteInstallDetail();
+////                detail.setId(ssgjHelper.createSiteInstallDetailIdService());
+////                detail.setSourceId(info.getId());
+////                detail.setInstall(0);
+////                detail.setFloorNum(1);//默认楼层为 1楼
+////                super.getFacade().getEtSiteInstallDetailService().createEtSiteInstallDetail(detail);
+////            }
+////            //当为空的时候重新获取 初始化的安装明细信息
+////            siteInstallDetails=super.getFacade().getEtSiteInstallDetailService().getEtSiteInstallDetailList(installDetail);
+////        }else{//存在集合 获取图片信息
+////            for (EtSiteInstallDetail detail: siteInstallDetails) {
+////                if(StringUtils.isNotBlank(detail.getImgPath())){
+////                    String[] imgs=detail.getImgPath().split(";");
+////                    //List<String> lists= Arrays.asList(imgs); detail.setImgs(lists);
+////                    detail.setImgsArray(imgs);
+////                }
+////            }
+////        }
         result.put("siteInstallDetails", siteInstallDetails);
         result.put("deptName",info.getDeptName());
         result.put("status", Constants.SUCCESS);
@@ -455,27 +541,47 @@ public class EtSiteInstallController extends BaseController {
     public synchronized Map<String,Object> saveSiteDetail (HttpServletRequest request,EtSiteInstallDetailForm ss) throws  Exception {
         Map map = new HashMap();
         String detailData = request.getParameter("detailData");
+        String sourceId = request.getParameter("sourceId");
         String operator = request.getParameter("operator");
-        JSONArray json = JSONArray.fromObject(detailData);
-        for(int i=0; i<json.size(); i++){
-            EtSiteInstallDetail detail = new EtSiteInstallDetail();
-            JSONObject jb = (JSONObject)json.get(i);
-            detail.setId(Long.parseLong(jb.getString("id")));
-            detail.setSiteName(jb.getString("siteName"));
-            detail.setIp(jb.getString("ip"));
-            detail.setBuilding(jb.getString("building"));
-            detail.setFloorNum(Integer.parseInt(jb.getString("floorNum")));
-            detail.setPcModel(jb.getString("pcModel"));
-            if(StringUtils.isNotBlank(jb.getString("install"))){
-                detail.setInstall(Integer.parseInt(jb.getString("install")));
-            }else{
-                detail.setInstall(0);
+        if(StringUtils.isNotBlank(detailData)){
+            String[] idList = detailData.split(",");
+            //全部置成未安装
+            EtSiteInstallDetail detail_old = new EtSiteInstallDetail();
+            detail_old.setSourceId(Long.valueOf(sourceId));
+            detail_old.setInstall(0);
+            super.getFacade().getEtSiteInstallDetailService().updateEtSiteInstallDetailSourceId(detail_old);
+
+            for(int i=0; i<idList.length; i++){
+                EtSiteInstallDetail detail = new EtSiteInstallDetail();
+                detail.setId(Long.valueOf(idList[i]));
+                detail.setInstall(1);
+                super.getFacade().getEtSiteInstallDetailService().modifyEtSiteInstallDetail(detail);
+
             }
-            detail.setOperator(Long.parseLong(operator));
-            detail.setOperatorTime(new Timestamp(new Date().getTime()));
-            super.getFacade().getEtSiteInstallDetailService().modifyEtSiteInstallDetail(detail);
+
 
         }
+
+//        JSONArray json = JSONArray.fromObject(detailData);
+//        for(int i=0; i<json.size(); i++){
+//            EtSiteInstallDetail detail = new EtSiteInstallDetail();
+//            JSONObject jb = (JSONObject)json.get(i);
+//            detail.setId(Long.parseLong(jb.getString("id")));
+//            detail.setSiteName(jb.getString("siteName"));
+//            detail.setIp(jb.getString("ip"));
+//            detail.setBuilding(jb.getString("building"));
+//            detail.setFloorNum(Integer.parseInt(jb.getString("floorNum")));
+//            detail.setPcModel(jb.getString("pcModel"));
+//            if(StringUtils.isNotBlank(jb.getString("install"))){
+//                detail.setInstall(Integer.parseInt(jb.getString("install")));
+//            }else{
+//                detail.setInstall(0);
+//            }
+//            detail.setOperator(Long.parseLong(operator));
+//            detail.setOperatorTime(new Timestamp(new Date().getTime()));
+//            super.getFacade().getEtSiteInstallDetailService().modifyEtSiteInstallDetail(detail);
+//
+//        }
 
         map.put("type", Constants.SUCCESS);
         map.put("msg", "站点修改成功！");
@@ -619,5 +725,7 @@ public class EtSiteInstallController extends BaseController {
         map.put("puserNumList",puserNumList);
         return map;
     }
+
+
 
 }

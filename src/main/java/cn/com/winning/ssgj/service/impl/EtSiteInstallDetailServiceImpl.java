@@ -62,4 +62,9 @@ public class EtSiteInstallDetailServiceImpl implements EtSiteInstallDetailServic
         return this.etSiteInstallDetailDao.getSiteListByDeptId(etDepartment);
     }
 
+    @Override
+    public void updateEtSiteInstallDetailSourceId(EtSiteInstallDetail t) {
+        this.etSiteInstallDetailDao.updateEtSiteInstallDetailSourceId(t);
+    }
+
 }

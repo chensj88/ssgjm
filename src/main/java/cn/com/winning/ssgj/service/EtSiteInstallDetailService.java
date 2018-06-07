@@ -29,4 +29,6 @@ public interface EtSiteInstallDetailService {
 
     List<EtSiteInstallDetail> getSiteListByDeptId(EtDepartment etDepartment);
 
+    void updateEtSiteInstallDetailSourceId(EtSiteInstallDetail detail_old);
+
 }

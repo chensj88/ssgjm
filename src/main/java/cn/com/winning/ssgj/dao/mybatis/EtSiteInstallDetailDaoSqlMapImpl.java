@@ -20,4 +20,9 @@ public class EtSiteInstallDetailDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtSite
     public List<EtSiteInstallDetail> getSiteListByDeptId(EtDepartment etDepartment) {
         return this.getSqlSession().selectList("getSiteListByDeptId", etDepartment);
     }
+
+    @Override
+    public void updateEtSiteInstallDetailSourceId(EtSiteInstallDetail t) {
+         this.getSqlSession().selectList("updateEtSiteInstallDetailSourceId",t);
+    }
 }

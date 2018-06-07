@@ -70,6 +70,7 @@
 		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
 		 * from ET_CONTRACT_TASK t where 1 = 1
 		<include refid="sf-etContractTask" />
+		<if test="map.softNameList != null and map.softNameList != ''"> AND t.ID IN (${map.softNameList})</if>
 		<!-- order by ID asc -->
 	</select>
 
