@@ -30,7 +30,6 @@ public class ProjectQueryController extends BaseController {
 
     /**
      * 查询用户的客户列表和项目列表
-     *
      * @return
      */
     @RequestMapping(value = "/common/queryCustomerMenu.do")

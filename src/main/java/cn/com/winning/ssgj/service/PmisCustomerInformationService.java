@@ -39,4 +39,6 @@ public interface PmisCustomerInformationService {
      * @return
      */
     List<PmisCustomerInformation> getUserCanViewCustomerList(Long userId);
+
+    List<PmisCustomerInformation> getAllCustomerByPageList( PmisCustomerInformation info);
 }

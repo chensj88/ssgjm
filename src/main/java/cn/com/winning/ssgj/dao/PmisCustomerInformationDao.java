@@ -19,4 +19,6 @@ public interface PmisCustomerInformationDao extends EntityDao<PmisCustomerInform
     List<PmisCustomerInformation> selectCustomerInfoListByProjectList(PmisCustomerInformation custinfo);
 
     List<PmisCustomerInformation> selectUserCanViewCustomerList(Long userId);
+
+    List<PmisCustomerInformation> selectAllCustomerByPageList(PmisCustomerInformation info);
 }

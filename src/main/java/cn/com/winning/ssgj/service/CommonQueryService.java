@@ -95,4 +95,11 @@ public interface CommonQueryService {
      * @param pmId
      */
     void generateEtContractTaskFromPmisContractProductInfo(Long pmId);
+
+    /**
+     * 查询当前用户可以查看的客户+项目列表
+     * @param userid
+     * @return noteTrees
+     */
+    List<NodeTree> queryUserManagerCustomer(long userid);
 }
