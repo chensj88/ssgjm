@@ -80,6 +80,7 @@ public class ShiroSessionDao extends CachingSessionDAO {
         loginUser.setToken(sessionId.toString());
         List<SysLoginUser> sessionStrList = sysLoginUserDao.selectEntityList(loginUser);
         if(sessionStrList.size() == 0) return null;
-        return SerializableUtils.deserialize(sessionStrList.get(0).getSessionString());
+        //注销
+        return SerializableUtils.deserialize(sessionStrList.get(0).toString());
     }
 }
