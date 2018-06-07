@@ -166,30 +166,41 @@ public class EtSoftHardwareController extends BaseController {
         } else {
             etSoftHardware.setIsScope(0);
         }
+        //参数值
+        Long plId = etSoftHardware.getPlId();
+        Long etSoftHardwareId = etSoftHardware.getId();
+        String hwName = etSoftHardware.getHwName();
+        Long pmId = etSoftHardware.getPmId();
+        Long cid = etSoftHardware.getcId();
+        String serialNo = etSoftHardware.getSerialNo();
         //创建临时变量
         EtSoftHardware etSoftHardwareTemp = new EtSoftHardware();
-        if (etSoftHardware.getPlId() != null) {
-            //已分配系统
-            etSoftHardwareTemp.setId(etSoftHardware.getId());
-        } else {
-            //未分配系统，通过硬件名称查重
-            etSoftHardwareTemp.setPmId(etSoftHardware.getPmId());
-            etSoftHardwareTemp.setSerialNo(etSoftHardware.getSerialNo());
-            etSoftHardwareTemp.setcId(etSoftHardware.getcId());
-            etSoftHardwareTemp.setHwName(etSoftHardware.getHwName());
+        if (plId != null) {
+            //已分配系统硬件更新
+            etSoftHardwareTemp.setPlId(plId);
         }
-        etSoftHardwareTemp = super.getFacade().getEtSoftHardwareService().getEtSoftHardware(etSoftHardwareTemp);
-        if (etSoftHardwareTemp != null) {
-            etSoftHardware.setOperatorTime(new Timestamp(new Date().getTime()));
-            super.getFacade().getEtSoftHardwareService().modifyEtSoftHardware(etSoftHardware);
+        etSoftHardwareTemp.setcId(cid);
+        etSoftHardwareTemp.setSerialNo(serialNo);
+        etSoftHardwareTemp.setPmId(pmId);
+        etSoftHardwareTemp.setHwName(hwName);
+        etSoftHardwareTemp = getFacade().getEtSoftHardwareService().getEtSoftHardware(etSoftHardwareTemp);
+        if (etSoftHardware.getId() != null && etSoftHardware.getId() != 0) {
+            //更新
+            if (etSoftHardwareTemp == null || (plId == null && etSoftHardwareTemp.getPlId() != null)) {
+                etSoftHardware.setOperatorTime(new Timestamp(new Date().getTime()));
+                super.getFacade().getEtSoftHardwareService().modifyEtSoftHardware(etSoftHardware);
+            }
         } else {
-            etSoftHardware.setId(ssgjHelper.createEtSoftHardwareIdService());
-            etSoftHardware.setSourceId(0L);
-            etSoftHardware.setContent("0");
-            etSoftHardware.setCreator(etSoftHardware.getOperator());
-            etSoftHardware.setCreateTime(new Timestamp(new Date().getTime()));
-            etSoftHardware.setOperatorTime(new Timestamp(new Date().getTime()));
-            super.getFacade().getEtSoftHardwareService().createEtSoftHardware(etSoftHardware);
+            //新增
+            if (etSoftHardwareTemp == null || (plId == null && etSoftHardwareTemp.getPlId() != null)) {
+                etSoftHardware.setId(ssgjHelper.createEtSoftHardwareIdService());
+                etSoftHardware.setSourceId(0L);
+                etSoftHardware.setContent("0");
+                etSoftHardware.setCreator(etSoftHardware.getOperator());
+                etSoftHardware.setCreateTime(new Timestamp(new Date().getTime()));
+                etSoftHardware.setOperatorTime(new Timestamp(new Date().getTime()));
+                super.getFacade().getEtSoftHardwareService().createEtSoftHardware(etSoftHardware);
+            }
         }
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
