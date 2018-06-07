@@ -14,4 +14,8 @@ import java.util.List;
 public interface EtDepartmentDao extends EntityDao<EtDepartment> {
 
     List<EtDepartment> selectDepartmentTypeList(EtDepartment t);
+
+    int selectDepartmentForSiteQuestionCount(EtDepartment department);
+
+    int selectDepartmentForSiteInstallCount(EtDepartment department);
 }

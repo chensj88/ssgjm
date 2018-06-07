@@ -5,6 +5,7 @@ import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.base.util.MD5;
+import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.EtDepartment;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
@@ -211,6 +212,9 @@ public class EtDepartmentController extends BaseController {
 
     /**
      * 删除医院科室信息
+     * 需要判断科室是否在站点问题和站点问题中是否使用
+     * 使用 则不允许删除
+     * 反之 则允许删除
      * @param department
      * @return
      */
@@ -218,10 +222,15 @@ public class EtDepartmentController extends BaseController {
     @ResponseBody
     @Transactional
     public Map<String, Object> deleteDept(EtDepartment department){
-        department.setIsDel(0);
-        super.getFacade().getEtDepartmentService().modifyEtDepartment(department);
+        String msg = getFacade().getEtDepartmentService().checkEtDepartmentIsUse(department);
         Map<String,Object> result = new HashMap<String,Object>();
-        result.put("status", Constants.SUCCESS);
+        if(StringUtil.isEmptyOrNull(msg)){
+            super.getFacade().getEtDepartmentService().removeEtDepartment(department);
+            result.put("status", Constants.SUCCESS);
+        }else{
+            result.put("status", Constants.FAILD);
+            result.put("msg", msg);
+        }
         return result;
     }
 

@@ -135,4 +135,32 @@
 		</if>
 	</delete>
 
+	<!--检查当前科室是否存在已久安装的站点信息-->
+	<select id="selectDepartmentForSiteInstallCount" resultType="int" parameterType="etDepartment">
+		SELECT count(1) FROM
+		ET_SITE_INSTALL
+		<where>
+			<if test="id != null ">
+				and DEPT_CODE = #{id}
+			</if>
+			<if test="serialNo != null ">
+				AND SERIAL_NO = #{serialNo}
+			</if>
+
+		</where>
+	</select>
+
+	<!--检查当前科室是否存在已久安装的站点信息-->
+	<select id="selectDepartmentForSiteQuestionCount" resultType="int" parameterType="etDepartment">
+		SELECT count(1) FROM
+		ET_SITE_QUESTION_INFO
+		<where>
+			<if test="id != null ">
+				and SITE_NAME = #{id}
+			</if>
+			<if test="serialNo != null ">
+				AND SERIAL_NO = #{serialNo}
+			</if>
+		</where>
+	</select>
 </mapper>

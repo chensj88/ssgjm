@@ -129,4 +129,28 @@ public class EtDepartmentServiceImpl implements EtDepartmentService {
 		return this.etDepartmentDao.selectDepartmentTypeList(t);
 	}
 
+	/**
+	 * 检查当前的科室是否使用，使用则不允许删除
+	 * 反之允许删除
+	 * @param department
+	 * @return
+	 */
+	@Override
+	public String checkEtDepartmentIsUse(EtDepartment department) {
+		//统计科室在站点问题中使用
+		int sqCount = etDepartmentDao.selectDepartmentForSiteQuestionCount(department);
+		//统计科室在站点安装中使用
+		int siCount = etDepartmentDao.selectDepartmentForSiteInstallCount(department);
+
+		String msg = "";
+		if(sqCount > 0){
+			msg += "当前科室在站点问题中使用,";
+		}
+
+		if(siCount > 0){
+			msg += "当前科室在站点安装中使用，";
+		}
+		return msg;
+	}
+
 }

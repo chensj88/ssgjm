@@ -31,4 +31,6 @@ public interface EtDepartmentService {
     void generateDepartInfo(EtDepartment department, String path);
 
     List<EtDepartment> selectDepartmentTypeList(EtDepartment info);
+
+    String checkEtDepartmentIsUse(EtDepartment department);
 }
