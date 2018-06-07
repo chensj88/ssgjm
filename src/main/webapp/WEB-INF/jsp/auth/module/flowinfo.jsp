@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ include file="/commons/header.jsp" %>
 <!DOCTYPE html >
 <html>
-<%@ include file="/commons/header.jsp" %>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/fileinput.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/js/fileapi/css/jquery.Jcrop.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/common.css"/>
-    <base href="<%=basePath%>">
+    <%--<base href="<%=basePath%>">--%>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <style type="text/css">
         .table-align{

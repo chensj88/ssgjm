@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/upload/css/style.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/js/fileapi/css/jquery.Jcrop.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/common.css"/>
-    <base href="<%=basePath%>">
+    <%--<base href="<%=basePath%>">--%>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
 </head>
 <body>
