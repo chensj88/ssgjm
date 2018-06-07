@@ -84,7 +84,7 @@ public class EtContractTaskServiceImpl implements EtContractTaskService {
 		for (EtContractTask t : contractTaskList) {
 			Map<String, String> userMap = new HashMap<>();
 			userMap.put("zxtmc", t.getZxtmc());
-			userMap.put("cpmc", t.getCpmc());
+			userMap.put("cpmc", t.getMap().get("allocateName").toString());
 			userMap.put("mx", t.getMx());
 			userMap.put("bz", t.getBz());
 			dataList.add(userMap);

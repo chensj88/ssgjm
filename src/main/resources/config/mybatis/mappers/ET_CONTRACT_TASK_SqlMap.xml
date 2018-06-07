@@ -21,6 +21,7 @@
 	</resultMap>
 
 	<resultMap id="etContractTaskResult" type="etContractTask" extends="etContractTaskResultForList">
+		<result column="ALLOCATE_NAME" property="map.allocateName" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<sql id="sf-etContractTask">
@@ -64,10 +65,13 @@
 		<include refid="sf-etContractTask" />
 	</select>
 
-	<select id="selectEtContractTaskList" resultMap="etContractTaskResultForList" parameterType="etContractTask">
+	<select id="selectEtContractTaskList" resultMap="etContractTaskResult" parameterType="etContractTask">
 		select
 		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
-		 * from ET_CONTRACT_TASK t where 1 = 1
+		 t.*, ISNULL(u.YHMC,'未分配') AS ALLOCATE_NAME
+		  from ET_CONTRACT_TASK t
+		  LEFT  JOIN SYS_USER_INFO u ON t.ALLOCATE_USER = u.ID
+		 where 1 = 1
 		<include refid="sf-etContractTask" />
 		<!-- order by ID asc -->
 	</select>

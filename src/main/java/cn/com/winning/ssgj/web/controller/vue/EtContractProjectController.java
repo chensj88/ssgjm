@@ -148,7 +148,9 @@ public class EtContractProjectController extends BaseController {
 
     /**
      * 删除项目产品信息
-     *
+     * 需要判断系统是否在硬件清单、站点问题和站点问题中是否使用
+     * 使用 则不允许删除
+     * 反之 则允许删除
      * @param task
      * @return
      */
@@ -195,7 +197,7 @@ public class EtContractProjectController extends BaseController {
             // 清空response
             response.reset();
             // 设置response的Header
-            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("合同产品清单.xls", "UTF-8"));
+            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("系统清单.xls", "UTF-8"));
             response.addHeader("Content-Length", "" + file.length());
             OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/octet-stream");
