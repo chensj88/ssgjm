@@ -381,7 +381,7 @@ public class PmisContractProductInfo extends BaseDomain implements Serializable 
 		etContractTask.setSerialNo(khxx+"");
 		etContractTask.setCpzxt(Long.valueOf(cpzxt));
 		etContractTask.setZxtmc(zxtmc);
-		etContractTask.setCpxx(cpxx);
+		etContractTask.setAllocateUser(-1L);
 		etContractTask.setCpmc(cpmc);
 		return etContractTask;
 	}

@@ -17,4 +17,25 @@ public interface EtContractTaskDao extends EntityDao<EtContractTask> {
 
     List<EtContractTask> selectEtContractTaskMergePageList(EtContractTask paramT);
     int selectEtContractTaskMergeCount(EtContractTask paramT);
+
+    /**
+     * 检查当前删除的系统是否被软硬件清单使用
+     * @param task
+     * @return
+     */
+    int selectEtContractTaskForEtSoftHardCount(EtContractTask task);
+
+    /**
+     * 检查当前删除的系统是否被站点问题使用
+     * @param task
+     * @return
+     */
+    int selectEtContractTaskForEtSitemQuestionCount(EtContractTask task);
+
+    /**
+     * 检查当前删除的系统是否被站点安装使用
+     * @param task
+     * @return
+     */
+    String selectEtContractTaskForSiteInstall(EtContractTask task);
 }

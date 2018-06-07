@@ -97,15 +97,32 @@
         <include refid="selectSql"/>
     </select>
 
+    <!--<select id="selectEtSoftHardwarePaginatedList" resultMap="etSoftHardwareResult" parameterType="etSoftHardware">-->
+    <!--select * from (-->
+    <!--select t.*,-->
+    <!--t1.NAME AS PL_NAME,-->
+    <!--t2.YHMC AS CREATE_USER,-->
+    <!--CONVERT(VARCHAR(32),t.CREATE_TIME,111) CREATE_DATE,-->
+    <!--ROW_NUMBER() OVER ( order by t.ID desc ) as _rn-->
+    <!--from ET_SOFT_HARDWARE t-->
+    <!--LEFT JOIN PMIS_PRODUCT_LINE_INFO t1 ON t.PL_ID = t1.ID-->
+    <!--LEFT JOIN SYS_USER_INFO t2 ON t.CREATOR = t2.ID-->
+    <!--where 1 = 1-->
+    <!--<include refid="selectSql"/>-->
+    <!--&lt;!&ndash; order by ID asc &ndash;&gt;-->
+    <!--) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}-->
+    <!--</select>-->
+
+    <!--分页查询-->
     <select id="selectEtSoftHardwarePaginatedList" resultMap="etSoftHardwareResult" parameterType="etSoftHardware">
         select * from (
         select t.*,
-        t1.NAME AS PL_NAME,
+        t1.ZXTMC AS PL_NAME,
         t2.YHMC AS CREATE_USER,
         CONVERT(VARCHAR(32),t.CREATE_TIME,111) CREATE_DATE,
         ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
         from ET_SOFT_HARDWARE t
-        LEFT JOIN PMIS_PRODUCT_LINE_INFO t1 ON t.PL_ID = t1.ID
+        LEFT JOIN ET_CONTRACT_TASK t1 ON t.PL_ID = t1.ID
         LEFT JOIN SYS_USER_INFO t2 ON t.CREATOR = t2.ID
         where 1 = 1
         <include refid="selectSql"/>
@@ -170,7 +187,7 @@
                 <if test="(cId != null and cId != '') or cId == 0">C_ID = #{cId, jdbcType=BIGINT},</if>
                 <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID = #{pmId, jdbcType=BIGINT},</if>
                 <if test="serialNo != null and serialNo != ''">SERIAL_NO = #{serialNo, jdbcType=VARCHAR},</if>
-                <if test="(plId != null and plId != '') or plId == 0">PL_ID = #{plId, jdbcType=BIGINT},</if>
+                PL_ID = #{plId, jdbcType=BIGINT},
                 <if test="hwName != null and hwName != ''">HW_NAME = #{hwName, jdbcType=VARCHAR},</if>
                 <if test="hwCode != null and hwCode != ''">HW_CODE = #{hwCode, jdbcType=VARCHAR},</if>
                 <if test="brand != null and brand != ''">BRAND = #{brand, jdbcType=VARCHAR},</if>

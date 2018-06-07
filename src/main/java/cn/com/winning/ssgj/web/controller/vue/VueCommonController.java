@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.web.controller.vue;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.domain.SysDictInfo;
+import cn.com.winning.ssgj.domain.expand.NodeTree;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -92,4 +93,32 @@ public class VueCommonController extends BaseController {
         return result;
 
     }
+
+    /**
+     * 根据项目ID查询可以分配的项目组成员信息
+     * @param pmId
+     * @return
+     */
+    @RequestMapping(value = "/queryWorkAssig.do" )
+    @ResponseBody
+    public Map<String,Object> queryWorkAssig(Long pmId){
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", this.getEtUserInfo(pmId));
+        return result;
+
+    }
+
+
+    @RequestMapping(value = "/common/queryMenu.do")
+    @ResponseBody
+    public Map<String, Object> queryUserCustomerAndProjectInfo(long userid) {
+        //TODO  测试使用
+        List<NodeTree> nodeTreeList = super.getFacade().getCommonQueryService().queryUserManagerCustomer(userid);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", nodeTreeList);
+        return result;
+    }
+
 }

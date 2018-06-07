@@ -6,6 +6,7 @@ import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.dao.*;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
+import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.service.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -497,7 +498,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
                     task.setZxtmc(pInfo.getZxtmc());
                     task.setCpzxt(Long.valueOf(pInfo.getCpzxt()));
                     task.setCpmc(pInfo.getCpmc());
-                    task.setCpxx(pInfo.getCpxx());
+                    task.setAllocateUser(-1L);
                     task.setSourceId(pInfo.getId());
                     task.setCreator(100001L);
                     task.setCreateTime(new Timestamp(new Date().getTime()));
@@ -506,6 +507,30 @@ public class CommonQueryServiceImpl implements CommonQueryService {
             }
 
         }
+    }
+
+    @Override
+    public List<NodeTree> queryUserManagerCustomer(long userid) {
+        List<NodeTree> nodeTrees = new ArrayList<>();
+        //检查用户类型
+        EtUserInfo etUser = new EtUserInfo();
+        etUser.setUserId(userid);
+        etUser.setIsDel(2);
+        etUser = etUserInfoService.getEtUserInfo(etUser);
+        if(etUser == null ){
+            nodeTrees = this.queryUserCustomerProjectTreeInfo(userid);
+        }else{
+            PmisCustomerInformation info = new PmisCustomerInformation();
+            Row row = new Row(0,10);
+            info.setRow(row);
+            List<PmisCustomerInformation> custInfoList =  pmisCustomerInformationService.getAllCustomerByPageList(info);
+            for (PmisCustomerInformation infos : custInfoList) {
+                NodeTree node = infos.getNodeTree();
+                node.setNodes(queryCustomerProjectNode(null,infos.getId()));
+                nodeTrees.add(node);
+            }
+        }
+        return nodeTrees;
     }
 
 

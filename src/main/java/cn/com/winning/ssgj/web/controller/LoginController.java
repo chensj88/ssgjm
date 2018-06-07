@@ -5,6 +5,8 @@ import cn.com.winning.ssgj.base.auth.Token;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.base.util.PasswordUtils;
+import cn.com.winning.ssgj.base.util.SerializableUtils;
+import cn.com.winning.ssgj.domain.SysLoginUser;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.apache.shiro.SecurityUtils;
@@ -12,6 +14,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,6 +73,16 @@ public class LoginController extends BaseController {
             map.put("status", false);
             map.put("message", error);
         } else {
+           /* Session session = SecurityUtils.getSubject().getSession();
+            String token = session.getId().toString();
+            SysUserInfo user = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
+            session.setAttribute("user", user);
+            SysLoginUser loginUser = new SysLoginUser();
+            loginUser.setToken(token);
+            loginUser.setLoginTime(new Timestamp(new Date().getTime()));
+            loginUser.setUserId(user.getId());
+            loginUser.setSessionString(SerializableUtils.serialize(session));
+            getFacade().getSysLoginUserService().createSysLoginUser(loginUser);*/
             String token = Token.generateTokenString();
             SysUserInfo user = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
             super.getFacade().getSysLoginUserService().createSysLoginUserBySelectiveKey(token,user.getId());

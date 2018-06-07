@@ -21,4 +21,14 @@ public class EtDepartmentDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtDepartment>
     public List<EtDepartment> selectDepartmentTypeList(EtDepartment t) {
         return this.getSqlSession().selectList("selectDepartmentTypeList",t);
     }
+
+    @Override
+    public int selectDepartmentForSiteQuestionCount(EtDepartment department) {
+        return this.getSqlSession().selectOne("selectDepartmentForSiteQuestionCount",department);
+    }
+
+    @Override
+    public int selectDepartmentForSiteInstallCount(EtDepartment department) {
+        return this.getSqlSession().selectOne("selectDepartmentForSiteInstallCount",department);
+    }
 }

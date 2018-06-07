@@ -101,12 +101,24 @@ public class SysDictInfoServiceImpl implements SysDictInfoService {
         return this.sysDictInfoDao.selectSysDictInfoListByType(dict);
     }
 
+    /**
+     * 根据传入的valueList{dictValue}和客户号下已经生成的产品的ID来获取需要生成的产品
+     * @param valueList dictValue 码值的list
+     * @param serialNo 客户号
+     * @return  List<SysDictInfo>
+     */
     @Override
-    public List<SysDictInfo> getSysDictInfoListByValue(List<String> valueList) {
+    public List<SysDictInfo> getSysDictInfoListByValue(List<String> valueList, String serialNo) {
         SysDictInfo dict = new SysDictInfo();
         dict.setDictCode(Constants.DictInfo.PRODUCT_NAME);
         dict.getMap().put("pks",valueList);
+        dict.getMap().put("serialNo",serialNo);
         return this.sysDictInfoDao.selectSysDictInfoListByValue(dict);
+    }
+
+    @Override
+    public List<SysDictInfo> getSysDictInfoListBySelectKey(SysDictInfo info) {
+        return this.sysDictInfoDao.selectSysDictInfoListBySelectKey(info);
     }
 
     /**

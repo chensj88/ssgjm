@@ -129,20 +129,25 @@
     <logger name="java.sql.PreparedStatement">
         <level value="DEBUG"/>
     </logger>
-    <logger name="druid.sql">
-        <level value="WARN"/>
+    <logger name="druid.sql" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="log_daily" />
     </logger>
-    <logger name="druid.sql.DataSource">
-        <level value="WARN"/>
+    <logger name="druid.sql.DataSource" additivity="false">
+        <level value="error"/>
+        <appender-ref ref="log_daily" />
     </logger>
-    <logger name="druid.sql.Connection">
-        <level value="WARN"/>
+    <logger name="druid.sql.Connection" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="log_daily" />
     </logger>
-    <logger name="druid.sql.Statement">
-        <level value="WARN"/>
+    <logger name="druid.sql.Statement" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="log_daily" />
     </logger>
-    <logger name="druid.sql.ResultSet">
-        <level value="WARN"/>
+    <logger name="druid.sql.ResultSet" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="log_daily" />
     </logger>
     <!-- Root Logger -->
     <root>

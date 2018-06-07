@@ -167,5 +167,27 @@
             AND DICT_VALUE in
             <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
         </if>
+        <if test="(map.serialNo != null and map.serialNo != '' )">
+            AND DICT_VALUE NOT IN (
+              SELECT DISTINCT CPZXT  FROM ET_CONTRACT_TASK WHERE SERIAL_NO = #{map.serialNo}
+            )
+        </if>
+    </select>
+
+
+    <select id="selectSysDictInfoListBySelectKey" resultMap="sysDictInfoResult" parameterType="sysDictInfo">
+        select *
+        from SYS_DICT_INFO t where 1 = 1
+        <if test="dictCode != null and dictCode != ''">and t.DICT_CODE = #{dictCode}</if>
+        <if test="dictLabel != null and dictLabel != ''">and t.DICT_LABEL LIKE '%${dictLabel}%' </if>
+        <if test="(map.pks != null and map.pks.size >0)">
+            AND DICT_VALUE in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+        <if test="(map.serialNo != null and map.serialNo != '' )">
+            AND DICT_VALUE NOT IN (
+            SELECT DISTINCT CPZXT  FROM ET_CONTRACT_TASK WHERE SERIAL_NO = #{map.serialNo}
+            )
+        </if>
     </select>
 </mapper>

@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -34,6 +35,12 @@ public class EtContractProjectController extends BaseController {
     @Autowired
     private SSGJHelper ssgjHelper;
 
+    /**
+     * 根据选择的产品序号来初始化产品
+     * @param task
+     * @param idList
+     * @return
+     */
     @RequestMapping(value = "/initData.do")
     @ResponseBody
     public Map<String, Object>  initProjectProduct(EtContractTask task,String idList) {
@@ -41,7 +48,8 @@ public class EtContractProjectController extends BaseController {
         for( int i = 0 ; i< idList.split(",").length; i++){
             valueList.add(idList.split(",")[i]);
         }
-        List<SysDictInfo> dicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByValue(valueList);
+        //去除已经的值,根据客户号查询已经生成的产品ID并去除，减少数据库查询
+        List<SysDictInfo> dicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByValue(valueList,task.getSerialNo());
         for (SysDictInfo info : dicts) {
             EtContractTask t = new EtContractTask();
             t.setcId(task.getcId());
@@ -51,14 +59,16 @@ public class EtContractProjectController extends BaseController {
             t = super.getFacade().getEtContractTaskService().getEtContractTask(t);
             if(t == null){
                 t = new EtContractTask();
-                t.setId(ssgjHelper.createEtContractTaskIdService());
-                t.setcId(task.getcId());
-                t.setPmId(task.getPmId());
-                t.setSerialNo(task.getSerialNo());
-                t.setZxtmc(info.getDictLabel());
-                t.setSourceId(Long.parseLong(info.getDictSort()));
-                t.setCreator(task.getCreator());
-                t.setCreateTime(new Timestamp(new Date().getTime()));
+                t.setId(ssgjHelper.createEtContractTaskIdService()); //ID
+                t.setcId(task.getcId()); //合同ID
+                t.setPmId(task.getPmId()); //项目ID
+                t.setSerialNo(task.getSerialNo()); //客户ID
+                t.setZxtmc(info.getDictLabel()); //字典显示值
+                t.setCpzxt(Long.parseLong(info.getDictSort())); //主系统ID
+                t.setSourceId(Long.parseLong(info.getDictSort())); //来源序号或ID
+                //t.setBz(info.getPyCode()); //备注放置拼音码
+                t.setCreator(task.getCreator()); //创建人
+                t.setCreateTime(new Timestamp(new Date().getTime())); //创建时间
                 getFacade().getEtContractTaskService().createEtContractTask(t);
             }
         }
@@ -90,18 +100,16 @@ public class EtContractProjectController extends BaseController {
 
     /**
      * 查询产品信息
-     *
-     * @param productInfo
+     * @param info
+     * @param serialNo 客户号
      * @return
      */
     @RequestMapping(value = "/queryProduct.do")
     @ResponseBody
-    public Map<String, Object> queryProduct(PmisProductInfo productInfo) {
-        Row row = new Row(0, 10);
-        productInfo.setRow(row);
-        productInfo.setZt(Constants.PMIS_STATUS_USE);
-        productInfo.setCplb("1");
-        List<PmisProductInfo> productInfos = super.getFacade().getPmisProductInfoService().getPmisProductInfoPaginatedListByCodeAndName(productInfo);
+    public Map<String, Object> queryProduct(SysDictInfo info,String serialNo) {
+        info.setDictCode(Constants.DictInfo.PRODUCT_NAME);
+        info.getMap().put("serialNo",serialNo);
+        List<SysDictInfo> productInfos = super.getFacade().getSysDictInfoService().getSysDictInfoListBySelectKey(info);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", productInfos);
@@ -120,16 +128,14 @@ public class EtContractProjectController extends BaseController {
         EtContractTask oldTask = new EtContractTask();
         oldTask.setId(task.getId());
         oldTask = super.getFacade().getEtContractTaskService().getEtContractTask(oldTask);
-        PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
-        basicInfo.setId(task.getPmId());
-        basicInfo = super.getFacade().getPmisProjectBasicInfoService().getPmisProjectBasicInfo(basicInfo);
-        task.setSerialNo(basicInfo.getKhxx() + "");
         if (oldTask != null) {
             task.setOperatorTime(new Timestamp(new Date().getTime()));
-            super.getFacade().getEtContractTaskService().modifyEtContractTask(task);
+
+             super.getFacade().getEtContractTaskService().modifyEtContractTask(task);
         } else {
             task.setId(ssgjHelper.createEtContractTaskIdService());
             task.setCreator(task.getOperator());
+            task.setSourceId(task.getCpzxt());
             task.setCreateTime(new Timestamp(new Date().getTime()));
             task.setOperatorTime(new Timestamp(new Date().getTime()));
             super.getFacade().getEtContractTaskService().createEtContractTask(task);
@@ -142,16 +148,24 @@ public class EtContractProjectController extends BaseController {
 
     /**
      * 删除项目产品信息
-     *
+     * 需要判断系统是否在硬件清单、站点问题和站点问题中是否使用
+     * 使用 则不允许删除
+     * 反之 则允许删除
      * @param task
      * @return
      */
     @RequestMapping(value = "/deleteProduct.do")
     @ResponseBody
     public Map<String, Object> deleteProduct(EtContractTask task) {
-        super.getFacade().getEtContractTaskService().removeEtContractTask(task);
+        String msg = super.getFacade().getEtContractTaskService().checkEtContractTaskIsUse(task);
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("status", Constants.SUCCESS);
+        if(StringUtil.isEmptyOrNull(msg)){
+            super.getFacade().getEtContractTaskService().removeEtContractTask(task);
+            result.put("status", Constants.SUCCESS);
+        }else {
+            result.put("msg",msg);
+            result.put("status", Constants.FAILD);
+        }
         return result;
     }
 
@@ -183,7 +197,7 @@ public class EtContractProjectController extends BaseController {
             // 清空response
             response.reset();
             // 设置response的Header
-            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("合同产品清单.xls", "UTF-8"));
+            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("系统清单.xls", "UTF-8"));
             response.addHeader("Content-Length", "" + file.length());
             OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/octet-stream");

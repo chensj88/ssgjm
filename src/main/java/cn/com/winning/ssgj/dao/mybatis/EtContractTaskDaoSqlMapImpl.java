@@ -26,4 +26,19 @@ public class EtContractTaskDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtContractT
     public int selectEtContractTaskMergeCount(EtContractTask paramT) {
         return super.getSqlSession().selectOne("selectEtContractTaskMergeCount",paramT);
     }
+
+    @Override
+    public int selectEtContractTaskForEtSoftHardCount(EtContractTask task) {
+        return super.getSqlSession().selectOne("selectEtContractTaskForEtSoftHardCount",task);
+    }
+
+    @Override
+    public int selectEtContractTaskForEtSitemQuestionCount(EtContractTask task) {
+        return super.getSqlSession().selectOne("selectEtContractTaskForEtSitemQuestionCount",task);
+    }
+
+    @Override
+    public String selectEtContractTaskForSiteInstall(EtContractTask task) {
+        return super.getSqlSession().selectOne("selectEtContractTaskForSiteInstall",task);
+    }
 }

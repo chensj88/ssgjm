@@ -36,4 +36,6 @@ public interface EtContractTaskService {
 	 * @param path 路径
 	 */
     void generateEtContractTask(EtContractTask task, String path);
+
+	String checkEtContractTaskIsUse(EtContractTask task);
 }
