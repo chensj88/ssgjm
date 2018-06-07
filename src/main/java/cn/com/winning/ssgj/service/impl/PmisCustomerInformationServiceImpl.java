@@ -80,4 +80,9 @@ public class PmisCustomerInformationServiceImpl implements PmisCustomerInformati
         return this.pmisCustomerInformationDao.selectUserCanViewCustomerList(userId);
     }
 
+    @Override
+    public List<PmisCustomerInformation> getAllCustomerByPageList( PmisCustomerInformation info) {
+        return this.pmisCustomerInformationDao.selectAllCustomerByPageList(info);
+    }
+
 }

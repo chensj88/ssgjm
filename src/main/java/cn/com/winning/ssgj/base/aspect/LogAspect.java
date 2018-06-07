@@ -44,21 +44,7 @@ public class LogAspect {
     @Pointcut("@annotation(cn.com.winning.ssgj.base.annoation.ILog)")
     public  void  serviceAspect(){}
     // Service层切点，这里如果需要配置多个切入点用“||”
-    @Pointcut("execution(* cn.com.winning.ssgj.web.controller.*.login(..))"
-            + "||execution(* cn.com.winning.ssgj.web.controller.*.upload*(..))"
-            + "||execution(* cn.com.winning.ssgj.web.controller.*.go*(..))"
-            + "||execution(* cn.com.winning.ssgj.web.controller.*.get*(..))"
-            + "||execution(* cn.com.winning.ssgj.web.controller.*.add*(..))"
-            + "||execution(* cn.com.winning.ssgj.web.controller.*.create*(..))"
-            + "||execution(* cn.com.winning.ssgj.web.controller.*.modify*(..))"
-            + "||execution(* cn.com.winning.ssgj.web.controller.*.remove*(..))"
-            + "||execution(* cn.com.winning.ssgj.web.controller.*.delete*(..))"
-            + "||execution(* cn.com.winning.ssgj.web.controller.*.new*(..))"
-            + "||execution(* cn.com.winning.ssgj.web.controller.*.edit*(..))"
-            + "||execution(* cn.com.winning.ssgj.web.controller.*.update*(..))"
-            + "||execution(* cn.com.winning.ssgj.web.controller.*.query*(..))"
-            + "||execution(* cn.com.winning.ssgj.web.controller.*.exists*(..))"
-            + "||execution(* cn.com.winning.ssgj.web.controller.*.select*(..))")
+    @Pointcut("execution(* cn.com.winning.ssgj.web.controller..*.*(..))")
     public void controllerAspect() {
     }
 
@@ -100,10 +86,16 @@ public class LogAspect {
      * 后置通知 用于拦截Controller层记录用户的操作
      * @param joinPoint 切点
      */
-    @After("serviceAspect()")
+    @After("controllerAspect()")
     public void after(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
+        String uri = request.getRequestURI();
+        String requestName = uri.substring(uri.lastIndexOf("/"),uri.lastIndexOf(".do"));
+        if(requestName.equals("/login") || requestName.equals("/logout") || requestName.equals("/check")
+                ||requestName.equals("/list")){
+            return;
+        }
         // 请求的IP
         String ip = request.getRemoteAddr();
         //访问主机名称
@@ -118,7 +110,7 @@ public class LogAspect {
             Object[] arguments = joinPoint.getArgs();
             Class targetClass = Class.forName(targetName);
             Method[] methods = targetClass.getMethods();
-           String operationType = "";
+            /*String operationType = "";
             String operationName = "";
             for (Method method : methods) {
                 if (method.getName().equals(methodName)) {
@@ -129,19 +121,16 @@ public class LogAspect {
                         break;
                     }
                 }
-            }
+            }*/
 
             // *========控制台输出=========*//
          logger.info("=====controller后置通知开始=====");
             logger.info("请求方法:"
-                    + (joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()")
-                    + "." + operationType);
+                    + (joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()"));
             /*logger.info("方法描述:" + operationName);*/
             logger.info("请求人:"  +operator.getYhmc());
             logger.info("请求IP:" + ip);
-            String content = "[classs] "+targetName +"[method] "+ methodName
-                   +"[method desc] "+operationName +"[method type] "+operationType
-                    +"[user] " + operator.getYhmc();
+            String content = "[method]{ "+targetName +"."+ methodName  + "} [user] {" + operator.getYhmc() +"}";
             logger.info("访问内容："+content);
             // *========数据库日志=========*//
             SysLog log = new SysLog();
@@ -152,8 +141,10 @@ public class LogAspect {
             if(!StringUtil.isEmptyOrNull(operator.getMap().get("PM_ID").toString())){
                 log.setPmId(Long.valueOf(operator.getMap().get("PM_ID").toString()));
             }
+            if(!StringUtil.isEmptyOrNull(operator.getMap().get("CU_ID").toString())){
+                log.setSerialNo(operator.getMap().get("CU_ID").toString());
+            }
             //暂时放空
-            log.setSerialNo(null);
             log.setOperator(operator.getId());
             log.setOperatorTime(new Timestamp(new Date().getTime()));
             log.setContent(content);

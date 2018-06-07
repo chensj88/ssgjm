@@ -36,4 +36,9 @@ public class PmisCustomerInformationDaoSqlMapImpl extends EntityDaoSqlMapImpl<Pm
     public List<PmisCustomerInformation> selectUserCanViewCustomerList(Long userId) {
         return super.getSqlSession().selectList("selectUserCanViewCustomerList",userId);
     }
+
+    @Override
+    public List<PmisCustomerInformation> selectAllCustomerByPageList(PmisCustomerInformation info) {
+        return super.getSqlSession().selectList("selectAllCustomerByPageList",info);
+    }
 }
