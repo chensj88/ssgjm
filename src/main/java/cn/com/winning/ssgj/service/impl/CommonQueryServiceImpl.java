@@ -8,9 +8,7 @@ import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.service.*;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -510,7 +508,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     }
 
     @Override
-    public List<NodeTree> queryUserManagerCustomer(long userid) {
+    public List<NodeTree> queryUserManagerCustomer(long userid, String name) {
         List<NodeTree> nodeTrees = new ArrayList<>();
         //检查用户类型
         EtUserInfo etUser = new EtUserInfo();
@@ -521,6 +519,8 @@ public class CommonQueryServiceImpl implements CommonQueryService {
             nodeTrees = this.queryUserCustomerProjectTreeInfo(userid);
         }else{
             PmisCustomerInformation info = new PmisCustomerInformation();
+            info.setName(name);
+            info.setZt(1);
             Row row = new Row(0,10);
             info.setRow(row);
             List<PmisCustomerInformation> custInfoList =  pmisCustomerInformationService.getAllCustomerByPageList(info);

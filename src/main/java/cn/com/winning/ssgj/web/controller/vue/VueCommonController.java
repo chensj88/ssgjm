@@ -110,11 +110,10 @@ public class VueCommonController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/common/queryMenu.do")
+    @RequestMapping(value = "/queryMenu.do")
     @ResponseBody
-    public Map<String, Object> queryUserCustomerAndProjectInfo(long userid) {
-        //TODO  测试使用
-        List<NodeTree> nodeTreeList = super.getFacade().getCommonQueryService().queryUserManagerCustomer(userid);
+    public Map<String, Object> queryUserCustomerAndProjectInfo(long userid,String name) {
+        List<NodeTree> nodeTreeList = super.getFacade().getCommonQueryService().queryUserManagerCustomer(userid,name);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", nodeTreeList);

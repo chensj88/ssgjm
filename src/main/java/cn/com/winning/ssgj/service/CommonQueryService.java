@@ -2,7 +2,6 @@ package cn.com.winning.ssgj.service;
 
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
-import sun.rmi.runtime.Log;
 
 import java.util.List;
 import java.util.Map;
@@ -99,7 +98,8 @@ public interface CommonQueryService {
     /**
      * 查询当前用户可以查看的客户+项目列表
      * @param userid
+     * @param name
      * @return noteTrees
      */
-    List<NodeTree> queryUserManagerCustomer(long userid);
+    List<NodeTree> queryUserManagerCustomer(long userid, String name);
 }

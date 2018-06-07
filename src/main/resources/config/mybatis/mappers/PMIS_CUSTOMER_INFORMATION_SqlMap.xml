@@ -90,6 +90,48 @@
         <if test="(zt != null and zt != '') or zt == 0">and t.ZT = #{zt}</if>
     </sql>
 
+    <sql id="query-pmisCustomerInformation">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="code != null and code != ''">and t.CODE = #{code}</if>
+        <if test="name != null and name != ''">and t.NAME like '%${name}%'</if>
+        <if test="py != null and py != ''">and t.PY = #{py}</if>
+        <if test="(khlb != null and khlb != '') or khlb == 0">and t.KHLB = #{khlb}</if>
+        <if test="khlx != null and khlx != ''">and t.KHLX = #{khlx}</if>
+        <if test="qyxx != null and qyxx != ''">and t.QYXX = #{qyxx}</if>
+        <if test="city != null and city != ''">and t.CITY = #{city}</if>
+        <if test="sfcj != null and sfcj != ''">and t.SFCJ = #{sfcj}</if>
+        <if test="yylx != null and yylx != ''">and t.YYLX = #{yylx}</if>
+        <if test="(mzl != null and mzl != '') or mzl == 0">and t.MZL = #{mzl}</if>
+        <if test="(cws != null and cws != '') or cws == 0">and t.CWS = #{cws}</if>
+        <if test="(yysl != null and yysl != '') or yysl == 0">and t.YYSL = #{yysl}</if>
+        <if test="(fwjgs != null and fwjgs != '') or fwjgs == 0">and t.FWJGS = #{fwjgs}</if>
+        <if test="zyyw != null and zyyw != ''">and t.ZYYW = #{zyyw}</if>
+        <if test="gsgm != null and gsgm != ''">and t.GSGM = #{gsgm}</if>
+        <if test="ssgs != null and ssgs != ''">and t.SSGS = #{ssgs}</if>
+        <if test="ssjg != null and ssjg != ''">and t.SSJG = #{ssjg}</if>
+        <if test="yydj != null and yydj != ''">and t.YYDJ = #{yydj}</if>
+        <if test="yygm != null and yygm != ''">and t.YYGM = #{yygm}</if>
+        <if test="yybjdj != null and yybjdj != ''">and t.YYBJDJ = #{yybjdj}</if>
+        <if test="khdz != null and khdz != ''">and t.KHDZ = #{khdz}</if>
+        <if test="yzbm != null and yzbm != ''">and t.YZBM = #{yzbm}</if>
+        <if test="xxkz != null and xxkz != ''">and t.XXKZ = #{xxkz}</if>
+        <if test="zgyz != null and zgyz != ''">and t.ZGYZ = #{zgyz}</if>
+        <if test="sfszkhjl != null and sfszkhjl != ''">and t.SFSZKHJL = #{sfszkhjl}</if>
+        <if test="khjl != null and khjl != ''">and t.KHJL = #{khjl}</if>
+        <if test="sycptx != null and sycptx != ''">and t.SYCPTX = #{sycptx}</if>
+        <if test="fwtry != null and fwtry != ''">and t.FWTRY = #{fwtry}</if>
+        <if test="zdkhbz != null and zdkhbz != ''">and t.ZDKHBZ = #{zdkhbz}</if>
+        <if test="lxr != null and lxr != ''">and t.LXR = #{lxr}</if>
+        <if test="lxfs != null and lxfs != ''">and t.LXFS = #{lxfs}</if>
+        <if test="glgs != null and glgs != ''">and t.GLGS = #{glgs}</if>
+        <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
+        <if test="gxr != null and gxr != ''">and t.GXR = #{gxr}</if>
+        <if test="gxsj != null and gxsj != ''">and t.GXSJ = #{gxsj}</if>
+        <if test="djr != null and djr != ''">and t.DJR = #{djr}</if>
+        <if test="djsj != null and djsj != ''">and t.DJSJ = #{djsj}</if>
+        <if test="(zt != null and zt != '') or zt == 0">and t.ZT = #{zt}</if>
+    </sql>
+
     <select id="selectPmisCustomerInformation" resultMap="pmisCustomerInformationResult"
             parameterType="pmisCustomerInformation">
         select * from PMIS_CUSTOMER_INFORMATION t where 1 = 1
@@ -330,11 +372,11 @@
         select * from (
         select *, ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
         from PMIS_CUSTOMER_INFORMATION t where 1 = 1
-        <include refid="sf-pmisCustomerInformation"/>
+        <include refid="query-pmisCustomerInformation"/>
             AND t.ID IN (
                 SELECT
                 DISTINCT C.ID
-                FROM PMIS_PROJECT_BASIC_INFO B ON A.XMLCB = B.ID
+                FROM PMIS_PROJECT_BASIC_INFO B
                 LEFT JOIN PMIS_CUSTOMER_INFORMATION C ON B.KHXX = C.ID
                 WHERE  B.ID IS NOT NULL
                 AND B.JHZT = 0
