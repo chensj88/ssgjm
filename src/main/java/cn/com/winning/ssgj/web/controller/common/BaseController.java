@@ -243,15 +243,14 @@ public class BaseController extends BaseSpringMvcMybatisController {
     }
 
     /**
-     * 获取产品名称字典
-     * @param productName 产品名称，可以为空，为空则查询全部产品，否则按照名称模糊查询
-     * @return dictInfos
+     * 根据客户号获取产品信息
+     * @param serialNo 客户号
+     * @return tasks
      */
-    public List<SysDictInfo> getProductDictInfo(String productName){
-       SysDictInfo dict = new SysDictInfo();
-       dict.setDictCode(Constants.DictInfo.PRODUCT_NAME);
-       dict.setDictLabel(productName);
-       List<SysDictInfo> dictInfos = getFacade().getSysDictInfoService().getSysDictInfoPageForOr(dict);
-       return dictInfos;
+    public List<EtContractTask> getProductDictInfo(String serialNo){
+       EtContractTask task = new EtContractTask();
+       task.setSerialNo(serialNo);
+       List<EtContractTask> tasks = getFacade().getEtContractTaskService().getEtContractTaskList(task);
+       return tasks;
     }
 }
