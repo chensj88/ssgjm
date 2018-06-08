@@ -183,7 +183,19 @@ public class EtSoftHardwareController extends BaseController {
         etSoftHardwareTemp.setSerialNo(serialNo);
         etSoftHardwareTemp.setPmId(pmId);
         etSoftHardwareTemp.setHwName(hwName);
-        etSoftHardwareTemp = getFacade().getEtSoftHardwareService().getEtSoftHardware(etSoftHardwareTemp);
+        List<EtSoftHardware> etSoftHardwareTemps = getFacade().getEtSoftHardwareService().getEtSoftHardwareList(etSoftHardwareTemp);
+        if (etSoftHardwareTemps.size() > 1) {
+            for (EtSoftHardware hardware : etSoftHardwareTemps) {
+                if (hardware.getPlId() == null) {
+                    return null;
+                }
+            }
+            etSoftHardwareTemp = null;
+        } else if (etSoftHardwareTemps.size() == 1) {
+            etSoftHardwareTemp = etSoftHardwareTemps.get(0);
+        } else {
+            etSoftHardwareTemp = null;
+        }
         if (etSoftHardware.getId() != null && etSoftHardware.getId() != 0) {
             //更新
             if (etSoftHardwareTemp == null || (plId == null && etSoftHardwareTemp.getPlId() != null)) {
@@ -376,15 +388,6 @@ public class EtSoftHardwareController extends BaseController {
     @RequestMapping(value = "/upload.do")
     @ResponseBody
     public Map<String, Object> upload(HttpServletRequest request, MultipartFile file, EtDevEnvHardware param) throws IOException {
-        //获取项目id
-        Long pmId = param.getPmId();
-        //根据项目id获取项目基本信息
-        PmisProjectBasicInfo pmisProjectBasicInfo = getFacade().getCommonQueryService().queryPmisProjectBasicInfoByProjectId(pmId);
-        //获取合同id
-        Long contractId = param.getcId();
-        //获取单据号即客户
-        String customerId = param.getSerialNo();
-
         Map<String, Object> result = new HashMap<String, Object>();
         //如果文件不为空，写入上传路径
         if (!file.isEmpty()) {
@@ -406,39 +409,93 @@ public class EtSoftHardwareController extends BaseController {
             //导入的数据集合
             List<EtSoftHardware> eList = new ArrayList<>();
 
-            SysDictInfo sysDictInfo = null;
+            //系统名称
+            List<EtContractTask> productDictInfos = this.getProductDictInfo(param.getSerialNo());
             try {
                 List<List<Object>> etSoftHardwareList = ExcelUtil.importExcel(newFile.getPath());
                 for (List<Object> temp : etSoftHardwareList) {
-                    EtSoftHardware etSoftHardware = new EtSoftHardware();
-                    etSoftHardware.setId(ssgjHelper.createEtSoftHardwareIdService());
-                    etSoftHardware.setPmId(pmId);
-                    etSoftHardware.setcId(contractId);
-                    etSoftHardware.setSerialNo(customerId);
-                    etSoftHardware.setSourceId(0L);
-                    //硬件名称
-                    etSoftHardware.setHwName(temp.get(0) == null ? null : temp.get(0).toString());
-                    //推荐品牌
-//                    etSoftHardware.setBrand(temp.get(2) == null ? null : temp.get(2).toString());
-                    etSoftHardware.setModel(temp.get(1) == null ? null : temp.get(1).toString());
-                    if (temp.get(2) != null && !StringUtil.isEmptyOrNull(temp.get(2).toString())) {
-                        etSoftHardware.setNum(Integer.parseInt(temp.get(2).toString()));
-                    } else {
-                        etSoftHardware.setNum(1);
+                    //系统名称
+                    String plName = temp.get(0) == null ? null : temp.get(0).toString().trim();
+                    String hwName = temp.get(1) == null ? null : temp.get(1).toString().trim();
+                    Long plId = null;
+                    if (!StringUtil.isEmptyOrNull(plName)) {
+                        for (EtContractTask etContractTask : productDictInfos) {
+                            String nameTemp = etContractTask.getZxtmc();
+                            if (nameTemp.equals(plName)) {
+                                //存在条线
+                                plId = etContractTask.getId();
+                                break;
+                            }
+                        }
+                        if (plId == null) {
+                            //导入系统不存在，则跳过该条数据
+                            continue;
+                        }
                     }
-                    //用途
-                    etSoftHardware.setUseContent(temp.get(3) == null ? null : temp.get(3).toString());
-                    //默认在当前范围
-                    etSoftHardware.setIsScope(1);
-                    //默认未完成
-                    etSoftHardware.setContent("0");
-                    etSoftHardware.setCreateTime(new Timestamp(new Date().getTime()));
-                    etSoftHardware.setCreator(param.getOperator());
-                    etSoftHardware.setOperator(param.getOperator());
-                    etSoftHardware.setOperatorTime(new Timestamp(new Date().getTime()));
-                    eList.add(etSoftHardware);
+                    //创建临时变量
+                    EtSoftHardware etSoftHardwareTemp = new EtSoftHardware();
+                    if (plId != null) {
+                        //已分配系统硬件更新
+                        etSoftHardwareTemp.setPlId(plId);
+                    }
+                    etSoftHardwareTemp.setcId(param.getcId());
+                    etSoftHardwareTemp.setSerialNo(param.getSerialNo());
+                    etSoftHardwareTemp.setPmId(param.getPmId());
+                    etSoftHardwareTemp.setHwName(hwName);
+                    List<EtSoftHardware> etSoftHardwareTemps = getFacade().getEtSoftHardwareService().getEtSoftHardwareList(etSoftHardwareTemp);
+                    if (etSoftHardwareTemps.size() > 1) {
+                        Boolean doAdd = true;
+                        for (EtSoftHardware hardware : etSoftHardwareTemps) {
+                            if (hardware.getPlId() == null) {
+                                doAdd = false;
+                                break;
+                            }
+                        }
+                        if (doAdd) {
+                            etSoftHardwareTemp = null;
+                        } else {
+                            continue;
+                        }
+                    } else if (etSoftHardwareTemps.size() == 1) {
+                        etSoftHardwareTemp = etSoftHardwareTemps.get(0);
+                    } else {
+                        etSoftHardwareTemp = null;
+                    }
+                    //新增
+                    if (etSoftHardwareTemp == null || (plId == null && etSoftHardwareTemp.getPlId() != null)) {
+                        EtSoftHardware etSoftHardware = new EtSoftHardware();
+                        etSoftHardware.setId(ssgjHelper.createEtSoftHardwareIdService());
+                        etSoftHardware.setPmId(param.getPmId());
+                        etSoftHardware.setcId(param.getcId());
+                        etSoftHardware.setSerialNo(param.getSerialNo());
+                        etSoftHardware.setSourceId(0L);
+                        etSoftHardware.setPlId(plId);
+                        //硬件名称
+                        etSoftHardware.setHwName(hwName);
+                        //推荐品牌
+//                    etSoftHardware.setBrand(temp.get(2) == null ? null : temp.get(2).toString());
+                        etSoftHardware.setModel(temp.get(2) == null ? null : temp.get(2).toString());
+                        if (temp.get(3) != null && !StringUtil.isEmptyOrNull(temp.get(3).toString())) {
+                            etSoftHardware.setNum(Integer.parseInt(temp.get(3).toString()));
+                        } else {
+                            etSoftHardware.setNum(1);
+                        }
+                        //用途
+                        etSoftHardware.setUseContent(temp.get(4) == null ? null : temp.get(4).toString());
+                        //默认在当前范围
+                        etSoftHardware.setIsScope(1);
+                        //默认未完成
+                        etSoftHardware.setContent("0");
+                        etSoftHardware.setCreateTime(new Timestamp(new Date().getTime()));
+                        etSoftHardware.setCreator(param.getOperator());
+                        etSoftHardware.setOperator(param.getOperator());
+                        etSoftHardware.setOperatorTime(new Timestamp(new Date().getTime()));
+                        eList.add(etSoftHardware);
+                    }
                 }
-                getFacade().getEtSoftHardwareService().insertEtSoftHardwareByList(eList);
+                if (eList.size() > 0) {
+                    getFacade().getEtSoftHardwareService().insertEtSoftHardwareByList(eList);
+                }
                 newFile.delete();
                 result.put("status", "success");
             } catch (Exception e) {
