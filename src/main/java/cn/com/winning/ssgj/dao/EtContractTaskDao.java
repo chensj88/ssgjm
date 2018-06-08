@@ -38,4 +38,6 @@ public interface EtContractTaskDao extends EntityDao<EtContractTask> {
      * @return
      */
     String selectEtContractTaskForSiteInstall(EtContractTask task);
+
+    String selectTaskTeamMemebers(EtContractTask task);
 }

@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 
 import cn.com.winning.ssgj.base.exception.SSGJException;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
+import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.support.Row;
 import org.springframework.stereotype.Service;
 
@@ -76,7 +77,8 @@ public class EtContractTaskServiceImpl implements EtContractTaskService {
 		List<EtContractTask> contractTaskList = this.etContractTaskDao.selectEntityList(task);
 		List<String> colList = new ArrayList<String>();
 		colList.add("zxtmc");
-		colList.add("cpmc");
+		colList.add("allocateUser");
+		colList.add("teamMemeber");
 		colList.add("mx");
 		colList.add("bz");
 		List<Map> dataList = new ArrayList<Map>();
@@ -84,7 +86,8 @@ public class EtContractTaskServiceImpl implements EtContractTaskService {
 		for (EtContractTask t : contractTaskList) {
 			Map<String, String> userMap = new HashMap<>();
 			userMap.put("zxtmc", t.getZxtmc());
-			userMap.put("cpmc", t.getMap().get("allocateName").toString());
+			userMap.put("allocateUser", t.getMap().get("allocateName").toString());
+			userMap.put("teamMemeber", queryUserByIdList(t));
 			userMap.put("mx", t.getMx());
 			userMap.put("bz", t.getBz());
 			dataList.add(userMap);
@@ -93,6 +96,14 @@ public class EtContractTaskServiceImpl implements EtContractTaskService {
 		dataMap.put("colSize", colList.size());
 		dataMap.put("data", dataList);
 		ExcelUtil.writeExcel(dataList, colList, colList.size(), path);
+	}
+
+	private String queryUserByIdList(EtContractTask t) {
+		String teamMemeber = "";
+		if(!StringUtil.isEmptyOrNull(t.getTeamMembers())){
+			teamMemeber = etContractTaskDao.selectTaskTeamMemebers(t);
+		}
+		return teamMemeber;
 	}
 
 	/**

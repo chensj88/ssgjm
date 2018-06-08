@@ -22,7 +22,7 @@ import java.util.*;
 
 /**
  * @author chenshijie
- * @title
+ * @title 系统清单Controller
  * @email chensj@winning.com.cm
  * @package cn.com.winning.ssgj.web.controller.vue
  * @date 2018-03-26 8:52

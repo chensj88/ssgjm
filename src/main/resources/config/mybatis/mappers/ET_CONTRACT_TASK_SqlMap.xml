@@ -9,7 +9,7 @@
 		<result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR" />
 		<result column="ZXTMC" property="zxtmc" jdbcType="VARCHAR" />
 		<result column="CPZXT" property="cpzxt" jdbcType="BIGINT" />
-		<result column="CPMC" property="cpmc" jdbcType="VARCHAR" />
+		<result column="TEAM_MEMBERS" property="teamMembers" jdbcType="VARCHAR" />
 		<result column="ALLOCATE_USER" property="allocateUser" jdbcType="BIGINT" />
 		<result column="MX" property="mx" jdbcType="VARCHAR" />
 		<result column="BZ" property="bz" jdbcType="LONGVARCHAR" />
@@ -31,7 +31,7 @@
 	   <if test="serialNo != null and serialNo != ''"> and t.SERIAL_NO = #{serialNo} </if>
 	   <if test="zxtmc != null and zxtmc != ''"> and t.ZXTMC = #{zxtmc} </if>
 	   <if test="(cpzxt != null and cpzxt != '') or cpzxt == 0"> and t.CPZXT = #{cpzxt} </if>
-	   <if test="cpmc != null and cpmc != ''"> and t.CPMC = #{cpmc} </if>
+	   <if test="teamMembers != null and teamMembers != ''"> and t.TEAM_MEMBERS = #{teamMembers} </if>
 	   <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0"> and t.ALLOCATE_USER = #{allocateUser} </if>
 	   <if test="mx != null and mx != ''"> and t.MX = #{mx} </if>
 	   <if test="bz != null and bz != ''"> and t.BZ = #{bz} </if>
@@ -49,7 +49,7 @@
 		<if test="serialNo != null and serialNo != ''"> and t.SERIAL_NO = #{serialNo} </if>
 		<if test="(cpzxt != null and cpzxt != '') or cpzxt == 0"> and t.CPZXT = #{cpzxt} </if>
 		<if test="zxtmc != null and zxtmc != ''"> and t.ZXTMC LIKE '%${zxtmc}%' </if>
-		<if test="cpmc != null and cpmc != '' "> and t.CPMC LIKE '%${cpmc}%' </if>
+		<if test="teamMembers != null and teamMembers != '' "> and t.TEAM_MEMBERS LIKE '%${teamMembers}%' </if>
 		<if test="(allocateUser != null and allocateUser != '') or allocateUser == 0"> and t.ALLOCATE_USER = #{allocateUser} </if>
 		<if test="mx != null and mx != ''"> and t.MX = #{mx} </if>
 		<if test="bz != null and bz != ''"> and t.BZ = #{bz} </if>
@@ -100,7 +100,7 @@
 		   <if test="serialNo != null and serialNo != ''"> SERIAL_NO, </if>
 		   <if test="zxtmc != null and zxtmc != ''"> ZXTMC, </if>
 	       <if test="(cpzxt != null and cpzxt != '') or cpzxt == 0"> CPZXT, </if>
-		   <if test="cpmc != null and cpmc != ''"> CPMC, </if>
+		   <if test="teamMembers != null and teamMembers != ''"> TEAM_MEMBERS, </if>
 	       <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0"> ALLOCATE_USER, </if>
 		   <if test="mx != null and mx != ''"> MX, </if>
 		   <if test="bz != null and bz != ''"> BZ, </if>
@@ -118,7 +118,7 @@
 		   <if test="serialNo != null and serialNo != ''"> #{serialNo, jdbcType=VARCHAR}, </if>
 		   <if test="zxtmc != null and zxtmc != ''"> #{zxtmc, jdbcType=VARCHAR}, </if>
 	       <if test="(cpzxt != null and cpzxt != '') or cpzxt == 0"> #{cpzxt, jdbcType=BIGINT}, </if>
-		   <if test="cpmc != null and cpmc != ''"> #{cpmc, jdbcType=VARCHAR}, </if>
+		   <if test="teamMembers != null and teamMembers != ''"> #{teamMembers, jdbcType=VARCHAR}, </if>
 	       <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0"> #{allocateUser, jdbcType=BIGINT}, </if>
 		   <if test="mx != null and mx != ''"> #{mx, jdbcType=VARCHAR}, </if>
 		   <if test="bz != null and bz != ''"> #{bz, jdbcType=LONGVARCHAR}, </if>
@@ -140,7 +140,7 @@
 			   <if test="serialNo != null and serialNo != ''"> SERIAL_NO = #{serialNo, jdbcType=VARCHAR}, </if>
 			   <if test="zxtmc != null and zxtmc != ''"> ZXTMC = #{zxtmc, jdbcType=VARCHAR}, </if>
 			   <if test="(cpzxt != null and cpzxt != '') or cpzxt == 0"> CPZXT = #{cpzxt, jdbcType=BIGINT}, </if>
-			   <if test="cpmc != null and cpmc != ''"> CPMC = #{cpmc, jdbcType=VARCHAR}, </if>
+			   <if test="teamMembers != null and teamMembers != ''"> TEAM_MEMBERS = #{teamMembers, jdbcType=VARCHAR}, </if>
 			   <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0"> ALLOCATE_USER = #{allocateUser, jdbcType=BIGINT}, </if>
 			   <if test="mx != null and mx != ''"> MX = #{mx, jdbcType=VARCHAR}, </if>
 			   <if test="bz != null and bz != ''"> BZ = #{bz, jdbcType=LONGVARCHAR}, </if>
@@ -202,7 +202,7 @@
 		t.KHXX  AS  SERIAL_NO,
 		t.ZXTMC AS  ZXTMC,
 		t.CPZXT AS  CPZXT,
-		t.CPMC AS  CPMC,
+		t.TEAM_MEMBERS AS  TEAM_MEMBERS,
 		t.ALLOCATE_USER AS  ALLOCATE_USER,
 		'' AS  MX,
 		'' AS  BZ,
@@ -276,5 +276,17 @@
 			AND A.PD_ID IS NOT NULL
 			AND A.PD_ID != ''
 			GROUP BY A.PM_ID,A.C_ID,A.SERIAL_NO
+	</select>
+
+
+	<select id="selectTaskTeamMemebers" parameterType="etContractTask" resultType="string">
+		   SELECT
+				 stuff((
+					   SELECT ','+YHMC
+					   FROM SYS_USER_INFO
+					   WHERE   ID IN ( ${teamMembers} )
+					   FOR XML PATH('')),1,1,'' )
+					  FROM ET_CONTRACT_TASK A
+					  WHERE  ID = #{id}
 	</select>
 </mapper>

@@ -76,9 +76,13 @@ public class EtUserInfoContorller extends BaseController {
     public Map<String, Object> addOrModifyHospitalUserInfo(EtUserInfo etUserInfo) {
         Map<String, Object> result = new HashMap<String, Object>();
         EtUserInfo temp = new EtUserInfo();
+        temp.setPmId(etUserInfo.getPmId());
+        temp.setSerialNo(etUserInfo.getSerialNo());
+        temp.setcId(etUserInfo.getcId());
         temp.setUserCard(etUserInfo.getUserCard());
+        temp.setIsDel(1);
         temp = getFacade().getEtUserInfoService().getEtUserInfo(temp);
-        if (etUserInfo.getId() == 0L) {
+        if (etUserInfo.getId() == 0L||etUserInfo.getId()==null) {
             //工号查重
             if (temp != null) {
                 result.put("status", Constants.FAILD);
