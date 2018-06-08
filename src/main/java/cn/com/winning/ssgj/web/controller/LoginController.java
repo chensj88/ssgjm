@@ -6,6 +6,7 @@ import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.base.util.PasswordUtils;
 import cn.com.winning.ssgj.base.util.SerializableUtils;
+import cn.com.winning.ssgj.domain.EtUserInfo;
 import cn.com.winning.ssgj.domain.SysLoginUser;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -49,8 +50,8 @@ public class LoginController extends BaseController {
 
     @RequestMapping(value = "/login/check.do")
     @ResponseBody
-    public Map<String, Object> check(HttpServletRequest request, String username, String password)  {
-        String error = login(username,password);
+    public Map<String, Object> check(HttpServletRequest request, String username, String password) {
+        String error = login(username, password);
         Map<String, Object> map = new HashMap<String, Object>();
         //用户名检查
         if (error != null) {
@@ -64,9 +65,9 @@ public class LoginController extends BaseController {
 
     @RequestMapping(value = "/vue/login.do")
     @ResponseBody
-    public Map<String,Object> vueLoginUser(String userid,String password){
+    public Map<String, Object> vueLoginUser(String userid, String password) {
 
-        String error = login(userid,password);
+        String error = login(userid, password);
         Map<String, Object> map = new HashMap<String, Object>();
         //用户名检查
         if (error != null) {
@@ -85,17 +86,27 @@ public class LoginController extends BaseController {
             getFacade().getSysLoginUserService().createSysLoginUser(loginUser);*/
             String token = Token.generateTokenString();
             SysUserInfo user = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
-            super.getFacade().getSysLoginUserService().createSysLoginUserBySelectiveKey(token,user.getId());
+            super.getFacade().getSysLoginUserService().createSysLoginUserBySelectiveKey(token, user.getId());
+            //根据userId查询用户是否为高权限用户（isDel：2）
+            EtUserInfo temp = new EtUserInfo();
+            temp.setUserCard(userid);
+            temp.setIsDel(2);
+            EtUserInfo etUserInfo = getFacade().getEtUserInfoService().getEtUserInfo(temp);
+            if (etUserInfo != null) {
+                //存在即为高权限用户，权限添加到session
+                map.put("remote", true);
+            } else {
+                map.put("remote", false);
+            }
             map.put("token", token);
-            map.put("user",user);
-            map.put("user",(SysUserInfo)SecurityUtils.getSubject().getPrincipal());
+            map.put("user", (SysUserInfo) SecurityUtils.getSubject().getPrincipal());
             map.put("status", true);
         }
         return map;
 
     }
 
-    private String login(String userid,String password){
+    private String login(String userid, String password) {
         String error = null;
         String decodePassword = null;
         try {
@@ -104,7 +115,7 @@ public class LoginController extends BaseController {
             e.printStackTrace();
             error = "密码解密失败";
         }
-        if( error == null){
+        if (error == null) {
             UsernamePasswordToken token = new UsernamePasswordToken(userid, MD5.stringMD5(decodePassword));
             Subject subject = SecurityUtils.getSubject();
             try {
@@ -123,9 +134,9 @@ public class LoginController extends BaseController {
 
     @RequestMapping(value = "/vue/logout.do")
     @ResponseBody
-    public Map<String,Object> userLogout(){
+    public Map<String, Object> userLogout() {
 
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }
