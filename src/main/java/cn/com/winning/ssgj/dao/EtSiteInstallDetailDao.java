@@ -17,4 +17,6 @@ public interface EtSiteInstallDetailDao extends EntityDao<EtSiteInstallDetail> {
     List<EtSiteInstallDetail> getSiteListByDeptId(EtDepartment etDepartment);
 
     void updateEtSiteInstallDetailSourceId(EtSiteInstallDetail t);
+
+    List<EtSiteInstallDetail> selectEtSiteInstallHardDetailList(EtSiteInstallDetail t);
 }

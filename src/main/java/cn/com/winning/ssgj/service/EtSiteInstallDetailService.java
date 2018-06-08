@@ -31,4 +31,5 @@ public interface EtSiteInstallDetailService {
 
     void updateEtSiteInstallDetailSourceId(EtSiteInstallDetail detail_old);
 
+    List<EtSiteInstallDetail> getEtSiteInstallHardDetailList(EtSiteInstallDetail installHardDetail);
 }
