@@ -126,11 +126,6 @@ public class EtContractTaskServiceImpl implements EtContractTaskService {
                 }
             }
         }
-        for (int i = 0; i < pdIdStr.split(",").length; i++) {
-            if (task.getId() == Long.parseLong(pdIdStr.split(",")[i])) {
-                isSiteInstall = true;
-            }
-        }
         String msg = "";
         if (shCount > 0) {
             msg += "系统在硬件清单中使用，";
