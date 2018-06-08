@@ -1,8 +1,14 @@
 package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
+
+import com.alibaba.fastjson.JSON;
 import org.apache.ibatis.type.Alias;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
@@ -29,7 +35,7 @@ public class EtContractTask extends BaseDomain implements Serializable {
 	
 	private Long cpzxt;
 	
-	private String cpmc;
+	private String teamMembers;
 	/**
 	 * 主力工程师
 	 */
@@ -48,6 +54,10 @@ public class EtContractTask extends BaseDomain implements Serializable {
 	private Date operatorTime;
 
 	private Long sourceId;
+	/**
+	 * 项目组成员ID列表
+	 */
+	private List<Long> memebers;
 	
 	public EtContractTask() {
 
@@ -100,13 +110,13 @@ public class EtContractTask extends BaseDomain implements Serializable {
 	public void setCpzxt(Long cpzxt) {
 		this.cpzxt = cpzxt;
 	}
-	
-	public String getCpmc() {
-		return cpmc;
+
+	public String getTeamMembers() {
+		return teamMembers;
 	}
-	
-	public void setCpmc(String cpmc) {
-		this.cpmc = cpmc;
+
+	public void setTeamMembers(String teamMembers) {
+		this.teamMembers = teamMembers;
 	}
 
 	public Long getAllocateUser() {
@@ -171,5 +181,13 @@ public class EtContractTask extends BaseDomain implements Serializable {
 
 	public void setSourceId(Long sourceId) {
 		this.sourceId = sourceId;
+	}
+
+	public List<Long> getMemebers() {
+		return  this.teamMembers == null ? new ArrayList<>() : JSON.parseArray(this.teamMembers,Long.class);
+	}
+
+	public void setMemebers(List<Long> memebers) {
+		this.memebers = memebers;
 	}
 }
