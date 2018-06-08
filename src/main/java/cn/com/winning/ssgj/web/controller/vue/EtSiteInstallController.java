@@ -351,7 +351,7 @@ public class EtSiteInstallController extends BaseController {
             }
 
             for (EtContractTask s:softHardwareList){
-                sfName +=s.getCpmc()+";";
+                sfName +=s.getZxtmc()+";";
             }
             sfName=sfName.substring(0,sfName.length()-1);
             info.setPdName(sfName);
@@ -422,6 +422,7 @@ public class EtSiteInstallController extends BaseController {
         //根据客户编号 找出对应的全部
         info.setPmId(info.getPmId());
         info.setId(info.getId());
+        info.setOperator(null);
         info = super.getFacade().getEtSiteInstallService().getEtSiteInstall(info);
         EtSiteInstallDetail installDetail = new EtSiteInstallDetail();
         //获取安装站点的信息
