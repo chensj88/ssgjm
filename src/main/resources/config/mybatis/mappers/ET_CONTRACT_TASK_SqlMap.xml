@@ -12,7 +12,7 @@
 		<result column="TEAM_MEMBERS" property="teamMembers" jdbcType="VARCHAR" />
 		<result column="ALLOCATE_USER" property="allocateUser" jdbcType="BIGINT" />
 		<result column="MX" property="mx" jdbcType="VARCHAR" />
-		<result column="BZ" property="bz" jdbcType="LONGVARCHAR" />
+		<result column="BZ" property="bz" jdbcType="VARCHAR" />
 		<result column="CREATOR" property="creator" jdbcType="BIGINT" />
 		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="OPERATOR" property="operator" jdbcType="BIGINT" />
@@ -84,10 +84,9 @@
 
 	<select id="selectEtContractTaskPaginatedList" resultMap="etContractTaskResult" parameterType="etContractTask">
 		select * from (
-			select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+			select *, ROW_NUMBER() OVER ( order by t.MX DESC,t.BZ DESC ) as _rn
 				from ET_CONTRACT_TASK t where 1 = 1
 			<include refid="query-etContractTask" />
-			<!-- order by ID asc -->
 		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
 	</select>
 
@@ -121,7 +120,7 @@
 		   <if test="teamMembers != null and teamMembers != ''"> #{teamMembers, jdbcType=VARCHAR}, </if>
 	       <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0"> #{allocateUser, jdbcType=BIGINT}, </if>
 		   <if test="mx != null and mx != ''"> #{mx, jdbcType=VARCHAR}, </if>
-		   <if test="bz != null and bz != ''"> #{bz, jdbcType=LONGVARCHAR}, </if>
+		   <if test="bz != null and bz != ''"> #{bz, jdbcType=VARCHAR}, </if>
 	       <if test="(creator != null and creator != '') or creator == 0"> #{creator, jdbcType=BIGINT}, </if>
 		   <if test="createTime != null "> #{createTime, jdbcType=TIMESTAMP}, </if>
 	       <if test="(operator != null and operator != '') or operator == 0"> #{operator, jdbcType=BIGINT}, </if>
@@ -143,7 +142,7 @@
 			   <if test="teamMembers != null and teamMembers != ''"> TEAM_MEMBERS = #{teamMembers, jdbcType=VARCHAR}, </if>
 			   <if test="(allocateUser != null and allocateUser != '') or allocateUser == 0"> ALLOCATE_USER = #{allocateUser, jdbcType=BIGINT}, </if>
 			   <if test="mx != null and mx != ''"> MX = #{mx, jdbcType=VARCHAR}, </if>
-			   <if test="bz != null and bz != ''"> BZ = #{bz, jdbcType=LONGVARCHAR}, </if>
+			   <if test="bz != null and bz != ''"> BZ = #{bz, jdbcType=VARCHAR}, </if>
 			   <if test="(creator != null and creator != '') or creator == 0"> CREATOR = #{creator, jdbcType=BIGINT}, </if>
 			   <if test="createTime != null "> CREATE_TIME = #{createTime, jdbcType=TIMESTAMP}, </if>
 			   <if test="(operator != null and operator != '') or operator == 0"> OPERATOR = #{operator, jdbcType=BIGINT}, </if>

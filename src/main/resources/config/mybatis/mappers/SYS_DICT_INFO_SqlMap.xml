@@ -191,7 +191,14 @@
 
 
     <select id="selectSysDictInfoListByValue" resultMap="sysDictInfoResult" parameterType="sysDictInfo">
-        select *
+        select t.*,
+        CASE
+        WHEN t.DICT_DESC = 'productType1' THEN '临床'
+        WHEN t.DICT_DESC = 'productType1' THEN '护理'
+        WHEN t.DICT_DESC = 'productType1' THEN '平台'
+        WHEN t.DICT_DESC = 'productType1' THEN 'HIS'
+        WHEN t.DICT_DESC = 'productType1' THEN '其他'
+        ELSE '未知' END PRODUCT_TYPE
         from SYS_DICT_INFO t where 1 = 1
         <include refid="sf-sysDictInfo"/>
         <if test="(map.pks != null and map.pks.size >0)">

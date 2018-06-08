@@ -29,27 +29,28 @@ import java.util.*;
  */
 @CrossOrigin
 @Controller
-@RequestMapping(value = "/vue/projectProduct")
-public class EtContractProjectController extends BaseController {
+@RequestMapping(value = "/vue/contractTask")
+public class EtContractTaskController extends BaseController {
 
     @Autowired
     private SSGJHelper ssgjHelper;
 
     /**
      * 根据选择的产品序号来初始化产品
+     *
      * @param task
      * @param idList
      * @return
      */
     @RequestMapping(value = "/initData.do")
     @ResponseBody
-    public Map<String, Object>  initProjectProduct(EtContractTask task,String idList) {
+    public Map<String, Object> initProjectProduct(EtContractTask task, String idList) {
         List<String> valueList = new ArrayList<>();
-        for( int i = 0 ; i< idList.split(",").length; i++){
+        for (int i = 0; i < idList.split(",").length; i++) {
             valueList.add(idList.split(",")[i]);
         }
         //去除已经的值,根据客户号查询已经生成的产品ID并去除，减少数据库查询
-        List<SysDictInfo> dicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByValue(valueList,task.getSerialNo());
+        List<SysDictInfo> dicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByValue(valueList, task.getSerialNo());
         for (SysDictInfo info : dicts) {
             EtContractTask t = new EtContractTask();
             t.setcId(task.getcId());
@@ -57,7 +58,7 @@ public class EtContractProjectController extends BaseController {
             t.setSerialNo(task.getSerialNo());
             t.setSourceId(Long.parseLong(info.getDictSort()));
             t = super.getFacade().getEtContractTaskService().getEtContractTask(t);
-            if(t == null){
+            if (t == null) {
                 t = new EtContractTask();
                 t.setId(ssgjHelper.createEtContractTaskIdService()); //ID
                 t.setcId(task.getcId()); //合同ID
@@ -65,26 +66,29 @@ public class EtContractProjectController extends BaseController {
                 t.setSerialNo(task.getSerialNo()); //客户ID
                 t.setZxtmc(info.getDictLabel()); //字典显示值
                 t.setCpzxt(Long.parseLong(info.getDictSort())); //主系统ID
+                t.setMx(info.getProductType());//产品大类
                 t.setSourceId(Long.parseLong(info.getDictSort())); //来源序号或ID
-                //t.setBz(info.getPyCode()); //备注放置拼音码
+                t.setBz(info.getPyCode()); //备注放置拼音码
                 t.setCreator(task.getCreator()); //创建人
                 t.setCreateTime(new Timestamp(new Date().getTime())); //创建时间
                 getFacade().getEtContractTaskService().createEtContractTask(t);
             }
         }
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
     }
+
     /**
      * 查询项目产品信息
+     *
      * @param task
      * @param row
      * @return
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Map<String, Object>  listProductOfProject(EtContractTask task, Row row) {
+    public Map<String, Object> listProductOfProject(EtContractTask task, Row row) {
         task.setRow(row);
         List<EtContractTask> taskList = super.getFacade().getEtContractTaskService().getEtContractTaskPaginatedList(task);
         int total = super.getFacade().getEtContractTaskService().getEtContractTaskCount(task);
@@ -93,22 +97,30 @@ public class EtContractProjectController extends BaseController {
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows", taskList);
+        return result;
+    }
+
+    @RequestMapping(value = "/process.do")
+    @ResponseBody
+    public Map<String, Object> process(EtContractTask task) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
         result.put("process", this.getProcessManager(task.getPmId()));
         return result;
     }
 
-
     /**
      * 查询产品信息
+     *
      * @param info
      * @param serialNo 客户号
      * @return
      */
     @RequestMapping(value = "/queryProduct.do")
     @ResponseBody
-    public Map<String, Object> queryProduct(SysDictInfo info,String serialNo) {
+    public Map<String, Object> queryProduct(SysDictInfo info, String serialNo) {
         info.setDictCode(Constants.DictInfo.PRODUCT_NAME);
-        info.getMap().put("serialNo",serialNo);
+        info.getMap().put("serialNo", serialNo);
         List<SysDictInfo> productInfos = super.getFacade().getSysDictInfoService().getSysDictInfoListBySelectKey(info);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
@@ -131,7 +143,7 @@ public class EtContractProjectController extends BaseController {
         if (oldTask != null) {
             task.setOperatorTime(new Timestamp(new Date().getTime()));
 
-             super.getFacade().getEtContractTaskService().modifyEtContractTask(task);
+            super.getFacade().getEtContractTaskService().modifyEtContractTask(task);
         } else {
             task.setId(ssgjHelper.createEtContractTaskIdService());
             task.setCreator(task.getOperator());
@@ -151,6 +163,7 @@ public class EtContractProjectController extends BaseController {
      * 需要判断系统是否在硬件清单、站点问题和站点问题中是否使用
      * 使用 则不允许删除
      * 反之 则允许删除
+     *
      * @param task
      * @return
      */
@@ -159,11 +172,11 @@ public class EtContractProjectController extends BaseController {
     public Map<String, Object> deleteProduct(EtContractTask task) {
         String msg = super.getFacade().getEtContractTaskService().checkEtContractTaskIsUse(task);
         Map<String, Object> result = new HashMap<String, Object>();
-        if(StringUtil.isEmptyOrNull(msg)){
+        if (StringUtil.isEmptyOrNull(msg)) {
             super.getFacade().getEtContractTaskService().removeEtContractTask(task);
             result.put("status", Constants.SUCCESS);
-        }else {
-            result.put("msg",msg);
+        } else {
+            result.put("msg", msg);
             result.put("status", Constants.FAILD);
         }
         return result;
