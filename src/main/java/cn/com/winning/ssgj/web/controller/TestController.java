@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.web.controller;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.domain.EtBusinessProcess;
+import cn.com.winning.ssgj.domain.EtDepartment;
 import cn.com.winning.ssgj.domain.PmisProductInfo;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 import cn.com.winning.ssgj.domain.support.Row;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,7 +109,27 @@ public class TestController extends BaseController{
         result.put("status", Constants.SUCCESS);
         result.put("data",pmisWorkingPaperService.queryWorkReport(code));
         return result;
+    }
+
+    @RequestMapping(value = "/testExcel.do")
+    public void wiriteExcel(HttpServletResponse response){
+        String serialNo = "10159";
+        EtDepartment dept = new EtDepartment();
+        List<EtDepartment> deps = getDepartmentList(Long.parseLong(serialNo),null);
+        List<Map<String,Object>> validateRoles = new ArrayList<>();
+        Map<String,Object> deptValidate = new HashMap<>();
+        String[] deptArr = new String[deps.size()];
+        for (int i = 0; i < deps.size(); i++) {
+            deptArr[i] = deps.get(i).getDeptName();
+        }
+        deptValidate.put("roles",deptArr);
+        deptValidate.put("firstRow",2);
+        deptValidate.put("lastRow",4000);
+        deptValidate.put("firstCol",2);
+        deptValidate.put("lastCol",2);
+        validateRoles.add(deptValidate);
 
     }
+
 
 }

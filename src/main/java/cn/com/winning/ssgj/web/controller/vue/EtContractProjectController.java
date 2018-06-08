@@ -93,8 +93,17 @@ public class EtContractProjectController extends BaseController {
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows", taskList);
+        return result;
+    }
+
+    @RequestMapping(value = "/process.do")
+    @ResponseBody
+    public Map<String, Object>  listProductOfProject(EtContractTask task){
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
         result.put("process", this.getProcessManager(task.getPmId()));
         return result;
+
     }
 
 

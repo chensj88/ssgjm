@@ -117,11 +117,14 @@ public class EtContractTaskServiceImpl implements EtContractTaskService {
 		int sqCount = etContractTaskDao.selectEtContractTaskForEtSitemQuestionCount(task);
 		String pdIdStr = etContractTaskDao.selectEtContractTaskForSiteInstall(task);
 		boolean isSiteInstall = false;
-		for (int i = 0; i < pdIdStr.split(",").length; i++) {
-			if(task.getId() == Long.parseLong(pdIdStr.split(",")[i])){
-				isSiteInstall = true;
+		if(pdIdStr != null){
+			for (int i = 0; i < pdIdStr.split(",").length; i++) {
+				if(task.getId() == Long.parseLong(pdIdStr.split(",")[i])){
+					isSiteInstall = true;
+				}
 			}
 		}
+
 		String msg = "";
 		if(shCount > 0){
 			msg += "系统在硬件清单中使用，";

@@ -4,8 +4,8 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.util.CellRangeAddressList;
+import org.apache.poi.xssf.usermodel.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -56,6 +56,76 @@ public class ExcelUtil {
         }
     }
 
+    /**
+     * 书写导入数据的模板
+     * @param response
+     * @param columnNameOfFirstRow 第一行数据的列明
+     * @param workBook Excel
+     * @param validateRoles 数据有效性
+     * @param filename 文件名
+     */
+    public static void writeTemplateExcel(
+                                  HttpServletResponse response,
+                                  List<String> columnNameOfFirstRow,
+                                  Workbook workBook,
+                                  List<Map<String,Object>> validateRoles,
+                                  String filename){
+        OutputStream out = null;
+        try {
+            // sheet 对应一个工作页
+            Sheet sheet = workBook.createSheet();
+            //样式
+            CellStyle cellStyle = workBook.createCellStyle();
+            Font font=workBook.createFont();
+            font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            cellStyle.setFont(font);
+            //设置Excel数据有效性
+            XSSFDataValidationHelper dvHelper = new XSSFDataValidationHelper((XSSFSheet) sheet);
+
+            XSSFDataValidationConstraint dvConstraint = null;
+            CellRangeAddressList addressList = null;
+            XSSFDataValidation validation = null;
+
+            for (Map<String, Object> validateRole : validateRoles) {
+                dvConstraint = (XSSFDataValidationConstraint) dvHelper.createExplicitListConstraint((String[]) validateRole.get("roles"));
+                addressList = new CellRangeAddressList(Integer.parseInt(validateRole.get("firstRow").toString()),
+                        Integer.parseInt(validateRole.get("lastRow").toString()),
+                         Integer.parseInt(validateRole.get("firstCol").toString()), Integer.parseInt(validateRole.get("lastCol").toString()));
+                validation = (XSSFDataValidation) dvHelper.createValidation(dvConstraint, addressList);
+                //数据有效性对象
+                sheet.addValidationData(validation);
+            }
+
+            //第一行保存列名
+            Row colRow = sheet.createRow(0);
+            for (int i = 0; i < columnNameOfFirstRow.size(); i++) {
+                Cell cell=colRow.createCell(i);
+                cell.setCellStyle(cellStyle);
+                cell.setCellValue(columnNameOfFirstRow.get(i).toString());
+                sheet.setColumnWidth(i, 20 * 256);
+            }
+            //获取响应输出流
+            OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
+            // 设置response的Header
+            response.setContentType("application/msexcel;charset=UTF-8");
+            response.addHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode(filename, "UTF-8"))));
+            workBook.write(outputStream);
+            outputStream.flush();
+            outputStream.close();
+            workBook.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.flush();
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     /**
      * 导出Excel
      * @param dataList      数据Map
