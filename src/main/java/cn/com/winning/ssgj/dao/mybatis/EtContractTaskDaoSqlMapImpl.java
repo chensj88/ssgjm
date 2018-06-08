@@ -41,4 +41,9 @@ public class EtContractTaskDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtContractT
     public String selectEtContractTaskForSiteInstall(EtContractTask task) {
         return super.getSqlSession().selectOne("selectEtContractTaskForSiteInstall",task);
     }
+
+    @Override
+    public String selectTaskTeamMemebers(EtContractTask task) {
+        return super.getSqlSession().selectOne("selectTaskTeamMemebers",task);
+    }
 }

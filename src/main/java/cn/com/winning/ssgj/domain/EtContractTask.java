@@ -184,7 +184,7 @@ public class EtContractTask extends BaseDomain implements Serializable {
 	}
 
 	public List<Long> getMemebers() {
-		return  this.teamMembers == null ? new ArrayList<>() : JSON.parseArray(this.teamMembers,Long.class);
+		return  this.teamMembers == null ? new ArrayList<>() : JSON.parseArray("["+this.teamMembers+"]",Long.class);
 	}
 
 	public void setMemebers(List<Long> memebers) {
