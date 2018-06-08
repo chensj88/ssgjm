@@ -36,6 +36,10 @@ public class SysDictInfo extends BaseDomain implements Serializable {
      * 拼音码
      */
     private String pyCode;
+    /**
+     * 产品分类，适用于产品信息
+     */
+    private String productType;
 
     public SysDictInfo() {
 
@@ -100,5 +104,13 @@ public class SysDictInfo extends BaseDomain implements Serializable {
 
     public void setPyCode(String pyCode) {
         this.pyCode = pyCode;
+    }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
     }
 }
