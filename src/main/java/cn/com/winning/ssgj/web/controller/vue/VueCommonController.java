@@ -77,19 +77,22 @@ public class VueCommonController extends BaseController {
         SysDictInfo dict = new SysDictInfo();
         dict.setDictCode(Constants.DictInfo.PRODUCT_NAME);
         dict.getMap().put("type","1");
-        List<SysDictInfo> firstDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByType(dict);
+        List<SysDictInfo> firstDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByDesc(dict);
         dict.getMap().put("type","2");
-        List<SysDictInfo> secondDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByType(dict);
+        List<SysDictInfo> secondDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByDesc(dict);
         dict.getMap().put("type","3");
-        List<SysDictInfo> thirdDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByType(dict);
+        List<SysDictInfo> thirdDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByDesc(dict);
         dict.getMap().put("type","4");
-        List<SysDictInfo> fourDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByType(dict);
+        List<SysDictInfo> fourDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByDesc(dict);
+        dict.getMap().put("type","5");
+        List<SysDictInfo> fiveDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByDesc(dict);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data1",firstDicts);
         result.put("data2",secondDicts );
         result.put("data3",thirdDicts);
         result.put("data4",fourDicts);
+        result.put("data5",fiveDicts);
         return result;
 
     }
