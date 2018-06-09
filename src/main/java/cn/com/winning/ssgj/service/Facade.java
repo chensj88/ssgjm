@@ -141,4 +141,7 @@ public interface Facade {
 
     EtAccessTokenService getEtAccessTokenService();
 
+    EtLogService getEtLogService();
+
+
 }
