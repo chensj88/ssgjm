@@ -54,7 +54,7 @@ public class EtUserInfoContorller extends BaseController {
     public Map<String, Object> rtOnlineUserList(EtUserInfo etUserInfo, Row row) {
         super.getFacade().getCommonQueryService().generateEtUserInfoFromPmisProjectUser(etUserInfo.getPmId());
         etUserInfo.setRow(row);
-        etUserInfo.setIsDel(Constants.STATUS_USE);
+//        etUserInfo.setIsDel(Constants.STATUS_USE);
         List<EtUserInfo> etUserInfoList = super.getFacade().getEtUserInfoService().getEtUserInfoPaginatedList(etUserInfo);
         int total = super.getFacade().getEtUserInfoService().getEtUserInfoCount(etUserInfo);
         //根据pmid获取项目进程
@@ -80,24 +80,27 @@ public class EtUserInfoContorller extends BaseController {
         temp.setSerialNo(etUserInfo.getSerialNo());
         temp.setcId(etUserInfo.getcId());
         temp.setUserCard(etUserInfo.getUserCard());
-        temp.setIsDel(1);
         temp = getFacade().getEtUserInfoService().getEtUserInfo(temp);
-        if (etUserInfo.getId() == 0L||etUserInfo.getId()==null) {
+        if (etUserInfo.getId() == 0L || etUserInfo.getId() == null) {
+            //新增
             //工号查重
-            if (temp != null) {
+            if (temp != null && temp.getIsDel() != 2) {
                 result.put("status", Constants.FAILD);
                 return result;
+            } else {
+                etUserInfo.setId(ssgjHelper.createEtUserInfoIdService());
+                etUserInfo.setIsDel(1);
+                super.getFacade().getEtUserInfoService().createEtUserInfo(etUserInfo);
             }
-            etUserInfo.setId(ssgjHelper.createEtUserInfoIdService());
-            etUserInfo.setIsDel(Constants.STATUS_USE);
-            super.getFacade().getEtUserInfoService().createEtUserInfo(etUserInfo);
         } else {
+            //编辑
             //工号查重
-            if (temp != null&&temp.getId()!=etUserInfo.getId()) {
+            if (temp != null && temp.getId() != etUserInfo.getId()) {
                 result.put("status", Constants.FAILD);
                 return result;
+            } else {
+                super.getFacade().getEtUserInfoService().modifyEtUserInfo(etUserInfo);
             }
-            super.getFacade().getEtUserInfoService().modifyEtUserInfo(etUserInfo);
         }
         result.put("status", Constants.SUCCESS);
         return result;
@@ -185,6 +188,7 @@ public class EtUserInfoContorller extends BaseController {
     @Transactional
     public Map<String, Object> deleteHospitalUser(EtUserInfo userInfo) {
         userInfo = super.getFacade().getEtUserInfoService().getEtUserInfo(userInfo);
+        userInfo.setPositionName("4");
         userInfo.setIsDel(Constants.STATUS_UNUSE);
         super.getFacade().getEtUserInfoService().modifyEtUserInfo(userInfo);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -218,10 +222,10 @@ public class EtUserInfoContorller extends BaseController {
 
     @RequestMapping(value = "/queryUser.do")
     @ResponseBody
-    public Map<String,Object> queryUserForUser(SysUserInfo user,Row row){
+    public Map<String, Object> queryUserForUser(SysUserInfo user, Row row) {
         user.setRow(row);
         List<SysUserInfo> userInfos = super.getFacade().getSysUserInfoService().getSysUserInfoQueryPaginatedList(user);
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", userInfos);
         return result;
