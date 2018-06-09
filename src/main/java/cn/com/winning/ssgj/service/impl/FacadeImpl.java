@@ -477,4 +477,11 @@ public class FacadeImpl implements Facade {
     public EtDepartmentService getEtDepartmentService() {
         return etDepartmentService;
     }
+
+    @Resource
+    EtLogService etLogService;
+
+    public EtLogService getEtLogService() {
+        return etLogService;
+    }
 }
