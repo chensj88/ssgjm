@@ -16,10 +16,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/mobile/wechatSiteQuestion")
 public class MobileSiteQuestionController  extends BaseController {
 
-
+    /**
+     * 采集中心新增客户问题
+     * @param model model  主要用来传输参数
+     * @param userid 用户id
+     * @param serialNo 客户号
+     * @return
+     */
     @RequestMapping(value = "/add.do")
-    public String add(Model model,long userid) {
+    public String add(Model model,long userid,String serialNo) {
+        model.addAttribute("siteQuestionInfo",null);
+        model.addAttribute("deptList", this.getDepartmentList(Long.parseLong(serialNo),null));
+        model.addAttribute("appList", this.getProductDictInfo(serialNo));
         model.addAttribute("userid", userid);
+        model.addAttribute("serialNo", serialNo);
         return "/mobile/service/site-question";
+    }
+
+    @RequestMapping(value = "/list.do")
+    public String list(Model model,long userid,String serialNo) {
+        return "/mobile/service/site-question-list";
     }
 }
