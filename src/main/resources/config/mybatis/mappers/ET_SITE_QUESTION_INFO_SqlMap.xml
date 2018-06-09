@@ -31,7 +31,7 @@
         <result column="MOBILE" property="mobile" jdbcType="VARCHAR"/>
         <result column="HOPE_FINISH_DATE" property="hopeFinishDate" jdbcType="VARCHAR"/>
         <result column="RESOLVE_DATE" property="resolveDate" jdbcType="VARCHAR"/>
-        <result column="SOLUTION_TYPE" property="solutionType" jdbcType="INTEGER"/>
+        <result column="PROCESS_STATUS" property="processStatus" jdbcType="INTEGER"/>
         <result column="SOLUTION_RESULT" property="solutionResult" jdbcType="VARCHAR"/>
         <result column="DIFFCULT_LEVEL" property="diffcultLevel" jdbcType="INTEGER"/>
         <result column="USER_MESSAGE" property="userMessage" jdbcType="VARCHAR"/>
@@ -94,7 +94,7 @@
         <if test="mobile != null and mobile != ''">and t.MOBILE = #{mobile}</if>
         <if test="hopeFinishDate != null and hopeFinishDate != ''">and t.HOPE_FINISH_DATE = #{hopeFinishDate}</if>
         <if test="resolveDate != null and resolveDate != ''">and t.RESOLVE_DATE = #{resolveDate}</if>
-        <if test="(solutionType != null and solutionType != '') or solutionType == 0">and t.SOLUTION_TYPE =#{solutionType}</if>
+        <if test="(processStatus != null and processStatus != '') or processStatus == 0">and t.PROCESS_STATUS =#{processStatus}</if>
         <if test="solutionResult != null and solutionResult != ''">and t.SOLUTION_RESULT = #{solutionResult}</if>
         <if test="(diffcultLevel != null and diffcultLevel != '') or diffcultLevel == 0">and t.DIFFCULT_LEVEL =#{diffcultLevel}</if>
         <if test="userMessage != null and userMessage != ''">and t.USER_MESSAGE = #{userMessage}</if>
@@ -136,7 +136,7 @@
         <if test="mobile != null and mobile != ''">and t.MOBILE = #{mobile}</if>
         <if test="hopeFinishDate != null and hopeFinishDate != ''">and t.HOPE_FINISH_DATE = #{hopeFinishDate}</if>
         <if test="resolveDate != null and resolveDate != ''">and t.RESOLVE_DATE = #{resolveDate}</if>
-        <if test="(solutionType != null and solutionType != '') or solutionType == 0">and t.SOLUTION_TYPE =#{solutionType}</if>
+        <if test="(processStatus != null and processStatus != '') or processStatus == 0">and t.PROCESS_STATUS =#{processStatus}</if>
         <if test="solutionResult != null and solutionResult != ''">and t.SOLUTION_RESULT = #{solutionResult}</if>
         <if test="(diffcultLevel != null and diffcultLevel != '') or diffcultLevel == 0">and t.DIFFCULT_LEVEL =#{diffcultLevel}</if>
         <if test="userMessage != null and userMessage != ''">and t.USER_MESSAGE = #{userMessage}</if>
@@ -275,6 +275,24 @@
         </where>
         ;
     </select>
+    
+    <!-- Chen,Kuai 2018年6月9日15:43:31  服务号首页的信息展示 -->
+    <select id="selectEtSiteQuestionInfoUserTotal" resultMap="etSiteQuestionInfoResult" parameterType="etSiteQuestionInfo">
+        SELECT
+            t.ID,d.DEPT_NAME,t.QUESTION_DESC,t.CREATE_TIME,tt.NUM
+        FROM
+            ET_SITE_QUESTION_INFO t
+        LEFT JOIN (
+            SELECT
+                CONVERT (CHAR(10), t.CREATE_TIME, 120) AS TIME_TEAM,COUNT (1) AS NUM
+            FROM
+                ET_SITE_QUESTION_INFO t
+            GROUP BY
+                CONVERT (CHAR(10), t.CREATE_TIME, 120)
+        ) tt ON CONVERT (CHAR(10), t.CREATE_TIME, 120) = tt.TIME_TEAM
+        LEFT JOIN ET_DEPARTMENT d ON t.SITE_NAME=d.DEPT_CODE;
+        
+    </select>
 
 
     <insert id="insertEtSiteQuestionInfo" parameterType="etSiteQuestionInfo">
@@ -309,7 +327,7 @@
 		   <if test="mobile != null and mobile != ''"> MOBILE, </if>
 		   <if test="hopeFinishDate != null and hopeFinishDate != ''"> HOPE_FINISH_DATE, </if>
 		   <if test="resolveDate != null and resolveDate != ''"> RESOLVE_DATE, </if>
-	       <if test="(solutionType != null and solutionType != '') or solutionType == 0"> SOLUTION_TYPE, </if>
+	       <if test="(processStatus != null and processStatus != '') or processStatus == 0"> PROCESS_STATUS, </if>
 		   <if test="solutionResult != null and solutionResult != ''"> SOLUTION_RESULT, </if>
 	       <if test="(diffcultLevel != null and diffcultLevel != '') or diffcultLevel == 0"> DIFFCULT_LEVEL, </if>
 		   <if test="userMessage != null and userMessage != ''"> USER_MESSAGE, </if>
@@ -358,8 +376,8 @@
             <if test="mobile != null and mobile != ''">#{mobile, jdbcType=VARCHAR},</if>
             <if test="hopeFinishDate != null and hopeFinishDate != ''">#{hopeFinishDate, jdbcType=VARCHAR},</if>
             <if test="resolveDate != null and resolveDate != ''">#{resolveDate, jdbcType=VARCHAR},</if>
-            <if test="(solutionType != null and solutionType != '') or solutionType == 0">
-                #{solutionType, jdbcType=INTEGER},
+            <if test="(processStatus != null and processStatus != '') or processStatus == 0">
+                #{processStatus, jdbcType=INTEGER},
             </if>
             <if test="solutionResult != null and solutionResult != ''">#{solutionResult, jdbcType=VARCHAR},</if>
             <if test="(diffcultLevel != null and diffcultLevel != '') or diffcultLevel == 0">
@@ -438,8 +456,8 @@
                 </if>
                 <if test="resolveDate != null and resolveDate != ''">RESOLVE_DATE = #{resolveDate, jdbcType=VARCHAR},
                 </if>
-                <if test="(solutionType != null and solutionType != '') or solutionType == 0">SOLUTION_TYPE =
-                    #{solutionType, jdbcType=INTEGER},
+                <if test="(processStatus != null and processStatus != '') or processStatus == 0">PROCESS_STATUS =
+                    #{processStatus, jdbcType=INTEGER},
                 </if>
                 <if test="solutionResult != null and solutionResult != ''">SOLUTION_RESULT =
                     #{solutionResult, jdbcType=VARCHAR},

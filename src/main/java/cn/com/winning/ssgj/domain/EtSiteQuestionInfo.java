@@ -160,9 +160,9 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 	private String resolveDate;
 
 	/**
-	 * @val 解决方式 1|现场;2|远程;3|电话;
+	 * @val 业务流程状态 1.新建（待分配）2.已分配（未接受）3.接受（未处理）4.已处理（完成）5.院方确认完成（结束）6.院方打回
 	 */
-	private Integer solutionType;
+	private Integer processStatus;
 
 	private String solutionResult;
 
@@ -608,17 +608,17 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 	}
 
 	/**
-	 * @val 解决方式 1|现场;2|远程;3|电话;
+	 * @val 业务流程状态 1.新建（待分配）2.已分配（未接受）3.接受（未处理）4.已处理（完成）5.院方确认完成（结束）6.院方打回
 	 */
-	public Integer getSolutionType() {
-		return solutionType;
+	public Integer getProcessStatus() {
+		return processStatus;
 	}
 
 	/**
-	 * @val 解决方式 1|现场;2|远程;3|电话;
+	 * @val 业务流程状态
 	 */
-	public void setSolutionType(Integer solutionType) {
-		this.solutionType = solutionType;
+	public void setProcessStatus(Integer processStatus) {
+		this.processStatus = processStatus;
 	}
 
 	public String getSolutionResult() {
