@@ -38,4 +38,9 @@ public class EtSiteQuestionInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtSiteQ
         return this.getSqlSession().selectList("selectEtSiteQuestionInfoTotalCountByUser",t);
     }
 
+    @Override
+    public List<EtSiteQuestionInfo> selectEtSiteQuestionInfoWXUserTotal(EtSiteQuestionInfo t) {
+        return this.getSqlSession().selectList("selectEtSiteQuestionInfoWXUserTotal",t);
+    }
+
 }

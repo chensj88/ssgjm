@@ -23,14 +23,14 @@
     </head>
     <body>
     <div class="mui-content datum gray site-question-write">
-        <input id="userId" type="hidden" name="userId" value="${userid}">
+        <input id="userId" type="hidden" name="userId" value="${userId}">
         <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
         <input id="id" type="hidden" name="id" value="${siteQuestionInfo.id}">
         <div class="header">
             <span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
             <div>新增采集</div>
             <span >
-                <a href="<%=basePath%>mobile/wechatSiteQuestion/list.do?serialNo=${serialNo}&userId=${userid}" style="color: #ffffff;">
+                <a href="<%=basePath%>mobile/wechatSiteQuestion/list.do?serialNo=${serialNo}&userId=${userId}" style="color: #ffffff;">
                     采集列表
                 </a>
             </span>
