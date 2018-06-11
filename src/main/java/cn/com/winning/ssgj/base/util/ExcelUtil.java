@@ -357,19 +357,26 @@ public class ExcelUtil {
             Font font=workBook.createFont();
             font.setBoldweight(Font.BOLDWEIGHT_BOLD);
             cellStyle.setFont(font);
+            cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 居中
+            cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); //下边框
+            cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
+            cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
+            cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
             //设置Excel数据有效性
-            DataValidationHelper dvHelper = new XSSFDataValidationHelper((XSSFSheet) sheet);
+            //DataValidationHelper dvHelper = new XSSFDataValidationHelper((XSSFSheet) sheet);
 
             DataValidationConstraint dvConstraint = null;
             CellRangeAddressList addressList = null;
             DataValidation validation = null;
 
             for (Map<String, Object> validateRole : validateRoles) {
-                dvConstraint =  dvHelper.createExplicitListConstraint((String[]) validateRole.get("roles"));
-                addressList = new CellRangeAddressList(Integer.parseInt(validateRole.get("firstRow").toString()),
+                dvConstraint =   DVConstraint.createExplicitListConstraint((String[]) validateRole.get("roles"));
+                addressList = new CellRangeAddressList(
+                        Integer.parseInt(validateRole.get("firstRow").toString()),
                         Integer.parseInt(validateRole.get("lastRow").toString()),
-                        Integer.parseInt(validateRole.get("firstCol").toString()), Integer.parseInt(validateRole.get("lastCol").toString()));
-                validation = dvHelper.createValidation(dvConstraint, addressList);
+                        Integer.parseInt(validateRole.get("firstCol").toString()),
+                        Integer.parseInt(validateRole.get("lastCol").toString()));
+                validation = new HSSFDataValidation(addressList, dvConstraint);
                 //数据有效性对象
                 sheet.addValidationData(validation);
             }
@@ -404,4 +411,6 @@ public class ExcelUtil {
             }
         }
     }
+
+
 }

@@ -509,4 +509,12 @@
         <property name="step" value="1"/>
         <property name="dateCutOff" value="false"/>
     </bean>
+
+    <!--日志表id-->
+    <bean id="etLogIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="ET_LOG_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
 </beans>

@@ -95,7 +95,7 @@ public class EtUserInfoContorller extends BaseController {
         } else {
             //编辑
             //工号查重
-            if (temp != null && temp.getId() != etUserInfo.getId()) {
+            if (temp != null && temp.getId().longValue() != etUserInfo.getId().longValue()) {
                 result.put("status", Constants.FAILD);
                 return result;
             } else {
