@@ -272,18 +272,6 @@ public class TestController extends BaseController{
         colRow.add("期望完成时间");
         colRow.add("用户方确认人签名及确认意见");
         colRow.add("需求编号");
-
-
-
-
-
-
-
-
-
-
-
-
         //创建工作簿
         Workbook workbook = new HSSFWorkbook();
         ExcelUtil.writeTemplateExcel(response,colRow,workbook,validateRoles,"工作簿1.xls");
