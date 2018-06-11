@@ -15,9 +15,9 @@ import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.dao.EtTempQuestionInfoDao;
 import cn.com.winning.ssgj.domain.EtTempQuestionInfo;
+import cn.com.winning.ssgj.domain.MobileSiteQuestion;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.service.SysUserInfoService;
-import org.omg.CORBA.OMGVMCID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -237,15 +237,15 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
      * @return
      */
     @Override
-    public List<Map<String, Object>> getSiteQuestionInfoByUser(EtSiteQuestionInfo info) throws ParseException {
-        List<Map<String, Object>> resultMap = new ArrayList<>();
-        List<Map<String,String>> countInfo = etSiteQuestionInfoDao.selectEtSiteQuestionInfoCountByUser(info);
-        for (Map<String, String> map : countInfo) {
-            Map<String,Object> paramMap = new HashMap<>();
-            paramMap.put("createDate",DateUtil.convertDateToMMDD(map.get("createDate").toString()));
-            paramMap.put("countNum",map.get("countNum"));
-            paramMap.put("rows",querySiteQuestionByUserAndDate(info,map.get("createDate")));
-            resultMap.add(paramMap);
+    public List<MobileSiteQuestion> getSiteQuestionInfoByUser(EtSiteQuestionInfo info) throws ParseException {
+        List<MobileSiteQuestion> resultMap = new ArrayList<>();
+        List<Map<String,Object>> countInfo = etSiteQuestionInfoDao.selectEtSiteQuestionInfoCountByUser(info);
+        for (Map<String, Object> map : countInfo) {
+            MobileSiteQuestion<EtSiteQuestionInfo> question = new MobileSiteQuestion<>();
+            question.setTimeMmdd(DateUtil.convertDateToMMDD(map.get("createDate").toString()));
+            question.setNum(map.get("countNum").toString());
+            question.setListQuery(querySiteQuestionByUserAndDate(info,map.get("createDate").toString()));
+            resultMap.add(question);
         }
         return resultMap;
     }

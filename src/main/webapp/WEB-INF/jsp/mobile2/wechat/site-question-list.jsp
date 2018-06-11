@@ -46,11 +46,18 @@
                     <c:forEach var="vwr" items="${questionList}">
                         <div>
                             <a href="#" class="row">
-                                <i class="iconfont icon-time">${vwr.createDate}</i><b>（${vmr.countNum}条）</b>
+                                <i class="iconfont icon-time">${vwr.timeMmdd}</i>
+                                <b>（ ${vwr.num} 条）</b>
+                                <script>
+                                    console.log("aaaa");
+                                    console.log("${vmr.timeMmdd}");
+                                    console.log("${vmr.num}");
+                                    console.log("bbbb");
+                                </script>
                             </a>
-                            <c:forEach var="vwr1" items="${vwr.rows}">
+                            <c:forEach var="vwr1" items="${vwr.listQuery}">
                                 <a href="#" class="row">
-                                    ${vmr1.menuName}
+                                    ${vwr1.questionDesc}
                                     <span class="A">A</span>
                                 </a>
                             </c:forEach>
@@ -103,57 +110,7 @@
                         <%--<div class="space"></div>--%>
                     <%--</div>--%>
                 <%--</div>--%>
-                <div id="item1" class="hide">
-                    <div>
-                        <a href="#" class="row">
-                            <i class="iconfont icon-time"></i>06-11<b>（6条）</b>
-                        </a>
-                        <a href="#" class="row active">
-                            五楼护士站-NIS部署-特大病号病号
-                            <span class="A">A</span>
-                        </a>
-                        <a href="#" class="row">
-                            五楼护士站-NIS部署-特大病号病号
-                            <span class="B">B</span>
-                        </a>
-                        <a href="#" class="row">
-                            五楼护士站-NIS部署-特大病号病号
-                            <span class="C">C</span>
-                        </a>
-                        <div class="space"></div>
-                    </div>
-                    <div>
-                        <a href="#" class="row">
-                            <i class="iconfont icon-time"></i>06-12<b>（6条）</b>
-                        </a>
-                        <a href="#" class="row active">
-                            五楼护士站-NIS部署-特大病号病号
-                            <span class="A">A</span>
-                        </a>
-                        <a href="#" class="row">
-                            五楼护士站-NIS部署-特大病号病号
-                            <span class="B">B</span>
-                        </a>
-                        <a href="#" class="row">
-                            五楼护士站-NIS部署-特大病号病号
-                            <span class="C">C</span>
-                        </a>
-                        <div class="space"></div>
-                    </div>
-                    <div>
-                        <a href="#" class="row">
-                            <i class="iconfont icon-time"></i>06-12<b>（6条）</b>
-                        </a>
-                        <a href="#" class="row">
-                            五楼护士站-NIS部署-特大病号病号
-                            <span class="A">A</span>
-                        </a>
-                        <a href="#" class="row">
-                            五楼护士站-NIS部署-特大病号病号
-                            <span class="A">A</span>
-                        </a>
-                    </div>
-                </div>
+
             </div>
         </div>
         <div class="hide">
@@ -167,9 +124,9 @@
         </div>
     </div>
     <!--新增-->
-    <a href="#" class="wrap-add">
-        <i class="iconfont icon-add"></i>
-    </a>
+    <%--<a href="#" class="wrap-add">--%>
+        <%--<i class="iconfont icon-add"></i>--%>
+    <%--</a>--%>
     <!--底部菜单-->
     <div class="wrap-foot">
         <div class="active">

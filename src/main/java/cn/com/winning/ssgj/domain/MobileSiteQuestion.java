@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Alias("mobileSiteQuestion")
-public class MobileSiteQuestion extends BaseDomain implements Serializable {
+public class MobileSiteQuestion<T> extends BaseDomain implements Serializable {
 
     private static final long serialVersionUID = -1L;
 
@@ -44,5 +44,8 @@ public class MobileSiteQuestion extends BaseDomain implements Serializable {
 
     public MobileSiteQuestion(List<T> listQuery) {
         this.listQuery = listQuery;
+    }
+
+    public MobileSiteQuestion() {
     }
 }

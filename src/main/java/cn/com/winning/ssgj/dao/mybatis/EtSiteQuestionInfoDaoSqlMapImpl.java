@@ -44,7 +44,7 @@ public class EtSiteQuestionInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtSiteQ
     }
 
     @Override
-    public List<Map<String, String>> selectEtSiteQuestionInfoCountByUser(EtSiteQuestionInfo t) {
+    public List<Map<String, Object>> selectEtSiteQuestionInfoCountByUser(EtSiteQuestionInfo t) {
         return this.getSqlSession().selectList("selectEtSiteQuestionInfoCountByUser",t);
     }
 

@@ -24,7 +24,7 @@ public interface EtSiteQuestionInfoDao extends EntityDao<EtSiteQuestionInfo> {
 
     List<EtSiteQuestionInfo> selectMobileEtSiteQuestionInfo(EtSiteQuestionInfo t);
 
-    List<Map<String,String>>  selectEtSiteQuestionInfoCountByUser(EtSiteQuestionInfo t);
+    List<Map<String,Object>>  selectEtSiteQuestionInfoCountByUser(EtSiteQuestionInfo t);
 
     List<EtSiteQuestionInfo> selectEtSiteQuestionInfoListByUserAndDate(EtSiteQuestionInfo t);
 }

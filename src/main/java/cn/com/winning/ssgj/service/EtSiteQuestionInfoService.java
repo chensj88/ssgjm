@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
+import cn.com.winning.ssgj.domain.MobileSiteQuestion;
 
 /**
  *
@@ -55,7 +56,7 @@ public interface EtSiteQuestionInfoService {
      */
     List<EtSiteQuestionInfo> getEtSiteQuestionInfoTotalCountByUser(EtSiteQuestionInfo info);
 
-    List<Map<String,Object>> getSiteQuestionInfoByUser(EtSiteQuestionInfo info) throws ParseException;
+    List<MobileSiteQuestion> getSiteQuestionInfoByUser(EtSiteQuestionInfo info) throws ParseException;
 
     List<EtSiteQuestionInfo> selectMobileEtSiteQuestionInfo(EtSiteQuestionInfo questionInfo);
 }
