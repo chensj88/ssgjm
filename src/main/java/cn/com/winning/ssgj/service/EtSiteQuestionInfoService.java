@@ -54,4 +54,6 @@ public interface EtSiteQuestionInfoService {
      * @return
      */
     List<EtSiteQuestionInfo> getEtSiteQuestionInfoTotalCountByUser(EtSiteQuestionInfo info);
+
+    List<Map<String,Object>> getSiteQuestionInfoByUser(EtSiteQuestionInfo info);
 }

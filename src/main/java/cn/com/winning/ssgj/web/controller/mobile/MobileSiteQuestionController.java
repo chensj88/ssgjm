@@ -52,7 +52,8 @@ public class MobileSiteQuestionController  extends BaseController {
     public String list(Model model,long userId,String serialNo) {
         EtSiteQuestionInfo info = new EtSiteQuestionInfo();
         info.setCreator(userId);
-        model.addAttribute("questionList", getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoList(info));
+        info.setSerialNo(serialNo);
+        model.addAttribute("questionList", getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(info));
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
         return "/mobile/service/site-question-list";
