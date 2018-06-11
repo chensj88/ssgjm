@@ -18,6 +18,7 @@ public class MobileTempSiteQuestionController  extends BaseController {
 
     @RequestMapping(value = "/list.do")
     public String list(Model model, String parameter) {
+        parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
         SysUserInfo info = super.getUserInfo(parameter);
         EtSiteQuestionInfo questionInfo = new EtSiteQuestionInfo();
         questionInfo.setCreator(info.getId());
@@ -27,7 +28,7 @@ public class MobileTempSiteQuestionController  extends BaseController {
 
 
 
-        return "mobile2/wechat/site-question-first";
+        return "mobile2/service/implement-work";
     }
 
 
