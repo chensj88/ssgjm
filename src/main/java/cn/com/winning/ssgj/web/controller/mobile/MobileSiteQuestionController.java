@@ -38,7 +38,7 @@ public class MobileSiteQuestionController  extends BaseController {
         model.addAttribute("appList", this.getProductDictInfo(serialNo));
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
-        return "/mobile/service/site-question";
+        return "mobile2/wechat/site-question";
     }
 
     /**
@@ -56,6 +56,6 @@ public class MobileSiteQuestionController  extends BaseController {
         model.addAttribute("questionList", getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(info));
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
-        return "/mobile/service/site-question-list";
+        return "mobile2/wechat/site-question-list";
     }
 }
