@@ -48,12 +48,6 @@
                             <a href="#" class="row">
                                 <i class="iconfont icon-time">${vwr.timeMmdd}</i>
                                 <b>（ ${vwr.num} 条）</b>
-                                <script>
-                                    console.log("aaaa");
-                                    console.log("${vmr.timeMmdd}");
-                                    console.log("${vmr.num}");
-                                    console.log("bbbb");
-                                </script>
                             </a>
                             <c:forEach var="vwr1" items="${vwr.listQuery}">
                                 <a href="#" class="row">
