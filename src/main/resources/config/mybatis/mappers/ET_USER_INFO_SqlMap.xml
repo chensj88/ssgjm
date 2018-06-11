@@ -173,10 +173,10 @@
                 <if test="positionName != null and positionName != ''">POSITION_NAME =
                     #{positionName, jdbcType=VARCHAR},
                 </if>
-                <if test="telephone != null and telephone != ''">TELEPHONE = #{telephone, jdbcType=VARCHAR},</if>
-                <if test="email != null and email != ''">EMAIL = #{email, jdbcType=VARCHAR},</if>
-                <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
-                <if test="(isDel != null   )">IS_DEL = #{isDel, jdbcType=INTEGER},</if>
+                <if test="telephone != null">TELEPHONE = #{telephone, jdbcType=VARCHAR},</if>
+                <if test="email != null">EMAIL = #{email, jdbcType=VARCHAR},</if>
+                <if test="remark != null">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
+                <if test="isDel != null">IS_DEL = #{isDel, jdbcType=INTEGER},</if>
             </trim>
         </set>
         <where>
