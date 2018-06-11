@@ -284,4 +284,9 @@ public class TestController extends BaseController{
         return "mobile2/wechat/site-jquery-weui";
     }
 
+    @RequestMapping(value = "/impl.do")
+    public String qyeryImplInfo(){
+        return "mobile2/service/implement-work";
+    }
+
 }

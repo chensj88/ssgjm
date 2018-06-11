@@ -12,21 +12,72 @@
     <head>
         <meta charset="UTF-8"/>
         <title>新增采集</title>
-        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+        <meta charset="UTF-8" />
+        <title>新增采集</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
         <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/normalize.css" />
         <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
         <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
         <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
-        <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_8s9fwys71yxmvx6r.css"/>
-        <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="<%=basePath%>resources/js/common.js" type="text/javascript" charset="utf-8"></script>
+        <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
     </head>
     <body>
     <input id="userId" type="hidden" name="userId" value="${userId}">
     <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
     <input id="id" type="hidden" name="id" value="${siteQuestionInfo.id}">
-
-    <div class="wrap">
+        <div class="wrap">
+            <div class="wrap-header">
+                <div class="header">
+                    <span class="mui-icon mui-icon-arrowleft"></span>
+                    <div>新增采集</div>
+                    <a href="<%=basePath%>mobile/wechatSiteQuestion/list.do?serialNo=${serialNo}&userId=${userId}">采集列表</a>
+                </div>
+            </div>
+            <div class="wrap-cnt">
+                <div class="column-2 collect-list">
+                    <strong>科室病区</strong>
+                    <div>
+                        <i class="iconfont icon-fanhui-copy"></i>
+                    </div>
+                </div>
+                <div class="column-2 collect-list">
+                    <strong>系统名称</strong>
+                    <div>
+                        <input type="text">
+                    </div>
+                </div>
+                <div class="column-2 collect-list">
+                    <strong>影响资料</strong>
+                </div>
+                <div class="column-2 collect-list">
+                    <div class="large-img">
+                        <img src="<%=basePath%>resources/mobile/images/sick.png" alt="">
+                        <img src="<%=basePath%>resources/mobile/images/sick.png" alt="">
+                        <img src="<%=basePath%>resources/mobile/images/sick.png" alt="">
+                        <img src="<%=basePath%>resources/mobile/images/sick.png" alt="">
+                    </div>
+                </div>
+                <div class="column-2 collect-list">
+                    <strong>解决方案</strong>
+                    <div>使用过程中打印机异常，保存使用异常，导出文件异常，结束操作异常，系统闪退</div>
+                </div>
+                <div class="space"></div>
+                <div class="column-2 collect-list">
+                    <strong>院方意见</strong>
+                </div>
+                <div class="column-2 collect-list">
+                    <div>
+                        <textarea></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="wrap-foot large-btn">
+                <a href="#"><span>保存</span></a>
+            </div>
+        </div>
+    </body>
+</html>
+<%--    <div class="wrap">
         <div class="wrap-header">
             <div class="header">
                 <span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
@@ -41,10 +92,10 @@
                     <i class="iconfont icon-search"></i>
                     <input type="text" placeholder="请输入搜索内容"/>
                 </div>
-                <%--<div class="wap-tab">--%>
-                    <%--<span class="active">未确认（23）</span>--%>
-                    <%--<span>已确认（27）</span>--%>
-                <%--</div>--%>
+                &lt;%&ndash;<div class="wap-tab">&ndash;%&gt;
+                    &lt;%&ndash;<span class="active">未确认（23）</span>&ndash;%&gt;
+                    &lt;%&ndash;<span>已确认（27）</span>&ndash;%&gt;
+                &lt;%&ndash;</div>&ndash;%&gt;
                 <div class="space"></div>
                 <div class="wap-tab-cnt">
                     <div class="datum-report padding-btm-20 padding-top-15">
@@ -268,26 +319,26 @@
                     $("#ul3").html("");
 
                     //加载菜单数据
-                    <%--$.ajax({--%>
-                    <%--type: "POST",--%>
-                    <%--url:"<%=basePath%>/mobile/siteQuestionInfo/loadData.do",--%>
-                    <%--data:{type:2,name:productName,serialNo:serialNo},--%>
-                    <%--dataType:"json",--%>
-                    <%--cache : false,--%>
-                    <%--error: function(request) {--%>
-                    <%--mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })--%>
-                    <%--console.log(request);--%>
-                    <%--},--%>
-                    <%--success: function(data) {--%>
-                    <%--console.log(data);--%>
-                    <%--var json=eval(data.xtJsons);--%>
-                    <%--$.each(json,function(i,item){--%>
-                    <%--str_html3=str_html3+"<li data-val='"+json[i].cpmc+"'>"+json[i].cpmc+"</li>";--%>
+                    &lt;%&ndash;$.ajax({&ndash;%&gt;
+                    &lt;%&ndash;type: "POST",&ndash;%&gt;
+                    &lt;%&ndash;url:"<%=basePath%>/mobile/siteQuestionInfo/loadData.do",&ndash;%&gt;
+                    &lt;%&ndash;data:{type:2,name:productName,serialNo:serialNo},&ndash;%&gt;
+                    &lt;%&ndash;dataType:"json",&ndash;%&gt;
+                    &lt;%&ndash;cache : false,&ndash;%&gt;
+                    &lt;%&ndash;error: function(request) {&ndash;%&gt;
+                    &lt;%&ndash;mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })&ndash;%&gt;
+                    &lt;%&ndash;console.log(request);&ndash;%&gt;
+                    &lt;%&ndash;},&ndash;%&gt;
+                    &lt;%&ndash;success: function(data) {&ndash;%&gt;
+                    &lt;%&ndash;console.log(data);&ndash;%&gt;
+                    &lt;%&ndash;var json=eval(data.xtJsons);&ndash;%&gt;
+                    &lt;%&ndash;$.each(json,function(i,item){&ndash;%&gt;
+                    &lt;%&ndash;str_html3=str_html3+"<li data-val='"+json[i].cpmc+"'>"+json[i].cpmc+"</li>";&ndash;%&gt;
 
-                    <%--});--%>
-                    <%--$("#ul3").html(str_html3);--%>
-                    <%--}--%>
-                    <%--});--%>
+                    &lt;%&ndash;});&ndash;%&gt;
+                    &lt;%&ndash;$("#ul3").html(str_html3);&ndash;%&gt;
+                    &lt;%&ndash;}&ndash;%&gt;
+                    &lt;%&ndash;});&ndash;%&gt;
                 }
             });
 
@@ -385,6 +436,5 @@
             }
 
         });
-    </script>
-    </body>
-    </html>
+    </script>--%>
+

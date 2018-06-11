@@ -50,68 +50,17 @@
                                 <b>（ ${vwr.num} 条）</b>
                             </a>
                             <c:forEach var="vwr1" items="${vwr.listQuery}">
-                                <a href="#" class="row">
-                                    <div>
-                                            ${vwr1.questionDesc}
-                                            <span class="${vwr1.map.priorityString}">
-                                                    ${vwr1.map.priorityString}
-                                            </span>
-                                    </div>
-
-
-
+                                <a href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?serialNo=${serialNo}&userId=${userId}&questionId=${vwr1.id}" class="row">
+                                    ${vwr1.questionDesc}
+                                    <span class="${vwr1.map.priorityString}">
+                                            ${vwr1.map.priorityString}
+                                    </span>
+                                    ${vwr1.map.processStr}
                                 </a>
                             </c:forEach>
                         </div>
                     </c:forEach>
                 </div>
-                <%--<div id="item0">--%>
-                    <%--<div>--%>
-                        <%--<a href="#" class="row">--%>
-                            <%--<i class="iconfont icon-time"></i>06-04<b>（6条）</b>--%>
-                        <%--</a>--%>
-                        <%--<a href="#" class="row active">--%>
-                            <%--五楼护士站-NIS部署-特大病号病号--%>
-                            <%--<span class="A">A</span>--%>
-                        <%--</a>--%>
-                        <%--<a href="#" class="row">--%>
-                            <%--五楼护士站-NIS部署-特大病号病号--%>
-                            <%--<span class="B">B</span>--%>
-                        <%--</a>--%>
-                        <%--<a href="#" class="row">--%>
-                            <%--五楼护士站-NIS部署-特大病号病号--%>
-                            <%--<span class="C">C</span>--%>
-                        <%--</a>--%>
-                        <%--<a href="#" class="row">--%>
-                            <%--五楼护士站-NIS部署-特大病号病号--%>
-                            <%--<span class="A">A</span>--%>
-                        <%--</a>--%>
-                        <%--<a href="#" class="row">--%>
-                            <%--五楼护士站-NIS部署-特大病号病号--%>
-                            <%--<span class="A">A</span>--%>
-                        <%--</a>--%>
-                        <%--<div class="space"></div>--%>
-                    <%--</div>--%>
-                    <%--<div>--%>
-                        <%--<a href="#" class="row">--%>
-                            <%--<i class="iconfont icon-time"></i>06-03<b>（6条）</b>--%>
-                        <%--</a>--%>
-                        <%--<a href="#" class="row">--%>
-                            <%--五楼护士站-NIS部署-特大病号病号--%>
-                            <%--<span class="A">A</span>--%>
-                        <%--</a>--%>
-                        <%--<a href="#" class="row">--%>
-                            <%--五楼护士站-NIS部署-特大病号病号--%>
-                            <%--<span class="B">B</span>--%>
-                        <%--</a>--%>
-                        <%--<a href="#" class="row">--%>
-                            <%--五楼护士站-NIS部署-特大病号病号--%>
-                            <%--<span class="C">C</span>--%>
-                        <%--</a>--%>
-                        <%--<div class="space"></div>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-
             </div>
         </div>
         <div class="hide">
