@@ -12,142 +12,184 @@
     <head>
         <meta charset="UTF-8"/>
         <title>新增采集</title>
-        <meta name="viewport"
-              content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
-        <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/normalize.css"/>
-        <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css"/>
-        <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css"/>
-        <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css"/>
-        <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_o710wavlb78n0zfr.css"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+        <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/normalize.css" />
+        <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
+        <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
+        <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
+        <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_8s9fwys71yxmvx6r.css"/>
         <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="<%=basePath%>resources/js/common.js" type="text/javascript" charset="utf-8"></script>
     </head>
     <body>
-    <div class="mui-content datum gray site-question-write">
-        <input id="userId" type="hidden" name="userId" value="${userId}">
-        <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
-        <input id="id" type="hidden" name="id" value="${siteQuestionInfo.id}">
-        <div class="header">
-            <span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
-            <div>新增采集</div>
-            <span >
-                <a href="<%=basePath%>mobile/wechatSiteQuestion/list.do?serialNo=${serialNo}&userId=${userId}" style="color: #ffffff;">
-                    采集列表
-                </a>
-            </span>
+    <input id="userId" type="hidden" name="userId" value="${userId}">
+    <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
+    <input id="id" type="hidden" name="id" value="${siteQuestionInfo.id}">
+
+    <div class="wrap">
+        <div class="wrap-header">
+            <div class="header">
+                <span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
+                <div>新增采集</div>
+                <a href="<%=basePath%>mobile/wechatSiteQuestion/list.do?serialNo=${serialNo}&userId=${userId}">采集列表</a>
+            </div>
         </div>
-        <div class="hole"></div>
-        <div class="datum-report padding-btm-20 padding-top-15">
-            <div class="datum-report-item">
-                <span>科室病区</span>
-                <div id="siteId" class="select">
-                    <input id="siteName" name="siteName" value="${siteQuestionInfo.siteName}" type="hidden"/>
-                    <c:if test="${siteQuestionInfo.siteName != null}">
-                        <a href="#"><span>${siteQuestionInfo.map.get("deptName")}</span><i class="arrow"></i></a>
-                    </c:if>
-                    <c:if test="${siteQuestionInfo.siteName == null}">
-                        <a href="#"><span>--请选择--</span><i class="arrow"></i></a>
-                    </c:if>
-                    <ul>
-                        <c:forEach var="vwr" items="${deptList}">
-                            <li data-val="${vwr.id}">${vwr.deptName}</li>
-                        </c:forEach>
-                    </ul>
+        <div class="wrap-cnt">
+            <div>
+                <!--search-->
+                <div class="imple-work-search">
+                    <i class="iconfont icon-search"></i>
+                    <input type="text" placeholder="请输入搜索内容"/>
                 </div>
-            </div>
-        </div>
-        <div class="datum-report padding-btm-20">
-            <div class="datum-report-item">
-                <span>系统名称</span>
-                <div id="productId" class="select">
-                    <input id="productName" name="productName" value="${siteQuestionInfo.productName}" type="hidden"/>
-                    <c:if test="${siteQuestionInfo.productName != null}">
-                        <a href="#"><span>${siteQuestionInfo.map.get("plName")}</span><i class="arrow"></i></a>
-                    </c:if>
-                    <c:if test="${siteQuestionInfo.productName == null}">
-                        <a href="#"><span>--请选择--</span><i class="arrow"></i></a>
-                    </c:if>
-                    <ul>
-                        <c:forEach var="vwr" items="${appList}">
-                            <li data-val="${vwr.id}">${vwr.zxtmc}</li>
-                        </c:forEach>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="datum-report padding-btm-20">
-            <div class="datum-report-item">
-                <span>问题标题</span>
-                <input id="menuName" type="text" name="menuName" value="${siteQuestionInfo.menuName}" style="border: 1px solid #5ff" />
-            </div>
-        </div>
-        <div class="datum-report">
-            <div class="datum-report-item">
-                <span class="align-self">问题描述</span>
-                <textarea id="questionDesc" name="questionDesc" class="margin-left">${siteQuestionInfo.questionDesc}</textarea>
-            </div>
-        </div>
-        <div class="datum-report padding-btm-20">
-            <p></p>
-        </div>
-        <div class="datum-report padding-btm-20">
-            <div class="datum-report-item site-radio">
-                <span>优先等级</span>
-            </div>
-            <div class="datum-report-item site-radio">
-                <div>
-                    <div class="mui-input-row mui-radio mui-left">
-                        <label>A级</label>
-                        <input name="radio" type="radio" value="1" >
-                    </div>
-                    <div class="mui-input-row mui-radio mui-left">
-                        <label>B级</label>
-                        <input name="radio" type="radio" value="2" >
-                    </div>
-                    <div class="mui-input-row mui-radio mui-left">
-                        <label>C级</label>
-                        <input name="radio" type="radio" value="3" checked="checked">
-                    </div>
-                    <div class="mui-input-row mui-radio mui-left">
-                        <label>D级</label>
-                        <input name="radio" type="radio" value="4" >
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="datum-report padding-btm-20">
-            注：C等级项目完成时间为7个工作日（仅供项目经理参考）
-        </div>
-        <div class="datum-report padding-btm-20">
-            <p></p>
-        </div>
-        <form id="file" action="" method="post" enctype="multipart/form-data">
-            <div class="datum-report padding-btm-20">
-                <div class="datum-report-item">
-                    <span class="align-self">影像资料</span>
-                </div>
-            </div>
-            <div class="datum-report padding-btm-20">
-                <div class="datum-report-item">
-                    <div class="datum-upload site-width">
-                        <div id="img_upload">
-                            <i class="iconfont icon-plus"></i>
-                            <input type="file" id="uploadFile" name="uploadFile" onchange="fileSelected2();" />
+                <%--<div class="wap-tab">--%>
+                    <%--<span class="active">未确认（23）</span>--%>
+                    <%--<span>已确认（27）</span>--%>
+                <%--</div>--%>
+                <div class="space"></div>
+                <div class="wap-tab-cnt">
+                    <div class="datum-report padding-btm-20 padding-top-15">
+                        <div class="datum-report-item">
+                            <span>科室病区</span>
+                            <div id="siteId" class="select">
+                                <input id="siteName" name="siteName" value="${siteQuestionInfo.siteName}" type="hidden"/>
+                                <c:if test="${siteQuestionInfo.siteName != null}">
+                                    <a href="#"><span>${siteQuestionInfo.map.get("deptName")}</span><i class="arrow"></i></a>
+                                </c:if>
+                                <c:if test="${siteQuestionInfo.siteName == null}">
+                                    <a href="#"><span>--请选择--</span><i class="arrow"></i></a>
+                                </c:if>
+                                <ul>
+                                    <c:forEach var="vwr" items="${deptList}">
+                                        <li data-val="${vwr.id}">${vwr.deptName}</li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
                         </div>
-                        <c:if test="${siteQuestionInfo.imgPath !=null && siteQuestionInfo.imgPath !=''}">
-                            <c:forEach var="img" items="${siteQuestionInfo.imgs}">
-                                <div id="close_id">
-                                    <img src="<%=basePathNuName%>shareFolder${img}" />
-                                    <span class="iconfont icon-close" onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>
-                                    <input type="hidden" />
+                    </div>
+                    <div class="datum-report padding-btm-20">
+                        <div class="datum-report-item">
+                            <span>系统名称</span>
+                            <div id="productId" class="select">
+                                <input id="productName" name="productName" value="${siteQuestionInfo.productName}" type="hidden"/>
+                                <c:if test="${siteQuestionInfo.productName != null}">
+                                    <a href="#"><span>${siteQuestionInfo.map.get("plName")}</span><i class="arrow"></i></a>
+                                </c:if>
+                                <c:if test="${siteQuestionInfo.productName == null}">
+                                    <a href="#"><span>--请选择--</span><i class="arrow"></i></a>
+                                </c:if>
+                                <ul>
+                                    <c:forEach var="vwr" items="${appList}">
+                                        <li data-val="${vwr.id}">${vwr.zxtmc}</li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="datum-report padding-btm-20">
+                        <div class="datum-report-item">
+                            <span>问题标题</span>
+                            <input id="menuName" type="text" name="menuName" value="${siteQuestionInfo.menuName}" style="border: 1px solid #5ff" />
+                        </div>
+                    </div>
+                    <div class="datum-report">
+                        <div class="datum-report-item">
+                            <span class="align-self">问题描述</span>
+                            <textarea id="questionDesc" name="questionDesc" class="margin-left">${siteQuestionInfo.questionDesc}</textarea>
+                        </div>
+                    </div>
+                    <div class="datum-report padding-btm-20">
+                        <p></p>
+                    </div>
+                    <div class="datum-report padding-btm-20">
+                        <div class="datum-report-item site-radio">
+                            <span>优先等级</span>
+                        </div>
+                        <div class="datum-report-item site-radio">
+                            <div>
+                                <div class="mui-input-row mui-radio mui-left">
+                                    <label>A级</label>
+                                    <input name="radio" type="radio" value="1" >
                                 </div>
-                            </c:forEach>
-                        </c:if>
+                                <div class="mui-input-row mui-radio mui-left">
+                                    <label>B级</label>
+                                    <input name="radio" type="radio" value="2" >
+                                </div>
+                                <div class="mui-input-row mui-radio mui-left">
+                                    <label>C级</label>
+                                    <input name="radio" type="radio" value="3" checked="checked">
+                                </div>
+                                <div class="mui-input-row mui-radio mui-left">
+                                    <label>D级</label>
+                                    <input name="radio" type="radio" value="4" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="datum-report padding-btm-20">
+                        注：C等级项目完成时间为7个工作日（仅供项目经理参考）
+                    </div>
+                    <div class="datum-report padding-btm-20">
+                        <p></p>
+                    </div>
+                    <form id="file" action="" method="post" enctype="multipart/form-data">
+                        <div class="datum-report padding-btm-20">
+                            <div class="datum-report-item">
+                                <span class="align-self">影像资料</span>
+                            </div>
+                        </div>
+                        <div class="datum-report padding-btm-20">
+                            <div class="datum-report-item">
+                                <div class="datum-upload site-width">
+                                    <div id="img_upload">
+                                        <i class="iconfont icon-plus"></i>
+                                        <input type="file" id="uploadFile" name="uploadFile" onchange="fileSelected2();" />
+                                    </div>
+                                    <c:if test="${siteQuestionInfo.imgPath !=null && siteQuestionInfo.imgPath !=''}">
+                                        <c:forEach var="img" items="${siteQuestionInfo.imgs}">
+                                            <div id="close_id">
+                                                <img src="<%=basePathNuName%>shareFolder${img}" />
+                                                <span class="iconfont icon-close" onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>
+                                                <input type="hidden" />
+                                            </div>
+                                        </c:forEach>
+                                    </c:if>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="site-button">
+                        <input type="button" name="" onclick="save();" value="保存" />
                     </div>
                 </div>
             </div>
-        </form>
-        <div class="site-button">
-            <input type="button" name="" onclick="save();" value="保存" />
+            <div class="hide">
+                视频内容
+            </div>
+            <div class="hide">
+                分享
+            </div>
+            <div class="hide">
+                我的
+            </div>
+        </div>
+        <!--底部菜单-->
+        <div class="wrap-foot">
+            <div class="active">
+                <i class="iconfont icon-ck"></i>
+                查看
+            </div>
+            <div>
+                <i class="iconfont icon-sp"></i>
+                视频
+            </div>
+            <div>
+                <i class="iconfont icon-fx"></i>
+                分析
+            </div>
+            <div>
+                <i class="iconfont icon-wo"></i>
+                我
+            </div>
         </div>
     </div>
     <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript" charset="utf-8"></script>

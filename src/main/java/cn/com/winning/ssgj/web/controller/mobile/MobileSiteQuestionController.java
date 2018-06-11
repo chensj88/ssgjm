@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.text.ParseException;
+
 /**
  * @title 微信服务号问题采集中心
  * @package cn.com.winning.ssgj.web.controller.mobile
@@ -49,7 +51,7 @@ public class MobileSiteQuestionController  extends BaseController {
      * @return
      */
     @RequestMapping(value = "/list.do")
-    public String list(Model model,long userId,String serialNo) {
+    public String list(Model model,long userId,String serialNo) throws ParseException {
         EtSiteQuestionInfo info = new EtSiteQuestionInfo();
         info.setCreator(userId);
         info.setSerialNo(serialNo);

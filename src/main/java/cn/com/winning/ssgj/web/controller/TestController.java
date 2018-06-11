@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -106,7 +107,7 @@ public class TestController extends BaseController{
 
     @RequestMapping(value = "/question.do")
     @ResponseBody
-    public Map<String,Object> testSiteQuestion(){
+    public Map<String,Object> testSiteQuestion() throws ParseException {
         EtSiteQuestionInfo info = new EtSiteQuestionInfo();
         info.setCreator(7110L);
         Map<String,Object> result = new HashMap<String,Object>();

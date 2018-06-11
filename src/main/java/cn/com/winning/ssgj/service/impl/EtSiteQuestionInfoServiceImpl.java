@@ -237,12 +237,12 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
      * @return
      */
     @Override
-    public List<Map<String, Object>> getSiteQuestionInfoByUser(EtSiteQuestionInfo info) {
+    public List<Map<String, Object>> getSiteQuestionInfoByUser(EtSiteQuestionInfo info) throws ParseException {
         List<Map<String, Object>> resultMap = new ArrayList<>();
         List<Map<String,String>> countInfo = etSiteQuestionInfoDao.selectEtSiteQuestionInfoCountByUser(info);
         for (Map<String, String> map : countInfo) {
             Map<String,Object> paramMap = new HashMap<>();
-            paramMap.put("createDate",map.get("createDate"));
+            paramMap.put("createDate",DateUtil.convertDateToMMDD(map.get("createDate").toString()));
             paramMap.put("countNum",map.get("countNum"));
             paramMap.put("rows",querySiteQuestionByUserAndDate(info,map.get("createDate")));
             resultMap.add(paramMap);
