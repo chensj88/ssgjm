@@ -435,3 +435,60 @@ span.nosolve{
 	height: 10px;
 	background: #f3f5f7;
 }
+/*特大号病号*/
+.large-list,
+.collect-list{
+	margin-top: 10px;
+    padding: 0px 10px;
+    font-size: 13px;
+}
+.large-list strong,
+.collect-list strong{
+    width: 50px;
+    margin-right: 15px;
+    color: #333333;
+}
+.large-list>span,
+.collect-list>div{
+    color: #666;
+    flex: 1;
+}
+.levelA{
+    font-size: 18px;
+    color: #FB6666 !important;
+}
+.large-img{
+	display: flex;
+	flex-wrap: wrap;
+}
+.large-img>img{
+	width: 70px;
+	margin-right: 5px;
+}
+.large-btn{
+	display: flex;
+	height: 44px;
+	font-size: 16px;
+}
+.large-btn>a{
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 16px;
+}
+.large-btn>a:first-child{
+	color: #666;
+}
+.large-btn>a:last-child{
+	color: #FFFFFF;
+	background: #81B3FF;
+}
+/*新增采集*/
+.collect-list{
+	height: 40px;
+}
+.collect-list>strong{
+	display: flex;
+	align-items: center;
+}

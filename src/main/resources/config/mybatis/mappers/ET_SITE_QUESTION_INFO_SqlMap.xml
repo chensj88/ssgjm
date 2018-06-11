@@ -63,6 +63,7 @@
         <result column="mstatusString" property="map.mstatusString" jdbcType="VARCHAR"/>
         <result column="diffString" property="map.diffString" jdbcType="VARCHAR"/>
         <result column="countNum" property="map.countNum" jdbcType="VARCHAR"/>
+        <result column="processStr" property="map.processStr" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="sf-etSiteQuestionInfo">
@@ -681,9 +682,11 @@
             WHEN t.PRIORITY = 2 THEN 'B'
             WHEN t.PRIORITY = 3 THEN 'C'
             WHEN t.PRIORITY = 4 THEN 'D'
-            ELSE 'X' END  AS  priorityString
+            ELSE 'X' END  AS  priorityString,
+        j.DICT_LABEL AS processStr
         from ET_SITE_QUESTION_INFO t
         LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
+        LEFT JOIN SYS_DICT_INFO j ON t.PROCESS_STATUS = j.DICT_VALUE AND j.DICT_CODE='processStatus'
         where 1 = 1
         <include refid="sf-etSiteQuestionInfo"/>
         <if test="map.createDate != null and map.createDate != ''">

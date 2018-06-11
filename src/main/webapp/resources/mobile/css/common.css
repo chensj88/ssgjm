@@ -278,7 +278,6 @@ table{
     border-bottom: 2px solid #61A0FF;
 }
 .tab-nav>div:nth-child(2n){
-	
 }
 .tab-nav>div.active a{
 	color: #5897FB;
@@ -334,4 +333,8 @@ table{
 	text-align: center;
 	background: #FDFEFF;
 	box-shadow: 0 2px 5px 0 #BFBFBF;
+}
+.column-2{
+	display: flex;
+	margin-bottom: 10px;
 }

@@ -51,8 +51,15 @@
                             </a>
                             <c:forEach var="vwr1" items="${vwr.listQuery}">
                                 <a href="#" class="row">
-                                    ${vwr1.questionDesc}
-                                    <span class="A">A</span>
+                                    <div>
+                                            ${vwr1.questionDesc}
+                                            <span class="${vwr1.map.priorityString}">
+                                                    ${vwr1.map.priorityString}
+                                            </span>
+                                    </div>
+
+
+
                                 </a>
                             </c:forEach>
                         </div>
