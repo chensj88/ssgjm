@@ -76,6 +76,104 @@
             </div>
         </div>
     </body>
+    <script type="text/javascript">
+        $(function(){
+
+        })
+
+        function fileSelected2(){
+            //获取文件的内容
+
+            var userId = $("#userId").val();
+            var serialNo = $("#serialNo").val();
+            var old_id = $("#id").val();
+            var uploadFile = new FormData($("#file")[0]);
+            //判断上传的只能是图片
+            var f=document.getElementById("uploadFile").value;
+            if(f=="") { alert("请上传图片");return false;}
+            else {
+                if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(f)) {
+                    mui.toast('图片类型必须是.gif,jpeg,jpg,png中的一种',{ duration:'long(3500ms)', type:'div' });
+                    return false;
+                }
+            }
+
+            //预览图片
+            // var objUrl = getObjectURL($("#file")[0]); //获取图片的路径，该路径不是图片在本地的路径
+            // if (objUrl) {
+            //     $("#uu").attr("src", objUrl) ; //将图片路径存入src中，显示出图片
+            // }
+
+            if("undefined" != typeof(uploadFile) && uploadFile != null && uploadFile != ""){
+                $.ajax({
+                    type: "POST",
+                    url:"<%=basePath%>mobile/siteQuestionInfo/saveAndUpdate.do?userId="+userId+"&serialNo="+serialNo+"&old_id="+old_id,
+                    data:uploadFile,
+                    cache : false,
+                    async: false,
+                    contentType: false, //不设置内容类型
+                    processData: false, //不处理数据
+                    error: function(request) {
+                        mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                        console.log(request);
+                    },
+                    success: function(data) {
+                        var obj = JSON.parse(data);
+                        if(obj.status == "1") {
+                            mui.toast('上传成功',{ duration:'long(3500ms)', type:'div' });
+                            //追加图片预览 <span class="iconfont icon-close" onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>
+                            //									<input type="hidden" />
+                            var imgs = "<div id=\"close_id\"><img src='<%=basePathNuName%>shareFolder"+obj.path+"'></img><span class=\"iconfont icon-close\" onclick=\"closeImg('+"+obj.id+"',"+"'"+obj.path+"');\"></span>\n</div>";
+                            $(".datum-upload.site-width").append(imgs);
+                            //$("#img_upload").append("<div id='close_id'><img src='<%=basePathNuName%>shareFolder${siteQuestionInfo.imgPath}' /></div>");
+                            $("#id").val(obj.id);
+                            //setTimeout("location.reload()",0);
+
+                        } else {
+                            mui.toast('上传失败',{ duration:'long(3500ms)', type:'div' });
+                            //追加图片预览
+                        }
+                    }
+                });
+
+
+            }else{
+                alert("选择的文件无效！请重新选择");
+            }
+
+        }
+
+        //删除图片
+        function closeImg(e,imgPath){
+            if(e==null || e ==''){
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                url:"<%=basePath%>mobile/siteQuestionInfo/deleteImg.do",
+                data:{id:e,imgPath:imgPath},
+                cache : false,
+                dataType:"json",
+                async: false,
+                error: function(request) {
+                    mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                },
+                success: function(data) {
+                    if(data.status) {
+                        mui.toast('删除成功',{ duration:'long(3500ms)', type:'div' });
+                        //追加图片预览
+                        //setTimeout("location.reload()",3500);
+                    } else {
+                        mui.toast('删除失败',{ duration:'long(3500ms)', type:'div' });
+                        //追加图片预览
+                        //setTimeout("location.reload()",3500);
+
+                    }
+                }
+            });
+
+        }
+    </script>
 </html>
 <%--    <div class="wrap">
         <div class="wrap-header">
