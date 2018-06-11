@@ -230,9 +230,14 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
         return this.etSiteQuestionInfoDao.selectEtSiteQuestionInfoTotalCountByUser(info);
     }
 
+    /**
+     * 根据用户ID和客户ID查询当前用户的可以查看的问题
+     * 注：只能看自己的问题的列表
+     * @param info   包含创建人、客户号
+     * @return
+     */
     @Override
     public List<Map<String, Object>> getSiteQuestionInfoByUser(EtSiteQuestionInfo info) {
-
         List<Map<String, Object>> resultMap = new ArrayList<>();
         List<Map<String,String>> countInfo = etSiteQuestionInfoDao.selectEtSiteQuestionInfoCountByUser(info);
         for (Map<String, String> map : countInfo) {
@@ -245,6 +250,12 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
         return resultMap;
     }
 
+    /**
+     * 查询当前用户在指定日期下的问题里列表
+     * @param info 包含创建人、客户号
+     * @param createDate 创建时间
+     * @return
+     */
     private List<EtSiteQuestionInfo> querySiteQuestionByUserAndDate(EtSiteQuestionInfo info, String createDate) {
         info.getMap().put("createDate",createDate);
         return etSiteQuestionInfoDao.selectEtSiteQuestionInfoListByUserAndDate(info);
