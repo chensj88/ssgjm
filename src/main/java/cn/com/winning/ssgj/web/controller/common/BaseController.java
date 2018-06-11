@@ -2,8 +2,12 @@ package cn.com.winning.ssgj.web.controller.common;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.Base64Utils;
+import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.service.Facade;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +21,13 @@ import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static cn.com.winning.ssgj.base.util.Base64Utils.decryptBASE64;
 
 public class BaseController extends BaseSpringMvcMybatisController {
     @Resource
     private Facade facade;
-
     @Autowired
     private SSGJHelper ssgjHelper;
 
@@ -134,32 +136,32 @@ public class BaseController extends BaseSpringMvcMybatisController {
      *
      * @return
      */
-    public List<EtDepartment> getDepartmentTypeList(Long serialNo) {
+    public List<EtDepartment> getDepartmentTypeList(Long serialNo){
         EtDepartment info = new EtDepartment();
         info.setIsDel(1);
         info.setSerialNo(serialNo);
-        List<EtDepartment> departmentTypeList = getFacade().getEtDepartmentService().selectDepartmentTypeList(info);
+        List<EtDepartment> departmentTypeList=getFacade().getEtDepartmentService().selectDepartmentTypeList(info);
         return departmentTypeList;
     }
 
     /**
      * 获取科室分类下的科室
-     *
      * @return
      */
-    public List<EtDepartment> getDepartmentList(Long serialNo, String deptType) {
+    public List<EtDepartment> getDepartmentList(Long serialNo,String deptType){
         EtDepartment info = new EtDepartment();
         info.setIsDel(1);
         info.setSerialNo(serialNo);
         info.setDeptType(deptType);
-        List<EtDepartment> departmentList = getFacade().getEtDepartmentService().getEtDepartmentList(info);
+        List<EtDepartment> departmentList=getFacade().getEtDepartmentService().getEtDepartmentList(info);
         return departmentList;
     }
 
 
+
+
     /**
      * 根据项目获取软硬件产品条线的系统集合
-     *
      * @param
      * @return
      */
@@ -179,20 +181,19 @@ public class BaseController extends BaseSpringMvcMybatisController {
 
     /**
      * 根据项目获取产品条线的系统集合
-     *
      * @param pmId
      * @return
      */
-    public List<PmisProductLineInfo> getPdNameList(Long pmId, String pdId) {
+    public List<PmisProductLineInfo> getPdNameList(Long pmId,String pdId) {
 //        PmisContractProductInfo pmisContractProductInfo = new PmisContractProductInfo();
 //        pmisContractProductInfo.setHtcplb(1);
 //        pmisContractProductInfo.setXmlcb(pmId);
-        // pmisContractProductInfo.getMap().put("softNameList",pdId);
+       // pmisContractProductInfo.getMap().put("softNameList",pdId);
         PmisProductLineInfo lineInfo = new PmisProductLineInfo();
         lineInfo.setLx(1);
         lineInfo.setZt(1);
         lineInfo.setCpdl("1");
-        lineInfo.getMap().put("softNameList", pdId);
+        lineInfo.getMap().put("softNameList",pdId);
         List<PmisProductLineInfo> pmisProductLineInfoList = getFacade().getPmisProductLineInfoService().getPmisProductLineInfoList(lineInfo);
         //根据产品获取产品条线
         //List<PmisProductLineInfo> pmisProductLineInfos = getFacade().getPmisProductLineInfoService().selectPmisProductLineInfoByPmidAndType(pmisContractProductInfo);
@@ -200,9 +201,9 @@ public class BaseController extends BaseSpringMvcMybatisController {
     }
 
 
+
     /**
      * 根据项目获取实施范围的硬件
-     *
      * @param pmId
      * @return
      */
@@ -215,41 +216,38 @@ public class BaseController extends BaseSpringMvcMybatisController {
 
     /**
      * 根据项目获取实施范围的硬件名称
-     *
      * @param pmId
      * @return
      */
-    public List<EtSoftHardware> getHardWareNameList(Long pmId, String hwId) {
+    public List<EtSoftHardware> getHardWareNameList(Long pmId,String hwId) {
         EtSoftHardware info = new EtSoftHardware();
         info.setPmId(pmId);
-        info.getMap().put("hardNameList", hwId);
+        info.getMap().put("hardNameList",hwId);
         List<EtSoftHardware> hardwareList = getFacade().getEtSoftHardwareService().getEtSoftHardwareList(info);
         return hardwareList;
     }
 
     /**
      * 根据项目ID获取可以分配的公司人员信息
-     *
      * @param pmId
      * @return
      */
-    public List<EtUserInfo> getEtUserInfo(long pmId) {
+    public List<EtUserInfo> getEtUserInfo(long pmId){
         EtUserInfo userInfo = new EtUserInfo();
-        userInfo.getMap().put("position", "1,0");
+        userInfo.getMap().put("position","1,0");
         userInfo.setUserType(1);
         userInfo.setPmId(pmId);
-        userInfo.getMap().put("admin", "100001");
+        userInfo.getMap().put("admin","100001");
         return getFacade().getEtUserInfoService().getEtUserInfoList(userInfo);
     }
 
     /**
      * 获取流程节点的情况
      * Chen,Kuai
-     *
      * @param pmId
      * @return
      */
-    public EtProcessManager getProcessManager(long pmId) {
+    public EtProcessManager getProcessManager(long pmId){
         EtProcessManager etProcessManager = new EtProcessManager();
         etProcessManager.setPmId(pmId);
         etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
@@ -258,17 +256,15 @@ public class BaseController extends BaseSpringMvcMybatisController {
 
     /**
      * 根据客户号获取产品信息
-     *
      * @param serialNo 客户号
      * @return tasks
      */
-    public List<EtContractTask> getProductDictInfo(String serialNo) {
-        EtContractTask task = new EtContractTask();
-        task.setSerialNo(serialNo);
-        List<EtContractTask> tasks = getFacade().getEtContractTaskService().getEtContractTaskList(task);
-        return tasks;
+    public List<EtContractTask> getProductDictInfo(String serialNo){
+       EtContractTask task = new EtContractTask();
+       task.setSerialNo(serialNo);
+       List<EtContractTask> tasks = getFacade().getEtContractTaskService().getEtContractTaskList(task);
+       return tasks;
     }
-
 
     /**
      * @param serialNo   客户号
@@ -302,4 +298,42 @@ public class BaseController extends BaseSpringMvcMybatisController {
         List<EtLog> etLogList = getFacade().getEtLogService().getEtLogList(etLog);
         return etLogList;
     }
+    /**
+     * 根据传递的服务号参数解析信息
+     *@param parameter
+     * */
+    public SysUserInfo getUserInfo(String parameter){
+        SysUserInfo info = new SysUserInfo();
+        try{
+            String userJsonStr = "[" + new String(decryptBASE64(parameter), "UTF-8") + "]";
+            ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
+            if (userList != null && !userList.equals("")) {
+                for (int i = 0; i < userList.size(); i++) {
+                    JSONObject io = userList.get(i);
+                    info.setId(ssgjHelper.createUserId());
+                    info.setUserType("0");
+                    info.setOpenId((String) io.get("OPENID"));
+                    info.setName(new String (decryptBASE64((String)io.get("USERNAME"))));
+                    info.setUserid((String) io.get("HOSPCODE") + (String) io.get("WORKNUM"));
+                    info.setPassword(MD5.stringMD5ForBarCode((String) io.get("WORKNUM")));
+                    info.setMobile((String) io.get("USERPHONE"));
+                    info.setSsgs(Long.parseLong((String) io.get("HOSPCODE")));
+                }
+                //判断用户 userId 是否存在
+                SysUserInfo info_use = new SysUserInfo();
+                info_use.setUserid(info.getUserid());
+                List<SysUserInfo> userIfonList = getFacade().getSysUserInfoService().getSysUserInfoList(info_use);
+                //真实用户
+                if (userIfonList.size() == 0 || userIfonList == null) {
+                    getFacade().getSysUserInfoService().createSysUserInfo(info);
+                }
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return info;
+    }
+
 }
