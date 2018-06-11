@@ -19,6 +19,7 @@
         <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
         <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
         <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
+        <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css" />
         <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
     </head>
     <body>
@@ -36,38 +37,58 @@
             <div class="wrap-cnt">
                 <div class="column-2 collect-list">
                     <strong>科室病区</strong>
-                    <div>
-                        <i class="iconfont icon-fanhui-copy"></i>
+                    <div class="collect-list-dp">
+
+                        <a href="#">${siteQuestionInfo.map.deptName}<i class="iconfont icon-fanhui-copy"></i></a>
                     </div>
                 </div>
                 <div class="column-2 collect-list">
                     <strong>系统名称</strong>
+                    <div class="collect-list-dp">
+                        <a href="#">${siteQuestionInfo.map.plName}<i class="iconfont icon-fanhui-copy"></i></a>
+                    </div>
+                </div>
+                <div class="column-2 collect-list">
+                    <strong>问题标题</strong>
+                    <div class="collect-list-text">
+                        <input type="text" title="${siteQuestionInfo.menuName}" value="${siteQuestionInfo.menuName}">
+                    </div>
+                </div>
+                <div class="column-2 collect-list">
+                    <strong>问题描述</strong>
                     <div>
-                        <input type="text">
+                        <textarea title="">
+                            ${siteQuestionInfo.questionDesc}
+                        </textarea>
                     </div>
-                </div>
-                <div class="column-2 collect-list">
-                    <strong>影响资料</strong>
-                </div>
-                <div class="column-2 collect-list">
-                    <div class="large-img">
-                        <img src="<%=basePath%>resources/mobile/images/sick.png" alt="">
-                        <img src="<%=basePath%>resources/mobile/images/sick.png" alt="">
-                        <img src="<%=basePath%>resources/mobile/images/sick.png" alt="">
-                        <img src="<%=basePath%>resources/mobile/images/sick.png" alt="">
-                    </div>
-                </div>
-                <div class="column-2 collect-list">
-                    <strong>解决方案</strong>
-                    <div>使用过程中打印机异常，保存使用异常，导出文件异常，结束操作异常，系统闪退</div>
                 </div>
                 <div class="space"></div>
                 <div class="column-2 collect-list">
-                    <strong>院方意见</strong>
+                    <strong>优先等级</strong>
+                </div>
+                <div class="column-2 collect-list" >
+                    <div class="collect-list-level">
+                        <span>A级</span>
+                        <span>B级</span>
+                        <span class="level">C级</span>
+                        <span>D级</span>
+                    </div>
+                </div>
+                <p class="collect-list-level_p">注：C等级项目完成时间为7个工作日</p>
+                <div class="space"></div>
+                <div class="column-2 collect-list">
+                    <strong>影音资料</strong>
                 </div>
                 <div class="column-2 collect-list">
-                    <div>
-                        <textarea></textarea>
+                    <div class="datum-upload site-width">
+                        <div>
+                            <i class="iconfont icon-plus"></i>
+                            <input type="file" id="uploadFile" name="uploadFile" onchange="fileSelected2();"  />
+                        </div>
+                        <div>
+                            <img src="<%=basePath%>resources/mobile/images/1.jpg"/>
+                            <span class="iconfont icon-close" onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -76,14 +97,48 @@
             </div>
         </div>
     </body>
+    <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+    <script src="<%=basePath%>resources/mobile/js/mui.js" type="text/javascript" charset="utf-8"></script>
+    <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         $(function(){
+            /*优先等级切换*/
+            $('.collect-list-level>span').click(function () {
+                $(this).addClass('level').siblings('span').removeClass('level');
+            });
+
+            setListLevel(${siteQuestionInfo.priority});
+
 
         })
-
+        //初始化优先级
+        function setListLevel(val){
+            var spanArr = $('.collect-list-level>span');
+            var valStr = '';
+            switch (val) {
+                case 1:
+                    valStr = 'A'
+                    break;
+                case 2:
+                    valStr = 'B'
+                    break;
+                case 3:
+                    valStr = 'C'
+                    break;
+                case 4:
+                    valStr = 'D'
+                    break;
+                default: 'D'
+            }
+            for(var i= 0;i<spanArr.length ; i++){
+                var text = $(spanArr[i]).text().substr(0,1);
+                if(text ===  valStr){
+                    $(spanArr[i]).addClass('level').siblings('span').removeClass('level');
+                }
+            }
+        }
         function fileSelected2(){
             //获取文件的内容
-
             var userId = $("#userId").val();
             var serialNo = $("#serialNo").val();
             var old_id = $("#id").val();
@@ -97,12 +152,6 @@
                     return false;
                 }
             }
-
-            //预览图片
-            // var objUrl = getObjectURL($("#file")[0]); //获取图片的路径，该路径不是图片在本地的路径
-            // if (objUrl) {
-            //     $("#uu").attr("src", objUrl) ; //将图片路径存入src中，显示出图片
-            // }
 
             if("undefined" != typeof(uploadFile) && uploadFile != null && uploadFile != ""){
                 $.ajax({

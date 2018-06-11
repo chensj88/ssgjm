@@ -20,8 +20,6 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_8s9fwys71yxmvx6r.css"/>
-    <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="<%=basePath%>resources/js/common.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
 <input id="userId" type="hidden" name="userId" value="${userId}">
