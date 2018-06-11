@@ -271,9 +271,7 @@ public class BaseController extends BaseSpringMvcMybatisController {
 
 
     /**
-     * @param pmId       项目id
      * @param serialNo   客户号
-     * @param cId        合同号
      * @param sourceType 操作数据来源
      * @param sourceId   操作数据id
      * @param content    日志内容
@@ -281,12 +279,10 @@ public class BaseController extends BaseSpringMvcMybatisController {
      * @param operator   操作人
      * @description 新增日志
      */
-    public void addEtLog(Long pmId, String serialNo, Long cId, String sourceType, Long sourceId, String content, Integer status, Long operator) {
+    public void addEtLog(String serialNo, String sourceType, Long sourceId, String content, Integer status, Long operator) {
         EtLog etLog = new EtLog();
         etLog.setId(ssgjHelper.createEtLogIdService());
-        etLog.setPmId(pmId);
         etLog.setSerialNo(serialNo);
-        etLog.setCId(cId);
         etLog.setSourceType(sourceType);
         etLog.setSourceId(sourceId);
         etLog.setContent(content);
@@ -297,16 +293,12 @@ public class BaseController extends BaseSpringMvcMybatisController {
     }
 
     /**
-     * @param pmId     项目id
-     * @param serialNo 客户id
-     * @param cId      合同id
+     * @param sourceId 数据源id
      * @return 日志集合
      */
-    public List<EtLog> getEtLog(Long pmId, String serialNo, Long cId) {
+    public List<EtLog> getEtLog(Long sourceId) {
         EtLog etLog = new EtLog();
-        etLog.setPmId(pmId);
-        etLog.setSerialNo(serialNo);
-        etLog.setCId(cId);
+        etLog.setSourceId(sourceId);
         List<EtLog> etLogList = getFacade().getEtLogService().getEtLogList(etLog);
         return etLogList;
     }

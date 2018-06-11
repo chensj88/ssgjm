@@ -41,7 +41,7 @@ public class LogController extends BaseController {
     @RequestMapping(value = "/add.do")
     @ResponseBody
     public Map<String, Object> add(EtLog etLog) {
-        this.addEtLog(etLog.getPmId(), etLog.getSerialNo(), etLog.getCId(), etLog.getSourceType(), etLog.getSourceId(), etLog.getContent(), etLog.getStatus(), etLog.getOperator());
+        this.addEtLog(etLog.getSerialNo(),  etLog.getSourceType(), etLog.getSourceId(), etLog.getContent(), etLog.getStatus(), etLog.getOperator());
         resultMap.put("msg", "新增操作日志成功。");
         return resultMap;
     }
