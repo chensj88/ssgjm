@@ -432,7 +432,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
                     EtUserInfo etUserInfo = new EtUserInfo();
                     etUserInfo.setPmId(pmId);
                     etUserInfo.setUserId(user.getId());
-                    etUserInfo.setPositionName(pmisProjctUser.getRyfl()+"");
+                    //etUserInfo.setPositionName(pmisProjctUser.getRyfl()+"");
                     etUserInfo = etUserInfoService.getEtUserInfo(etUserInfo);
                     if(etUserInfo == null){
                         etUserInfo = new EtUserInfo();
