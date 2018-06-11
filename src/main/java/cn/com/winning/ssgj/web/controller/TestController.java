@@ -130,6 +130,8 @@ public class TestController extends BaseController{
     @RequestMapping(value = "/testExcel.do")
     public void wiriteExcel(HttpServletResponse response){
         List<Map<String,Object>> validateRoles = new ArrayList<>();
+        List<String> colRow = new ArrayList<>();
+        colRow.add("问题优先级");
         //问题优先级
         SysDictInfo dictInfo = new SysDictInfo();
         dictInfo.setDictCode("priorityType");
@@ -140,11 +142,12 @@ public class TestController extends BaseController{
             dictArr[i] = dictInfos.get(i).getDictLabel();
         }
         dictValidate.put("roles",dictArr);
-        dictValidate.put("firstRow",2);
+        dictValidate.put("firstRow",1);
         dictValidate.put("lastRow",4000);
-        dictValidate.put("firstCol",1);
-        dictValidate.put("lastCol",1);
+        dictValidate.put("firstCol",0);
+        dictValidate.put("lastCol",0);
         validateRoles.add(dictValidate);
+        colRow.add("站点名称/科室名称");
         //站点名称/科室名称
         String serialNo = "10159";
         EtDepartment dept = new EtDepartment();
@@ -155,11 +158,13 @@ public class TestController extends BaseController{
             deptArr[i] = deps.get(i).getDeptName();
         }
         deptValidate.put("roles",deptArr);
-        deptValidate.put("firstRow",2);
+        deptValidate.put("firstRow",1);
         deptValidate.put("lastRow",4000);
-        deptValidate.put("firstCol",2);
-        deptValidate.put("lastCol",2);
+        deptValidate.put("firstCol",1);
+        deptValidate.put("lastCol",1);
         validateRoles.add(deptValidate);
+
+        colRow.add("系统");
         //系统
         EtContractTask task = new EtContractTask();
         task.setSerialNo(serialNo);
@@ -170,14 +175,17 @@ public class TestController extends BaseController{
             taskArr[i] = deps.get(i).getDeptName();
         }
         taskValidate.put("roles",taskArr);
-        taskValidate.put("firstRow",2);
+        taskValidate.put("firstRow",1);
         taskValidate.put("lastRow",4000);
-        taskValidate.put("firstCol",3);
-        taskValidate.put("lastCol",3);
+        taskValidate.put("firstCol",2);
+        taskValidate.put("lastCol",2);
         validateRoles.add(deptValidate);
+        colRow.add("菜单");
+        colRow.add("问题描述");
+        colRow.add("底稿类型");
         //底稿类型
         dictInfo = new SysDictInfo();
-        dictInfo.setDictCode("manuscriptStatus");
+        dictInfo.setDictCode("manuscriptType");
         dictInfos = getFacade().getSysDictInfoService().getSysDictInfoList(dictInfo);
         Map<String,Object> masValidate = new HashMap<>();
         dictArr = new String[dictInfos.size()];
@@ -185,22 +193,99 @@ public class TestController extends BaseController{
             dictArr[i] = dictInfos.get(i).getDictLabel();
         }
         masValidate.put("roles",dictArr);
-        masValidate.put("firstRow",2);
+        masValidate.put("firstRow",1);
         masValidate.put("lastRow",4000);
-        masValidate.put("firstCol",6);
-        masValidate.put("lastCol",6);
-        validateRoles.add(dictValidate);
+        masValidate.put("firstCol",5);
+        masValidate.put("lastCol",5);
+        validateRoles.add(masValidate);
 
-        List<String> colRow = new ArrayList<>();
-        colRow.add("问题优先级");
-        colRow.add("站点名称/科室名称");
-        colRow.add("系统");
-        colRow.add("菜单");
-        colRow.add("问题描述");
-        colRow.add("底稿类型");
+        colRow.add("原因分类");
+        //原因分类
+        dictInfo = new SysDictInfo();
+        dictInfo.setDictCode("reasonType");
+        dictInfos = getFacade().getSysDictInfoService().getSysDictInfoList(dictInfo);
+        Map<String,Object> reasonTypeValidate = new HashMap<>();
+        dictArr = new String[dictInfos.size()];
+        for (int i = 0; i < dictInfos.size(); i++) {
+            dictArr[i] = dictInfos.get(i).getDictLabel();
+        }
+        reasonTypeValidate.put("roles",dictArr);
+        reasonTypeValidate.put("firstRow",1);
+        reasonTypeValidate.put("lastRow",4000);
+        reasonTypeValidate.put("firstCol",6);
+        reasonTypeValidate.put("lastCol",6);
+        validateRoles.add(reasonTypeValidate);
+
+        colRow.add("底稿状态");
+        //底稿状态 manuscriptStatus
+        dictInfo = new SysDictInfo();
+        dictInfo.setDictCode("manuscriptStatus");
+        dictInfos = getFacade().getSysDictInfoService().getSysDictInfoList(dictInfo);
+        Map<String,Object> manuscriptStatusValidate = new HashMap<>();
+        dictArr = new String[dictInfos.size()];
+        for (int i = 0; i < dictInfos.size(); i++) {
+            dictArr[i] = dictInfos.get(i).getDictLabel();
+        }
+        manuscriptStatusValidate.put("roles",dictArr);
+        manuscriptStatusValidate.put("firstRow",1);
+        manuscriptStatusValidate.put("lastRow",4000);
+        manuscriptStatusValidate.put("firstCol",7);
+        manuscriptStatusValidate.put("lastCol",7);
+        validateRoles.add(manuscriptStatusValidate);
+
+        colRow.add("难度");
+        //难度 manuscriptStatus
+        dictInfo = new SysDictInfo();
+        dictInfo.setDictCode("diffcultLevel");
+        dictInfos = getFacade().getSysDictInfoService().getSysDictInfoList(dictInfo);
+        Map<String,Object> diffcultLevelValidate = new HashMap<>();
+        dictArr = new String[dictInfos.size()];
+        for (int i = 0; i < dictInfos.size(); i++) {
+            dictArr[i] = dictInfos.get(i).getDictLabel();
+        }
+        diffcultLevelValidate.put("roles",dictArr);
+        diffcultLevelValidate.put("firstRow",1);
+        diffcultLevelValidate.put("lastRow",4000);
+        diffcultLevelValidate.put("firstCol",8);
+        diffcultLevelValidate.put("lastCol",8);
+        validateRoles.add(diffcultLevelValidate);
+
+        colRow.add("联系人");
+        colRow.add("联系电话");
+        colRow.add("解决方式");
+        //解决方式 operType
+        dictInfo = new SysDictInfo();
+        dictInfo.setDictCode("operType");
+        dictInfos = getFacade().getSysDictInfoService().getSysDictInfoList(dictInfo);
+        Map<String,Object> operTypeValidate = new HashMap<>();
+        dictArr = new String[dictInfos.size()];
+        for (int i = 0; i < dictInfos.size(); i++) {
+            dictArr[i] = dictInfos.get(i).getDictLabel();
+        }
+        operTypeValidate.put("roles",dictArr);
+        operTypeValidate.put("firstRow",1);
+        operTypeValidate.put("lastRow",4000);
+        operTypeValidate.put("firstCol",11);
+        operTypeValidate.put("lastCol",11);
+        validateRoles.add(operTypeValidate);
+
+        colRow.add("期望完成时间");
+        colRow.add("用户方确认人签名及确认意见");
+        colRow.add("需求编号");
+
+
+
+
+
+
+
+
+
+
+
 
         //创建工作簿
-        Workbook workbook = new XSSFWorkbook();
+        Workbook workbook = new HSSFWorkbook();
         ExcelUtil.writeTemplateExcel(response,colRow,workbook,validateRoles,"工作簿1.xls");
     }
 

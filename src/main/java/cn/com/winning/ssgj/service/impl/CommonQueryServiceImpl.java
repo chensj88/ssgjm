@@ -451,7 +451,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
                         etUserInfo.setIsDel(Constants.STATUS_USE);
                         etUserInfo.setPositionName(pmisProjctUser.getRyfl()+"");
                         etUserInfoService.createEtUserInfo(etUserInfo);
-                    }else{
+                    }/*else{
                         etUserInfo.setPmId(pmId);
                         etUserInfo.setcId(project.getHtxx());
                         etUserInfo.setSerialNo(project.getKhxx()+"");
@@ -466,7 +466,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
                         etUserInfo.setIsDel(Constants.STATUS_USE);
                         etUserInfo.setPositionName(pmisProjctUser.getRyfl()+"");
                         etUserInfoService.modifyEtUserInfo(etUserInfo);
-                    }
+                    }*/
                 }
             }
         }
