@@ -35,36 +35,9 @@ public class FloorQuestionController extends BaseController {
 
     @RequestMapping(value = "/list.do")
     public String floorQuestionList(Model model, String parameter) {
-        //进行中的项目
-        //parameter = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
         try {
-            byte[] byteArray = Base64Utils.decryptBASE64(parameter);
-            String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
-            ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
-            SysUserInfo info = new SysUserInfo();
-            if (userList != null && !userList.equals("")) {
-                for (int i = 0; i < userList.size(); i++) {
-                    JSONObject io = userList.get(i);
-                    info.setId(ssgjHelper.createUserId());
-                    info.setUserType("0");
-                    info.setOpenId((String) io.get("OPENID"));
-                    info.setName((String) io.get("USERNAME"));
-                    info.setUserid((String) io.get("HOSPCODE") + (String) io.get("WORKNUM"));
-                    info.setPassword(MD5.stringMD5ForBarCode((String) io.get("WORKNUM")));
-                    info.setMobile((String) io.get("USERPHONE"));
-                    info.setSsgs(Long.parseLong((String) io.get("HOSPCODE")));
-                }
-                //判断用户 userId 是否存在
-                SysUserInfo info_use = new SysUserInfo();
-                info_use.setUserid(info.getUserid());
-                List<SysUserInfo> userIfonList = super.getFacade().getSysUserInfoService().getSysUserInfoList(info_use);
-                //真实用户
-                if (userIfonList.size() == 0 || userIfonList == null) {
-                    super.getFacade().getSysUserInfoService().createSysUserInfo(info);
-                }
-            }
+            SysUserInfo info = super.getUserInfo(parameter);
             EtFloorQuestionInfo questionInfo = new EtFloorQuestionInfo();
-            //questionInfo.getMap().put("Ssgs", info.getSsgs());
             questionInfo.setSerialNo(String.valueOf(info.getSsgs()));
             List<EtFloorQuestionInfo> infoList = super.getFacade().getEtFloorQuestionInfoService()
                     .getEtFloorQuestionInfoSummaryList(questionInfo);

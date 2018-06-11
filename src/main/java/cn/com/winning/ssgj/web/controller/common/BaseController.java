@@ -1,10 +1,16 @@
 package cn.com.winning.ssgj.web.controller.common;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.Base64Utils;
+import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.service.Facade;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -14,12 +20,18 @@ import javax.servlet.http.HttpSession;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static cn.com.winning.ssgj.base.util.Base64Utils.decryptBASE64;
 
 public class BaseController extends BaseSpringMvcMybatisController {
     @Resource
     private Facade facade;
+    @Autowired
+    private SSGJHelper ssgjHelper;
+
 
     private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -253,4 +265,44 @@ public class BaseController extends BaseSpringMvcMybatisController {
        List<EtContractTask> tasks = getFacade().getEtContractTaskService().getEtContractTaskList(task);
        return tasks;
     }
+
+    /**
+     * 根据传递的服务号参数解析信息
+     *@param parameter
+     * */
+    public SysUserInfo getUserInfo(String parameter){
+        SysUserInfo info = new SysUserInfo();
+        try{
+            String userJsonStr = "[" + new String(decryptBASE64(parameter), "UTF-8") + "]";
+            ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
+            if (userList != null && !userList.equals("")) {
+                for (int i = 0; i < userList.size(); i++) {
+                    JSONObject io = userList.get(i);
+                    info.setId(ssgjHelper.createUserId());
+                    info.setUserType("0");
+                    info.setOpenId((String) io.get("OPENID"));
+                    info.setName(new String (decryptBASE64((String)io.get("USERNAME"))));
+                    info.setUserid((String) io.get("HOSPCODE") + (String) io.get("WORKNUM"));
+                    info.setPassword(MD5.stringMD5ForBarCode((String) io.get("WORKNUM")));
+                    info.setMobile((String) io.get("USERPHONE"));
+                    info.setSsgs(Long.parseLong((String) io.get("HOSPCODE")));
+                }
+                //判断用户 userId 是否存在
+                SysUserInfo info_use = new SysUserInfo();
+                info_use.setUserid(info.getUserid());
+                List<SysUserInfo> userIfonList = getFacade().getSysUserInfoService().getSysUserInfoList(info_use);
+                //真实用户
+                if (userIfonList.size() == 0 || userIfonList == null) {
+                    getFacade().getSysUserInfoService().createSysUserInfo(info);
+                }
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return info;
+    }
+
+
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.com.winning.ssgj.domain.EtDepartment;
 import cn.com.winning.ssgj.domain.EtSiteInstallDetail;
+import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
 
 /**
  *
@@ -32,4 +33,5 @@ public interface EtSiteInstallDetailService {
     void updateEtSiteInstallDetailSourceId(EtSiteInstallDetail detail_old);
 
     List<EtSiteInstallDetail> getEtSiteInstallHardDetailList(EtSiteInstallDetail installHardDetail);
+
 }
