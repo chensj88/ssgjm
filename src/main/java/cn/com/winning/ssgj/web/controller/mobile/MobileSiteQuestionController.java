@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.web.controller.mobile;
 
+import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,24 +18,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MobileSiteQuestionController  extends BaseController {
 
     /**
-     * 采集中心新增客户问题
+     * 采集中心新增/修改问题客户问题
      * @param model model  主要用来传输参数
-     * @param userid 用户id
+     * @param userId 用户id
      * @param serialNo 客户号
      * @return
      */
     @RequestMapping(value = "/add.do")
-    public String add(Model model,long userid,String serialNo) {
-        model.addAttribute("siteQuestionInfo",null);
+    public String add(Model model,Long questionId,Long userId,String serialNo) {
+        if(questionId != null){
+            EtSiteQuestionInfo info = new EtSiteQuestionInfo();
+            info.setId(questionId);
+            model.addAttribute("siteQuestionInfo",this.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info));
+        }else{
+            model.addAttribute("siteQuestionInfo",null);
+        }
+
         model.addAttribute("deptList", this.getDepartmentList(Long.parseLong(serialNo),null));
         model.addAttribute("appList", this.getProductDictInfo(serialNo));
-        model.addAttribute("userid", userid);
+        model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
         return "/mobile/service/site-question";
     }
 
+    /**
+     * 显示当前操作人的全部问题
+     * @param model  主要用来传输参数
+     * @param userId 用户id
+     * @param serialNo 客户号
+     * @return
+     */
     @RequestMapping(value = "/list.do")
-    public String list(Model model,long userid,String serialNo) {
+    public String list(Model model,long userId,String serialNo) {
+        EtSiteQuestionInfo info = new EtSiteQuestionInfo();
+        info.setCreator(userId);
+        model.addAttribute("questionList", getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfoList(info));
+        model.addAttribute("userId", userId);
+        model.addAttribute("serialNo", serialNo);
         return "/mobile/service/site-question-list";
     }
 }

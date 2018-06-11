@@ -21,4 +21,6 @@ public interface EtSiteQuestionInfoDao extends EntityDao<EtSiteQuestionInfo> {
     List<Map<String,Object>> selectEtSiteQuestionCountInfo(EtSiteQuestionInfo info);
 
     List<EtSiteQuestionInfo> selectEtSiteQuestionInfoTotalCountByUser(EtSiteQuestionInfo t);
+
+    List<EtSiteQuestionInfo> selectEtSiteQuestionInfoWXUserTotal(EtSiteQuestionInfo t);
 }
