@@ -230,4 +230,25 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
         return this.etSiteQuestionInfoDao.selectEtSiteQuestionInfoTotalCountByUser(info);
     }
 
+    @Override
+    public List<Map<String, Object>> getSiteQuestionInfoByUser(EtSiteQuestionInfo info) {
+
+        List<Map<String, Object>> resultMap = new ArrayList<>();
+        List<Map<String,String>> countInfo = etSiteQuestionInfoDao.selectEtSiteQuestionInfoCountByUser(info);
+        for (Map<String, String> map : countInfo) {
+            Map<String,Object> paramMap = new HashMap<>();
+            paramMap.put("createDate",map.get("createDate"));
+            paramMap.put("countNum",map.get("countNum"));
+            paramMap.put("rows",querySiteQuestionByUserAndDate(info,map.get("createDate")));
+            resultMap.add(paramMap);
+        }
+        return resultMap;
+    }
+
+    private List<EtSiteQuestionInfo> querySiteQuestionByUserAndDate(EtSiteQuestionInfo info, String createDate) {
+        info.getMap().put("createDate",createDate);
+        return etSiteQuestionInfoDao.selectEtSiteQuestionInfoListByUserAndDate(info);
+
+    }
+
 }

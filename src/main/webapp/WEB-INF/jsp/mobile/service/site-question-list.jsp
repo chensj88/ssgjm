@@ -13,74 +13,57 @@
     <meta charset="UTF-8"/>
     <title>新增采集</title>
     <meta name="viewport"  content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
-    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
-    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="<%=basePath%>resources/mobile/css/mui.min.css">
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css" />
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_o710wavlb78n0zfr.css" />
+    <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="<%=basePath%>resources/js/common.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
-<div class="page-group">
-    <div class="page page-current">
-        <header class="bar bar-nav">
-        <a class="button button-link button-nav pull-left" href="<%=basePath%>mobile/wechatSiteQuestion/list.do?serialNo=${serialNo}&userId=${userId}" data-transition='slide-out'>
-            <span class="icon icon-left"></span>
-            返回
-        </a>
-        <h1 class="title">我的生活</h1>
-    </header>
-        <nav class="bar bar-tab">
-            <a class="tab-item active" href="#">
-                <span class="icon icon-home"></span>
-                <span class="tab-label">首页</span>
-            </a>
-            <a class="tab-item" href="#">
-                <span class="icon icon-me"></span>
-                <span class="tab-label">我</span>
-            </a>
-            <a class="tab-item" href="#">
-                <span class="icon icon-star"></span>
-                <span class="tab-label">收藏</span>
-            </a>
-            <a class="tab-item" href="#">
-                <span class="icon icon-settings"></span>
-                <span class="tab-label">设置</span>
-            </a>
-        </nav>
-        <div class="content">
-            <div class="page-index">
-                <div class="card">
-                    <div  valign="bottom" class="card-header color-white no-border">旅途的山</div>
-                    <div class="card-content">
-                        <div class="card-content-inner">
-                            <p class="color-gray">发表于 2015/01/15</p>
-                            <p>此处是内容...</p>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="link">赞</a>
-                        <a href="#" class="link">更多</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <div  valign="bottom" class="card-header color-white no-border">旅途的山</div>
-                    <div class="card-content">
-                        <div class="card-content-inner">
-                            <p class="color-gray">发表于 2015/01/15</p>
-                            <p>此处是内容...</p>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="link">赞</a>
-                        <a href="#" class="link">更多</a>
-                    </div>
-                </div>
-                ... 可以多放几张卡片
-            </div>
-        </div>
+<input id="userId" type="hidden" name="userId" value="${userId}">
+<input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
+    <div class="header">
+        <span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
+        <div>采集列表</div>
     </div>
-</div>
-<%--<script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>--%>
-<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
-<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
-<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/??sm.min.js,sm-extend.min.js' charset='utf-8'></script>
+    <div class="hole"></div>
+    <div class="site-question">
+        <c:forEach var="vwr" items="${questionList}">
+            <div class="site-item">
+                <div class="top">
+                    <div class="top-left">
+                        <div>${vwr.createDate}<span>${vwr.countNum}</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <c:forEach var="vwr1" items="${vwr.rows}">
+                <div class="site-item" onclick="detail(${vwr1.id})">
+                    <div class="top-left">
+                        <div>${vwr1.map.get("deptName")}<span>${vwr1.map.get("plName")}</span></div>
+                        <span>${vwr1.menuName}</span>
+                    </div>
+                    <div class="btm">
+                        <p>${vwr1.priority} 状态<script>
+                            document.write(Common.getDateSubStr("${vwr.createTime}"));
+                        </script>
+                    </div>
+                </div>
+            </c:forEach>
+
+        </c:forEach>
+    </div>
+<script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript" charset="utf-8"></script>
+
+    <script >
+        function detail(id){
+            location.href="<%=basePath%>mobile/wechatSiteQuestion/add.do?questionId="+id+"&serialNo=${serialNo}&userId=${userId}";
+        }
+
+    </script>
 </body>
 
 </html>
