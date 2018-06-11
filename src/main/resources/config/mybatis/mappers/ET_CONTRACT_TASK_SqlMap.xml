@@ -84,7 +84,7 @@
 
 	<select id="selectEtContractTaskPaginatedList" resultMap="etContractTaskResult" parameterType="etContractTask">
 		select * from (
-			select *, ROW_NUMBER() OVER ( order by t.MX DESC,t.BZ DESC ) as _rn
+			select *, ROW_NUMBER() OVER ( order by t.MX ASC ,t.BZ ASC ) as _rn
 				from ET_CONTRACT_TASK t where 1 = 1
 			<include refid="query-etContractTask" />
 		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}

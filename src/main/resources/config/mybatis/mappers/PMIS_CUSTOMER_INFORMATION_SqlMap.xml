@@ -345,7 +345,7 @@
         </where>
         )
     </select>
-
+    <!--查看用户可以查看的客户信息-->
     <select id="selectUserCanViewCustomerList" parameterType="java.lang.Long" resultMap="pmisCustomerInformationResult">
        SELECT * FROM PMIS_CUSTOMER_INFORMATION
        WHERE  ID IN (
@@ -365,6 +365,7 @@
             WHERE T.USER_ID = #{userId}
             AND  T.IS_DEL = 1
             AND T.USER_TYPE = 1
+            AND t.POSITION_NAME != '4'
         )
     </select>
 

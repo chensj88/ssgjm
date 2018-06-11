@@ -277,4 +277,10 @@ public class TestController extends BaseController{
         ExcelUtil.writeTemplateExcel(response,colRow,workbook,validateRoles,"工作簿1.xls");
     }
 
+
+    @RequestMapping(value = "/testWxUI.do")
+    public String qyeryReportInfo(){
+        return "mobile2/wechat/site-jquery-weui";
+    }
+
 }

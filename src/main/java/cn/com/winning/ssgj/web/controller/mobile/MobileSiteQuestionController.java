@@ -24,7 +24,7 @@ public class MobileSiteQuestionController  extends BaseController {
      * @param serialNo 客户号
      * @return
      */
-    @RequestMapping(value = "/add.do")
+    @RequestMapping(value = "/addPage.do")
     public String add(Model model,Long questionId,Long userId,String serialNo) {
         if(questionId != null){
             EtSiteQuestionInfo info = new EtSiteQuestionInfo();
