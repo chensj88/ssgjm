@@ -59,4 +59,6 @@ public interface EtSiteQuestionInfoService {
     List<MobileSiteQuestion> getSiteQuestionInfoByUser(EtSiteQuestionInfo info) throws ParseException;
 
     List<EtSiteQuestionInfo> selectMobileEtSiteQuestionInfo(EtSiteQuestionInfo questionInfo);
+
+    EtSiteQuestionInfo getEtSiteQuestionProcessStatus(EtSiteQuestionInfo qinfo);
 }

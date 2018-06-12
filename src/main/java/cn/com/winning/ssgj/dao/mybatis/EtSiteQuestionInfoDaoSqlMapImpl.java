@@ -53,4 +53,9 @@ public class EtSiteQuestionInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtSiteQ
         return this.getSqlSession().selectList("selectEtSiteQuestionInfoListByUserAndDate",t);
     }
 
+    @Override
+    public EtSiteQuestionInfo selectEtSiteQuestionProcessStatus(EtSiteQuestionInfo t) {
+        return this.getSqlSession().selectOne("selectEtSiteQuestionProcessStatus",t);
+    }
+
 }

@@ -64,6 +64,9 @@
         <result column="diffString" property="map.diffString" jdbcType="VARCHAR"/>
         <result column="countNum" property="map.countNum" jdbcType="VARCHAR"/>
         <result column="processStr" property="map.processStr" jdbcType="VARCHAR"/>
+        <result column="numNo" property="map.numNo" jdbcType="VARCHAR"/>
+        <result column="numOver" property="map.numOver" jdbcType="VARCHAR"/>
+
     </resultMap>
 
     <sql id="sf-etSiteQuestionInfo">
@@ -674,7 +677,8 @@
             parameterType="etSiteQuestionInfo">
         select
         <if test="row.count != null and row.count != ''">top ${row.count}</if>
-        t.*,i.YHMC as create_name,
+        t.*,i.YHMC as create_name,g.DEPT_NAME as DEPT_NAME,h.ZXTMC AS PL_NAME,
+        /*h.ZXTMC AS PL_NAME,*/
         i.USERID AS createUser,
         i.NAME AS createUserName,
         CASE
@@ -687,6 +691,8 @@
         from ET_SITE_QUESTION_INFO t
         LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
         LEFT JOIN SYS_DICT_INFO j ON t.PROCESS_STATUS = j.DICT_VALUE AND j.DICT_CODE='processStatus'
+        LEFT JOIN ET_DEPARTMENT g ON  CAST(t.SITE_NAME AS INT) = g.ID
+        LEFT JOIN ET_CONTRACT_TASK h ON CAST(t.PRODUCT_NAME AS INT) = h.ID
         where 1 = 1
         <include refid="sf-etSiteQuestionInfo"/>
         <if test="map.createDate != null and map.createDate != ''">
@@ -694,5 +700,19 @@
         </if>
         order by ID DESC
         <!-- order by ID asc -->
+    </select>
+
+    <!-- Chen,Kuai 处理情况 -->
+    <select id="selectEtSiteQuestionProcessStatus" resultMap="etSiteQuestionInfoResult"
+            parameterType="etSiteQuestionInfo">
+        SELECT ISNULL(tt.num1, 0) as numNo,ISNULL(dd.num2, 0) as numOver,tt.SERIAL_NO FROM
+        (SELECT COUNT(*) as num1,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS NOT IN (4,5)
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test=" creator != null and creator != ''">and t.CREATOR != 100001</if>
+        GROUP BY t.SERIAL_NO) tt LEFT JOIN
+        (SELECT COUNT(*) as num2,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS IN (4,5)
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test=" creator != null and creator != ''">and t.CREATOR != 100001</if>
+        GROUP BY t.SERIAL_NO) dd  ON tt.SERIAL_NO =dd.SERIAL_NO;
     </select>
 </mapper>

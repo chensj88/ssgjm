@@ -23,6 +23,7 @@
 				</div>
 			</div>
 			<div class="wrap-cnt">
+
 				<div>
 					<!--search-->
 					<div class="imple-work-search">
@@ -31,31 +32,33 @@
 					</div>
 					<!--tab-->
 					<div class="wap-tab">
-						<span class="active">未确认（23）</span>
-						<span>已确认（27）</span>
+						<span class="active">未确认（${process_num.map.get("numNo")}）</span>
+						<span>已确认（${process_num.map.get("numOver")}）</span>
 					</div>
 					<div class="space"></div>
 					<div class="wap-tab-cnt">
 						<div id="item0">
-							<c:forEach var="vwr" items="${questionList}">
-								<div>
+
+                            <c:forEach var="vwr" items="${questionList}">
+							<div>
 								<a href="#" class="row">
-								<i class="iconfont icon-time">${vwr.timeMmdd}</i>
-								<b>（ ${vwr.num} 条）</b>
+									<i class="iconfont icon-time"></i>${vwr.timeMmdd}<b>（${vwr.num}条）</b>
 								</a>
 								<c:forEach var="vwr1" items="${vwr.listQuery}">
-									<a href="#" class="row">
-												${vwr1.questionDesc}
-											<span class="${vwr1.map.priorityString}">
-													${vwr1.map.priorityString}
-											</span>
-									</a>
+								<a href="#" class="row active">
+										${vwr1.menuName}-${vwr1.map.deptName}
+									<span class="${vwr1.map.priorityString}">${vwr1.map.priorityString}</span>
+								</a>
 								</c:forEach>
-								</div>
-								</c:forEach>
+								<div class="space"></div>
+							</div>
+							</c:forEach>
 						</div>
+
 					</div>
 				</div>
+
+
 				<div class="hide">
 					视频内容
 				</div>

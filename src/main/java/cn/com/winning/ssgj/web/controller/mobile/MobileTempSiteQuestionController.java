@@ -26,7 +26,8 @@ public class MobileTempSiteQuestionController  extends BaseController {
             //qinfo.setSerialNo(String.valueOf(info.getSsgs()));
             qinfo.setCreator((long)100008);
             qinfo.setSerialNo("11980");
-            model.addAttribute("questionList", getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(qinfo));
+            model.addAttribute("questionList", super.getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(qinfo));
+            model.addAttribute("process_num",super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(qinfo));
             model.addAttribute("userId", info.getUserid());
             model.addAttribute("serialNo", info.getSsgs());
 

@@ -259,6 +259,11 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
         return etSiteQuestionInfoDao.selectMobileEtSiteQuestionInfo(t);
     }
 
+    @Override
+    public EtSiteQuestionInfo getEtSiteQuestionProcessStatus(EtSiteQuestionInfo t) {
+        return etSiteQuestionInfoDao.selectEtSiteQuestionProcessStatus(t);
+    }
+
     /**
      * 查询当前用户在指定日期下的问题里列表
      * @param info 包含创建人、客户号
