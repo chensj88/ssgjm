@@ -163,4 +163,51 @@
 			</if>
 		</where>
 	</select>
+	
+	<select id="selectDepartmentInitCode" resultType="string" parameterType="etDepartment">
+		SELECT
+		DISTINCT t.SERIAL_NAME
+		FROM
+			(
+				SELECT
+				CASE  WHEN  SERIAL_NAME IN ('1','2','3','4','5','6','7','8','9','0') THEN '#'
+				ELSE SERIAL_NAME END  SERIAL_NAME
+				FROM ET_DEPARTMENT
+				<where>
+					<if test="serialNo != null ">
+						AND SERIAL_NO = #{serialNo}
+					</if>
+				</where>
+
+			) t
+	</select>
+
+
+	<select id="selectDepartmentByInitCode" resultMap="etDepartmentResult" parameterType="etDepartment">
+		SELECT
+		 *
+		FROM ET_DEPARTMENT
+		<where>
+			<if test="serialNo != null ">
+				AND SERIAL_NO = #{serialNo}
+			</if>
+			<if test="serialName != null and serialName != '' ">
+				 AND SERIAL_NAME = #{serialName}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectDepartmentByInitCodeForNum" resultMap="etDepartmentResult" parameterType="etDepartment">
+		SELECT
+		*
+		FROM ET_DEPARTMENT
+		<where>
+			<if test="serialNo != null ">
+				AND SERIAL_NO = #{serialNo}
+			</if>
+			<if test="serialName != null and serialName != '' ">
+				AND SERIAL_NAME IN ('1','2','3','4','5','6','7','8','9','0')
+			</if>
+		</where>
+	</select>
 </mapper>

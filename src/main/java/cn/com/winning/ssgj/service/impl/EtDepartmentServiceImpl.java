@@ -11,6 +11,7 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.base.util.MD5;
+import cn.com.winning.ssgj.domain.MobileSiteQuestion;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -151,6 +152,34 @@ public class EtDepartmentServiceImpl implements EtDepartmentService {
 			msg += "当前科室在站点安装中使用，";
 		}
 		return msg;
+	}
+
+	/**
+	 * 获取站点数据
+	 * @param department
+	 * @return
+	 */
+	@Override
+	public List<MobileSiteQuestion<EtDepartment>> getWechatDepartmentData(EtDepartment department) {
+		List<String> serialNames = etDepartmentDao.selectDepartmentInitCode(department);
+		List<MobileSiteQuestion<EtDepartment>> data = new ArrayList<>();
+		for (String name : serialNames) {
+			MobileSiteQuestion<EtDepartment> dept = new MobileSiteQuestion<>();
+			department.setSerialName(name);
+			dept.setGroupName(name);
+
+			dept.setListQuery(
+					"#".equals(name)?
+							etDepartmentDao.selectDepartmentByInitCodeForNum(department) :
+							etDepartmentDao.selectDepartmentByInitCode(department));
+			data.add(dept);
+		}
+		return data;
+	}
+
+	@Override
+	public List<String> getEtDepartmentFirstInitCode(EtDepartment dept) {
+		return etDepartmentDao.selectDepartmentInitCode(dept);
 	}
 
 }
