@@ -5,6 +5,7 @@ import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.base.util.MD5;
+import cn.com.winning.ssgj.base.util.PinyinTools;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.EtDepartment;
 import cn.com.winning.ssgj.domain.SysUserInfo;
@@ -95,6 +96,7 @@ public class EtDepartmentController extends BaseController {
             }
 
             if(uniqueList==null||uniqueList.size()==0){
+                depart.setSerialName(PinyinTools.cn2GetFirstSpell(depart.getDeptName()).toUpperCase());
                 super.getFacade().getEtDepartmentService().createEtDepartment(depart);
             }else{
                 result.put("status", "repeat");
@@ -108,6 +110,7 @@ public class EtDepartmentController extends BaseController {
             unique_old.getMap().put("not_id",depart.getId());
             unique_old = super.getFacade().getEtDepartmentService().getEtDepartment(unique_old);
             if(unique_old==null){
+                depart.setSerialName(PinyinTools.cn2GetFirstSpell(depart.getDeptName()).toUpperCase());
                 super.getFacade().getEtDepartmentService().modifyEtDepartment(depart);
             }else{
                 result.put("status", "repeat");
