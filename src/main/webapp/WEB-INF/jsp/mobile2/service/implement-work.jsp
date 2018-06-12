@@ -17,7 +17,7 @@
 		<div class="wrap">
 			<div class="wrap-header">
 				<div class="header">
-					<span class="mui-icon mui-icon-arrowleft"></span>
+					<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
 					<div>实施工作</div>
 					<a href="#">采集列表</a>
 				</div>
@@ -28,7 +28,7 @@
 					<!--search-->
 					<div class="imple-work-search">
 						<i class="iconfont icon-search"></i>
-						<input id="search" type="text" placeholder="请输入搜索内容"/>
+						<input type="text" placeholder="请输入搜索内容"/>
 					</div>
 					<!--tab-->
 					<div class="wap-tab">
@@ -76,6 +76,7 @@
 			<!--底部菜单-->
 			<div class="wrap-foot">
 				<div class="active">
+					<a href="<%=basePath%>/mobile/trainVideoList/list.do">  </a>
 					<i class="iconfont icon-ck"></i>
 					查看
 				</div>
