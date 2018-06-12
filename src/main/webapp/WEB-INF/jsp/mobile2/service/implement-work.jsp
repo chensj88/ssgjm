@@ -28,12 +28,12 @@
 					<!--search-->
 					<div class="imple-work-search">
 						<i class="iconfont icon-search"></i>
-						<input type="text" placeholder="请输入搜索内容"/>
+						<input id="search" type="text" placeholder="请输入搜索内容"/>
 					</div>
 					<!--tab-->
 					<div class="wap-tab">
-						<span class="active">未确认（${process_num.map.get("numNo")}）</span>
-						<span>已确认（${process_num.map.get("numOver")}）</span>
+						<span <c:if test="${active != '1'}"> class="active"</c:if> onclick="processStatus(0);">未确认（${process_num.map.get("numNo")}）</span>
+						<span <c:if test="${active == '1'}"> class="active"</c:if> onclick="processStatus(1);">已确认（${process_num.map.get("numOver")}）</span>
 					</div>
 					<div class="space"></div>
 					<div class="wap-tab-cnt">
@@ -46,7 +46,7 @@
 								</a>
 								<c:forEach var="vwr1" items="${vwr.listQuery}">
 								<a href="#" class="row active">
-										${vwr1.menuName}-${vwr1.map.deptName}
+										${vwr1.map.deptName}-${vwr1.menuName}
 									<span class="${vwr1.map.priorityString}">${vwr1.map.priorityString}</span>
 								</a>
 								</c:forEach>
@@ -99,6 +99,15 @@
 			$(function () {
                 IMS.menuTab();
             })
+
+			function processStatus(val){
+			        location.href="<%=basePath%>/mobile/tempSiteQuestion/list.do?processStatus="+val;
+
+			}
+
+
+
+
 		</script>
 	</body>
 </html>

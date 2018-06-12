@@ -417,6 +417,10 @@ span.nosolve{
 	color: #469CFF;
 	border: 1px solid #9DCBFF;
 }
+.row>span.D{
+	color: #469CFF;
+	border: 1px solid #FFFFFF;
+}
 .row>i{
 	margin-right: 10px;
 	color: #9797;
