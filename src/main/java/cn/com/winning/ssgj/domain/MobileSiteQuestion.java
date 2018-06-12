@@ -11,19 +11,19 @@ public class MobileSiteQuestion<T> extends BaseDomain implements Serializable {
 
     private static final long serialVersionUID = -1L;
 
-    private String timeMmdd; //时间
+    private String groupName; //时间
 
     private String num; //数量
 
     private List<T> listQuery; //集合
 
 
-    public String getTimeMmdd() {
-        return timeMmdd;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setTimeMmdd(String timeMmdd) {
-        this.timeMmdd = timeMmdd;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public String getNum() {

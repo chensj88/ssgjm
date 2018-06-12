@@ -4,6 +4,7 @@ import cn.com.winning.ssgj.domain.EtDepartment;
 import cn.com.winning.ssgj.dao.EntityDao;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Coder AutoGenerator generate.
@@ -18,4 +19,10 @@ public interface EtDepartmentDao extends EntityDao<EtDepartment> {
     int selectDepartmentForSiteQuestionCount(EtDepartment department);
 
     int selectDepartmentForSiteInstallCount(EtDepartment department);
+
+    List<String> selectDepartmentInitCode(EtDepartment department);
+
+    List<EtDepartment> selectDepartmentByInitCode(EtDepartment department);
+
+    List<EtDepartment> selectDepartmentByInitCodeForNum(EtDepartment department);
 }

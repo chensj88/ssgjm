@@ -242,7 +242,7 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
         List<Map<String,Object>> countInfo = etSiteQuestionInfoDao.selectEtSiteQuestionInfoCountByUser(info);
         for (Map<String, Object> map : countInfo) {
             MobileSiteQuestion<EtSiteQuestionInfo> question = new MobileSiteQuestion<>();
-            question.setTimeMmdd(DateUtil.convertDateToMMDD(map.get("createDate").toString()));
+            question.setGroupName(DateUtil.convertDateToMMDD(map.get("createDate").toString()));
             question.setNum(map.get("countNum").toString());
             question.setListQuery(querySiteQuestionByUserAndDate(info,map.get("createDate").toString()));
             resultMap.add(question);

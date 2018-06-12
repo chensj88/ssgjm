@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.service;
 import java.util.List;
 
 import cn.com.winning.ssgj.domain.EtDepartment;
+import cn.com.winning.ssgj.domain.MobileSiteQuestion;
 
 /**
  * Coder AutoGenerator generate.
@@ -33,4 +34,8 @@ public interface EtDepartmentService {
     List<EtDepartment> selectDepartmentTypeList(EtDepartment info);
 
     String checkEtDepartmentIsUse(EtDepartment department);
+
+    List<MobileSiteQuestion<EtDepartment>> getWechatDepartmentData(EtDepartment department);
+
+    List<String> getEtDepartmentFirstInitCode(EtDepartment dept);
 }

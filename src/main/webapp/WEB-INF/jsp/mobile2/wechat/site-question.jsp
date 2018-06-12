@@ -12,8 +12,6 @@
     <head>
         <meta charset="UTF-8"/>
         <title>新增采集</title>
-        <meta charset="UTF-8" />
-        <title>新增采集</title>
         <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
         <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/normalize.css" />
         <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
@@ -29,7 +27,7 @@
         <div class="wrap">
             <div class="wrap-header">
                 <div class="header">
-                    <span class="mui-icon mui-icon-arrowleft"></span>
+                    <span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)" ></span>
                     <div>新增采集</div>
                     <a href="<%=basePath%>mobile/wechatSiteQuestion/list.do?serialNo=${serialNo}&userId=${userId}">采集列表</a>
                 </div>
@@ -40,17 +38,17 @@
                     <div class="collect-list-dp">
                         <input type="hidden" id="siteName" name="siteName" value="${siteQuestionInfo.siteName}" >
                         <c:if test="${siteQuestionInfo.siteName != null}" >
-                            <a href="#"><span>${siteQuestionInfo.map.get("deptName")}</span><i class="iconfont icon-fanhui-copy"></i></a>
+                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}"><span>${siteQuestionInfo.map.get("deptName")}</span><i class="iconfont icon-fanhui-copy"></i></a>
                         </c:if>
                         <c:if test="${siteQuestionInfo.siteName == null}" >
-                            <a href="#"><span>--请选择--</span><i class="iconfont icon-fanhui-copy"></i></a>
+                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}"><span>--请选择--</span><i class="iconfont icon-fanhui-copy"></i></a>
                         </c:if>
                     </div>
                 </div>
                 <div class="column-2 collect-list">
                     <strong>系统名称</strong>
                     <div class="collect-list-dp">
-                        <input type="hidden" id="procductName" name="procductName" value="${siteQuestionInfo.procductName}" >
+                        <input id="productName" name="productName" value="${siteQuestionInfo.productName}" type="hidden"/>
                         <c:if test="${siteQuestionInfo.productName != null}" >
                             <a href="#"><span>${siteQuestionInfo.map.get("plName")}</span><i class="iconfont icon-fanhui-copy"></i></a>
                         </c:if>
@@ -79,10 +77,10 @@
                 </div>
                 <div class="column-2 collect-list">
                     <div class="collect-list-level">
-                        <span>A级</span>
-                        <span>B级</span>
-                        <span class="level">C级</span>
-                        <span>D级</span>
+                        <span>A(紧急)</span>
+                        <span>B(急)</span>
+                        <span class="level">C(一般)</span>
+                        <span>D(暂缓)</span>
                     </div>
                 </div>
                 <p class="collect-list-level_p">注：C等级项目完成时间为7个工作日</p>
@@ -90,18 +88,29 @@
                 <div class="column-2 collect-list">
                     <strong>影音资料</strong>
                 </div>
-                <div class="column-2 collect-list">
-                    <div class="datum-upload site-width">
-                        <div>
-                            <i class="iconfont icon-plus"></i>
-                            <input type="file" id="uploadFile" name="uploadFile" onchange="fileSelected2();"  />
-                        </div>
-                        <div>
-                            <img src="<%=basePath%>resources/mobile/images/1.jpg"/>
-                            <span class="iconfont icon-close" onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>
+                <form id="file" action="" method="post" enctype="multipart/form-data">
+                    <div class="column-2 collect-list">
+                        <div class="datum-upload site-width">
+                            <div>
+                                <i class="iconfont icon-plus"></i>
+                                <input type="file" id="uploadFile" name="uploadFile" onchange="fileSelected2();"  />
+                            </div>
+                            <%--<div>--%>
+                                <%--<img src="<%=basePath%>resources/mobile/images/1.jpg"/>--%>
+                                <%--<span class="iconfont icon-close" onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>--%>
+                            <%--</div>--%>
+                            <c:if test="${siteQuestionInfo.imgPath !=null && siteQuestionInfo.imgPath !=''}">
+                                <c:forEach var="img" items="${siteQuestionInfo.imgs}">
+                                    <div id="close_id">
+                                        <img src="<%=basePathNuName%>shareFolder${img}" />
+                                        <span class="iconfont icon-close" onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>
+                                        <input type="hidden" />
+                                    </div>
+                                </c:forEach>
+                            </c:if>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="wrap-foot large-btn">
                 <a href="#"  onclick="save();"><span>保存</span></a>
@@ -117,9 +126,7 @@
             $('.collect-list-level>span').click(function () {
                 $(this).addClass('level').siblings('span').removeClass('level');
             });
-
             setListLevel(${siteQuestionInfo.priority});
-
 
         })
         /**
@@ -145,8 +152,40 @@
         }
 
         function save() {
+            var id = $('#id').val();
+            var priority = getListLevelValue();
+            var siteName = $('#siteName').val();
+            var productName = $('#productName').val();
+            var menuName = $('#menuName').val();
+            var questionDesc = $('#questionDesc').val();
 
-            getListLevelValue();
+            if(siteName == null || siteName ==''){
+                mui.toast('科室病区不能为空',{ duration:'long(3500ms)', type:'div' });
+                return false;
+            }
+            if(productName == null || productName ==''){
+                mui.toast('系统名称不能为空',{ duration:'long(3500ms)', type:'div' });
+                return false;
+            }
+            if(menuName == null || menuName ==''){
+                mui.toast('问题标题不能为空',{ duration:'long(3500ms)', type:'div' });
+                return false;
+            }
+            if(questionDesc == null || questionDesc ==''){
+                mui.toast('问题描述不能为空',{ duration:'long(3500ms)', type:'div' });
+                return false;
+            }
+
+            var queryJson = {
+                id : $('#id').val(),
+                priority:getListLevelValue(),
+                siteName:$('#siteName').val(),
+                productName:$('#productName').val(),
+                menuName: $('#menuName').val(),
+                questionDesc:$('#questionDesc').val()
+            };
+            console.log(queryJson);
+
         }
         function fileSelected2(){
             //获取文件的内容
@@ -156,8 +195,9 @@
             var uploadFile = new FormData($("#file")[0]);
             //判断上传的只能是图片
             var f=document.getElementById("uploadFile").value;
-            if(f=="") { alert("请上传图片");return false;}
-            else {
+            if(f=="") {
+                alert("请上传图片");return false;
+            } else {
                 if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(f)) {
                     mui.toast('图片类型必须是.gif,jpeg,jpg,png中的一种',{ duration:'long(3500ms)', type:'div' });
                     return false;
@@ -167,7 +207,7 @@
             if("undefined" != typeof(uploadFile) && uploadFile != null && uploadFile != ""){
                 $.ajax({
                     type: "POST",
-                    url:"<%=basePath%>mobile/siteQuestionInfo/saveAndUpdate.do?userId="+userId+"&serialNo="+serialNo+"&old_id="+old_id,
+                    url:"<%=basePath%>mobile/wechatSiteQuestion/saveAndUpdate.do?userId="+userId+"&serialNo="+serialNo+"&old_id="+old_id,
                     data:uploadFile,
                     cache : false,
                     async: false,
@@ -183,15 +223,12 @@
                             mui.toast('上传成功',{ duration:'long(3500ms)', type:'div' });
                             //追加图片预览 <span class="iconfont icon-close" onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>
                             //									<input type="hidden" />
-                            var imgs = "<div id=\"close_id\"><img src='<%=basePathNuName%>shareFolder"+obj.path+"'></img><span class=\"iconfont icon-close\" onclick=\"closeImg('+"+obj.id+"',"+"'"+obj.path+"');\"></span>\n</div>";
+                            var imgs = "<div id=\"close_id\"><img src='<%=Constants.FTP_SHARE_FLODER%>"+obj.path+"'></img><span class=\"iconfont icon-close\" onclick=\"closeImg('+"+obj.id+"',"+"'"+obj.path+"');\"></span>\n</div>";
                             $(".datum-upload.site-width").append(imgs);
-                            //$("#img_upload").append("<div id='close_id'><img src='<%=basePathNuName%>shareFolder${siteQuestionInfo.imgPath}' /></div>");
                             $("#id").val(obj.id);
-                            //setTimeout("location.reload()",0);
 
                         } else {
                             mui.toast('上传失败',{ duration:'long(3500ms)', type:'div' });
-                            //追加图片预览
                         }
                     }
                 });

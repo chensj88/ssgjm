@@ -277,7 +277,7 @@
 			GROUP BY A.PM_ID,A.C_ID,A.SERIAL_NO
 	</select>
 
-
+	<!--获取组成员信息-->
 	<select id="selectTaskTeamMemebers" parameterType="etContractTask" resultType="string">
 		   SELECT
 				 stuff((
@@ -288,4 +288,15 @@
 					  FROM ET_CONTRACT_TASK A
 					  WHERE  ID = #{id}
 	</select>
+
+	<!--查询当前的首字母信息-->
+	<!--<select id="selectConstractTaskFirstColumn" parameterType="etContractTask" resultType="map">-->
+		<!--SELECT-->
+		<!--DISTINCT UPPER(substring(a.BZ,1,1))-->
+		<!--FROM dbo.ET_CONTRACT_TASK a-->
+		<!--<if test="serialNo != null ">-->
+			<!--AND a.SERIAL_NO = #{serialNo}-->
+		<!--</if>-->
+	<!--</select>-->
+
 </mapper>
