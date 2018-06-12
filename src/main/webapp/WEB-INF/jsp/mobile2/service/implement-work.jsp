@@ -14,6 +14,7 @@
 		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_8s9fwys71yxmvx6r.css"/>
 	</head>
 	<body>
+
 		<div class="wrap">
 			<div class="wrap-header">
 				<div class="header">
@@ -23,7 +24,9 @@
 				</div>
 			</div>
 			<div class="wrap-cnt">
-
+				<input id="userId" type="hidden" name="userId" value="${userId}">
+				<input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
+				<input id="openId" type="hidden" name="openId" value="${openId}">
 				<div>
 					<!--search-->
 					<div class="imple-work-search">
@@ -59,8 +62,8 @@
 				</div>
 
 
-				<div class="hide">
-					视频内容
+				<div class="hide" >
+
 				</div>
 				<div class="hide">
 					分享
@@ -80,7 +83,7 @@
 					<i class="iconfont icon-ck"></i>
 					查看
 				</div>
-				<div>
+				<div onclick="videoLoad();">
 					<i class="iconfont icon-sp"></i>
 					视频
 				</div>
@@ -106,8 +109,10 @@
 
 			}
 
-
-
+			function videoLoad() {
+                location.href="<%=basePath%>/mobile/trainVideoList/list.do?openId="+$("#openId").val()+"&userId="+$("#userId").val()+
+					"&serialNo="+$("#serialNo").val();
+            }
 
 		</script>
 	</body>
