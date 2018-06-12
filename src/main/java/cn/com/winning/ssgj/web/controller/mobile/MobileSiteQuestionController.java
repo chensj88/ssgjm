@@ -102,6 +102,7 @@ public class MobileSiteQuestionController  extends BaseController {
 
         return "mobile2/wechat/site-department";
     }
+
     @RequestMapping(value = "/changeDept.do")
     public String changeDept(Model model,String questionId,Long userId,String serialNo,String type,String siteName) {
         EtSiteQuestionInfo info = new EtSiteQuestionInfo();
@@ -229,4 +230,26 @@ public class MobileSiteQuestionController  extends BaseController {
         return map;
     }
 
+
+    @RequestMapping(value="/addOrUpdate.do", method= RequestMethod.POST)
+    @ResponseBody
+    @ILog
+    public Map<String,Object> addOrUpdate(EtSiteQuestionInfo info){
+        if(info.getId() == null){
+            long id = ssgjHelper.createSiteQuestionIdService();
+            info.setId(id);
+            info.setCreateTime(new Timestamp(new Date().getTime()));
+            info.setOperator(info.getCreator());
+            info.setOperatorTime(new Timestamp(new Date().getTime()));
+            getFacade().getEtSiteQuestionInfoService().createEtSiteQuestionInfo(info);
+        }else {
+            info.setOperator(info.getCreator());
+            info.setOperatorTime(new Timestamp(new Date().getTime()));
+            info.setCreator(null);
+            getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+        }
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
 }

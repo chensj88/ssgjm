@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
-    <link rel="stylesheet" href="<%=basePath%>resources/mobile/css/mui.indexedlist.css">
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.indexedlist.css">
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>

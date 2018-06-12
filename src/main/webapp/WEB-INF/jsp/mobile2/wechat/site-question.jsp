@@ -152,8 +152,6 @@
         }
 
         function save() {
-            var id = $('#id').val();
-            var priority = getListLevelValue();
             var siteName = $('#siteName').val();
             var productName = $('#productName').val();
             var menuName = $('#menuName').val();
@@ -176,14 +174,35 @@
                 return false;
             }
 
+
             var queryJson = {
                 id : $('#id').val(),
                 priority:getListLevelValue(),
                 siteName:$('#siteName').val(),
                 productName:$('#productName').val(),
                 menuName: $('#menuName').val(),
-                questionDesc:$('#questionDesc').val()
+                questionDesc:$('#questionDesc').val(),
+                creator: $('#userId').val()
+
             };
+
+            $.ajax({
+                type: "POST",
+                url:"<%=basePath%>mobile/wechatSiteQuestion/addOrUpdate.do",
+                data:queryJson,
+                cache : false,
+                dataType:"json",
+                async: false,
+                error: function(request) {
+                    mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                },
+                success: function(data) {
+                    if (data.status) {
+                        mui.toast('问题提交成功', {duration: 'long(3500ms)', type: 'div'});
+                        location.href="<%=basePath%>mobile/wechatSiteQuestion/list.do?serialNo=${serialNo}&userId=${userId}";
+                    }
+                }
+            });
             console.log(queryJson);
 
         }

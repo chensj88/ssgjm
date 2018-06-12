@@ -152,11 +152,11 @@ public class EtContractTaskServiceImpl implements EtContractTaskService {
     public List<MobileSiteQuestion<EtContractTask>> getWechatContractTaskData(String serialNo) {
         EtContractTask task = new EtContractTask();
         task.setSerialNo(serialNo);
-        List<String> mxs = etContractTaskDao.selectEtContractTaskFirstInitCode(task);
+        List<String> bzs = etContractTaskDao.selectEtContractTaskFirstInitCode(task);
         List<MobileSiteQuestion<EtContractTask>> data = new ArrayList<>();
-        for (String name : mxs) {
+        for (String name : bzs) {
             MobileSiteQuestion<EtContractTask> ctask = new MobileSiteQuestion<>();
-            task.setMx(name);
+            task.setBz(name);
             ctask.setGroupName(name);
             ctask.setListQuery(
                     "#".equals(name)?

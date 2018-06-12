@@ -39,7 +39,6 @@
         <if test="email != null and email != ''">and t.EMAIL = #{email}</if>
         <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
         <if test="(isDel != null ) ">and t.IS_DEL = #{isDel}</if>
-        and t.IS_DEL !=2
     </sql>
 
     <sql id="query-etUserInfo">
@@ -64,6 +63,7 @@
         <if test="email != null and email != ''">and t.EMAIL = #{email}</if>
         <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
         <if test="(isDel != null ) ">and t.IS_DEL = #{isDel}</if>
+        and t.IS_DEL !=2
     </sql>
 
     <select id="selectEtUserInfo" resultMap="etUserInfoResult" parameterType="etUserInfo">
