@@ -38,10 +38,10 @@
                     <div class="collect-list-dp">
                         <input type="hidden" id="siteName" name="siteName" value="${siteQuestionInfo.siteName}" >
                         <c:if test="${siteQuestionInfo.siteName != null}" >
-                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}"><span>${siteQuestionInfo.map.get("deptName")}</span><i class="iconfont icon-fanhui-copy"></i></a>
+                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}&type=1"><span>${siteQuestionInfo.map.get("deptName")}</span><i class="iconfont icon-fanhui-copy"></i></a>
                         </c:if>
                         <c:if test="${siteQuestionInfo.siteName == null}" >
-                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}"><span>--请选择--</span><i class="iconfont icon-fanhui-copy"></i></a>
+                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}&type=1"><span>--请选择--</span><i class="iconfont icon-fanhui-copy"></i></a>
                         </c:if>
                     </div>
                 </div>
@@ -50,10 +50,10 @@
                     <div class="collect-list-dp">
                         <input id="productName" name="productName" value="${siteQuestionInfo.productName}" type="hidden"/>
                         <c:if test="${siteQuestionInfo.productName != null}" >
-                            <a href="#"><span>${siteQuestionInfo.map.get("plName")}</span><i class="iconfont icon-fanhui-copy"></i></a>
+                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}&type=2"><span>${siteQuestionInfo.map.get("plName")}</span><i class="iconfont icon-fanhui-copy"></i></a>
                         </c:if>
                         <c:if test="${siteQuestionInfo.productName == null}" >
-                            <a href="#"><span>--请选择--</span><i class="iconfont icon-fanhui-copy"></i></a>
+                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}&type=2"><span>--请选择--</span><i class="iconfont icon-fanhui-copy"></i></a>
                         </c:if>
                     </div>
                 </div>

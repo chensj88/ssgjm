@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.service;
 import java.util.List;
 
 import cn.com.winning.ssgj.domain.EtContractTask;
+import cn.com.winning.ssgj.domain.MobileSiteQuestion;
 
 /**
  * Coder AutoGenerator generate.
@@ -38,4 +39,8 @@ public interface EtContractTaskService {
     void generateEtContractTask(EtContractTask task, String path);
 
 	String checkEtContractTaskIsUse(EtContractTask task);
+
+    List<String> getEtContractTaskFirstInitCode(String serialNo);
+
+	List<MobileSiteQuestion<EtContractTask>> getWechatContractTaskData(String serialNo);
 }

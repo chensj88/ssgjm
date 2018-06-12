@@ -10,6 +10,8 @@ import javax.annotation.Resource;
 import cn.com.winning.ssgj.base.exception.SSGJException;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.base.util.StringUtil;
+import cn.com.winning.ssgj.domain.EtDepartment;
+import cn.com.winning.ssgj.domain.MobileSiteQuestion;
 import cn.com.winning.ssgj.domain.support.Row;
 import org.springframework.stereotype.Service;
 
@@ -137,6 +139,32 @@ public class EtContractTaskServiceImpl implements EtContractTaskService {
             msg += "系统在站点安装中使用,";
         }
         return msg;
+    }
+
+    @Override
+    public List<String> getEtContractTaskFirstInitCode(String serialNo) {
+        EtContractTask task = new EtContractTask();
+        task.setSerialNo(serialNo);
+        return etContractTaskDao.selectEtContractTaskFirstInitCode(task);
+    }
+
+    @Override
+    public List<MobileSiteQuestion<EtContractTask>> getWechatContractTaskData(String serialNo) {
+        EtContractTask task = new EtContractTask();
+        task.setSerialNo(serialNo);
+        List<String> mxs = etContractTaskDao.selectEtContractTaskFirstInitCode(task);
+        List<MobileSiteQuestion<EtContractTask>> data = new ArrayList<>();
+        for (String name : mxs) {
+            MobileSiteQuestion<EtContractTask> ctask = new MobileSiteQuestion<>();
+            task.setMx(name);
+            ctask.setGroupName(name);
+            ctask.setListQuery(
+                    "#".equals(name)?
+                            etContractTaskDao.selectWechatContractTaskDataForNum(task) :
+                            etContractTaskDao.selectWechatContractTaskData(task));
+            data.add(ctask);
+        }
+        return data;
     }
 
 }
