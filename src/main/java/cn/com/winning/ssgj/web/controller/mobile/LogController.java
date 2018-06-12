@@ -1,24 +1,15 @@
 package cn.com.winning.ssgj.web.controller.mobile;
 
-import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
-import cn.com.winning.ssgj.base.util.Base64Utils;
-import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.base.util.StringUtil;
-import cn.com.winning.ssgj.domain.EtFloorQuestionInfo;
 import cn.com.winning.ssgj.domain.EtLog;
-import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -41,12 +32,12 @@ public class LogController extends BaseController {
         Long sourceId = etLog.getSourceId();
         if (StringUtil.isEmptyOrNull(serialNo) || sourceId == null) {
             //当缺少参数客户号或者sourceId，则无数据
-            return "/mobile2/service/log";
+            return "mobile2/service/update-record";
         }
         List<EtLog> etLogList = getFacade().getEtLogService().getEtLogList(etLog);
         resultMap.put("logs", etLogList);
         model.addAllAttributes(resultMap);
-        return "/mobile2/service/log";
+        return "mobile2/service/update-record";
     }
 
 //    @RequestMapping(value = "/add.do")
