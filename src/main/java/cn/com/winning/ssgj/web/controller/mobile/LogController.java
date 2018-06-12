@@ -28,20 +28,23 @@ import java.util.*;
  **/
 @Controller
 @CrossOrigin
-@RequestMapping("/mobile/log")
+@RequestMapping("/mobile2/log")
 public class LogController extends BaseController {
     @Autowired
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/list.do")
     public String floorQuestionList(Model model, EtLog etLog) {
-        return "/mobile/service/floor-question";
+        List<EtLog> etLogList = getFacade().getEtLogService().getEtLogList(new EtLog());
+        resultMap.put("logs", etLogList);
+        model.addAllAttributes(resultMap);
+        return "/mobile2/service/log";
     }
 
     @RequestMapping(value = "/add.do")
     @ResponseBody
     public Map<String, Object> add(EtLog etLog) {
-        this.addEtLog(etLog.getSerialNo(),  etLog.getSourceType(), etLog.getSourceId(), etLog.getContent(), etLog.getStatus(), etLog.getOperator());
+        this.addEtLog(etLog.getSerialNo(), etLog.getSourceType(), etLog.getSourceId(), etLog.getContent(), etLog.getStatus(), etLog.getOperator());
         resultMap.put("msg", "新增操作日志成功。");
         return resultMap;
     }
