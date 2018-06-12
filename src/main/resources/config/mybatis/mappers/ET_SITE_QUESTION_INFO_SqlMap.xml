@@ -91,7 +91,7 @@
         <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
         <if test="batchNo != null and batchNo != ''">and t.BATCH_NO = #{batchNo}</if>
         <if test="(reasonType != null and reasonType != '') or reasonType == 0">and t.REASON_TYPE = #{reasonType}</if>
-        <if test="(manuscriptStatus != null and manuscriptStatus != '') or manuscriptStatus == 0">andt.MANUSCRIPT_STATUS = #{manuscriptStatus}</if>
+        <if test="(manuscriptStatus != null and manuscriptStatus != '') or manuscriptStatus == 0">and t.MANUSCRIPT_STATUS = #{manuscriptStatus}</if>
         <if test="devUser != null and devUser != ''">and t.DEV_USER = #{devUser}</if>
         <if test="devUserName != null and devUserName != ''">and t.DEV_USER_NAME = #{devUserName}</if>
         <if test="linkman != null and linkman != ''">and t.LINKMAN = #{linkman}</if>

@@ -103,7 +103,7 @@
     })
 
     function detail(id){
-        location.href="<%=basePath%>mobile/wechatSiteQuestion/add.do?questionId="+id+"&serialNo=${serialNo}&userId=${userId}";
+        location.href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?questionId="+id+"&serialNo=${serialNo}&userId=${userId}";
     }
 </script>
 </body>
