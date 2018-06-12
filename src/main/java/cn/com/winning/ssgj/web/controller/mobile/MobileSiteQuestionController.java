@@ -111,16 +111,16 @@ public class MobileSiteQuestionController  extends BaseController {
             info.setCId((long)-2); //11980游客
             info.setPmId((long)-2);//11980游客
             info.setSerialNo(serialNo);
+            info.setSiteName(siteName);
             info.setCreator(userId);
             info.setCreateTime(new Timestamp(new Date().getTime()));
             info.setOperator(userId);
             info.setOperatorTime(new Timestamp(new Date().getTime()));
             super.getFacade().getEtSiteQuestionInfoService().createEtSiteQuestionInfo(info);
         }
+        info = new EtSiteQuestionInfo();
         info.setId(Long.parseLong(questionId));
         model.addAttribute("siteQuestionInfo",this.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info));
-        model.addAttribute("deptList", this.getDepartmentList(Long.parseLong(serialNo),null));
-        model.addAttribute("appList", this.getProductDictInfo(serialNo));
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
         return "mobile2/wechat/site-question";
