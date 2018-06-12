@@ -36,7 +36,6 @@ public class LogController extends BaseController {
 
     @RequestMapping(value = "/list.do")
     public String floorQuestionList(Model model, EtLog etLog) {
-//        List<EtLog> etLogList = getFacade().getEtLogService().getEtLogList(new EtLog());
         //参数校验
         String serialNo = etLog.getSerialNo();
         Long sourceId = etLog.getSourceId();
@@ -50,12 +49,12 @@ public class LogController extends BaseController {
         return "/mobile2/service/log";
     }
 
-    @RequestMapping(value = "/add.do")
-    @ResponseBody
-    public Map<String, Object> add(EtLog etLog) {
-        this.addEtLog(etLog.getSerialNo(), etLog.getSourceType(), etLog.getSourceId(), etLog.getContent(), etLog.getStatus(), etLog.getOperator());
-        resultMap.put("msg", "新增操作日志成功。");
-        return resultMap;
-    }
+//    @RequestMapping(value = "/add.do")
+//    @ResponseBody
+//    public Map<String, Object> add(EtLog etLog) {
+//        this.addEtLog(etLog.getSerialNo(), etLog.getSourceType(), etLog.getSourceId(), etLog.getContent(), etLog.getStatus(), etLog.getOperator());
+//        resultMap.put("msg", "新增操作日志成功。");
+//        return resultMap;
+//    }
 
 }
