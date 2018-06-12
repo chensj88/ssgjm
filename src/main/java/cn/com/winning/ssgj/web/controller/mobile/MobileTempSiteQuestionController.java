@@ -19,14 +19,15 @@ public class MobileTempSiteQuestionController  extends BaseController {
 
     @RequestMapping(value = "/list.do")
     public String list(Model model, String parameter,String processStatus) {
-        parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
+       // parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
+        parameter = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
         try{
             SysUserInfo info = super.getUserInfo(parameter);
             EtSiteQuestionInfo qinfo = new EtSiteQuestionInfo();
             //qinfo.setCreator(Long.parseLong(info.getUserid()));
             //qinfo.setSerialNo(String.valueOf(info.getSsgs()));
-            qinfo.setCreator((long)100008);
-            qinfo.setSerialNo("11980");
+            qinfo.setCreator((long)7110);
+            qinfo.setSerialNo("11403");
             if("1".equals(processStatus)){
                 qinfo.getMap().put("process_status_yes","4,5");
             }else{
