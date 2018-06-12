@@ -417,10 +417,6 @@ span.nosolve{
 	color: #469CFF;
 	border: 1px solid #9DCBFF;
 }
-.row>span.D{
-	color: #469CFF;
-	border: 1px solid #FFFFFF;
-}
 .row>i{
 	margin-right: 10px;
 	color: #9797;
@@ -538,4 +534,20 @@ span.nosolve{
 	padding: 0px 10px;
 	color: #999999;
 	font-size: 12px;
+}
+/*更新记录*/
+.update-record-item{
+	padding: 10px;
+	font-size: 13px;
+	border-bottom: 1px dashed #F1F1F1;
+}
+.update-record-item p{
+	margin-bottom: 5px;
+	color: #999999;
+}
+.update-record-item p>span{
+	float: right;
+}
+.update-record-item strong{
+	color: #333333;
 }

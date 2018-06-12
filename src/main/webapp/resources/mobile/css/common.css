@@ -338,3 +338,17 @@ table{
 	display: flex;
 	margin-bottom: 10px;
 }
+/*reset mui*/
+.mui-popup-title{
+	font-size: 14px;
+	color: #666666;
+}
+.mui-popup-button{
+	color: #666;
+	font-size: 14px;
+}
+.mui-popup-button.mui-popup-button-bold{
+	font-size: 14px;
+	color: #17A7FF;
+	font-weight: normal;
+}
