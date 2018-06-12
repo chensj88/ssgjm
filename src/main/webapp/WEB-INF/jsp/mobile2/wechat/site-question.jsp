@@ -12,21 +12,219 @@
     <head>
         <meta charset="UTF-8"/>
         <title>新增采集</title>
-        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+        <meta charset="UTF-8" />
+        <title>新增采集</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
         <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/normalize.css" />
         <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
         <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
         <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
-        <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_8s9fwys71yxmvx6r.css"/>
-        <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="<%=basePath%>resources/js/common.js" type="text/javascript" charset="utf-8"></script>
+        <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css" />
+        <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
     </head>
     <body>
     <input id="userId" type="hidden" name="userId" value="${userId}">
     <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
     <input id="id" type="hidden" name="id" value="${siteQuestionInfo.id}">
+        <div class="wrap">
+            <div class="wrap-header">
+                <div class="header">
+                    <span class="mui-icon mui-icon-arrowleft"></span>
+                    <div>新增采集</div>
+                    <a href="<%=basePath%>mobile/wechatSiteQuestion/list.do?serialNo=${serialNo}&userId=${userId}">采集列表</a>
+                </div>
+            </div>
+            <div class="wrap-cnt">
+                <div class="column-2 collect-list">
+                    <strong>科室病区</strong>
+                    <div class="collect-list-dp">
 
-    <div class="wrap">
+                        <a href="#">${siteQuestionInfo.map.deptName}<i class="iconfont icon-fanhui-copy"></i></a>
+                    </div>
+                </div>
+                <div class="column-2 collect-list">
+                    <strong>系统名称</strong>
+                    <div class="collect-list-dp">
+                        <a href="#">${siteQuestionInfo.map.plName}<i class="iconfont icon-fanhui-copy"></i></a>
+                    </div>
+                </div>
+                <div class="column-2 collect-list">
+                    <strong>问题标题</strong>
+                    <div class="collect-list-text">
+                        <input type="text" title="${siteQuestionInfo.menuName}" value="${siteQuestionInfo.menuName}">
+                    </div>
+                </div>
+                <div class="column-2 collect-list">
+                    <strong>问题描述</strong>
+                    <div>
+                        <textarea title="">
+                            ${siteQuestionInfo.questionDesc}
+                        </textarea>
+                    </div>
+                </div>
+                <div class="space"></div>
+                <div class="column-2 collect-list">
+                    <strong>优先等级</strong>
+                </div>
+                <div class="column-2 collect-list" >
+                    <div class="collect-list-level">
+                        <span>A级</span>
+                        <span>B级</span>
+                        <span class="level">C级</span>
+                        <span>D级</span>
+                    </div>
+                </div>
+                <p class="collect-list-level_p">注：C等级项目完成时间为7个工作日</p>
+                <div class="space"></div>
+                <div class="column-2 collect-list">
+                    <strong>影音资料</strong>
+                </div>
+                <div class="column-2 collect-list">
+                    <div class="datum-upload site-width">
+                        <div>
+                            <i class="iconfont icon-plus"></i>
+                            <input type="file" id="uploadFile" name="uploadFile" onchange="fileSelected2();"  />
+                        </div>
+                        <div>
+                            <img src="<%=basePath%>resources/mobile/images/1.jpg"/>
+                            <span class="iconfont icon-close" onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="wrap-foot large-btn">
+                <a href="#"><span>保存</span></a>
+            </div>
+        </div>
+    </body>
+    <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+    <script src="<%=basePath%>resources/mobile/js/mui.js" type="text/javascript" charset="utf-8"></script>
+    <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        $(function(){
+            /*优先等级切换*/
+            $('.collect-list-level>span').click(function () {
+                $(this).addClass('level').siblings('span').removeClass('level');
+            });
+
+            setListLevel(${siteQuestionInfo.priority});
+
+
+        })
+        //初始化优先级
+        function setListLevel(val){
+            var spanArr = $('.collect-list-level>span');
+            var valStr = '';
+            switch (val) {
+                case 1:
+                    valStr = 'A'
+                    break;
+                case 2:
+                    valStr = 'B'
+                    break;
+                case 3:
+                    valStr = 'C'
+                    break;
+                case 4:
+                    valStr = 'D'
+                    break;
+                default: 'D'
+            }
+            for(var i= 0;i<spanArr.length ; i++){
+                var text = $(spanArr[i]).text().substr(0,1);
+                if(text ===  valStr){
+                    $(spanArr[i]).addClass('level').siblings('span').removeClass('level');
+                }
+            }
+        }
+        function fileSelected2(){
+            //获取文件的内容
+            var userId = $("#userId").val();
+            var serialNo = $("#serialNo").val();
+            var old_id = $("#id").val();
+            var uploadFile = new FormData($("#file")[0]);
+            //判断上传的只能是图片
+            var f=document.getElementById("uploadFile").value;
+            if(f=="") { alert("请上传图片");return false;}
+            else {
+                if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(f)) {
+                    mui.toast('图片类型必须是.gif,jpeg,jpg,png中的一种',{ duration:'long(3500ms)', type:'div' });
+                    return false;
+                }
+            }
+
+            if("undefined" != typeof(uploadFile) && uploadFile != null && uploadFile != ""){
+                $.ajax({
+                    type: "POST",
+                    url:"<%=basePath%>mobile/siteQuestionInfo/saveAndUpdate.do?userId="+userId+"&serialNo="+serialNo+"&old_id="+old_id,
+                    data:uploadFile,
+                    cache : false,
+                    async: false,
+                    contentType: false, //不设置内容类型
+                    processData: false, //不处理数据
+                    error: function(request) {
+                        mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                        console.log(request);
+                    },
+                    success: function(data) {
+                        var obj = JSON.parse(data);
+                        if(obj.status == "1") {
+                            mui.toast('上传成功',{ duration:'long(3500ms)', type:'div' });
+                            //追加图片预览 <span class="iconfont icon-close" onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>
+                            //									<input type="hidden" />
+                            var imgs = "<div id=\"close_id\"><img src='<%=basePathNuName%>shareFolder"+obj.path+"'></img><span class=\"iconfont icon-close\" onclick=\"closeImg('+"+obj.id+"',"+"'"+obj.path+"');\"></span>\n</div>";
+                            $(".datum-upload.site-width").append(imgs);
+                            //$("#img_upload").append("<div id='close_id'><img src='<%=basePathNuName%>shareFolder${siteQuestionInfo.imgPath}' /></div>");
+                            $("#id").val(obj.id);
+                            //setTimeout("location.reload()",0);
+
+                        } else {
+                            mui.toast('上传失败',{ duration:'long(3500ms)', type:'div' });
+                            //追加图片预览
+                        }
+                    }
+                });
+
+
+            }else{
+                alert("选择的文件无效！请重新选择");
+            }
+
+        }
+
+        //删除图片
+        function closeImg(e,imgPath){
+            if(e==null || e ==''){
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                url:"<%=basePath%>mobile/siteQuestionInfo/deleteImg.do",
+                data:{id:e,imgPath:imgPath},
+                cache : false,
+                dataType:"json",
+                async: false,
+                error: function(request) {
+                    mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                },
+                success: function(data) {
+                    if(data.status) {
+                        mui.toast('删除成功',{ duration:'long(3500ms)', type:'div' });
+                        //追加图片预览
+                        //setTimeout("location.reload()",3500);
+                    } else {
+                        mui.toast('删除失败',{ duration:'long(3500ms)', type:'div' });
+                        //追加图片预览
+                        //setTimeout("location.reload()",3500);
+
+                    }
+                }
+            });
+
+        }
+    </script>
+</html>
+<%--    <div class="wrap">
         <div class="wrap-header">
             <div class="header">
                 <span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
@@ -41,10 +239,10 @@
                     <i class="iconfont icon-search"></i>
                     <input type="text" placeholder="请输入搜索内容"/>
                 </div>
-                <%--<div class="wap-tab">--%>
-                    <%--<span class="active">未确认（23）</span>--%>
-                    <%--<span>已确认（27）</span>--%>
-                <%--</div>--%>
+                &lt;%&ndash;<div class="wap-tab">&ndash;%&gt;
+                    &lt;%&ndash;<span class="active">未确认（23）</span>&ndash;%&gt;
+                    &lt;%&ndash;<span>已确认（27）</span>&ndash;%&gt;
+                &lt;%&ndash;</div>&ndash;%&gt;
                 <div class="space"></div>
                 <div class="wap-tab-cnt">
                     <div class="datum-report padding-btm-20 padding-top-15">
@@ -268,26 +466,26 @@
                     $("#ul3").html("");
 
                     //加载菜单数据
-                    <%--$.ajax({--%>
-                    <%--type: "POST",--%>
-                    <%--url:"<%=basePath%>/mobile/siteQuestionInfo/loadData.do",--%>
-                    <%--data:{type:2,name:productName,serialNo:serialNo},--%>
-                    <%--dataType:"json",--%>
-                    <%--cache : false,--%>
-                    <%--error: function(request) {--%>
-                    <%--mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })--%>
-                    <%--console.log(request);--%>
-                    <%--},--%>
-                    <%--success: function(data) {--%>
-                    <%--console.log(data);--%>
-                    <%--var json=eval(data.xtJsons);--%>
-                    <%--$.each(json,function(i,item){--%>
-                    <%--str_html3=str_html3+"<li data-val='"+json[i].cpmc+"'>"+json[i].cpmc+"</li>";--%>
+                    &lt;%&ndash;$.ajax({&ndash;%&gt;
+                    &lt;%&ndash;type: "POST",&ndash;%&gt;
+                    &lt;%&ndash;url:"<%=basePath%>/mobile/siteQuestionInfo/loadData.do",&ndash;%&gt;
+                    &lt;%&ndash;data:{type:2,name:productName,serialNo:serialNo},&ndash;%&gt;
+                    &lt;%&ndash;dataType:"json",&ndash;%&gt;
+                    &lt;%&ndash;cache : false,&ndash;%&gt;
+                    &lt;%&ndash;error: function(request) {&ndash;%&gt;
+                    &lt;%&ndash;mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })&ndash;%&gt;
+                    &lt;%&ndash;console.log(request);&ndash;%&gt;
+                    &lt;%&ndash;},&ndash;%&gt;
+                    &lt;%&ndash;success: function(data) {&ndash;%&gt;
+                    &lt;%&ndash;console.log(data);&ndash;%&gt;
+                    &lt;%&ndash;var json=eval(data.xtJsons);&ndash;%&gt;
+                    &lt;%&ndash;$.each(json,function(i,item){&ndash;%&gt;
+                    &lt;%&ndash;str_html3=str_html3+"<li data-val='"+json[i].cpmc+"'>"+json[i].cpmc+"</li>";&ndash;%&gt;
 
-                    <%--});--%>
-                    <%--$("#ul3").html(str_html3);--%>
-                    <%--}--%>
-                    <%--});--%>
+                    &lt;%&ndash;});&ndash;%&gt;
+                    &lt;%&ndash;$("#ul3").html(str_html3);&ndash;%&gt;
+                    &lt;%&ndash;}&ndash;%&gt;
+                    &lt;%&ndash;});&ndash;%&gt;
                 }
             });
 
@@ -385,6 +583,5 @@
             }
 
         });
-    </script>
-    </body>
-    </html>
+    </script>--%>
+
