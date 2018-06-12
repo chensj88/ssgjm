@@ -34,9 +34,7 @@
                     <div class="col-xs-12">
                         <div class="col-xs-8" style="text-align: left;">
                             <span>
-                                <fmt:formatDate value="${log.operatorTime}"
-                                                pattern="yyyy-MM-dd HH:mm:ss">
-                                </fmt:formatDate>
+                                    <fmt:formatDate value="${log.operatorTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
                             </span>
                         </div>
                         <div class="col-xs-4" style="text-align: right;"><span>${log.map.userName}</span>
