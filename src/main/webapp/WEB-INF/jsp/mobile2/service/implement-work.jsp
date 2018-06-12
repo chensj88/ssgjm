@@ -37,101 +37,22 @@
 					<div class="space"></div>
 					<div class="wap-tab-cnt">
 						<div id="item0">
-							<div>
+							<c:forEach var="vwr" items="${questionList}">
+								<div>
 								<a href="#" class="row">
-									<i class="iconfont icon-time"></i>06-04<b>（6条）</b>
+								<i class="iconfont icon-time">${vwr.timeMmdd}</i>
+								<b>（ ${vwr.num} 条）</b>
 								</a>
-								<a href="#" class="row active">
-									五楼护士站-NIS部署-特大病号病号
-									<span class="A">A</span>
-								</a>
-								<a href="#" class="row">
-									五楼护士站-NIS部署-特大病号病号
-									<span class="B">B</span>
-								</a>
-								<a href="#" class="row">
-									五楼护士站-NIS部署-特大病号病号
-									<span class="C">C</span>
-								</a>
-								<a href="#" class="row">
-									五楼护士站-NIS部署-特大病号病号
-									<span class="A">A</span>
-								</a>
-								<a href="#" class="row">
-									五楼护士站-NIS部署-特大病号病号
-									<span class="A">A</span>
-								</a>
-								<div class="space"></div>
-							</div>
-							<div>
-								<a href="#" class="row">
-									<i class="iconfont icon-time"></i>06-03<b>（6条）</b>
-								</a>
-								<a href="#" class="row">
-									五楼护士站-NIS部署-特大病号病号
-									<span class="A">A</span>
-								</a>
-								<a href="#" class="row">
-									五楼护士站-NIS部署-特大病号病号
-									<span class="B">B</span>
-								</a>
-								<a href="#" class="row">
-									五楼护士站-NIS部署-特大病号病号
-									<span class="C">C</span>
-								</a>
-								<div class="space"></div>
-							</div>
-						</div>
-						<div id="item1" class="hide">
-							<div>
-								<a href="#" class="row">
-									<i class="iconfont icon-time"></i>06-11<b>（6条）</b>
-								</a>
-								<a href="#" class="row active">
-									五楼护士站-NIS部署-特大病号病号
-									<span class="A">A</span>
-								</a>
-								<a href="#" class="row">
-									五楼护士站-NIS部署-特大病号病号
-									<span class="B">B</span>
-								</a>
-								<a href="#" class="row">
-									五楼护士站-NIS部署-特大病号病号
-									<span class="C">C</span>
-								</a>
-								<div class="space"></div>
-							</div>
-							<div>
-								<a href="#" class="row">
-									<i class="iconfont icon-time"></i>06-12<b>（6条）</b>
-								</a>
-								<a href="#" class="row active">
-									五楼护士站-NIS部署-特大病号病号
-									<span class="A">A</span>
-								</a>
-								<a href="#" class="row">
-									五楼护士站-NIS部署-特大病号病号
-									<span class="B">B</span>
-								</a>
-								<a href="#" class="row">
-									五楼护士站-NIS部署-特大病号病号
-									<span class="C">C</span>
-								</a>
-								<div class="space"></div>
-							</div>
-							<div>
-								<a href="#" class="row">
-									<i class="iconfont icon-time"></i>06-12<b>（6条）</b>
-								</a>
-								<a href="#" class="row">
-									五楼护士站-NIS部署-特大病号病号
-									<span class="A">A</span>
-								</a>
-								<a href="#" class="row">
-									五楼护士站-NIS部署-特大病号病号
-									<span class="A">A</span>
-								</a>
-							</div>
+								<c:forEach var="vwr1" items="${vwr.listQuery}">
+									<a href="#" class="row">
+												${vwr1.questionDesc}
+											<span class="${vwr1.map.priorityString}">
+													${vwr1.map.priorityString}
+											</span>
+									</a>
+								</c:forEach>
+								</div>
+								</c:forEach>
 						</div>
 					</div>
 				</div>
