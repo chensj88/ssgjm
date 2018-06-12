@@ -19,14 +19,20 @@ public class MobileTempSiteQuestionController  extends BaseController {
     @RequestMapping(value = "/list.do")
     public String list(Model model, String parameter) {
         parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
-        SysUserInfo info = super.getUserInfo(parameter);
-        EtSiteQuestionInfo questionInfo = new EtSiteQuestionInfo();
-        questionInfo.setCreator(info.getId());
-        questionInfo.setSerialNo(String.valueOf(info.getSsgs()));
-        List<EtSiteQuestionInfo> etSiteQuestionInfoList = super.getFacade().getEtSiteQuestionInfoService().selectMobileEtSiteQuestionInfo(questionInfo);
+        try{
+            SysUserInfo info = super.getUserInfo(parameter);
+            EtSiteQuestionInfo qinfo = new EtSiteQuestionInfo();
+            //qinfo.setCreator(Long.parseLong(info.getUserid()));
+            //qinfo.setSerialNo(String.valueOf(info.getSsgs()));
+            qinfo.setCreator((long)100008);
+            qinfo.setSerialNo("11980");
+            model.addAttribute("questionList", getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(qinfo));
+            model.addAttribute("userId", info.getUserid());
+            model.addAttribute("serialNo", info.getSsgs());
 
-
-
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         return "mobile2/service/implement-work";
     }
