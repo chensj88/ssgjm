@@ -676,6 +676,7 @@
           WHERE  CREATOR = #{creator}
           AND  SERIAL_NO = #{serialNo}
           AND SITE_NAME != ''
+        <if test="search_text != null and search_text != ''">and ( t.MENU_NAME LIKE '%${search_text}%' OR t.QUESTION_DESC LIKE '%${search_text}%')</if>
         <if test="map.process_status_no != null and map.process_status_no != null "> and
             PROCESS_STATUS not in  (${map.process_status_no})
         </if>

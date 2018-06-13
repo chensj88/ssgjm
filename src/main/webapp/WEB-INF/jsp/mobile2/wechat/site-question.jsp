@@ -60,15 +60,13 @@
                 <div class="column-2 collect-list">
                     <strong>问题标题</strong>
                     <div class="collect-list-text">
-                        <input type="text" title="${siteQuestionInfo.menuName}" value="${siteQuestionInfo.menuName}" id="menuName">
+                        <input type="text" title="${siteQuestionInfo.menuName}" value="${siteQuestionInfo.menuName.trim()}" id="menuName">
                     </div>
                 </div>
                 <div class="column-2 collect-list">
                     <strong>问题描述</strong>
                     <div>
-                        <textarea title="" id="questionDesc">
-                            ${siteQuestionInfo.questionDesc}
-                        </textarea>
+                        <textarea id="questionDesc" name="questionDesc">${siteQuestionInfo.questionDesc}</textarea>
                     </div>
                 </div>
                 <div class="space"></div>
@@ -95,14 +93,10 @@
                                 <i class="iconfont icon-plus"></i>
                                 <input type="file" id="uploadFile" name="uploadFile" onchange="fileSelected2();"  />
                             </div>
-                            <%--<div>--%>
-                                <%--<img src="<%=basePath%>resources/mobile/images/1.jpg"/>--%>
-                                <%--<span class="iconfont icon-close" onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>--%>
-                            <%--</div>--%>
                             <c:if test="${siteQuestionInfo.imgPath !=null && siteQuestionInfo.imgPath !=''}">
                                 <c:forEach var="img" items="${siteQuestionInfo.imgs}">
                                     <div id="close_id">
-                                        <img src="<%=Constants.FTP_SHARE_FLODER%>shareFolder${img}" />
+                                        <img src="<%=Constants.FTP_SHARE_FLODER%>${img}" />
                                         <span class="iconfont icon-close" onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>
                                         <input type="hidden" />
                                     </div>
@@ -122,6 +116,7 @@
     <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         $(function(){
+            enterprise.init();
             /*优先等级切换*/
             $('.collect-list-level>span').click(function () {
                 $(this).addClass('level').siblings('span').removeClass('level');
@@ -177,11 +172,12 @@
 
             var queryJson = {
                 id : $('#id').val(),
+                serialNo : $('#serialNo').val(),
                 priority:getListLevelValue(),
                 siteName:$('#siteName').val(),
                 productName:$('#productName').val(),
                 menuName: $('#menuName').val(),
-                questionDesc:$('#questionDesc').val(),
+                questionDesc:$('#questionDesc').val().trim(),
                 creator: $('#userId').val()
 
             };
@@ -267,7 +263,7 @@
             $.ajax({
                 type: "POST",
                 url:"<%=basePath%>mobile/siteQuestionInfo/deleteImg.do",
-                data:{id:e,imgPath:imgPath},
+                data:{id:e,imgPath:imgPath,serialNo:${serialNo},userId:${userId}},
                 cache : false,
                 dataType:"json",
                 async: false,
