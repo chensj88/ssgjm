@@ -44,7 +44,7 @@
                     <c:forEach var="vwr" items="${questionList}">
                         <div>
                             <a href="#" class="row">
-                                <i class="iconfont icon-time">${vwr.timeMmdd}</i>
+                                <i class="iconfont icon-time">${vwr.groupName}</i>
                                 <b>（ ${vwr.num} 条）</b>
                             </a>
                             <c:forEach var="vwr1" items="${vwr.listQuery}">

@@ -83,23 +83,37 @@ public class MobileSiteQuestionController  extends BaseController {
     }
 
     @RequestMapping(value = "/openDept.do")
-    public String openDept(Model model,Long userId,String serialNo,Long questionId) throws ParseException {
+    public String openDept(Model model,Long userId,String serialNo,Long questionId,String type) throws ParseException {
         EtDepartment dept = new EtDepartment();
         dept.setSerialNo(Long.parseLong(serialNo));
         model.addAttribute("questionId", questionId);
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
-        model.addAttribute("firstInit", getFacade().getEtDepartmentService().getEtDepartmentFirstInitCode(dept));
-        model.addAttribute("depts", getFacade().getEtDepartmentService().getWechatDepartmentData(dept));
+        model.addAttribute("type",type);
+        if("1".equals(type)){
+            model.addAttribute("title","科室病区");
+            model.addAttribute("firstInit", getFacade().getEtDepartmentService().getEtDepartmentFirstInitCode(dept));
+            model.addAttribute("depts", getFacade().getEtDepartmentService().getWechatDepartmentData(dept));
+        }else {
+            model.addAttribute("title","系统名称");
+            model.addAttribute("firstInit", getFacade().getEtContractTaskService().getEtContractTaskFirstInitCode(serialNo));
+            model.addAttribute("depts", getFacade().getEtContractTaskService().getWechatContractTaskData(serialNo));
+        }
+
         return "mobile2/wechat/site-department";
     }
+
     @RequestMapping(value = "/changeDept.do")
-    public String changeDept(Model model,String questionId,Long userId,String serialNo,String siteName) {
+    public String changeDept(Model model,String questionId,Long userId,String serialNo,String type,String siteName) {
         EtSiteQuestionInfo info = new EtSiteQuestionInfo();
         if(StringUtils.isNotBlank(questionId)) {
             info.setId(Long.parseLong(questionId));
             info = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info);
-            info.setSiteName(siteName);
+            if("1".equals(type)){
+                info.setSiteName(siteName);
+            }else {
+                info.setProductName(siteName);
+            }
             info.setOperator(userId);
             info.setOperatorTime(new Timestamp(new Date().getTime()));
             super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
@@ -111,7 +125,11 @@ public class MobileSiteQuestionController  extends BaseController {
             info.setCId((long)-2); //11980游客
             info.setPmId((long)-2);//11980游客
             info.setSerialNo(serialNo);
-            info.setSiteName(siteName);
+            if("1".equals(type)){
+                info.setSiteName(siteName);
+            }else {
+                info.setProductName(siteName);
+            }
             info.setCreator(userId);
             info.setCreateTime(new Timestamp(new Date().getTime()));
             info.setOperator(userId);
@@ -212,4 +230,26 @@ public class MobileSiteQuestionController  extends BaseController {
         return map;
     }
 
+
+    @RequestMapping(value="/addOrUpdate.do", method= RequestMethod.POST)
+    @ResponseBody
+    @ILog
+    public Map<String,Object> addOrUpdate(EtSiteQuestionInfo info){
+        if(info.getId() == null){
+            long id = ssgjHelper.createSiteQuestionIdService();
+            info.setId(id);
+            info.setCreateTime(new Timestamp(new Date().getTime()));
+            info.setOperator(info.getCreator());
+            info.setOperatorTime(new Timestamp(new Date().getTime()));
+            getFacade().getEtSiteQuestionInfoService().createEtSiteQuestionInfo(info);
+        }else {
+            info.setOperator(info.getCreator());
+            info.setOperatorTime(new Timestamp(new Date().getTime()));
+            info.setCreator(null);
+            getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+        }
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
 }

@@ -290,13 +290,47 @@
 	</select>
 
 	<!--查询当前的首字母信息-->
-	<!--<select id="selectConstractTaskFirstColumn" parameterType="etContractTask" resultType="map">-->
-		<!--SELECT-->
-		<!--DISTINCT UPPER(substring(a.BZ,1,1))-->
-		<!--FROM dbo.ET_CONTRACT_TASK a-->
-		<!--<if test="serialNo != null ">-->
-			<!--AND a.SERIAL_NO = #{serialNo}-->
-		<!--</if>-->
-	<!--</select>-->
+	<select id="selectEtContractTaskFirstInitCode" parameterType="etContractTask" resultType="string">
+		SELECT  DISTINCT  t.BZ
+			  FROM (
+				SELECT
+				CASE  WHEN  UPPER(substring(a.BZ,1,1))  IN ('1','2','3','4','5','6','7','8','9','0') THEN '#'
+				ELSE UPPER(substring(a.BZ,1,1)) END  BZ
+				FROM ET_CONTRACT_TASK a
+				<where>
+					<if test="serialNo != null ">
+						AND a.SERIAL_NO = #{serialNo}
+					</if>
+				</where>
+			) t
+	</select>
+
+	<select id="selectWechatContractTaskData" resultMap="etContractTaskResult" parameterType="etContractTask">
+		SELECT
+		*
+		FROM ET_CONTRACT_TASK
+		<where>
+			<if test="serialNo != null ">
+				AND SERIAL_NO = #{serialNo}
+			</if>
+			<if test="bz != null and bz != '' ">
+				AND UPPER(substring(BZ,1,1)) = #{bz}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectWechatContractTaskDataForNum" resultMap="etContractTaskResult" parameterType="etContractTask">
+		SELECT
+		*
+		FROM ET_CONTRACT_TASK
+		<where>
+			<if test="serialNo != null ">
+				AND SERIAL_NO = #{serialNo}
+			</if>
+			<if test="bz != null and bz != '' ">
+				AND UPPER(substring(BZ,1,1)) IN ('1','2','3','4','5','6','7','8','9','0')
+			</if>
+		</where>
+	</select>
 
 </mapper>

@@ -11,6 +11,7 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.base.util.MD5;
+import cn.com.winning.ssgj.base.util.PinyinTools;
 import cn.com.winning.ssgj.domain.MobileSiteQuestion;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,6 +96,7 @@ public class EtDepartmentServiceImpl implements EtDepartmentService {
 						repeat.setDeptType(String.valueOf(ssgjHelper.createSysHospitalDeptTypeIdService()));
 					}
 					repeat.setDeptLocation(deptLocation);
+					repeat.setSerialName(PinyinTools.cn2GetFirstSpell(repeat.getDeptName()).toUpperCase());
 					this.etDepartmentDao.insertEntity(repeat);
 				}
 		}

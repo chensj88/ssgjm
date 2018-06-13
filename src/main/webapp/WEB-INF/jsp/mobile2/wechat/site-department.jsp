@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
-    <link rel="stylesheet" href="<%=basePath%>resources/mobile/css/mui.indexedlist.css">
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.indexedlist.css">
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
@@ -26,13 +26,13 @@
     <div class="wrap-header">
         <div class="header">
             <span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)" ></span>
-            <div>科室病区</div>
+            <div>${title}</div>
         </div>
     </div>
     <div class="wrap-cnt">
         <div id='list' class="mui-indexed-list">
             <div class="mui-indexed-list-search mui-input-row mui-search">
-                <input type="search" class="mui-input-clear mui-indexed-list-search-input" placeholder="搜索科室病区">
+                <input type="search" class="mui-input-clear mui-indexed-list-search-input" placeholder="搜索${title}">
             </div>
             <div class="mui-indexed-list-bar">
                 <c:forEach var="d1" items="${firstInit}">
@@ -43,13 +43,25 @@
             <div class="mui-indexed-list-inner">
                 <div class="mui-indexed-list-empty-alert">没有数据</div>
                 <ul class="mui-table-view">
-                    <c:forEach var="vmr" items="${depts}">
-                        <li data-group="${vmr.groupName}" class="mui-table-view-divider mui-indexed-list-group">${vmr.groupName}</li>
-                        <c:forEach var="vmr1" items="${vmr.listQuery}">
-                            <li data-value="${vmr1.id }" data-tags="${vmr1.serialName}" class="mui-table-view-cell mui-indexed-list-item"
-                                onclick="selectSiteName(${vmr1.id})">${vmr1.deptName}</li>
+                    <c:if test="${type == 1}">
+                        <c:forEach var="vmr" items="${depts}">
+                            <li data-group="${vmr.groupName}" class="mui-table-view-divider mui-indexed-list-group">${vmr.groupName}</li>
+                            <c:forEach var="vmr1" items="${vmr.listQuery}">
+                                <li data-value="${vmr1.id }" data-tags="${vmr1.serialName}" class="mui-table-view-cell mui-indexed-list-item"
+                                    onclick="selectSiteName(${vmr1.id})">${vmr1.deptName}</li>
+                            </c:forEach>
                         </c:forEach>
-                    </c:forEach>
+                    </c:if>
+                    <c:if test="${type == 2}">
+                        <c:forEach var="vmr" items="${depts}">
+                            <li data-group="${vmr.groupName}" class="mui-table-view-divider mui-indexed-list-group">${vmr.groupName}</li>
+                            <c:forEach var="vmr1" items="${vmr.listQuery}">
+                                <li data-value="${vmr1.id }" data-tags="${vmr1.mx}" class="mui-table-view-cell mui-indexed-list-item"
+                                    onclick="selectSiteName(${vmr1.id})">${vmr1.zxtmc}</li>
+                            </c:forEach>
+                        </c:forEach>
+                    </c:if>
+
                 </ul>
             </div>
         </div>
@@ -69,7 +81,7 @@
     });
 
     function selectSiteName(id){
-        location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&siteName="+id;
+            location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&siteName="+id;
     }
 </script>
 </html>
