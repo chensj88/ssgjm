@@ -19,7 +19,7 @@
 <div class="wrap">
     <div class="wrap-header">
         <div class="header">
-            <span class="mui-icon mui-icon-arrowleft"></span>
+            <span class="mui-icon mui-icon-arrowleft" onclick="window.history.go(-1);"></span>
             <div>更新记录</div>
         </div>
     </div>

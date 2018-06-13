@@ -474,7 +474,7 @@ public class Constants implements Serializable {
         public static final int RP_BB = 2;
     }
 
-    public class DictInfo{
+    public class DictInfo {
         /**
          * 地区信息
          */
@@ -484,11 +484,11 @@ public class Constants implements Serializable {
          */
         public static final String AUDI_TYPE = "audiType";
         /**
-         *数据类型
+         * 数据类型
          */
         public static final String DATA_TYPE = "dataType";
         /**
-         *难度级别
+         * 难度级别
          */
         public static final String DIFFCULT_LEVEL = "diffcultLevel";
         /**
@@ -573,4 +573,30 @@ public class Constants implements Serializable {
         public static final String VIDEO_TYPE = "videoType";
 
     }
+
+    /**
+     * 新建（待分配）
+     */
+    public static final int CREATE_UNALLOCATED = 1;
+    /**
+     * 已分配（未接受）
+     */
+    public static final int ALLOCATED_UNACCEPTED = 2;
+    /**
+     * 接受（未处理）
+     */
+    public static final int ACCEPTED_UNTREATED = 3;
+    /**
+     * 已处理（完成）
+     */
+    public static final int TREATED_COMPLETE = 4;
+    /**
+     * 院方确认完成（结束）
+     */
+    public static final int CONFIRM_END = 5;
+    /**
+     * 院方打回
+     */
+    public static final int REFUSE = 6;
+
 }
