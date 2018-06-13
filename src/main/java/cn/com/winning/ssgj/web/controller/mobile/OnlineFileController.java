@@ -495,7 +495,7 @@ public class OnlineFileController extends BaseController {
                             str +=imgs[i]+";";
                         }
                     }
-                    process.setImgPath(str.substring(0,str.length()-1));
+                    //process.setImgPath(str.substring(0,str.length()-1));
                 }else{
                     process.setImgPath("");
                 }
