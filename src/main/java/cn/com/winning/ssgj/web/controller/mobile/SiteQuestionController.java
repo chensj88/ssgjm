@@ -46,7 +46,7 @@ public class SiteQuestionController extends BaseController {
     public String SiteQuestionList(Model model, String parameter) {
         //String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9"; //工号
         //String hospcode="11980";  //客户号
-        parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
+        //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
         EtSiteQuestionInfo entity = new EtSiteQuestionInfo();
         try{
             String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
@@ -278,17 +278,20 @@ public class SiteQuestionController extends BaseController {
             if(StringUtils.isBlank(info.getSiteName())){
                 super.getFacade().getEtSiteQuestionInfoService().removeEtSiteQuestionInfo(info);
             }else{
-
                 String[] imgs=info.getImgPath().split(";");
-                String str="";
-                for(int i = 0; i < imgs.length; i++) {
-                    if(imgPath.equals(imgs[i])){
+                String str= "";
+                if(imgs.length >1){
+                    for(int i = 0; i < imgs.length; i++) {
+                        if(imgPath.equals(imgs[i])){
 
-                    }else{
-                        str +=imgs[i]+";";
+                        }else{
+                            str +=imgs[i]+";";
+                        }
                     }
+                    info.setImgPath(str.substring(0,str.length()-1));
+                }else{
+                    info.setImgPath("");
                 }
-                info.setImgPath(str.substring(0,str.length()-1));
                 super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
             }
             map.put("status",true);

@@ -30,8 +30,8 @@
 				<div>
 					<!--search-->
 					<div class="imple-work-search">
-						<i class="iconfont icon-search"></i>
-						<input type="text" placeholder="请输入搜索内容"/>
+						<i class="iconfont icon-search" onclick="search();"></i>
+						<input id="search_text" type="text" placeholder="请输入搜索内容"/>
 					</div>
 					<!--tab-->
 					<div class="wap-tab">
@@ -66,10 +66,10 @@
 
 				</div>
 				<div class="hide">
-					分享
+					正在建设中
 				</div>
 				<div class="hide">
-					我的
+					正在建设中
 				</div>
 			</div>
 			<!--新增-->
@@ -112,6 +112,10 @@
 			function videoLoad() {
                 location.href="<%=basePath%>/mobile/trainVideoList/list.do?openId="+$("#openId").val()+"&userId="+$("#userId").val()+
 					"&serialNo="+$("#serialNo").val();
+            }
+
+            function  search() {
+				location.href="<%=basePath%>/mobile/tempSiteQuestion/list.do?search_text="+$("#search_text").val();
             }
 
 		</script>
