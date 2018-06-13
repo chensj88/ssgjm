@@ -108,8 +108,8 @@ public class EtSiteQuestionInfoController extends BaseController {
         result.put("nameList", nameList);
         result.put("numList", numList);
         //产品信息更
-        /*result.put("plList", this.getProductDictInfo(info.getSerialNo()));*/
-        result.put("plList", this.getProductLineList());
+        result.put("plList", this.getProductDictInfo(info.getSerialNo()));
+        /*result.put("plList", this.getProductLineList());*/
         result.put("deptList", this.getDepartmentList(Long.valueOf(serialNo), null));
         return result;
     }
