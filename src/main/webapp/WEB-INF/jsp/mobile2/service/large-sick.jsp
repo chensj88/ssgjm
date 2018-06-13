@@ -104,11 +104,13 @@
 
 
     function status(val,suggest){
-        var id =${siteQuestionInfo.id};
+        var id = ${siteQuestionInfo.id};
+        var userId = ${userId};
+        var serialNo = ${serialNo};
         $.ajax({
             type: "POST",
             url:"<%=basePath%>/mobile/tempSiteQuestion/processStatus.do",
-            data:{id:id,val:val,suggest:suggest},
+            data:{id:id,val:val,suggest:suggest,serialNo:serialNo,userId:userId},
             dataType:"json",
             error: function(request) {
                 mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })

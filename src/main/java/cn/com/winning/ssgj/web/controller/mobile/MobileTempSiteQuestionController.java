@@ -32,12 +32,12 @@ public class MobileTempSiteQuestionController  extends BaseController {
     @RequestMapping(value = "/list.do")
     public String list(Model model, String parameter,String processStatus,String search_text) {
        // parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
-        parameter = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
+        //parameter = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
         try{
             SysUserInfo info = super.getUserInfo(parameter);
             EtSiteQuestionInfo qinfo = new EtSiteQuestionInfo();
-            qinfo.setCreator((long)7110);
-            qinfo.setSerialNo("11403");
+            qinfo.setCreator(info.getId());
+            qinfo.setSerialNo(String.valueOf(info.getSsgs()));
             qinfo.getMap().put("search_text",search_text);
             if("1".equals(processStatus)){
                 qinfo.getMap().put("process_status_yes","5");//已确认完成
@@ -47,7 +47,7 @@ public class MobileTempSiteQuestionController  extends BaseController {
 
             model.addAttribute("questionList", super.getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(qinfo));
             model.addAttribute("process_num",super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(qinfo));
-            model.addAttribute("userId", info.getUserid());
+            model.addAttribute("userId", 7110);
             model.addAttribute("serialNo", info.getSsgs());
             model.addAttribute("openId",info.getOpenId());
             model.addAttribute("active",processStatus);
@@ -97,13 +97,20 @@ public class MobileTempSiteQuestionController  extends BaseController {
      */
     @RequestMapping(value = "/processStatus.do", method ={RequestMethod.POST})
     @ResponseBody
-    public Map<String,String> processStatus(Long id,int val,String suggest) {
+    public Map<String,String> processStatus(Long id,int val,String suggest,Long userId,String serialNo) {
         Map<String,String> map = new HashMap<String,String>();
+        String msg ="";
         EtSiteQuestionInfo info = new EtSiteQuestionInfo();
         info.setId(id);
         info.setProcessStatus(val);
         info.setSuggest(suggest);
+        if(val == 5){
+            msg ="状态更改：院方确认完成";
+        }else{
+            msg ="状态更改：院方打回"+"院方意见："+suggest;
+        }
         int i = super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+        addEtLog(serialNo,"ET_SITE_QUESTION_INFO",info.getId(),msg,val,userId);
         return map;
     }
 

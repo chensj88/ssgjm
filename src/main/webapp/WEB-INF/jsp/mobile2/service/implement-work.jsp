@@ -18,15 +18,16 @@
 		<div class="wrap">
 			<div class="wrap-header">
 				<div class="header">
-					<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
+                    <span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
+                    <input id="userId" type="hidden" name="userId" value="${userId}">
+                    <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
+                    <input id="openId" type="hidden" name="openId" value="${openId}">
 					<div>实施工作</div>
-					<a href="#">采集列表</a>
+					<a href="<%=basePath%>/mobile/wechatSiteQuestion/list.do?userId=${userId}&serialNo=${serialNo}">采集列表</a>
 				</div>
 			</div>
 			<div class="wrap-cnt">
-				<input id="userId" type="hidden" name="userId" value="${userId}">
-				<input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
-				<input id="openId" type="hidden" name="openId" value="${openId}">
+
 				<div>
 					<!--search-->
 					<div class="imple-work-search">
@@ -35,8 +36,8 @@
 					</div>
 					<!--tab-->
 					<div class="wap-tab">
-						<span <c:if test="${active != '1'}"> class="active"</c:if> onclick="processStatus(0);">未确认（${process_num.map.get("numNo")}）</span>
-						<span <c:if test="${active == '1'}"> class="active"</c:if> onclick="processStatus(1);">已确认（${process_num.map.get("numOver")}）</span>
+						<span <c:if test="${active != '1'}"> class="active"</c:if> onclick="processStatus(0);">未确认（${process_num.map.get("numNo")==null?0:process_num.map.get("numNo")}）</span>
+						<span <c:if test="${active == '1'}"> class="active"</c:if> onclick="processStatus(1);">已确认（${process_num.map.get("numOver")==null?0:process_num.map.get("numOver")}）</span>
 					</div>
 					<div class="space"></div>
 					<div class="wap-tab-cnt">
