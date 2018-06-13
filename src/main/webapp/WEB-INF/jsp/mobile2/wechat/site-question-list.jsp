@@ -19,7 +19,7 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
-    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_8s9fwys71yxmvx6r.css"/>
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
 </head>
 <body>
 <input id="userId" type="hidden" name="userId" value="${userId}">
@@ -32,32 +32,35 @@
         </div>
     </div>
     <div class="wrap-cnt">
-        <div>
-            <!--search-->
-            <div class="imple-work-search">
-                <i class="iconfont icon-search" ></i>
-                <input type="text" placeholder="请输入搜索内容"/>
-            </div>
-            <div class="space"></div>
-            <div class="wap-tab-cnt">
-                <div>
-                    <c:forEach var="vwr" items="${questionList}">
-                        <div>
-                            <a href="#" class="row">
-                                <i class="iconfont icon-time">${vwr.groupName}</i>
-                                <b>（ ${vwr.num} 条）</b>
-                            </a>
-                            <c:forEach var="vwr1" items="${vwr.listQuery}">
-                                <a href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?serialNo=${serialNo}&userId=${userId}&questionId=${vwr1.id}" class="row">
-                                        ${vwr1.map.deptName}-${vwr1.menuName}
-                                        <span class="${vwr1.map.priorityString}">${vwr1.map.priorityString}</span>
-                                </a>
-                            </c:forEach>
+            <c:forEach var="vwr" items="${questionList}">
+                <a href="#" class="row">
+                    <i class="iconfont icon-time"></i>${vwr.groupName}<b>（${vwr.num}条）</b>
+                </a>
+                <ul id="OA_task_1" class="mui-table-view">
+                <c:forEach var="vwr1" items="${vwr.listQuery}">
+                    <li class="mui-table-view-cell">
+                        <div class="mui-slider-right mui-disabled">
+                            <a class="mui-btn mui-btn-red">删除</a>
                         </div>
-                        <div class="space"></div>
-                    </c:forEach>
-                </div>
-            </div>
+                        <div class="mui-slider-handle collect-item" onclick="detail(${vwr1.id})">
+                            <h3>${vwr1.map.deptName}-${vwr1.menuName}</h3>
+                            <p>
+                                <span class="${vwr1.map.priorityString}">${vwr1.map.priorityString}</span>
+                                <span>${vwr1.map.processStr}</span>
+                            </p>
+                        </div>
+                    </li>
+                    <li class="mui-table-view-cell">
+                        <div class="mui-slider-right mui-disabled">
+                            <a class="mui-btn mui-btn-red">删除</a>
+                        </div>
+                        <div class="mui-slider-handle">
+                            左滑显示删除按钮
+                        </div>
+                    </li>
+                </c:forEach>
+                </ul>
+            </c:forEach>
         </div>
         <div class="hide">
             视频内容
@@ -70,9 +73,9 @@
         </div>
     </div>
     <!--新增-->
-    <%--<a href="#" class="wrap-add">--%>
-        <%--<i class="iconfont icon-add"></i>--%>
-    <%--</a>--%>
+    <a href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?serialNo=${serialNo}&userId=${userId}" class="wrap-add">
+        <i class="iconfont icon-add"></i>
+    </a>
     <!--底部菜单-->
     <div class="wrap-foot">
         <div class="active">
