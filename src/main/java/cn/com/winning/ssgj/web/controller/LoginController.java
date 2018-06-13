@@ -91,7 +91,7 @@ public class LoginController extends BaseController {
             EtUserInfo temp = new EtUserInfo();
             temp.setUserCard(userid);
             temp.setIsDel(2);
-            EtUserInfo etUserInfo = getFacade().getEtUserInfoService().getEtUserInfo(temp);
+            EtUserInfo etUserInfo = getFacade().getEtUserInfoService().getAllEtUserInfo(temp);
             if (etUserInfo != null) {
                 //存在即为高权限用户，权限添加到session
                 map.put("remote", true);
