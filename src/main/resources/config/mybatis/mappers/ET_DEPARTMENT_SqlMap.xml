@@ -177,6 +177,9 @@
 					<if test="serialNo != null ">
 						AND SERIAL_NO = #{serialNo}
 					</if>
+					<if test="serialNo != null ">
+						AND IS_DEL = 1
+					</if>
 				</where>
 
 			) t
@@ -193,6 +196,9 @@
 			</if>
 			<if test="serialName != null and serialName != '' ">
 				 AND SERIAL_NAME = #{serialName}
+			</if>
+			<if test="serialNo != null ">
+				AND IS_DEL = 1
 			</if>
 		</where>
 	</select>
