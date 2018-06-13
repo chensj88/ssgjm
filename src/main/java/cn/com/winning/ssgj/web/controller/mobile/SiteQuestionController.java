@@ -288,7 +288,7 @@ public class SiteQuestionController extends BaseController {
                             str +=imgs[i]+";";
                         }
                     }
-                    info.setImgPath(str.substring(0,str.length()-1));
+                  //  info.setImgPath(str.substring(0,str.length()-1));
                 }else{
                     info.setImgPath("");
                 }
