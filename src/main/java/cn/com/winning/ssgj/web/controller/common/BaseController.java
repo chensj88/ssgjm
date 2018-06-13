@@ -303,6 +303,7 @@ public class BaseController extends BaseSpringMvcMybatisController {
     public SysUserInfo getUserInfo(String parameter) {
         SysUserInfo info = new SysUserInfo();
         try {
+            System.out.println(parameter);
             String userJsonStr = "[" + new String(decryptBASE64(parameter), "UTF-8") + "]";
             ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
             if (userList != null && !userList.equals("")) {
@@ -311,8 +312,8 @@ public class BaseController extends BaseSpringMvcMybatisController {
                     info.setId(ssgjHelper.createUserId());
                     info.setUserType("0");
                     info.setOpenId((String) io.get("OPENID"));
-                    info.setName(new String(decryptBASE64((String) io.get("USERNAME"))));
-                    info.setUserid((String) io.get("HOSPCODE") + (String) io.get("WORKNUM"));
+                    info.setName(new String((String) io.get("USERNAME")));
+                    info.setUserid((String) io.get("HOSPCODE") +(String) io.get("WORKNUM"));
                     info.setPassword(MD5.stringMD5ForBarCode((String) io.get("WORKNUM")));
                     info.setMobile((String) io.get("USERPHONE"));
                     info.setSsgs(Long.parseLong((String) io.get("HOSPCODE")));
@@ -322,8 +323,11 @@ public class BaseController extends BaseSpringMvcMybatisController {
                 info_use.setUserid(info.getUserid());
                 List<SysUserInfo> userIfonList = getFacade().getSysUserInfoService().getSysUserInfoList(info_use);
                 //真实用户
-                if (userIfonList.size() == 0 || userIfonList == null) {
+                if (userIfonList.size() == 0) {
+                    info.setUserid(info.getUserid());
                     getFacade().getSysUserInfoService().createSysUserInfo(info);
+                }else{
+                    info =userIfonList.get(0);
                 }
             }
 

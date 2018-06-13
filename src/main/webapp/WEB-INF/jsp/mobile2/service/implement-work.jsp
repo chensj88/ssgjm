@@ -113,17 +113,18 @@
             })
 
 			function processStatus(val){
-			        location.href="<%=basePath%>/mobile/tempSiteQuestion/list.do?processStatus="+val;
-
+			        location.href="<%=basePath%>/mobile/tempSiteQuestion/laodList.do?processStatus="+val+"&openId="+$("#openId").val()
+                        +"&userId="+$("#userId").val()+ "&serialNo="+$("#serialNo").val();
 			}
 
 			function videoLoad() {
-                location.href="<%=basePath%>/mobile/trainVideoList/list.do?openId="+$("#openId").val()+"&userId="+$("#userId").val()+
+                location.href="<%=basePath%>/mobile/trainVideoList/laodList.do?openId="+$("#openId").val()+"&userId="+$("#userId").val()+
 					"&serialNo="+$("#serialNo").val();
             }
 
             function  search() {
-				location.href="<%=basePath%>/mobile/tempSiteQuestion/list.do?search_text="+$("#search_text").val();
+				location.href="<%=basePath%>/mobile/tempSiteQuestion/laodList.do?search_text="+$("#search_text").val()+"&openId="+$("#openId").val()
+                    +"&userId="+$("#userId").val()+ "&serialNo="+$("#serialNo").val();;
             }
 
 		</script>
