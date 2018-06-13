@@ -133,11 +133,14 @@ public class MobileSiteQuestionController  extends BaseController {
             info = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info);
             if("1".equals(type)){
                 info.setSiteName(siteName);
+                addEtLog(serialNo,"ET_SITE_QUESTION_INFO",info.getId(),"内容变更:选择科室病区",1,userId);
             }else {
                 info.setProductName(siteName);
+                addEtLog(serialNo,"ET_SITE_QUESTION_INFO",info.getId(),"内容变更:选择系统名称",1,userId);
             }
             info.setOperator(userId);
             info.setOperatorTime(new Timestamp(new Date().getTime()));
+
             super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
         }else{
             //生成系统预设 ID
@@ -149,8 +152,10 @@ public class MobileSiteQuestionController  extends BaseController {
             info.setSerialNo(serialNo);
             if("1".equals(type)){
                 info.setSiteName(siteName);
+                addEtLog(serialNo,"ET_SITE_QUESTION_INFO",info.getId(),"创建问题:选择科室病区",1,userId);
             }else {
                 info.setProductName(siteName);
+                addEtLog(serialNo,"ET_SITE_QUESTION_INFO",info.getId(),"创建问题:选择科室病区",1,userId);
             }
             info.setPriority(3);
             info.setCreator(userId);
@@ -216,6 +221,7 @@ public class MobileSiteQuestionController  extends BaseController {
                     }
                     info.setOperator(Long.parseLong(userId));
                     info.setOperatorTime(new Timestamp(new Date().getTime()));
+                    addEtLog(serialNo,"ET_SITE_QUESTION_INFO",info.getId(),"内容变更:上传图片",1,Long.parseLong(userId));
                     super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
                     map.put("id",String.valueOf(old_id));
                     map.put("status","1");
@@ -233,6 +239,7 @@ public class MobileSiteQuestionController  extends BaseController {
                         info.setCreateTime(new Timestamp(new Date().getTime()));
                         info.setOperator(Long.parseLong(userId));
                         info.setOperatorTime(new Timestamp(new Date().getTime()));
+                        addEtLog(serialNo,"ET_SITE_QUESTION_INFO",info.getId(),"创建问题:上传图片",1,Long.parseLong(userId));
                         super.getFacade().getEtSiteQuestionInfoService().createEtSiteQuestionInfo(info);
                         map.put("status","1");
                         map.put("id",String.valueOf(id));
@@ -272,11 +279,13 @@ public class MobileSiteQuestionController  extends BaseController {
             info.setCreateTime(new Timestamp(new Date().getTime()));
             info.setOperator(info.getCreator());
             info.setOperatorTime(new Timestamp(new Date().getTime()));
+            addEtLog(info.getSerialNo(),"ET_SITE_QUESTION_INFO",info.getId(),"内容创建:新建问题",1,info.getCreator());
             getFacade().getEtSiteQuestionInfoService().createEtSiteQuestionInfo(info);
         }else {
             info.setOperator(info.getCreator());
             info.setOperatorTime(new Timestamp(new Date().getTime()));
             info.setCreator(null);
+            addEtLog(info.getSerialNo(),"ET_SITE_QUESTION_INFO",info.getId(),"内容变更:问题修改",1,info.getCreator());
             getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
         }
         Map<String,Object> result = new HashMap<String,Object>();
