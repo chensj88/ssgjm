@@ -75,13 +75,13 @@
                 </div>
                 <div class="column-2 collect-list">
                     <div class="collect-list-level">
-                        <span>A(紧急)</span>
-                        <span>B(急)</span>
-                        <span class="level">C(一般)</span>
-                        <span>D(暂缓)</span>
+                        <span onclick="changeListLevel(1)">A(紧急)</span>
+                        <span onclick="changeListLevel(2)">B(急)</span>
+                        <span onclick="changeListLevel(3)" class="level">C(一般)</span>
+                        <span onclick="changeListLevel(4)">D(暂缓)</span>
                     </div>
                 </div>
-                <p class="collect-list-level_p">注：C等级项目完成时间为7个工作日</p>
+                <p class="collect-list-level_p" id="remark"></p>
                 <div class="space"></div>
                 <div class="column-2 collect-list">
                     <strong>影像资料</strong>
@@ -122,6 +122,7 @@
                 $(this).addClass('level').siblings('span').removeClass('level');
             });
             setListLevel(${siteQuestionInfo.priority});
+            changeListLevel(${siteQuestionInfo.priority});
 
         })
         /**
@@ -199,9 +200,8 @@
                     }
                 }
             });
-            console.log(queryJson);
-
         }
+
         function fileSelected2(){
             //获取文件的内容
             var userId = $("#userId").val();
@@ -262,7 +262,7 @@
             }
             $.ajax({
                 type: "POST",
-                url:"<%=basePath%>mobile/siteQuestionInfo/deleteImg.do",
+                url:"<%=basePath%>mobile/wechatSiteQuestion/deleteImg.do",
                 data:{id:e,imgPath:imgPath,serialNo:${serialNo},userId:${userId}},
                 cache : false,
                 dataType:"json",
@@ -285,7 +285,27 @@
             });
 
         }
-
+        /**
+         * 变更优先级文字
+         */
+        function changeListLevel(val) {
+            switch (val){
+                case 1 :
+                    $('#remark').text("注：A等级项目完成时间为1个工作日");
+                    break;
+                case 2 :
+                    $('#remark').text("注：B等级项目完成时间为3个工作日");
+                    break;
+                case 3 :
+                    $('#remark').text("注：C等级项目完成时间为7个工作日");
+                    break;
+                case 4 :
+                    $('#remark').text("注：D等级项目完成时间为15个工作日");
+                    break;
+                default :
+                    $('#remark').text("注：C等级项目完成时间为7个工作日");
+            }
+        }
         /**
          *优先级转换 从码值到ABCD
          *@param val

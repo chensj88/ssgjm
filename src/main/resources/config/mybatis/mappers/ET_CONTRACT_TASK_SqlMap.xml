@@ -304,7 +304,7 @@
 				</where>
 			) t
 	</select>
-
+	<!--根据首字母查询符合要求的系统清单信息 适用于字母-->
 	<select id="selectWechatContractTaskData" resultMap="etContractTaskResult" parameterType="etContractTask">
 		SELECT
 		*
@@ -318,7 +318,7 @@
 			</if>
 		</where>
 	</select>
-
+	<!--根据首字母查询符合要求的系统清单信息 适用于数字-->
 	<select id="selectWechatContractTaskDataForNum" resultMap="etContractTaskResult" parameterType="etContractTask">
 		SELECT
 		*

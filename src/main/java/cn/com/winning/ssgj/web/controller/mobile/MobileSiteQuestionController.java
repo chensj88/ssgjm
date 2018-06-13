@@ -357,4 +357,24 @@ public class MobileSiteQuestionController  extends BaseController {
         }
         return map;
     }
+
+    @RequestMapping("/checkQuestion.do")
+    @ResponseBody
+    @ILog
+    public Map<String,Object> checkForDelete(EtSiteQuestionInfo info){
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", getFacade().getEtSiteQuestionInfoService().checkEtSiteQuestionInfoStatus(info));
+        return result;
+    }
+
+    @RequestMapping("/delete.do")
+    @ResponseBody
+    @ILog
+    public Map<String,Object> deleteQuestion(EtSiteQuestionInfo info){
+        getFacade().getEtSiteQuestionInfoService().removeEtSiteQuestionInfo(info);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
 }

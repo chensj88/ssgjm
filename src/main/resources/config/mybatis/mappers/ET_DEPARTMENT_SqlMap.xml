@@ -163,7 +163,7 @@
 			</if>
 		</where>
 	</select>
-	
+	<!--查询部门信息的首字母信息-->
 	<select id="selectDepartmentInitCode" resultType="string" parameterType="etDepartment">
 		SELECT
 		DISTINCT t.SERIAL_NAME
@@ -185,7 +185,7 @@
 			) t
 	</select>
 
-
+	<!--根据首字母信息查询符合要求的部门 仅限字母-->
 	<select id="selectDepartmentByInitCode" resultMap="etDepartmentResult" parameterType="etDepartment">
 		SELECT
 		 *
@@ -202,7 +202,7 @@
 			</if>
 		</where>
 	</select>
-
+	<!--根据首字母信息查询符合要求的部门 仅限数字-->
 	<select id="selectDepartmentByInitCodeForNum" resultMap="etDepartmentResult" parameterType="etDepartment">
 		SELECT
 		*

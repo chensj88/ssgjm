@@ -352,3 +352,14 @@ table{
 	color: #17A7FF;
 	font-weight: normal;
 }
+.mui-table-view-cell{
+	padding: 5px 10px 10px;
+}
+.mui-table-view:before,
+.mui-table-view:after
+{
+	height: 0px;
+}
+.mui-table-view-cell:after{
+	left: 10px;
+}

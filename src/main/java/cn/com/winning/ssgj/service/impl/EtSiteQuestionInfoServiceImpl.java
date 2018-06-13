@@ -265,6 +265,20 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
     }
 
     /**
+     * 判断当前的问题信息是否可以删除
+     * @param info
+     * @return
+     */
+    @Override
+    public int checkEtSiteQuestionInfoStatus(EtSiteQuestionInfo info) {
+        info = etSiteQuestionInfoDao.selectEntity(info);
+        if(info.getAllocateUser() != null || info.getRequirementNo() != null){
+            return  1;
+        }
+        return 0;
+    }
+
+    /**
      * 查询当前用户在指定日期下的问题里列表
      * @param info 包含创建人、客户号
      * @param createDate 创建时间

@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.domain.expand;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,7 +48,7 @@ public class NodeTree {
      */
     private int level;
 
-    private List<NodeTree> nodes;
+    private List<NodeTree> nodes = new ArrayList<>();
 
 
     public String getText() {
@@ -121,5 +122,9 @@ public class NodeTree {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public void addNode(NodeTree tree){
+        this.nodes.add(tree);
     }
 }
