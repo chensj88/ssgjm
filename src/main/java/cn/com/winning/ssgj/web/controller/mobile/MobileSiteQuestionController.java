@@ -166,7 +166,13 @@ public class MobileSiteQuestionController  extends BaseController {
         }
         info = new EtSiteQuestionInfo();
         info.setId(Long.parseLong(questionId));
-        model.addAttribute("siteQuestionInfo",this.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info));
+        info = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info);
+        if(StringUtils.isNotBlank(info.getImgPath())){
+            String[] imgs=info.getImgPath().split(";");
+            List<String> lists= Arrays.asList(imgs);
+            info.setImgs(lists);
+        }
+        model.addAttribute("siteQuestionInfo",info);
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
         return "mobile2/wechat/site-question";
@@ -291,5 +297,64 @@ public class MobileSiteQuestionController  extends BaseController {
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         return result;
+    }
+
+    /**
+     * 图片删除
+     * @param id 问题ID
+     * @param imgPath 问题路径
+     * @return
+     */
+    @RequestMapping("/deleteImg.do")
+    @ResponseBody
+    @ILog
+    public Map<String,Boolean> deleteImg(Long id,String imgPath,String serialNo,Long userId){
+        Map<String,Boolean> map = new HashMap<String,Boolean>();
+        EtSiteQuestionInfo info = new EtSiteQuestionInfo();
+        info.setId(id);
+        try{
+            info = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info);
+            CommonFtpUtils.removeUploadFile(imgPath);
+            if(StringUtils.isBlank(info.getSiteName())){
+                String[] imgs=info.getImgPath().split(";");
+                String str= "";
+                if(imgs.length >1){
+                    for(int i = 0; i < imgs.length; i++) {
+                        if(imgPath.equals(imgs[i])){
+
+                        }else{
+                            str +=imgs[i]+";";
+                        }
+                    }
+                    info.setImgPath(str.substring(0,str.length()-1));
+                    addEtLog(serialNo,"ET_SITE_QUESTION_INFO",id,"内容变更:删除上传图片",1,userId);
+                    super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+                }else{
+                    addEtLog(serialNo,"ET_SITE_QUESTION_INFO",id,"内容变更:问题删除",1,userId);
+                    super.getFacade().getEtSiteQuestionInfoService().removeEtSiteQuestionInfo(info);
+                }
+            }else{
+                String[] imgs=info.getImgPath().split(";");
+                String str= "";
+                if(imgs.length >1){
+                    for(int i = 0; i < imgs.length; i++) {
+                        if(imgPath.equals(imgs[i])){
+
+                        }else{
+                            str +=imgs[i]+";";
+                        }
+                    }
+                    info.setImgPath(str.substring(0,str.length()-1));
+                }else{
+                    info.setImgPath("");
+                }
+                addEtLog(serialNo,"ET_SITE_QUESTION_INFO",id,"内容变更:删除上传图片",1,userId);
+                super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+            }
+            map.put("status",true);
+        }catch (Exception e){
+            map.put("status",false);
+        }
+        return map;
     }
 }

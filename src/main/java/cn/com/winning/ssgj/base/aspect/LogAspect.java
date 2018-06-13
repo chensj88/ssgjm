@@ -93,7 +93,7 @@ public class LogAspect {
         String uri = request.getRequestURI();
         String requestName = uri.substring(uri.lastIndexOf("/"),uri.lastIndexOf(".do"));
         if(requestName.equals("/login") || requestName.equals("/logout") || requestName.equals("/check")
-                ||requestName.equals("/list")){
+                ||requestName.equals("/list")||requestName.equals("/mobile")){
             return;
         }
         // 请求的IP

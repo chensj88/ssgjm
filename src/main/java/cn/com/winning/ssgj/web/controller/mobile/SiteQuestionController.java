@@ -275,8 +275,23 @@ public class SiteQuestionController extends BaseController {
             } else if (port == 22) {
                 SFtpUtils.rmFile(imgPath);
             }
+
             if(StringUtils.isBlank(info.getSiteName())){
-                super.getFacade().getEtSiteQuestionInfoService().removeEtSiteQuestionInfo(info);
+                String[] imgs=info.getImgPath().split(";");
+                String str= "";
+                if(imgs.length >1){
+                    for(int i = 0; i < imgs.length; i++) {
+                        if(imgPath.equals(imgs[i])){
+
+                        }else{
+                            str +=imgs[i]+";";
+                        }
+                    }
+                    info.setImgPath(str.substring(0,str.length()-1));
+                    super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+                }else{
+                    super.getFacade().getEtSiteQuestionInfoService().removeEtSiteQuestionInfo(info);
+                }
             }else{
                 String[] imgs=info.getImgPath().split(";");
                 String str= "";
@@ -288,7 +303,7 @@ public class SiteQuestionController extends BaseController {
                             str +=imgs[i]+";";
                         }
                     }
-                  //  info.setImgPath(str.substring(0,str.length()-1));
+                   info.setImgPath(str.substring(0,str.length()-1));
                 }else{
                     info.setImgPath("");
                 }
