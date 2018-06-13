@@ -102,7 +102,7 @@
                             <c:if test="${siteQuestionInfo.imgPath !=null && siteQuestionInfo.imgPath !=''}">
                                 <c:forEach var="img" items="${siteQuestionInfo.imgs}">
                                     <div id="close_id">
-                                        <img src="<%=basePathNuName%>shareFolder${img}" />
+                                        <img src="<%=Constants.FTP_SHARE_FLODER%>shareFolder${img}" />
                                         <span class="iconfont icon-close" onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>
                                         <input type="hidden" />
                                     </div>

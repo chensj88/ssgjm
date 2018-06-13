@@ -278,6 +278,8 @@ public class BaseController extends BaseSpringMvcMybatisController {
     public void addEtLog(String serialNo, String sourceType, Long sourceId, String content, Integer status, Long operator) {
         EtLog etLog = new EtLog();
         etLog.setId(ssgjHelper.createEtLogIdService());
+        etLog.setCId(-2l);
+        etLog.setPmId(-2l);
         etLog.setSerialNo(serialNo);
         etLog.setSourceType(sourceType);
         etLog.setSourceId(sourceId);

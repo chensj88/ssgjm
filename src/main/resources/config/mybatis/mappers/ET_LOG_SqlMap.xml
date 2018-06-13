@@ -38,7 +38,7 @@
         <if test="(status != null and status != '') or status == 0">and t.STATUS = #{status}</if>
         <if test="content != null and content != ''">and t.CONTENT = #{content}</if>
         <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
-        <if test="operatorTime != null and operatorTime != ''">and t.OPERATOR_TIME = #{operatorTime}</if>
+        <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
         <if test="clientMac != null and clientMac != ''">and t.CLIENT_MAC = #{clientMac}</if>
         <if test="clientIp != null and clientIp != ''">and t.CLIENT_IP = #{clientIp}</if>
         <if test="clientName != null and clientName != ''">and t.CLIENT_NAME = #{clientName}</if>
@@ -75,8 +75,6 @@
     </select>
 
     <insert id="insertEtLog" parameterType="etLog">
-        <selectKey resultType="String" order="BEFORE" keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID
-        </selectKey>
         insert into ET_LOG
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(id != null and id != '') or id == 0">ID,</if>
@@ -88,7 +86,7 @@
             <if test="(status != null and status != '') or status == 0">STATUS,</if>
             <if test="content != null and content != ''">CONTENT,</if>
             <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
-            <if test="operatorTime != null and operatorTime != ''">OPERATOR_TIME,</if>
+            <if test="operatorTime != null ">OPERATOR_TIME,</if>
             <if test="clientMac != null and clientMac != ''">CLIENT_MAC,</if>
             <if test="clientIp != null and clientIp != ''">CLIENT_IP,</if>
             <if test="clientName != null and clientName != ''">CLIENT_NAME,</if>
@@ -107,7 +105,7 @@
             <if test="(status != null and status != '') or status == 0">#{status, jdbcType=INTEGER},</if>
             <if test="content != null and content != ''">#{content, jdbcType=LONGVARCHAR},</if>
             <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
-            <if test="operatorTime != null and operatorTime != ''">#{operatorTime, jdbcType=TIMESTAMP},</if>
+            <if test="operatorTime != null ">#{operatorTime, jdbcType=TIMESTAMP},</if>
             <if test="clientMac != null and clientMac != ''">#{clientMac, jdbcType=VARCHAR},</if>
             <if test="clientIp != null and clientIp != ''">#{clientIp, jdbcType=VARCHAR},</if>
             <if test="clientName != null and clientName != ''">#{clientName, jdbcType=VARCHAR},</if>
@@ -134,7 +132,7 @@
                 <if test="(operator != null and operator != '') or operator == 0">OPERATOR =
                     #{operator, jdbcType=BIGINT},
                 </if>
-                <if test="operatorTime != null and operatorTime != ''">OPERATOR_TIME =
+                <if test="operatorTime != null ">OPERATOR_TIME =
                     #{operatorTime, jdbcType=TIMESTAMP},
                 </if>
                 <if test="clientMac != null and clientMac != ''">CLIENT_MAC = #{clientMac, jdbcType=VARCHAR},</if>
