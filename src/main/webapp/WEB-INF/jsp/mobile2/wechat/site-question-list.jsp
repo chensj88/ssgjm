@@ -50,14 +50,14 @@
                                     <c:when test="${vwr1.processStatus==1}">
                                         <span class="distribution">${vwr1.map.processStr}</span>
                                     </c:when>
-                                    <c:when test="${vwr1.processStatus==2} || ${vwr1.processStatus==3} ||${vwr1.processStatus==4}  ">
+                                    <c:when test="${vwr1.processStatus == 2 || vwr1.processStatus == 3 || vwr1.processStatus == 4}">
                                         <span class="distributioned">${vwr1.map.processStr}</span>
                                     </c:when>
-                                    <c:when test="${vwr1.processStatus==6} ">
-                                        <span class="no-distribution">${vwr1.map.processStr}</span>
+                                    <c:when test="${vwr1.processStatus == 5}">
+                                        <span class="distributioned" style="color: #000;border-color: #000;">${vwr1.map.processStr}</span>
                                     </c:when>
                                     <c:otherwise>
-                                        <span class="distributioned">${vwr1.map.processStr}</span>
+                                        <span class="no-distribution" style="color: red;border-color: red;">${vwr1.map.processStr}</span>
                                     </c:otherwise>
                                 </c:choose>
                             </p>
@@ -110,7 +110,7 @@
         $('.OA_task_1').on('tap', '.mui-btn', function(event) {
             var elem = this;
             var li = elem.parentNode.parentNode;
-            var questionId = $(this).attr('vid');
+            var questionId = this.getAttribute('vid');
             $.ajax({
                 type: "POST",
                 url:"<%=basePath%>mobile/wechatSiteQuestion/checkQuestion.do",
