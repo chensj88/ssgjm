@@ -5,7 +5,7 @@
 
 	<head>
 		<meta charset="UTF-8" />
-		<title>实施工作</title>
+		<title>实施工具</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/normalize.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
@@ -22,7 +22,7 @@
                     <input id="userId" type="hidden" name="userId" value="${userId}">
                     <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
                     <input id="openId" type="hidden" name="openId" value="${openId}">
-					<div>实施工作</div>
+					<div>实施工具</div>
 					<a href="<%=basePath%>/mobile/wechatSiteQuestion/list.do?userId=${userId}&serialNo=${serialNo}">采集列表</a>
 				</div>
 			</div>
@@ -81,7 +81,7 @@
 				</div>
 			</div>
 			<!--新增-->
-			<a href="#" class="wrap-add">
+			<a href="<%=basePath%>/mobile/wechatSiteQuestion/addPage.do?userId=${userId}&serialNo=${serialNo}" class="wrap-add" >
 				<i class="iconfont icon-add"></i>
 			</a>
 			<!--底部菜单-->

@@ -38,6 +38,7 @@ public class MobileTempSiteQuestionController  extends BaseController {
             EtSiteQuestionInfo qinfo = new EtSiteQuestionInfo();
             qinfo.setCreator(info.getId());
             qinfo.setSerialNo(String.valueOf(info.getSsgs()));
+
             qinfo.getMap().put("search_text",search_text);
             if("1".equals(processStatus)){
                 qinfo.getMap().put("process_status_yes","5");//已确认完成
@@ -47,7 +48,7 @@ public class MobileTempSiteQuestionController  extends BaseController {
 
             model.addAttribute("questionList", super.getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(qinfo));
             model.addAttribute("process_num",super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(qinfo));
-            model.addAttribute("userId", 7110);
+            model.addAttribute("userId", info.getId());
             model.addAttribute("serialNo", info.getSsgs());
             model.addAttribute("openId",info.getOpenId());
             model.addAttribute("active",processStatus);
