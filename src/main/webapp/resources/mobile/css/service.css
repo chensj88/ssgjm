@@ -555,7 +555,55 @@ span.nosolve{
 .update-record-item strong{
 	color: #333333;
 }
+/*状态*/
+.statusA,
+.statusB,
+.statusC{
+	padding: 0px 8px;
+	border-radius: 2px;
+	margin-right: 10px;
+}
+.statusA{
+	color: #FF5D58;
+	border: 1px solid #FFA8A5;
+	background: #FFD9D8;;
+}
+.statusB{
+	color: #FF9522;
+	border: 1px solid #FFC98F;
+	background: #FFEBD5;
+}
+.statusC{
+	color: #469CFF;
+	border: 1px solid #9DCBFF;
+	background: #DBEFFF;
+}
+.distribution,
+.distributioned,
+.no-distribution{
+	margin-right: 10px;
+	padding: 0px 9px;
+	border-radius: 2px;
+	font-size: 12px;
+}
+.distribution{
+	color: #FFFFFF;
+	background: #81B3FF;
+	border: 1px solid #81B3FF;
+}
+.distributioned{
+	color: #639DFF;
+	border:1px solid #639DFF;
+}
+.no-distribution{
+	color: #657685;
+	border: 1px solid #657685;
+}
+
+
+
 /*采集列表*/
+
 .collect-item{
 }
 .collect-item>h3{

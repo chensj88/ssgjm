@@ -61,4 +61,6 @@ public interface EtSiteQuestionInfoService {
     List<EtSiteQuestionInfo> selectMobileEtSiteQuestionInfo(EtSiteQuestionInfo questionInfo);
 
     EtSiteQuestionInfo getEtSiteQuestionProcessStatus(EtSiteQuestionInfo qinfo);
+
+    int checkEtSiteQuestionInfoStatus(EtSiteQuestionInfo info);
 }

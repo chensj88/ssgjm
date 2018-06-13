@@ -64,17 +64,64 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     private SysOrganizationService sysOrganizationService;
     @Autowired
     private EtContractTaskService etContractTaskService;
+    @Autowired
+    private EtUserLookProjectService etUserLookProjectService;
 
     @Override
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId) {
         List<NodeTree> treeList = new ArrayList<NodeTree>();
         List<PmisCustomerInformation> custInfoList = pmisCustomerInformationService.getUserCanViewCustomerList(userId);
+        EtUserLookProject etUserLookProject = etUserLookProjectService.getLastUserLookProject(userId);
         for (PmisCustomerInformation info : custInfoList) {
             NodeTree node = info.getNodeTree();
             node.setNodes(queryCustomerProjectNode(userId, info.getId()));
             treeList.add(node);
         }
+        checkUserLookProject(treeList,etUserLookProject);
+
         return treeList;
+    }
+
+    /**
+     * 校验用户最后一次登录项目是否在noteTree中
+     * @param treeList
+     * @param etUserLookProject
+     */
+    private void checkUserLookProject(List<NodeTree> treeList, EtUserLookProject etUserLookProject) {
+        List<NodeTree> treeListBak = new ArrayList<>();
+        treeListBak.addAll(treeList);
+        boolean addStatus = false;
+        if(etUserLookProject != null){
+            for (NodeTree tree : treeListBak) {
+                if(tree.getId() != Long.parseLong(etUserLookProject.getSerialNo())){
+                    if(!addStatus){
+                        PmisCustomerInformation info = new PmisCustomerInformation();
+                        info.setId(Long.parseLong(etUserLookProject.getSerialNo()));
+                        info = pmisCustomerInformationService.getPmisCustomerInformation(info);
+                        PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
+                        basicInfo.setId(etUserLookProject.getPmId());
+                        basicInfo = pmisProjectBasicInfoService.getPmisProjectBasicInfo(basicInfo);
+                        NodeTree node = info.getNodeTree();
+                        node.addNode( basicInfo.getNodeTree());
+                        treeList.add(node);
+                        addStatus = true;
+                    }
+
+                }else if(tree.getId() == Long.parseLong(etUserLookProject.getSerialNo())){
+                    for (NodeTree nodeTree : tree.getNodes()) {
+                        if(nodeTree.getId() != etUserLookProject.getPmId()){
+                            if(!addStatus) {
+                                PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
+                                basicInfo.setId(etUserLookProject.getPmId());
+                                basicInfo = pmisProjectBasicInfoService.getPmisProjectBasicInfo(basicInfo);
+                                nodeTree.addNode(basicInfo.getNodeTree());
+                                addStatus = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
