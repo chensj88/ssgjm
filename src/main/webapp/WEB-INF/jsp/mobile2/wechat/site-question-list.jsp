@@ -40,7 +40,7 @@
             </div>
             <div class="space"></div>
             <div class="wap-tab-cnt">
-                <div id="item0">
+                <div>
                     <c:forEach var="vwr" items="${questionList}">
                         <div>
                             <a href="#" class="row">
@@ -49,14 +49,12 @@
                             </a>
                             <c:forEach var="vwr1" items="${vwr.listQuery}">
                                 <a href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?serialNo=${serialNo}&userId=${userId}&questionId=${vwr1.id}" class="row">
-                                    ${vwr1.questionDesc}
-                                    <span class="${vwr1.map.priorityString}">
-                                            ${vwr1.map.priorityString}
-                                    </span>
-                                    ${vwr1.map.processStr}
+                                        ${vwr1.map.deptName}-${vwr1.menuName}
+                                        <span class="${vwr1.map.priorityString}">${vwr1.map.priorityString}</span>
                                 </a>
                             </c:forEach>
                         </div>
+                        <div class="space"></div>
                     </c:forEach>
                 </div>
             </div>

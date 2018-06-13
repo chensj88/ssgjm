@@ -22,10 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @title 微信服务号问题采集中心
@@ -52,11 +49,16 @@ public class MobileSiteQuestionController  extends BaseController {
         if(questionId != null){
             EtSiteQuestionInfo info = new EtSiteQuestionInfo();
             info.setId(questionId);
-            model.addAttribute("siteQuestionInfo",this.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info));
+            info=super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info);
+            if(StringUtils.isNotBlank(info.getImgPath())){
+                String[] imgs=info.getImgPath().split(";");
+                List<String> lists= Arrays.asList(imgs);
+                info.setImgs(lists);
+            }
+            model.addAttribute("siteQuestionInfo",info);
         }else{
             model.addAttribute("siteQuestionInfo",null);
         }
-
         model.addAttribute("deptList", this.getDepartmentList(Long.parseLong(serialNo),null));
         model.addAttribute("appList", this.getProductDictInfo(serialNo));
         model.addAttribute("userId", userId);
@@ -82,6 +84,16 @@ public class MobileSiteQuestionController  extends BaseController {
         return "mobile2/wechat/site-question-list";
     }
 
+    /**
+     * 打开科室或者病区选择页面
+     * @param model
+     * @param userId 用户ID
+     * @param serialNo 客户好
+     * @param questionId 问题ID
+     * @param type 类型 1 科室病区 2系统
+     * @return
+     * @throws ParseException
+     */
     @RequestMapping(value = "/openDept.do")
     public String openDept(Model model,Long userId,String serialNo,Long questionId,String type) throws ParseException {
         EtDepartment dept = new EtDepartment();
@@ -103,6 +115,16 @@ public class MobileSiteQuestionController  extends BaseController {
         return "mobile2/wechat/site-department";
     }
 
+    /**
+     * 修改科室名称和系统名称
+     * @param model
+     * @param questionId 问题ID
+     * @param userId 用户ID
+     * @param serialNo 客户号
+     * @param type 类型 1 科室病区 2系统
+     * @param siteName 科室ID或系统ID
+     * @return
+     */
     @RequestMapping(value = "/changeDept.do")
     public String changeDept(Model model,String questionId,Long userId,String serialNo,String type,String siteName) {
         EtSiteQuestionInfo info = new EtSiteQuestionInfo();
@@ -130,6 +152,7 @@ public class MobileSiteQuestionController  extends BaseController {
             }else {
                 info.setProductName(siteName);
             }
+            info.setPriority(3);
             info.setCreator(userId);
             info.setCreateTime(new Timestamp(new Date().getTime()));
             info.setOperator(userId);
@@ -145,7 +168,7 @@ public class MobileSiteQuestionController  extends BaseController {
     }
 
     /**
-     * 上次文件
+     * 文件上传 ajax
      * @param request
      * @param uploadFile
      * @return
@@ -205,6 +228,7 @@ public class MobileSiteQuestionController  extends BaseController {
                         info.setPmId((long)-2);//11980游客
                         info.setSerialNo(serialNo);
                         info.setImgPath(remotePath);
+                        info.setPriority(3);
                         info.setCreator(Long.parseLong(userId));
                         info.setCreateTime(new Timestamp(new Date().getTime()));
                         info.setOperator(Long.parseLong(userId));
@@ -230,7 +254,11 @@ public class MobileSiteQuestionController  extends BaseController {
         return map;
     }
 
-
+    /**
+     * 问题新增或者修改
+     * @param info
+     * @return
+     */
     @RequestMapping(value="/addOrUpdate.do", method= RequestMethod.POST)
     @ResponseBody
     @ILog
@@ -238,6 +266,9 @@ public class MobileSiteQuestionController  extends BaseController {
         if(info.getId() == null){
             long id = ssgjHelper.createSiteQuestionIdService();
             info.setId(id);
+            if(info.getPriority()  == null){
+                info.setPriority(3);
+            }
             info.setCreateTime(new Timestamp(new Date().getTime()));
             info.setOperator(info.getCreator());
             info.setOperatorTime(new Timestamp(new Date().getTime()));
