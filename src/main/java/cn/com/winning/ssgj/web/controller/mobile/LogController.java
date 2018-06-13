@@ -28,9 +28,9 @@ public class LogController extends BaseController {
     @RequestMapping(value = "/list.do")
     public String floorQuestionList(Model model, EtLog etLog) {
         //参数校验
-        String serialNo = etLog.getSerialNo();
+//        String serialNo = etLog.getSerialNo();
         Long sourceId = etLog.getSourceId();
-        if (StringUtil.isEmptyOrNull(serialNo) || sourceId == null) {
+        if (sourceId == null) {
             //当缺少参数客户号或者sourceId，则无数据
             return "mobile2/service/update-record";
         }
