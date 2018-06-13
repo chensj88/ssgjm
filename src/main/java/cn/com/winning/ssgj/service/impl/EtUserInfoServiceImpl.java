@@ -91,6 +91,11 @@ public class EtUserInfoServiceImpl implements EtUserInfoService {
         return this.etUserInfoDao.deleteEntity(t);
     }
 
+    @Override
+    public EtUserInfo getAllEtUserInfo(EtUserInfo t) {
+        return this.etUserInfoDao.getAllEtUserInfo(t);
+    }
+
 
     public List<EtUserInfo> getEtUserInfoPaginatedList(EtUserInfo t) {
         return this.etUserInfoDao.selectEntityPaginatedList(t);

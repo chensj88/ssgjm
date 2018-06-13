@@ -13,4 +13,6 @@ import java.util.List;
  */
 public interface EtUserInfoDao extends EntityDao<EtUserInfo> {
 
+    EtUserInfo getAllEtUserInfo(EtUserInfo t);
+
 }

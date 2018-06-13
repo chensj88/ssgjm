@@ -71,7 +71,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         List<PmisCustomerInformation> custInfoList = pmisCustomerInformationService.getUserCanViewCustomerList(userId);
         for (PmisCustomerInformation info : custInfoList) {
             NodeTree node = info.getNodeTree();
-            node.setNodes(queryCustomerProjectNode(userId,info.getId()));
+            node.setNodes(queryCustomerProjectNode(userId, info.getId()));
             treeList.add(node);
         }
         return treeList;
@@ -79,9 +79,9 @@ public class CommonQueryServiceImpl implements CommonQueryService {
 
     @Override
     public List<PmisProductInfo> queryProductOfProjectByProjectIdAndType(long pmId, int type) {
-        Map<String,Object> param = new HashMap<>();
-        param.put("pmId",pmId);
-        param.put("type",type);
+        Map<String, Object> param = new HashMap<>();
+        param.put("pmId", pmId);
+        param.put("type", type);
         return pmisProductInfoDao.selectProductInfoListByPmIdAndType(param);
     }
 
@@ -93,9 +93,9 @@ public class CommonQueryServiceImpl implements CommonQueryService {
      * @return pdIds
      */
     private List<Long> queryProductIdByProjectIdAndType(long pmId, int type) {
-        Map<String,Object> param = new HashMap<>();
-        param.put("pmId",pmId);
-        param.put("type",type);
+        Map<String, Object> param = new HashMap<>();
+        param.put("pmId", pmId);
+        param.put("type", type);
         List<Long> pIds = pmisContractProductInfoDao.selectProcuctIdListByPmIdAndHtcplb(param);
         return pIds;
     }
@@ -147,15 +147,15 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         List<Integer> projectHandle = new ArrayList<>();
         List<String> projectItem = new ArrayList<>();
         //基础数据准备
-        dataCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);
+        dataCheckByProjectId(pmId, projectCompele, projectHandle, projectItem);
         //易用数据准备
-        easyDataCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);
+        easyDataCheckByProjectId(pmId, projectCompele, projectHandle, projectItem);
         //接口准备
-        thirdInterfaceCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);
+        thirdInterfaceCheckByProjectId(pmId, projectCompele, projectHandle, projectItem);
         //业务流程调研
-        businessProcessCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);
+        businessProcessCheckByProjectId(pmId, projectCompele, projectHandle, projectItem);
         //报表单据
-        etReportCheckByProjectId(pmId,projectCompele,projectHandle,projectItem);
+        etReportCheckByProjectId(pmId, projectCompele, projectHandle, projectItem);
         Map<String, List> result = new HashMap<String, List>();
         result.put("success", projectCompele);
         result.put("handle", projectHandle);
@@ -165,6 +165,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
 
     /**
      * 报表单据准备
+     *
      * @param pmId
      * @param projectCompele
      * @param projectHandle
@@ -183,17 +184,18 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         report.setStatus(9);
         int succReportNum = etReportService.getEtReportCount(report);
         int otherSucc = sumSucc - succReportNum;
-        int otherFail = total -sumSucc - reportTotal + succReportNum;
+        int otherFail = total - sumSucc - reportTotal + succReportNum;
         projectCompele.add(otherSucc);
         projectHandle.add(otherFail);
-        projectItem.add("单据准备("+(otherSucc+otherFail)+")");
+        projectItem.add("单据准备(" + (otherSucc + otherFail) + ")");
         projectCompele.add(succReportNum);
-        projectHandle.add(reportTotal-succReportNum);
-        projectItem.add("报表准备("+reportTotal+")");
+        projectHandle.add(reportTotal - succReportNum);
+        projectItem.add("报表准备(" + reportTotal + ")");
     }
 
     /**
      * 业务流程调研
+     *
      * @param pmId
      * @param projectCompele
      * @param projectHandle
@@ -214,6 +216,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
 
     /**
      * 接口完成情况统计
+     *
      * @param pmId
      * @param projectCompele
      * @param projectHandle
@@ -230,6 +233,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         projectHandle.add(failNum);
         projectItem.add("接口准备(" + total + ")");
     }
+
     /**
      * 计算接口完成数量
      *
@@ -253,6 +257,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
 
     /**
      * 易用数据校验
+     *
      * @param pmId
      * @param projectCompele
      * @param projectHandle
@@ -287,6 +292,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
 
     /**
      * 基础数据校验
+     *
      * @param pmId
      * @param projectCompele
      * @param projectHandle
@@ -377,13 +383,14 @@ public class CommonQueryServiceImpl implements CommonQueryService {
 
     /**
      * 查询项目信息,根据客户ID和项目ID
+     *
      * @param userId 人员ID
-     * @param custId  客户ID
+     * @param custId 客户ID
      * @return
      */
-    private List<NodeTree> queryCustomerProjectNode(Long userId,Long custId) {
+    private List<NodeTree> queryCustomerProjectNode(Long userId, Long custId) {
         PmisProjectBasicInfo project = new PmisProjectBasicInfo();
-        project.getMap().put("userId",userId);
+        project.getMap().put("userId", userId);
         project.setKhxx(custId);
         List<PmisProjectBasicInfo> basicInfoList = pmisProjectBasicInfoService.getProjectInfoByCustomerIdAndProjectId(project);
         List<NodeTree> treeList = new ArrayList<NodeTree>();
@@ -405,6 +412,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
 
     /**
      * 根据表名查询表是否存在数据库中
+     *
      * @param propMap
      * @return
      */
@@ -421,25 +429,25 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         List<PmisProjctUser> userList = pmisProjctUserService.getPmisProjctUserList(projctUser);
         PmisProjectBasicInfo project = this.queryPmisProjectBasicInfoByProjectId(pmId);
         //人员列表数据判断
-        if( userList != null && userList.size() > 0){
+        if (userList != null && userList.size() > 0) {
             for (PmisProjctUser pmisProjctUser : userList) {
                 //判断人员是否存在于PMIS人员表中
-                SysUserInfo user  = new SysUserInfo();
+                SysUserInfo user = new SysUserInfo();
                 user.setId(pmisProjctUser.getRy());
                 user = sysUserInfoService.getSysUserInfo(user);
-                if(user != null ){
+                if (user != null) {
                     SysOrganization org = sysOrganizationService.getSysOrganizationById(user.getOrgid());
                     EtUserInfo etUserInfo = new EtUserInfo();
                     etUserInfo.setPmId(pmId);
                     etUserInfo.setUserId(user.getId());
                     //etUserInfo.setPositionName(pmisProjctUser.getRyfl()+"");
                     etUserInfo = etUserInfoService.getEtUserInfo(etUserInfo);
-                    if(etUserInfo == null){
+                    if (etUserInfo == null) {
                         etUserInfo = new EtUserInfo();
                         etUserInfo.setId(ssgjHelper.createEtUserInfoIdService());
                         etUserInfo.setPmId(pmId);
                         etUserInfo.setcId(project.getHtxx());
-                        etUserInfo.setSerialNo(project.getKhxx()+"");
+                        etUserInfo.setSerialNo(project.getKhxx() + "");
                         etUserInfo.setUserId(user.getId());
                         etUserInfo.setUserType(1);
                         etUserInfo.setUserCard(user.getUserid());
@@ -449,7 +457,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
                         etUserInfo.setEmail(user.getEmail());
                         etUserInfo.setRemark("0");
                         etUserInfo.setIsDel(Constants.STATUS_USE);
-                        etUserInfo.setPositionName(pmisProjctUser.getRyfl()+"");
+                        etUserInfo.setPositionName(pmisProjctUser.getRyfl() + "");
                         etUserInfoService.createEtUserInfo(etUserInfo);
                     }/*else{
                         etUserInfo.setPmId(pmId);
@@ -479,20 +487,20 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         info.setHtcplb(1);
         info.setZt(1);
         List<PmisContractProductInfo> infoList = pmisContractProductInfoDao.selectEntityList(info);
-        if(infoList != null && infoList.size() > 0){
+        if (infoList != null && infoList.size() > 0) {
             for (PmisContractProductInfo pInfo : infoList) {
                 EtContractTask task = new EtContractTask();
                 task.setSourceId(pInfo.getId());
                 task.setPmId(pInfo.getXmlcb());
                 task.setcId(pInfo.getHtxx());
-                task.setSerialNo(pInfo.getKhxx()+"");
+                task.setSerialNo(pInfo.getKhxx() + "");
                 task = etContractTaskService.getEtContractTask(task);
-                if(task == null){
+                if (task == null) {
                     task = new EtContractTask();
                     task.setId(ssgjHelper.createEtContractTaskIdService());
                     task.setPmId(pInfo.getXmlcb());
                     task.setcId(pInfo.getHtxx());
-                    task.setSerialNo(pInfo.getKhxx()+"");
+                    task.setSerialNo(pInfo.getKhxx() + "");
                     task.setZxtmc(pInfo.getZxtmc());
                     task.setCpzxt(Long.valueOf(pInfo.getCpzxt()));
                     task.setTeamMembers(null);
@@ -514,19 +522,19 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         EtUserInfo etUser = new EtUserInfo();
         etUser.setUserId(userid);
         etUser.setIsDel(2);
-        etUser = etUserInfoService.getEtUserInfo(etUser);
-        if(etUser == null ){
+        etUser = etUserInfoService.getAllEtUserInfo(etUser);
+        if (etUser == null) {
             nodeTrees = this.queryUserCustomerProjectTreeInfo(userid);
-        }else{
+        } else {
             PmisCustomerInformation info = new PmisCustomerInformation();
             info.setName(name);
             info.setZt(1);
-            Row row = new Row(0,10);
+            Row row = new Row(0, 10);
             info.setRow(row);
-            List<PmisCustomerInformation> custInfoList =  pmisCustomerInformationService.getAllCustomerByPageList(info);
+            List<PmisCustomerInformation> custInfoList = pmisCustomerInformationService.getAllCustomerByPageList(info);
             for (PmisCustomerInformation infos : custInfoList) {
                 NodeTree node = infos.getNodeTree();
-                node.setNodes(queryCustomerProjectNode(null,infos.getId()));
+                node.setNodes(queryCustomerProjectNode(null, infos.getId()));
                 nodeTrees.add(node);
             }
         }
