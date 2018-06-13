@@ -205,6 +205,10 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 	 * PMIS 需求编号
 	 */
 	private String requirementNo;
+	/**
+	 * PMIS 意见
+	 */
+	private String suggest;
 
 	private List imgs;
 	
@@ -723,5 +727,13 @@ public class EtSiteQuestionInfo extends BaseDomain implements Serializable {
 
 	public void setRequirementNo(String requirementNo) {
 		this.requirementNo = requirementNo;
+	}
+
+	public String getSuggest() {
+		return suggest;
+	}
+
+	public void setSuggest(String suggest) {
+		this.suggest = suggest;
 	}
 }

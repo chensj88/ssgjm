@@ -42,6 +42,8 @@
         <result column="INTRODUCER_NAME" property="introducerName" jdbcType="VARCHAR"/>
         <result column="INTRODUCER_DATE" property="introducerDate" jdbcType="VARCHAR"/>
         <result column="REQUIREMENT_NO" property="requirementNo" jdbcType="VARCHAR"/>
+        <result column="SUGGEST" property="suggest" jdbcType="VARCHAR"/>
+
     </resultMap>
 
     <resultMap id="etSiteQuestionInfoResult" type="etSiteQuestionInfo" extends="etSiteQuestionInfoResultForList">
@@ -66,7 +68,6 @@
         <result column="processStr" property="map.processStr" jdbcType="VARCHAR"/>
         <result column="numNo" property="map.numNo" jdbcType="VARCHAR"/>
         <result column="numOver" property="map.numOver" jdbcType="VARCHAR"/>
-
     </resultMap>
 
     <sql id="sf-etSiteQuestionInfo">
@@ -109,6 +110,8 @@
         <if test="introducerName != null and introducerName != ''">and t.INTRODUCER_NAME = #{introducerName}</if>
         <if test="introducerDate != null and introducerDate != ''">and t.INTRODUCER_DATE = #{introducerDate}</if>
         <if test="requirementNo != null and requirementNo != ''">and t.REQUIREMENT_NO = #{requirementNo}</if>
+        <if test="suggest != null and suggest != ''">and t.SUGGEST = #{suggest}</if>
+
     </sql>
 
     <sql id="query-etSiteQuestionInfo">
@@ -160,6 +163,7 @@
         <if test="map.process_status_yes != null and map.process_status_yes != null "> and
             t.PROCESS_STATUS in  (${map.process_status_yes})
         </if>
+        <if test="suggest != null and suggest != ''">and t.SUGGEST = #{suggest}</if>
 
     </sql>
     <select id="selectEtSiteQuestionInfo" resultMap="etSiteQuestionInfoResult" parameterType="etSiteQuestionInfo">
@@ -351,6 +355,8 @@
             <if test="introducerName != null and introducerName != ''">INTRODUCER_NAME,</if>
             <if test="introducerDate != null and introducerDate != ''">INTRODUCER_DATE,</if>
             <if test="requirementNo != null and requirementNo != ''"> REQUIREMENT_NO,</if>
+            <if test="suggest != null and suggest != ''"> SUGGEST,</if>
+
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -405,6 +411,8 @@
             <if test="introducerName != null and introducerName != ''">#{introducerName, jdbcType=VARCHAR},</if>
             <if test="introducerDate != null and introducerDate != ''">#{introducerDate, jdbcType=VARCHAR} ,</if>
             <if test="requirementNo != null and requirementNo != ''"> #{requirementNo,jdbcType=VARCHAR},</if>
+            <if test="suggest != null and suggest != ''"> #{suggest,jdbcType=VARCHAR},</if>
+
         </trim>
     </insert>
 
@@ -493,6 +501,7 @@
                     #{introducerDate, jdbcType=VARCHAR} ,
                 </if>
                 <if test="requirementNo != null and requirementNo != ''"> REQUIREMENT_NO = #{requirementNo,jdbcType=VARCHAR} ,</if>
+                <if test="suggest != null and suggest != ''"> SUGGEST = #{suggest,jdbcType=VARCHAR} ,</if>
 
             </trim>
         </set>
@@ -676,7 +685,7 @@
           WHERE  CREATOR = #{creator}
           AND  SERIAL_NO = #{serialNo}
           AND SITE_NAME != ''
-        <if test="search_text != null and search_text != ''">and ( t.MENU_NAME LIKE '%${search_text}%' OR t.QUESTION_DESC LIKE '%${search_text}%')</if>
+        <if test="map.search_text != null and map.search_text != ''">and ( t.MENU_NAME LIKE '%${map.search_text}%' OR t.QUESTION_DESC LIKE '%${map.search_text}%')</if>
         <if test="map.process_status_no != null and map.process_status_no != null "> and
             PROCESS_STATUS not in  (${map.process_status_no})
         </if>

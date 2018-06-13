@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -16,7 +17,14 @@ import java.util.List;
 @RequestMapping("/mobile/tempSiteQuestion")
 public class MobileTempSiteQuestionController  extends BaseController {
 
-
+    /**
+     *  院方信息主页面
+     * @param model
+     * @param parameter
+     * @param processStatus
+     * @param search_text
+     * @return
+     */
     @RequestMapping(value = "/list.do")
     public String list(Model model, String parameter,String processStatus,String search_text) {
        // parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
@@ -45,6 +53,36 @@ public class MobileTempSiteQuestionController  extends BaseController {
         }
 
         return "mobile2/service/implement-work";
+    }
+
+
+    /**
+     * 采集中心新增/修改问题客户问题
+     * @param model model  主要用来传输参数
+     * @param userId 用户id
+     * @param serialNo 客户号
+     * @return
+     */
+    @RequestMapping(value = "/addPage.do")
+    public String add(Model model,Long questionId,Long userId,String serialNo) {
+        if(questionId != null){
+            EtSiteQuestionInfo info = new EtSiteQuestionInfo();
+            info.setId(questionId);
+            info=super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info);
+            if(StringUtils.isNotBlank(info.getImgPath())){
+                String[] imgs=info.getImgPath().split(";");
+                List<String> lists= Arrays.asList(imgs);
+                info.setImgs(lists);
+            }
+            model.addAttribute("siteQuestionInfo",info);
+        }else{
+            model.addAttribute("siteQuestionInfo",null);
+        }
+        model.addAttribute("deptList", this.getDepartmentList(Long.parseLong(serialNo),null));
+        model.addAttribute("appList", this.getProductDictInfo(serialNo));
+        model.addAttribute("userId", userId);
+        model.addAttribute("serialNo", serialNo);
+        return "mobile2/service/large-sick";
     }
 
 

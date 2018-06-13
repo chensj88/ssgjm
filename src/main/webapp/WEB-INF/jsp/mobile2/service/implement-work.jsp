@@ -42,21 +42,28 @@
 					<div class="wap-tab-cnt">
 						<div id="item0">
 
-                            <c:forEach var="vwr" items="${questionList}">
-							<div>
-								<a href="#" class="row">
-									<i class="iconfont icon-time"></i>${vwr.timeMmdd}<b>（${vwr.num}条）</b>
-								</a>
-								<c:forEach var="vwr1" items="${vwr.listQuery}">
-								<a href="#" class="row active">
-										${vwr1.map.deptName}-${vwr1.menuName}
-									<span class="${vwr1.map.priorityString}">${vwr1.map.priorityString}</span>
-								</a>
+								<c:forEach var="vwr" items="${questionList}">
+								<div>
+									<a href="#" class="row">
+										<i class="iconfont icon-time"></i>${vwr.groupName}<b>（${vwr.num}条）</b>
+									</a>
+									<c:forEach var="vwr1" items="${vwr.listQuery}">
+									<c:if test="${active != '1'}">
+									<a href="<%=basePath%>/mobile/wechatSiteQuestion/addPage.do?questionId=${vwr1.id}&userId=${vwr1.creator}&serialNo=${vwr1.serialNo}" class="row active">
+										</c:if>
+										<c:if test="${active == '1'}">
+										<a href="<%=basePath%>/mobile/tempSiteQuestion/addPage.do?questionId=${vwr1.id}&userId=${vwr1.creator}&serialNo=${vwr1.serialNo}" class="row active">
+											</c:if>
+												${vwr1.map.deptName}-${vwr1.menuName}
+											<span class="${vwr1.map.priorityString}">${vwr1.map.priorityString}</span>
+										</a>
+									</c:forEach>
+									<div class="space"></div>
+								</div>
 								</c:forEach>
-								<div class="space"></div>
-							</div>
-							</c:forEach>
+
 						</div>
+
 
 					</div>
 				</div>
