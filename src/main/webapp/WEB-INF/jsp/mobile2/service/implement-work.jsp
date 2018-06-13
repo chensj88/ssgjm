@@ -48,10 +48,10 @@
 										<i class="iconfont icon-time"></i>${vwr.groupName}<b>（${vwr.num}条）</b>
 									</a>
 									<c:forEach var="vwr1" items="${vwr.listQuery}">
-									<c:if test="${active != '1'}">
+									<c:if test="${vwr1.processStatus == 1}">
 									<a href="<%=basePath%>/mobile/wechatSiteQuestion/addPage.do?questionId=${vwr1.id}&userId=${vwr1.creator}&serialNo=${vwr1.serialNo}" class="row active">
 										</c:if>
-										<c:if test="${active == '1'}">
+										<c:if test="${vwr1.processStatus != 1}">
 										<a href="<%=basePath%>/mobile/tempSiteQuestion/addPage.do?questionId=${vwr1.id}&userId=${vwr1.creator}&serialNo=${vwr1.serialNo}" class="row active">
 											</c:if>
 												${vwr1.map.deptName}-${vwr1.menuName}

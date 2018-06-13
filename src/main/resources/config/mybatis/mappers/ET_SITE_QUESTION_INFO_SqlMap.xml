@@ -738,11 +738,11 @@
     <select id="selectEtSiteQuestionProcessStatus" resultMap="etSiteQuestionInfoResult"
             parameterType="etSiteQuestionInfo">
         SELECT ISNULL(tt.num1, 0) as numNo,ISNULL(dd.num2, 0) as numOver,tt.SERIAL_NO FROM
-        (SELECT COUNT(*) as num1,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS NOT IN (4,5) AND t.SITE_NAME != ''
+        (SELECT COUNT(*) as num1,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS NOT IN (5) AND t.SITE_NAME != ''
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
         <if test=" creator != null and creator != ''">and t.CREATOR = #{creator}</if>
         GROUP BY t.SERIAL_NO) tt LEFT JOIN
-        (SELECT COUNT(*) as num2,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS IN (4,5) AND t.SITE_NAME != ''
+        (SELECT COUNT(*) as num2,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS IN (5) AND t.SITE_NAME != ''
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
         <if test=" creator != null and creator != ''">and t.CREATOR = #{creator}</if>
         GROUP BY t.SERIAL_NO) dd  ON tt.SERIAL_NO =dd.SERIAL_NO;

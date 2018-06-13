@@ -8,9 +8,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @CrossOrigin
@@ -36,9 +40,9 @@ public class MobileTempSiteQuestionController  extends BaseController {
             qinfo.setSerialNo("11403");
             qinfo.getMap().put("search_text",search_text);
             if("1".equals(processStatus)){
-                qinfo.getMap().put("process_status_yes","4,5");
+                qinfo.getMap().put("process_status_yes","5");//已确认完成
             }else{
-                qinfo.getMap().put("process_status_no","4,5");
+                qinfo.getMap().put("process_status_no","5");
             }
 
             model.addAttribute("questionList", super.getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(qinfo));
@@ -86,6 +90,22 @@ public class MobileTempSiteQuestionController  extends BaseController {
     }
 
 
+    /**
+     *  院方打回与确认完成
+     * @param id
+     * @param val
+     */
+    @RequestMapping(value = "/processStatus.do", method ={RequestMethod.POST})
+    @ResponseBody
+    public Map<String,String> processStatus(Long id,int val,String suggest) {
+        Map<String,String> map = new HashMap<String,String>();
+        EtSiteQuestionInfo info = new EtSiteQuestionInfo();
+        info.setId(id);
+        info.setProcessStatus(val);
+        info.setSuggest(suggest);
+        int i = super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+        return map;
+    }
 
 
 }

@@ -84,7 +84,7 @@
                 <p class="collect-list-level_p">注：C等级项目完成时间为7个工作日</p>
                 <div class="space"></div>
                 <div class="column-2 collect-list">
-                    <strong>影音资料</strong>
+                    <strong>影像资料</strong>
                 </div>
                 <form id="file" action="" method="post" enctype="multipart/form-data">
                     <div class="column-2 collect-list">
@@ -292,23 +292,23 @@
          *@returns {string}
          */
         function convertTypeToInt(val) {
-            var valStr = '';
-            switch (val) {
-                case 1:
-                    valStr = 'A'
-                    break;
-                case 2:
-                    valStr = 'B'
-                    break;
-                case 3:
-                    valStr = 'C'
-                    break;
-                case 4:
-                    valStr = 'D'
-                    break;
-                default: 'D'
-            }
-            return valStr;
+                var valStr = '';
+                switch (val) {
+                    case 1:
+                        valStr = 'A'
+                        break;
+                    case 2:
+                        valStr = 'B'
+                        break;
+                    case 3:
+                        valStr = 'C'
+                        break;
+                    case 4:
+                        valStr = 'D'
+                        break;
+                    default: 'D'
+                }
+                return valStr;
         }
 
         /**

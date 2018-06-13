@@ -462,7 +462,9 @@ span.nosolve{
 	flex-wrap: wrap;
 }
 .large-img>img{
-	width: 70px;
+	display: block;
+	width: 88px;
+	height: 92px;
 	margin-right: 5px;
 	margin-bottom: 5px;
 }
