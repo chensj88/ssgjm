@@ -57,6 +57,7 @@
         <if test="row.count != null and row.count != ''">top ${row.count}</if>
         * , (select s.YHMC from SYS_USER_INFO s where s.ID = t.OPERATOR) AS USER_NAME from ET_LOG t where 1 = 1
         <include refid="sf-etLog"/>
+        order by t.ID desc
         <!-- order by ID asc -->
     </select>
 
