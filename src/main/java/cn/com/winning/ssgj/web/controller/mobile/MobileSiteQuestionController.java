@@ -75,10 +75,13 @@ public class MobileSiteQuestionController  extends BaseController {
      * @return
      */
     @RequestMapping(value = "/list.do")
-    public String list(Model model,long userId,String serialNo) throws ParseException {
+    public String list(Model model,long userId,String serialNo,String searchText) throws ParseException {
         EtSiteQuestionInfo info = new EtSiteQuestionInfo();
         info.setCreator(userId);
         info.setSerialNo(serialNo);
+        //只查询 新建,已分配，待处理，打回
+        info.getMap().put("processStatus","1,2,3,6");
+        info.getMap().put("search_text",searchText);
         model.addAttribute("questionList", getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(info));
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);

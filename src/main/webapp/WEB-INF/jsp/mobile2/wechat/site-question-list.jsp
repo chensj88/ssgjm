@@ -23,48 +23,52 @@
 <div class="wrap">
     <div class="wrap-header">
         <div class="header">
+            <span class="mui-icon mui-icon-arrowleft" onclick="openIndexPage()"></span>
             <input id="userId" type="hidden" name="userId" value="${userId}">
             <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
-          <%--  <span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)" ></span>--%>
             <div>采集列表</div>
         </div>
     </div>
     <div class="wrap-cnt">
-            <c:forEach var="vwr" items="${questionList}">
-                <a href="#" class="row">
-                    <i class="iconfont icon-time"></i>${vwr.groupName}<b>（${vwr.num}条）</b>
-                </a>
-                <ul class="mui-table-view OA_task_1">
-                <c:forEach var="vwr1" items="${vwr.listQuery}">
-                    <li class="mui-table-view-cell">
-                        <div class="mui-slider-right mui-disabled">
-                            <a vid="${vwr1.id}" vstatus="${vwr1.processStatus}" vrequirementNo="${vwr1.requirementNo}" class="mui-btn mui-btn-red">删除</a>
-                        </div>
-                        <div class="mui-slider-handle collect-item" onclick="detail(${vwr1.id},${vwr1.processStatus})">
-                            <h3>${vwr1.map.deptName}-${vwr1.menuName}</h3>
-                            <p>
-                                <span class="status${vwr1.map.priorityString}">${vwr1.map.priorityString}</span>
-                                <c:choose>
-                                    <c:when test="${vwr1.processStatus==1}">
-                                        <span class="distribution">${vwr1.map.processStr}</span>
-                                    </c:when>
-                                    <c:when test="${vwr1.processStatus == 2 || vwr1.processStatus == 3 || vwr1.processStatus == 4}">
-                                        <span class="distributioned">${vwr1.map.processStr}</span>
-                                    </c:when>
-                                    <c:when test="${vwr1.processStatus == 5}">
-                                        <span class="distributioned" style="color: #000;border-color: #000;">${vwr1.map.processStr}</span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span class="no-distribution" style="color: red;border-color: red;">${vwr1.map.processStr}</span>
-                                    </c:otherwise>
-                                </c:choose>
-                            </p>
-                        </div>
-                    </li>
-                </c:forEach>
-                </ul>
-            </c:forEach>
+        <div class="imple-work-search">
+            <i class="iconfont icon-search"></i>
+            <input id="search_text" type="text" placeholder="请输入搜索内容" onblur="search()"/>
         </div>
+
+        <c:forEach var="vwr" items="${questionList}">
+            <a href="#" class="row">
+                <i class="iconfont icon-time"></i>${vwr.groupName}<b>（${vwr.num}条）</b>
+            </a>
+            <ul class="mui-table-view OA_task_1">
+            <c:forEach var="vwr1" items="${vwr.listQuery}">
+                <li class="mui-table-view-cell">
+                    <div class="mui-slider-right mui-disabled">
+                        <a vid="${vwr1.id}" vstatus="${vwr1.processStatus}" vrequirementNo="${vwr1.requirementNo}" class="mui-btn mui-btn-red">删除</a>
+                    </div>
+                    <div class="mui-slider-handle collect-item" onclick="detail(${vwr1.id})">
+                        <h3>${vwr1.map.deptName}-${vwr1.menuName}</h3>
+                        <p>
+                            <span class="status${vwr1.map.priorityString}">${vwr1.map.priorityString}</span>
+                            <c:choose>
+                                <c:when test="${vwr1.processStatus==1}">
+                                    <span class="distribution">${vwr1.map.processStr}</span>
+                                </c:when>
+                                <c:when test="${vwr1.processStatus == 2 || vwr1.processStatus == 3 || vwr1.processStatus == 4}">
+                                    <span class="distributioned">${vwr1.map.processStr}</span>
+                                </c:when>
+                                <c:when test="${vwr1.processStatus == 5}">
+                                    <span class="distributioned" style="color: #000;border-color: #000;">${vwr1.map.processStr}</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="no-distribution" style="color: red;border-color: red;">${vwr1.map.processStr}</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </p>
+                    </div>
+                </li>
+            </c:forEach>
+            </ul>
+        </c:forEach>
     </div>
     <!--新增-->
     <a href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?serialNo=${serialNo}&userId=${userId}&source=2" class="wrap-add">
@@ -92,7 +96,6 @@
 </div>
 </body>
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
-<script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>
 <script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
         mui.init();
@@ -136,18 +139,13 @@
                     }
                 });
             });
-            IMS.menuTab();
         })(mui);
 
     /**
      * 跳转问题详情页
      */
-    function detail(id,processStatus){
-        if(processStatus ==1){
-            location.href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?questionId="+id+"&serialNo=${serialNo}&userId=${userId}&source=2";
-        }else{
-            location.href="<%=basePath%>mobile/tempSiteQuestion/addPage.do?questionId="+id+"&serialNo=${serialNo}&userId=${userId}&source=2";
-        }
+    function detail(id){
+        location.href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?questionId="+id+"&serialNo=${serialNo}&userId=${userId}&source=2";
     }
 
     /**
@@ -178,6 +176,15 @@
         });
     }
 
+    function  search() {
+        location.href="<%=basePath%>/mobile/wechatSiteQuestion/list.do?searchText="+$("#search_text").val()+"&userId="+$("#userId").val()+ "&serialNo="+$("#serialNo").val();
+    }
 
+</script>
+<script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        IMS.menuTab();
+    })
 </script>
 </html>
