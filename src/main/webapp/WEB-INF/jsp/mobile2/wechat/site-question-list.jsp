@@ -30,6 +30,11 @@
         </div>
     </div>
     <div class="wrap-cnt">
+        <div class="imple-work-search">
+            <i class="iconfont icon-search"></i>
+            <input id="search_text" type="text" placeholder="请输入搜索内容" onblur="search()"/>
+        </div>
+
         <c:forEach var="vwr" items="${questionList}">
             <a href="#" class="row">
                 <i class="iconfont icon-time"></i>${vwr.groupName}<b>（${vwr.num}条）</b>
@@ -171,6 +176,9 @@
         });
     }
 
+    function  search() {
+        location.href="<%=basePath%>/mobile/wechatSiteQuestion/list.do?searchText="+$("#search_text").val()+"&userId="+$("#userId").val()+ "&serialNo="+$("#serialNo").val();
+    }
 
 </script>
 <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>
