@@ -36,8 +36,8 @@
 					</div>
 					<!--tab-->
 					<div class="wap-tab">
-						<span <c:if test="${active != '1'}"> class="active"</c:if> onclick="processStatus(0);">未确认（${process_num.map.get("numNo")==null?0:process_num.map.get("numNo")}）</span>
-						<span <c:if test="${active == '1'}"> class="active"</c:if> onclick="processStatus(1);">已确认（${process_num.map.get("numOver")==null?0:process_num.map.get("numOver")}）</span>
+						<span <c:if test="${active != '1'}"> class="active"</c:if> onclick="processStatus(4);">未确认（${process_num.map.get("numNo")==null?0:process_num.map.get("numNo")}）</span>
+						<span <c:if test="${active == '1'}"> class="active"</c:if> onclick="processStatus(5);">已确认（${process_num.map.get("numOver")==null?0:process_num.map.get("numOver")}）</span>
 					</div>
 					<div class="space"></div>
 					<div class="wap-tab-cnt">
@@ -49,12 +49,8 @@
 										<i class="iconfont icon-time"></i>${vwr.groupName}<b>（${vwr.num}条）</b>
 									</a>
 									<c:forEach var="vwr1" items="${vwr.listQuery}">
-									<c:if test="${vwr1.processStatus == 1}">
-									<a href="<%=basePath%>/mobile/wechatSiteQuestion/addPage.do?questionId=${vwr1.id}&userId=${vwr1.creator}&serialNo=${vwr1.serialNo}" class="row active">
-										</c:if>
-										<c:if test="${vwr1.processStatus != 1}">
 										<a href="<%=basePath%>/mobile/tempSiteQuestion/addPage.do?questionId=${vwr1.id}&userId=${vwr1.creator}&serialNo=${vwr1.serialNo}" class="row active">
-											</c:if>
+
 												${vwr1.map.deptName}-${vwr1.menuName}
 											<span class="${vwr1.map.priorityString}">${vwr1.map.priorityString}</span>
 										</a>
