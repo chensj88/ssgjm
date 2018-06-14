@@ -30,45 +30,55 @@
         </div>
     </div>
     <div class="wrap-cnt">
-        <div class="imple-work-search">
-            <i class="iconfont icon-search"></i>
-            <input id="search_text" type="text" value="${search_text == null ? '' : search_text }" placeholder="请输入搜索内容" onblur="search()"/>
-        </div>
-
-        <c:forEach var="vwr" items="${questionList}">
-            <a href="#" class="row">
-                <i class="iconfont icon-time"></i>${vwr.groupName}<b>（${vwr.num}条）</b>
-            </a>
-            <ul class="mui-table-view OA_task_1">
-            <c:forEach var="vwr1" items="${vwr.listQuery}">
-                <li class="mui-table-view-cell">
-                    <div class="mui-slider-right mui-disabled">
-                        <a vid="${vwr1.id}" vstatus="${vwr1.processStatus}" vrequirementNo="${vwr1.requirementNo}" class="mui-btn mui-btn-red">删除</a>
-                    </div>
-                    <div class="mui-slider-handle collect-item" onclick="detail(${vwr1.id},${vwr1.processStatus})">
-                        <h3>${vwr1.map.deptName}-${vwr1.menuName}</h3>
-                        <p>
-                            <span class="status${vwr1.map.priorityString}">${vwr1.map.priorityString}</span>
-                            <c:choose>
-                                <c:when test="${vwr1.processStatus==1}">
-                                    <span class="distribution">${vwr1.map.processStr}</span>
-                                </c:when>
-                                <c:when test="${vwr1.processStatus == 2 || vwr1.processStatus == 3 || vwr1.processStatus == 4}">
-                                    <span class="distributioned">${vwr1.map.processStr}</span>
-                                </c:when>
-                                <c:when test="${vwr1.processStatus == 5}">
-                                    <span class="distributioned" style="color: #000;border-color: #000;">${vwr1.map.processStr}</span>
-                                </c:when>
-                                <c:otherwise>
-                                    <span class="no-distribution" style="color: red;border-color: red;">${vwr1.map.processStr}</span>
-                                </c:otherwise>
-                            </c:choose>
-                        </p>
-                    </div>
-                </li>
+        <div>
+            <div class="imple-work-search">
+                <i class="iconfont icon-search"></i>
+                <input id="search_text" type="text" value="${search_text == null ? '' : search_text }" placeholder="请输入搜索内容" onblur="search()"/>
+            </div>
+            <c:forEach var="vwr" items="${questionList}">
+                <a href="#" class="row">
+                    <i class="iconfont icon-time"></i>${vwr.groupName}<b>（${vwr.num}条）</b>
+                </a>
+                <ul class="mui-table-view OA_task_1">
+                <c:forEach var="vwr1" items="${vwr.listQuery}">
+                    <li class="mui-table-view-cell">
+                        <div class="mui-slider-right mui-disabled">
+                            <a vid="${vwr1.id}" vstatus="${vwr1.processStatus}" vrequirementNo="${vwr1.requirementNo}" class="mui-btn mui-btn-red">删除</a>
+                        </div>
+                        <div class="mui-slider-handle collect-item" onclick="detail(${vwr1.id},${vwr1.processStatus})">
+                            <h3>${vwr1.map.deptName}-${vwr1.menuName}</h3>
+                            <p>
+                                <span class="status${vwr1.map.priorityString}">${vwr1.map.priorityString}</span>
+                                <c:choose>
+                                    <c:when test="${vwr1.processStatus==1}">
+                                        <span class="distribution">${vwr1.map.processStr}</span>
+                                    </c:when>
+                                    <c:when test="${vwr1.processStatus == 2 || vwr1.processStatus == 3 || vwr1.processStatus == 4}">
+                                        <span class="distributioned">${vwr1.map.processStr}</span>
+                                    </c:when>
+                                    <c:when test="${vwr1.processStatus == 5}">
+                                        <span class="distributioned" style="color: #000;border-color: #000;">${vwr1.map.processStr}</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="no-distribution" style="color: red;border-color: red;">${vwr1.map.processStr}</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </p>
+                        </div>
+                    </li>
+                </c:forEach>
+                </ul>
             </c:forEach>
-            </ul>
-        </c:forEach>
+        </div>
+        <div class="hide" >
+
+        </div>
+        <div class="hide">
+            正在建设中
+        </div>
+        <div class="hide">
+            正在建设中
+        </div>
     </div>
     <!--新增-->
     <a href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?serialNo=${serialNo}&userId=${userId}&source=2" class="wrap-add">
@@ -80,7 +90,7 @@
             <i class="iconfont icon-ck"></i>
             查看
         </div>
-        <div>
+        <div onclick="videoLoad()">
             <i class="iconfont icon-sp"></i>
             视频
         </div>
@@ -150,7 +160,6 @@
         }else{
             location.href="<%=basePath%>mobile/tempSiteQuestion/addPage.do?questionId="+id+"&serialNo=${serialNo}&userId=${userId}&source=2";
         }
-
     }
 
     /**
@@ -185,6 +194,10 @@
         location.href="<%=basePath%>/mobile/wechatSiteQuestion/list.do?searchText="+$("#search_text").val()+"&userId="+$("#userId").val()+ "&serialNo="+$("#serialNo").val();
     }
 
+    function videoLoad() {
+        location.href="<%=basePath%>/mobile/trainVideoList/list.do?openId="+$("#openId").val()+"&userId="+$("#userId").val()+
+            "&serialNo="+$("#serialNo").val();
+    }
 </script>
 <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>
 <script type="text/javascript">

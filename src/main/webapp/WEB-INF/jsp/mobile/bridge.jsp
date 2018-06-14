@@ -17,33 +17,41 @@
 
 	<body>
 		<!--header-->
-		<div class="header">
-			<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
-			<div>课程视频分类</div>
-			<span class="mui-icon mui-icon-more"></span>
-		</div>
-		<div class="hole"></div>
+		<div class="wrap">
 
-		<div class="bridge">
-			<div class="bridge-item">
-				<c:forEach var="repoType" items="${repoTypeList}" >
-					<a href="<%=basePath%>mobile/trainVideoList/video.do?video_type=${repoType.videoType}&OPENID=${OPENID}" >
-						<i class="${repoType.dictDesc}"></i>
-						<span>${repoType.typeLabel}</span>
-					</a>
-
-
-				</c:forEach>
-
+			<div class="wrap-header">
+				<div class="header">
+				<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
+				<div>课程视频分类</div>
+				<span class="mui-icon mui-icon-more"></span>
 			</div>
+			</div>
+			<div class="wrap-cnt">
+				<div class="bridge">
+					<div class="bridge-item">
+						<c:forEach var="repoType" items="${repoTypeList}" >
+							<a href="<%=basePath%>mobile/trainVideoList/video.do?video_type=${repoType.videoType}&OPENID=${OPENID}" >
+								<i class="${repoType.dictDesc}"></i>
+								<span>${repoType.typeLabel}</span>
+							</a>
+						</c:forEach>
+					</div>
+				</div>
+				<div class="hide">
+					正在建设中
+				</div>
+				<div class="hide">
+					正在建设中
+				</div>
+			</div>
+
 			<!--底部菜单-->
 			<div class="wrap-foot">
-				<div class="active">
-					<a href="<%=basePath%>/mobile/trainVideoList/list.do">  </a>
+				<div  onclick="openIndexPage()">
 					<i class="iconfont icon-ck"></i>
 					查看
 				</div>
-				<div onclick="videoLoad();">
+				<div onclick="videoLoad();" class="active">
 					<i class="iconfont icon-sp"></i>
 					视频
 				</div>
@@ -58,5 +66,14 @@
 			</div>
 		</div>
 	</body>
-
+	<script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+	<script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>
+	<script type="text/javascript">
+        $(function () {
+            IMS.menuTab();
+        })
+		function openIndexPage() {
+            location.href="<%=basePath%>mobile/tempSiteQuestion/laodList.do?processStatus=4&userId=${userId}&serialNo=${serialNo}";
+        }
+	</script>
 </html>

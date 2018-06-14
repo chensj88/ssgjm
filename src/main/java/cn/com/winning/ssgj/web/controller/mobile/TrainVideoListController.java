@@ -53,6 +53,9 @@ public class TrainVideoListController extends BaseController {
             List<SysTrainVideoRepo> repoTypeList = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepoTypeList(repo);
             model.addAttribute("repoTypeList", repoTypeList);
             model.addAttribute("OPENID", openId);
+            model.addAttribute("userId", userId);
+            model.addAttribute("serialNo", serialNo);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
