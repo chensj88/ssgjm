@@ -312,7 +312,8 @@ public class BaseController extends BaseSpringMvcMybatisController {
                     info.setId(ssgjHelper.createUserId());
                     info.setUserType("0");
                     info.setOpenId((String) io.get("OPENID"));
-                    info.setName(new String((String) io.get("USERNAME")));
+                    info.setName(new String((String) io.get("USERNAME"))+"("+(String) io.get("HOSPCODE")+")");
+                    info.setYhmc(new String((String) io.get("USERNAME")));
                     info.setUserid((String) io.get("HOSPCODE") +(String) io.get("WORKNUM"));
                     info.setPassword(MD5.stringMD5ForBarCode((String) io.get("WORKNUM")));
                     info.setMobile((String) io.get("USERPHONE"));

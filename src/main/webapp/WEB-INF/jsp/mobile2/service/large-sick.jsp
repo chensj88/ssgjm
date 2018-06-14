@@ -17,8 +17,13 @@
     <div class="wrap-header">
         <div class="header">
             <span class="mui-icon mui-icon-arrowleft"  onclick="javascript:history.go(-1)"></span>
+            <input id="userId" type="hidden" name="userId" value="${userId}">
+            <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
+            <input id="openId" type="hidden" name="openId" value="${openId}">
             <div>院方确认</div>
-            <a href="#">更新记录</a>
+            <c:if test="${siteQuestionInfo.processStatus != 1}">
+                <a href="<%=basePath%>mobile2/log/list.do?sourceId=${siteQuestionInfo.id}">更新记录11</a>
+            </c:if>
         </div>
     </div>
     <div class="wrap-cnt">
