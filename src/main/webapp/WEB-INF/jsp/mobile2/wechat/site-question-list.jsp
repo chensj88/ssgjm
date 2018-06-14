@@ -31,10 +31,12 @@
     </div>
     <div class="wrap-cnt">
         <div>
-            <div class="imple-work-search">
-                <i class="iconfont icon-search"></i>
-                <input id="search_text" type="text" value="${search_text == null ? '' : search_text }" placeholder="请输入搜索内容" onblur="search()"/>
-            </div>
+            <form  action="javascript:search();">
+                <div class="imple-work-search">
+                    <i class="iconfont icon-search" onclick="search()"></i>
+                    <input id="search_text" type="text" value="${search_text == null ? '' : search_text }" placeholder="请输入搜索内容" />
+                </div>
+            </form>
             <c:forEach var="vwr" items="${questionList}">
                 <a href="#" class="row">
                     <i class="iconfont icon-time"></i>${vwr.groupName}<b>（${vwr.num}条）</b>

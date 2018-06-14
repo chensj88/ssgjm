@@ -372,6 +372,11 @@ public class MobileSiteQuestionController  extends BaseController {
         return map;
     }
 
+    /**
+     * 判断当前的问题信息是否可以删除
+     * @param info
+     * @return
+     */
     @RequestMapping("/checkQuestion.do")
     @ResponseBody
     @ILog
@@ -381,6 +386,12 @@ public class MobileSiteQuestionController  extends BaseController {
         result.put("data", getFacade().getEtSiteQuestionInfoService().checkEtSiteQuestionInfoStatus(info));
         return result;
     }
+
+    /**
+     * 检查问题的标题是否为空，为空则返回 0 反之返回 1
+     * @param info
+     * @return
+     */
     @RequestMapping("/checkQuestionStatus.do")
     @ResponseBody
     @ILog
@@ -392,6 +403,11 @@ public class MobileSiteQuestionController  extends BaseController {
         return result;
     }
 
+    /**
+     * 问题删除
+     * @param info
+     * @return
+     */
     @RequestMapping("/delete.do")
     @ResponseBody
     @ILog
