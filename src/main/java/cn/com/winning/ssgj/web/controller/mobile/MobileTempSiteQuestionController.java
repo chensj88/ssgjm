@@ -53,17 +53,18 @@ public class MobileTempSiteQuestionController  extends BaseController {
     }
 
     @RequestMapping(value = "/laodList.do")
-    public String laodList(Model model,Long userId,String serialNo,String openId,String processStatus,String search_text) {
+    public String laodList(Model model,Long userId,String serialNo,String openId,int processStatus,String search_text) {
         try{
             EtSiteQuestionInfo qinfo = new EtSiteQuestionInfo();
             qinfo.setCreator(userId);
             qinfo.setSerialNo(serialNo);
             qinfo.getMap().put("search_text",search_text);
-            if("1".equals(processStatus)){
-                qinfo.getMap().put("process_status_yes","5");//已确认完成
-            }else{
-                qinfo.getMap().put("process_status_no","5");
-            }
+//            if("1".equals(processStatus)){
+//                qinfo.getMap().put("process_status_yes","5");//已确认完成
+//            }else{
+//                qinfo.getMap().put("process_status_no","5");
+//            }
+            qinfo.setProcessStatus(processStatus);
             model.addAttribute("questionList", super.getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(qinfo));
             model.addAttribute("process_num",super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(qinfo));
             model.addAttribute("userId", userId);

@@ -685,13 +685,8 @@
           WHERE  CREATOR = #{creator}
           AND  SERIAL_NO = #{serialNo}
           AND SITE_NAME != ''
-        <if test="map.search_text != null and map.search_text != ''">and ( t.MENU_NAME LIKE '%${map.search_text}%' OR t.QUESTION_DESC LIKE '%${map.search_text}%')</if>
-        <if test="map.process_status_no != null and map.process_status_no != null "> and
-            PROCESS_STATUS not in  (${map.process_status_no})
-        </if>
-        <if test="map.process_status_yes != null and map.process_status_yes != null "> and
-            PROCESS_STATUS in  (${map.process_status_yes})
-        </if>
+        <if test="map.search_text != null and map.search_text != ''">and ( MENU_NAME LIKE '%${map.search_text}%' OR QUESTION_DESC LIKE '%${map.search_text}%')</if>
+        <if test="(processStatus != null and processStatus != '') or processStatus == 0">and PROCESS_STATUS =#{processStatus}</if>
           GROUP BY CONVERT(VARCHAR(32),CREATE_TIME,111)
           ) t ORDER BY t.createDate DESC
     </select>
@@ -721,12 +716,7 @@
         LEFT JOIN ET_CONTRACT_TASK h ON CAST(t.PRODUCT_NAME AS INT) = h.ID
         where 1 = 1
         <include refid="sf-etSiteQuestionInfo"/>
-        <if test="map.process_status_no != null and map.process_status_no != null "> and
-            t.PROCESS_STATUS not in  (${map.process_status_no})
-        </if>
-        <if test="map.process_status_yes != null and map.process_status_yes != null "> and
-            t.PROCESS_STATUS in  (${map.process_status_yes})
-        </if>
+        <if test="(processStatus != null and processStatus != '') or processStatus == 0">and t.PROCESS_STATUS =#{processStatus}</if>
         <if test="map.createDate != null and map.createDate != ''">
             and CONVERT(VARCHAR(32),t.CREATE_TIME,111) = #{map.createDate}
         </if>
@@ -738,11 +728,11 @@
     <select id="selectEtSiteQuestionProcessStatus" resultMap="etSiteQuestionInfoResult"
             parameterType="etSiteQuestionInfo">
         SELECT ISNULL(tt.num1, 0) as numNo,ISNULL(dd.num2, 0) as numOver,tt.SERIAL_NO FROM
-        (SELECT COUNT(*) as num1,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS NOT IN (5) AND t.SITE_NAME != ''
+        (SELECT COUNT(*) as num1,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS =4 AND t.SITE_NAME != ''
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
         <if test=" creator != null and creator != ''">and t.CREATOR = #{creator}</if>
         GROUP BY t.SERIAL_NO) tt LEFT JOIN
-        (SELECT COUNT(*) as num2,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS IN (5) AND t.SITE_NAME != ''
+        (SELECT COUNT(*) as num2,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS =5 AND t.SITE_NAME != ''
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
         <if test=" creator != null and creator != ''">and t.CREATOR = #{creator}</if>
         GROUP BY t.SERIAL_NO) dd  ON tt.SERIAL_NO =dd.SERIAL_NO;
