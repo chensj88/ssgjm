@@ -20,7 +20,7 @@ import java.util.*;
  **/
 @Controller
 @CrossOrigin
-@RequestMapping("/mobile2/log")
+@RequestMapping("/mobile/log")
 public class LogController extends BaseController {
     @Autowired
     private SSGJHelper ssgjHelper;
