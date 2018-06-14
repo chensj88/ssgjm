@@ -96,7 +96,7 @@ public class MobileSiteQuestionController  extends BaseController {
      * @throws ParseException
      */
     @RequestMapping(value = "/openDept.do")
-    public String openDept(Model model,Long userId,String serialNo,Long questionId,String type,String source) throws ParseException {
+    public String openDept(Model model,Long userId,String serialNo,Long questionId,String type,String menuName,String questionDesc,String priority,String source) throws ParseException {
         EtDepartment dept = new EtDepartment();
         dept.setSerialNo(Long.parseLong(serialNo));
         model.addAttribute("questionId", questionId);
@@ -104,6 +104,9 @@ public class MobileSiteQuestionController  extends BaseController {
         model.addAttribute("serialNo", serialNo);
         model.addAttribute("type",type);
         model.addAttribute("source", source);
+        model.addAttribute("menuName", menuName);
+        model.addAttribute("questionDesc", questionDesc);
+        model.addAttribute("priority", priority);
         if("1".equals(type)){
             model.addAttribute("title","科室病区");
             model.addAttribute("firstInit", getFacade().getEtDepartmentService().getEtDepartmentFirstInitCode(dept));
@@ -129,7 +132,7 @@ public class MobileSiteQuestionController  extends BaseController {
      */
     @RequestMapping(value = "/changeDept.do")
     public String changeDept(Model model,String questionId,Long userId,String serialNo,String type,
-                             String siteName,String source) {
+                             String siteName,String source,String menuName,String questionDesc,String priority) {
         EtSiteQuestionInfo info = new EtSiteQuestionInfo();
         if(StringUtils.isNotBlank(questionId)) {
             info.setId(Long.parseLong(questionId));
@@ -179,6 +182,9 @@ public class MobileSiteQuestionController  extends BaseController {
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
         model.addAttribute("source", source);
+        model.addAttribute("menuName", menuName);
+        model.addAttribute("questionDesc", questionDesc);
+        model.addAttribute("priority", priority);
         return "mobile2/wechat/site-question";
     }
 

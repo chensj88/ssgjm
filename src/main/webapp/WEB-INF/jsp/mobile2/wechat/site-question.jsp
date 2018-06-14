@@ -45,10 +45,10 @@
                     <div class="collect-list-dp">
                         <input type="hidden" id="siteName" name="siteName" value="${siteQuestionInfo.siteName}" >
                         <c:if test="${siteQuestionInfo.siteName != null}" >
-                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}&type=1&source=${source}"><span class="span_font">${siteQuestionInfo.map.get("deptName")}</span><i class="iconfont icon-fanhui-copy"></i></a>
+                            <a href="#" onclick="openDeptOrSysWindow(1)"><span class="span_font">${siteQuestionInfo.map.get("deptName")}</span><i class="iconfont icon-fanhui-copy"></i></a>
                         </c:if>
                         <c:if test="${siteQuestionInfo.siteName == null}" >
-                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}&type=1&source=${source}"><span class="span_font">--请选择--</span><i class="iconfont icon-fanhui-copy"></i></a>
+                            <a href="#" onclick="openDeptOrSysWindow(1)"><span class="span_font">--请选择--</span><i class="iconfont icon-fanhui-copy"></i></a>
                         </c:if>
                     </div>
                 </div>
@@ -57,23 +57,23 @@
                     <div class="collect-list-dp">
                         <input id="productName" name="productName" value="${siteQuestionInfo.productName}" type="hidden"/>
                         <c:if test="${siteQuestionInfo.productName != null}" >
-                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}&type=2&source=${source}"><span class="span_font">${siteQuestionInfo.map.get("plName")}</span><i class="iconfont icon-fanhui-copy"></i></a>
+                            <a href="#" onclick="openDeptOrSysWindow(2)"><span class="span_font">${siteQuestionInfo.map.get("plName")}</span><i class="iconfont icon-fanhui-copy"></i></a>
                         </c:if>
                         <c:if test="${siteQuestionInfo.productName == null}" >
-                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}&type=2&source=${source}"><span class="span_font">--请选择--</span><i class="iconfont icon-fanhui-copy"></i></a>
+                            <a href="#" onclick="openDeptOrSysWindow(2)"><span class="span_font">--请选择--</span><i class="iconfont icon-fanhui-copy"></i></a>
                         </c:if>
                     </div>
                 </div>
                 <div class="column-2 collect-list">
                     <strong>问题标题</strong>
                     <div class="collect-list-text">
-                        <input type="text" title="${siteQuestionInfo.menuName}" value="${siteQuestionInfo.menuName.trim()}" id="menuName">
+                        <input type="text" title="${siteQuestionInfo.menuName}" value="${ menuName != null ? menuName : siteQuestionInfo.menuName.trim() }" id="menuName">
                     </div>
                 </div>
                 <div class="column-2 collect-list">
                     <strong>问题描述</strong>
                     <div>
-                        <textarea id="questionDesc" name="questionDesc">${siteQuestionInfo.questionDesc}</textarea>
+                        <textarea id="questionDesc" name="questionDesc">${questionDesc != null ? questionDesc : siteQuestionInfo.questionDesc}</textarea>
                     </div>
                 </div>
                 <div class="space"></div>
@@ -130,8 +130,8 @@
             $('.collect-list-level>span').click(function () {
                 $(this).addClass('level').siblings('span').removeClass('level');
             });
-            setListLevel(${siteQuestionInfo.priority});
-            changeListLevel(${siteQuestionInfo.priority});
+            setListLevel(${priority != null ? priority : siteQuestionInfo.priority});
+            changeListLevel(${priority != null ? priority : siteQuestionInfo.priority});
         })
         /**
          * 初始化优先级
@@ -434,6 +434,14 @@
 //                    mui.toast('问题删除成功！',{ duration:'long', type:'div' })
                 }
             });
+        }
+
+        function openDeptOrSysWindow(type) {
+            var menuName = $('#menuName').val();
+            var questionDesc = $('#questionDesc').val();
+            var priority = getListLevelValue();
+            location.href = "<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId} "+
+                            "&questionId=${siteQuestionInfo.id}&type="+type+"&source=${source}&menuName="+encodeURI(menuName)+"&questionDesc="+encodeURI(questionDesc)+"&priority="+priority;
         }
     </script>
 </html>

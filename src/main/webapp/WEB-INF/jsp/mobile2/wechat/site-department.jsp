@@ -81,7 +81,7 @@
     });
 
     function selectSiteName(id){
-            location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&siteName="+id;
+            location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&siteName="+id +"&menuName=${menuName}&questionDesc=${questionDesc}&priority=${priority}";
     }
 </script>
 </html>
