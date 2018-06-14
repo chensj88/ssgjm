@@ -717,6 +717,7 @@
         LEFT JOIN ET_CONTRACT_TASK h ON CAST(t.PRODUCT_NAME AS INT) = h.ID
         where 1 = 1
         <include refid="sf-etSiteQuestionInfo"/>
+        <if test="map.search_text != null and map.search_text != ''">and ( t.MENU_NAME LIKE '%${map.search_text}%' OR t.QUESTION_DESC LIKE '%${map.search_text}%')</if>
         <if test="(processStatus != null and processStatus != '') or processStatus == 0">and t.PROCESS_STATUS =#{processStatus}</if>
         <if test="(map.processStatus != null and map.processStatus != '') ">and t.PROCESS_STATUS IN  (${map.processStatus})</if>
         <if test="map.createDate != null and map.createDate != ''">

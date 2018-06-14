@@ -85,6 +85,7 @@ public class MobileSiteQuestionController  extends BaseController {
         model.addAttribute("questionList", getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(info));
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
+        model.addAttribute("search_text", searchText);
         return "mobile2/wechat/site-question-list";
     }
 

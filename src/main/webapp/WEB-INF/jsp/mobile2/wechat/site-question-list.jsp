@@ -32,7 +32,7 @@
     <div class="wrap-cnt">
         <div class="imple-work-search">
             <i class="iconfont icon-search"></i>
-            <input id="search_text" type="text" placeholder="请输入搜索内容" onblur="search()"/>
+            <input id="search_text" type="text" value="${search_text == null ? '' : search_text }" placeholder="请输入搜索内容" onblur="search()"/>
         </div>
 
         <c:forEach var="vwr" items="${questionList}">
@@ -45,7 +45,7 @@
                     <div class="mui-slider-right mui-disabled">
                         <a vid="${vwr1.id}" vstatus="${vwr1.processStatus}" vrequirementNo="${vwr1.requirementNo}" class="mui-btn mui-btn-red">删除</a>
                     </div>
-                    <div class="mui-slider-handle collect-item" onclick="detail(${vwr1.id})">
+                    <div class="mui-slider-handle collect-item" onclick="detail(${vwr1.id},${vwr1.processStatus})">
                         <h3>${vwr1.map.deptName}-${vwr1.menuName}</h3>
                         <p>
                             <span class="status${vwr1.map.priorityString}">${vwr1.map.priorityString}</span>
@@ -144,8 +144,13 @@
     /**
      * 跳转问题详情页
      */
-    function detail(id){
-        location.href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?questionId="+id+"&serialNo=${serialNo}&userId=${userId}&source=2";
+    function detail(id,status){
+        if( status === 1 ){
+            location.href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?questionId="+id+"&serialNo=${serialNo}&userId=${userId}&source=2";
+        }else{
+            location.href="<%=basePath%>mobile/tempSiteQuestion/addPage.do?questionId="+id+"&serialNo=${serialNo}&userId=${userId}&source=2";
+        }
+
     }
 
     /**
