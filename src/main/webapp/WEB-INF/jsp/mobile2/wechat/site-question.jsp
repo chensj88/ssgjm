@@ -19,15 +19,22 @@
         <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
         <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css" />
         <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
+        <style type="text/css">
+            .span_font {
+                color :#666666;
+                font-family: 'Helvetica Neue',Helvetica,sans-serif;
+            }
+        </style>
     </head>
     <body>
     <input id="userId" type="hidden" name="userId" value="${userId}">
     <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
     <input id="id" type="hidden" name="id" value="${siteQuestionInfo.id}">
+    <input id="source" type="hidden" name="source" value="${source}">
         <div class="wrap">
             <div class="wrap-header">
                 <div class="header">
-                    <span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)" ></span>
+                    <span class="mui-icon mui-icon-arrowleft" onclick="checkQuestion()" ></span>
                     <div>新增采集</div>
                     <a href="<%=basePath%>mobile/wechatSiteQuestion/list.do?serialNo=${serialNo}&userId=${userId}">采集列表</a>
                 </div>
@@ -38,10 +45,10 @@
                     <div class="collect-list-dp">
                         <input type="hidden" id="siteName" name="siteName" value="${siteQuestionInfo.siteName}" >
                         <c:if test="${siteQuestionInfo.siteName != null}" >
-                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}&type=1"><span>${siteQuestionInfo.map.get("deptName")}</span><i class="iconfont icon-fanhui-copy"></i></a>
+                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}&type=1&source=${source}"><span class="span_font">${siteQuestionInfo.map.get("deptName")}</span><i class="iconfont icon-fanhui-copy"></i></a>
                         </c:if>
                         <c:if test="${siteQuestionInfo.siteName == null}" >
-                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}&type=1"><span>--请选择--</span><i class="iconfont icon-fanhui-copy"></i></a>
+                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}&type=1&source=${source}"><span class="span_font">--请选择--</span><i class="iconfont icon-fanhui-copy"></i></a>
                         </c:if>
                     </div>
                 </div>
@@ -50,10 +57,10 @@
                     <div class="collect-list-dp">
                         <input id="productName" name="productName" value="${siteQuestionInfo.productName}" type="hidden"/>
                         <c:if test="${siteQuestionInfo.productName != null}" >
-                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}&type=2"><span>${siteQuestionInfo.map.get("plName")}</span><i class="iconfont icon-fanhui-copy"></i></a>
+                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}&type=2&source=${source}"><span class="span_font">${siteQuestionInfo.map.get("plName")}</span><i class="iconfont icon-fanhui-copy"></i></a>
                         </c:if>
                         <c:if test="${siteQuestionInfo.productName == null}" >
-                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}&type=2"><span>--请选择--</span><i class="iconfont icon-fanhui-copy"></i></a>
+                            <a href="<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}&questionId=${siteQuestionInfo.id}&type=2&source=${source}"><span class="span_font">--请选择--</span><i class="iconfont icon-fanhui-copy"></i></a>
                         </c:if>
                     </div>
                 </div>
@@ -107,7 +114,9 @@
                 </form>
             </div>
             <div class="wrap-foot large-btn">
+                <a href="#"  onclick="checkQuestion();"><span>取消</span></a>
                 <a href="#"  onclick="save();"><span>保存</span></a>
+
             </div>
         </div>
     </body>
@@ -123,7 +132,6 @@
             });
             setListLevel(${siteQuestionInfo.priority});
             changeListLevel(${siteQuestionInfo.priority});
-
         })
         /**
          * 初始化优先级
@@ -146,7 +154,54 @@
         function getListLevelValue() {
             return convertStringToCodeValue($('.collect-list-level').find('span.level').text());
         }
+        /**
+         * 检查问题的状态
+         *
+         */
+        function checkQuestion() {
+            var questionId = $('#id').val();
+            if(questionId !== ''){
+                $.ajax({
+                    type: "POST",
+                    url:"<%=basePath%>mobile/wechatSiteQuestion/checkQuestionStatus.do",
+                    data:{id:questionId},
+                    cache : false,
+                    dataType:"json",
+                    async: false,
+                    error: function(request) {
+                        mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                    },
+                    success: function(data) {
+                        if(data.status == 'success') {
+                            if(data.data == 0){
+                                deleteQuestion(questionId);
+                                goToIndexPage();
+                            }else{
+                                goToIndexPage();
+                            }
+                        }
+                    }
+                });
+            }else{
+                goToIndexPage();
+            }
 
+        }
+
+        function goToIndexPage() {
+            console.log(${source});
+            console.log(${source == 1});
+            console.log(${source == 2});
+            if(${source == 1}){
+                location.href="<%=basePath%>mobile/tempSiteQuestion/laodList.do?processStatus=4&userId=${userId}&serialNo=${serialNo}";
+            }else if(${source == 2}){
+                location.href="<%=basePath%>mobile/wechatSiteQuestion/list.do?userId=${userId}&serialNo=${serialNo}";
+            }
+
+        }
+        /**
+         * 提交数据到后台
+         */
         function save() {
             var siteName = $('#siteName').val();
             var productName = $('#productName').val();
@@ -201,7 +256,9 @@
                 }
             });
         }
-
+        /**
+         * 文件选择
+         */
         function fileSelected2(){
             //获取文件的内容
             var userId = $("#userId").val();
@@ -356,6 +413,27 @@
                 default: -1
             }
             return codeVal;
+        }
+
+        /**
+         * 问题删除
+         * @param id
+         */
+        function deleteQuestion(id) {
+            $.ajax({
+                type: "POST",
+                url:"<%=basePath%>mobile/wechatSiteQuestion/delete.do",
+                data:{id:id},
+                cache : false,
+                dataType:"json",
+                async: false,
+                error: function(request) {
+                    mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                },
+                success: function(data) {
+//                    mui.toast('问题删除成功！',{ duration:'long', type:'div' })
+                }
+            });
         }
     </script>
 </html>
