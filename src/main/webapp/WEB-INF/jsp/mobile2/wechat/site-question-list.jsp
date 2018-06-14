@@ -20,11 +20,11 @@
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
 </head>
 <body>
-<input id="userId" type="hidden" name="userId" value="${userId}">
-<input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
 <div class="wrap">
     <div class="wrap-header">
         <div class="header">
+            <input id="userId" type="hidden" name="userId" value="${userId}">
+            <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
           <%--  <span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)" ></span>--%>
             <div>采集列表</div>
         </div>
@@ -65,15 +65,6 @@
                 </ul>
             </c:forEach>
         </div>
-        <div class="hide">
-            视频内容
-        </div>
-        <div class="hide">
-            分享
-        </div>
-        <div class="hide">
-            我的
-        </div>
     </div>
     <!--新增-->
     <a href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?serialNo=${serialNo}&userId=${userId}&source=2" class="wrap-add">
@@ -81,7 +72,7 @@
     </a>
     <!--底部菜单-->
     <div class="wrap-foot">
-        <div class="active">
+        <div class="active" onclick="openIndexPage()">
             <i class="iconfont icon-ck"></i>
             查看
         </div>
@@ -98,66 +89,74 @@
             我
         </div>
     </div>
+</div>
+</body>
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>
-<script type="text/javascript">
-    $(function () {
-        IMS.menuTab();
-    });
-</script>
-</div>
 <script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
-
-    mui.init();
-    (function($) {
-        //第一个demo，拖拽后显示操作图标，点击操作图标删除元素；
-        $('.OA_task_1').on('tap', '.mui-btn', function(event) {
-            var elem = this;
-            var li = elem.parentNode.parentNode;
-            var questionId = this.getAttribute('vid');
-            $.ajax({
-                type: "POST",
-                url:"<%=basePath%>mobile/wechatSiteQuestion/checkQuestion.do",
-                data:{id:questionId},
-                cache : false,
-                dataType:"json",
-                async: false,
-                error: function(request) {
-                    mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
-                },
-                success: function(data) {
-                    if (data.status == "success") {
-                        if(data.data == 1){
-                            mui.toast('当前问题已分配或已导入系统，不允许删除！',{ duration:'long', type:'div' });
-                            setTimeout(function() {
-                                $.swipeoutClose(li);
-                            }, 0);
-                        }else{
-                            mui.confirm('', '确认删除该条记录？',  ['确认','取消'], function(e) {
-                                console.log(e);
-                                if (e.index == 0) {
-                                    li.parentNode.removeChild(li);
-                                    deleteQuestion(questionId);
-                                } else {
-                                    setTimeout(function() {
-                                        $.swipeoutClose(li);
-                                    }, 0);
-                                }
-                            });
+        mui.init();
+        (function($) {
+            //第一个demo，拖拽后显示操作图标，点击操作图标删除元素；
+            $('.OA_task_1').on('tap', '.mui-btn', function(event) {
+                var elem = this;
+                var li = elem.parentNode.parentNode;
+                var questionId = this.getAttribute('vid');
+                $.ajax({
+                    type: "POST",
+                    url:"<%=basePath%>mobile/wechatSiteQuestion/checkQuestion.do",
+                    data:{id:questionId},
+                    cache : false,
+                    dataType:"json",
+                    async: false,
+                    error: function(request) {
+                        mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                    },
+                    success: function(data) {
+                        if (data.status == "success") {
+                            if(data.data == 1){
+                                mui.toast('当前问题已分配或已导入系统，不允许删除！',{ duration:'long', type:'div' });
+                                setTimeout(function() {
+                                    $.swipeoutClose(li);
+                                }, 0);
+                            }else{
+                                mui.confirm('', '确认删除该条记录？',  ['确认','取消'], function(e) {
+                                    console.log(e);
+                                    if (e.index == 0) {
+                                        li.parentNode.removeChild(li);
+                                        deleteQuestion(questionId);
+                                    } else {
+                                        setTimeout(function() {
+                                            $.swipeoutClose(li);
+                                        }, 0);
+                                    }
+                                });
+                            }
                         }
                     }
-                }
+                });
             });
+            IMS.menuTab();
+        })(mui);
 
-        });
-    })(mui);
-
-
+    /**
+     * 跳转问题详情页
+     */
     function detail(id){
         location.href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?questionId="+id+"&serialNo=${serialNo}&userId=${userId}&source=2";
     }
 
+    /**
+     * 跳转首页
+     */
+    function openIndexPage() {
+        location.href="<%=basePath%>mobile/tempSiteQuestion/laodList.do?processStatus=4&userId="+$("#userId").val()+ "&serialNo="+$("#serialNo").val();
+    }
+
+    /**
+     * 问题删除
+     * @param id
+     */
     function deleteQuestion(id) {
         $.ajax({
             type: "POST",
@@ -175,8 +174,6 @@
         });
     }
 
+
 </script>
-
-</body>
-
 </html>
