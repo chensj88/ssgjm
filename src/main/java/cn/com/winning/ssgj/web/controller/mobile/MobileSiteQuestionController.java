@@ -79,6 +79,8 @@ public class MobileSiteQuestionController  extends BaseController {
         EtSiteQuestionInfo info = new EtSiteQuestionInfo();
         info.setCreator(userId);
         info.setSerialNo(serialNo);
+        //只查询 新建,已分配，待处理，打回
+        info.getMap().put("processStatus","1,2,3,6");
         model.addAttribute("questionList", getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(info));
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
