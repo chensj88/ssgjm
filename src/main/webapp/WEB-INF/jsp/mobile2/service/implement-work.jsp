@@ -87,7 +87,7 @@
 			<!--底部菜单-->
 			<div class="wrap-foot">
 				<div class="active">
-					<a href="<%=basePath%>/mobile/trainVideoList/list.do">  </a>
+					<a href="#" onclick="processStatus(0);">  </a>
 					<i class="iconfont icon-ck"></i>
 					查看
 				</div>
@@ -117,9 +117,9 @@
                         +"&userId="+$("#userId").val()+ "&serialNo="+$("#serialNo").val();
 			}
 
-			function videoLoad() {
-                location.href="<%=basePath%>/mobile/trainVideoList/laodList.do?openId="+$("#openId").val()+"&userId="+$("#userId").val()+
-					"&serialNo="+$("#serialNo").val();
+            function videoLoad() {
+                location.href="<%=basePath%>/mobile/trainVideoList/list.do?openId="+$("#openId").val()+"&userId="+$("#userId").val()+
+                    "&serialNo="+$("#serialNo").val();
             }
 
             function  search() {
