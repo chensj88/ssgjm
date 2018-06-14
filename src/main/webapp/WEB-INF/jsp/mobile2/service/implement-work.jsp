@@ -36,8 +36,8 @@
 					</div>
 					<!--tab-->
 					<div class="wap-tab">
-						<span <c:if test="${active != '1'}"> class="active"</c:if> onclick="processStatus(4);">未确认（${process_num.map.get("numNo")==null?0:process_num.map.get("numNo")}）</span>
-						<span <c:if test="${active == '1'}"> class="active"</c:if> onclick="processStatus(5);">已确认（${process_num.map.get("numOver")==null?0:process_num.map.get("numOver")}）</span>
+						<span <c:if test="${active != '5'}"> class="active"</c:if> onclick="processStatus(4);">未确认（${process_num.map.get("numNo")==null?0:process_num.map.get("numNo")}）</span>
+						<span <c:if test="${active == '5'}"> class="active"</c:if> onclick="processStatus(5);">已确认（${process_num.map.get("numOver")==null?0:process_num.map.get("numOver")}）</span>
 					</div>
 					<div class="space"></div>
 					<div class="wap-tab-cnt">

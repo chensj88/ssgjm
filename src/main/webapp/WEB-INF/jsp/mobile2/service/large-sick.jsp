@@ -22,7 +22,7 @@
             <input id="openId" type="hidden" name="openId" value="${openId}">
             <div>院方确认</div>
             <c:if test="${siteQuestionInfo.processStatus != 1}">
-                <a href="<%=basePath%>mobile2/log/list.do?sourceId=${siteQuestionInfo.id}">更新记录11</a>
+                <a href="<%=basePath%>mobile/log/list.do?sourceId=${siteQuestionInfo.id}">更新记录</a>
             </c:if>
         </div>
     </div>
@@ -54,7 +54,7 @@
 					<span class="large-img">
                     <c:if test="${siteQuestionInfo.imgPath !=null && siteQuestionInfo.imgPath !=''}">
                         <c:forEach var="img" items="${siteQuestionInfo.imgs}">
-						<img src="<%=Constants.FTP_SHARE_FLODER%>${img}" alt="">
+						<img style="width: 88px;height: 92px;" src="<%=Constants.FTP_SHARE_FLODER%>${img}" alt="">
                         </c:forEach>
                     </c:if>
 					</span>
@@ -63,8 +63,8 @@
             <strong>解决方案</strong>
             <span>${siteQuestionInfo.solutionResult}</span>
         </div>
-        <c:if test="${siteQuestionInfo.processStatus == 4}">
         <div class="space"></div>
+        <c:if test="${siteQuestionInfo.processStatus == 4}">
         <div class="column-2 large-list">
             <strong>院方意见</strong>
         </div>
@@ -73,11 +73,13 @@
 						<textarea id="suggestDesc">${siteQuestionInfo.suggest}</textarea>
 					</span>
         </div>
+        </c:if>
     </div>
+    <c:if test="${siteQuestionInfo.processStatus == 4}">
     <div class="wrap-foot large-btn">
         <a href="#" id="refuse"><span>打回</span></a>
         <a href="#" id="complete"><span>确认完成</span></a>
-    </div> </c:if>
+    </div></c:if>
 </div>
 <script type="text/javascript" src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/mobile/js/mui.min.js"></script>
@@ -123,10 +125,12 @@
             success: function() {
                 if(val==5){
                     mui.toast('确认成功',{ duration:600, type:'div' });
-                    setTimeout(location.href="<%=basePath%>/mobile/tempSiteQuestion/list.do?processStatus=1",600);
+                    setTimeout(location.href="<%=basePath%>/mobile/tempSiteQuestion/laodList.do?processStatus="+val+"&openId="+$("#openId").val()
+                        +"&userId="+$("#userId").val()+ "&serialNo="+$("#serialNo").val(),600);
                 }else{
                     mui.toast('打回成功',{ duration:600, type:'div' });
-                    setTimeout(location.href="<%=basePath%>/mobile/tempSiteQuestion/list.do?processStatus=0",600);
+                    setTimeout(location.href="<%=basePath%>/mobile/tempSiteQuestion/laodList.do?processStatus=4"+"&openId="+$("#openId").val()
+                        +"&userId="+$("#userId").val()+ "&serialNo="+$("#serialNo").val(),600);
                 }
             }
         });
