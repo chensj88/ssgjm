@@ -13,8 +13,6 @@
     <meta charset="UTF-8"/>
     <title>采集列表</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
@@ -27,7 +25,7 @@
 <div class="wrap">
     <div class="wrap-header">
         <div class="header">
-            <span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)" ></span>
+          <%--  <span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)" ></span>--%>
             <div>采集列表</div>
         </div>
     </div>
@@ -78,7 +76,7 @@
         </div>
     </div>
     <!--新增-->
-    <a href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?serialNo=${serialNo}&userId=${userId}" class="wrap-add">
+    <a href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?serialNo=${serialNo}&userId=${userId}&source=2" class="wrap-add">
         <i class="iconfont icon-add"></i>
     </a>
     <!--底部菜单-->
@@ -100,10 +98,17 @@
             我
         </div>
     </div>
-</div>
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        IMS.menuTab();
+    });
+</script>
+</div>
 <script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
+
     mui.init();
     (function($) {
         //第一个demo，拖拽后显示操作图标，点击操作图标删除元素；
@@ -148,8 +153,9 @@
         });
     })(mui);
 
+
     function detail(id){
-        location.href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?questionId="+id+"&serialNo=${serialNo}&userId=${userId}";
+        location.href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?questionId="+id+"&serialNo=${serialNo}&userId=${userId}&source=2";
     }
 
     function deleteQuestion(id) {
@@ -168,7 +174,9 @@
             }
         });
     }
+
 </script>
+
 </body>
 
 </html>

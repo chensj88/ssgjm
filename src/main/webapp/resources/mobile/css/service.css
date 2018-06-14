@@ -417,6 +417,10 @@ span.nosolve{
 	color: #469CFF;
 	border: 1px solid #9DCBFF;
 }
+.row>span.D,.D{
+    color: #2ED056;
+    border: 1px solid #90E4A5;
+}
 .row>i{
 	margin-right: 10px;
 	color: #9797;
@@ -462,9 +466,7 @@ span.nosolve{
 	flex-wrap: wrap;
 }
 .large-img>img{
-	display: block;
-	width: 88px;
-	height: 92px;
+	width: 70px;
 	margin-right: 5px;
 	margin-bottom: 5px;
 }
@@ -560,7 +562,8 @@ span.nosolve{
 /*状态*/
 .statusA,
 .statusB,
-.statusC{
+.statusC,
+.statusD{
 	padding: 0px 8px;
 	border-radius: 2px;
 	margin-right: 10px;
@@ -579,6 +582,11 @@ span.nosolve{
 	color: #469CFF;
 	border: 1px solid #9DCBFF;
 	background: #DBEFFF;
+}
+.statusD{
+    color: #2ED056;
+    border: 1px solid #90E4A5;
+    background: #BDF0CA;
 }
 .distribution,
 .distributioned,

@@ -45,7 +45,7 @@ public class MobileSiteQuestionController  extends BaseController {
      * @return
      */
     @RequestMapping(value = "/addPage.do")
-    public String add(Model model,Long questionId,Long userId,String serialNo) {
+    public String add(Model model,Long questionId,Long userId,String serialNo,String source) {
         if(questionId != null){
             EtSiteQuestionInfo info = new EtSiteQuestionInfo();
             info.setId(questionId);
@@ -63,6 +63,7 @@ public class MobileSiteQuestionController  extends BaseController {
         model.addAttribute("appList", this.getProductDictInfo(serialNo));
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
+        model.addAttribute("source", source);
         return "mobile2/wechat/site-question";
     }
 
@@ -95,13 +96,14 @@ public class MobileSiteQuestionController  extends BaseController {
      * @throws ParseException
      */
     @RequestMapping(value = "/openDept.do")
-    public String openDept(Model model,Long userId,String serialNo,Long questionId,String type) throws ParseException {
+    public String openDept(Model model,Long userId,String serialNo,Long questionId,String type,String source) throws ParseException {
         EtDepartment dept = new EtDepartment();
         dept.setSerialNo(Long.parseLong(serialNo));
         model.addAttribute("questionId", questionId);
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
         model.addAttribute("type",type);
+        model.addAttribute("source", source);
         if("1".equals(type)){
             model.addAttribute("title","科室病区");
             model.addAttribute("firstInit", getFacade().getEtDepartmentService().getEtDepartmentFirstInitCode(dept));
@@ -126,7 +128,8 @@ public class MobileSiteQuestionController  extends BaseController {
      * @return
      */
     @RequestMapping(value = "/changeDept.do")
-    public String changeDept(Model model,String questionId,Long userId,String serialNo,String type,String siteName) {
+    public String changeDept(Model model,String questionId,Long userId,String serialNo,String type,
+                             String siteName,String source) {
         EtSiteQuestionInfo info = new EtSiteQuestionInfo();
         if(StringUtils.isNotBlank(questionId)) {
             info.setId(Long.parseLong(questionId));
@@ -175,6 +178,7 @@ public class MobileSiteQuestionController  extends BaseController {
         model.addAttribute("siteQuestionInfo",info);
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
+        model.addAttribute("source", source);
         return "mobile2/wechat/site-question";
     }
 
@@ -365,6 +369,16 @@ public class MobileSiteQuestionController  extends BaseController {
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", getFacade().getEtSiteQuestionInfoService().checkEtSiteQuestionInfoStatus(info));
+        return result;
+    }
+    @RequestMapping("/checkQuestionStatus.do")
+    @ResponseBody
+    @ILog
+    public Map<String,Object> checkQuestionStatus(EtSiteQuestionInfo info){
+        int status = super.getFacade().getEtSiteQuestionInfoService().checkQuestionStatus(info);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", status);
         return result;
     }
 

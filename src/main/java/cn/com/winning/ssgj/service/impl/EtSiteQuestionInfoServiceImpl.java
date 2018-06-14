@@ -279,6 +279,22 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
     }
 
     /**
+     * 检查问题的标题是否为空，为空则返回 0 反之返回 1
+     *  0 作为前端允许删除
+     *  1 作为前端不操作
+     * @param info
+     * @return
+     */
+    @Override
+    public int checkQuestionStatus(EtSiteQuestionInfo info) {
+        info = etSiteQuestionInfoDao.selectEntity(info);
+        if(StringUtil.isEmptyOrNull(info.getMenuName())){
+            return 0;
+        }
+        return 1;
+    }
+
+    /**
      * 查询当前用户在指定日期下的问题里列表
      * @param info 包含创建人、客户号
      * @param createDate 创建时间

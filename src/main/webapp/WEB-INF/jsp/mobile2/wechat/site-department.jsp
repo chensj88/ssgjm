@@ -9,7 +9,7 @@
 <%@ include file="/commons/header.jsp" %>
 <html>
 <head>
-    <title>科室病区</title>
+    <title>${title}</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
@@ -25,7 +25,7 @@
 <div class="wrap">
     <div class="wrap-header">
         <div class="header">
-            <span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)" ></span>
+            <%--<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)" ></span>--%>
             <div>${title}</div>
         </div>
     </div>
@@ -81,7 +81,7 @@
     });
 
     function selectSiteName(id){
-            location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&siteName="+id;
+            location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&siteName="+id;
     }
 </script>
 </html>
