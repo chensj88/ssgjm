@@ -71,7 +71,7 @@ public class MobileTempSiteQuestionController  extends BaseController {
             model.addAttribute("serialNo", serialNo);
             model.addAttribute("openId",openId);
             model.addAttribute("active",processStatus);
-
+            model.addAttribute("search_text",search_text);
         }catch (Exception e){
             e.printStackTrace();
         }

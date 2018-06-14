@@ -30,10 +30,12 @@
 
 				<div>
 					<!--search-->
+					<form  action="javascript:search();">
 					<div class="imple-work-search">
-						<i class="iconfont icon-search" onclick="search();"></i>
-						<input id="search_text" type="text" placeholder="请输入搜索内容"/>
+						<i class="iconfont icon-search" onclick="search(${active})"></i>
+						<input style="background-color:rgba(0,0,0,0);text-align:left;" id="search_text" type="search" value="${search_text}" placeholder="请输入搜索内容"/>
 					</div>
+					</form>
 					<!--tab-->
 					<div class="wap-tab">
 						<span <c:if test="${active != '5'}"> class="active"</c:if> onclick="processStatus(4);">未确认（${process_num.map.get("numNo")==null?0:process_num.map.get("numNo")}）</span>
@@ -118,9 +120,9 @@
                     "&serialNo="+$("#serialNo").val();
             }
 
-            function  search() {
-				location.href="<%=basePath%>/mobile/tempSiteQuestion/laodList.do?search_text="+$("#search_text").val()+"&openId="+$("#openId").val()
-                    +"&userId="+$("#userId").val()+ "&serialNo="+$("#serialNo").val();;
+            function  search(active) {
+				location.href="<%=basePath%>/mobile/tempSiteQuestion/laodList.do?search_text="+$("#search_text").val()+"&processStatus="+active
+                    +"&userId="+$("#userId").val()+ "&serialNo="+$("#serialNo").val();
             }
 
 		</script>
