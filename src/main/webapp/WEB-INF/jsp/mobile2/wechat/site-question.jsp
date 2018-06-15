@@ -251,7 +251,7 @@
                 success: function(data) {
                     if (data.status) {
                         mui.toast('问题提交成功', {duration: 'long(3500ms)', type: 'div'});
-                        location.href="<%=basePath%>mobile/wechatSiteQuestion/list.do?serialNo=${serialNo}&userId=${userId}";
+                        location.href="<%=basePath%>mobile/tempSiteQuestion//laodList.do?processStatus=1&userId="+$("#userId").val()+ "&serialNo="+$("#serialNo").val();
                     }
                 }
             });

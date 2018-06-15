@@ -65,7 +65,11 @@ public class MobileTempSiteQuestionController  extends BaseController {
 //            }else{
 //                qinfo.getMap().put("process_status_no","5");
 //            }
-            qinfo.setProcessStatus(processStatus);
+            if(processStatus ==1){
+                qinfo.getMap().put("process_status_no","4,5");
+            }else{
+                qinfo.setProcessStatus(processStatus);
+            }
             model.addAttribute("questionList", super.getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(qinfo));
             model.addAttribute("process_num",super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(qinfo));
             model.addAttribute("userId", userId);
