@@ -187,11 +187,10 @@
             }
 
         }
-
+        /**
+         * 根据数据来源页，跳转到指定页面
+         */
         function goToIndexPage() {
-            console.log(${source});
-            console.log(${source == 1});
-            console.log(${source == 2});
             if(${source == 1}){
                 location.href="<%=basePath%>mobile/tempSiteQuestion/laodList.do?processStatus=4&userId=${userId}&serialNo=${serialNo}";
             }else if(${source == 2}){
@@ -224,8 +223,43 @@
                 mui.toast('问题描述不能为空',{ duration:'long(3500ms)', type:'div' });
                 return false;
             }
+            $.ajax({
+                type: "POST",
+                url:"<%=basePath%>mobile/wechatSiteQuestion/checkIsAutomatic.do",
+                data: {serialNo : $('#serialNo').val()},
+                cache : false,
+                dataType:"json",
+                async: false,
+                error: function(request) {
+                    mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                },
+                success: function(data) {
+                    if (data.status === 'success') {
+                        if(data.yesOrNo === 0 ){ //自动分配关闭
+                            saveData();
+                            mui.toast('问题提交成功', {duration: 'long(3500ms)', type: 'div'});
+                            location.href="<%=basePath%>mobile/wechatSiteQuestion/list.do?serialNo=${serialNo}&userId=${userId}";
+                        }else{
+                            mui.confirm('', '项目经理已开启自动分配，保存后直接分配到对应的实施工程师，如果需要更改或者删除请联系项目实施人员！',  ['确认','取消'], function(e) {
+                                if (e.index == 0) {
+                                    saveData();
+                                } else {
+                                    mui.toast('问题提交取消', {duration: 'long(3500ms)', type: 'div'});
+                                }
+                            });
+                        }
 
 
+                    }
+                }
+            });
+
+
+        }
+        /**
+         * 数据提交后台
+         */
+        function saveData() {
             var queryJson = {
                 id : $('#id').val(),
                 serialNo : $('#serialNo').val(),
@@ -235,7 +269,6 @@
                 menuName: $('#menuName').val(),
                 questionDesc:$('#questionDesc').val().trim(),
                 creator: $('#userId').val()
-
             };
 
             $.ajax({
@@ -436,6 +469,10 @@
             });
         }
 
+        /**
+         *  修改的值携带到下一页
+         * @param type
+         */
         function openDeptOrSysWindow(type) {
             var menuName = $('#menuName').val();
             var questionDesc = $('#questionDesc').val();

@@ -70,6 +70,7 @@ public class EtContractTaskController extends BaseController {
                 t.setSourceId(Long.parseLong(info.getDictSort())); //来源序号或ID
                 t.setBz(info.getPyCode()); //备注放置拼音码
                 t.setCreator(task.getCreator()); //创建人
+                t.setAllocateUser(task.getCreator()); //默认任务分配给当前创建人
                 t.setCreateTime(new Timestamp(new Date().getTime())); //创建时间
                 getFacade().getEtContractTaskService().createEtContractTask(t);
             }
