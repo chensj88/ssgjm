@@ -90,38 +90,46 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     private void checkUserLookProject(List<NodeTree> treeList, EtUserLookProject etUserLookProject) {
         List<NodeTree> treeListBak = new ArrayList<>();
         treeListBak.addAll(treeList);
-        boolean addStatus = false;
+        boolean haveProject = false; //项目存在
+        boolean haveCustomer = false; //客户存在
         if(etUserLookProject != null){
             for (NodeTree tree : treeListBak) {
-                if(tree.getId() != Long.parseLong(etUserLookProject.getSerialNo())){
-                    if(!addStatus){
-                        PmisCustomerInformation info = new PmisCustomerInformation();
-                        info.setId(Long.parseLong(etUserLookProject.getSerialNo()));
-                        info = pmisCustomerInformationService.getPmisCustomerInformation(info);
-                        PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
-                        basicInfo.setId(etUserLookProject.getPmId());
-                        basicInfo = pmisProjectBasicInfoService.getPmisProjectBasicInfo(basicInfo);
-                        NodeTree node = info.getNodeTree();
-                        node.addNode( basicInfo.getNodeTree());
-                        treeList.add(node);
-                        addStatus = true;
-                    }
-
-                }else if(tree.getId() == Long.parseLong(etUserLookProject.getSerialNo())){
+              if(tree.getId().longValue() == Long.parseLong(etUserLookProject.getSerialNo())){
+                  haveCustomer = true;
                     for (NodeTree nodeTree : tree.getNodes()) {
-                        if(nodeTree.getId() != etUserLookProject.getPmId()){
-                            if(!addStatus) {
-                                PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
-                                basicInfo.setId(etUserLookProject.getPmId());
-                                basicInfo = pmisProjectBasicInfoService.getPmisProjectBasicInfo(basicInfo);
-                                nodeTree.addNode(basicInfo.getNodeTree());
-                                addStatus = true;
-                            }
+                        if(nodeTree.getId().longValue() == etUserLookProject.getPmId().longValue()){
+                            haveProject = true;
                         }
                     }
                 }
             }
+            //客户存在，项目不存在
+            if(haveCustomer && !haveProject){
+                for (int i=0 ; i< treeListBak.size() ; i++) {
+                    NodeTree tree = treeListBak.get(i);
+                    NodeTree listTree = treeList.get(i);
+                    if(tree.getId().longValue() == Long.parseLong(etUserLookProject.getSerialNo())){
+                        PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
+                        basicInfo.setId(etUserLookProject.getPmId());
+                        basicInfo = pmisProjectBasicInfoService.getPmisProjectBasicInfo(basicInfo);
+                        listTree.addNode(basicInfo.getNodeTree());
+                    }
+                }
+            //客户，项目均不存在
+            }else if(!haveCustomer && !haveProject){
+                PmisCustomerInformation info = new PmisCustomerInformation();
+                info.setId(Long.parseLong(etUserLookProject.getSerialNo()));
+                info = pmisCustomerInformationService.getPmisCustomerInformation(info);
+                PmisProjectBasicInfo basicInfo = new PmisProjectBasicInfo();
+                basicInfo.setId(etUserLookProject.getPmId());
+                basicInfo = pmisProjectBasicInfoService.getPmisProjectBasicInfo(basicInfo);
+                NodeTree node = info.getNodeTree();
+                node.addNode( basicInfo.getNodeTree());
+                treeList.add(node);
+            }
+            //已经存在不添加
         }
+
     }
 
     @Override
