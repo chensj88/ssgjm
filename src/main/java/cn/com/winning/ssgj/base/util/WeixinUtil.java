@@ -45,15 +45,15 @@ public class WeixinUtil implements Serializable {
         } else {
             BeanUtil.requireNonNull(scope, "scope is null");
             String userstate = StrUtil.isBlank(state) ? "STATE" : state;
-            String url = null;
-            try {
-                url = URLEncoder.encode(redirectUrl, "UTF-8");
-            } catch (UnsupportedEncodingException var7) {
-                //logger.error("异常", var7);
-            }
+//            String url = null;
+//            try {
+//                url = URLEncoder.encode(redirectUrl, "UTF-8");
+//            } catch (UnsupportedEncodingException var7) {
+//                //logger.error("异常", var7);
+//            }
 
             StringBuffer stringBuffer = new StringBuffer("https://open.weixin.qq.com/connect/oauth2/authorize?");
-            stringBuffer.append("appid=").append(WxConstants.CORPID).append("&redirect_uri=").append(url).append("&response_type=code&scope=").append(scope.toString()).append("&state=").append(userstate).append("#wechat_redirect");
+            stringBuffer.append("appid=").append(WxConstants.CORPID).append("&redirect_uri=").append(redirectUrl).append("&response_type=code&scope=").append(scope.toString()).append("&state=").append(userstate).append("#wechat_redirect");
             return stringBuffer.toString();
         }
     }
