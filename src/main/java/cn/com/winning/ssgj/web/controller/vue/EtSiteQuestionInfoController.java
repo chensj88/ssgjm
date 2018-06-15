@@ -150,6 +150,10 @@ public class EtSiteQuestionInfoController extends BaseController {
     @ResponseBody
     @Transactional
     public Map<String, Object> updateOperate(EtSiteQuestionInfo info) {
+        if(info.getOperType() == null && info.getPriority() == null
+                && info.getAllocateUser() != null){
+            info.setProcessStatus(Constants.ALLOCATED_UNACCEPTED);
+        }
         info.setOperatorTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
         Map<String, Object> result = new HashMap<String, Object>();
