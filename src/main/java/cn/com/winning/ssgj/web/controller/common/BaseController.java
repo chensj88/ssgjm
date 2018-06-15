@@ -354,25 +354,22 @@ public class BaseController extends BaseSpringMvcMybatisController {
         if (id != null) {
             etContractTaskTemp.setId(id);
             etContractTask = getFacade().getEtContractTaskService().getEtContractTask(etContractTaskTemp);
-        } else {
-            etContractTaskList = getFacade().getEtContractTaskService().getEtContractTaskList(etContractTaskTemp);
+            return etContractTask;
         }
+        etContractTaskList = getFacade().getEtContractTaskService().getEtContractTaskList(etContractTaskTemp);
+
         if (etContractTaskList == null || etContractTaskList.size() <= 0) {
             //当查询不到时，返回null
             return null;
         }
-        if (id == null) {
-            //当无id参数时，循环遍历确认所有系统都有分配主力工程师
-            for (EtContractTask contractTask : etContractTaskList) {
-                Long allocateUser = contractTask.getAllocateUser();
-                if (allocateUser == null) {
-                    return null;
-                }
+        //当无id参数时，循环遍历确认所有系统都有分配主力工程师
+        for (EtContractTask contractTask : etContractTaskList) {
+            Long allocateUser = contractTask.getAllocateUser();
+            if (allocateUser == null) {
+                return null;
             }
-            return etContractTaskTemp;
-        } else {
-            return etContractTask;
         }
+        return etContractTaskTemp;
     }
 
 }
