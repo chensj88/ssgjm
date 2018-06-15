@@ -7,8 +7,10 @@ import cn.com.winning.ssgj.base.util.CommonFtpUtils;
 import cn.com.winning.ssgj.base.util.FtpUtils;
 import cn.com.winning.ssgj.base.util.SFtpUtils;
 import cn.com.winning.ssgj.base.util.StringUtil;
+import cn.com.winning.ssgj.domain.EtContractTask;
 import cn.com.winning.ssgj.domain.EtDepartment;
 import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
+import cn.com.winning.ssgj.domain.EtStartEnd;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
@@ -305,6 +307,14 @@ public class MobileSiteQuestionController  extends BaseController {
             info.setOperator(info.getCreator());
             info.setOperatorTime(new Timestamp(new Date().getTime()));
             info.setCreator(null);
+            EtStartEnd end =  new EtStartEnd();
+            end.setSerialNo(info.getSerialNo());
+            end = super.getFacade().getEtStartEndService().getEtStartEnd(end);
+            if(end != null ){ //判断是否自动分配
+                EtContractTask task = this.getAllocateUser(info.getSerialNo(),Long.parseLong(info.getProductName()));
+                addEtLog(info.getSerialNo(),"ET_SITE_QUESTION_INFO",info.getId(),"问题分配:自动分配给{"+task.getAllocateUser()+"}",1,info.getCreator());
+                info.setAllocateUser(task.getAllocateUser());
+            }
             addEtLog(info.getSerialNo(),"ET_SITE_QUESTION_INFO",info.getId(),"内容变更:问题修改",1,info.getCreator());
             getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
         }
@@ -400,6 +410,21 @@ public class MobileSiteQuestionController  extends BaseController {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", status);
+        return result;
+    }
+
+    /**
+     * 校验当前客户是否是自动分配问题
+     * @param end
+     * @return
+     */
+    @RequestMapping(value = "/checkIsAutomatic.do")
+    @ResponseBody
+    public Map<String, Object> checkIsAutomatic(EtStartEnd end){
+        end = super.getFacade().getEtStartEndService().getEtStartEnd(end);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("yesOrNo",end == null ? 0 : 1 );
         return result;
     }
 
