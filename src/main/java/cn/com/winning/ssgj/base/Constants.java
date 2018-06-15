@@ -599,4 +599,9 @@ public class Constants implements Serializable {
      */
     public static final int REFUSE = 6;
 
+    /**
+     * 工程师打回打回
+     */
+    public static final int ENGINEER_REFUSE = 7;
+
 }
