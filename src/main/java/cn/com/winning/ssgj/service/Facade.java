@@ -143,5 +143,7 @@ public interface Facade {
 
     EtLogService getEtLogService();
 
+    EtStartEndService getEtStartEndService();
+
 
 }
