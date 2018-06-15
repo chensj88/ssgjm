@@ -312,9 +312,9 @@ public class BaseController extends BaseSpringMvcMybatisController {
                     info.setId(ssgjHelper.createUserId());
                     info.setUserType("0");
                     info.setOpenId((String) io.get("OPENID"));
-                    info.setName(new String((String) io.get("USERNAME"))+"("+(String) io.get("HOSPCODE")+")");
+                    info.setName(new String((String) io.get("USERNAME")) + "(" + (String) io.get("HOSPCODE") + ")");
                     info.setYhmc(new String((String) io.get("USERNAME")));
-                    info.setUserid((String) io.get("HOSPCODE") +(String) io.get("WORKNUM"));
+                    info.setUserid((String) io.get("HOSPCODE") + (String) io.get("WORKNUM"));
                     info.setPassword(MD5.stringMD5ForBarCode((String) io.get("WORKNUM")));
                     info.setMobile((String) io.get("USERPHONE"));
                     info.setSsgs(Long.parseLong((String) io.get("HOSPCODE")));
@@ -327,8 +327,8 @@ public class BaseController extends BaseSpringMvcMybatisController {
                 if (userIfonList.size() == 0) {
                     info.setUserid(info.getUserid());
                     getFacade().getSysUserInfoService().createSysUserInfo(info);
-                }else{
-                    info =userIfonList.get(0);
+                } else {
+                    info = userIfonList.get(0);
                 }
             }
 
@@ -337,6 +337,42 @@ public class BaseController extends BaseSpringMvcMybatisController {
         }
 
         return info;
+    }
+
+    /**
+     * 获取助理工程师
+     *
+     * @param seriaNo
+     * @param id
+     * @return
+     */
+    public EtContractTask getAllocateUser(String seriaNo, Long id) {
+        EtContractTask etContractTaskTemp = new EtContractTask();
+        List<EtContractTask> etContractTaskList = null;
+        EtContractTask etContractTask = null;
+        etContractTaskTemp.setSerialNo(seriaNo);
+        if (id != null) {
+            etContractTaskTemp.setId(id);
+            etContractTask = getFacade().getEtContractTaskService().getEtContractTask(etContractTaskTemp);
+        } else {
+            etContractTaskList = getFacade().getEtContractTaskService().getEtContractTaskList(etContractTaskTemp);
+        }
+        if (etContractTaskList == null || etContractTaskList.size() <= 0) {
+            //当查询不到时，返回null
+            return null;
+        }
+        if (id == null) {
+            //当无id参数时，循环遍历确认所有系统都有分配主力工程师
+            for (EtContractTask contractTask : etContractTaskList) {
+                Long allocateUser = contractTask.getAllocateUser();
+                if (allocateUser == null) {
+                    return null;
+                }
+            }
+            return etContractTaskTemp;
+        } else {
+            return etContractTask;
+        }
     }
 
 }
