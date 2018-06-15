@@ -575,7 +575,7 @@ public class Constants implements Serializable {
     }
 
     /**
-     * 新建（待分配）
+     * 新建（待分配,实施工程师退回）
      */
     public static final int CREATE_UNALLOCATED = 1;
     /**

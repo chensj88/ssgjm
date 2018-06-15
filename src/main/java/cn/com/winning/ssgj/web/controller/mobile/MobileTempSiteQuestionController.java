@@ -34,14 +34,15 @@ public class MobileTempSiteQuestionController  extends BaseController {
         //parameter = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
         try{
             SysUserInfo info = super.getUserInfo(parameter);
-            EtSiteQuestionInfo qinfo = new EtSiteQuestionInfo();
-            qinfo.setCreator(info.getId());
-            qinfo.setSerialNo(String.valueOf(info.getSsgs()));
-            qinfo.getMap().put("process_status_no","5");//未确认
-            model.addAttribute("questionList", super.getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(qinfo));
-            model.addAttribute("process_num",super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(qinfo));
-            model.addAttribute("userId", qinfo.getCreator());
-            model.addAttribute("serialNo", qinfo.getSerialNo());
+            EtSiteQuestionInfo qInfo = new EtSiteQuestionInfo();
+            qInfo.setCreator(info.getId());
+            qInfo.setSerialNo(String.valueOf(info.getSsgs()));
+            qInfo.setProcessStatus(4);//未确认
+            //qinfo.getMap().put("process_status_no","5");//未确认
+            model.addAttribute("questionList", super.getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(qInfo));
+            model.addAttribute("process_num",super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(qInfo));
+            model.addAttribute("userId", qInfo.getCreator());
+            model.addAttribute("serialNo", qInfo.getSerialNo());
             model.addAttribute("openId",info.getOpenId());
             model.addAttribute("active",0);
 
