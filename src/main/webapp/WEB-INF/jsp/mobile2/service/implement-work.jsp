@@ -51,7 +51,7 @@
 										<i class="iconfont icon-time"></i>${vwr.groupName}<b>（${vwr.num}条）</b>
 									</a>
 									<c:forEach var="vwr1" items="${vwr.listQuery}">
-										<a href="<%=basePath%>/mobile/tempSiteQuestion/addPage.do?questionId=${vwr1.id}&userId=${vwr1.creator}&serialNo=${vwr1.serialNo}" class="row active">
+										<a href="<%=basePath%>/mobile/tempSiteQuestion/addPage.do?questionId=${vwr1.id}&userId=${vwr1.creator}&serialNo=${vwr1.serialNo}" class="row">
 
 												${vwr1.map.deptName}-${vwr1.menuName}
 											<span class="${vwr1.map.priorityString}">${vwr1.map.priorityString}</span>
