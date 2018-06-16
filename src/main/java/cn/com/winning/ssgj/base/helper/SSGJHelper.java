@@ -254,6 +254,10 @@ public class SSGJHelper {
     @Qualifier(value = "etLogIdService")
     private StepSequenceFactory  etLogIdService;
 
+    @Autowired
+    @Qualifier(value = "etStartEndIdService")
+    private StepSequenceFactory  etStartEndIdService;
+
     /**
      * 导入站点问题临时表ID
      * @return
@@ -332,6 +336,7 @@ public class SSGJHelper {
     public long createEtSoftHardwareIdService(){ return (long) etSoftHardwareIdService.create(); }
     public long createEtReportIdService(){ return (long) etReportIdService.create(); }
     public long createEtLogIdService(){ return (long) etLogIdService.create(); }
+    public long createEtStartEndIdService(){ return (long) etStartEndIdService.create(); }
 
 
 
