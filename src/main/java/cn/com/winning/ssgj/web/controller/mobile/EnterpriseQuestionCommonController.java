@@ -50,8 +50,13 @@ public class EnterpriseQuestionCommonController extends BaseController{
             }
         }
         model.addAttribute("questionList", getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(info));
-        model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
+        model.addAttribute("userId", userId);
+        model.addAttribute("status", status);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("searchText", searchText);
+        model.addAttribute("userType", userType);
+        model.addAttribute("priority", priority);
         return "mobile2/enterprise/common-question-list";
     }
 }

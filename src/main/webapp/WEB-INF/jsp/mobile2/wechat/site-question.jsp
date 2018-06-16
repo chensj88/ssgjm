@@ -203,12 +203,13 @@
 
     /**
      * 根据数据来源页，跳转到指定页面
+     * 统一跳转到首页
      */
     function goToIndexPage() {
         if (${source == 1}) {
-            location.href = "<%=basePath%>mobile/tempSiteQuestion/laodList.do?processStatus=4&userId=${userId}&serialNo=${serialNo}";
+            location.href = "<%=basePath%>mobile/tempSiteQuestion/laodList.do?processStatus=1&userId=${userId}&serialNo=${serialNo}";
         } else if (${source == 2}) {
-            location.href = "<%=basePath%>mobile/wechatSiteQuestion/list.do?userId=${userId}&serialNo=${serialNo}";
+            location.href = "<%=basePath%>mobile/tempSiteQuestion/laodList.do?processStatus=1&userId=${userId}&serialNo=${serialNo}";
         }
 
     }
@@ -298,7 +299,12 @@
             success: function (data) {
                 if (data.status) {
                     mui.toast('问题提交成功', {duration: 'long(3500ms)', type: 'div'});
-                    location.href = "<%=basePath%>mobile/tempSiteQuestion/laodList.do?processStatus=1&userId=" + $("#userId").val() + "&serialNo=" + $("#serialNo").val();
+                    if(${source == 1}){
+                        location.href = "<%=basePath%>mobile/tempSiteQuestion/laodList.do?processStatus=1&userId=" + $("#userId").val() + "&serialNo=" + $("#serialNo").val();
+                    }else{
+                        //TODO 添加服务端首页跳转信息
+                    }
+
                 }
             }
         });

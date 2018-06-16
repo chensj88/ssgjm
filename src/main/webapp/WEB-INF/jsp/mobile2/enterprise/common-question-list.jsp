@@ -20,7 +20,7 @@
     <style type="text/css">
         .wap-tab{
             display: flex;
-            margin-bottom: 10px;
+            margin-bottom: 0px;
             padding: 0px 0px;
         }
         .wap-tab>span{
@@ -40,17 +40,23 @@
     </style>
 </head>
 <body>
+<%--数据传输隐藏域--%>
 <input id="userId" type="hidden" name="userId" value="${userId}">
 <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
+<input id="status" type="hidden" name="status" value="${status}">
+<input id="searchType" type="hidden" name="searchType" value="${searchType}">
+<input id="searchText" type="hidden" name="searchText" value="${searchText}">
+<input id="userType" type="hidden" name="userType" value="${userType}">
+<input id="priority" type="hidden" name="priority" value="${priority}">
 <div class="wrap">
     <div class="wrap-cnt">
         <div>
             <div class="wap-tab">
-                <span class="active">全部</span>
-                <span >A</span>
-                <span >B</span>
-                <span >C</span>
-                <span >D</span>
+                <span onclick="openQuestionListByPriority()" id="all">全部</span>
+                <span onclick="openQuestionListByPriority(1)">A</span>
+                <span onclick="openQuestionListByPriority(2)">B</span>
+                <span onclick="openQuestionListByPriority(3)">C</span>
+                <span onclick="openQuestionListByPriority(4)">D</span>
                 <span ><i class="iconfont icon-search"></i></span>
             </div>
             <c:forEach var="vwr" items="${questionList}">
@@ -79,7 +85,7 @@
         </div>
     </div>
     <!--新增-->
-    <a href="<%=basePath%>/mobile/wechatSiteQuestion/addPage.do?userId=${userId}&serialNo=${serialNo}&source=1" class="wrap-add" >
+    <a href="<%=basePath%>/mobile/wechatSiteQuestion/addPage.do?userId=${userId}&serialNo=${serialNo}&source=2" class="wrap-add" >
         <i class="iconfont icon-add"></i>
     </a>
     <!--底部菜单-->
@@ -107,9 +113,63 @@
 <script type="text/javascript">
     $(function () {
         IMS.menuTab();
+        if(${priority != null}){
+            setListLevel(${priority});
+        }else{
+            $('#all').attr('class','active');
+        }
     })
     function openQuestionDetail(id){
         location.href = "<%=basePath%>mobile/wechatSiteQuestion/goUpdate.do?id="+id+"&serialNo=${serialNo}&userId=${userId}";
+    }
+
+    /**
+     *优先级转换 从码值到ABCD
+     *@param val
+     *@returns {string}
+     */
+    function convertTypeToInt(val) {
+        var valStr = '';
+        switch (val) {
+            case 1:
+                valStr = 'A'
+                break;
+            case 2:
+                valStr = 'B'
+                break;
+            case 3:
+                valStr = 'C'
+                break;
+            case 4:
+                valStr = 'D'
+                break;
+            default:
+                'D'
+        }
+        return valStr;
+    }
+
+    function setListLevel(val) {
+        var spanArr = $('.wap-tab>span');
+        var valStr = convertTypeToInt(val);
+        for (var i = 0; i < spanArr.length; i++) {
+            var text = $(spanArr[i]).text().substr(0, 1);
+            if (text === valStr) {
+                $(spanArr[i]).addClass('active').siblings('span').removeClass('active');
+            }
+        }
+    }
+    /**
+     * 点击优先级获取信息
+     * @param priority
+     */
+    function openQuestionListByPriority(priority) {
+        if(!priority){
+            location.href = "<%=basePath%>mobile/commons/list.do?serialNo=${serialNo}&userId=${userId}&status=${status}&searchType=${searchType}&searchText=${searchText}&userType=${userType}";
+        }else{
+            location.href = "<%=basePath%>mobile/commons/list.do?serialNo=${serialNo}&userId=${userId}&status=${status}&searchType=${searchType}&searchText=${searchText}&userType=${userType}&priority="+priority;
+        }
+
     }
 </script>
 </body>
