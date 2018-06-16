@@ -19,12 +19,12 @@
 		<div class="mui-content detail">
 			<!--header-->
 			<!--header-->
-			<div class="header">
-				<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
-				<div>课程学习-详情页</div>
-				<span class="mui-icon mui-icon-more"></span>
-			</div>
-			<div class="hole"></div>
+			<%--<div class="header">--%>
+				<%--<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>--%>
+				<%--<div>课程学习-详情页</div>--%>
+				<%--<span class="mui-icon mui-icon-more"></span>--%>
+			<%--</div>--%>
+			<%--<div class="hole"></div>--%>
 
 			<div class="detail-play">
 				<video width="100%" height="200" controls>

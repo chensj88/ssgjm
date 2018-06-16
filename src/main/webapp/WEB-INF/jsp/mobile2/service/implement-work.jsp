@@ -19,9 +19,9 @@
 			<%--<div class="wrap-header">--%>
 				<%--<div class="header">--%>
                     <%--<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>--%>
-                    <%--<input id="userId" type="hidden" name="userId" value="${userId}">--%>
-                    <%--<input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">--%>
-                    <%--<input id="openId" type="hidden" name="openId" value="${openId}">--%>
+                    <input id="userId" type="hidden" name="userId" value="${userId}">
+                    <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
+                    <input id="openId" type="hidden" name="openId" value="${openId}">
 					<%--<div>实施工具</div>--%>
 					<%--<a href="<%=basePath%>/mobile/wechatSiteQuestion/list.do?userId=${userId}&serialNo=${serialNo}">采集列表</a>--%>
 				<%--</div>--%>
