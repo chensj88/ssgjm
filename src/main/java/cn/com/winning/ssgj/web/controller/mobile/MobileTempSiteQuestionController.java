@@ -141,5 +141,30 @@ public class MobileTempSiteQuestionController  extends BaseController {
         return map;
     }
 
+    @RequestMapping(value = "/index.do")
+    public String index(Model model,Long questionId,Long userId,String serialNo,String openId) {
+        try{
+            //SysUserInfo info = super.getUserInfo(parameter);
+            EtSiteQuestionInfo qInfo = new EtSiteQuestionInfo();
+            qInfo.setCreator(null);
+            qInfo.setSerialNo(String.valueOf(11403));
+            //qInfo.setProcessStatus(4);//未确认
+            //qinfo.getMap().put("process_status_no","5");//未确认
+            model.addAttribute("questionList", super.getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(qInfo));
+            model.addAttribute("process_num",super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(qInfo));
+            model.addAttribute("userId", qInfo.getCreator());
+            model.addAttribute("serialNo", qInfo.getSerialNo());
+            //model.addAttribute("openId",info.getOpenId());
+            model.addAttribute("active",0);
 
-}
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        return "mobile2/enterprise/index";
+    }
+
+
+
+    }
