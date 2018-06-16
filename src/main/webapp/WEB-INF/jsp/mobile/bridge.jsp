@@ -19,13 +19,13 @@
 		<!--header-->
 		<div class="wrap">
 
-			<div class="wrap-header">
-				<div class="header">
-				<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
-				<div>课程视频分类</div>
-				<span class="mui-icon mui-icon-more"></span>
-			</div>
-			</div>
+			<%--<div class="wrap-header">--%>
+				<%--<div class="header">--%>
+				<%--<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>--%>
+				<%--<div>课程视频分类</div>--%>
+				<%--<span class="mui-icon mui-icon-more"></span>--%>
+			<%--</div>
+			</div>--%>
 			<div class="wrap-cnt">
 				<div class="bridge">
 					<div class="bridge-item">

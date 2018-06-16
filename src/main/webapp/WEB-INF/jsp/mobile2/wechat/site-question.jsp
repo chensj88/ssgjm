@@ -33,13 +33,13 @@
 <input id="id" type="hidden" name="id" value="${siteQuestionInfo.id}">
 <input id="source" type="hidden" name="source" value="${source}">
 <div class="wrap">
-    <div class="wrap-header">
-        <div class="header" style="margin: 0;padding: 10px;">
-            <div style="text-align: left;line-height: 20px">
-                <a href="<%=basePath%>mobile/wechatSiteQuestion/list.do?serialNo=${serialNo}&userId=${userId}">采集列表</a>
-            </div>
-        </div>
-    </div>
+    <%--<div class="wrap-header">--%>
+        <%--<div class="header" style="margin: 0;padding: 10px;">--%>
+            <%--<div style="text-align: left;line-height: 20px">--%>
+                <%--<a href="<%=basePath%>mobile/wechatSiteQuestion/list.do?serialNo=${serialNo}&userId=${userId}">采集列表</a>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
     <div class="wrap-cnt">
         <div class="column-2 collect-list">
             <strong>科室病区</strong>

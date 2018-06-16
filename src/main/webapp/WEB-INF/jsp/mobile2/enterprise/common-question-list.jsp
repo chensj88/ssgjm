@@ -37,15 +37,11 @@
             background: #81B3FF;
             border: 1px solid #81B3FF;
         }
-        /*.wap-tab>span:first-child{*/
-            /*border-radius: 4px 0 0 4px;*/
-        /*}*/
-        /*.wap-tab>span:last-child{*/
-            /*border-radius:0 4px 4px 0;*/
-        /*}*/
     </style>
 </head>
 <body>
+<input id="userId" type="hidden" name="userId" value="${userId}">
+<input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
 <div class="wrap">
     <div class="wrap-cnt">
         <div>
@@ -57,69 +53,20 @@
                 <span >D</span>
                 <span ><i class="iconfont icon-search"></i></span>
             </div>
-
-            <div class="index-date">
-                <p>06-04（4条）</p>
-                <a href='#'>
-                    <span class="index-date_txt">五楼护士站-NIS部署-特大病号</span>
-                    <span class="index-date_status">
-								<i class="index-A">A</i>
-								<i class="index-wqr">未确认</i>
-							</span>
-                </a>
-                <a href='#'>
-                    <span class="index-date_txt">五楼护士站-NIS部署-特大病号病号特大病号病号特大病号</span>
-                    <span class="index-date_status">
-								<i class="index-B">B</i>
-								<i class="index-wqr">已打回</i>
-							</span>
-                </a>
-                <a href='#'>
-                    <span class="index-date_txt">五楼护士站-NIS部署-特大病号病号特病号</span>
-                    <span class="index-date_status">
-								<i class="index-C">C</i>
-								<i class="index-yqr">已确认</i>
-							</span>
-                </a>
-                <a href='#'>
-                    <span class="index-date_txt">五楼护士站-NIS部署-特大病号病号特大病号病号特大病号病号</span>
-                    <span class="index-date_status">
-								<i class="index-D">D</i>
-								<i class="index-wqr">未确认</i>
-							</span>
-                </a>
-            </div>
-            <div class="index-date">
-                <p>06-04（4条）</p>
-                <a href='#'>
-                    <span class="index-date_txt">五楼护士站-NIS部署-特大病号</span>
-                    <span class="index-date_status">
-								<i class="index-A">A</i>
-								<i class="index-wqr">未确认</i>
-							</span>
-                </a>
-                <a href='#'>
-                    <span class="index-date_txt">五楼护士站-NIS部署-特大病号病号特大病号病号特大病号</span>
-                    <span class="index-date_status">
-								<i class="index-B">B</i>
-								<i class="index-wqr">已打回</i>
-							</span>
-                </a>
-                <a href='#'>
-                    <span class="index-date_txt">五楼护士站-NIS部署-特大病号病号特病号</span>
-                    <span class="index-date_status">
-								<i class="index-C">C</i>
-								<i class="index-yqr">已确认</i>
-							</span>
-                </a>
-                <a href='#'>
-                    <span class="index-date_txt">五楼护士站-NIS部署-特大病号病号特大病号病号特大病号病号</span>
-                    <span class="index-date_status">
-								<i class="index-D">D</i>
-								<i class="index-wqr">未确认</i>
-							</span>
-                </a>
-            </div>
+            <c:forEach var="vwr" items="${questionList}">
+                <div class="index-date">
+                    <p>${vwr.groupName}（${vwr.num}条）</p>
+                <c:forEach var="vwr1" items="${vwr.listQuery}">
+                    <a href='openQuestionDetail(${vwr1.id})'>
+                        <span class="index-date_txt">${vwr1.map.deptName}-${vwr1.menuName}</span>
+                        <span class="index-date_status">
+                            <i class="index-${vwr1.map.priorityString}">${vwr1.map.priorityString}</i>
+                            <i class="index-wqr">${vwr1.map.processStr}</i>
+                        </span>
+                    </a>
+                </c:forEach>
+                </div>
+            </c:forEach>
         </div>
         <div class="hide">
             站点
@@ -132,7 +79,7 @@
         </div>
     </div>
     <!--新增-->
-    <a href="#" class="wrap-add">
+    <a href="<%=basePath%>/mobile/wechatSiteQuestion/addPage.do?userId=${userId}&serialNo=${serialNo}&source=1" class="wrap-add" >
         <i class="iconfont icon-add"></i>
     </a>
     <!--底部菜单-->
@@ -161,6 +108,9 @@
     $(function () {
         IMS.menuTab();
     })
+    function openQuestionDetail(id){
+        location.href = "<%=basePath%>mobile/wechatSiteQuestion/goUpdate.do?id="+id+"&serialNo=${serialNo}&userId=${userId}";
+    }
 </script>
 </body>
 </html>
