@@ -23,12 +23,12 @@
 <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
 <input id="questionId" type="hidden" name="questionId" value="${questionId}">
 <div class="wrap">
-    <div class="wrap-header">
-        <div class="header">
-            <%--<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)" ></span>--%>
-            <div>${title}</div>
-        </div>
-    </div>
+    <%--<div class="wrap-header">--%>
+        <%--<div class="header">--%>
+            <%--&lt;%&ndash;<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)" ></span>&ndash;%&gt;--%>
+            <%--<div>${title}</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
     <div class="wrap-cnt">
         <div id='list' class="mui-indexed-list">
             <div class="mui-indexed-list-search mui-input-row mui-search">
