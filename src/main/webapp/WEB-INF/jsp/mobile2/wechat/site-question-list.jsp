@@ -4,6 +4,7 @@
   Date: 2018/6/9
   Time: 18:31
   To change this template use File | Settings | File Templates.
+  页面作废不在使用，统一使用首页中的采集列表 implement-work.jsp&processStatus={1~3}
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/commons/header.jsp" %>
@@ -21,24 +22,16 @@
 </head>
 <body>
 <div class="wrap">
-    <%--<div class="wrap-header">--%>
-        <%--<div class="header">--%>
-            <%--<span class="mui-icon mui-icon-arrowleft" onclick="openIndexPage()"></span>--%>
-            <%--<input id="userId" type="hidden" name="userId" value="${userId}">--%>
-            <%--<input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">--%>
-            <%--<div>采集列表</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
     <div class="wrap-cnt">
         <input id="userId" type="hidden" name="userId" value="${userId}">
         <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
         <div>
-            <form  action="javascript:search();">
+          <%--  <form  action="javascript:search();">
                 <div class="imple-work-search">
                     <i class="iconfont icon-search" onclick="search()"></i>
                     <input id="search_text" type="text" value="${search_text == null ? '' : search_text }" placeholder="请输入搜索内容" />
                 </div>
-            </form>
+            </form>--%>
             <c:forEach var="vwr" items="${questionList}">
                 <a href="#" class="row">
                     <i class="iconfont icon-time"></i>${vwr.groupName}<b>（${vwr.num}条）</b>
