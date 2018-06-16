@@ -618,3 +618,92 @@ div.select-user-cnt{
 	font-size: 13px;
 	font-weight: bold;
 }
+/*管理者首页*/
+.index-link{
+	display: flex;
+	height: 60px;
+}
+.index-link>a{
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	color: #849ECD;
+}
+.index-date{
+}
+.index-date>p{
+    padding-left: 14px;
+    line-height: 30px;
+    background:#F3F5F7;
+    color: #97AACC ;
+    font-size: 12px;
+    margin-bottom: 0px;
+}
+.index-date>a{
+    position: relative;
+    display: block;
+    height: 50px;
+    font-size: 14px;
+    color: #333333;
+    border-bottom: 1px solid #F3F5F7;
+}
+.index-date_txt{
+    display: inline-block;
+    width: 70%;
+    line-height: 50px;
+    padding-left: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.index-date_status{
+    position: absolute;
+    top:16px;
+    right: 14px;
+}
+.index-A,
+.index-B,
+.index-C,
+.index-D{
+    margin-right: 5px;
+    padding: 0px 8px;
+    border-radius: 3px;
+}
+.index-A{
+    color: #FFFFFF;
+    background: #FF564F;
+}
+.index-B{
+    color: #B16200;
+    background: #FFDFA6;
+}
+.index-C{
+    color: #5184D8;
+    background: #D7ECFF;
+}
+.index-D{
+    color: #595959;
+    background: #EFEFEF;
+}
+
+
+.index-wqr,
+.index-ydh,
+.index-yqr{
+    padding: 0px 4px;
+    border-radius: 3px;
+}
+.index-wqr{
+    color: #81B3FF;
+    border: 1px solid #81B3FF;
+}
+.index-ydh{
+    color: #F5C07B;
+    border: 1px solid #F5C07B;
+}
+.index-yqr{
+    color: #6ADB70;
+    border: 1px solid #6ADB70;
+}

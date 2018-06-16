@@ -339,6 +339,10 @@ table{
 	display: flex;
 	margin-bottom: 10px;
 }
+.space{
+	height: 10px;
+	background: #f3f5f7;
+}
 /*reset mui*/
 .mui-popup-title{
 	font-size: 14px;
