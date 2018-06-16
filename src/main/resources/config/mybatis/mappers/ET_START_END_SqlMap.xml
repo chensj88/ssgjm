@@ -43,8 +43,7 @@
 	</select>
 
 	<insert id="insertEtStartEnd" parameterType="etStartEnd">
-	<selectKey resultType="String"  order="BEFORE"  keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID</selectKey>
-		insert into ET_START_END 
+		insert into ET_START_END
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 	       <if test="(id != null and id != '') or id == 0"> ID, </if>
 		   <if test="serialNo != null and serialNo != ''"> SERIAL_NO, </if>
@@ -75,6 +74,7 @@
 	<delete id="deleteEtStartEnd" parameterType="EtStartEnd">
 		delete from ET_START_END where
 		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="serialNo != null and serialNo != ''"> SERIAL_NO = #{serialNo} </if>
 		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
 			ID in
 			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>

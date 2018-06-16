@@ -681,16 +681,26 @@
     <!--根据用户和时间查询汇总人员查询信息-->
     <select id="selectEtSiteQuestionInfoCountByUser" resultType="map" parameterType="etSiteQuestionInfo">
       SELECT * FROM (
-          SELECT  CONVERT(VARCHAR(32),CREATE_TIME,111) createDate ,
-          count(1) AS countNum FROM ET_SITE_QUESTION_INFO
-          WHERE  CREATOR = #{creator}
-          AND  SERIAL_NO = #{serialNo}
-          AND SITE_NAME != ''
-        <if test="map.search_text != null and map.search_text != ''">and ( MENU_NAME LIKE '%${map.search_text}%' OR QUESTION_DESC LIKE '%${map.search_text}%')</if>
-        <if test="(processStatus != null and processStatus != '') or processStatus == 0">and PROCESS_STATUS =#{processStatus}</if>
-        <if test="(map.processStatus != null and map.processStatus != '') ">and PROCESS_STATUS IN  (${map.processStatus})</if>
-        <if test="map.process_status_no != null and map.process_status_no != null "> and PROCESS_STATUS not in  (${map.process_status_no}) </if>
-          GROUP BY CONVERT(VARCHAR(32),CREATE_TIME,111)
+          SELECT  CONVERT(VARCHAR(32),t.CREATE_TIME,111) createDate ,
+          count(1) AS countNum
+          FROM ET_SITE_QUESTION_INFO t
+          WHERE 1 = 1
+            <if test="(creator != null and creator != '')">AND t.CREATOR = #{creator}</if>
+            <if test="(serialNo != null and serialNo != '')">AND  t.SERIAL_NO = #{serialNo}</if>
+            <if test="(allocateUser != null and allocateUser != '')">AND t.ALLOCATE_USER = #{allocateUser}</if>
+          AND t.SITE_NAME != ''
+          <if test="(priority != null and priority != '') or priority == 0">and t.PRIORITY = #{priority}</if>
+          <if test="map.search_text != null and map.search_text != ''">and ( t.MENU_NAME LIKE '%${map.search_text}%' OR t.QUESTION_DESC LIKE '%${map.search_text}%')</if>
+          <if test="(processStatus != null and processStatus != '') or processStatus == 0">and t.PROCESS_STATUS =#{processStatus}</if>
+          <if test="(map.processStatus != null and map.processStatus != '') ">and t.PROCESS_STATUS IN  (${map.processStatus})</if>
+          <if test="map.process_status_no != null and map.process_status_no != '' "> and t.PROCESS_STATUS not in  (${map.process_status_no}) </if>
+          <if test="map.searchType != null and map.searchType != '' and map.searchType == 1 ">
+              AND t.SITE_NAME IN  (SELECT ID FROM ET_DEPARTMENT WHERE SERIAL_NO = #{serialNo} AND IS_DEL = 1 AND DEPT_NAME LIKE '%${map.searchText}%' )
+          </if>
+          <if test="map.searchType != null and map.searchType != '' and map.searchType == 3 ">
+              AND t.PRODUCT_NAME IN  (SELECT ID  FROM ET_CONTRACT_TASK WHERE SERIAL_NO = #{serialNo} AND ZXTMC LIKE '%${map.searchText}%')
+          </if>
+          GROUP BY CONVERT(VARCHAR(32),t.CREATE_TIME,111)
           ) t ORDER BY t.createDate DESC
     </select>
 
@@ -723,6 +733,12 @@
         <if test="(processStatus != null and processStatus != '') or processStatus == 0">and t.PROCESS_STATUS =#{processStatus}</if>
         <if test="(map.processStatus != null and map.processStatus != '') ">and t.PROCESS_STATUS IN  (${map.processStatus})</if>
         <if test="map.process_status_no != null and map.process_status_no != null "> and t.PROCESS_STATUS not in  (${map.process_status_no}) </if>
+        <if test="map.searchType != null and map.searchType != '' and map.searchType == 1 ">
+            AND t.SITE_NAME IN  (SELECT ID FROM ET_DEPARTMENT WHERE SERIAL_NO = #{serialNo} AND IS_DEL = 1 AND DEPT_NAME LIKE '%${map.searchText}%' )
+        </if>
+        <if test="map.searchType != null and map.searchType != '' and map.searchType == 3 ">
+            AND t.PRODUCT_NAME IN  (SELECT ID  FROM ET_CONTRACT_TASK WHERE SERIAL_NO = #{serialNo} AND ZXTMC LIKE '%${map.searchText}%')
+        </if>
         <if test="map.createDate != null and map.createDate != ''">
             and CONVERT(VARCHAR(32),t.CREATE_TIME,111) = #{map.createDate}
         </if>
