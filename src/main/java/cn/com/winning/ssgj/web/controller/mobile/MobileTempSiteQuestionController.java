@@ -44,7 +44,7 @@ public class MobileTempSiteQuestionController  extends BaseController {
             model.addAttribute("userId", qInfo.getCreator());
             model.addAttribute("serialNo", qInfo.getSerialNo());
             model.addAttribute("openId",info.getOpenId());
-            model.addAttribute("active",0);
+            model.addAttribute("active",4);
 
         }catch (Exception e){
             e.printStackTrace();
