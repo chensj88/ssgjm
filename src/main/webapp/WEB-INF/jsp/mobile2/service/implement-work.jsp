@@ -30,7 +30,7 @@
 
 				<div>
 					<!--search-->
-					<form  action="javascript:search();">
+					<form  action="javascript:search(${active});">
 					<div class="imple-work-search">
 						<i class="iconfont icon-search" onclick="search(${active})"></i>
 						<input style="background-color:rgba(0,0,0,0);text-align:left;" id="search_text" type="search" value="${search_text}" placeholder="请输入搜索内容"/>

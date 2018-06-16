@@ -749,8 +749,9 @@
     <!-- Chen,Kuai 处理情况 -->
     <select id="selectEtSiteQuestionProcessStatus" resultMap="etSiteQuestionInfoResult"
             parameterType="etSiteQuestionInfo">
-        SELECT ISNULL(tt.num1, 0) as numNo,ISNULL(dd.num2, 0) as numOver,ISNULL(cc.num3, 0) as numList,tt.SERIAL_NO FROM
-        (SELECT COUNT(*) as num1,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS =4 AND t.SITE_NAME != ''
+        SELECT ISNULL(tt.num3, 0) as numList,ISNULL(dd.num2, 0) as numOver,ISNULL(cc.num1, 0) as numNo,tt.SERIAL_NO FROM
+        (
+        SELECT COUNT(*) as num3,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.SITE_NAME != '' and t.PROCESS_STATUS not in (4,5)
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
         <if test=" creator != null and creator != ''">and t.CREATOR = #{creator}</if>
         GROUP BY t.SERIAL_NO) tt LEFT JOIN
@@ -758,9 +759,11 @@
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
         <if test=" creator != null and creator != ''">and t.CREATOR = #{creator}</if>
         GROUP BY t.SERIAL_NO) dd  ON tt.SERIAL_NO =dd.SERIAL_NO LEFT JOIN
-        (SELECT COUNT(*) as num3,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.SITE_NAME != ''
+        (
+        SELECT COUNT(*) as num1,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS =4 AND t.SITE_NAME != ''
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
         <if test=" creator != null and creator != ''">and t.CREATOR = #{creator}</if>
-        GROUP BY t.SERIAL_NO) cc ON tt.SERIAL_NO = cc.SERIAL_NO;
+        GROUP BY t.SERIAL_NO
+        ) cc ON tt.SERIAL_NO = cc.SERIAL_NO;
     </select>
 </mapper>
