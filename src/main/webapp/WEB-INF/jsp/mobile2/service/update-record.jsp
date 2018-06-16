@@ -17,12 +17,6 @@
 </head>
 <body>
 <div class="wrap">
-    <div class="wrap-header">
-        <div class="header">
-            <span class="mui-icon mui-icon-arrowleft" onclick="window.history.go(-1);"></span>
-            <div>更新记录</div>
-        </div>
-    </div>
     <div class="wrap-cnt">
         <c:forEach var="log" items="${logs}">
             <div class="update-record-item">

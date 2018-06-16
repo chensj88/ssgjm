@@ -21,15 +21,17 @@
 </head>
 <body>
 <div class="wrap">
-    <div class="wrap-header">
-        <div class="header">
-            <span class="mui-icon mui-icon-arrowleft" onclick="openIndexPage()"></span>
-            <input id="userId" type="hidden" name="userId" value="${userId}">
-            <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
-            <div>采集列表</div>
-        </div>
-    </div>
+    <%--<div class="wrap-header">--%>
+        <%--<div class="header">--%>
+            <%--<span class="mui-icon mui-icon-arrowleft" onclick="openIndexPage()"></span>--%>
+            <%--<input id="userId" type="hidden" name="userId" value="${userId}">--%>
+            <%--<input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">--%>
+            <%--<div>采集列表</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
     <div class="wrap-cnt">
+        <input id="userId" type="hidden" name="userId" value="${userId}">
+        <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
         <div>
             <form  action="javascript:search();">
                 <div class="imple-work-search">
