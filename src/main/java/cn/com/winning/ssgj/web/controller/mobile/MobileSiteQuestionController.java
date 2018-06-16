@@ -314,7 +314,8 @@ public class MobileSiteQuestionController  extends BaseController {
                 EtContractTask task = this.getAllocateUser(info.getSerialNo(),Long.parseLong(info.getProductName()));
                 addEtLog(info.getSerialNo(),"ET_SITE_QUESTION_INFO",info.getId(),"问题分配:自动分配给{"+task.getAllocateUser()+"}",1,info.getCreator());
                 info.setAllocateUser(task.getAllocateUser());
-            }
+                info.setProcessStatus(Constants.ACCEPTED_UNTREATED); //默认将状态分配到接收待处理
+            }            
             addEtLog(info.getSerialNo(),"ET_SITE_QUESTION_INFO",info.getId(),"内容变更:问题修改",1,info.getCreator());
             getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
         }
