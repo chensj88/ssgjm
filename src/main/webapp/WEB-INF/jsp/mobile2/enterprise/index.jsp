@@ -41,31 +41,12 @@
                     <a href='#'>
                         <span class="index-date_txt">五楼护士站-NIS部署-特大病号</span>
                         <span class="index-date_status">
-                                    <i class="index-A">A</i>
+                                    <i class="index-${vwr1.map.priorityString}">${vwr1.map.priorityString}</i>
                                     <i class="index-wqr">未确认</i>
                                 </span>
                     </a>
-                    <a href='#'>
-                        <span class="index-date_txt">五楼护士站-NIS部署-特大病号病号特大病号病号特大病号</span>
-                        <span class="index-date_status">
-                                    <i class="index-B">B</i>
-                                    <i class="index-wqr">已打回</i>
-                                </span>
-                    </a>
-                    <a href='#'>
-                        <span class="index-date_txt">五楼护士站-NIS部署-特大病号病号特病号</span>
-                        <span class="index-date_status">
-                                    <i class="index-C">C</i>
-                                    <i class="index-yqr">已确认</i>
-                                </span>
-                    </a>
-                    <a href='#'>
-                        <span class="index-date_txt">五楼护士站-NIS部署-特大病号病号特大病号病号特大病号病号</span>
-                        <span class="index-date_status">
-                                    <i class="index-D">D</i>
-                                    <i class="index-wqr">未确认</i>
-                                </span>
-                    </a>
+
+
                 </c:forEach>
             </div>
             <div class="index-date">
