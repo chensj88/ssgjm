@@ -40,17 +40,23 @@
     </style>
 </head>
 <body>
+<%--数据传输隐藏域--%>
 <input id="userId" type="hidden" name="userId" value="${userId}">
 <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
+<input id="status" type="hidden" name="status" value="${status}">
+<input id="searchType" type="hidden" name="searchType" value="${searchType}">
+<input id="searchText" type="hidden" name="searchText" value="${searchText}">
+<input id="userType" type="hidden" name="userType" value="${userType}">
+<input id="priority" type="hidden" name="priority" value="${priority}">
 <div class="wrap">
     <div class="wrap-cnt">
         <div>
             <div class="wap-tab">
-                <span class="active">全部</span>
-                <span >A</span>
-                <span >B</span>
-                <span >C</span>
-                <span >D</span>
+                <span class="active" onclick="openQuestionListByPriority()">全部</span>
+                <span onclick="openQuestionListByPriority(1)">A</span>
+                <span onclick="openQuestionListByPriority(2)">B</span>
+                <span onclick="openQuestionListByPriority(3)">C</span>
+                <span onclick="openQuestionListByPriority(4)">D</span>
                 <span ><i class="iconfont icon-search"></i></span>
             </div>
             <c:forEach var="vwr" items="${questionList}">
@@ -107,9 +113,29 @@
 <script type="text/javascript">
     $(function () {
         IMS.menuTab();
+        if(${priority != null}){
+            setListLevel(${priority});
+        }
     })
     function openQuestionDetail(id){
         location.href = "<%=basePath%>mobile/wechatSiteQuestion/goUpdate.do?id="+id+"&serialNo=${serialNo}&userId=${userId}";
+    }
+
+    function setListLevel(val) {
+        var spanArr = $('.wap-tab>span');
+        for (var i = 0; i < spanArr.length; i++) {
+            var text = $(spanArr[i]).text().substr(0, 1);
+            if (text === val) {
+                $(spanArr[i]).addClass('active').siblings('span').removeClass('active');
+            }
+        }
+    }
+    /**
+     * 点击优先级获取信息
+     * @param priority
+     */
+    function openQuestionListByPriority(priority) {
+        location.href = "<%=basePath%>mobile/commons/list.do?serialNo=${serialNo}&userId=${userId}&status=${status}&searchType=${searchType}&searchText=${searchText}&userType=${userType}&priority="+priority;
     }
 </script>
 </body>
