@@ -20,7 +20,7 @@
     <style type="text/css">
         .wap-tab{
             display: flex;
-            margin-bottom: 10px;
+            margin-bottom: 0px;
             padding: 0px 0px;
         }
         .wap-tab>span{
@@ -52,7 +52,7 @@
     <div class="wrap-cnt">
         <div>
             <div class="wap-tab">
-                <span class="active" onclick="openQuestionListByPriority()">全部</span>
+                <span onclick="openQuestionListByPriority()" id="all">全部</span>
                 <span onclick="openQuestionListByPriority(1)">A</span>
                 <span onclick="openQuestionListByPriority(2)">B</span>
                 <span onclick="openQuestionListByPriority(3)">C</span>
@@ -115,17 +115,46 @@
         IMS.menuTab();
         if(${priority != null}){
             setListLevel(${priority});
+        }else{
+            $('#all').attr('class','active');
         }
     })
     function openQuestionDetail(id){
         location.href = "<%=basePath%>mobile/wechatSiteQuestion/goUpdate.do?id="+id+"&serialNo=${serialNo}&userId=${userId}";
     }
 
+    /**
+     *优先级转换 从码值到ABCD
+     *@param val
+     *@returns {string}
+     */
+    function convertTypeToInt(val) {
+        var valStr = '';
+        switch (val) {
+            case 1:
+                valStr = 'A'
+                break;
+            case 2:
+                valStr = 'B'
+                break;
+            case 3:
+                valStr = 'C'
+                break;
+            case 4:
+                valStr = 'D'
+                break;
+            default:
+                'D'
+        }
+        return valStr;
+    }
+
     function setListLevel(val) {
         var spanArr = $('.wap-tab>span');
+        var valStr = convertTypeToInt(val);
         for (var i = 0; i < spanArr.length; i++) {
             var text = $(spanArr[i]).text().substr(0, 1);
-            if (text === val) {
+            if (text === valStr) {
                 $(spanArr[i]).addClass('active').siblings('span').removeClass('active');
             }
         }
@@ -135,7 +164,12 @@
      * @param priority
      */
     function openQuestionListByPriority(priority) {
-        location.href = "<%=basePath%>mobile/commons/list.do?serialNo=${serialNo}&userId=${userId}&status=${status}&searchType=${searchType}&searchText=${searchText}&userType=${userType}&priority="+priority;
+        if(!priority){
+            location.href = "<%=basePath%>mobile/commons/list.do?serialNo=${serialNo}&userId=${userId}&status=${status}&searchType=${searchType}&searchText=${searchText}&userType=${userType}";
+        }else{
+            location.href = "<%=basePath%>mobile/commons/list.do?serialNo=${serialNo}&userId=${userId}&status=${status}&searchType=${searchType}&searchText=${searchText}&userType=${userType}&priority="+priority;
+        }
+
     }
 </script>
 </body>
