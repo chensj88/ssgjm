@@ -253,7 +253,7 @@
                     if (data.yesOrNo === 0) { //自动分配关闭
                         saveData();
                         mui.toast('问题提交成功', {duration: 'long(3500ms)', type: 'div'});
-                        location.href = "<%=basePath%>mobile/tempSiteQuestion//laodList.do?processStatus=1&userId=" + $("#userId").val() + "&serialNo=" + $("#serialNo").val();
+                        location.href = "<%=basePath%>mobile/tempSiteQuestion/laodList.do?processStatus=1&userId=" + $("#userId").val() + "&serialNo=" + $("#serialNo").val();
                     } else {
                         mui.confirm('', '项目经理已开启自动分配，保存后直接分配到对应的实施工程师，如果需要更改或者删除请联系项目实施人员！', ['确认', '取消'], function (e) {
                             if (e.index == 0) {
