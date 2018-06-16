@@ -50,6 +50,7 @@ public class EnterpriseQuestionCommonController extends BaseController{
             }
         }
         model.addAttribute("questionList", getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(info));
+        model.addAttribute("serialNo", serialNo);
         model.addAttribute("userId", userId);
         model.addAttribute("status", status);
         model.addAttribute("searchType", searchType);
