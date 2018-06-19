@@ -90,7 +90,7 @@
         let id =${questionInfo.id};
         let serialNo =${serialNo};
         let userId =${userId};
-        window.location.href = "<%=basePath%>mobile/wechatSiteQuestion/goUpdate.do?id=" + id + "&serialNo=" + serialNo + "&userId=" + userId;
+        window.location.href = "<%=basePath%>mobile/wechatSiteQuestion/goUpdate.do?id=" + id + "&serialNo=" + serialNo + "&userId=" + userId + "&type=" + 2;
     }
 
     /**
