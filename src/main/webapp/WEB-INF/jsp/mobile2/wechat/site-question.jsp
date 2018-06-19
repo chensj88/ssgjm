@@ -303,6 +303,7 @@
                         location.href = "<%=basePath%>mobile/tempSiteQuestion/laodList.do?processStatus=1&userId=" + $("#userId").val() + "&serialNo=" + $("#serialNo").val();
                     }else{
                         //TODO 添加服务端首页跳转信息
+                        location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=" + $("#userId").val() + "&serialNo=" + $("#serialNo").val();
                     }
 
                 }

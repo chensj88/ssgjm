@@ -63,7 +63,7 @@
         </div>
     </div>
     <!--新增-->
-    <a href="#" class="wrap-add">
+    <a href="<%=basePath%>/mobile/wechatSiteQuestion/addPage.do?userId=${userId}&serialNo=${serialNo}&source=2" class="wrap-add" >
         <i class="iconfont icon-add"></i>
     </a>
     <!--底部菜单-->
