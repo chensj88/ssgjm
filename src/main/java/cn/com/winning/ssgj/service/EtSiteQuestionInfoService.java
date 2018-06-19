@@ -65,4 +65,6 @@ public interface EtSiteQuestionInfoService {
     int checkEtSiteQuestionInfoStatus(EtSiteQuestionInfo info);
 
     int checkQuestionStatus(EtSiteQuestionInfo info);
+
+    EtSiteQuestionInfo getEtSiteQuestionProcessStatusService(EtSiteQuestionInfo qInfo);
 }

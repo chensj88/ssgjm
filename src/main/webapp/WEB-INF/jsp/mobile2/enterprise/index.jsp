@@ -20,66 +20,37 @@
             <div class="index-link">
                 <a href="#">
                     <i class="iconfont icon-dfp"></i>
-                    待分配 (9)
+                    待分配 (${process_num.map.get("numNo")==null?0:process_num.map.get("numList")})
                 </a>
                 <a href="#">
                     <i class="iconfont icon-dcl"></i>
-                    未处理 (10)
+                    未处理 (${process_num.map.get("numNo")==null?0:process_num.map.get("numOver")})
                 </a>
                 <a href="#">
                     <i class="iconfont icon-ycl"></i>
-                    处理 (10)
+                    处理 (${process_num.map.get("numNo")==null?0:process_num.map.get("numNo")})
                 </a>
                 <a href="#">
                     <i class="iconfont icon-ydh"></i>
-                    已打回 (90)
+                    已打回 (${process_num.map.get("numReturn")==null?0:process_num.map.get("numReturn")})
                 </a>
             </div>
+            <c:forEach var="vwr" items="${questionList}">
             <div class="index-date">
-                <c:forEach var="vwr" items="${questionList}">
+
                     <p>${vwr.groupName}  （${vwr.num}条）</p>
+                    <c:forEach var="vwr1" items="${vwr.listQuery}">
                     <a href='#'>
-                        <span class="index-date_txt">五楼护士站-NIS部署-特大病号</span>
+                        <span class="index-date_txt">${vwr1.map.deptName}-${vwr1.menuName}</span>
                         <span class="index-date_status">
                                     <i class="index-${vwr1.map.priorityString}">${vwr1.map.priorityString}</i>
-                                    <i class="index-wqr">未确认</i>
+                                    <i class="index-wqr">${vwr1.map.processString}</i>
                                 </span>
                     </a>
-
-
-                </c:forEach>
+                    </c:forEach>
             </div>
-            <div class="index-date">
-                <p>06-04（4条）</p>
-                <a href='#'>
-                    <span class="index-date_txt">五楼护士站-NIS部署-特大病号</span>
-                    <span class="index-date_status">
-								<i class="index-A">A</i>
-								<i class="index-wqr">未确认</i>
-							</span>
-                </a>
-                <a href='#'>
-                    <span class="index-date_txt">五楼护士站-NIS部署-特大病号病号特大病号病号特大病号</span>
-                    <span class="index-date_status">
-								<i class="index-B">B</i>
-								<i class="index-wqr">已打回</i>
-							</span>
-                </a>
-                <a href='#'>
-                    <span class="index-date_txt">五楼护士站-NIS部署-特大病号病号特病号</span>
-                    <span class="index-date_status">
-								<i class="index-C">C</i>
-								<i class="index-yqr">已确认</i>
-							</span>
-                </a>
-                <a href='#'>
-                    <span class="index-date_txt">五楼护士站-NIS部署-特大病号病号特大病号病号特大病号病号</span>
-                    <span class="index-date_status">
-								<i class="index-D">D</i>
-								<i class="index-wqr">未确认</i>
-							</span>
-                </a>
-            </div>
+            </c:forEach>
+
         </div>
         <div class="hide">
             站点

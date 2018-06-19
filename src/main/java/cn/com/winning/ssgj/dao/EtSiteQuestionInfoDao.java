@@ -29,4 +29,7 @@ public interface EtSiteQuestionInfoDao extends EntityDao<EtSiteQuestionInfo> {
     List<EtSiteQuestionInfo> selectEtSiteQuestionInfoListByUserAndDate(EtSiteQuestionInfo t);
 
     EtSiteQuestionInfo selectEtSiteQuestionProcessStatus(EtSiteQuestionInfo t);
+
+    EtSiteQuestionInfo selectEtSiteQuestionProcessStatusService(EtSiteQuestionInfo t);
+
 }

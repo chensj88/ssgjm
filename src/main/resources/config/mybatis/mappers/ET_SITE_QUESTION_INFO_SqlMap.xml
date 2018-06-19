@@ -69,6 +69,8 @@
         <result column="numNo" property="map.numNo" jdbcType="VARCHAR"/>
         <result column="numOver" property="map.numOver" jdbcType="VARCHAR"/>
         <result column="numList" property="map.numList" jdbcType="VARCHAR"/>
+        <result column="processString" property="map.processString" jdbcType="VARCHAR"/>
+
     </resultMap>
 
     <sql id="sf-etSiteQuestionInfo">
@@ -721,6 +723,15 @@
             WHEN t.PRIORITY = 3 THEN 'C'
             WHEN t.PRIORITY = 4 THEN 'D'
             ELSE 'X' END  AS  priorityString,
+        CASE
+        WHEN t.PROCESS_STATUS = 1 THEN '待分配'
+        WHEN t.PROCESS_STATUS = 2 THEN '待接受'
+        WHEN t.PROCESS_STATUS = 3 THEN '未处理'
+        WHEN t.PROCESS_STATUS = 4 THEN '已处理'
+        WHEN t.PROCESS_STATUS = 5 THEN '已处理'
+        WHEN t.PROCESS_STATUS = 6 THEN '院方打回'
+        WHEN t.PROCESS_STATUS = 7 THEN '工程师打回'
+        ELSE 'X' END  AS  processString,
         j.DICT_LABEL AS processStr
         from ET_SITE_QUESTION_INFO t
         LEFT JOIN SYS_USER_INFO i ON t.CREATOR=i.ID
@@ -766,4 +777,35 @@
         GROUP BY t.SERIAL_NO
         ) cc ON tt.SERIAL_NO = cc.SERIAL_NO;
     </select>
+
+
+
+
+    <!-- Chen,Kuai 微信企业号处理情况-->
+    <select id="selectEtSiteQuestionProcessStatusService" resultMap="etSiteQuestionInfoResult"
+            parameterType="etSiteQuestionInfo">
+        SELECT ISNULL(tt.num1, 0) as numList,ISNULL(dd.num2, 0) as numOver,ISNULL(cc.num3, 0) as numNo,ISNULL(ff.num4, 0) as numReturn,tt.SERIAL_NO FROM
+        (
+        SELECT COUNT(*) as num1,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.SITE_NAME != '' and t.PROCESS_STATUS in (1,7)
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test=" creator != null and creator != ''">and t.CREATOR = #{creator}</if>
+        GROUP BY t.SERIAL_NO) tt LEFT JOIN
+        (SELECT COUNT(*) as num2,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS =3 AND t.SITE_NAME != ''
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test=" creator != null and creator != ''">and t.CREATOR = #{creator}</if>
+        GROUP BY t.SERIAL_NO) dd  ON tt.SERIAL_NO =dd.SERIAL_NO LEFT JOIN
+        (
+        SELECT COUNT(*) as num3,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS in (4,5) AND t.SITE_NAME != ''
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test=" creator != null and creator != ''">and t.CREATOR = #{creator}</if>
+        GROUP BY t.SERIAL_NO
+        ) cc ON tt.SERIAL_NO = cc.SERIAL_NO  LEFT JOIN (
+        SELECT COUNT(*) as num4,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS =6 AND t.SITE_NAME != ''
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test=" creator != null and creator != ''">and t.CREATOR = #{creator}</if>
+        GROUP BY t.SERIAL_NO
+        ) ff ON tt.SERIAL_NO = ff.SERIAL_NO ;
+    </select>
+
+
 </mapper>

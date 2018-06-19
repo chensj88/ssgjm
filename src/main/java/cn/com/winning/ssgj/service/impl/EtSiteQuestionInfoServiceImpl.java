@@ -295,6 +295,16 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
     }
 
     /**
+     * 企业微信首页处理情况
+     * @param t
+     * @return
+     */
+    @Override
+    public EtSiteQuestionInfo getEtSiteQuestionProcessStatusService(EtSiteQuestionInfo t) {
+        return etSiteQuestionInfoDao.selectEtSiteQuestionProcessStatusService(t);
+    }
+
+    /**
      * 查询当前用户在指定日期下的问题里列表
      * @param info 包含创建人、客户号
      * @param createDate 创建时间
