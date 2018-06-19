@@ -18,19 +18,19 @@
     <div class="wrap-cnt">
         <div>
             <div class="index-link">
-                <a href="#">
+                <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=1&userType=0">
                     <i class="iconfont icon-dfp"></i>
                     待分配 (9)
                 </a>
-                <a href="#">
+                <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=3&userType=0">
                     <i class="iconfont icon-dcl"></i>
                     未处理 (10)
                 </a>
-                <a href="#">
+                <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=4,5&userType=0">
                     <i class="iconfont icon-ycl"></i>
                     处理 (10)
                 </a>
-                <a href="#">
+                <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=6&userType=0">
                     <i class="iconfont icon-ydh"></i>
                     已打回 (90)
                 </a>
@@ -115,8 +115,8 @@
         </div>
     </div>
 </div>
-<script src="../js/jquery-3.3.1.min.js" type="text/javascript"></script>
-<script src="../js/ims.js" type="text/javascript"></script>
+<script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(function () {
         IMS.menuTab();
