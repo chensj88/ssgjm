@@ -258,6 +258,11 @@ public class SSGJHelper {
     @Qualifier(value = "etStartEndIdService")
     private StepSequenceFactory  etStartEndIdService;
 
+    @Autowired
+    @Qualifier(value = "etUserLogIdService")
+    private StepSequenceFactory  etUserLogIdService;
+
+
     /**
      * 导入站点问题临时表ID
      * @return
@@ -338,8 +343,13 @@ public class SSGJHelper {
     public long createEtLogIdService(){ return (long) etLogIdService.create(); }
     public long createEtStartEndIdService(){ return (long) etStartEndIdService.create(); }
 
-
-
+    /**
+     * 用户搜索历史记录表
+     * @return
+     */
+    public long createEtUserLogIdService(){
+        return (long) etUserLogIdService.create();
+    }
     /**
      * 获取报表类信息表Id
      *

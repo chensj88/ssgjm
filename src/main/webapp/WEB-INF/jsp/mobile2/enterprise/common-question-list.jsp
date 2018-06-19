@@ -58,7 +58,7 @@
                 <span onclick="openQuestionListByPriority(2)">B</span>
                 <span onclick="openQuestionListByPriority(3)">C</span>
                 <span onclick="openQuestionListByPriority(4)">D</span>
-                <span ><i class="iconfont icon-search"></i></span>
+                <span onclick="openQueryWindows()"><i class="iconfont icon-search"></i></span>
             </div>
             <c:forEach var="vwr" items="${questionList}">
                 <div class="index-date">
@@ -122,6 +122,12 @@
     })
     function openQuestionDetail(id){
         location.href = "<%=basePath%>mobile/wechatSiteQuestion/goView.do?id="+id+"&serialNo=${serialNo}&userId=${userId}";
+    }
+    /**
+     * 打开查询页面
+     */
+    function openQueryWindows() {
+        location.href = "<%=basePath%>mobile/commons/query.do?serialNo=${serialNo}&userId=${userId}&status=${status}&searchType=${searchType}&searchText=${searchText}&userType=${userType}";
     }
 
     /**
