@@ -67,4 +67,7 @@ public interface EtSiteQuestionInfoService {
     int checkQuestionStatus(EtSiteQuestionInfo info);
 
     EtSiteQuestionInfo getEtSiteQuestionProcessStatusService(EtSiteQuestionInfo qInfo);
+
+    List<EtSiteQuestionInfo> selectEtSiteQuestionInfoUserTotalBySerialNo(EtSiteQuestionInfo etSiteQuestionInfo);
+
 }

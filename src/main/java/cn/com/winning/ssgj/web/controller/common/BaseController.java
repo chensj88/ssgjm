@@ -340,7 +340,7 @@ public class BaseController extends BaseSpringMvcMybatisController {
     }
 
     /**
-     * 获取助理工程师
+     * 获取主力工程师
      *
      * @param seriaNo
      * @param id
@@ -370,6 +370,21 @@ public class BaseController extends BaseSpringMvcMybatisController {
             }
         }
         return etContractTaskTemp;
+    }
+
+    /**
+     * 获取客户下所有工程师
+     *
+     * @param seriaNo
+     * @param userType 用户类型 0客户 1公司
+     * @return
+     */
+    public List<EtUserInfo> getAllocateUserBySeriaNo(String seriaNo, Integer userType) {
+        EtUserInfo etUserInfo = new EtUserInfo();
+        etUserInfo.setSerialNo(seriaNo);
+        etUserInfo.setUserType(1);
+        List<EtUserInfo> etUserInfoList = getFacade().getEtUserInfoService().getEtUserInfoList(etUserInfo);
+        return etUserInfoList;
     }
 
 }

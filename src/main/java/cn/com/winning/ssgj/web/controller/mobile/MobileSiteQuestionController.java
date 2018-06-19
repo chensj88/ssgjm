@@ -10,6 +10,7 @@ import cn.com.winning.ssgj.domain.EtDepartment;
 import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
 import cn.com.winning.ssgj.domain.EtStartEnd;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -495,11 +496,54 @@ public class MobileSiteQuestionController extends BaseController {
         EtSiteQuestionInfo questionInfo = new EtSiteQuestionInfo();
         questionInfo.setId(id);
         questionInfo = getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(questionInfo);
+        if (StringUtils.isNotBlank(questionInfo.getImgPath())) {
+            String[] imgs = questionInfo.getImgPath().split(";");
+            List<String> lists = Arrays.asList(imgs);
+            questionInfo.setImgs(lists);
+        }
         resultMap.put("questionInfo", questionInfo);
         resultMap.put("userId", userId);
         resultMap.put("serialNo", serialNo);
         model.addAllAttributes(resultMap);
         return "mobile2/enterprise/site-question-edit";
+    }
+
+    /**
+     * 跳转分配页面
+     *
+     * @param model
+     * @param id
+     * @param userId
+     * @param serialNo
+     * @return
+     */
+    @RequestMapping("/goDistribute.do")
+    public String goDistribute(Model model, Long id, Long userId, String serialNo) {
+        EtSiteQuestionInfo info = new EtSiteQuestionInfo();
+        info.setSerialNo(serialNo);
+        List<EtSiteQuestionInfo> infoList = super.getFacade().getEtSiteQuestionInfoService().selectEtSiteQuestionInfoUserTotalBySerialNo(info);
+        //调出对应的信息
+        EtSiteQuestionInfo info_old = new EtSiteQuestionInfo();
+        info_old.setId(id);
+        info_old = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info_old);
+
+
+        //人员信息
+        List<String> nameList= new ArrayList<String>();
+        List<Integer> numList= new ArrayList<Integer>();
+        if(infoList != null && infoList.size() > 0){
+            for (EtSiteQuestionInfo en:infoList) {
+                nameList.add((String) en.getMap().get("c_name"));
+                numList.add((Integer) en.getMap().get("num"));
+            }
+        }
+        String jsonName = JSON.toJSONString(nameList);
+        model.addAttribute("numList",numList);
+        model.addAttribute("jsonName",jsonName);
+        model.addAttribute("infoList",infoList);
+        model.addAttribute("siteName",info_old.getSiteName());
+        model.addAttribute("info_old",info_old);
+        return "mobile2/enterprise/site-question-distribution";
     }
 
     //    企业微信号相关controller》》》》》》》》》》》》》》》》》》》end
