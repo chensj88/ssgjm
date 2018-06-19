@@ -18,19 +18,19 @@
     <div class="wrap-cnt">
         <div>
             <div class="index-link">
-                <a href="#">
+                <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=1&userType=0">
                     <i class="iconfont icon-dfp"></i>
                     待分配 (${process_num.map.get("numNo")==null?0:process_num.map.get("numList")})
                 </a>
-                <a href="#">
+                <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=3&userType=0">
                     <i class="iconfont icon-dcl"></i>
                     未处理 (${process_num.map.get("numNo")==null?0:process_num.map.get("numOver")})
                 </a>
-                <a href="#">
+                <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=4,5&userType=0">
                     <i class="iconfont icon-ycl"></i>
                     处理 (${process_num.map.get("numNo")==null?0:process_num.map.get("numNo")})
                 </a>
-                <a href="#">
+                <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=6&userType=0">
                     <i class="iconfont icon-ydh"></i>
                     已打回 (${process_num.map.get("numReturn")==null?0:process_num.map.get("numReturn")})
                 </a>
@@ -86,8 +86,8 @@
         </div>
     </div>
 </div>
-<script src="../js/jquery-3.3.1.min.js" type="text/javascript"></script>
-<script src="../js/ims.js" type="text/javascript"></script>
+<script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(function () {
         IMS.menuTab();
