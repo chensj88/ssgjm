@@ -69,6 +69,7 @@
         <result column="numNo" property="map.numNo" jdbcType="VARCHAR"/>
         <result column="numOver" property="map.numOver" jdbcType="VARCHAR"/>
         <result column="numList" property="map.numList" jdbcType="VARCHAR"/>
+        <result column="numReturn" property="map.numReturn" jdbcType="VARCHAR"/>
         <result column="processString" property="map.processString" jdbcType="VARCHAR"/>
 
     </resultMap>
