@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
- *
  * @author SSGJ
  * @date 2018-01-18 10:11:47
  */
@@ -18,18 +16,20 @@ public interface EtSiteQuestionInfoDao extends EntityDao<EtSiteQuestionInfo> {
 
     List<EtSiteQuestionInfo> selectEtSiteQuestionInfoUserTotal(EtSiteQuestionInfo t);
 
-    List<Map<String,Object>> selectEtSiteQuestionCountInfo(EtSiteQuestionInfo info);
+    List<Map<String, Object>> selectEtSiteQuestionCountInfo(EtSiteQuestionInfo info);
 
     List<EtSiteQuestionInfo> selectEtSiteQuestionInfoTotalCountByUser(EtSiteQuestionInfo t);
 
     List<EtSiteQuestionInfo> selectMobileEtSiteQuestionInfo(EtSiteQuestionInfo t);
 
-    List<Map<String,Object>>  selectEtSiteQuestionInfoCountByUser(EtSiteQuestionInfo t);
+    List<Map<String, Object>> selectEtSiteQuestionInfoCountByUser(EtSiteQuestionInfo t);
 
     List<EtSiteQuestionInfo> selectEtSiteQuestionInfoListByUserAndDate(EtSiteQuestionInfo t);
 
     EtSiteQuestionInfo selectEtSiteQuestionProcessStatus(EtSiteQuestionInfo t);
 
     EtSiteQuestionInfo selectEtSiteQuestionProcessStatusService(EtSiteQuestionInfo t);
+
+    List<EtSiteQuestionInfo> selectEtSiteQuestionInfoUserTotalBySerialNo(EtSiteQuestionInfo etSiteQuestionInfo);
 
 }

@@ -209,6 +209,9 @@ public class FacadeImpl implements Facade {
     @Resource
     EtStartEndService etStartEndService;
 
+    @Resource
+    EtUserLogService etUserLogService;
+
     public EtAccessTokenService getEtAccessTokenService() {
         return etAccessTokenService;
     }
@@ -491,5 +494,10 @@ public class FacadeImpl implements Facade {
     @Override
     public EtStartEndService getEtStartEndService() {
         return etStartEndService;
+    }
+
+    @Override
+    public EtUserLogService getEtUserLogService() {
+        return etUserLogService;
     }
 }

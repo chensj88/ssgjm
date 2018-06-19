@@ -48,6 +48,7 @@
 <input id="searchText" type="hidden" name="searchText" value="${searchText}">
 <input id="userType" type="hidden" name="userType" value="${userType}">
 <input id="priority" type="hidden" name="priority" value="${priority}">
+<%--主页面--%>
 <div class="wrap">
     <div class="wrap-cnt">
         <div>
@@ -57,13 +58,13 @@
                 <span onclick="openQuestionListByPriority(2)">B</span>
                 <span onclick="openQuestionListByPriority(3)">C</span>
                 <span onclick="openQuestionListByPriority(4)">D</span>
-                <span ><i class="iconfont icon-search"></i></span>
+                <span onclick="openQueryWindows()"><i class="iconfont icon-search"></i></span>
             </div>
             <c:forEach var="vwr" items="${questionList}">
                 <div class="index-date">
                     <p>${vwr.groupName}（${vwr.num}条）</p>
                 <c:forEach var="vwr1" items="${vwr.listQuery}">
-                    <a href='openQuestionDetail(${vwr1.id})'>
+                    <a href="<%=basePath%>mobile/wechatSiteQuestion/goView.do?id=${vwr1.id}&serialNo=${serialNo}&userId=${userId}">
                         <span class="index-date_txt">${vwr1.map.deptName}-${vwr1.menuName}</span>
                         <span class="index-date_status">
                             <i class="index-${vwr1.map.priorityString}">${vwr1.map.priorityString}</i>
@@ -85,12 +86,12 @@
         </div>
     </div>
     <!--新增-->
-    <a href="<%=basePath%>/mobile/wechatSiteQuestion/addPage.do?userId=${userId}&serialNo=${serialNo}&source=2" class="wrap-add" >
+   <%-- <a href="<%=basePath%>/mobile/wechatSiteQuestion/addPage.do?userId=${userId}&serialNo=${serialNo}&source=2" class="wrap-add" >
         <i class="iconfont icon-add"></i>
-    </a>
+    </a>--%>
     <!--底部菜单-->
     <div class="wrap-foot">
-        <div class="active">
+        <div class="active" onclick="openIndexPage()">
             <i class="iconfont icon-task"></i>
             任务
         </div>
@@ -120,9 +121,18 @@
         }
     })
     function openQuestionDetail(id){
-        location.href = "<%=basePath%>mobile/wechatSiteQuestion/goUpdate.do?id="+id+"&serialNo=${serialNo}&userId=${userId}";
+        location.href = "<%=basePath%>mobile/wechatSiteQuestion/goView.do?id="+id+"&serialNo=${serialNo}&userId=${userId}";
+    }
+    /**
+     * 打开查询页面
+     */
+    function openQueryWindows() {
+        location.href = "<%=basePath%>mobile/commons/query.do?serialNo=${serialNo}&userId=${userId}&status=${status}&searchType=${searchType}&searchText=${searchText}&userType=${userType}";
     }
 
+    function openIndexPage() {
+        location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=${userId}&serialNo=${serialNo}";
+    }
     /**
      *优先级转换 从码值到ABCD
      *@param val

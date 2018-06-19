@@ -40,7 +40,7 @@
 
                     <p>${vwr.groupName}  （${vwr.num}条）</p>
                     <c:forEach var="vwr1" items="${vwr.listQuery}">
-                    <a href='#'>
+                    <a href='<%=basePath%>mobile/wechatSiteQuestion/goView.do?id=${vwr1.id}&serialNo=${serialNo}&userId=${userId}'>
                         <span class="index-date_txt">${vwr1.map.deptName}-${vwr1.menuName}</span>
                         <span class="index-date_status">
                                     <i class="index-${vwr1.map.priorityString}">${vwr1.map.priorityString}</i>
@@ -63,12 +63,12 @@
         </div>
     </div>
     <!--新增-->
-    <a href="#" class="wrap-add">
+    <a href="<%=basePath%>/mobile/wechatSiteQuestion/addPage.do?userId=${userId}&serialNo=${serialNo}&source=2" class="wrap-add" >
         <i class="iconfont icon-add"></i>
     </a>
     <!--底部菜单-->
     <div class="wrap-foot">
-        <div class="active">
+        <div class="active" onclick="openIndexPage()">
             <i class="iconfont icon-task"></i>
             任务
         </div>
@@ -92,6 +92,9 @@
     $(function () {
         IMS.menuTab();
     })
+    function openIndexPage() {
+        location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=${userId}&serialNo=${serialNo}";
+    }
 </script>
 </body>
 </html>
