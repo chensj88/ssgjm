@@ -81,7 +81,7 @@
     </div>
     <!--底部菜单-->
     <div class="wrap-foot">
-        <div class="active">
+        <div class="active" onclick="openIndexPage()">
             <i class="iconfont icon-task"></i>
             任务
         </div>
@@ -132,6 +132,9 @@
         location.href = "<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${status}&searchType="+searchType+"&searchText="+searchText+"&userType=${userType}";
     }
 
+    function openIndexPage() {
+        location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=${userId}&serialNo=${serialNo}";
+    }
 </script>
 </body>
 </html>

@@ -68,7 +68,7 @@
     </a>
     <!--底部菜单-->
     <div class="wrap-foot">
-        <div class="active">
+        <div class="active" onclick="openIndexPage()">
             <i class="iconfont icon-task"></i>
             任务
         </div>
@@ -92,6 +92,9 @@
     $(function () {
         IMS.menuTab();
     })
+    function openIndexPage() {
+        location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=${userId}&serialNo=${serialNo}";
+    }
 </script>
 </body>
 </html>

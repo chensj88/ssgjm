@@ -86,12 +86,12 @@
         </div>
     </div>
     <!--新增-->
-    <a href="<%=basePath%>/mobile/wechatSiteQuestion/addPage.do?userId=${userId}&serialNo=${serialNo}&source=2" class="wrap-add" >
+   <%-- <a href="<%=basePath%>/mobile/wechatSiteQuestion/addPage.do?userId=${userId}&serialNo=${serialNo}&source=2" class="wrap-add" >
         <i class="iconfont icon-add"></i>
-    </a>
+    </a>--%>
     <!--底部菜单-->
     <div class="wrap-foot">
-        <div class="active">
+        <div class="active" onclick="openIndexPage()">
             <i class="iconfont icon-task"></i>
             任务
         </div>
@@ -130,6 +130,9 @@
         location.href = "<%=basePath%>mobile/commons/query.do?serialNo=${serialNo}&userId=${userId}&status=${status}&searchType=${searchType}&searchText=${searchText}&userType=${userType}";
     }
 
+    function openIndexPage() {
+        location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=${userId}&serialNo=${serialNo}";
+    }
     /**
      *优先级转换 从码值到ABCD
      *@param val
