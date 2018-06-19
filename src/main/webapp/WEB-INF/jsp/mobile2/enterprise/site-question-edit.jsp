@@ -30,7 +30,7 @@
 <body>
 <input id="userId" type="hidden" name="userId" value="${userId}">
 <input id="serialNo" type="hidden" name="serialNo" value="${serialNo}">
-<input id="id" type="hidden" name="id" value="${siteQuestionInfo.id}">
+<input id="id" type="hidden" name="id" value="${questionInfo.id}">
 <input id="source" type="hidden" name="source" value="${source}">
 <div class="wrap">
     <div class="wrap-cnt">
@@ -133,8 +133,8 @@
         $('.collect-list-level>span').click(function () {
             $(this).addClass('level').siblings('span').removeClass('level');
         });
-        setListLevel(${priority != null ? priority : questionInfo.priority});
-        changeListLevel(${priority != null ? priority : questionInfo.priority});
+        setListLevel(${questionInfo.priority});
+        changeListLevel(${questionInfo.priority});
     })
 
     /**
@@ -165,32 +165,35 @@
      *
      */
     function checkQuestion() {
-        var questionId = $('#id').val();
-        if (questionId !== '') {
-            $.ajax({
-                type: "POST",
-                url: "<%=basePath%>mobile/wechatSiteQuestion/checkQuestionStatus.do",
-                data: {id: questionId},
-                cache: false,
-                dataType: "json",
-                async: false,
-                error: function (request) {
-                    mui.toast('服务端错误，或网络不稳定，本次操作被终止。', {duration: 'long', type: 'div'})
-                },
-                success: function (data) {
-                    if (data.status == 'success') {
-                        if (data.data == 0) {
-                            deleteQuestion(questionId);
-                            goToIndexPage();
-                        } else {
-                            goToIndexPage();
-                        }
-                    }
-                }
-            });
-        } else {
-            goToIndexPage();
-        }
+        <%--var questionId = $('#id').val();--%>
+        <%--if (questionId !== '') {--%>
+        <%--$.ajax({--%>
+        <%--type: "POST",--%>
+        <%--url: "<%=basePath%>mobile/wechatSiteQuestion/checkQuestionStatus.do",--%>
+        <%--data: {id: questionId},--%>
+        <%--cache: false,--%>
+        <%--dataType: "json",--%>
+        <%--async: false,--%>
+        <%--error: function (request) {--%>
+        <%--mui.toast('服务端错误，或网络不稳定，本次操作被终止。', {duration: 'long', type: 'div'})--%>
+        <%--},--%>
+        <%--success: function (data) {--%>
+        <%--if (data.status == 'success') {--%>
+        <%--if (data.data == 0) {--%>
+        <%--deleteQuestion(questionId);--%>
+        <%--goToIndexPage();--%>
+        <%--} else {--%>
+        <%--goToIndexPage();--%>
+        <%--}--%>
+        <%--}--%>
+        <%--}--%>
+        <%--});--%>
+        <%--} else {--%>
+        <%--goToIndexPage();--%>
+        <%--}--%>
+        let serialNo =${serialNo};
+        let userId =${userId};
+        window.location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=" + userId + "&serialNo=" + serialNo;
 
     }
 
@@ -292,10 +295,12 @@
             success: function (data) {
                 if (data.status) {
                     mui.toast('问题提交成功', {duration: 'long(3500ms)', type: 'div'});
-                    if (${source == 1}) {
+                    if (${type == 1}) {
                         location.href = "<%=basePath%>mobile/tempSiteQuestion/laodList.do?processStatus=1&userId=" + $("#userId").val() + "&serialNo=" + $("#serialNo").val();
                     } else {
                         //TODO 添加服务端首页跳转信息
+                        location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=" + $("#userId").val() + "&serialNo=" + $("#serialNo").val();
+
                     }
 
                 }
@@ -341,7 +346,7 @@
                     var obj = JSON.parse(data);
                     if (obj.status == "1") {
                         mui.toast('上传成功', {duration: 'long(3500ms)', type: 'div'});
-                        //追加图片预览 <span class="iconfont icon-close" onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>
+                        //追加图片预览 <span class="iconfont icon-close" onclick="closeImg('${questionInfo.id}','${img}');"></span>
                         //									<input type="hidden" />
                         var imgs = "<div id=\"close_id\"><img src='<%=Constants.FTP_SHARE_FLODER%>" + obj.path + "'></img><span class=\"iconfont icon-close\" onclick=\"closeImg('+" + obj.id + "'," + "'" + obj.path + "');\"></span>\n</div>";
                         $(".datum-upload.site-width").append(imgs);
@@ -497,7 +502,7 @@
         var questionDesc = $('#questionDesc').val();
         var priority = getListLevelValue();
         location.href = "<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId} " +
-            "&questionId=${siteQuestionInfo.id}&type=" + type + "&source=${source}&menuName=" + encodeURI(menuName) + "&questionDesc=" + encodeURI(questionDesc) + "&priority=" + priority;
+            "&questionId=${questionInfo.id}&type=" + type + "&source=${source}&menuName=" + encodeURI(menuName) + "&questionDesc=" + encodeURI(questionDesc) + "&priority=" + priority;
     }
 </script>
 </html>
