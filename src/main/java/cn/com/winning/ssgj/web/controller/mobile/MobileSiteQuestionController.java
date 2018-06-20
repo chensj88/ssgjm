@@ -5,10 +5,7 @@ import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.CommonFtpUtils;
 import cn.com.winning.ssgj.base.util.StringUtil;
-import cn.com.winning.ssgj.domain.EtContractTask;
-import cn.com.winning.ssgj.domain.EtDepartment;
-import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
-import cn.com.winning.ssgj.domain.EtStartEnd;
+import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
@@ -22,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -529,23 +527,80 @@ public class MobileSiteQuestionController extends BaseController {
 
 
         //人员信息
-        List<String> nameList= new ArrayList<String>();
-        List<Integer> numList= new ArrayList<Integer>();
-        if(infoList != null && infoList.size() > 0){
-            for (EtSiteQuestionInfo en:infoList) {
+        List<String> nameList = new ArrayList<String>();
+        List<Integer> numList = new ArrayList<Integer>();
+        if (infoList != null && infoList.size() > 0) {
+            for (EtSiteQuestionInfo en : infoList) {
                 nameList.add((String) en.getMap().get("c_name"));
                 numList.add((Integer) en.getMap().get("num"));
             }
         }
         String jsonName = JSON.toJSONString(nameList);
-        model.addAttribute("numList",numList);
-        model.addAttribute("jsonName",jsonName);
-        model.addAttribute("infoList",infoList);
-        model.addAttribute("siteName",info_old.getSiteName());
-        model.addAttribute("info_old",info_old);
+        model.addAttribute("numList", numList);
+        model.addAttribute("jsonName", jsonName);
+        model.addAttribute("infoList", infoList);
+        model.addAttribute("siteName", info_old.getSiteName());
+        model.addAttribute("info_old", info_old);
+        model.addAttribute("userId", userId);
+        model.addAttribute("serialNo", serialNo);
         return "mobile2/enterprise/site-question-distribution";
     }
 
+
+    /**
+     * 跳转分配详情页面
+     *
+     * @param model
+     * @param id
+     * @param userId
+     * @return
+     */
+    @RequestMapping("/goDistributeDetail.do")
+    public String goDistributeDetail(Model model, Long id, Long userId,String serialNo,Long allocateUser) {
+        EtSiteQuestionInfo questionInfo = new EtSiteQuestionInfo();
+        questionInfo.setId(id);
+        questionInfo = getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(questionInfo);
+        if (StringUtils.isNotBlank(questionInfo.getImgPath())) {
+            String[] imgs = questionInfo.getImgPath().split(";");
+            List<String> lists = Arrays.asList(imgs);
+            questionInfo.setImgs(lists);
+        }
+        SysUserInfo sysUserInfo = new SysUserInfo();
+        sysUserInfo.setId(allocateUser);
+        sysUserInfo = getFacade().getSysUserInfoService().getSysUserInfo(sysUserInfo);
+        resultMap.put("questionInfo", questionInfo);
+        resultMap.put("userId", userId);
+        resultMap.put("serialNo", serialNo);
+        resultMap.put("sysUserInfo", sysUserInfo);
+        model.addAllAttributes(resultMap);
+        return "mobile2/enterprise/site-question-distribution-detail";
+    }
+
+
+    /**
+     * 跳转分配详情页面
+     *
+     * @param model
+     * @param id
+     * @param userId
+     * @return
+     */
+    @RequestMapping("/saveDistribution.do")
+    @ResponseBody
+    public Map saveDistribution(Model model, Long id, Long userId,String serialNo,Long allocateUser,String hopeDate) {
+        EtSiteQuestionInfo info = new EtSiteQuestionInfo();
+        info.setId(id);
+        info.setAllocateUser(allocateUser);
+        info.setHopeFinishDate(hopeDate);
+        info.setProcessStatus(Constants.ALLOCATED_UNACCEPTED);
+        try{
+            super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+            resultMap.put("status",true);
+        }catch (Exception e){
+            resultMap.put("status",false);
+        }
+        return resultMap;
+    }
     //    企业微信号相关controller》》》》》》》》》》》》》》》》》》》end
 
 
