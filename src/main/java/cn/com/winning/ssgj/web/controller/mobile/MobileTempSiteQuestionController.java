@@ -142,8 +142,9 @@ public class MobileTempSiteQuestionController  extends BaseController {
     }
 
     @RequestMapping(value = "/index.do")
-    public String index(Model model,Long questionId,Long userId,String serialNo,String openId) {
+    public String index(Model model,Long questionId,Long userId,String serialNo,String openId,String code) {
         try{
+            logger.info("yes:"+code);
             //SysUserInfo info = super.getUserInfo(parameter);
             EtSiteQuestionInfo qInfo = new EtSiteQuestionInfo();
             qInfo.setCreator(null);
@@ -154,7 +155,6 @@ public class MobileTempSiteQuestionController  extends BaseController {
             model.addAttribute("serialNo", qInfo.getSerialNo());
             //model.addAttribute("openId",info.getOpenId());
             model.addAttribute("active",0);
-
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -68,10 +68,22 @@
                     </c:if>
 					</span>
         </div>
+        <div class="column-2 large-list" id="solutionResult">
+            <strong>解决方案</strong>
+            <span>${questionInfo.solutionResult}</span>
+        </div>
+        <div class="column-2 large-list" id="userMessage">
+            <strong>院方意见</strong>
+            <span>${questionInfo.userMessage}</span>
+        </div>
+        <div class="column-2 large-list" id="suggest">
+            <strong>打回意见</strong>
+            <span>${questionInfo.suggest}</span>
+        </div>
     </div>
     <div class="wrap-foot large-btn">
         <a href="#" onclick="goUpdate();"><span>编辑</span></a>
-        <a href="#" onclick="save();"><span>分配</span></a>
+        <a href="#" onclick="goDistribute();"><span>分配</span></a>
 
     </div>
 </div>
@@ -83,6 +95,17 @@
     $(function () {
         enterprise.init();
         setListLevel(${questionInfo.priority});
+        //工程师打回：7
+        let processStatus =${questionInfo.processStatus};
+        if (processStatus == 7) {
+            $("#solutionResult").show();
+            $("#userMessage").show();
+            $("#suggest").show();
+        } else {
+            $("#solutionResult").hide();
+            $("#userMessage").hide();
+            $("#suggest").hide();
+        }
     });
 
     // 跳转编辑页面
@@ -91,6 +114,14 @@
         let serialNo =${serialNo};
         let userId =${userId};
         window.location.href = "<%=basePath%>mobile/wechatSiteQuestion/goUpdate.do?id=" + id + "&serialNo=" + serialNo + "&userId=" + userId + "&type=" + 2;
+    }
+
+    // 跳转分配页面
+    function goDistribute() {
+        let id =${questionInfo.id};
+        let serialNo =${serialNo};
+        let userId =${userId};
+        window.location.href = "<%=basePath%>mobile/wechatSiteQuestion/goDistribute.do?id=" + id + "&serialNo=" + serialNo + "&userId=" + userId + "&type=" + 2;
     }
 
     /**

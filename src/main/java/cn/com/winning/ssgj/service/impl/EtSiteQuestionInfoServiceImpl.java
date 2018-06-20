@@ -107,30 +107,30 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
 
         for (EtSiteQuestionInfo qinfo : infoList) {
             Map<String, String> dataMap = new HashMap<>();
-            dataMap.put("deptName",qinfo.getMap().get("deptName").toString());
-            dataMap.put("sysName",qinfo.getMap().get("plName").toString());
-            dataMap.put("menuName",qinfo.getMenuName());
-            dataMap.put("requireNo",qinfo.getRequirementNo());
-            dataMap.put("questionType",qinfo.getMap().get("dict_label").toString());
-            dataMap.put("questionDesc",qinfo.getQuestionDesc());
-            if(qinfo.getMap().get("operTypeString") == null){
-                dataMap.put("operTypeString","");
-            }else {
-                dataMap.put("operTypeString",qinfo.getMap().get("operTypeString").toString());
+            dataMap.put("deptName", qinfo.getMap().get("deptName").toString());
+            dataMap.put("sysName", qinfo.getMap().get("plName").toString());
+            dataMap.put("menuName", qinfo.getMenuName());
+            dataMap.put("requireNo", qinfo.getRequirementNo());
+            dataMap.put("questionType", qinfo.getMap().get("dict_label").toString());
+            dataMap.put("questionDesc", qinfo.getQuestionDesc());
+            if (qinfo.getMap().get("operTypeString") == null) {
+                dataMap.put("operTypeString", "");
+            } else {
+                dataMap.put("operTypeString", qinfo.getMap().get("operTypeString").toString());
             }
-            if(qinfo.getMap().get("priorityString") == null){
-                dataMap.put("priorityString","");
-            }else {
-                dataMap.put("priorityString",qinfo.getMap().get("priorityString").toString());
+            if (qinfo.getMap().get("priorityString") == null) {
+                dataMap.put("priorityString", "");
+            } else {
+                dataMap.put("priorityString", qinfo.getMap().get("priorityString").toString());
             }
-            if(qinfo.getMap().get("allocate_name") == null){ // modify chensj 分配人map key 错误
-                dataMap.put("allocateUser","");
-            }else {
-                dataMap.put("allocateUser",qinfo.getMap().get("allocate_name").toString());// modify chensj 分配人map key 错误
+            if (qinfo.getMap().get("allocate_name") == null) { // modify chensj 分配人map key 错误
+                dataMap.put("allocateUser", "");
+            } else {
+                dataMap.put("allocateUser", qinfo.getMap().get("allocate_name").toString());// modify chensj 分配人map key 错误
             }
-            dataMap.put("create_name",qinfo.getMap().get("create_name").toString());
-            dataMap.put("createTimeString",qinfo.getMap().get("createTimeString").toString());
-            dataMap.put("isPmis",qinfo.getPmisStatus() == 2 ? "否" :"是");
+            dataMap.put("create_name", qinfo.getMap().get("create_name").toString());
+            dataMap.put("createTimeString", qinfo.getMap().get("createTimeString").toString());
+            dataMap.put("isPmis", qinfo.getPmisStatus() == 2 ? "否" : "是");
             dataList.add(dataMap);
         }
         ExcelUtil.writeExcel(dataList, colList, colList.size(), path);
@@ -174,13 +174,13 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
             tempInfo.setMobile(list.get(10).toString());
             tempInfo.setOperVar(list.get(11).toString());
             tempInfo.setHopeFinishDate(list.get(12).toString());
-            String userMsg  = "";
-            if(list.size() >= 14 && !StringUtil.isEmptyOrNull(list.get(13).toString())){
+            String userMsg = "";
+            if (list.size() >= 14 && !StringUtil.isEmptyOrNull(list.get(13).toString())) {
                 userMsg = list.get(13).toString();
             }
             tempInfo.setUserMessage(userMsg);
-            String requireNo  = "";
-            if(list.size() >= 15 && !StringUtil.isEmptyOrNull(list.get(14).toString())){
+            String requireNo = "";
+            if (list.size() >= 15 && !StringUtil.isEmptyOrNull(list.get(14).toString())) {
                 requireNo = list.get(14).toString();
             }
             tempInfo.setRequirementNo(requireNo);
@@ -212,10 +212,10 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
             qinfo.setHopeFinishDate(tinfo.getHopeFinishDate());
             qinfo.setCreator(info.getCreator());
             qinfo.setCreateTime(new Timestamp(new Date().getTime()));
-            if(tinfo.getRequirementNo() != null && !StringUtil.isEmptyOrNull(tinfo.getRequirementNo())){
+            if (tinfo.getRequirementNo() != null && !StringUtil.isEmptyOrNull(tinfo.getRequirementNo())) {
                 qinfo.setRequirementNo(tinfo.getRequirementNo());
                 qinfo.setPmisStatus(1);
-            }else{
+            } else {
                 qinfo.setPmisStatus(2);
             }
             qinfo.setCreateNo(user.getUserid());
@@ -233,18 +233,19 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
     /**
      * 根据用户ID和客户ID查询当前用户的可以查看的问题
      * 注：只能看自己的问题的列表
-     * @param info   包含创建人、客户号
+     *
+     * @param info 包含创建人、客户号
      * @return
      */
     @Override
     public List<MobileSiteQuestion> getSiteQuestionInfoByUser(EtSiteQuestionInfo info) throws ParseException {
         List<MobileSiteQuestion> resultMap = new ArrayList<>();
-        List<Map<String,Object>> countInfo = etSiteQuestionInfoDao.selectEtSiteQuestionInfoCountByUser(info);
+        List<Map<String, Object>> countInfo = etSiteQuestionInfoDao.selectEtSiteQuestionInfoCountByUser(info);
         for (Map<String, Object> map : countInfo) {
             MobileSiteQuestion<EtSiteQuestionInfo> question = new MobileSiteQuestion<>();
             question.setGroupName(DateUtil.convertDateToMMDD(map.get("createDate").toString()));
             question.setNum(map.get("countNum").toString());
-            question.setListQuery(querySiteQuestionByUserAndDate(info,map.get("createDate").toString()));
+            question.setListQuery(querySiteQuestionByUserAndDate(info, map.get("createDate").toString()));
             resultMap.add(question);
         }
         return resultMap;
@@ -252,7 +253,7 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
 
     /**
      * 查看问题展示首页信息
-     * */
+     */
     @Override
     public List<EtSiteQuestionInfo> selectMobileEtSiteQuestionInfo(EtSiteQuestionInfo t) {
 
@@ -266,29 +267,31 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
 
     /**
      * 判断当前的问题信息是否可以删除
+     *
      * @param info
      * @return
      */
     @Override
     public int checkEtSiteQuestionInfoStatus(EtSiteQuestionInfo info) {
         info = etSiteQuestionInfoDao.selectEntity(info);
-        if(info.getAllocateUser() != null || info.getRequirementNo() != null){
-            return  1;
+        if (info.getAllocateUser() != null || info.getRequirementNo() != null) {
+            return 1;
         }
         return 0;
     }
 
     /**
      * 检查问题的标题是否为空，为空则返回 0 反之返回 1
-     *  0 作为前端允许删除
-     *  1 作为前端不操作
+     * 0 作为前端允许删除
+     * 1 作为前端不操作
+     *
      * @param info
      * @return
      */
     @Override
     public int checkQuestionStatus(EtSiteQuestionInfo info) {
         info = etSiteQuestionInfoDao.selectEntity(info);
-        if(StringUtil.isEmptyOrNull(info.getMenuName())){
+        if (StringUtil.isEmptyOrNull(info.getMenuName())) {
             return 0;
         }
         return 1;
@@ -296,6 +299,7 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
 
     /**
      * 企业微信首页处理情况
+     *
      * @param t
      * @return
      */
@@ -304,14 +308,20 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
         return etSiteQuestionInfoDao.selectEtSiteQuestionProcessStatusService(t);
     }
 
+    @Override
+    public List<EtSiteQuestionInfo> selectEtSiteQuestionInfoUserTotalBySerialNo(EtSiteQuestionInfo etSiteQuestionInfo) {
+        return etSiteQuestionInfoDao.selectEtSiteQuestionInfoUserTotalBySerialNo(etSiteQuestionInfo);
+    }
+
     /**
      * 查询当前用户在指定日期下的问题里列表
-     * @param info 包含创建人、客户号
+     *
+     * @param info       包含创建人、客户号
      * @param createDate 创建时间
      * @return
      */
     private List<EtSiteQuestionInfo> querySiteQuestionByUserAndDate(EtSiteQuestionInfo info, String createDate) {
-        info.getMap().put("createDate",createDate);
+        info.getMap().put("createDate", createDate);
         return etSiteQuestionInfoDao.selectEtSiteQuestionInfoListByUserAndDate(info);
 
     }
