@@ -27,26 +27,26 @@
     <%--</div>--%>
     <div class="hole"></div>
     <div id='chart'></div>
-    <%--<div class="check-distribuion-list">--%>
-    <%--<c:forEach var="vwr" items="${infoList}">--%>
-    <%--<div class="mui-input-row mui-radio">--%>
-    <%--<label>--%>
-    <%--<strong>${vwr.map.get("c_name")} </strong><span style="margin-left: 20px;">${vwr.map.get("position_name")}&nbsp;&nbsp;  处理问题数</span><i>${vwr.map.get("num")}</i>--%>
-    <%--</label>--%>
-    <%--<input name="radio1" type="radio" value="${vwr.allocateUser}">--%>
-    <%--</div>--%>
-    <%--</c:forEach>--%>
+    <div class="check-distribuion-list">
+    <c:forEach var="vwr" items="${infoList}">
+    <div class="mui-input-row mui-radio">
+    <label>
+    <strong>${vwr.map.get("c_name")} </strong><span style="margin-left: 20px;">${vwr.map.get("position_name")}&nbsp;&nbsp;  处理问题数</span><i>${vwr.map.get("num")}</i>
+    </label>
+    <input name="radio1" type="radio" value="${vwr.allocateUser}">
+    </div>
+    </c:forEach>
 
-    <%--</div>--%>
-    <%--<div class="fix-hole"></div>--%>
-    <%--<div class="check-distribuion-btn">--%>
-    <%--<input type="button" onclick="save();" value="保存" />--%>
-    <%--<input type="button" onclick="history.go(-1)" value="取消" />--%>
-    <%--</div>--%>
+    </div>
+    <div class="fix-hole"></div>
+    <div class="check-distribuion-btn">
+    <input type="button" onclick="save();" value="保存" />
+    <input type="button" onclick="history.go(-1)" value="取消" />
+    </div>
 </div>
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=basePath%>resources/mobile/js/echarts.simple.min.js"></script>
-<script src="<%=basePath%>resources/mobile/js/mui.js" type="text/javascript" charset="utf-8"></script>
+<script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
     $(function () {
@@ -110,7 +110,7 @@
                 normal: {
                     show: true,
                     padding: [2, 5],
-                    position: 'insideRight',
+                    position: 'right',
                     color: '#fff',
                     fontSize: '12',
                     offset: [5, 0],
