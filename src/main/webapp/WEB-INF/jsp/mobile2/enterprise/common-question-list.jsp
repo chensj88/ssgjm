@@ -47,7 +47,7 @@
 <input id="status" type="hidden" name="status" value="${status}">
 <input id="searchType" type="hidden" name="searchType" value="${searchType}">
 <input id="searchText" type="hidden" name="searchText" value="${searchText}">
-<input id="userType" type="hidden" name="userType" value="${userType}">
+<input id="isManager" type="hidden" name="isManager" value="${isManager}">
 <input id="priority" type="hidden" name="priority" value="${priority}">
 <%--主页面--%>
 <div class="wrap">
@@ -122,13 +122,13 @@
         }
     })
     function openQuestionDetail(id){
-        location.href = "<%=basePath%>mobile/wechatSiteQuestion/goView.do?id="+id+"&serialNo=${serialNo}&userId=${userId}";
+        location.href = "<%=basePath%>mobile/wechatSiteQuestion/goView.do?id="+id+"&serialNo=${serialNo}&userId=${userId}&isManager=${isManager}";
     }
     /**
      * 打开查询页面
      */
     function openQueryWindows() {
-        location.href = "<%=basePath%>mobile/commons/query.do?serialNo=${serialNo}&userId=${userId}&status=${status}&searchType=${searchType}&searchText=${searchText}&userType=${userType}";
+        location.href = "<%=basePath%>mobile/commons/query.do?serialNo=${serialNo}&userId=${userId}&status=${status}&searchType=${searchType}&searchText=${searchText}&isManager=${isManager}";
     }
 
     function openIndexPage() {
@@ -176,9 +176,9 @@
      */
     function openQuestionListByPriority(priority) {
         if(!priority){
-            location.href = "<%=basePath%>mobile/commons/list.do?serialNo=${serialNo}&userId=${userId}&status=${status}&searchType=${searchType}&searchText=${searchText}&userType=${userType}";
+            location.href = "<%=basePath%>mobile/commons/list.do?serialNo=${serialNo}&userId=${userId}&status=${status}&searchType=${searchType}&searchText=${searchText}&isManager=${isManager}";
         }else{
-            location.href = "<%=basePath%>mobile/commons/list.do?serialNo=${serialNo}&userId=${userId}&status=${status}&searchType=${searchType}&searchText=${searchText}&userType=${userType}&priority="+priority;
+            location.href = "<%=basePath%>mobile/commons/list.do?serialNo=${serialNo}&userId=${userId}&status=${status}&searchType=${searchType}&searchText=${searchText}&isManager=${isManager}&priority="+priority;
         }
 
     }
