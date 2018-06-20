@@ -347,11 +347,44 @@ public class ExcelUtil {
             List<String> columnNameOfFirstRow,
             Workbook workBook,
             List<Map<String,Object>> validateRoles,
+            List<Map<String,Object>> hiddenValidateRoles,
             String filename){
         OutputStream out = null;
         try {
             // sheet 对应一个工作页
             Sheet sheet = workBook.createSheet();
+            Sheet hidden = null;
+            DataValidationConstraint dvConstraint = null;
+            CellRangeAddressList addressList = null;
+            DataValidation validation = null;
+
+            for (int j = 0; j < hiddenValidateRoles.size(); j++) {
+                hidden = workBook.createSheet("hidden"+j);
+                Cell cell1 = null;
+                Map<String, Object> hiddenValidateRole =  hiddenValidateRoles.get(j);
+                String[] roles = (String[]) hiddenValidateRole.get("roles");
+                for (int i = 0, length= roles.length; i < length; i++) {
+                    String name = roles[i];
+                    Row row = hidden.createRow(i);
+                    cell1 = row.createCell(0);
+                    cell1.setCellValue(name);
+                }
+
+                addressList =
+                        new CellRangeAddressList(Integer.parseInt(hiddenValidateRole.get("firstRow").toString()),
+                                Integer.parseInt(hiddenValidateRole.get("lastRow").toString()),
+                                Integer.parseInt(hiddenValidateRole.get("firstCol").toString()),
+                                Integer.parseInt(hiddenValidateRole.get("lastCol").toString()));
+                Name namedCell = workBook.createName();
+                namedCell.setNameName("hidden"+j);
+                namedCell.setRefersToFormula("hidden"+j+"!$A$1:$A$" + roles.length);
+                dvConstraint = DVConstraint.createFormulaListConstraint("hidden"+j);
+                validation = new HSSFDataValidation(addressList, dvConstraint);
+
+                workBook.setSheetHidden(j+1, true);
+                sheet.addValidationData(validation);
+            }
+
             //样式
             CellStyle cellStyle = workBook.createCellStyle();
             Font font=workBook.createFont();
@@ -365,9 +398,7 @@ public class ExcelUtil {
             //设置Excel数据有效性
             //DataValidationHelper dvHelper = new XSSFDataValidationHelper((XSSFSheet) sheet);
 
-            DataValidationConstraint dvConstraint = null;
-            CellRangeAddressList addressList = null;
-            DataValidation validation = null;
+
 
             for (Map<String, Object> validateRole : validateRoles) {
                 dvConstraint =   DVConstraint.createExplicitListConstraint((String[]) validateRole.get("roles"));
@@ -384,7 +415,7 @@ public class ExcelUtil {
             //第一行保存列名
             Row colRow = sheet.createRow(0);
             for (int i = 0; i < columnNameOfFirstRow.size(); i++) {
-                Cell cell=colRow.createCell(i);
+                Cell cell = colRow.createCell(i);
                 cell.setCellStyle(cellStyle);
                 cell.setCellValue(columnNameOfFirstRow.get(i).toString());
                 sheet.setColumnWidth(i, 20 * 256);
