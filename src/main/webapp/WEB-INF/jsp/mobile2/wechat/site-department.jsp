@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
 </head>
 <body>
 <input id="userId" type="hidden" name="userId" value="${userId}">
@@ -76,7 +77,8 @@
     mui.ready(function() {
         var header = document.querySelector('.wrap-header');
         var list = document.getElementById('list');
-        list.style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
+        //list.style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
+        list.style.height = (document.body.offsetHeight - 0) + 'px';
         window.indexedList = new mui.IndexedList(list);
     });
 

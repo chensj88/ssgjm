@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css"/>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css"/>
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
 </head>
 
 <body>

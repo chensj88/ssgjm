@@ -20,6 +20,7 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css"/>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css"/>
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <style type="text/css">
         .span_font {
             color: #666666;

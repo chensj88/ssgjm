@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css" />
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_9raiir53539.css"/>
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
 </head>
 <body>
 <div class="wrap">
