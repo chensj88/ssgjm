@@ -76,7 +76,8 @@
     mui.ready(function() {
         var header = document.querySelector('.wrap-header');
         var list = document.getElementById('list');
-        list.style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
+        //list.style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
+        list.style.height = (document.body.offsetHeight - 0) + 'px';
         window.indexedList = new mui.IndexedList(list);
     });
 
