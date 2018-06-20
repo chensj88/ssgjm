@@ -32,6 +32,7 @@ public class TemplateUtils {
     public static  void  createWorkreport(Facade facade,HttpServletResponse response,
                                           String serialNo,String fileName){
         List<Map<String,Object>> validateRoles = new ArrayList<>();
+        List<Map<String,Object>> hiddenValidateRoles = new ArrayList<>();
         List<String> colRow = new ArrayList<>();
         colRow.add("问题优先级 *");
         //问题优先级
@@ -68,7 +69,7 @@ public class TemplateUtils {
         deptValidate.put("lastRow",4000);
         deptValidate.put("firstCol",1);
         deptValidate.put("lastCol",1);
-        validateRoles.add(deptValidate);
+        hiddenValidateRoles.add(deptValidate);
 
         colRow.add("系统 *");
         //系统
@@ -85,7 +86,7 @@ public class TemplateUtils {
         taskValidate.put("lastRow",4000);
         taskValidate.put("firstCol",2);
         taskValidate.put("lastCol",2);
-        validateRoles.add(taskValidate);
+        hiddenValidateRoles.add(taskValidate);
 
 
         colRow.add("菜单 *");
@@ -180,8 +181,10 @@ public class TemplateUtils {
         colRow.add("期望完成时间 *");
         colRow.add("用户方确认人签名及确认意见");
         colRow.add("需求编号");
+
+
         //创建工作簿
         Workbook workbook = new HSSFWorkbook();
-        ExcelUtil.writeTemplateExcel(response,colRow,workbook,validateRoles,fileName);
+        ExcelUtil.writeTemplateExcel(response,colRow,workbook,validateRoles,hiddenValidateRoles,fileName);
     }
 }
