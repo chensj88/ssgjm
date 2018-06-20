@@ -847,22 +847,26 @@
         <if test="map.isManager == 0">and t.PROCESS_STATUS in (1,7)</if>
         <if test="map.isManager != 0">and t.PROCESS_STATUS = 2</if>
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="(allocateUser != null and allocateUser != '')">AND t.ALLOCATE_USER = #{allocateUser}</if>
         <if test=" creator != null and creator != ''">and t.CREATOR = #{creator}</if>
         GROUP BY t.SERIAL_NO) tt LEFT JOIN
         (SELECT COUNT(*) as num2,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS =3 AND t.SITE_NAME !=
         ''
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="(allocateUser != null and allocateUser != '')">AND t.ALLOCATE_USER = #{allocateUser}</if>
         <if test=" creator != null and creator != ''">and t.CREATOR = #{creator}</if>
         GROUP BY t.SERIAL_NO) dd ON tt.SERIAL_NO =dd.SERIAL_NO LEFT JOIN
         (
         SELECT COUNT(*) as num3,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS in (4,5) AND t.SITE_NAME
         != ''
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="(allocateUser != null and allocateUser != '')">AND t.ALLOCATE_USER = #{allocateUser}</if>
         <if test=" creator != null and creator != ''">and t.CREATOR = #{creator}</if>
         GROUP BY t.SERIAL_NO
         ) cc ON tt.SERIAL_NO = cc.SERIAL_NO LEFT JOIN (
         SELECT COUNT(*) as num4,t.SERIAL_NO FROM ET_SITE_QUESTION_INFO t WHERE t.PROCESS_STATUS =6 AND t.SITE_NAME != ''
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="(allocateUser != null and allocateUser != '')">AND t.ALLOCATE_USER = #{allocateUser}</if>
         <if test=" creator != null and creator != ''">and t.CREATOR = #{creator}</if>
         GROUP BY t.SERIAL_NO
         ) ff ON tt.SERIAL_NO = ff.SERIAL_NO ;

@@ -164,11 +164,12 @@ public class MobileTempSiteQuestionController  extends BaseController {
 
             //获取项目组中的权限
             Long user_id =super.user_id(UserId,"1");
-            int isManager =super.getPosition("11403",7284);
+            int isManager =0; //super.getPosition("11403",7284);
             //SysUserInfo info = super.getUserInfo(parameter);
             EtSiteQuestionInfo qInfo = new EtSiteQuestionInfo();
             if(isManager > 0){
-                qInfo.setCreator((long)7110);
+                qInfo.getMap().put("process_status_no","1,7");
+                qInfo.setAllocateUser((long)7110);
                 qInfo.setSerialNo(String.valueOf(11403));
             }else{
                 qInfo.setCreator(null);
