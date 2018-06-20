@@ -617,3 +617,99 @@ span.nosolve{
 	font-size: 14px;
 	font-weight: normal;
 }
+
+/*管理-搜索*/
+.management-search{
+	position: relative;
+	padding: 0 10px 0;
+	background-color: #f3f5f7;
+}
+.management-search>i{
+	position: absolute;
+	top: 10px;
+	left: 20px;
+	color: #C5C5C5;
+	font-size: 18px;
+}
+.management-search>input{
+	padding-left: 40px;
+	border: 1px solid #E2E2E2;
+	border-radius: 4px;
+	font-size: 13px;
+	margin-bottom: 0;
+}
+.management-search>input::-webkit-input-placeholder{
+	color: #C5C5C5;
+}
+
+.tab-cntent>a{
+	position: relative;
+	display: block;
+	height: 50px;
+	font-size: 14px;
+	color: #333333;
+	border-bottom: 1px solid #F3F5F7;
+}
+.tab_txt {
+	display: inline-block;
+	line-height: 50px;
+	padding-left: 14px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+/*管理_全选/分批分配*/
+.wrap-selection-header, .selection-header {
+	height: 40px;
+}
+.wrap-selection-header>.selection-header {
+	position: fixed;
+	width: 100%;
+	margin-bottom: 40px;
+	padding: 0px 40px;
+	color: #333333;
+	line-height: 40px;
+	text-align: center;
+	box-shadow: 0 1px 4px 0 rgba(165,165,165,0.50);
+	z-index: 2;
+}
+.selection-header>div {
+	position: absolute;
+	margin-right: 15px;
+	font-size: 12px;
+	color: #333333;
+	left: 8px;
+	top: 0px;
+	bottom: 0px;
+}
+.selection-header .select-txt{
+	position: absolute;
+	left: 35px;
+	color: #333333;
+	font-size: 12px;
+}
+.row .select_flag{
+	float: left;
+	width: 18px;
+	margin-top: 15px;
+	margin-right: 8px;
+	display: inline-block;
+}
+.selection-header #total{
+	width: 18px;
+	position: absolute;
+	left: 8px;
+	top: 10px;
+}
+.selection-header>a {
+	position: absolute;
+	margin-right: 15px;
+	font-size: 14px;
+	color: #47AEFD;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+}
+.border-bottom{
+	border-bottom: 1px solid #F3F5F7;
+}
