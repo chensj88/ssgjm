@@ -49,7 +49,7 @@
 
                     <p>${vwr.groupName}  （${vwr.num}条）</p>
                     <c:forEach var="vwr1" items="${vwr.listQuery}">
-                    <a href='<%=basePath%>mobile/wechatSiteQuestion/goView.do?id=${vwr1.id}&serialNo=${serialNo}&userId=${userId}'>
+                    <a href='<%=basePath%>mobile/wechatSiteQuestion/goView.do?id=${vwr1.id}&serialNo=${serialNo}&userId=${userId}&isManager=${isManager}'>
                         <span class="index-date_txt">${vwr1.map.deptName}-${vwr1.menuName}</span>
                         <span class="index-date_status">
                                     <i class="index-${vwr1.map.priorityString}">${vwr1.map.priorityString}</i>

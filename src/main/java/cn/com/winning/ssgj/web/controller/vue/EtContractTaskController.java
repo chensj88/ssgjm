@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.PinyinTools;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
@@ -143,12 +144,13 @@ public class EtContractTaskController extends BaseController {
         oldTask = super.getFacade().getEtContractTaskService().getEtContractTask(oldTask);
         if (oldTask != null) {
             task.setOperatorTime(new Timestamp(new Date().getTime()));
-
+            task.setBz(PinyinTools.cn2FirstSpell(task.getZxtmc()));
             super.getFacade().getEtContractTaskService().modifyEtContractTask(task);
         } else {
             task.setId(ssgjHelper.createEtContractTaskIdService());
             task.setCreator(task.getOperator());
             task.setSourceId(task.getCpzxt());
+            task.setBz(PinyinTools.cn2FirstSpell(task.getZxtmc()));
             task.setCreateTime(new Timestamp(new Date().getTime()));
             task.setOperatorTime(new Timestamp(new Date().getTime()));
             super.getFacade().getEtContractTaskService().createEtContractTask(task);
