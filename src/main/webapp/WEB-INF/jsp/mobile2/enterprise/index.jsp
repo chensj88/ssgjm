@@ -19,10 +19,18 @@
     <div class="wrap-cnt">
         <div>
             <div class="index-link">
+                <c:if test="${isManager ==1}">
+                    <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=1&userType=0">
+                        <i class="iconfont icon-dfp"></i>
+                        待接受 (${process_num.map.get("numNo")==null?0:process_num.map.get("numList")})
+                    </a>
+                </c:if>
+                <c:if test="${isManager !=1}">
                 <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=1&userType=0">
                     <i class="iconfont icon-dfp"></i>
                     待分配 (${process_num.map.get("numNo")==null?0:process_num.map.get("numList")})
                 </a>
+                </c:if>
                 <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=3&userType=0">
                     <i class="iconfont icon-dcl"></i>
                     未处理 (${process_num.map.get("numNo")==null?0:process_num.map.get("numOver")})
