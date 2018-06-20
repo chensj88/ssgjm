@@ -145,12 +145,12 @@
      * @param questionType
      */
     function openQuestionQueryList(searchType) {
-        var searchText = $('#search_text').val();
-        if (searchText == null || searchText == '') {
-            mui.toast('搜索内容不能为空', {duration: 'long(3500ms)', type: 'div'});
-            return false;
-        }
-        location.href = "<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${status}&searchType="+searchType+"&searchText="+searchText+"&userType=${userType}";
+            var searchText = $('#search_text').val();
+            if (searchText == null || searchText == '') {
+                mui.toast('搜索内容不能为空', {duration: 'long(3500ms)', type: 'div'});
+                return false;
+            }
+            location.href = "<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${status}&searchType="+searchType+"&searchText="+searchText+"&userType=${userType}";
     }
     
     function search() {

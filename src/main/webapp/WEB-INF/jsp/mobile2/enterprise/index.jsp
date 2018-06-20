@@ -20,26 +20,26 @@
         <div>
             <div class="index-link">
                 <c:if test="${isManager ==0}">
-                    <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=1&userType=0">
+                    <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=1&userType=${isManager}">
                         <i class="iconfont icon-dfp"></i>
                         待分配 (${process_num.map.get("numNo")==null?0:process_num.map.get("numList")})
                     </a>
                 </c:if>
                 <c:if test="${isManager !=0}">
-                    <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=1&userType=0">
+                    <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=1&userType=${isManager}">
                         <i class="iconfont icon-dfp"></i>
                         待接受 (${process_num.map.get("numNo")==null?0:process_num.map.get("numList")})
                     </a>
                 </c:if>
-                <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=3&userType=0">
+                <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=3&userType=${isManager}">
                     <i class="iconfont icon-dcl"></i>
                     未处理 (${process_num.map.get("numNo")==null?0:process_num.map.get("numOver")})
                 </a>
-                <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=4,5&userType=0">
+                <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=4,5&userType=${isManager}">
                     <i class="iconfont icon-ycl"></i>
                     处理 (${process_num.map.get("numNo")==null?0:process_num.map.get("numNo")})
                 </a>
-                <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=6&userType=0">
+                <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=6&userType=${isManager}">
                     <i class="iconfont icon-ydh"></i>
                     已打回 (${process_num.map.get("numReturn")==null?0:process_num.map.get("numReturn")})
                 </a>
@@ -49,7 +49,7 @@
 
                     <p>${vwr.groupName}  （${vwr.num}条）</p>
                     <c:forEach var="vwr1" items="${vwr.listQuery}">
-                    <a href='<%=basePath%>mobile/wechatSiteQuestion/goView.do?id=${vwr1.id}&serialNo=${serialNo}&userId=${userId}'>
+                    <a href='<%=basePath%>mobile/wechatSiteQuestion/goView.do?id=${vwr1.id}&serialNo=${serialNo}&userId=${userId}&isManager=${isManager}'>
                         <span class="index-date_txt">${vwr1.map.deptName}-${vwr1.menuName}</span>
                         <span class="index-date_status">
                                     <i class="index-${vwr1.map.priorityString}">${vwr1.map.priorityString}</i>

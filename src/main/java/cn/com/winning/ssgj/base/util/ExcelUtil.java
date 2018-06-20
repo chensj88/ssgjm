@@ -357,7 +357,7 @@ public class ExcelUtil {
             DataValidationConstraint dvConstraint = null;
             CellRangeAddressList addressList = null;
             DataValidation validation = null;
-
+            //多值匹配使用hidden sheet
             for (int j = 0; j < hiddenValidateRoles.size(); j++) {
                 hidden = workBook.createSheet("hidden"+j);
                 Cell cell1 = null;
