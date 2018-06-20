@@ -8,7 +8,7 @@ import cn.com.winning.ssgj.domain.EtAccessToken;
  * Coder AutoGenerator generate.
  *
  * @author Coder AutoGenerator
- * @date 2018-06-06 19:10:25
+ * @date 2018-06-20 11:22:30
  */
 public interface EtAccessTokenService {
 

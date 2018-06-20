@@ -6,7 +6,8 @@
 		<result column="ID" property="id" jdbcType="BIGINT" />
 		<result column="ACCESS_TOKEN" property="accessToken" jdbcType="VARCHAR" />
 		<result column="EXPIRES_IN" property="expiresIn" jdbcType="VARCHAR" />
-		<result column="DING_TIME" property="dingTime" jdbcType="VARCHAR" />
+		<result column="TYPE" property="type" jdbcType="INTEGER" />
+		<result column="LAST_TIME" property="lastTime" jdbcType="TIMESTAMP" />
 		<result column="REMARK" property="remark" jdbcType="LONGVARCHAR" />
 	</resultMap>
 
@@ -17,7 +18,8 @@
 	   <if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
 	   <if test="accessToken != null and accessToken != ''"> and t.ACCESS_TOKEN = #{accessToken} </if>
 	   <if test="expiresIn != null and expiresIn != ''"> and t.EXPIRES_IN = #{expiresIn} </if>
-	   <if test="dingTime != null and dingTime != ''"> and t.DING_TIME = #{dingTime} </if>
+	   <if test="(type != null and type != '') or type == 0"> and t.TYPE = #{type} </if>
+	   <if test="lastTime != null and lastTime != ''"> and t.LAST_TIME = #{lastTime} </if>
 	   <if test="remark != null and remark != ''"> and t.REMARK = #{remark} </if>
 	</sql>
 
@@ -55,7 +57,8 @@
 	       <if test="(id != null and id != '') or id == 0"> ID, </if>
 		   <if test="accessToken != null and accessToken != ''"> ACCESS_TOKEN, </if>
 		   <if test="expiresIn != null and expiresIn != ''"> EXPIRES_IN, </if>
-		   <if test="dingTime != null and dingTime != ''"> DING_TIME, </if>
+	       <if test="(type != null and type != '') or type == 0"> TYPE, </if>
+		   <if test="lastTime != null and lastTime != ''"> LAST_TIME, </if>
 		   <if test="remark != null and remark != ''"> REMARK, </if>
 		</trim>
 		values
@@ -63,7 +66,8 @@
 	       <if test="(id != null and id != '') or id == 0"> #{id, jdbcType=BIGINT}, </if>
 		   <if test="accessToken != null and accessToken != ''"> #{accessToken, jdbcType=VARCHAR}, </if>
 		   <if test="expiresIn != null and expiresIn != ''"> #{expiresIn, jdbcType=VARCHAR}, </if>
-		   <if test="dingTime != null and dingTime != ''"> #{dingTime, jdbcType=VARCHAR}, </if>
+	       <if test="(type != null and type != '') or type == 0"> #{type, jdbcType=INTEGER}, </if>
+		   <if test="lastTime != null and lastTime != ''"> #{lastTime, jdbcType=TIMESTAMP}, </if>
 		   <if test="remark != null and remark != ''"> #{remark, jdbcType=LONGVARCHAR}, </if>
 		</trim>
 	</insert>
@@ -75,7 +79,8 @@
 			   <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>
 			   <if test="accessToken != null and accessToken != ''"> ACCESS_TOKEN = #{accessToken, jdbcType=VARCHAR}, </if>
 			   <if test="expiresIn != null and expiresIn != ''"> EXPIRES_IN = #{expiresIn, jdbcType=VARCHAR}, </if>
-			   <if test="dingTime != null and dingTime != ''"> DING_TIME = #{dingTime, jdbcType=VARCHAR}, </if>
+			   <if test="(type != null and type != '') or type == 0"> TYPE = #{type, jdbcType=INTEGER}, </if>
+			   <if test="lastTime != null and lastTime != ''"> LAST_TIME = #{lastTime, jdbcType=TIMESTAMP}, </if>
 			   <if test="remark != null and remark != ''"> REMARK = #{remark, jdbcType=LONGVARCHAR}, </if>
 			</trim>
 		</set>

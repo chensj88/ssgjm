@@ -23,8 +23,6 @@ public class WeixinUtil implements Serializable {
     public static JSONObject getApiReturn(String apiUrl) throws Exception{
         java.net.URL url = new URL(apiUrl);
         HttpURLConnection urlcon = (HttpURLConnection)url.openConnection();
-        logger.info("陈蒯3=="+urlcon);
-
         InputStream is = urlcon.getInputStream();
         BufferedReader buffer = new BufferedReader(new InputStreamReader(is));
         StringBuffer bs = new StringBuffer();
@@ -34,7 +32,6 @@ public class WeixinUtil implements Serializable {
         }
         //获取access_token
         JSONObject firstWx = JSONObject.parseObject(bs.toString());
-        logger.info("陈蒯4=="+firstWx);
         return firstWx;
     }
 

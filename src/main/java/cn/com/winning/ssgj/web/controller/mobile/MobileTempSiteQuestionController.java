@@ -1,8 +1,11 @@
 package cn.com.winning.ssgj.web.controller.mobile;
 
+import cn.com.winning.ssgj.base.WxConstants;
+import cn.com.winning.ssgj.base.util.WeixinUtil;
 import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.stereotype.Controller;
@@ -145,10 +148,26 @@ public class MobileTempSiteQuestionController  extends BaseController {
     public String index(Model model,Long questionId,Long userId,String serialNo,String openId,String code) {
         try{
             logger.info("yes:"+code);
-            String isManager = "1";
+            //获取企业的access_token
+            JSONObject apiAccessToken= WeixinUtil.getApiReturn(WxConstants.SUITE_ACCESS_TOKEN);
+            String suite_access_token = (String)apiAccessToken.get("suite_access_token");
+
+            //access_token=SUITE_ACCESS_TOKEN&code=CODE
+            String token = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=wxac9ca7b3c2c43e81&corpsecret=X8KHKKb0O3yR7qcnQSFDzBGiPhc8urJBK5sAnUE7-j8";
+            JSONObject testToken= WeixinUtil.getApiReturn(token);
+            String access_token = (String)testToken.get("access_token");
+            StringBuffer stringBuffer = new StringBuffer(WxConstants.QY_USER_INFO);
+            stringBuffer.append("access_token=").append(access_token).append("&code=").append(code);
+            JSONObject userInfo = WeixinUtil.getApiReturn(stringBuffer.toString());
+            String UserId = (String)userInfo.get("UserId"); //员工工号
+            logger.info("UserId=="+UserId);
+
+            //获取项目组中的权限
+            Long user_id =super.user_id(UserId,"1");
+            int isManager =super.getPosition("11403",7284);
             //SysUserInfo info = super.getUserInfo(parameter);
             EtSiteQuestionInfo qInfo = new EtSiteQuestionInfo();
-            if(isManager.equals("1")){
+            if(isManager > 0){
                 qInfo.setCreator((long)7110);
                 qInfo.setSerialNo(String.valueOf(11403));
             }else{

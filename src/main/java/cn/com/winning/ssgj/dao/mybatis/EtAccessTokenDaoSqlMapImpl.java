@@ -10,7 +10,7 @@ import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
  * Coder AutoGenerator generate.
  *
  * @author Coder AutoGenerator
- * @date 2018-06-06 19:10:25
+ * @date 2018-06-20 11:22:30
  */
 @Service
 public class EtAccessTokenDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtAccessToken> implements EtAccessTokenDao {

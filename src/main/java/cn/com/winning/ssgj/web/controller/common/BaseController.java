@@ -387,4 +387,26 @@ public class BaseController extends BaseSpringMvcMybatisController {
         return etUserInfoList;
     }
 
+
+    public int getPosition(String seriaNo, long userId) {
+        int i =0;
+        EtUserInfo etUserInfo = new EtUserInfo();
+        etUserInfo.setSerialNo(seriaNo);
+        etUserInfo.setUserId(userId);
+        etUserInfo.setUserType(1);
+        List<EtUserInfo> etUserInfoList = getFacade().getEtUserInfoService().getEtUserInfoList(etUserInfo);
+        if(etUserInfoList.size()>0){
+            etUserInfo = etUserInfoList.get(0);
+            if(etUserInfo.getPositionName().equals("0")){
+                i=0;
+            }else{
+                i=1;
+            }
+
+        }
+        return i;
+    }
+
+
+
 }

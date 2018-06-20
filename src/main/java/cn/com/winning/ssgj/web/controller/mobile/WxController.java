@@ -44,15 +44,14 @@ public class WxController extends BaseController {
         String userInfo = null;
         try{
             //获取企业的access_token
-            String token = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=wxac9ca7b3c2c43e81&corpsecret=X8KHKKb0O3yR7qcnQSFDzBGiPhc8urJBK5sAnUE7-j8";
-            JSONObject apiAccessToken= WeixinUtil.getApiReturn(token);
-            String access_token = (String)apiAccessToken.get("access_token");
+//            String token = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=wxac9ca7b3c2c43e81&corpsecret=X8KHKKb0O3yR7qcnQSFDzBGiPhc8urJBK5sAnUE7-j8";
+//            JSONObject apiAccessToken= WeixinUtil.getApiReturn(token);
+//            String access_token = (String)apiAccessToken.get("access_token");
             //获取成员信息
             String redirectUrl = WxConstants.URL;
             OauthScope snsapi_base = WxConstants.SCOPE;
             String state =WxConstants.STATE;
             userInfo= WeixinUtil.getOauthPageUrl(redirectUrl,snsapi_base,state);
-
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -2,13 +2,14 @@ package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
 import org.apache.ibatis.type.Alias;
+import java.util.Date;
 import cn.com.winning.ssgj.domain.BaseDomain;
 
 /**
  * Coder AutoGenerator generate.
  *
  * @author Coder AutoGenerator
- * @date 2018-06-06 19:10:25
+ * @date 2018-06-20 11:22:30
  */
  
 @Alias("etAccessToken")
@@ -22,7 +23,12 @@ public class EtAccessToken extends BaseDomain implements Serializable {
 	
 	private String expiresIn;
 	
-	private String dingTime;
+	/**
+	 * @val 0：微信企业号1：微信服务号
+	 */
+	private Integer type;
+	
+	private Date lastTime;
 	
 	private String remark;
 	
@@ -54,12 +60,26 @@ public class EtAccessToken extends BaseDomain implements Serializable {
 		this.expiresIn = expiresIn;
 	}
 	
-	public String getDingTime() {
-		return dingTime;
+	/**
+	 * @val 0：微信企业号1：微信服务号
+	 */
+	public Integer getType() {
+		return type;
 	}
 	
-	public void setDingTime(String dingTime) {
-		this.dingTime = dingTime;
+	/**
+	 * @val 0：微信企业号1：微信服务号
+	 */
+	public void setType(Integer type) {
+		this.type = type;
+	}
+	
+	public Date getLastTime() {
+		return lastTime;
+	}
+	
+	public void setLastTime(Date lastTime) {
+		this.lastTime = lastTime;
 	}
 	
 	public String getRemark() {
