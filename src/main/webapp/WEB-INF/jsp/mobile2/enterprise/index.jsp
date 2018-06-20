@@ -57,7 +57,7 @@
             站点
         </div>
         <div class="hide">
-            分享
+            资料上传
         </div>
         <div class="hide">
             我的
