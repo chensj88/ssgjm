@@ -83,7 +83,7 @@
         </div>
     </div>
     <div class="wrap-foot large-btn">
-        <c:if test="${questionInfo.processStatus==1}">
+        <c:if test="${questionInfo.processStatus==1&&isManager==0}">
             <a href="javascript:void(0);" onclick="goUpdate();"><span>编辑</span></a>
             <a href="javascript:void(0);" onclick="goDistribute();"><span>查看分配</span></a>
         </c:if>
