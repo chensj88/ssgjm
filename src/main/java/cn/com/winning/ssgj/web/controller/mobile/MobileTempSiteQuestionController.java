@@ -145,16 +145,24 @@ public class MobileTempSiteQuestionController  extends BaseController {
     public String index(Model model,Long questionId,Long userId,String serialNo,String openId,String code) {
         try{
             logger.info("yes:"+code);
+            String isManager = "1";
             //SysUserInfo info = super.getUserInfo(parameter);
             EtSiteQuestionInfo qInfo = new EtSiteQuestionInfo();
-            qInfo.setCreator(null);
-            qInfo.setSerialNo(String.valueOf(11403));
+            if(isManager.equals("1")){
+                qInfo.setCreator((long)7110);
+                qInfo.setSerialNo(String.valueOf(11403));
+            }else{
+                qInfo.setCreator(null);
+                qInfo.setSerialNo(String.valueOf(11403));
+            }
+            qInfo.getMap().put("isManager",isManager);
             model.addAttribute("questionList", super.getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(qInfo));
             model.addAttribute("process_num",super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(qInfo));
             model.addAttribute("userId",super.user_id("5823","1"));
             model.addAttribute("serialNo", qInfo.getSerialNo());
             //model.addAttribute("openId",info.getOpenId());
             model.addAttribute("active",0);
+            model.addAttribute("isManager",isManager);//0 项目经理 1实施工程师
         }catch (Exception e){
             e.printStackTrace();
         }
