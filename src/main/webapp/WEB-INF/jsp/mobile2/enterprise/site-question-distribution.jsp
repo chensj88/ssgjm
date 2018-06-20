@@ -28,20 +28,21 @@
     <div class="hole"></div>
     <div id='chart'></div>
     <div class="check-distribuion-list">
-    <c:forEach var="vwr" items="${infoList}">
-    <div class="mui-input-row mui-radio">
-    <label>
-    <strong>${vwr.map.get("c_name")} </strong><span style="margin-left: 20px;">${vwr.map.get("position_name")}&nbsp;&nbsp;  处理问题数</span><i>${vwr.map.get("num")}</i>
-    </label>
-    <input name="radio1" type="radio" value="${vwr.allocateUser}">
-    </div>
-    </c:forEach>
+        <c:forEach var="vwr" items="${infoList}">
+            <div class="mui-input-row mui-radio">
+                <label>
+                    <strong>${vwr.map.get("c_name")} </strong><span
+                        style="margin-left: 20px;">${vwr.map.get("position_name")}&nbsp;&nbsp;  处理问题数</span><i>${vwr.map.get("num")}</i>
+                </label>
+                <input name="radio1" type="radio" value="${vwr.allocateUser}">
+            </div>
+        </c:forEach>
 
     </div>
     <div class="fix-hole"></div>
     <div class="check-distribuion-btn">
-    <input type="button" onclick="save();" value="保存" />
-    <input type="button" onclick="history.go(-1)" value="取消" />
+        <input type="button" onclick="goDistributeDetail();" value="分配"/>
+        <input type="button" onclick="history.go(-1)" value="取消"/>
     </div>
 </div>
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
@@ -130,6 +131,20 @@
         // window.open('https://www.baidu.com/s?wd=' + encodeURIComponent(params.name));
         console.info(params);
     });
+
+    //跳转分配详情页面
+    function goDistributeDetail() {
+        //判断是否选择分配人
+        let id = $("#id").val();
+        let userId=${userId};
+        let serialNo=${serialNo};
+        let allocateUser = $("input[name='radio1']:checked").val();
+        if (allocateUser == null || allocateUser == "") {
+            mui.toast('请选择分配人！', {duration: 'long', type: 'div'});
+        } else {
+            window.location.href="<%=basePath%>mobile/wechatSiteQuestion/goDistributeDetail.do?id="+id+"&userId="+userId+"&serialNo"+serialNo+"&allocateUser="+allocateUser;
+        }
+    }
 
     //保存修改的分配人
     function save() {

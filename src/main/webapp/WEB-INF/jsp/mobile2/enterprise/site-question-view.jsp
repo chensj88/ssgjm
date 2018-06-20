@@ -83,9 +83,10 @@
         </div>
     </div>
     <div class="wrap-foot large-btn">
-        <a href="#" onclick="goUpdate();"><span>编辑</span></a>
-        <a href="#" onclick="goDistribute();"><span>分配</span></a>
-
+        <c:if test="${questionInfo.processStatus==1}">
+            <a href="javascript:void(0);" onclick="goUpdate();"><span>编辑</span></a>
+            <a href="javascript:void(0);" onclick="goDistribute();"><span>查看分配</span></a>
+        </c:if>
     </div>
 </div>
 </body>
