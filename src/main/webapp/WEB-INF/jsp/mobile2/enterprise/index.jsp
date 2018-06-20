@@ -26,7 +26,7 @@
                     </a>
                 </c:if>
                 <c:if test="${isManager !=0}">
-                    <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=1&userType=${isManager}">
+                    <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=2&userType=${isManager}">
                         <i class="iconfont icon-dfp"></i>
                         待接受 (${process_num.map.get("numNo")==null?0:process_num.map.get("numList")})
                     </a>
