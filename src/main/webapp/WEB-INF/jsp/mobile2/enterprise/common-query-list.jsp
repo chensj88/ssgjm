@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_9raiir53539.css"/>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
-    <style>
+   <%-- <style>
         .index-date>a{
             position: relative;
             display: block;
@@ -36,7 +36,7 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-    </style>
+    </style>--%>
 </head>
 <body>
 <%--数据传输隐藏域--%>
@@ -49,7 +49,7 @@
 <%--主页面--%>
 <div class="wrap">
     <div class="wrap-cnt">
-        <div>
+        <%--<div>
             <form  action="javascript:search();">
             <div class="imple-work-search">
                 <i class="iconfont icon-search" onclick="search()"></i>
@@ -69,7 +69,37 @@
                     </a>
                 </c:forEach>
             </div>
-        </div>
+        </div>--%>
+            <div class="space"></div>
+            <form  action="javascript:search();">
+                <div class="management-search">
+                    <i class="iconfont icon-search" onclick="search()"></i>
+                    <input type="text" placeholder="请输入搜索内容" id="search_text">
+                </div>
+            </form>
+            <div class="site-question">
+                <!--tab-->
+                <div class="tab">
+                    <div class="tab-nav">
+                        <div type="1">
+                            <a  onclick="openQuestionQueryList(1)" href="#">系统名称</a>
+                        </div>
+                        <div class="active" type="2">
+                            <a  onclick="openQuestionQueryList(2)" href="#">关键词</a>
+                        </div>
+                        <div type="3">
+                            <a  onclick="openQuestionQueryList(3)" href="#">科室病区</a>
+                        </div>
+                    </div>
+                    <div class="tab-cntent">
+                        <c:forEach var="vwr" items="${logList}">
+                            <a href="<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${vwr.processStatus}&searchType=${vwr.sourceType}&searchText=${vwr.content}&userType=${userType}">
+                                <span class="tab_txt">${vwr.content}</span>
+                            </a>
+                        </c:forEach>
+                    </div>
+                </div>
+            </div>
         <div class="hide">
             站点
         </div>
@@ -105,6 +135,7 @@
 <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(function () {
+        IMS.init();
         IMS.menuTab();
         $('#search_text').val('');
     })
@@ -128,7 +159,7 @@
             mui.toast('搜索内容不能为空', {duration: 'long(3500ms)', type: 'div'});
             return false;
         }
-        var searchType = $($('.wap-tab').find('.active')[0]).attr('type');
+        var searchType = $($('.tab-nav').find('.active')[0]).attr('type');
 
         location.href = "<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${status}&searchType="+searchType+"&searchText="+searchText+"&userType=${userType}";
     }

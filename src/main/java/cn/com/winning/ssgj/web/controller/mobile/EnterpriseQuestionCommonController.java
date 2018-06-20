@@ -111,8 +111,8 @@ public class EnterpriseQuestionCommonController extends BaseController {
         model.addAttribute("serialNo", serialNo);
         model.addAttribute("userId", userId);
         model.addAttribute("status", status);
-        model.addAttribute("searchType", searchType);
-        model.addAttribute("searchText", searchText);
+        model.addAttribute("searchType", 2); //跳转页面提供默认值
+        model.addAttribute("searchText", "");//跳转页面提供默认值
         model.addAttribute("userType", userType);
         return "mobile2/enterprise/common-query-list";
     }

@@ -53,39 +53,39 @@ public class TemplateUtils {
 
         colRow.add("站点名称/科室名称 *");
         //站点名称/科室名称
-        EtDepartment dept = new EtDepartment();
-        EtDepartment info = new EtDepartment();
-        info.setIsDel(1);
-        info.setSerialNo(Long.parseLong(serialNo));
-        List<EtDepartment> departmentList= facade.getEtDepartmentService().getEtDepartmentList(info);
-        Map<String,Object> deptValidate = new HashMap<>();
-        String[] deptArr = new String[departmentList.size()];
-        for (int i = 0; i < departmentList.size(); i++) {
-            deptArr[i] = departmentList.get(i).getDeptName();
-        }
-        deptValidate.put("roles",deptArr);
-        deptValidate.put("firstRow",1);
-        deptValidate.put("lastRow",4000);
-        deptValidate.put("firstCol",1);
-        deptValidate.put("lastCol",1);
-        validateRoles.add(deptValidate);
+//        EtDepartment dept = new EtDepartment();
+//        EtDepartment info = new EtDepartment();
+//        info.setIsDel(1);
+//        info.setSerialNo(Long.parseLong(serialNo));
+//        List<EtDepartment> departmentList= facade.getEtDepartmentService().getEtDepartmentList(info);
+//        Map<String,Object> deptValidate = new HashMap<>();
+//        String[] deptArr = new String[departmentList.size()];
+//        for (int i = 0; i < departmentList.size(); i++) {
+//            deptArr[i] = departmentList.get(i).getDeptName();
+//        }
+//        deptValidate.put("roles",deptArr);
+//        deptValidate.put("firstRow",1);
+//        deptValidate.put("lastRow",4000);
+//        deptValidate.put("firstCol",1);
+//        deptValidate.put("lastCol",1);
+//        validateRoles.add(deptValidate);
 
         colRow.add("系统 *");
         //系统
-        EtContractTask task = new EtContractTask();
-        task.setSerialNo(serialNo);
-        List<EtContractTask> tasks = facade.getEtContractTaskService().getEtContractTaskList(task);
-        Map<String,Object> taskValidate = new HashMap<>();
-        String[] taskArr = new String[tasks.size()];
-        for (int i = 0; i < tasks.size(); i++) {
-            taskArr[i] = tasks.get(i).getZxtmc();
-        }
-        taskValidate.put("roles",taskArr);
-        taskValidate.put("firstRow",1);
-        taskValidate.put("lastRow",4000);
-        taskValidate.put("firstCol",2);
-        taskValidate.put("lastCol",2);
-        validateRoles.add(taskValidate);
+//        EtContractTask task = new EtContractTask();
+//        task.setSerialNo(serialNo);
+//        List<EtContractTask> tasks = facade.getEtContractTaskService().getEtContractTaskList(task);
+//        Map<String,Object> taskValidate = new HashMap<>();
+//        String[] taskArr = new String[tasks.size()];
+//        for (int i = 0; i < tasks.size(); i++) {
+//            taskArr[i] = tasks.get(i).getZxtmc();
+//        }
+//        taskValidate.put("roles",taskArr);
+//        taskValidate.put("firstRow",1);
+//        taskValidate.put("lastRow",4000);
+//        taskValidate.put("firstCol",2);
+//        taskValidate.put("lastCol",2);
+//        validateRoles.add(taskValidate);
 
 
         colRow.add("菜单 *");
