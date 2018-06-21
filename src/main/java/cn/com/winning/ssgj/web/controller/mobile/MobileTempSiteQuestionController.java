@@ -146,6 +146,7 @@ public class MobileTempSiteQuestionController  extends BaseController {
     public String index(Model model,Long questionId,Long userId,String serialNo,String openId,String code) {
         try{
             int isManager =0;//0：项目经理 1：非项目经理　
+            //userId =(long)7110;
             if(userId == null ){
                 String access_token = super.getAccessToken();
                 Cookie cookie = new Cookie("access_token",access_token);//将登录信息加入cookie中
@@ -173,7 +174,7 @@ public class MobileTempSiteQuestionController  extends BaseController {
             }
             qInfo.getMap().put("isManager",isManager);
             model.addAttribute("questionList", super.getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(qInfo));
-            model.addAttribute("process_num",super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(qInfo));
+            model.addAttribute("process_num",mapList(qInfo,2,isManager));
             model.addAttribute("userId",userId);
             model.addAttribute("serialNo", qInfo.getSerialNo());
             //model.addAttribute("openId",info.getOpenId());

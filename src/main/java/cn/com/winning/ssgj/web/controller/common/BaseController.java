@@ -437,24 +437,24 @@ public class BaseController extends BaseSpringMvcMybatisController {
             }else{
                 info.setProcessStatus(2);   //待接受
             }
-            if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info)!= null)
-                info.getMap().put("numList",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList")==null?0
-                        :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList"));
-                info.getMap().put("process_status_yes",null);
-            info.setProcessStatus(3);   //已处理（院方未确认）
-            if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info)!= null)
-            info.getMap().put("numOver",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList")==null?0
-                    :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList"));
+            if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info)!= null)
+                info.getMap().put("numList",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info).getMap().get("numList")==null?0
+                        :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info).getMap().get("numList"));
+                info.getMap().put("process_status_yes","3,6");
+            //info.setProcessStatus(3);   //已处理（院方未确认）
+            if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info)!= null)
+            info.getMap().put("numOver",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info).getMap().get("numList")==null?0
+                    :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info).getMap().get("numList"));
             info.getMap().put("process_status_yes","4,5"); //待分配 与待接受
             info.setProcessStatus(null);
-            if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info)!= null)
-            info.getMap().put("numNo",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList")==null?0
-                    :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList"));
+            if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info)!= null)
+            info.getMap().put("numNo",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info).getMap().get("numList")==null?0
+                    :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info).getMap().get("numList"));
             info.getMap().put("process_status_yes",null);
             info.setProcessStatus(6);   //已处理（院方未确认）
-            if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info)!= null)
-            info.getMap().put("numReturn",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList")==null?0
-                    :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList"));
+            if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info)!= null)
+            info.getMap().put("numReturn",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info).getMap().get("numList")==null?0
+                    :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info).getMap().get("numList"));
         }
 
         return info;
