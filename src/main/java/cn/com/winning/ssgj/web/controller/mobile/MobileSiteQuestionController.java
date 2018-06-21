@@ -464,7 +464,7 @@ public class MobileSiteQuestionController extends BaseController {
      * @return
      */
     @RequestMapping("/goView.do")
-    public String goView(Model model, Long id, Long userId, String serialNo) {
+    public String goView(Model model, Long id, Long userId, String serialNo,Integer isManager) {
         EtSiteQuestionInfo questionInfo = new EtSiteQuestionInfo();
         questionInfo.setId(id);
         questionInfo = getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(questionInfo);
@@ -476,6 +476,7 @@ public class MobileSiteQuestionController extends BaseController {
         resultMap.put("questionInfo", questionInfo);
         resultMap.put("userId", userId);
         resultMap.put("serialNo", serialNo);
+        resultMap.put("isManager", isManager);
         model.addAllAttributes(resultMap);
         return "mobile2/enterprise/site-question-view";
     }

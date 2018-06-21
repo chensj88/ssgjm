@@ -45,7 +45,7 @@
 <input id="status" type="hidden" name="status" value="${status}">
 <input id="searchType" type="hidden" name="searchType" value="${searchType}">
 <input id="searchText" type="hidden" name="searchText" value="${searchText}">
-<input id="userType" type="hidden" name="userType" value="${userType}">
+<input id="isManager" type="hidden" name="isManager" value="${isManager}">
 <%--主页面--%>
 <div class="wrap">
     <div class="wrap-cnt">
@@ -93,7 +93,7 @@
                     </div>
                     <div class="tab-cntent">
                         <c:forEach var="vwr" items="${logList}">
-                            <a href="<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${vwr.processStatus}&searchType=${vwr.sourceType}&searchText=${vwr.content}&userType=${userType}">
+                            <a href="<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${vwr.processStatus}&searchType=${vwr.sourceType}&searchText=${vwr.content}&isManager=${isManager}">
                                 <span class="tab_txt">${vwr.content}</span>
                             </a>
                         </c:forEach>
@@ -150,7 +150,7 @@
                 mui.toast('搜索内容不能为空', {duration: 'long(3500ms)', type: 'div'});
                 return false;
             }
-            location.href = "<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${status}&searchType="+searchType+"&searchText="+searchText+"&userType=${userType}";
+            location.href = "<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${status}&searchType="+searchType+"&searchText="+searchText+"&isManager=${isManager}";
     }
     
     function search() {
@@ -161,7 +161,7 @@
         }
         var searchType = $($('.tab-nav').find('.active')[0]).attr('type');
 
-        location.href = "<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${status}&searchType="+searchType+"&searchText="+searchText+"&userType=${userType}";
+        location.href = "<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${status}&searchType="+searchType+"&searchText="+searchText+"&isManager=${isManager}";
     }
 
     function openIndexPage() {
