@@ -49,7 +49,7 @@
                             <li data-group="${vmr.groupName}" class="mui-table-view-divider mui-indexed-list-group">${vmr.groupName}</li>
                             <c:forEach var="vmr1" items="${vmr.listQuery}">
                                 <li data-value="${vmr1.id }" data-tags="${vmr1.serialName}" class="mui-table-view-cell mui-indexed-list-item"
-                                    onclick="selectSiteName(${vmr1.id})">${vmr1.deptName}</li>
+                                    onclick="selectSiteName(${vmr1.id},'${vmr1.deptName}')">${vmr1.deptName}</li>
                             </c:forEach>
                         </c:forEach>
                     </c:if>
@@ -58,7 +58,7 @@
                             <li data-group="${vmr.groupName}" class="mui-table-view-divider mui-indexed-list-group">${vmr.groupName}</li>
                             <c:forEach var="vmr1" items="${vmr.listQuery}">
                                 <li data-value="${vmr1.id }" data-tags="${vmr1.mx}" class="mui-table-view-cell mui-indexed-list-item"
-                                    onclick="selectSiteName(${vmr1.id})">${vmr1.zxtmc}</li>
+                                    onclick="selectSiteName(${vmr1.id},'${vmr1.zxtmc}')">${vmr1.zxtmc}</li>
                             </c:forEach>
                         </c:forEach>
                     </c:if>
@@ -82,8 +82,34 @@
         window.indexedList = new mui.IndexedList(list);
     });
 
-    function selectSiteName(id){
-            location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&siteName="+id +"&menuName=${menuName}&questionDesc=${questionDesc}&priority=${priority}";
+    $(function () {
+        var siteId = getCookie('siteId');
+        if(siteId && ${type == 1}){
+            $('li[data-value='+siteId+']').css('color','#f40').css('font-weight','bolder');
+        }
+    });
+    function selectSiteName(id,name){
+            if(${type == 1}){
+                location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&menuName=${menuName}&questionDesc=${questionDesc}&priority=${priority}"
+                    +"&siteId="+id + "&siteName="+encodeURI(name)+"&productId=${productId}&productName=${productName}";
+                    setCookie('siteId',id);
+                    setCookie('siteName',name);
+            }else{
+                location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&menuName=${menuName}&questionDesc=${questionDesc}&priority=${priority}"
+                    +"&siteId=${siteId}&siteName=${siteName}&productId="+id + "&productName="+encodeURI(name);
+            }
+
     }
+
+    function getCookie(name)
+    {
+        return window.localStorage.getItem(name);
+    }
+
+    function setCookie(name,value)
+    {
+        window.localStorage.setItem(name, value);
+    }
+
 </script>
 </html>

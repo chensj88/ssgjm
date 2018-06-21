@@ -45,14 +45,14 @@
         <div class="column-2 collect-list">
             <strong>科室病区</strong>
             <div class="collect-list-dp">
-                <input type="hidden" id="siteName" name="siteName" value="${siteQuestionInfo.siteName}">
-                <c:if test="${siteQuestionInfo.siteName != null}">
+                <input type="hidden" id="siteName" name="siteName" value="${siteQuestionInfo.siteName == null ? siteId : siteQuestionInfo.siteName}">
+                <c:if test="${siteQuestionInfo.siteName != null || siteName != null }">
                     <a href="#" onclick="openDeptOrSysWindow(1)"><span
-                            class="span_font">${siteQuestionInfo.map.get("deptName")}</span><i
+                            class="span_font">${siteQuestionInfo.map.get("deptName") == null ? siteName : siteQuestionInfo.map.get("deptName")}</span><i
                             class="iconfont icon-fanhui-copy"></i></a>
                 </c:if>
-                <c:if test="${siteQuestionInfo.siteName == null}">
-                    <a href="#" onclick="openDeptOrSysWindow(1)"><span class="span_font">--请选择--</span><i
+                <c:if test="${siteQuestionInfo.siteName == null &&  siteName == null}">
+                    <a href="#" onclick="openDeptOrSysWindow(1)"><span class="span_font" id="siteInfo">--请选择--</span><i
                             class="iconfont icon-fanhui-copy"></i></a>
                 </c:if>
             </div>
@@ -60,13 +60,13 @@
         <div class="column-2 collect-list">
             <strong>系统名称</strong>
             <div class="collect-list-dp">
-                <input id="productName" name="productName" value="${siteQuestionInfo.productName}" type="hidden"/>
-                <c:if test="${siteQuestionInfo.productName != null}">
+                <input id="productName" name="productName" value="${siteQuestionInfo.productName == null ? productId : siteQuestionInfo.productName }" type="hidden"/>
+                <c:if test="${siteQuestionInfo.productName != null || productName != null}">
                     <a href="#" onclick="openDeptOrSysWindow(2)"><span
-                            class="span_font">${siteQuestionInfo.map.get("plName")}</span><i
+                            class="span_font">${siteQuestionInfo.map.get("plName") == null ? productName : siteQuestionInfo.map.get("plName")}</span><i
                             class="iconfont icon-fanhui-copy"></i></a>
                 </c:if>
-                <c:if test="${siteQuestionInfo.productName == null}">
+                <c:if test="${siteQuestionInfo.productName == null &&  productName == null}">
                     <a href="#" onclick="openDeptOrSysWindow(2)"><span class="span_font">--请选择--</span><i
                             class="iconfont icon-fanhui-copy"></i></a>
                 </c:if>
@@ -143,6 +143,17 @@
         });
         setListLevel(${priority != null ? priority : siteQuestionInfo.priority});
         changeListLevel(${priority != null ? priority : siteQuestionInfo.priority});
+        if(${siteName !=null and siteId != null}){
+            setCookie('siteId',${siteId});
+            setCookie('siteName','${siteName}');
+        }
+        var siteId = getCookie('siteId');
+        var siteName = getCookie('siteName');
+        if(siteId && siteName){
+            $('#siteName').val(siteId);
+            $('#siteInfo').text(siteName);
+        }
+
     })
 
     /**
@@ -207,9 +218,9 @@
      * 统一跳转到首页
      */
     function goToIndexPage() {
-        if (${source == 1}) {
+        if (${source == 2}) { //微信
             location.href = "<%=basePath%>mobile/tempSiteQuestion/laodList.do?processStatus=1&userId=${userId}&serialNo=${serialNo}";
-        } else if (${source == 2}) {
+        } else{ //企业微信
             location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=${userId}&serialNo=${serialNo}";
         }
 
@@ -300,7 +311,7 @@
             success: function (data) {
                 if (data.status) {
                     mui.toast('问题提交成功', {duration: 'long(3500ms)', type: 'div'});
-                    if(${source == 1}){
+                    if(${source == 2}){ //微信端
                         location.href = "<%=basePath%>mobile/tempSiteQuestion/laodList.do?processStatus=1&userId=" + $("#userId").val() + "&serialNo=" + $("#serialNo").val();
                     }else{
                         //TODO 添加服务端首页跳转信息
@@ -505,8 +516,21 @@
         var menuName = $('#menuName').val();
         var questionDesc = $('#questionDesc').val();
         var priority = getListLevelValue();
-        location.href = "<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId} " +
-            "&questionId=${siteQuestionInfo.id}&type=" + type + "&source=${source}&menuName=" + encodeURI(menuName) + "&questionDesc=" + encodeURI(questionDesc) + "&priority=" + priority;
+        var questionId = ${siteQuestionInfo.id == null} ?$('#id').val():${siteQuestionInfo.id == null ? 0 :siteQuestionInfo.id};
+        location.href = "<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}" +
+            "&questionId="+questionId+"&type=" + type + "&source=${source}&menuName=" + encodeURI(menuName) +
+            "&questionDesc=" + encodeURI(questionDesc) + "&priority=" + priority
+            +"&productId=${productId}&productName=${productName}&siteId=${siteId}&siteName=${siteName}";
+    }
+
+    function getCookie(name)
+    {
+        return window.localStorage.getItem(name);
+    }
+
+    function setCookie(name,value)
+    {
+        window.localStorage.setItem(name, JSON.stringify(value));
     }
 </script>
 </html>
