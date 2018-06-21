@@ -41,7 +41,7 @@ public class MobileTempSiteQuestionController  extends BaseController {
             qInfo.setProcessStatus(4);//未确认
             //qinfo.getMap().put("process_status_no","5");//未确认
             model.addAttribute("questionList", super.getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(qInfo));
-            model.addAttribute("process_num",super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(qInfo));
+            model.addAttribute("process_num",mapList(qInfo,1,-1));
             model.addAttribute("userId", qInfo.getCreator());
             model.addAttribute("serialNo", qInfo.getSerialNo());
             model.addAttribute("openId",info.getOpenId());
@@ -72,7 +72,7 @@ public class MobileTempSiteQuestionController  extends BaseController {
                 qinfo.setProcessStatus(processStatus);
             }
             model.addAttribute("questionList", super.getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(qinfo));
-            model.addAttribute("process_num",super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(qinfo));
+            model.addAttribute("process_num", mapList(qinfo,1,-1));
             model.addAttribute("userId", userId);
             model.addAttribute("serialNo", serialNo);
             model.addAttribute("openId",openId);

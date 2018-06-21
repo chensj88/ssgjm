@@ -408,6 +408,59 @@ public class BaseController extends BaseSpringMvcMybatisController {
         }
         return i;
     }
+    /**
+     * 将状态数量加入map
+     *
+     * */
+    public EtSiteQuestionInfo mapList(EtSiteQuestionInfo info,int type,int isManager){
+        Map<String,Object> map =new HashMap<String,Object>();
+        // 1.新建未接受  2.接受 3.已分配（未处理） 4.已处理（院方未确认）5.院方确认（完结）6.院方打回7.实施工程师打回
+        //服务号
+        info.setProcessStatus(null);
+        if(type==1){
+            info.getMap().put("process_status_no","4,5"); //采集列表
+            if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info)!= null)
+                 info.getMap().put("numList",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList")==null?0
+                    :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList"));
+            info.getMap().put("process_status_no",null);
+            info.setProcessStatus(4);   //已处理（院方未确认）
+            if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info)!= null)
+                info.getMap().put("numNo",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList")==null?0
+                    :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList"));
+            info.setProcessStatus(5);   //院方未处理
+            if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info)!= null)
+                info.getMap().put("numOver",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList")==null?0
+                    :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList"));
+        }else{
+            if(isManager ==0){ //项目经理
+                info.getMap().put("process_status_yes","1,7"); //待分配 与待接受
+            }else{
+                info.setProcessStatus(2);   //待接受
+            }
+            if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info)!= null)
+                info.getMap().put("numList",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList")==null?0
+                        :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList"));
+                info.getMap().put("process_status_yes",null);
+            info.setProcessStatus(3);   //已处理（院方未确认）
+            if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info)!= null)
+            info.getMap().put("numOver",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList")==null?0
+                    :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList"));
+            info.getMap().put("process_status_yes","4,5"); //待分配 与待接受
+            info.setProcessStatus(null);
+            if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info)!= null)
+            info.getMap().put("numNo",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList")==null?0
+                    :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList"));
+            info.getMap().put("process_status_yes",null);
+            info.setProcessStatus(6);   //已处理（院方未确认）
+            if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info)!= null)
+            info.getMap().put("numReturn",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList")==null?0
+                    :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatus(info).getMap().get("numList"));
+        }
+
+        return info;
+    }
+
+
 
     /**
      * 获取access_token 1.5小时访问一次
