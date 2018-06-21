@@ -1,9 +1,11 @@
 package cn.com.winning.ssgj.web.controller.common;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.WxConstants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.Base64Utils;
 import cn.com.winning.ssgj.base.util.MD5;
+import cn.com.winning.ssgj.base.util.WeixinUtil;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.service.Facade;
 import com.alibaba.fastjson.JSON;
@@ -407,6 +409,54 @@ public class BaseController extends BaseSpringMvcMybatisController {
         return i;
     }
 
+    /**
+     * 获取access_token 1.5小时访问一次
+     * @return
+     */
+    public  String getAccessToken(){
+        String access_token=null;
+        try{
+            JSONObject testToken= WeixinUtil.getApiReturn(WxConstants.ACCESS_TOKEN);
+            access_token = (String)testToken.get("access_token");
+            String expires_in = (String)testToken.get("expires_in");
+            EtAccessToken entity = new EtAccessToken();
+            entity.setId(ssgjHelper.createEtAccessTokenIdService());
+            entity.setAccessToken(access_token);
+            entity.setExpiresIn(expires_in);
+            entity.setLastTime(new Timestamp(new Date().getTime()));
+            entity.setType(1);//企业微信客户端
+            facade.getEtAccessTokenService().createEtAccessToken(entity);
+
+        }catch (Exception e){
+
+        }
+
+        return access_token;
+    }
+
+    /**
+     * 定时任务 生成access_token
+     */
+    public void taskAccessToken(){
+            new Timer().schedule(new TimerTask() {
+                public void run() {
+                    try{
+                        JSONObject testToken= WeixinUtil.getApiReturn(WxConstants.ACCESS_TOKEN);
+                        String access_token = (String)testToken.get("access_token");
+                        String expires_in = (String)testToken.get("expires_in");
+                        EtAccessToken entity = new EtAccessToken();
+                        entity.setId(ssgjHelper.createEtAccessTokenIdService());
+                        entity.setAccessToken(access_token);
+                        entity.setExpiresIn(expires_in);
+                        entity.setLastTime(new Timestamp(new Date().getTime()));
+                        entity.setType(1);//企业微信客户端
+                        facade.getEtAccessTokenService().createEtAccessToken(entity);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }, 0,5400);
+    }
 
 
 }
