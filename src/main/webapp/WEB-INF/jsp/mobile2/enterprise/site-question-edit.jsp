@@ -120,7 +120,6 @@
     <div class="wrap-foot large-btn">
         <a href="#" onclick="checkQuestion();"><span>取消</span></a>
         <a href="#" onclick="save();"><span>保存</span></a>
-
     </div>
 </div>
 </body>

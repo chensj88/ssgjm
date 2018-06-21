@@ -35,12 +35,13 @@
 <input id="id" type="hidden" name="id" value="${questionInfo.id}">
 <div class="wrap">
     <div class="wrap-cnt">
-        <div class="column-3 large-list row" >
+        <div class="column-3 large-list row">
             <div class="col-xs-4 " style="padding-right: 0">
                 <strong>期望完成时间</strong>
             </div>
             <div id="datePicker" class="col-xs-6 input-group date" style="height: 30px">
-                <input id="hopeDate" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                <input id="hopeDate" type="text" class="form-control"><span class="input-group-addon"><i
+                    class="glyphicon glyphicon-th"></i></span>
             </div>
         </div>
         <div class="column-3 large-list" style="margin-top: 0">
@@ -84,16 +85,16 @@
 					</span>
         </div>
         <%--<div class="column-3 large-list" id="solutionResult">--%>
-            <%--<strong>解决方案</strong>--%>
-            <%--<span>${questionInfo.solutionResult}</span>--%>
+        <%--<strong>解决方案</strong>--%>
+        <%--<span>${questionInfo.solutionResult}</span>--%>
         <%--</div>--%>
         <%--<div class="column-3 large-list" id="userMessage">--%>
-            <%--<strong>院方意见</strong>--%>
-            <%--<span>${questionInfo.userMessage}</span>--%>
+        <%--<strong>院方意见</strong>--%>
+        <%--<span>${questionInfo.userMessage}</span>--%>
         <%--</div>--%>
         <%--<div class="column-3 large-list" id="suggest">--%>
-            <%--<strong>打回意见</strong>--%>
-            <%--<span>${questionInfo.suggest}</span>--%>
+        <%--<strong>打回意见</strong>--%>
+        <%--<span>${questionInfo.suggest}</span>--%>
         <%--</div>--%>
     </div>
     <div class="wrap-foot large-btn">
@@ -116,13 +117,13 @@
         <%--//工程师打回：7--%>
         <%--let processStatus =${questionInfo.processStatus};--%>
         <%--if (processStatus == 7) {--%>
-            <%--$("#solutionResult").show();--%>
-            <%--$("#userMessage").show();--%>
-            <%--$("#suggest").show();--%>
+        <%--$("#solutionResult").show();--%>
+        <%--$("#userMessage").show();--%>
+        <%--$("#suggest").show();--%>
         <%--} else {--%>
-            <%--$("#solutionResult").hide();--%>
-            <%--$("#userMessage").hide();--%>
-            <%--$("#suggest").hide();--%>
+        <%--$("#solutionResult").hide();--%>
+        <%--$("#userMessage").hide();--%>
+        <%--$("#suggest").hide();--%>
         <%--}--%>
         $('#datePicker').datepicker({
             format: "yyyy-mm-dd",
@@ -161,26 +162,26 @@
     }
 
     //返回上一页
-    function goBack(){
+    function goBack() {
         history.go(-1);
     }
 
     // 确认分配
-    function distrbuteConfirm(){
-        let hopeDate=$("#hopeDate").val();
+    function distrbuteConfirm() {
+        let hopeDate = $("#hopeDate").val();
         //校验
-        if(hopeDate==null||hopeDate==""){
+        if (hopeDate == null || hopeDate == "") {
             mui.toast('请选择期望完成时间！', {duration: 'long', type: 'div'});
             return;
         }
         let allocateUser = ${sysUserInfo.id};
-        let serialNo=${userId};
+        let serialNo =${questionInfo.serialNo};
         let id = ${questionInfo.id};
-        let userId=${userId};
+        let userId =${userId};
         $.ajax({
             type: "POST",
             url: "<%=basePath%>mobile/wechatSiteQuestion/saveDistribution.do",
-            data: {id: id, allocateUser: allocateUser,userId:userId,serialNo:serialNo,hopeDate:hopeDate},
+            data: {id: id, allocateUser: allocateUser, userId: userId, serialNo: serialNo, hopeDate: hopeDate},
             cache: false,
             dataType: "json",
             async: false,
@@ -190,6 +191,8 @@
             success: function (data) {
                 if (data.status) {
                     mui.toast('分配成功', {duration: 'long(3500ms)', type: 'div'});
+                    window.location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=" + userId + "&serialNo=" + serialNo;
+
                     //追加图片预览
                     // setTimeout("location.reload()", 3500);
                 } else {
