@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css"/>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <style type="text/css">
@@ -106,7 +107,7 @@
                     <c:if test="${questionInfo.imgPath !=null && questionInfo.imgPath !=''}">
                         <c:forEach var="img" items="${questionInfo.imgs}">
                             <div id="close_id">
-                                <img src="<%=Constants.FTP_SHARE_FLODER%>${img}"/>
+                                <img src="<%=Constants.FTP_SHARE_FLODER%>${img}" onclick="showImage('<%=Constants.FTP_SHARE_FLODER%>${img}')" alt=""/>
                                 <span class="iconfont icon-close"
                                       onclick="closeImg('${questionInfo.id}','${img}');"></span>
                                 <input type="hidden"/>
@@ -122,10 +123,18 @@
         <a href="#" onclick="save();"><span>保存</span></a>
     </div>
 </div>
+<div class="modal fade text-center" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" >
+    <div class="modal-dialog modal-xs" >
+        <div class="modal-content">
+            <img  id="imgInModalID" src="" onclick="closeModal()" >
+        </div>
+    </div>
+</div>
 </body>
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript">
     $(function () {
         enterprise.init();
@@ -503,6 +512,25 @@
         var priority = getListLevelValue();
         location.href = "<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId} " +
             "&questionId=${questionInfo.id}&type=" + type + "&source=${source}&menuName=" + encodeURI(menuName) + "&questionDesc=" + encodeURI(questionDesc) + "&priority=" + priority;
+    }
+    /**
+     * 图片预览
+     * @param url
+     */
+    function showImage(url){
+        var height = document.body.offsetHeight * 0.9;
+        var width = document.body.offsetWidth * 0.9;
+        $('#imgInModalID').attr('src',url);
+        $('#imgInModalID').attr('height',height);
+        $('#imgInModalID').attr('width',width);
+        $('#imgModal').modal('show');
+    }
+
+    /**
+     * 图片点击关闭
+     */
+    function closeModal() {
+        $('#imgModal').modal('hide');
     }
 </script>
 </html>
