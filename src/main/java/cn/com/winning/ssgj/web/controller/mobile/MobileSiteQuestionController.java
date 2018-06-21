@@ -102,7 +102,10 @@ public class MobileSiteQuestionController extends BaseController {
      * @throws ParseException
      */
     @RequestMapping(value = "/openDept.do")
-    public String openDept(Model model, Long userId, String serialNo, Long questionId, String type, String menuName, String questionDesc, String priority, String source) throws ParseException {
+    public String openDept(Model model, Long userId, String serialNo, Long questionId, String type,
+                           String siteId, String siteName,
+                           String productId, String productName,
+                           String menuName, String questionDesc, String priority, String source) throws ParseException {
         EtDepartment dept = new EtDepartment();
         dept.setSerialNo(Long.parseLong(serialNo));
         model.addAttribute("questionId", questionId);
@@ -113,6 +116,10 @@ public class MobileSiteQuestionController extends BaseController {
         model.addAttribute("menuName", menuName);
         model.addAttribute("questionDesc", questionDesc);
         model.addAttribute("priority", priority);
+        model.addAttribute("siteId", siteId);
+        model.addAttribute("siteName", siteName);
+        model.addAttribute("productId", productId);
+        model.addAttribute("productName", productName);
         if ("1".equals(type)) {
             model.addAttribute("title", "科室病区");
             model.addAttribute("firstInit", getFacade().getEtDepartmentService().getEtDepartmentFirstInitCode(dept));
@@ -139,53 +146,27 @@ public class MobileSiteQuestionController extends BaseController {
      */
     @RequestMapping(value = "/changeDept.do")
     public String changeDept(Model model, String questionId, Long userId, String serialNo, String type,
-                             String siteName, String source, String menuName, String questionDesc, String priority) {
-        EtSiteQuestionInfo info = new EtSiteQuestionInfo();
-        if (StringUtils.isNotBlank(questionId)) {
+                             String siteId, String siteName,
+                             String productId, String productName,
+                             String source, String menuName,
+                             String questionDesc, String priority) {
+        if (questionId != null) {
+            EtSiteQuestionInfo info = new EtSiteQuestionInfo();
             info.setId(Long.parseLong(questionId));
             info = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info);
-            if ("1".equals(type)) {
-                info.setSiteName(siteName);
-                addEtLog(serialNo, "ET_SITE_QUESTION_INFO", info.getId(), "内容变更:选择科室病区", 1, userId);
-            } else {
-                info.setProductName(siteName);
-                addEtLog(serialNo, "ET_SITE_QUESTION_INFO", info.getId(), "内容变更:选择系统名称", 1, userId);
+            if (StringUtils.isNotBlank(info.getImgPath())) {
+                String[] imgs = info.getImgPath().split(";");
+                List<String> lists = Arrays.asList(imgs);
+                info.setImgs(lists);
             }
-            info.setOperator(userId);
-            info.setOperatorTime(new Timestamp(new Date().getTime()));
-
-            super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+            model.addAttribute("siteQuestionInfo", info);
         } else {
-            //生成系统预设 ID
-            long id = ssgjHelper.createSiteQuestionIdService();
-            questionId = id + "";
-            info.setId(id); //站点问题ID
-            info.setCId((long) -2); //11980游客
-            info.setPmId((long) -2);//11980游客
-            info.setSerialNo(serialNo);
-            if ("1".equals(type)) {
-                info.setSiteName(siteName);
-                addEtLog(serialNo, "ET_SITE_QUESTION_INFO", info.getId(), "创建问题:选择科室病区", 1, userId);
-            } else {
-                info.setProductName(siteName);
-                addEtLog(serialNo, "ET_SITE_QUESTION_INFO", info.getId(), "创建问题:选择科室病区", 1, userId);
-            }
-            info.setPriority(3);
-            info.setCreator(userId);
-            info.setCreateTime(new Timestamp(new Date().getTime()));
-            info.setOperator(userId);
-            info.setOperatorTime(new Timestamp(new Date().getTime()));
-            super.getFacade().getEtSiteQuestionInfoService().createEtSiteQuestionInfo(info);
+            model.addAttribute("siteQuestionInfo", null);
         }
-        info = new EtSiteQuestionInfo();
-        info.setId(Long.parseLong(questionId));
-        info = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info);
-        if (StringUtils.isNotBlank(info.getImgPath())) {
-            String[] imgs = info.getImgPath().split(";");
-            List<String> lists = Arrays.asList(imgs);
-            info.setImgs(lists);
-        }
-        model.addAttribute("siteQuestionInfo", info);
+        model.addAttribute("siteId", siteId);
+        model.addAttribute("siteName", siteName);
+        model.addAttribute("productId", productId);
+        model.addAttribute("productName", productName);
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
         model.addAttribute("source", source);
