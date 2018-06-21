@@ -620,19 +620,23 @@ public class MobileSiteQuestionController extends BaseController {
     @RequestMapping("/changeStatus.do")
     @ResponseBody
     public Map changeStatus(Model model, Long id, Long userId, String serialNo, String solutionResult, Integer option) {
-        EtSiteQuestionInfo info = new EtSiteQuestionInfo();
-        info.setId(id);
-        info.setSolutionResult(solutionResult);
-        if (option == 0) {
-            //打回
-            info.setProcessStatus(Constants.ENGINEER_REFUSE);
-        } else {
-            //确认接受
-            info.setProcessStatus(Constants.ACCEPTED_UNTREATED);
-        }
-
         try {
-            super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+            EtSiteQuestionInfo info = new EtSiteQuestionInfo();
+            info.setId(id);
+            info.setSolutionResult(solutionResult);
+            if (option == 0) {
+                //打回
+                info.setHopeFinishDate(null);
+                info.setAllocateUser(null);
+                info.setProcessStatus(Constants.ENGINEER_REFUSE);
+                super.getFacade().getEtSiteQuestionInfoService().updateProcessStatus(info);
+            } else {
+                //确认接受
+                info.setProcessStatus(Constants.ACCEPTED_UNTREATED);
+                super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+            }
+
+
             resultMap.put("status", true);
         } catch (Exception e) {
             resultMap.put("status", false);

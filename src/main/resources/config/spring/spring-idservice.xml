@@ -534,4 +534,12 @@
         <property name="dateCutOff" value="false"/>
     </bean>
 
+    <!--ACCESSTOKEN表-->
+    <bean id="etAccessTokenIdService" class="cn.com.winning.ssgj.base.id.StepSequenceFactory">
+        <property name="table" ref="sequenceTable"/>
+        <property name="type" value="ET_ACCESS_TOKEN_ID"/>
+        <property name="step" value="1"/>
+        <property name="dateCutOff" value="false"/>
+    </bean>
+
 </beans>

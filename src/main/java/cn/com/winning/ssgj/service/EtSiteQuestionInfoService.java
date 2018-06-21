@@ -8,8 +8,6 @@ import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
 import cn.com.winning.ssgj.domain.MobileSiteQuestion;
 
 /**
- *
- *
  * @author SSGJ
  * @date 2018-01-18 10:11:48
  */
@@ -35,15 +33,17 @@ public interface EtSiteQuestionInfoService {
 
     /**
      * 生成站点问题信息
+     *
      * @param info
      * @param path
      */
     void generateEtSiteQuestionInfo(EtSiteQuestionInfo info, String path);
 
-    List<Map<String,Object>> getEtSiteQuestionCountInfo(EtSiteQuestionInfo info);
+    List<Map<String, Object>> getEtSiteQuestionCountInfo(EtSiteQuestionInfo info);
 
     /**
      * 根据Excel读取内容生成类
+     *
      * @param questionList
      * @param info
      */
@@ -51,6 +51,7 @@ public interface EtSiteQuestionInfoService {
 
     /**
      * 统计用户任务信息
+     *
      * @param info
      * @return
      */
@@ -69,5 +70,7 @@ public interface EtSiteQuestionInfoService {
     EtSiteQuestionInfo getEtSiteQuestionProcessStatusService(EtSiteQuestionInfo qInfo);
 
     List<EtSiteQuestionInfo> selectEtSiteQuestionInfoUserTotalBySerialNo(EtSiteQuestionInfo etSiteQuestionInfo);
+
+    void updateProcessStatus(EtSiteQuestionInfo etSiteQuestionInfo);
 
 }

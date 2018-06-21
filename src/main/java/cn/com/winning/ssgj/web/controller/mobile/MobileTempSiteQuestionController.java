@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.Cookie;
+import java.util.*;
 
 @Controller
 @CrossOrigin
@@ -147,29 +145,27 @@ public class MobileTempSiteQuestionController  extends BaseController {
     @RequestMapping(value = "/index.do")
     public String index(Model model,Long questionId,Long userId,String serialNo,String openId,String code) {
         try{
-            logger.info("yes:"+code);
-            //获取企业的access_token
-            JSONObject apiAccessToken= WeixinUtil.getApiReturn(WxConstants.SUITE_ACCESS_TOKEN);
-            String suite_access_token = (String)apiAccessToken.get("suite_access_token");
+            int isManager =0;//0：项目经理 1：非项目经理　
+            if(userId == null ){
+                String access_token = super.getAccessToken();
+                Cookie cookie = new Cookie("access_token",access_token);//将登录信息加入cookie中
+                cookie.setMaxAge(60*60*24*3);   //设置cookie最大失效时间 3天　　　
+                StringBuffer stringBuffer = new StringBuffer(WxConstants.QY_USER_INFO);
+                stringBuffer.append("access_token=").append(access_token).append("&code=").append(code);
+                JSONObject userInfo = WeixinUtil.getApiReturn(stringBuffer.toString());
+                String user_id = (String)userInfo.get("UserId"); //员工工号
+                logger.info("UserId=="+user_id);
+                userId =super.user_id(user_id,"1"); //登录员工的ID
+                isManager =super.getPosition("11403",userId);
 
-            //access_token=SUITE_ACCESS_TOKEN&code=CODE
-            String token = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=wxac9ca7b3c2c43e81&corpsecret=X8KHKKb0O3yR7qcnQSFDzBGiPhc8urJBK5sAnUE7-j8";
-            JSONObject testToken= WeixinUtil.getApiReturn(token);
-            String access_token = (String)testToken.get("access_token");
-            StringBuffer stringBuffer = new StringBuffer(WxConstants.QY_USER_INFO);
-            stringBuffer.append("access_token=").append(access_token).append("&code=").append(code);
-            JSONObject userInfo = WeixinUtil.getApiReturn(stringBuffer.toString());
-            String UserId = (String)userInfo.get("UserId"); //员工工号
-            logger.info("UserId=="+UserId);
+            }else{
+                isManager =super.getPosition("11403",userId);
+            }
 
-            //获取项目组中的权限
-            Long user_id =super.user_id(UserId,"1");
-            int isManager =0; //super.getPosition("11403",7284);
-            //SysUserInfo info = super.getUserInfo(parameter);
             EtSiteQuestionInfo qInfo = new EtSiteQuestionInfo();
             if(isManager > 0){
                 qInfo.getMap().put("process_status_no","1,7");
-                qInfo.setAllocateUser((long)7110);
+                qInfo.setAllocateUser(userId);
                 qInfo.setSerialNo(String.valueOf(11403));
             }else{
                 qInfo.setCreator(null);
@@ -178,7 +174,7 @@ public class MobileTempSiteQuestionController  extends BaseController {
             qInfo.getMap().put("isManager",isManager);
             model.addAttribute("questionList", super.getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(qInfo));
             model.addAttribute("process_num",super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(qInfo));
-            model.addAttribute("userId",7110);
+            model.addAttribute("userId",userId);
             model.addAttribute("serialNo", qInfo.getSerialNo());
             //model.addAttribute("openId",info.getOpenId());
             model.addAttribute("active",0);
@@ -191,5 +187,4 @@ public class MobileTempSiteQuestionController  extends BaseController {
     }
 
 
-
-    }
+}

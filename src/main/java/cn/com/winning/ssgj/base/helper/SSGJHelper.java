@@ -262,6 +262,14 @@ public class SSGJHelper {
     @Qualifier(value = "etUserLogIdService")
     private StepSequenceFactory  etUserLogIdService;
 
+    @Autowired
+    @Qualifier(value = "etAccessTokenIdService")
+    private StepSequenceFactory  etAccessTokenIdService;
+
+
+    public long createEtAccessTokenIdService() {
+        return (long)etAccessTokenIdService.create();
+    }
 
     /**
      * 导入站点问题临时表ID
