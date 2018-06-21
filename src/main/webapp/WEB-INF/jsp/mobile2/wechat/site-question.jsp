@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css"/>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <style type="text/css">
@@ -67,7 +68,7 @@
                             class="iconfont icon-fanhui-copy"></i></a>
                 </c:if>
                 <c:if test="${siteQuestionInfo.productName == null &&  productName == null}">
-                    <a href="#" onclick="openDeptOrSysWindow(2)"><span class="span_font">--请选择--</span><i
+                    <a href="#" onclick="openDeptOrSysWindow(2)"><span class="span_font" id="productInfo">--请选择--</span><i
                             class="iconfont icon-fanhui-copy"></i></a>
                 </c:if>
             </div>
@@ -113,7 +114,7 @@
                     <c:if test="${siteQuestionInfo.imgPath !=null && siteQuestionInfo.imgPath !=''}">
                         <c:forEach var="img" items="${siteQuestionInfo.imgs}">
                             <div id="close_id">
-                                <img src="<%=Constants.FTP_SHARE_FLODER%>${img}"/>
+                                <img src="<%=Constants.FTP_SHARE_FLODER%>${img}" onclick="showImage('<%=Constants.FTP_SHARE_FLODER%>${img}')"/>
                                 <span class="iconfont icon-close"
                                       onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>
                                 <input type="hidden"/>
@@ -130,10 +131,18 @@
 
     </div>
 </div>
+<div class="modal fade text-center" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" >
+    <div class="modal-dialog modal-xs" >
+        <div class="modal-content">
+            <img  id="imgInModalID" src="" onclick="closeModal()" >
+        </div>
+    </div>
+</div>
 </body>
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript">
     $(function () {
         enterprise.init();
@@ -149,10 +158,15 @@
         }
         var siteId = getCookie('siteId');
         var siteName = getCookie('siteName');
+        var productId = getCookie('productId');
+        var productName = getCookie('productName');
         if(siteId && siteName){
-            console.log(siteName);
             $('#siteName').val(siteId);
             $('#siteInfo').text(siteName);
+        }
+        if(productId && productName){
+            $('#productName').val(productId);
+            $('#productInfo').text(productName);
         }
 
     })
@@ -534,6 +548,23 @@
     function setCookie(name,value)
     {
         window.localStorage.setItem(name, value);
+    }
+
+
+    function showImage(url){
+        console.log(document.body.offsetHeight);
+        console.log(document.body.offsetWidth);
+        var height = document.body.offsetHeight * 0.9;
+        var width = document.body.offsetWidth * 0.9;
+
+        $('#imgInModalID').attr('src',url);
+        $('#imgInModalID').attr('height',height);
+        $('#imgInModalID').attr('width',width);
+        $('#imgModal').modal('show');
+    }
+
+    function closeModal() {
+        $('#imgModal').modal('hide');
     }
 </script>
 </html>
