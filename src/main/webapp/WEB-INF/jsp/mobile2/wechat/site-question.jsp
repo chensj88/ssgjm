@@ -540,29 +540,43 @@
             +"&productId=${productId}&productName=${productName}&siteId="+siteId+"&siteName="+siteName;
     }
 
+    /**
+     * 从本地缓存中读取缓存数据
+     * @param name
+     */
     function getCookie(name)
     {
         return window.localStorage.getItem(name);
     }
 
+    /**
+     * 保存数据到本地缓存
+     * @param name
+     * @param value
+     */
     function setCookie(name,value)
     {
         window.localStorage.setItem(name, value);
     }
 
-
+    /**
+     * 图片预览
+     * @param url
+     */
     function showImage(url){
         console.log(document.body.offsetHeight);
         console.log(document.body.offsetWidth);
         var height = document.body.offsetHeight * 0.9;
         var width = document.body.offsetWidth * 0.9;
-
         $('#imgInModalID').attr('src',url);
         $('#imgInModalID').attr('height',height);
         $('#imgInModalID').attr('width',width);
         $('#imgModal').modal('show');
     }
 
+    /**
+     * 图片点击关闭
+     */
     function closeModal() {
         $('#imgModal').modal('hide');
     }
