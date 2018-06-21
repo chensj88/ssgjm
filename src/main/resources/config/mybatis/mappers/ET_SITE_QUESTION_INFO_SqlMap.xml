@@ -905,5 +905,97 @@
         </where>
     </select>
 
+    <!--Evol 2018年6月21日13:02:12-->
+    <update id="updateProcessStatus" parameterType="EtSiteQuestionInfo">
+        update ET_SITE_QUESTION_INFO
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(pmId != null and pmId != '') or pmId == 0">PM_ID = #{pmId, jdbcType=BIGINT},</if>
+                <if test="(cId != null and cId != '') or cId == 0">C_ID = #{cId, jdbcType=BIGINT},</if>
+                <if test="serialNo != null and serialNo != ''">SERIAL_NO = #{serialNo, jdbcType=VARCHAR},</if>
+                <if test="siteName != null and siteName != ''">SITE_NAME = #{siteName, jdbcType=VARCHAR},</if>
+                <if test="productName != null and productName != ''">PRODUCT_NAME = #{productName, jdbcType=VARCHAR},
+                </if>
+                <if test="menuName != null and menuName != ''">MENU_NAME = #{menuName, jdbcType=VARCHAR},</if>
+                <if test="questionType != null and questionType != ''">QUESTION_TYPE
+                    =#{questionType, jdbcType=INTEGER},
+                </if>
+                <if test="questionDesc != null and questionDesc != ''">QUESTION_DESC
+                    =#{questionDesc, jdbcType=LONGVARCHAR},
+                </if>
+                <if test="imgPath != null">IMG_PATH = #{imgPath, jdbcType=LONGVARCHAR},</if>
+                <if test="(operType != null and operType != '') or operType == 0">OPER_TYPE
+                    =#{operType, jdbcType=INTEGER},
+                </if>
+                <if test="(priority != null and priority != '') or priority == 0">PRIORITY =
+                    #{priority, jdbcType=INTEGER},
+                </if>
+                ALLOCATE_USER = #{allocateUser, jdbcType=BIGINT},
+                <if test="(isOperation != null and isOperation != '') or isOperation == 0">IS_OPERATION =
+                    #{isOperation, jdbcType=INTEGER},
+                </if>
+                <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
+                <if test="(creator != null and creator != '') or creator == 0">CREATOR = #{creator, jdbcType=BIGINT},
+                </if>
+                <if test="createTime != null ">CREATE_TIME = #{createTime, jdbcType=TIMESTAMP},</if>
+                <if test="(operator != null and operator != '') or operator == 0">OPERATOR =
+                    #{operator, jdbcType=BIGINT},
+                </if>
+                <if test="operatorTime != null ">OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP},</if>
+                <if test="batchNo != null and batchNo != ''">BATCH_NO = #{batchNo, jdbcType=INTEGER},</if>
+                <if test="(reasonType != null and reasonType != '') or reasonType == 0">REASON_TYPE =
+                    #{reasonType, jdbcType=INTEGER},
+                </if>
+                <if test="(manuscriptStatus != null and manuscriptStatus != '') or manuscriptStatus == 0">
+                    MANUSCRIPT_STATUS = #{manuscriptStatus, jdbcType=INTEGER},
+                </if>
+                <if test="devUser != null and devUser != ''">DEV_USER = #{devUser, jdbcType=VARCHAR},</if>
+                <if test="devUserName != null and devUserName != ''">DEV_USER_NAME = #{devUserName, jdbcType=VARCHAR},
+                </if>
+                <if test="linkman != null and linkman != ''">LINKMAN = #{linkman, jdbcType=VARCHAR},</if>
+                <if test="mobile != null and mobile != ''">MOBILE = #{mobile, jdbcType=VARCHAR},</if>
+                HOPE_FINISH_DATE = #{hopeFinishDate, jdbcType=VARCHAR},
+                <if test="resolveDate != null and resolveDate != ''">RESOLVE_DATE = #{resolveDate, jdbcType=VARCHAR},
+                </if>
+                <if test="(processStatus != null and processStatus != '') or processStatus == 0">PROCESS_STATUS =
+                    #{processStatus, jdbcType=INTEGER},
+                </if>
+                <if test="solutionResult != null and solutionResult != ''">SOLUTION_RESULT =
+                    #{solutionResult, jdbcType=VARCHAR},
+                </if>
+                <if test="(diffcultLevel != null and diffcultLevel != '') or diffcultLevel == 0">DIFFCULT_LEVEL =
+                    #{diffcultLevel, jdbcType=INTEGER},
+                </if>
+                <if test="userMessage != null and userMessage != ''">USER_MESSAGE = #{userMessage, jdbcType=VARCHAR},
+                </if>
+                <if test="createNo != null and createNo != ''">CREATE_NO = #{createNo, jdbcType=VARCHAR},</if>
+                <if test="(pmisStatus != null and pmisStatus != '') or pmisStatus == 0">PMIS_STATUS =
+                    #{pmisStatus, jdbcType=INTEGER},
+                </if>
+                <if test="workLoad != null and workLoad != ''">WORK_LOAD = #{workLoad , jdbcType=VARCHAR},</if>
+                <if test="introducer != null and introducer != ''">INTRODUCER = #{introducer, jdbcType=VARCHAR} ,</if>
+                <if test="introducerName != null and introducerName != ''">INTRODUCER_NAME =
+                    #{introducerName, jdbcType=VARCHAR} ,
+                </if>
+                <if test="introducerDate != null and introducerDate != ''">INTRODUCER_DATE =
+                    #{introducerDate, jdbcType=VARCHAR} ,
+                </if>
+                <if test="requirementNo != null and requirementNo != ''">REQUIREMENT_NO =
+                    #{requirementNo,jdbcType=VARCHAR} ,
+                </if>
+                <if test="suggest != null and suggest != ''">SUGGEST = #{suggest,jdbcType=VARCHAR} ,</if>
+
+            </trim>
+        </set>
+        <where>
+            <if test="id != null and id != ''">ID = #{id}</if>
+            <if test="(id == null or id == '') and (map.pks != null and map.pks.size >0)">
+                ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </update>
+
 
 </mapper>

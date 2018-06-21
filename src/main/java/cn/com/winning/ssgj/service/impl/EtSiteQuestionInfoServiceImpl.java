@@ -313,6 +313,11 @@ public class EtSiteQuestionInfoServiceImpl implements EtSiteQuestionInfoService 
         return etSiteQuestionInfoDao.selectEtSiteQuestionInfoUserTotalBySerialNo(etSiteQuestionInfo);
     }
 
+    @Override
+    public void updateProcessStatus(EtSiteQuestionInfo etSiteQuestionInfo) {
+        etSiteQuestionInfoDao.updateProcessStatus(etSiteQuestionInfo);
+    }
+
     /**
      * 查询当前用户在指定日期下的问题里列表
      *

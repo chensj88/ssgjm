@@ -32,4 +32,6 @@ public interface EtSiteQuestionInfoDao extends EntityDao<EtSiteQuestionInfo> {
 
     List<EtSiteQuestionInfo> selectEtSiteQuestionInfoUserTotalBySerialNo(EtSiteQuestionInfo etSiteQuestionInfo);
 
+    void updateProcessStatus(EtSiteQuestionInfo etSiteQuestionInfo);
+
 }
