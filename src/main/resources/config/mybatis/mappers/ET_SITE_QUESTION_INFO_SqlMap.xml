@@ -727,7 +727,7 @@
         <if test="(creator != null and creator != '')">AND t.CREATOR = #{creator}</if>
         <if test="(serialNo != null and serialNo != '')">AND t.SERIAL_NO = #{serialNo}</if>
         <if test="(allocateUser != null and allocateUser != '')">AND t.ALLOCATE_USER = #{allocateUser}</if>
-        AND t.SITE_NAME != ''
+        AND t.MENU_NAME != '' AND t.MENU_NAME IS NOT NULL
         <if test="(priority != null and priority != '') or priority == 0">and t.PRIORITY = #{priority}</if>
         <if test="map.search_text != null and map.search_text != ''">and ( t.MENU_NAME LIKE '%${map.search_text}%' OR
             t.QUESTION_DESC LIKE '%${map.search_text}%')
@@ -798,6 +798,7 @@
         <if test="map.process_status_no != null and map.process_status_no != null ">and t.PROCESS_STATUS not in
             (${map.process_status_no})
         </if>
+        AND t.MENU_NAME != '' AND t.MENU_NAME IS NOT NULL
         <if test="map.searchType != null and map.searchType != '' and map.searchType == 3 ">
             AND t.SITE_NAME IN (SELECT ID FROM ET_DEPARTMENT WHERE SERIAL_NO = #{serialNo} AND IS_DEL = 1 AND DEPT_NAME
             LIKE '%${map.searchText}%' )
