@@ -23,7 +23,7 @@
                 <c:if test="${isManager ==0}">
                     <a href="<%=basePath%>/mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=1,7&isManager=${isManager}">
                         <i class="iconfont icon-dfp"></i>
-                        待分配 ($process_num.map.get("numList")==null?0:process_num.map.get("numList")})
+                        待分配 (${process_num.map.get("numList")==null?0:process_num.map.get("numList")})
                     </a>
                 </c:if>
                 <c:if test="${isManager !=0}">

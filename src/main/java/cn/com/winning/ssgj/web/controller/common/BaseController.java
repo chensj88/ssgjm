@@ -391,7 +391,7 @@ public class BaseController extends BaseSpringMvcMybatisController {
 
 
     public int getPosition(String seriaNo, long userId) {
-        int i =0;
+        int i =1;
         EtUserInfo etUserInfo = new EtUserInfo();
         etUserInfo.setSerialNo(seriaNo);
         etUserInfo.setUserId(userId);
