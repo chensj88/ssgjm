@@ -4,13 +4,14 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>实施工具</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css" />
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/normalize.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css"/>
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_9raiir53539.css"/>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
 </head>
@@ -45,7 +46,7 @@
                 </a>
             </div>
             <c:forEach var="vwr" items="${questionList}">
-            <div class="index-date">
+                <div class="index-date">
 
                     <p>${vwr.groupName}  （${vwr.num}条）</p>
                     <c:forEach var="vwr1" items="${vwr.listQuery}">
@@ -67,9 +68,8 @@
         <div class="hide">
             资料上传
         </div>
-        <div class="hide">
-            我的
-        </div>
+        <%--<div class="hide">--%>
+        <%--</div>--%>
     </div>
     <!--新增-->
     <a href="<%=basePath%>/mobile/wechatSiteQuestion/addPage.do?userId=${userId}&serialNo=${serialNo}&source=1" class="wrap-add" >
@@ -90,13 +90,24 @@
             上传
         </div>
         <div>
-            <i class="iconfont icon-wo"></i>
-            我
+            <a href="#popover" id="openPopover" class="iconfont icon-wo" style="color: #A4A5AB;"></a>
+            <span style="color: #A4A5AB;">我</span>
         </div>
+    </div>
+    <%--弹出菜单--%>
+    <div id="popover" class="mui-popover">
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell"><a href="#">切换医院</a></li>
+            <li class="mui-table-view-cell"><a href="#">Item2</a></li>
+            <li class="mui-table-view-cell"><a href="#">Item3</a></li>
+            <li class="mui-table-view-cell"><a href="#">Item4</a></li>
+            <li class="mui-table-view-cell"><a href="#">Item5</a></li>
+        </ul>
     </div>
 </div>
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>
+<script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
     $(function () {
         IMS.menuTab();

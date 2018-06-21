@@ -600,24 +600,48 @@ public class MobileSiteQuestionController extends BaseController {
      */
     @RequestMapping("/changeStatus.do")
     @ResponseBody
-    public Map changeStatus(Model model, Long id, Long userId, String serialNo, String solutionResult, Integer option) {
+    public Map changeStatus(Model model, Long id, Long userId, String serialNo, String suggest, String solutionResult, Integer option) {
         try {
             EtSiteQuestionInfo info = new EtSiteQuestionInfo();
             info.setId(id);
-            info.setSolutionResult(solutionResult);
-            if (option == 0) {
-                //打回
-                info.setHopeFinishDate(null);
-                info.setAllocateUser(null);
-                info.setProcessStatus(Constants.ENGINEER_REFUSE);
-                super.getFacade().getEtSiteQuestionInfoService().updateProcessStatus(info);
-            } else {
-                //确认接受
-                info.setProcessStatus(Constants.ACCEPTED_UNTREATED);
-                super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+            switch (option) {
+                case 2:
+                    //已分配，待接受
+                    info.setProcessStatus(Constants.ALLOCATED_UNACCEPTED);
+                    super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+                    break;
+                case 3:
+                    //已接收任务，未处理
+                    info.setProcessStatus(Constants.ACCEPTED_UNTREATED);
+                    super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+                    break;
+                case 4:
+                    //已处理
+                    info.setSolutionResult(solutionResult);
+                    info.setProcessStatus(Constants.TREATED_COMPLETE);
+                    super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+                    break;
+                case 5:
+                    //院方确认完成
+                    info.setProcessStatus(Constants.CONFIRM_END);
+                    super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+                    break;
+                case 6:
+                    //院方打回
+                    info.setProcessStatus(Constants.REFUSE);
+                    super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+                    break;
+                case 7:
+                    //工程师拒绝接受或打回
+                    info.setSuggest(suggest);
+                    info.setHopeFinishDate(null);
+                    info.setAllocateUser(null);
+                    info.setProcessStatus(Constants.ENGINEER_REFUSE);
+                    super.getFacade().getEtSiteQuestionInfoService().updateProcessStatus(info);
+                    break;
+                default:
+                    break;
             }
-
-
             resultMap.put("status", true);
         } catch (Exception e) {
             resultMap.put("status", false);

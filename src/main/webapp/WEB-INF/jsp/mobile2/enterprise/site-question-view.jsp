@@ -69,23 +69,39 @@
                     </c:if>
 					</span>
         </div>
-        <div class="column-2 large-list" id="solutionResult">
+        <div class="column-2 large-list" id="solutionResult" style="display: none;">
             <strong>解决方案</strong>
             <span>${questionInfo.solutionResult}</span>
         </div>
-        <div class="column-2 large-list" id="userMessage">
+        <div class="column-2 large-list" id="userMessage" style="display: none;">
             <strong>院方意见</strong>
             <span>${questionInfo.userMessage}</span>
         </div>
-        <div class="column-2 large-list" id="suggest">
+        <div class="column-2 large-list" id="suggest" style="display: none;">
             <strong>打回意见</strong>
             <span>${questionInfo.suggest}</span>
         </div>
-        <c:if test="${questionInfo.processStatus==2&&questionInfo.allocateUser==userId}">
-            <div class="column-2 large-list" id="solutionResult">
+        <c:if test="${questionInfo.processStatus==3&&(questionInfo.allocateUser==userId||isManager==0)}">
+            <div class="column-2 large-list" id="solutionResultEditDiv">
                 <strong>解决方案</strong>
                 <div class="collect-list-text" style="width: 80%;">
                     <textarea id="solutionResultEdit">${questionInfo.solutionResult}</textarea>
+                </div>
+            </div>
+        </c:if>
+        <c:if test="${questionInfo.processStatus==3&&(questionInfo.allocateUser==userId||isManager==0)}">
+            <div class="column-2 large-list" id="userMessageEditDiv">
+                <strong>院方意见</strong>
+                <div class="collect-list-text" style="width: 80%;">
+                    <textarea id="userMessageEdit">${questionInfo.solutionResult}</textarea>
+                </div>
+            </div>
+        </c:if>
+        <c:if test="${questionInfo.processStatus==3&&(questionInfo.allocateUser==userId||isManager==0)}">
+            <div class="column-2 large-list" id="suggestEditDiv">
+                <strong>打回意见</strong>
+                <div class="collect-list-text" style="width: 80%;">
+                    <textarea id="suggestEdit">${questionInfo.solutionResult}</textarea>
                 </div>
             </div>
         </c:if>
@@ -95,9 +111,20 @@
             <a href="javascript:void(0);" onclick="goUpdate();"><span>编辑</span></a>
             <a href="javascript:void(0);" onclick="goDistribute();"><span>查看分配</span></a>
         </c:if>
-        <c:if test="${questionInfo.processStatus==2&&questionInfo.allocateUser==userId}">
-            <a href="javascript:void(0);" onclick="changeStatus(0);"><span>打回</span></a>
-            <a href="javascript:void(0);" onclick="changeStatus(1);"><span>确认完成</span></a>
+        <%--项目经理未处理--%>
+        <c:if test="${(questionInfo.processStatus==3||questionInfo.processStatus==6)&&isManager==0}">
+            <a href="javascript:void(0);" onclick="changeStatus(0,7,'打回');"><span>打回</span></a>
+            <a href="javascript:void(0);" onclick="changeStatus(0,4,'确认');"><span>确认完成</span></a>
+        </c:if>
+        <%--工程师待接受--%>
+        <c:if test="${questionInfo.processStatus==2&&questionInfo.allocateUser==userId&&isManager==1}">
+            <a href="javascript:void(0);" onclick="changeStatus(1,7,'拒绝');"><span>拒绝</span></a>
+            <a href="javascript:void(0);" onclick="changeStatus(1,3,'接受');"><span>接受</span></a>
+        </c:if>
+        <%--工程师未处理--%>
+        <c:if test="${(questionInfo.processStatus==3||questionInfo.processStatus==6)&&questionInfo.allocateUser==userId&&isManager==1}">
+            <a href="javascript:void(0);" onclick="changeStatus(1,7,'打回');"><span>打回</span></a>
+            <a href="javascript:void(0);" onclick="changeStatus(1,4,'确认');"><span>确认完成</span></a>
         </c:if>
     </div>
 </div>
@@ -111,7 +138,7 @@
         setListLevel(${questionInfo.priority});
         //工程师打回：7
         let processStatus =${questionInfo.processStatus};
-        if (processStatus == 7) {
+        if (processStatus == 7 || processStatus == 4 || processStatus == 5 || processStatus == 6) {
             $("#solutionResult").show();
             $("#userMessage").show();
             $("#suggest").show();
@@ -171,12 +198,20 @@
         $(".levelA").text(valStr);
     }
 
-    //打回
-    function changeStatus(option) {
+    function changeStatus(isManager, option, optionName) {
         let solutionResult = $("#solutionResultEdit").val();
-        if (solutionResult == null || solutionResult == "") {
-            mui.toast('请输入解决方案', {duration: 'long', type: 'div'});
-            return;
+        let suggest = $("#suggestEdit").val();
+        if (option == 4) {
+            if (solutionResult == null || solutionResult == "") {
+                mui.toast('请输入解决方案', {duration: 'long', type: 'div'});
+                return;
+            }
+        }
+        if (option == 7) {
+            if (suggest == null || suggest == "") {
+                mui.toast('请输入打回意见', {duration: 'long', type: 'div'});
+                return;
+            }
         }
         let serialNo =${questionInfo.serialNo};
         let id = ${questionInfo.id};
@@ -184,7 +219,14 @@
         $.ajax({
             type: "POST",
             url: "<%=basePath%>mobile/wechatSiteQuestion/changeStatus.do",
-            data: {id: id, solutionResult: solutionResult, userId: userId, serialNo: serialNo, option: option},
+            data: {
+                id: id,
+                suggest: suggest,
+                solutionResult: solutionResult,
+                userId: userId,
+                serialNo: serialNo,
+                option: option
+            },
             cache: false,
             dataType: "json",
             async: false,
@@ -194,17 +236,17 @@
             success: function (data) {
                 if (data.status) {
                     if (option == 0) {
-                        mui.toast('打回成功', {duration: 'long(3500ms)', type: 'div'});
+                        mui.toast(optionName + '成功', {duration: 'long(3500ms)', type: 'div'});
                     } else {
-                        mui.toast('确认成功', {duration: 'long(3500ms)', type: 'div'});
+                        mui.toast(optionName + '成功', {duration: 'long(3500ms)', type: 'div'});
                     }
                     //追加图片预览
                     // setTimeout("location.reload()", 3500);
                 } else {
                     if (option == 0) {
-                        mui.toast('打回失败', {duration: 'long(3500ms)', type: 'div'});
+                        mui.toast(optionName + '失败', {duration: 'long(3500ms)', type: 'div'});
                     } else {
-                        mui.toast('确认失败', {duration: 'long(3500ms)', type: 'div'});
+                        mui.toast(optionName + '失败', {duration: 'long(3500ms)', type: 'div'});
 
                     }
                     //追加图片预览
