@@ -52,7 +52,7 @@
                             class="iconfont icon-fanhui-copy"></i></a>
                 </c:if>
                 <c:if test="${siteQuestionInfo.siteName == null &&  siteName == null}">
-                    <a href="#" onclick="openDeptOrSysWindow(1)"><span class="span_font">--请选择--</span><i
+                    <a href="#" onclick="openDeptOrSysWindow(1)"><span class="span_font" id="siteInfo">--请选择--</span><i
                             class="iconfont icon-fanhui-copy"></i></a>
                 </c:if>
             </div>
@@ -143,6 +143,17 @@
         });
         setListLevel(${priority != null ? priority : siteQuestionInfo.priority});
         changeListLevel(${priority != null ? priority : siteQuestionInfo.priority});
+        if(${siteName !=null and siteId != null}){
+            setCookie('siteId',${siteId});
+            setCookie('siteName','${siteName}');
+        }
+        var siteId = getCookie('siteId');
+        var siteName = getCookie('siteName');
+        if(siteId && siteName){
+            $('#siteName').val(siteId);
+            $('#siteInfo').text(siteName);
+        }
+
     })
 
     /**
@@ -510,6 +521,16 @@
             "&questionId="+questionId+"&type=" + type + "&source=${source}&menuName=" + encodeURI(menuName) +
             "&questionDesc=" + encodeURI(questionDesc) + "&priority=" + priority
             +"&productId=${productId}&productName=${productName}&siteId=${siteId}&siteName=${siteName}";
+    }
+
+    function getCookie(name)
+    {
+        return window.localStorage.getItem(name);
+    }
+
+    function setCookie(name,value)
+    {
+        window.localStorage.setItem(name, JSON.stringify(value));
     }
 </script>
 </html>

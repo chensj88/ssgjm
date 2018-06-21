@@ -150,7 +150,7 @@ public class MobileSiteQuestionController extends BaseController {
                              String productId, String productName,
                              String source, String menuName,
                              String questionDesc, String priority) {
-        if (questionId != null) {
+        if (StringUtils.isNotBlank(questionId)) {
             EtSiteQuestionInfo info = new EtSiteQuestionInfo();
             info.setId(Long.parseLong(questionId));
             info = super.getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(info);

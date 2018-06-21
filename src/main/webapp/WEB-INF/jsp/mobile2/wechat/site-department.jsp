@@ -82,15 +82,34 @@
         window.indexedList = new mui.IndexedList(list);
     });
 
+    $(function () {
+        var siteId = getCookie('siteId');
+        if(siteId && ${type == 1}){
+            $('li[data-value='+siteId+']').css('color','#f40').css('font-weight','bolder');
+        }
+    });
     function selectSiteName(id,name){
             if(${type == 1}){
                 location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&menuName=${menuName}&questionDesc=${questionDesc}&priority=${priority}"
                     +"&siteId="+id + "&siteName="+encodeURI(name)+"&productId=${productId}&productName=${productName}";
+                    setCookie('siteId',id);
+                    setCookie('siteName',name);
             }else{
                 location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&menuName=${menuName}&questionDesc=${questionDesc}&priority=${priority}"
                     +"&siteId=${siteId}&siteName=${siteName}&productId="+id + "&productName="+encodeURI(name);
             }
 
     }
+
+    function getCookie(name)
+    {
+        return window.localStorage.getItem(name);
+    }
+
+    function setCookie(name,value)
+    {
+        window.localStorage.setItem(name, value);
+    }
+
 </script>
 </html>
