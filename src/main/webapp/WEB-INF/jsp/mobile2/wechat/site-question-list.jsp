@@ -154,9 +154,9 @@
      */
     function detail(id,status){
         if( status === 1 ){
-            location.href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?questionId="+id+"&serialNo=${serialNo}&userId=${userId}&source=2";
+            location.href="<%=basePath%>mobile/wechatSiteQuestion/addPage.do?questionId="+id+"&serialNo=${serialNo}&userId=${userId}&source=1";
         }else{
-            location.href="<%=basePath%>mobile/tempSiteQuestion/addPage.do?questionId="+id+"&serialNo=${serialNo}&userId=${userId}&source=2";
+            location.href="<%=basePath%>mobile/tempSiteQuestion/addPage.do?questionId="+id+"&serialNo=${serialNo}&userId=${userId}&source=1";
         }
     }
 
