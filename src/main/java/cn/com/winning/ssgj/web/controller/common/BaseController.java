@@ -440,15 +440,16 @@ public class BaseController extends BaseSpringMvcMybatisController {
             if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info)!= null)
                 info.getMap().put("numList",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info).getMap().get("numList")==null?0
                         :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info).getMap().get("numList"));
-                info.getMap().put("process_status_yes","3,6");
+            info.setProcessStatus(null);
+            info.getMap().put("process_status_yes","3,6");
             //info.setProcessStatus(3);   //已处理（院方未确认）
             if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info)!= null)
-            info.getMap().put("numOver",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info).getMap().get("numList")==null?0
+            info.getMap().put("numNo",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info).getMap().get("numList")==null?0
                     :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info).getMap().get("numList"));
             info.getMap().put("process_status_yes","4,5"); //待分配 与待接受
             info.setProcessStatus(null);
             if(facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info)!= null)
-            info.getMap().put("numNo",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info).getMap().get("numList")==null?0
+            info.getMap().put("numOver",facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info).getMap().get("numList")==null?0
                     :facade.getEtSiteQuestionInfoService().getEtSiteQuestionProcessStatusService(info).getMap().get("numList"));
             info.getMap().put("process_status_yes",null);
             info.setProcessStatus(6);   //已处理（院方未确认）
