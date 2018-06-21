@@ -1,8 +1,10 @@
 package cn.com.winning.ssgj.web.controller.mobile;
 
+import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
 import cn.com.winning.ssgj.domain.EtUserLog;
+import cn.com.winning.ssgj.domain.PmisCustomerInformation;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author LENOVO
@@ -23,7 +29,7 @@ import java.util.Date;
  */
 @Controller
 @CrossOrigin
-@RequestMapping("mobile/commons")
+@RequestMapping("/mobile/commons")
 public class EnterpriseQuestionCommonController extends BaseController {
 
     @Autowired
@@ -115,6 +121,28 @@ public class EnterpriseQuestionCommonController extends BaseController {
         model.addAttribute("searchText", "");//跳转页面提供默认值
         model.addAttribute("isManager", isManager);
         return "mobile2/enterprise/common-query-list";
+    }
+
+    /**
+     * 模糊查询客户名称
+     * @param name
+     * @return
+     */
+    @RequestMapping(value = "/queryCustomerName.do")
+    @ResponseBody
+    public Map<String, Object> queryCustomerNameInfo(String name) {
+        PmisCustomerInformation customer = new PmisCustomerInformation();
+        customer.setName(name);
+        customer.setZt(Constants.PMIS_STATUS_USE);
+        int matchCount = 20;
+        Row row = new Row(0, matchCount);
+        customer.setRow(row);
+        List<PmisCustomerInformation> customerInformationList = super.getFacade().getPmisCustomerInformationService().getPmisCustomerInformationPageListFuzzy(customer);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("total", matchCount);
+        result.put("status", Constants.SUCCESS);
+        result.put("data", customerInformationList);
+        return result;
     }
 
 }

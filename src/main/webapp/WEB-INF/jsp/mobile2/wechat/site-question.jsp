@@ -150,6 +150,7 @@
         var siteId = getCookie('siteId');
         var siteName = getCookie('siteName');
         if(siteId && siteName){
+            console.log(siteName);
             $('#siteName').val(siteId);
             $('#siteInfo').text(siteName);
         }
@@ -516,11 +517,13 @@
         var menuName = $('#menuName').val();
         var questionDesc = $('#questionDesc').val();
         var priority = getListLevelValue();
+        var siteId = getCookie('siteId') ? getCookie('siteId') : ${siteId == null ? 0 : siteId};
+        var siteName = getCookie('siteName') ? getCookie('siteName') : ${siteName == null ? '0  ' : siteName};
         var questionId = ${siteQuestionInfo.id == null} ?$('#id').val():${siteQuestionInfo.id == null ? 0 :siteQuestionInfo.id};
         location.href = "<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}" +
             "&questionId="+questionId+"&type=" + type + "&source=${source}&menuName=" + encodeURI(menuName) +
             "&questionDesc=" + encodeURI(questionDesc) + "&priority=" + priority
-            +"&productId=${productId}&productName=${productName}&siteId=${siteId}&siteName=${siteName}";
+            +"&productId=${productId}&productName=${productName}&siteId="+siteId+"&siteName="+siteName;
     }
 
     function getCookie(name)
@@ -530,7 +533,7 @@
 
     function setCookie(name,value)
     {
-        window.localStorage.setItem(name, JSON.stringify(value));
+        window.localStorage.setItem(name, value);
     }
 </script>
 </html>
