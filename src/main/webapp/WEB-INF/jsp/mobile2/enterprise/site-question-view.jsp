@@ -81,11 +81,23 @@
             <strong>打回意见</strong>
             <span>${questionInfo.suggest}</span>
         </div>
+        <c:if test="${questionInfo.processStatus==2&&questionInfo.allocateUser==userId}">
+            <div class="column-2 large-list" id="solutionResult">
+                <strong>解决方案</strong>
+                <div class="collect-list-text" style="width: 80%;">
+                    <textarea id="solutionResultEdit">${questionInfo.solutionResult}</textarea>
+                </div>
+            </div>
+        </c:if>
     </div>
     <div class="wrap-foot large-btn">
-        <c:if test="${questionInfo.processStatus==1&&isManager==0}">
+        <c:if test="${(questionInfo.processStatus==1||questionInfo.processStatus==7)&&isManager==0}">
             <a href="javascript:void(0);" onclick="goUpdate();"><span>编辑</span></a>
             <a href="javascript:void(0);" onclick="goDistribute();"><span>查看分配</span></a>
+        </c:if>
+        <c:if test="${questionInfo.processStatus==2&&questionInfo.allocateUser==userId}">
+            <a href="javascript:void(0);" onclick="changeStatus(0);"><span>打回</span></a>
+            <a href="javascript:void(0);" onclick="changeStatus(1);"><span>确认完成</span></a>
         </c:if>
     </div>
 </div>
@@ -157,6 +169,50 @@
     function setListLevel(val) {
         var valStr = convertTypeToInt(val);
         $(".levelA").text(valStr);
+    }
+
+    //打回
+    function changeStatus(option) {
+        let solutionResult = $("#solutionResultEdit").val();
+        if (solutionResult == null || solutionResult == "") {
+            mui.toast('请输入解决方案', {duration: 'long', type: 'div'});
+            return;
+        }
+        let serialNo =${questionInfo.serialNo};
+        let id = ${questionInfo.id};
+        let userId =${userId};
+        $.ajax({
+            type: "POST",
+            url: "<%=basePath%>mobile/wechatSiteQuestion/changeStatus.do",
+            data: {id: id, solutionResult: solutionResult, userId: userId, serialNo: serialNo, option: option},
+            cache: false,
+            dataType: "json",
+            async: false,
+            error: function (request) {
+                mui.toast('服务端错误，或网络不稳定，本次操作被终止。', {duration: 'long', type: 'div'})
+            },
+            success: function (data) {
+                if (data.status) {
+                    if (option == 0) {
+                        mui.toast('打回成功', {duration: 'long(3500ms)', type: 'div'});
+                    } else {
+                        mui.toast('确认成功', {duration: 'long(3500ms)', type: 'div'});
+                    }
+                    //追加图片预览
+                    // setTimeout("location.reload()", 3500);
+                } else {
+                    if (option == 0) {
+                        mui.toast('打回失败', {duration: 'long(3500ms)', type: 'div'});
+                    } else {
+                        mui.toast('确认失败', {duration: 'long(3500ms)', type: 'div'});
+
+                    }
+                    //追加图片预览
+                    //setTimeout("location.reload()",3500);
+                }
+                window.location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=" + userId + "&serialNo=" + serialNo;
+            }
+        });
     }
 </script>
 </html>

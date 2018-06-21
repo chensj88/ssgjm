@@ -464,7 +464,7 @@ public class MobileSiteQuestionController extends BaseController {
      * @return
      */
     @RequestMapping("/goView.do")
-    public String goView(Model model, Long id, Long userId, String serialNo,Integer isManager) {
+    public String goView(Model model, Long id, Long userId, String serialNo, Integer isManager) {
         EtSiteQuestionInfo questionInfo = new EtSiteQuestionInfo();
         questionInfo.setId(id);
         questionInfo = getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(questionInfo);
@@ -557,7 +557,7 @@ public class MobileSiteQuestionController extends BaseController {
      * @return
      */
     @RequestMapping("/goDistributeDetail.do")
-    public String goDistributeDetail(Model model, Long id, Long userId,String serialNo,Long allocateUser) {
+    public String goDistributeDetail(Model model, Long id, Long userId, String serialNo, Long allocateUser) {
         EtSiteQuestionInfo questionInfo = new EtSiteQuestionInfo();
         questionInfo.setId(id);
         questionInfo = getFacade().getEtSiteQuestionInfoService().getEtSiteQuestionInfo(questionInfo);
@@ -579,7 +579,7 @@ public class MobileSiteQuestionController extends BaseController {
 
 
     /**
-     * 跳转分配详情页面
+     * 保存分配
      *
      * @param model
      * @param id
@@ -588,20 +588,58 @@ public class MobileSiteQuestionController extends BaseController {
      */
     @RequestMapping("/saveDistribution.do")
     @ResponseBody
-    public Map saveDistribution(Model model, Long id, Long userId,String serialNo,Long allocateUser,String hopeDate) {
+    public Map saveDistribution(Model model, Long id, Long userId, String serialNo, Long allocateUser, String hopeDate) {
         EtSiteQuestionInfo info = new EtSiteQuestionInfo();
         info.setId(id);
         info.setAllocateUser(allocateUser);
         info.setHopeFinishDate(hopeDate);
-        info.setProcessStatus(Constants.ALLOCATED_UNACCEPTED);
-        try{
+        int isManager = getPosition(serialNo, allocateUser);
+        if (isManager == 0) {
+            //接受人权限为项目经理默认直接接受（未处理）
+            info.setProcessStatus(Constants.ACCEPTED_UNTREATED);
+        } else {
+            info.setProcessStatus(Constants.ALLOCATED_UNACCEPTED);
+        }
+        try {
             super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
-            resultMap.put("status",true);
-        }catch (Exception e){
-            resultMap.put("status",false);
+            resultMap.put("status", true);
+        } catch (Exception e) {
+            resultMap.put("status", false);
         }
         return resultMap;
     }
+
+    /**
+     * 打回
+     *
+     * @param model
+     * @param id
+     * @param userId
+     * @return
+     */
+    @RequestMapping("/changeStatus.do")
+    @ResponseBody
+    public Map changeStatus(Model model, Long id, Long userId, String serialNo, String solutionResult, Integer option) {
+        EtSiteQuestionInfo info = new EtSiteQuestionInfo();
+        info.setId(id);
+        info.setSolutionResult(solutionResult);
+        if (option == 0) {
+            //打回
+            info.setProcessStatus(Constants.ENGINEER_REFUSE);
+        } else {
+            //确认接受
+            info.setProcessStatus(Constants.ACCEPTED_UNTREATED);
+        }
+
+        try {
+            super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+            resultMap.put("status", true);
+        } catch (Exception e) {
+            resultMap.put("status", false);
+        }
+        return resultMap;
+    }
+
     //    企业微信号相关controller》》》》》》》》》》》》》》》》》》》end
 
 
