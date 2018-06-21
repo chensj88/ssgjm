@@ -22,6 +22,7 @@ public class WxConstants implements Serializable {
     public static  final String QY_USER_INFO = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?";
     //第三方使用user_ticket获取成员详情
     public static  final String USER_INFO = "https://qyapi.weixin.qq.com/cgi-bin/service/getuserdetail3rd?access_token=SUITE_ACCESS_TOKEN";
-
+    //获取access_token
+    public static  final String  ACCESS_TOKEN="https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=wxac9ca7b3c2c43e81&corpsecret=X8KHKKb0O3yR7qcnQSFDzBGiPhc8urJBK5sAnUE7-j8" ;
 
 }
