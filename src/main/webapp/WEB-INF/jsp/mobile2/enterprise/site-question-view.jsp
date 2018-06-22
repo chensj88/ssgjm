@@ -65,7 +65,8 @@
 					<span class="large-img">
                     <c:if test="${questionInfo.imgPath !=null && questionInfo.imgPath !=''}">
                         <c:forEach var="img" items="${questionInfo.imgs}">
-                            <img style="width: 88px;height: 92px;" src="<%=Constants.FTP_SHARE_FLODER%>${img}" class="zoomify">
+                            <img style="width: 88px;height: 92px;" src="<%=Constants.FTP_SHARE_FLODER%>${img}"
+                                 class="zoomify">
                         </c:forEach>
                     </c:if>
 					</span>
@@ -113,7 +114,7 @@
             <a href="javascript:void(0);" onclick="goDistribute();"><span>查看分配</span></a>
         </c:if>
         <%--项目经理未处理--%>
-        <c:if test="${(questionInfo.processStatus==3||questionInfo.processStatus==6)&&isManager==0}">
+        <c:if test="${(questionInfo.processStatus==3||questionInfo.processStatus==6)&&isManager==0&&status!='6'}">
             <a href="javascript:void(0);" onclick="changeStatus(0,7,'打回');"><span>打回</span></a>
             <a href="javascript:void(0);" onclick="changeStatus(0,4,'确认');"><span>确认完成</span></a>
         </c:if>
@@ -123,7 +124,7 @@
             <a href="javascript:void(0);" onclick="changeStatus(1,3,'接受');"><span>接受</span></a>
         </c:if>
         <%--工程师未处理--%>
-        <c:if test="${questionInfo.processStatus==3&&(questionInfo.allocateUser==userId||isManager==0)&&status!='6'}">
+        <c:if test="${(questionInfo.processStatus==3||questionInfo.processStatus==6)&&(questionInfo.allocateUser==userId||isManager==1)&&status!='6'}">
             <a href="javascript:void(0);" onclick="changeStatus(1,7,'打回');"><span>打回</span></a>
             <a href="javascript:void(0);" onclick="changeStatus(1,4,'确认');"><span>确认完成</span></a>
         </c:if>
@@ -242,6 +243,7 @@
     }
 
     function changeStatus(isManager, option, optionName) {
+        let processStatus =${questionInfo.processStatus};
         let solutionResult = $("#solutionResultEdit").val();
         let suggest = $("#suggestEdit").val();
         if (option == 4) {
@@ -250,7 +252,7 @@
                 return;
             }
         }
-        if (option == 7) {
+        if (option == 7 && processStatus != 2) {
             if (suggest == null || suggest == "") {
                 mui.toast('请输入打回意见', {duration: 'long', type: 'div'});
                 return;
@@ -304,12 +306,12 @@
      * 图片预览
      * @param url
      */
-    function showImage(url){
+    function showImage(url) {
         var height = document.body.offsetHeight * 0.9;
         var width = document.body.offsetWidth * 0.9;
-        $('#imgInModalID').attr('src',url);
-        $('#imgInModalID').attr('height',height);
-        $('#imgInModalID').attr('width',width);
+        $('#imgInModalID').attr('src', url);
+        $('#imgInModalID').attr('height', height);
+        $('#imgInModalID').attr('width', width);
         $('#imgModal').modal('show');
     }
 
