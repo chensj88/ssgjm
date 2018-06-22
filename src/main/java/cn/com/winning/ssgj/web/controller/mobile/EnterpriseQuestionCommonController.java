@@ -125,21 +125,21 @@ public class EnterpriseQuestionCommonController extends BaseController {
 
     /**
      * 模糊查询客户名称
-     * @param name
+     * @param name 客户名称关键字
+     * @param count 每次显示数量
      * @return
      */
     @RequestMapping(value = "/queryCustomerName.do")
     @ResponseBody
-    public Map<String, Object> queryCustomerNameInfo(String name) {
+    public Map<String, Object> queryCustomerNameInfo(String name,int count) {
         PmisCustomerInformation customer = new PmisCustomerInformation();
         customer.setName(name);
         customer.setZt(Constants.PMIS_STATUS_USE);
-        int matchCount = 20;
-        Row row = new Row(0, matchCount);
+        Row row = new Row(0, count);
         customer.setRow(row);
         List<PmisCustomerInformation> customerInformationList = super.getFacade().getPmisCustomerInformationService().getPmisCustomerInformationPageListFuzzy(customer);
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("total", matchCount);
+        result.put("total", count);
         result.put("status", Constants.SUCCESS);
         result.put("data", customerInformationList);
         return result;
