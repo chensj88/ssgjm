@@ -282,6 +282,8 @@ public class MobileSiteQuestionController extends BaseController {
             if (info.getPriority() == null) {
                 info.setPriority(3);
             }
+            info.setCId((long) -2); //11980游客
+            info.setPmId((long) -2);//11980游客
             info.setCreateTime(new Timestamp(new Date().getTime()));
             info.setOperator(info.getCreator());
             info.setOperatorTime(new Timestamp(new Date().getTime()));

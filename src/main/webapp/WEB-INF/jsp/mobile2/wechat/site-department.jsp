@@ -84,8 +84,12 @@
 
     $(function () {
         var siteId = getCookie('siteId');
+        var productId = getCookie('productId');
         if(siteId && ${type == 1}){
             $('li[data-value='+siteId+']').css('color','#f40').css('font-weight','bolder');
+        }
+        if(productId && ${type == 2}){
+            $('li[data-value='+productId+']').css('color','#f40').css('font-weight','bolder');
         }
     });
     function selectSiteName(id,name){
@@ -97,6 +101,8 @@
             }else{
                 location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&menuName=${menuName}&questionDesc=${questionDesc}&priority=${priority}"
                     +"&siteId=${siteId}&siteName=${siteName}&productId="+id + "&productName="+encodeURI(name);
+                setCookie('productId',id);
+                setCookie('productName',name);
             }
 
     }
