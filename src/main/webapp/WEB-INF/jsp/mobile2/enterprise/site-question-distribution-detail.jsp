@@ -30,19 +30,23 @@
             font-family: 'Helvetica Neue', Helvetica, sans-serif;
         }
 
-        .large-list>div{
+        .large-list1{
+            display: flex;
+            margin-top: 15px;
+            padding: 0px 10px;
+            font-size: 13px;
+        }
+        .large-list1>strong{
+            width: 80px;
+            margin-right: 15px;
+            margin-top: 5px;
+            color: #333333;
+        }
+        .large-list1>div{
             color: #666;
-            flex: 1;
-            width:50%;
+            flex: 0.7;
+            width:30%;
             display:inline-table;
-        }
-        input{
-            padding:0px;
-        }
-        .demo{
-            height:35px;
-            line-height:35px;
-            overflow:hidden;
         }
     </style>
 </head>
@@ -52,11 +56,11 @@
 <input id="id" type="hidden" name="id" value="${questionInfo.id}">
 <div class="wrap">
     <div class="wrap-cnt">
-        <div class="column-3 large-list" >
+        <div class="column-3 large-list1" >
             <strong class="demo">期望完成时间</strong>
-            <div id="datePicker" class="input-group date">
+            <div id="datePicker" class="input-group date" style="width: 100px;">
                 <input id="hopeDate" type="text" class="form-control input-sm"
-                       style="padding: 0px;height: 30px;width:150px;" readonly >
+                       style="padding: 0px;height:30px;width:100%;" readonly >
                 <span class="input-group-addon">
                     <i class="glyphicon glyphicon-th"></i>
                 </span>
