@@ -65,8 +65,7 @@
 					<span class="large-img">
                     <c:if test="${questionInfo.imgPath !=null && questionInfo.imgPath !=''}">
                         <c:forEach var="img" items="${questionInfo.imgs}">
-                            <img style="width: 88px;height: 92px;" src="<%=Constants.FTP_SHARE_FLODER%>${img}"
-                                 class="zoomify">
+                            <img style="width: 88px;height: 92px;" src="<%=Constants.FTP_SHARE_FLODER%>${img}" class="zoomify">
                         </c:forEach>
                     </c:if>
 					</span>
@@ -305,12 +304,12 @@
      * 图片预览
      * @param url
      */
-    function showImage(url) {
+    function showImage(url){
         var height = document.body.offsetHeight * 0.9;
         var width = document.body.offsetWidth * 0.9;
-        $('#imgInModalID').attr('src', url);
-        $('#imgInModalID').attr('height', height);
-        $('#imgInModalID').attr('width', width);
+        $('#imgInModalID').attr('src',url);
+        $('#imgInModalID').attr('height',height);
+        $('#imgInModalID').attr('width',width);
         $('#imgModal').modal('show');
     }
 

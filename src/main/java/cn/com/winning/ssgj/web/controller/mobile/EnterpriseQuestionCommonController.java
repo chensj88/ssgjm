@@ -77,7 +77,7 @@ public class EnterpriseQuestionCommonController extends BaseController {
             log.setCId(-2L);
             log.setContent(searchText);
             log.setSourceType(searchType);
-            log.setProcessStatus(Integer.valueOf(status));
+            log.setProcessStatus(status);
             log.setOperator(userId);
             log.setOperatorTime(new Timestamp(new Date().getTime()));
             getFacade().getEtUserLogService().createEtUserLog(log);
