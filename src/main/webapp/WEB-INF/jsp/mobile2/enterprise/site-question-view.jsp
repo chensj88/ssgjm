@@ -82,7 +82,7 @@
             <strong>打回意见</strong>
             <span>${questionInfo.suggest}</span>
         </div>
-        <c:if test="${questionInfo.processStatus==3&&(questionInfo.allocateUser==userId||isManager==0)}">
+        <c:if test="${(questionInfo.processStatus==3||questionInfo.processStatus==6)&&(questionInfo.allocateUser==userId||isManager==0)&&status!='6'}">
             <div class="column-2 large-list" id="solutionResultEditDiv">
                 <strong>解决方案</strong>
                 <div class="collect-list-text" style="width: 80%;">
@@ -90,15 +90,15 @@
                 </div>
             </div>
         </c:if>
-        <c:if test="${questionInfo.processStatus==3&&(questionInfo.allocateUser==userId||isManager==0)}">
-            <div class="column-2 large-list" id="userMessageEditDiv">
-                <strong>院方意见</strong>
-                <div class="collect-list-text" style="width: 80%;">
-                    <textarea id="userMessageEdit">${questionInfo.solutionResult}</textarea>
-                </div>
-            </div>
-        </c:if>
-        <c:if test="${questionInfo.processStatus==3&&(questionInfo.allocateUser==userId||isManager==0)}">
+        <%--<c:if test="${(questionInfo.allocateUser==userId||isManager==0)}">--%>
+        <%--<div class="column-2 large-list" id="userMessageEditDiv">--%>
+        <%--<strong>院方意见</strong>--%>
+        <%--<div class="collect-list-text" style="width: 80%;">--%>
+        <%--<textarea id="userMessageEdit">${questionInfo.solutionResult}</textarea>--%>
+        <%--</div>--%>
+        <%--</div>--%>
+        <%--</c:if>--%>
+        <c:if test="${(questionInfo.processStatus==3||questionInfo.processStatus==6)&&(questionInfo.allocateUser==userId||isManager==0)&&status!='6'}">
             <div class="column-2 large-list" id="suggestEditDiv">
                 <strong>打回意见</strong>
                 <div class="collect-list-text" style="width: 80%;">
@@ -123,27 +123,66 @@
             <a href="javascript:void(0);" onclick="changeStatus(1,3,'接受');"><span>接受</span></a>
         </c:if>
         <%--工程师未处理--%>
-        <c:if test="${(questionInfo.processStatus==3||questionInfo.processStatus==6)&&questionInfo.allocateUser==userId&&isManager==1}">
+        <c:if test="${questionInfo.processStatus==3&&(questionInfo.allocateUser==userId||isManager==0)&&status!='6'}">
             <a href="javascript:void(0);" onclick="changeStatus(1,7,'打回');"><span>打回</span></a>
             <a href="javascript:void(0);" onclick="changeStatus(1,4,'确认');"><span>确认完成</span></a>
         </c:if>
     </div>
 </div>
+<div class="modal fade text-center" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-xs">
+        <div class="modal-content">
+            <img id="imgInModalID" src="" onclick="closeModal()">
+        </div>
+    </div>
+</div>
+<input id="status" type="hidden" value="${status}"/>
 </body>
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript" charset="utf-8"></script>
-<script src="<%=basePath%>resources/zoomify/js/zoomify.min.js" type="text/javascript"  charset="utf-8"></script>
+<script src="<%=basePath%>resources/zoomify/js/zoomify.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
     $(function () {
         enterprise.init();
         setListLevel(${questionInfo.priority});
         //工程师打回：7
         let processStatus =${questionInfo.processStatus};
-        if (processStatus == 7 || processStatus == 4 || processStatus == 5 || processStatus == 6) {
+        let status = $("#status").val();
+        if (status == "1,7") {
+            //待分配
+            if (processStatus == 7) {
+                $("#solutionResult").show();
+                $("#userMessage").show();
+                $("#suggest").show();
+            }
+
+        } else if (status == "2") {
+            //待接受
+            $("#solutionResult").hide();
+            $("#userMessage").hide();
+            $("#suggest").hide();
+        } else if (status == "3,6") {
+            //已接收未处理
+            if (processStatus == 3) {
+                $("#userMessage").hide();
+            } else {
+                $("#userMessage").show();
+            }
+        } else if (status == "4,5") {
+            //已处理
+            if (processStatus == 4) {
+                $("#solutionResult").show();
+            } else {
+                $("#solutionResult").show();
+                $("#userMessage").show();
+            }
+
+        } else if (status == "6") {
+            //已打回
             $("#solutionResult").show();
             $("#userMessage").show();
-            $("#suggest").show();
+
         } else {
             $("#solutionResult").hide();
             $("#userMessage").hide();
