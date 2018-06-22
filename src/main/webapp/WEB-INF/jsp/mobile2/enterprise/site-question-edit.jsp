@@ -75,6 +75,10 @@
         </div>
         <div class="column-2 collect-list">
             <strong>问题描述</strong>
+
+
+
+
             <div>
                 <textarea id="questionDesc"
                           name="questionDesc">${questionInfo.questionDesc}</textarea>

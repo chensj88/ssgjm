@@ -87,7 +87,7 @@
             <div class="column-2 large-list" id="solutionResultEditDiv">
                 <strong>解决方案</strong>
                 <div class="collect-list-text" style="width: 80%;">
-                    <textarea id="solutionResultEdit">${questionInfo.solutionResult}</textarea>
+                    <textarea id="solutionResultEdit" style="font-size:12px">${questionInfo.solutionResult}</textarea>
                 </div>
             </div>
         </c:if>
@@ -103,7 +103,7 @@
             <div class="column-2 large-list" id="suggestEditDiv">
                 <strong>打回意见</strong>
                 <div class="collect-list-text" style="width: 80%;">
-                    <textarea id="suggestEdit">${questionInfo.solutionResult}</textarea>
+                    <textarea id="suggestEdit" style="font-size:12px">${questionInfo.solutionResult}</textarea>
                 </div>
             </div>
         </c:if>
