@@ -57,7 +57,7 @@ public class EtUserHospitalLog extends BaseDomain implements Serializable {
 	/**
 	 * @val 操作时间
 	 */
-	private Date operatorTime;
+	private java.sql.Timestamp operatorTime;
 	
 	public EtUserHospitalLog() {
 
@@ -172,14 +172,14 @@ public class EtUserHospitalLog extends BaseDomain implements Serializable {
 	/**
 	 * @val 操作时间
 	 */
-	public Date getOperatorTime() {
+	public java.sql.Timestamp getOperatorTime() {
 		return operatorTime;
 	}
 	
 	/**
 	 * @val 操作时间
 	 */
-	public void setOperatorTime(Date operatorTime) {
+	public void setOperatorTime(java.sql.Timestamp operatorTime) {
 		this.operatorTime = operatorTime;
 	}
 	

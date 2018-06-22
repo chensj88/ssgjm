@@ -77,19 +77,16 @@
     mui.ready(function() {
         var header = document.querySelector('.wrap-header');
         var list = document.getElementById('list');
-        //list.style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
         list.style.height = (document.body.offsetHeight - 0) + 'px';
         window.indexedList = new mui.IndexedList(list);
     });
 
     $(function () {
-        var siteId = getCookie('siteId');
-        var productId = getCookie('productId');
-        if(siteId && ${type == 1}){
-            $('li[data-value='+siteId+']').css('color','#f40').css('font-weight','bolder');
+        if(${type == 1 && logInfo.siteName!= null}){
+            $('li[data-value=${logInfo.siteName}]').css('color','#f40').css('font-weight','bolder');
         }
-        if(productId && ${type == 2}){
-            $('li[data-value='+productId+']').css('color','#f40').css('font-weight','bolder');
+        if(${type == 2 && logInfo.productName!= null}){
+            $('li[data-value=${logInfo.productName}]').css('color','#f40').css('font-weight','bolder');
         }
     });
     function selectSiteName(id,name){
@@ -97,7 +94,8 @@
                 var json = {
                     operator:${userId},
                     serialNo:${serialNo},
-                    siteName:id
+                    siteName:id,
+                    id:${logInfo.id == null ? -1 : logInfo.id}
                 };
                 $.ajax({
                     type: "POST",
@@ -111,7 +109,7 @@
                     },
                     success: function (data) {
                         location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&menuName=${menuName}&questionDesc=${questionDesc}&priority=${priority}"
-                            +"&siteId="+id + "&siteName="+encodeURI(name)+"&productId=${productId}&productName=${productName}&logId="+data.data;
+                            +"&logId="+data.data;
                     }
                 });
 
@@ -119,9 +117,9 @@
                 var json = {
                     operator:${userId},
                     serialNo:${serialNo},
-                    productName:id
+                    productName:id,
+                    id:${logInfo.id == null ? -1 : logInfo.id}
                 };
-                var logId = addEtUserHospitalLog(json);
                 $.ajax({
                     type: "POST",
                     url: "<%=basePath%>mobile/commons/addOperateDeptOrProductLog.do",
@@ -134,28 +132,12 @@
                     },
                     success: function (data) {
                         location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&menuName=${menuName}&questionDesc=${questionDesc}&priority=${priority}"
-                            +"&siteId=${siteId}&siteName=${siteName}&productId="+id + "&productName="+encodeURI(name)+"&logId="+data.data;
+                            +"&logId="+data.data;
                     }
                 });
 
             }
 
-    }
-    function  addEtUserHospitalLog(json) {
-        $.ajax({
-            type: "POST",
-            url: "<%=basePath%>mobile/commons/addOperateDeptOrProductLog.do",
-            data: json,
-            cache: false,
-            dataType: "json",
-            async: false,
-            error: function (request) {
-                mui.toast('服务端错误，或网络不稳定，本次操作被终止。', {duration: 'long', type: 'div'})
-            },
-            success: function (data) {
-                return data.data;
-            }
-        });
     }
 
 </script>

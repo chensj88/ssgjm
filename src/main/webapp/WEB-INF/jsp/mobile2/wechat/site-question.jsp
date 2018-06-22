@@ -509,14 +509,12 @@
         var menuName = $('#menuName').val();
         var questionDesc = $('#questionDesc').val();
         var priority = getListLevelValue();
-        var siteId = getCookie('siteId') ? getCookie('siteId') : ${siteId == null ? 0 : siteId};
-        var siteName = getCookie('siteName') ? getCookie('siteName') : ${siteName == null ? '0  ' : siteName};
         var questionId = ${siteQuestionInfo.id == null} ?$('#id').val():${siteQuestionInfo.id == null ? 0 :siteQuestionInfo.id};
         var logId = ${logInfo.id == null ? -1 : logInfo.id };
         location.href = "<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}" +
             "&questionId="+questionId+"&type=" + type + "&source=${source}&menuName=" + encodeURI(menuName) +
             "&questionDesc=" + encodeURI(questionDesc) + "&priority=" + priority
-            +"&productId=${productId}&productName=${productName}&siteId="+siteId+"&siteName="+siteName+"&logId="+logId;
+            +"&logId="+logId;
     }
 
 </script>

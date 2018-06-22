@@ -28,7 +28,7 @@
 	   <if test="productName != null and productName != ''"> and t.PRODUCT_NAME = #{productName} </if>
 	   <if test="(sourceType != null and sourceType != '') or sourceType == 0"> and t.SOURCE_TYPE = #{sourceType} </if>
 	   <if test="(operator != null and operator != '') or operator == 0"> and t.OPERATOR = #{operator} </if>
-	   <if test="operatorTime != null and operatorTime != ''"> and t.OPERATOR_TIME = #{operatorTime} </if>
+	   <if test="operatorTime != null "> and t.OPERATOR_TIME = #{operatorTime} </if>
 	</sql>
 
 	<select id="selectEtUserHospitalLog" resultMap="etUserHospitalLogResult" parameterType="etUserHospitalLog">
@@ -72,7 +72,7 @@
 		   <if test="productName != null and productName != ''"> PRODUCT_NAME, </if>
 	       <if test="(sourceType != null and sourceType != '') or sourceType == 0"> SOURCE_TYPE, </if>
 	       <if test="(operator != null and operator != '') or operator == 0"> OPERATOR, </if>
-		   <if test="operatorTime != null and operatorTime != ''"> OPERATOR_TIME, </if>
+		   <if test="operatorTime != null "> OPERATOR_TIME, </if>
 		</trim>
 		values
 		<trim prefix="(" suffix=")" suffixOverrides=",">
@@ -84,7 +84,7 @@
 		   <if test="productName != null and productName != ''"> #{productName, jdbcType=VARCHAR}, </if>
 	       <if test="(sourceType != null and sourceType != '') or sourceType == 0"> #{sourceType, jdbcType=INTEGER}, </if>
 	       <if test="(operator != null and operator != '') or operator == 0"> #{operator, jdbcType=BIGINT}, </if>
-		   <if test="operatorTime != null and operatorTime != ''"> #{operatorTime, jdbcType=TIMESTAMP}, </if>
+		   <if test="operatorTime != null "> #{operatorTime, jdbcType=TIMESTAMP}, </if>
 		</trim>
 	</insert>
 
@@ -100,7 +100,7 @@
 			   <if test="productName != null and productName != ''"> PRODUCT_NAME = #{productName, jdbcType=VARCHAR}, </if>
 			   <if test="(sourceType != null and sourceType != '') or sourceType == 0"> SOURCE_TYPE = #{sourceType, jdbcType=INTEGER}, </if>
 			   <if test="(operator != null and operator != '') or operator == 0"> OPERATOR = #{operator, jdbcType=BIGINT}, </if>
-			   <if test="operatorTime != null and operatorTime != ''"> OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP}, </if>
+			   <if test="operatorTime != null "> OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP}, </if>
 			</trim>
 		</set>
 		where

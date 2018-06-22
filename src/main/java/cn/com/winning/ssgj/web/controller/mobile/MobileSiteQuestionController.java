@@ -62,6 +62,7 @@ public class MobileSiteQuestionController extends BaseController {
         EtUserHospitalLog log = new EtUserHospitalLog();
         log.setSerialNo(serialNo);
         log.setOperator(userId);
+        log.setSourceType(1);
         model.addAttribute("logInfo", getFacade().getEtUserHospitalLogService().getEtUserHospitalLog(log));
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
@@ -105,11 +106,17 @@ public class MobileSiteQuestionController extends BaseController {
      */
     @RequestMapping(value = "/openDept.do")
     public String openDept(Model model, Long userId, String serialNo, Long questionId, String type,
-                           String siteId, String siteName,
-                           String productId, String productName,
+                           String siteName, String productName,Long logId,
                            String menuName, String questionDesc, String priority, String source) throws ParseException {
         EtDepartment dept = new EtDepartment();
         dept.setSerialNo(Long.parseLong(serialNo));
+        EtUserHospitalLog log = new EtUserHospitalLog();
+        log.setId(logId);
+        log.setSerialNo(serialNo);
+        log.setSiteName("0".equals(siteName)? null : siteName);
+        log.setSourceType(1);
+        log.setProductName("0".equals(productName)? null : productName);
+        log.setOperator(userId);
         model.addAttribute("questionId", questionId);
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
@@ -118,10 +125,7 @@ public class MobileSiteQuestionController extends BaseController {
         model.addAttribute("menuName", menuName);
         model.addAttribute("questionDesc", questionDesc);
         model.addAttribute("priority", priority);
-        model.addAttribute("siteId", siteId);
-        model.addAttribute("siteName", siteName);
-        model.addAttribute("productId", productId);
-        model.addAttribute("productName", productName);
+        model.addAttribute("logInfo", getFacade().getEtUserHospitalLogService().getEtUserHospitalLog(log));
         if ("1".equals(type)) {
             model.addAttribute("title", "科室病区");
             model.addAttribute("firstInit", getFacade().getEtDepartmentService().getEtDepartmentFirstInitCode(dept));
@@ -143,15 +147,11 @@ public class MobileSiteQuestionController extends BaseController {
      * @param userId     用户ID
      * @param serialNo   客户号
      * @param type       类型 1 科室病区 2系统
-     * @param siteName   科室ID或系统ID
      * @return
      */
     @RequestMapping(value = "/changeDept.do")
     public String changeDept(Model model, String questionId, Long userId, String serialNo, String type,
-                             String siteId, String siteName,
-                             String productId, String productName,
-                             String source, String menuName,
-                             String questionDesc, String priority,Long logId) {
+                             Long logId,String source, String menuName, String questionDesc, String priority) {
         if (StringUtils.isNotBlank(questionId)) {
             EtSiteQuestionInfo info = new EtSiteQuestionInfo();
             info.setId(Long.parseLong(questionId));
@@ -168,10 +168,6 @@ public class MobileSiteQuestionController extends BaseController {
         EtUserHospitalLog log = new EtUserHospitalLog();
         log.setId(logId);
         model.addAttribute("logInfo", getFacade().getEtUserHospitalLogService().getEtUserHospitalLog(log));
-        model.addAttribute("siteId", siteId);
-        model.addAttribute("siteName", siteName);
-        model.addAttribute("productId", productId);
-        model.addAttribute("productName", productName);
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
         model.addAttribute("source", source);
