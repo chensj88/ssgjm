@@ -71,7 +71,7 @@
         grid: {
             top: '10',
             left: '0%',
-            right: '0%',
+            right: '8%',
             bottom: '0%',
             containLabel: true
         },
