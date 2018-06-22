@@ -19,7 +19,9 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css"/>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/zoomify/css/zoomify.min.css"/>
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/jquery-ui/css/jquery-ui.min.css" />
+    <%--<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/jquery-ui/css/jquery-ui.min.css" />--%>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/bootstrap/css/bootstrap-datepicker3.min.css"/>
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <style type="text/css">
@@ -28,11 +30,19 @@
             font-family: 'Helvetica Neue', Helvetica, sans-serif;
         }
 
-        .large-list>input{
+        .large-list>div{
             color: #666;
             flex: 1;
-            width:40%;
-            height:30px;
+            width:50%;
+            display:inline-table;
+        }
+        input{
+            padding:0px;
+        }
+        .demo{
+            height:35px;
+            line-height:35px;
+            overflow:hidden;
         }
     </style>
 </head>
@@ -42,20 +52,17 @@
 <input id="id" type="hidden" name="id" value="${questionInfo.id}">
 <div class="wrap">
     <div class="wrap-cnt">
-        <%--<div class="column-3 large-list row">--%>
-            <%--<div class="col-xs-4 " style="padding-right: 0">--%>
-                <%--<strong>期望完成时间</strong>--%>
-            <%--</div>--%>
-            <%--<div id="datePicker" class="col-xs-6 input-group date" style="height: 30px">--%>
-                <%--<input id="hopeDate" type="text" class="form-control"><span class="input-group-addon"><i--%>
-                    <%--class="glyphicon glyphicon-th"></i></span>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-        <div class="column-3 large-list">
-            <strong>期望完成时间</strong>
-            <input type="text" id="hopeDate"/>
+        <div class="column-3 large-list" >
+            <strong class="demo">期望完成时间</strong>
+            <div id="datePicker" class="input-group date">
+                <input id="hopeDate" type="text" class="form-control input-sm"
+                       style="padding: 0px;height: 30px;width:150px;" readonly >
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-th"></i>
+                </span>
+            </div>
         </div>
-        <div class="column-3 large-list" style="margin-top: 0">
+        <div class="column-3 large-list" >
             <strong>问题完成人</strong>
             <span>${sysUserInfo.yhmc}</span>
         </div>
@@ -119,7 +126,9 @@
 <script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=basePath%>resources/zoomify/js/zoomify.min.js" type="text/javascript"  charset="utf-8"></script>
-<script src="<%=basePath%>resources/jquery-ui/js/jquery-ui.min.js"></script>
+<script src="<%=basePath%>resources/bootstrap/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="<%=basePath%>resources/bootstrap/js/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>
+<%--<script src="<%=basePath%>resources/jquery-ui/js/jquery-ui.min.js"></script>--%>
 <script type="text/javascript">
     $(function () {
         enterprise.init();
@@ -135,28 +144,29 @@
         <%--$("#userMessage").hide();--%>
         <%--$("#suggest").hide();--%>
         <%--}--%>
-//        $('#datePicker').datepicker({
-//            format: "yyyy-mm-dd",
-//            clearBtn: true,
-//            language: "zh-CN",
-//            autoclose: true,
-//            todayHighlight: true,
-//            toggleActive: true
-//        });
-        $( "#hopeDate" ).datepicker({
-            showAnim:'slideDown', //显示动画样式
-            dateFormat: 'yy-mm-dd',//时间样式
-            dayNamesMin: ['日','一','二','三','四','五','六'], //指定星期中天的最小格式
-            monthNames : ['一月','二月','三月','四月','五月','六月', '七月','八月','九月','十月','十一月','十二月'],//指定月份的长格式
-            monthNamesShort  : ['一月','二月','三月','四月','五月','六月', '七月','八月','九月','十月','十一月','十二月'],//指定月份的简写
-            changeMonth: true, //显示月份 可以选择
-            changeYear: true ,//显示年份 可以选择
-            showOtherMonths: true,
-            selectOtherMonths: true,
-            minDate: 0,
-            autoSize: true,
-            regional:'zh'
+        $('#datePicker').datepicker({
+            format: "yyyy-mm-dd",
+            clearBtn: true,
+            language: "zh-CN",
+            autoclose: true,
+            todayHighlight: true,
+            toggleActive: true,
+            startDate:new Date()
         });
+//        $( "#hopeDate" ).datepicker({
+//            showAnim:'slideDown', //显示动画样式
+//            dateFormat: 'yy-mm-dd',//时间样式
+//            dayNamesMin: ['日','一','二','三','四','五','六'], //指定星期中天的最小格式
+//            monthNames : ['一月','二月','三月','四月','五月','六月', '七月','八月','九月','十月','十一月','十二月'],//指定月份的长格式
+//            monthNamesShort  : ['一月','二月','三月','四月','五月','六月', '七月','八月','九月','十月','十一月','十二月'],//指定月份的简写
+//            changeMonth: true, //显示月份 可以选择
+//            changeYear: true ,//显示年份 可以选择
+//            showOtherMonths: true,
+//            selectOtherMonths: true,
+//            minDate: 0,
+//            autoSize: true,
+//            regional:'zh'
+//        });
 
         $('.zoomify').zoomify();
     });
