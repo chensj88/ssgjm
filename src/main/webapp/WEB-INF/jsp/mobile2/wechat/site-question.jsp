@@ -433,19 +433,19 @@
     function changeListLevel(val) {
         switch (val) {
             case 1 :
-                $('#remark').text("注：A等级项目完成时间为1个工作日");
+                $('#remark').text("注：A等级项目期望完成时间是1天内，供项目经理参考安排工作");
                 break;
             case 2 :
-                $('#remark').text("注：B等级项目完成时间为3个工作日");
+                $('#remark').text("注：B等级项目期望完成时间是3天内，供项目经理参考安排工作");
                 break;
             case 3 :
-                $('#remark').text("注：C等级项目完成时间为7个工作日");
+                $('#remark').text("注：C等级项目期望完成时间是7天内，供项目经理参考安排工作");
                 break;
             case 4 :
-                $('#remark').text("注：D等级项目完成时间为15个工作日");
+                $('#remark').text("注：D等级项目期望完成时间是15天内，供项目经理参考安排工作");
                 break;
             default :
-                $('#remark').text("注：C等级项目完成时间为7个工作日");
+                $('#remark').text("注：C等级项目期望完成时间是7天内，供项目经理参考安排工作");
         }
     }
 
