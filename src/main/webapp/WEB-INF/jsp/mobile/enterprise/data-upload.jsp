@@ -10,20 +10,23 @@
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
 		<link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css" />
-		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_l39bx41qun2ke29.css"/>
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_9raiir53539.css"/>
+		<script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>
 		<style type="text/css">
 		</style>
 	</head>
 
 	<body>
-		<div class="mui-content datum">
+	<div class="wrap">
+
+	<div class="wrap-cnt mui-content datum">
 		    <!--header-->
-			<div class="header">
-				<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
-				<div>实施资料上传</div>
-				<span class="mui-icon mui-icon-more"></span>
-			</div>
-			<div class="hole"></div>
+			<%--<div class="header">--%>
+				<%--<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>--%>
+				<%--<div>实施资料上传</div>--%>
+				<%--<span class="mui-icon mui-icon-more"></span>--%>
+			<%--</div>--%>
 			<div class="datum-item">
 				<div class="datum-row">
 					<span>调研报告</span>
@@ -123,14 +126,51 @@
 				</ul>
 			</div>
 		</div>
+
+
+		<!--底部菜单-->
+		<div class="wrap-foot">
+			<div onclick="openIndexPage()">
+				<i class="iconfont icon-task"></i>
+				任务
+			</div>
+			<div onclick="siteLoad();">
+				<i class="iconfont icon-site"></i>
+				站点
+			</div>
+			<div class="active" onclick="onlineLoad();">
+				<i class="iconfont icon-upload"></i>
+				上传
+			</div>
+			<div>
+				<a href="#popover" id="openPopover" class="iconfont icon-wo" style="color: #A4A5AB;"></a>
+				<span style="color: #A4A5AB;">我</span>
+			</div>
+		</div>
+	</div>
+
 		<script src="<%=basePath%>resources/mobile/js/mui.min.js"></script>
 		<script type="text/javascript">
-			mui.init();
+            $(function () {
+                mui.init();
+                IMS.menuTab();
+            });
 
 			function fileDatail(id) {
 				alert(id);
             }
 
+            function openIndexPage() {
+                location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=${userId}&serialNo=${serialNo}";
+            }
+
+            function siteLoad() {
+                location.href="<%=basePath%>/mobile/siteInstall/list.do?userId=${userId}&serialNo=${serialNo}";
+            }
+
+            function onlineLoad() {
+                location.href="<%=basePath%>/mobile/implementData/list.do?userId=${userId}&serialNo=${serialNo}"
+            }
 		</script>
 	</body>
 

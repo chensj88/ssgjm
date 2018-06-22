@@ -44,40 +44,43 @@ public class SiteInstallController extends BaseController {
      * @Description: 站点安装登记
      */
     @RequestMapping(value = "/list.do")
-    public String siteInstall(Model model, String parameter) {
+    public String siteInstall(Model model, String userId,String serialNo) {
         EtSiteInstall entity = new EtSiteInstall();
         //String parameter2 = "eyJXT1JLTlVNIjoiMTQyMCJ9"; //工号
         //String hospcode="11980";  //客户号
         //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
         try{
-            String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
-            ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
-            String work_num = null;
-            String hospcode = null;
-            if (userList != null && !userList.equals("")) {
-                for (int i = 0; i < userList.size(); i++) { //  推荐用这个
-                    JSONObject io = userList.get(i);
-                    work_num = (String) io.get("WORKNUM");
-                    hospcode = (String) io.get("HOSPCODE");
-                }
-            }
+            //String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
+            //ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
+ //           String work_num = "5823";
+  //          String hospcode = "11403";
+ //           if (userList != null && !userList.equals("")) {
+//                for (int i = 0; i < userList.size(); i++) { //  推荐用这个
+//                    JSONObject io = userList.get(i);
+////                    work_num = (String) io.get("WORKNUM");
+////                    hospcode = (String) io.get("HOSPCODE");
+//                    work_num = "5823";
+//                    hospcode = "11403";
+//
+//                }
+//            }
             SysUserInfo info = new SysUserInfo();
-            info.setUserid(work_num);
+            info.setId(Long.valueOf(userId));
             info.setStatus(1);
             info.setUserType("1");  //0医院1公司员工
             info = super.getFacade().getSysUserInfoService().getSysUserInfo(info);
             List<EtSiteInstall> installList = new ArrayList<EtSiteInstall>();
             if(info !=null){
                 //根据客户编号 找出对应的全部
-                entity.setSerialNo(hospcode);
+                entity.setSerialNo(serialNo);
                 installList = super.getFacade().getEtSiteInstallService().getEtSiteInstallListWithSum(entity);
 
             }else{
 
             }
             model.addAttribute("installList",installList);
-            model.addAttribute("userId",work_num);
-            model.addAttribute("serialNo",hospcode);
+            model.addAttribute("userId",userId);
+            model.addAttribute("serialNo",serialNo);
         }catch (Exception e){
 
         }

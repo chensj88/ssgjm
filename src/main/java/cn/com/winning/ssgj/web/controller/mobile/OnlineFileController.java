@@ -40,43 +40,29 @@ public class OnlineFileController extends BaseController {
 
 
     @RequestMapping(value = "/list.do")
-    public String floorQuestionList(Model model, String parameter) {
+    public String floorQuestionList(Model model,String userId,String serialNo) {
 
         EtOnlineFile onlineFile = new  EtOnlineFile();
         //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
         try{
-            byte[] byteArray = Base64Utils.decryptBASE64(parameter);
-            String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
-            List<JSONObject> userList = JSON.parseArray(userJsonStr,JSONObject.class);
-            String work_num =null;
-            String hospcode =null;
-            if (userList != null && !userList.equals("")) {
-                for (int i = 0; i < userList.size(); i++) { //  推荐用这个
-                    JSONObject io = userList.get(i);
-                    work_num =(String) io.get("WORKNUM");
-                    hospcode=(String) io.get("HOSPCODE");
-                }
-            }
-//            String work_num ="5823";
-//            String hospcode ="10159";
             //获取用户的信息
             SysUserInfo info = new SysUserInfo();
-            info.setUserid(work_num);
+            info.setId(Long.valueOf(userId));
             info.setStatus(1);
             info.setUserType("1");  //0医院1公司员工
             info = super.getFacade().getSysUserInfoService().getSysUserInfo(info);
             if(info !=null){
                 //根据客户编号 找出对应的全部 1.业务流程调研 = 调研报告
                 EtBusinessProcess businessProcess = new EtBusinessProcess();
-                businessProcess.setSerialNo(hospcode);
+                businessProcess.setSerialNo(serialNo);
                 businessProcess.setIsScope(1);
                 List<EtBusinessProcess> businessProcessesList = super.getFacade().getEtBusinessProcessService().getEtBusinessProcessList(businessProcess);
                 //根据客户编号 找出对应的全部 2.单据报表开发 = 单据
                 EtReport report=new EtReport();
-                report.setSerialNo(hospcode);
+                report.setSerialNo(serialNo);
                 List<EtReport> reportList = super.getFacade().getEtReportService().getEtReportList(report);
                 //根据客户编号 找出对应的全部 3.上线可行性评估 = 上线联调报告 4.上线切换方案
-                onlineFile.setSerialNo(hospcode);
+                onlineFile.setSerialNo(serialNo);
                 onlineFile.setStatus(1);
                 onlineFile.setFileType("3");
                 List<EtOnlineFile> onlineFileList_three = super.getFacade().getEtOnlineFileService().getEtOnlineFileList(onlineFile);
@@ -89,8 +75,8 @@ public class OnlineFileController extends BaseController {
             }else{
 
             }
-            model.addAttribute("userId",work_num);
-            model.addAttribute("serialNo",hospcode);
+            model.addAttribute("userId",userId);
+            model.addAttribute("serialNo",serialNo);
 
         }catch (Exception e){
             e.printStackTrace();
