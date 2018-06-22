@@ -11,7 +11,7 @@
 		<result column="CONTENT" property="content" jdbcType="LONGVARCHAR" />
 		<result column="OPERATOR" property="operator" jdbcType="BIGINT" />
 		<result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP" />
-		<result column="PROCESS_STATUS" property="processStatus" jdbcType="INTEGER"/>
+		<result column="PROCESS_STATUS" property="processStatus" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<resultMap id="etUserLogResult" type="etUserLog" extends="etUserLogResultForList">
@@ -79,7 +79,7 @@
 		   <if test="content != null and content != ''"> #{content, jdbcType=LONGVARCHAR}, </if>
 	       <if test="(operator != null and operator != '') or operator == 0"> #{operator, jdbcType=BIGINT}, </if>
 		   <if test="operatorTime != null "> #{operatorTime, jdbcType=TIMESTAMP}, </if>
-			<if test="(processStatus != null and processStatus != '') or processStatus == 0"> #{processStatus , jdbcType=INTEGER},</if>
+			<if test="(processStatus != null and processStatus != '') or processStatus == 0"> #{processStatus , jdbcType=VARCHAR},</if>
 		</trim>
 	</insert>
 
@@ -95,7 +95,7 @@
 			   <if test="content != null and content != ''"> CONTENT = #{content, jdbcType=LONGVARCHAR}, </if>
 			   <if test="(operator != null and operator != '') or operator == 0"> OPERATOR = #{operator, jdbcType=BIGINT}, </if>
 			   <if test="operatorTime != null "> OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP}, </if>
-				<if test="(processStatus != null and processStatus != '') or processStatus == 0"> PROCESS_STATUS = #{processStatus, jdbcType=INTEGER},</if>
+				<if test="(processStatus != null and processStatus != '') or processStatus == 0"> PROCESS_STATUS = #{processStatus, jdbcType=VARCHAR},</if>
 			</trim>
 		</set>
 		where

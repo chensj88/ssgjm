@@ -57,7 +57,7 @@ public class EtUserLog extends BaseDomain implements Serializable {
 	/**
 	 * @val 流程状态
 	 */
-	private Integer processStatus;
+	private String processStatus;
 	
 	public EtUserLog() {
 
@@ -173,7 +173,7 @@ public class EtUserLog extends BaseDomain implements Serializable {
 	 * @val 流程状态
 	 * @return
 	 */
-	public Integer getProcessStatus() {
+	public String getProcessStatus() {
 		return processStatus;
 	}
 
@@ -181,7 +181,7 @@ public class EtUserLog extends BaseDomain implements Serializable {
 	 * @val 流程状态
 	 * @param processStatus
 	 */
-	public void setProcessStatus(Integer processStatus) {
+	public void setProcessStatus(String processStatus) {
 		this.processStatus = processStatus;
 	}
 }
