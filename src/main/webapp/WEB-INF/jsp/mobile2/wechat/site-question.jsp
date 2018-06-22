@@ -156,6 +156,10 @@
             setCookie('siteId',${siteId});
             setCookie('siteName','${siteName}');
         }
+        if(${productId !=null and productName != null}){
+            setCookie('productId',${productId});
+            setCookie('productName','${productName}');
+        }
         var siteId = getCookie('siteId');
         var siteName = getCookie('siteName');
         var productId = getCookie('productId');
@@ -539,25 +543,6 @@
             "&questionId="+questionId+"&type=" + type + "&source=${source}&menuName=" + encodeURI(menuName) +
             "&questionDesc=" + encodeURI(questionDesc) + "&priority=" + priority
             +"&productId=${productId}&productName=${productName}&siteId="+siteId+"&siteName="+siteName;
-    }
-
-    /**
-     * 从本地缓存中读取缓存数据
-     * @param name
-     */
-    function getCookie(name)
-    {
-        return window.localStorage.getItem(name);
-    }
-
-    /**
-     * 保存数据到本地缓存
-     * @param name
-     * @param value
-     */
-    function setCookie(name,value)
-    {
-        window.localStorage.setItem(name, value);
     }
 
 </script>

@@ -107,15 +107,5 @@
 
     }
 
-    function getCookie(name)
-    {
-        return window.localStorage.getItem(name);
-    }
-
-    function setCookie(name,value)
-    {
-        window.localStorage.setItem(name, value);
-    }
-
 </script>
 </html>
