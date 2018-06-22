@@ -129,13 +129,6 @@
         </c:if>
     </div>
 </div>
-<div class="modal fade text-center" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" >
-    <div class="modal-dialog modal-xs" >
-        <div class="modal-content">
-            <img  id="imgInModalID" src="" onclick="closeModal()" >
-        </div>
-    </div>
-</div>
 </body>
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
