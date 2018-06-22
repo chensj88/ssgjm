@@ -44,7 +44,7 @@
         }
         .large-list1>div{
             color: #666;
-            flex: 0.7;
+            flex: 0.8;
             width:30%;
             display:inline-table;
         }
