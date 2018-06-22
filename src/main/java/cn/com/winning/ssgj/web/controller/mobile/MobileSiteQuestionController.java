@@ -59,8 +59,10 @@ public class MobileSiteQuestionController extends BaseController {
         } else {
             model.addAttribute("siteQuestionInfo", null);
         }
-        model.addAttribute("deptList", this.getDepartmentList(Long.parseLong(serialNo), null));
-        model.addAttribute("appList", this.getProductDictInfo(serialNo));
+        EtUserHospitalLog log = new EtUserHospitalLog();
+        log.setSerialNo(serialNo);
+        log.setOperator(userId);
+        model.addAttribute("logInfo", getFacade().getEtUserHospitalLogService().getEtUserHospitalLog(log));
         model.addAttribute("userId", userId);
         model.addAttribute("serialNo", serialNo);
         model.addAttribute("source", source);
@@ -149,7 +151,7 @@ public class MobileSiteQuestionController extends BaseController {
                              String siteId, String siteName,
                              String productId, String productName,
                              String source, String menuName,
-                             String questionDesc, String priority) {
+                             String questionDesc, String priority,Long logId) {
         if (StringUtils.isNotBlank(questionId)) {
             EtSiteQuestionInfo info = new EtSiteQuestionInfo();
             info.setId(Long.parseLong(questionId));
@@ -163,6 +165,9 @@ public class MobileSiteQuestionController extends BaseController {
         } else {
             model.addAttribute("siteQuestionInfo", null);
         }
+        EtUserHospitalLog log = new EtUserHospitalLog();
+        log.setId(logId);
+        model.addAttribute("logInfo", getFacade().getEtUserHospitalLogService().getEtUserHospitalLog(log));
         model.addAttribute("siteId", siteId);
         model.addAttribute("siteName", siteName);
         model.addAttribute("productId", productId);

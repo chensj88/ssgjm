@@ -7,7 +7,7 @@ import cn.com.winning.ssgj.dao.EntityDao;
  * Coder AutoGenerator generate.
  *
  * @author Coder AutoGenerator
- * @date 2018-06-22 16:38:32
+ * @date 2018-06-22 16:58:18
  */
 public interface EtUserHospitalLogDao extends EntityDao<EtUserHospitalLog> {
 

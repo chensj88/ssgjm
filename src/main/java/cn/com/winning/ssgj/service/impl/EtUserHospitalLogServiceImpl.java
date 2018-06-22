@@ -14,7 +14,7 @@ import cn.com.winning.ssgj.service.EtUserHospitalLogService;
  * Coder AutoGenerator generate.
  *
  * @author Coder AutoGenerator
- * @date 2018-06-22 16:38:33
+ * @date 2018-06-22 16:58:18
  */
 @Service
 public class EtUserHospitalLogServiceImpl implements EtUserHospitalLogService {

@@ -500,4 +500,11 @@ public class FacadeImpl implements Facade {
     public EtUserLogService getEtUserLogService() {
         return etUserLogService;
     }
+
+    @Resource
+    EtUserHospitalLogService etUserHospitalLogService;
+
+    public EtUserHospitalLogService getEtUserHospitalLogService() {
+        return etUserHospitalLogService;
+    }
 }

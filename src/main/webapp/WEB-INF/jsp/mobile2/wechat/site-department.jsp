@@ -94,17 +94,68 @@
     });
     function selectSiteName(id,name){
             if(${type == 1}){
-                location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&menuName=${menuName}&questionDesc=${questionDesc}&priority=${priority}"
-                    +"&siteId="+id + "&siteName="+encodeURI(name)+"&productId=${productId}&productName=${productName}";
-                    setCookie('siteId',id);
-                    setCookie('siteName',name);
+                var json = {
+                    operator:${userId},
+                    serialNo:${serialNo},
+                    siteName:id
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "<%=basePath%>mobile/commons/addOperateDeptOrProductLog.do",
+                    data: json,
+                    cache: false,
+                    dataType: "json",
+                    async: false,
+                    error: function (request) {
+                        mui.toast('服务端错误，或网络不稳定，本次操作被终止。', {duration: 'long', type: 'div'})
+                    },
+                    success: function (data) {
+                        location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&menuName=${menuName}&questionDesc=${questionDesc}&priority=${priority}"
+                            +"&siteId="+id + "&siteName="+encodeURI(name)+"&productId=${productId}&productName=${productName}&logId="+data.data;
+                    }
+                });
+
             }else{
-                location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&menuName=${menuName}&questionDesc=${questionDesc}&priority=${priority}"
-                    +"&siteId=${siteId}&siteName=${siteName}&productId="+id + "&productName="+encodeURI(name);
-                setCookie('productId',id);
-                setCookie('productName',name);
+                var json = {
+                    operator:${userId},
+                    serialNo:${serialNo},
+                    productName:id
+                };
+                var logId = addEtUserHospitalLog(json);
+                $.ajax({
+                    type: "POST",
+                    url: "<%=basePath%>mobile/commons/addOperateDeptOrProductLog.do",
+                    data: json,
+                    cache: false,
+                    dataType: "json",
+                    async: false,
+                    error: function (request) {
+                        mui.toast('服务端错误，或网络不稳定，本次操作被终止。', {duration: 'long', type: 'div'})
+                    },
+                    success: function (data) {
+                        location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&menuName=${menuName}&questionDesc=${questionDesc}&priority=${priority}"
+                            +"&siteId=${siteId}&siteName=${siteName}&productId="+id + "&productName="+encodeURI(name)+"&logId="+data.data;
+                    }
+                });
+
             }
 
+    }
+    function  addEtUserHospitalLog(json) {
+        $.ajax({
+            type: "POST",
+            url: "<%=basePath%>mobile/commons/addOperateDeptOrProductLog.do",
+            data: json,
+            cache: false,
+            dataType: "json",
+            async: false,
+            error: function (request) {
+                mui.toast('服务端错误，或网络不稳定，本次操作被终止。', {duration: 'long', type: 'div'})
+            },
+            success: function (data) {
+                return data.data;
+            }
+        });
     }
 
 </script>
