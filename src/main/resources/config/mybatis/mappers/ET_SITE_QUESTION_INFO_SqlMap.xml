@@ -914,7 +914,7 @@
         FROM
         ET_SITE_QUESTION_INFO t
         WHERE
-        1 = 1
+        1 = 1   <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
         GROUP BY
         ALLOCATE_USER
         ) AS tt
