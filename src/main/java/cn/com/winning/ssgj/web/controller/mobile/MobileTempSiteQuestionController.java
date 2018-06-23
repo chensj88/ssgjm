@@ -170,8 +170,8 @@ public class MobileTempSiteQuestionController  extends BaseController {
                 List<EtUserHospitalLog> logList = super.getFacade().getEtUserHospitalLogService().getEtUserHospitalLogList(hospitalLog);
                 if(logList.size() >0){ //第一次登录
                     hospitalLog = logList.get(0);//按照时间排序取最新的
-                    model.addAttribute("serialNo",hospitalLog.getSerialNo());
-                    model.addAttribute("userId",userId);
+                    //model.addAttribute("serialNo",hospitalLog.getSerialNo());
+                    //model.addAttribute("userId",userId);
                     return "redirect:"+ Constants.HTTP_SERVER+"/mobile/tempSiteQuestion/index.do?userId="+userId+"&serialNo="+hospitalLog.getSerialNo();
                 }
                 model.addAttribute("userId",userId);
