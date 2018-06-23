@@ -24,11 +24,14 @@
             </div>
         </form>
         <div class="space">
-            <ul id="hospital" class="mui-table-view OA_task_1">
-                <li></li>
+        </div>
+        <div style="margin: 15px;">
+            <ul id="hospital" class="mui-table-view OA_task_1" >
+                <li class="mui-table-view-cell"></li>
             </ul>
 
         </div>
+
 
 
 
@@ -64,7 +67,7 @@
                 //var json=eval(data.data.xtJsons);
                 $.each(data.data,function(i,item){
                     console.info("sss=="+data.data[i].name);
-                    str_html=str_html+"<li data-val='"+data.data[i].id+"'  onclick=goIndex('"+data.data[i].id+"')>"+data.data[i].name+"</li>";
+                    str_html=str_html+"<li class='mui-table-view-cell'  onclick=goIndex('"+data.data[i].id+"')>"+data.data[i].name+"</li>";
                 });
                 $("#hospital").html(str_html);
 
