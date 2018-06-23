@@ -138,6 +138,22 @@
         IMS.init();
         IMS.menuTab();
         $('#search_text').val('');
+        $('#search_text').on('input propertychange',function () {
+//            var searchText = $('#search_text').val();
+//            var searchType = $($('.tab-nav').find('.active')[0]).attr('type');
+//            if (searchText == null || searchText == '') {
+//                mui.toast('搜索内容不能为空', {duration: 'long(3500ms)', type: 'div'});
+//                return false;
+//            }
+//            if(searchText.length < 2 ){
+//                mui.toast('搜索内容大于2个字', {duration: 'long(3500ms)', type: 'div'});
+//                return false;
+//            }
+//            findSearchResult(searchType,searchText);
+//            console.log(searchText);
+//            console.log(searchType);
+        });
+
     })
 
     /**

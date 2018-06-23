@@ -70,7 +70,7 @@ public class EnterpriseQuestionCommonController extends BaseController {
                 info.getMap().put("search_text", searchText);
             }
             EtUserLog log = new EtUserLog();
-            log.setId(ssgjHelper.createEtUserLogIdService());
+            //log.setId(ssgjHelper.createEtUserLogIdService()); 增加日志判断逻辑
             log.setSerialNo(serialNo);
             log.setPmId(-2L);
             log.setCId(-2L);
@@ -78,8 +78,23 @@ public class EnterpriseQuestionCommonController extends BaseController {
             log.setSourceType(searchType);
             log.setProcessStatus(status);
             log.setOperator(userId);
-            log.setOperatorTime(new Timestamp(new Date().getTime()));
-            getFacade().getEtUserLogService().createEtUserLog(log);
+            log = super.getFacade().getEtUserLogService().getEtUserLog(log);
+            if(log == null ){
+                log = new EtUserLog();
+                log.setId(ssgjHelper.createEtUserLogIdService());
+                log.setSerialNo(serialNo);
+                log.setPmId(-2L);
+                log.setCId(-2L);
+                log.setContent(searchText);
+                log.setSourceType(searchType);
+                log.setProcessStatus(status);
+                log.setOperator(userId);
+                log.setOperatorTime(new Timestamp(new Date().getTime()));
+                getFacade().getEtUserLogService().createEtUserLog(log);
+            }else{
+                log.setOperatorTime(new Timestamp(new Date().getTime()));
+                getFacade().getEtUserLogService().modifyEtUserLog(log);
+            }
         }
         model.addAttribute("questionList", getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(info));
         model.addAttribute("serialNo", serialNo);

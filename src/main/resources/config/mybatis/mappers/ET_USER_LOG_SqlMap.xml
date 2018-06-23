@@ -8,7 +8,7 @@
 		<result column="PM_ID" property="pmId" jdbcType="BIGINT" />
 		<result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR" />
 		<result column="SOURCE_TYPE" property="sourceType" jdbcType="INTEGER" />
-		<result column="CONTENT" property="content" jdbcType="LONGVARCHAR" />
+		<result column="CONTENT" property="content" jdbcType="VARCHAR" />
 		<result column="OPERATOR" property="operator" jdbcType="BIGINT" />
 		<result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP" />
 		<result column="PROCESS_STATUS" property="processStatus" jdbcType="VARCHAR"/>
@@ -76,7 +76,7 @@
 	       <if test="(pmId != null and pmId != '') or pmId == 0"> #{pmId, jdbcType=BIGINT}, </if>
 		   <if test="serialNo != null and serialNo != ''"> #{serialNo, jdbcType=VARCHAR}, </if>
 	       <if test="(sourceType != null and sourceType != '') or sourceType == 0"> #{sourceType, jdbcType=INTEGER}, </if>
-		   <if test="content != null and content != ''"> #{content, jdbcType=LONGVARCHAR}, </if>
+		   <if test="content != null and content != ''"> #{content, jdbcType=VARCHAR}, </if>
 	       <if test="(operator != null and operator != '') or operator == 0"> #{operator, jdbcType=BIGINT}, </if>
 		   <if test="operatorTime != null "> #{operatorTime, jdbcType=TIMESTAMP}, </if>
 			<if test="(processStatus != null and processStatus != '') or processStatus == 0"> #{processStatus , jdbcType=VARCHAR},</if>
@@ -92,7 +92,7 @@
 			   <if test="(pmId != null and pmId != '') or pmId == 0"> PM_ID = #{pmId, jdbcType=BIGINT}, </if>
 			   <if test="serialNo != null and serialNo != ''"> SERIAL_NO = #{serialNo, jdbcType=VARCHAR}, </if>
 			   <if test="(sourceType != null and sourceType != '') or sourceType == 0"> SOURCE_TYPE = #{sourceType, jdbcType=INTEGER}, </if>
-			   <if test="content != null and content != ''"> CONTENT = #{content, jdbcType=LONGVARCHAR}, </if>
+			   <if test="content != null and content != ''"> CONTENT = #{content, jdbcType=VARCHAR}, </if>
 			   <if test="(operator != null and operator != '') or operator == 0"> OPERATOR = #{operator, jdbcType=BIGINT}, </if>
 			   <if test="operatorTime != null "> OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP}, </if>
 				<if test="(processStatus != null and processStatus != '') or processStatus == 0"> PROCESS_STATUS = #{processStatus, jdbcType=VARCHAR},</if>
