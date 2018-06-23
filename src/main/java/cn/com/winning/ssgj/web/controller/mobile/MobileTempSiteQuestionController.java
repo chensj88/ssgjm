@@ -142,26 +142,49 @@ public class MobileTempSiteQuestionController  extends BaseController {
         return map;
     }
 
+    /**
+     * 微信开始
+     * @param model
+     * @param code
+     * @return
+     */
+    @RequestMapping(value = "/wxStart.do")
+    public String wxStart(Model model,String code) {
+        try{
+//            String access_token = super.getAccessToken();
+//            Cookie cookie = new Cookie("access_token",access_token);//将登录信息加入cookie中
+//            cookie.setMaxAge(60*60*24*3);   //设置cookie最大失效时间 3天　　　
+//            StringBuffer stringBuffer = new StringBuffer(WxConstants.QY_USER_INFO);
+//            stringBuffer.append("access_token=").append(access_token).append("&code=").append(code);
+//            JSONObject userInfo = WeixinUtil.getApiReturn(stringBuffer.toString());
+//            String user_id = (String)userInfo.get("UserId"); //员工工号
+//            logger.info("UserId=="+user_id);
+
+
+            String user_id="5823";
+            Long userId =super.user_id(user_id,"1"); //登录员工的ID
+            model.addAttribute("userId",userId);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "mobile2/enterprise/start";
+    }
+
+    @RequestMapping(value = "/wxSearch.do")
+    public String wxSearch(Model model,Long userId) {
+        model.addAttribute("userId",userId);
+        return "mobile2/enterprise/wx_search_hospital";
+    }
+
+
+
+
     @RequestMapping(value = "/index.do")
     public String index(Model model,Long questionId,Long userId,String serialNo,String openId,String code) {
         try{
             int isManager =0;//0：项目经理 1：非项目经理　
             //userId =(long)7284;
-            if(userId == null ){
-                String access_token = super.getAccessToken();
-                Cookie cookie = new Cookie("access_token",access_token);//将登录信息加入cookie中
-                cookie.setMaxAge(60*60*24*3);   //设置cookie最大失效时间 3天　　　
-                StringBuffer stringBuffer = new StringBuffer(WxConstants.QY_USER_INFO);
-                stringBuffer.append("access_token=").append(access_token).append("&code=").append(code);
-                JSONObject userInfo = WeixinUtil.getApiReturn(stringBuffer.toString());
-                String user_id = (String)userInfo.get("UserId"); //员工工号
-                logger.info("UserId=="+user_id);
-                userId =super.user_id(user_id,"1"); //登录员工的ID
-                isManager =super.getPosition("11403",userId);
-
-            }else{
-                isManager =super.getPosition("11403",userId);
-            }
+            isManager =super.getPosition("11403",userId);
 
             EtSiteQuestionInfo qInfo = new EtSiteQuestionInfo();
             if(isManager > 0){

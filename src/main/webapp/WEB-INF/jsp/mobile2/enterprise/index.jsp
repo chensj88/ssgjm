@@ -63,10 +63,10 @@
 
         </div>
         <div class="hide">
-
+            站点
         </div>
         <div class="hide">
-
+            资料上传
         </div>
         <%--<div class="hide">--%>
         <%--</div>--%>
@@ -81,11 +81,11 @@
             <i class="iconfont icon-task"></i>
             任务
         </div>
-        <div onclick="siteLoad();">
+        <div onclick="videoLoad();">
             <i class="iconfont icon-site"></i>
             站点
         </div>
-        <div onclick="onlineLoad();">
+        <div>
             <i class="iconfont icon-upload"></i>
             上传
         </div>
@@ -114,14 +114,6 @@
     })
     function openIndexPage() {
         location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=${userId}&serialNo=${serialNo}";
-    }
-
-    function siteLoad() {
-        location.href="<%=basePath%>/mobile/siteInstall/list.do?userId=${userId}&serialNo=${serialNo}";
-    }
-
-    function onlineLoad() {
-        location.href="<%=basePath%>/mobile/implementData/list.do?userId=${userId}&serialNo=${serialNo}"
     }
 </script>
 </body>

@@ -538,7 +538,7 @@
         location.href = "<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}" +
             "&questionId="+questionId+"&type=" + type + "&source=${source}&menuName=" + encodeURI(menuName) +
             "&questionDesc=" + encodeURI(questionDesc) + "&priority=" + priority
-            +"&productId=${productId}&productName=${productName}&siteId="+siteId+"&siteName="+siteName;
+            +"&productId=${productId}&productName=${productName}&siteId="+siteId+"&siteName="+siteName+'&time='+((new Date()).getTime());
     }
 
     /**
