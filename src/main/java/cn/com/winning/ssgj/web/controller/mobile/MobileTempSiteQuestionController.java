@@ -218,6 +218,7 @@ public class MobileTempSiteQuestionController  extends BaseController {
                 info.setSourceType(2);//1.采集日志 2.医院日志
                 info.setOperator(userId);
                 info.setOperatorTime(new Timestamp(new Date().getTime()));
+                super.getFacade().getEtUserHospitalLogService().createEtUserHospitalLog(info);
             }else{
                 log.setOperatorTime(new Timestamp(new Date().getTime()));
                 super.getFacade().getEtUserHospitalLogService().modifyEtUserHospitalLog(log);

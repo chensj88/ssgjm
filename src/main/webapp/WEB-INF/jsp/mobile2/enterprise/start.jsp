@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>管理_搜索</title>
+    <title>工具</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
