@@ -120,7 +120,7 @@
                         <input type="file" id="uploadFile" name="uploadFile" onchange="fileSelected2();"/>
                     </div>
                     <c:if test="${siteQuestionInfo.imgPath !=null && siteQuestionInfo.imgPath !=''}">
-                        <c:forEach var="img" items="${siteQuestionInfo.imgs}">
+                        <c:forEach var="img" items="${siteQuestionInfo.imgs}" varStatus="status">
                             <div id="close_id">
                                 <img src="<%=Constants.FTP_SHARE_FLODER%>${img}" onclick="toBigPic(${status.index})"/>
                                 <span class="iconfont icon-close"
