@@ -21,6 +21,13 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/zoomify/css/zoomify.min.css"/>
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
+    <%--photoSwipe--%>
+    <link rel="stylesheet prefetch" href="<%=basePath%>resources/photoSwipe/css/photoswipe.css">
+    <link rel="stylesheet prefetch" href="<%=basePath%>resources/photoSwipe/css/default-skin.css">
+    <script src="<%=basePath%>resources/photoSwipe/js/photoswipe.min.js"></script>
+    <script src="<%=basePath%>resources/photoSwipe/js/photoswipe-ui-default.min.js"></script>
+    <script src="<%=basePath%>resources/photoSwipe/js/myPhoto.js" type="text/javascript" charset="utf-8"></script>
+
     <style type="text/css">
         .span_font {
             color: #666666;
@@ -61,12 +68,22 @@
         <div class="column-2 collect-list">
             <strong>影像资料</strong>
         </div>
+        <%--<div class="column-2 large-list">--%>
+        <%--<span class="large-img">--%>
+        <%--<c:if test="${questionInfo.imgPath !=null && questionInfo.imgPath !=''}">--%>
+        <%--<c:forEach var="img" items="${questionInfo.imgs}">--%>
+        <%--<img style="width: 88px;height: 92px;" src="<%=Constants.FTP_SHARE_FLODER%>${img}"--%>
+        <%--class="zoomify">--%>
+        <%--</c:forEach>--%>
+        <%--</c:if>--%>
+        <%--</span>--%>
+        <%--</div>--%>
         <div class="column-2 large-list">
-					<span class="large-img">
+					<span class="large-img" id="imgs">
                     <c:if test="${questionInfo.imgPath !=null && questionInfo.imgPath !=''}">
-                        <c:forEach var="img" items="${questionInfo.imgs}">
+                        <c:forEach var="img" items="${questionInfo.imgs}" varStatus="status">
                             <img style="width: 88px;height: 92px;" src="<%=Constants.FTP_SHARE_FLODER%>${img}"
-                                 class="zoomify">
+                                 onclick="toBigPic(${status.index})">
                         </c:forEach>
                     </c:if>
 					</span>
@@ -91,6 +108,7 @@
                 </div>
             </div>
         </c:if>
+        <jsp:include page="img.jsp"></jsp:include>
         <%--<c:if test="${(questionInfo.allocateUser==userId||isManager==0)}">--%>
         <%--<div class="column-2 large-list" id="userMessageEditDiv">--%>
         <%--<strong>院方意见</strong>--%>

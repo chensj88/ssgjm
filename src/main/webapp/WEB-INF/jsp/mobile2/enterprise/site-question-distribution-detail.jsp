@@ -24,29 +24,37 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/bootstrap/css/bootstrap-datepicker3.min.css"/>
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
+    <%--photoSwipe--%>
+    <link rel="stylesheet prefetch" href="<%=basePath%>resources/photoSwipe/css/photoswipe.css">
+    <link rel="stylesheet prefetch" href="<%=basePath%>resources/photoSwipe/css/default-skin.css">
+    <script src="<%=basePath%>resources/photoSwipe/js/photoswipe.min.js"></script>
+    <script src="<%=basePath%>resources/photoSwipe/js/photoswipe-ui-default.min.js"></script>
+    <script src="<%=basePath%>resources/photoSwipe/js/myPhoto.js" type="text/javascript" charset="utf-8"></script>
     <style type="text/css">
         .span_font {
             color: #666666;
             font-family: 'Helvetica Neue', Helvetica, sans-serif;
         }
 
-        .large-list1{
+        .large-list1 {
             display: flex;
             margin-top: 15px;
             padding: 0px 10px;
             font-size: 13px;
         }
-        .large-list1>strong{
+
+        .large-list1 > strong {
             width: 80px;
             margin-right: 15px;
             margin-top: 5px;
             color: #333333;
         }
-        .large-list1>div{
+
+        .large-list1 > div {
             color: #666;
             flex: 0.8;
-            width:30%;
-            display:inline-table;
+            width: 30%;
+            display: inline-table;
         }
     </style>
 </head>
@@ -56,17 +64,17 @@
 <input id="id" type="hidden" name="id" value="${questionInfo.id}">
 <div class="wrap">
     <div class="wrap-cnt">
-        <div class="column-3 large-list1" >
+        <div class="column-3 large-list1">
             <strong class="demo">期望完成时间</strong>
             <div id="datePicker" class="input-group date" style="width: 100px;">
                 <input id="hopeDate" type="text" class="form-control input-sm"
-                       style="padding: 0px;height:30px;width:100%;" readonly >
+                       style="padding: 0px;height:30px;width:100%;" readonly>
                 <span class="input-group-addon">
                     <i class="glyphicon glyphicon-th"></i>
                 </span>
             </div>
         </div>
-        <div class="column-3 large-list" >
+        <div class="column-3 large-list">
             <strong>问题完成人</strong>
             <span>${sysUserInfo.yhmc}</span>
         </div>
@@ -98,10 +106,11 @@
             <strong>影像资料</strong>
         </div>
         <div class="column-3 large-list">
-					<span class="large-img">
+					<span class="large-img" id="imgs">
                     <c:if test="${questionInfo.imgPath !=null && questionInfo.imgPath !=''}">
-                        <c:forEach var="img" items="${questionInfo.imgs}">
-                            <img style="width: 88px;height: 92px;"  class="zoomify" src="<%=Constants.FTP_SHARE_FLODER%>${img}" alt="">
+                        <c:forEach var="img" items="${questionInfo.imgs}" varStatus="status">
+                            <img style="width: 88px;height: 92px;" src="<%=Constants.FTP_SHARE_FLODER%>${img}"
+                                 onclick="toBigPic(${status.index})">
                         </c:forEach>
                     </c:if>
 					</span>
@@ -124,12 +133,13 @@
         <a href="#" onclick="distrbuteConfirm();"><span>保存</span></a>
 
     </div>
+    <jsp:include page="img.jsp"></jsp:include>
 </div>
 </body>
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript" charset="utf-8"></script>
-<script src="<%=basePath%>resources/zoomify/js/zoomify.min.js" type="text/javascript"  charset="utf-8"></script>
+<script src="<%=basePath%>resources/zoomify/js/zoomify.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=basePath%>resources/bootstrap/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
 <script src="<%=basePath%>resources/bootstrap/js/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>
 <%--<script src="<%=basePath%>resources/jquery-ui/js/jquery-ui.min.js"></script>--%>
@@ -155,7 +165,7 @@
             autoclose: true,
             todayHighlight: true,
             toggleActive: true,
-            startDate:new Date()
+            startDate: new Date()
         });
 //        $( "#hopeDate" ).datepicker({
 //            showAnim:'slideDown', //显示动画样式
