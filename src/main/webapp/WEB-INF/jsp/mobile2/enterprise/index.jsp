@@ -63,10 +63,10 @@
 
         </div>
         <div class="hide">
-
+            站点
         </div>
         <div class="hide">
-
+            资料上传
         </div>
         <%--<div class="hide">--%>
         <%--</div>--%>
@@ -81,29 +81,25 @@
             <i class="iconfont icon-task"></i>
             任务
         </div>
-        <div onclick="siteLoad();">
+        <div onclick="videoLoad();">
             <i class="iconfont icon-site"></i>
             站点
         </div>
-        <div onclick="onlineLoad();">
+        <div>
             <i class="iconfont icon-upload"></i>
             上传
         </div>
         <div>
             <a href="#popover" id="openPopover" class="iconfont icon-wo"
-               style="color: #A4A5AB; display: block;">
-                <span style="color: #A4A5AB;">我</span>
+               style="color: #A4A5AB;">
+                <span style="color: #A4A5AB; display: block;">我</span>
             </a>
         </div>
     </div>
     <%--弹出菜单--%>
     <div id="popover" class="mui-popover">
         <ul class="mui-table-view">
-            <li class="mui-table-view-cell"><a href="#">切换医院</a></li>
-            <li class="mui-table-view-cell"><a href="#">Item2</a></li>
-            <li class="mui-table-view-cell"><a href="#">Item3</a></li>
-            <li class="mui-table-view-cell"><a href="#">Item4</a></li>
-            <li class="mui-table-view-cell"><a href="#">Item5</a></li>
+            <li class="mui-table-view-cell"><a href="<%=basePath%>/mobile/tempSiteQuestion/wxStart.do?userId=${userId}&serialNo=${serialNo}&serialName=${serialName}">注销：${serialName}</a></li>
         </ul>
     </div>
 </div>
@@ -116,14 +112,6 @@
     })
     function openIndexPage() {
         location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=${userId}&serialNo=${serialNo}";
-    }
-
-    function siteLoad() {
-        location.href="<%=basePath%>/mobile/siteInstall/list.do?userId=${userId}&serialNo=${serialNo}";
-    }
-
-    function onlineLoad() {
-        location.href="<%=basePath%>/mobile/implementData/list.do?userId=${userId}&serialNo=${serialNo}"
     }
 </script>
 </body>

@@ -3,10 +3,7 @@ package cn.com.winning.ssgj.web.controller.mobile;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.dao.EtUserHospitalLogDao;
-import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
-import cn.com.winning.ssgj.domain.EtUserHospitalLog;
-import cn.com.winning.ssgj.domain.EtUserLog;
-import cn.com.winning.ssgj.domain.PmisCustomerInformation;
+import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +70,7 @@ public class EnterpriseQuestionCommonController extends BaseController {
                 info.getMap().put("search_text", searchText);
             }
             EtUserLog log = new EtUserLog();
-            log.setId(ssgjHelper.createEtUserLogIdService());
+            //log.setId(ssgjHelper.createEtUserLogIdService()); 增加日志判断逻辑
             log.setSerialNo(serialNo);
             log.setPmId(-2L);
             log.setCId(-2L);
@@ -81,8 +78,23 @@ public class EnterpriseQuestionCommonController extends BaseController {
             log.setSourceType(searchType);
             log.setProcessStatus(status);
             log.setOperator(userId);
-            log.setOperatorTime(new Timestamp(new Date().getTime()));
-            getFacade().getEtUserLogService().createEtUserLog(log);
+            log = super.getFacade().getEtUserLogService().getEtUserLog(log);
+            if(log == null ){
+                log = new EtUserLog();
+                log.setId(ssgjHelper.createEtUserLogIdService());
+                log.setSerialNo(serialNo);
+                log.setPmId(-2L);
+                log.setCId(-2L);
+                log.setContent(searchText);
+                log.setSourceType(searchType);
+                log.setProcessStatus(status);
+                log.setOperator(userId);
+                log.setOperatorTime(new Timestamp(new Date().getTime()));
+                getFacade().getEtUserLogService().createEtUserLog(log);
+            }else{
+                log.setOperatorTime(new Timestamp(new Date().getTime()));
+                getFacade().getEtUserLogService().modifyEtUserLog(log);
+            }
         }
         model.addAttribute("questionList", getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(info));
         model.addAttribute("serialNo", serialNo);
@@ -168,6 +180,29 @@ public class EnterpriseQuestionCommonController extends BaseController {
         result.put("data", log.getId());
         return result;
     }
+    @RequestMapping(value = "/queryDept.do")
+    @ResponseBody
+    public Map<String, Object> queryDept(String searchText,String searchType, String serialNo){
+        Map<String, Object> result = new HashMap<String, Object>();
+        Row row = new Row(0,10);
+        if("3".equals(searchType)){
+            EtDepartment dept = new EtDepartment();
+            dept.setIsDel(1);
+            dept.setSerialNo(Long.valueOf(serialNo));
+            dept.setDeptName(searchText);
+            dept.setRow(row);
+            result.put("status", Constants.SUCCESS);
+            result.put("data", getFacade().getEtDepartmentService().getEtDepartmentPaginatedList(dept));
+        }else{
+            EtContractTask task = new EtContractTask();
+            task.setSerialNo(serialNo);
+            task.setZxtmc(searchText);
+            task.setRow(row);
+            result.put("status", Constants.SUCCESS);
+            result.put("data", getFacade().getEtContractTaskService().getEtContractTaskPaginatedList(task));
+        }
 
+        return result;
+    }
 }
 

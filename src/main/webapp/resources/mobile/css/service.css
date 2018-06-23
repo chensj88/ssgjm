@@ -713,3 +713,53 @@ span.nosolve{
 .border-bottom{
 	border-bottom: 1px solid #F3F5F7;
 }
+/*启动页面*/
+.wrap-start-header {
+	width: 100%;
+	height: 70%;
+	background-size: 100% 70%;
+	background: url("../images/start.png") center center no-repeat;
+	background-color: #F2F9FF;
+	margin: 0px;
+	padding: 0px;
+}
+.wrap-start-cnt{
+	text-align: center;
+}
+
+.wrap-start-cnt .start_tit{
+	font-family: PingFangSC-Regular;
+	font-size: 28px;
+	color: #333333;
+	letter-spacing: 0;
+	margin-top: 5vh;
+	/*line-height:30px;*/
+}
+.wrap-start-cnt .start-desc{
+	font-family: PingFangSC-Regular;
+	font-size: 16px;
+	color: #999999;
+	letter-spacing: 0;
+	margin-top: 2vh;
+}
+.wrap-start-cnt .start-desc__Selected{
+	font-family: PingFangSC-Regular;
+	font-size: 16px;
+	color: #609FFE;
+	letter-spacing: 0;
+	margin-top: 2vh;
+}
+.start-button {
+	width: 180px;
+	height: 50px;
+	background-image: linear-gradient(-122deg, #38C2FF 10%, #786AF6 100%);
+	box-shadow: 0 1px 4px 0 #2299E5;
+	border-radius: 25px;
+	margin: 0 auto;
+	line-height: 50px;
+	font-family: PingFangSC-Regular;
+	font-size: 18px;
+	color: #FFFFFF;
+	letter-spacing: 0;
+	margin-top: 4vh;
+}

@@ -512,5 +512,17 @@ public class BaseController extends BaseSpringMvcMybatisController {
             }, 0,5400);
     }
 
+    /**
+     * 根据客户号 获取客户名称
+     * @param serialNo
+     * @return
+     */
+    public String getSerialName(long serialNo){
+        PmisCustomerInformation customerInformation = new PmisCustomerInformation();
+        customerInformation.setId(serialNo);
+        customerInformation = facade.getPmisCustomerInformationService().getPmisCustomerInformation(customerInformation);
+        return customerInformation.getName();
+    }
+
 
 }
