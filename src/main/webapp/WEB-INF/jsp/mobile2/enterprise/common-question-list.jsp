@@ -91,24 +91,7 @@
         <i class="iconfont icon-add"></i>
     </a>--%>
     <!--底部菜单-->
-    <div class="wrap-foot">
-        <div class="active" onclick="openIndexPage()">
-            <i class="iconfont icon-task"></i>
-            任务
-        </div>
-        <div>
-            <i class="iconfont icon-site"></i>
-            站点
-        </div>
-        <div>
-            <i class="iconfont icon-upload"></i>
-            上传
-        </div>
-        <div>
-            <i class="iconfont icon-wo"></i>
-            我
-        </div>
-    </div>
+    <%@ include file="/commons/footer.jsp" %>
 </div>
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>

@@ -63,10 +63,10 @@
 
         </div>
         <div class="hide">
-            站点
+
         </div>
         <div class="hide">
-            资料上传
+
         </div>
         <%--<div class="hide">--%>
         <%--</div>--%>
@@ -76,32 +76,33 @@
         <i class="iconfont icon-add"></i>
     </a>
     <!--底部菜单-->
-    <div class="wrap-foot">
-        <div class="active" onclick="openIndexPage()">
-            <i class="iconfont icon-task"></i>
-            任务
-        </div>
-        <div onclick="videoLoad();">
-            <i class="iconfont icon-site"></i>
-            站点
-        </div>
-        <div>
-            <i class="iconfont icon-upload"></i>
-            上传
-        </div>
-        <div>
-            <a href="#popover" id="openPopover" class="iconfont icon-wo"
-               style="color: #A4A5AB;">
-                <span style="color: #A4A5AB; display: block;">我</span>
-            </a>
-        </div>
-    </div>
-    <%--弹出菜单--%>
-    <div id="popover" class="mui-popover">
-        <ul class="mui-table-view">
-            <li class="mui-table-view-cell"><a href="<%=basePath%>/mobile/tempSiteQuestion/wxStart.do?userId=${userId}&serialNo=${serialNo}&serialName=${serialName}">注销：${serialName}</a></li>
-        </ul>
-    </div>
+    <%--<div class="wrap-foot">--%>
+        <%--<div class="active" onclick="openIndexPage()">--%>
+            <%--<i class="iconfont icon-task"></i>--%>
+            <%--任务--%>
+        <%--</div>--%>
+        <%--<div onclick="siteLoad();">--%>
+            <%--<i class="iconfont icon-site"></i>--%>
+            <%--站点--%>
+        <%--</div>--%>
+        <%--<div onclick="onlineLoad();">--%>
+            <%--<i class="iconfont icon-upload"></i>--%>
+            <%--上传--%>
+        <%--</div>--%>
+        <%--<div>--%>
+            <%--<a href="#popover" id="openPopover" class="iconfont icon-wo"--%>
+               <%--style="color: #A4A5AB;">--%>
+                <%--<span style="color: #A4A5AB; display: block;">我</span>--%>
+            <%--</a>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+    <%--&lt;%&ndash;弹出菜单&ndash;%&gt;--%>
+    <%--<div id="popover" class="mui-popover">--%>
+        <%--<ul class="mui-table-view">--%>
+            <%--<li class="mui-table-view-cell"><a href="<%=basePath%>/mobile/tempSiteQuestion/wxStart.do?userId=${userId}&serialNo=${serialNo}&serialName=${serialName}">注销：${serialName}</a></li>--%>
+        <%--</ul>--%>
+    <%--</div>--%>
+    <%@ include file="/commons/footer.jsp" %>
 </div>
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>
@@ -110,9 +111,7 @@
     $(function () {
         IMS.menuTab();
     })
-    function openIndexPage() {
-        location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=${userId}&serialNo=${serialNo}";
-    }
+
 </script>
 </body>
 </html>
