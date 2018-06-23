@@ -22,6 +22,11 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/zoomify/css/zoomify.min.css"/>
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
+    <%--photoSwipe--%>
+    <link rel="stylesheet prefetch" href="<%=basePath%>resources/photoSwipe/css/photoswipe.css">
+    <link rel="stylesheet prefetch" href="<%=basePath%>resources/photoSwipe/css/default-skin.css">
+    <script src="<%=basePath%>resources/photoSwipe/js/photoswipe.min.js"></script>
+    <script src="<%=basePath%>resources/photoSwipe/js/photoswipe-ui-default.min.js"></script>
     <style type="text/css">
         .span_font {
             color: #666666;
@@ -77,8 +82,6 @@
             <strong>问题描述</strong>
 
 
-
-
             <div>
                 <textarea id="questionDesc"
                           name="questionDesc">${questionInfo.questionDesc}</textarea>
@@ -103,15 +106,15 @@
         </div>
         <form id="file" action="" method="post" enctype="multipart/form-data">
             <div class="column-2 collect-list">
-                <div class="datum-upload site-width">
+                <div class="datum-upload site-width" id="imgs">
                     <div>
                         <i class="iconfont icon-plus"></i>
                         <input type="file" id="uploadFile" name="uploadFile" onchange="fileSelected2();"/>
                     </div>
                     <c:if test="${questionInfo.imgPath !=null && questionInfo.imgPath !=''}">
-                        <c:forEach var="img" items="${questionInfo.imgs}">
+                        <c:forEach var="img" items="${questionInfo.imgs}" varStatus="status">
                             <div id="close_id">
-                                <img src="<%=Constants.FTP_SHARE_FLODER%>${img}" class="zoomify"/>
+                                <img src="<%=Constants.FTP_SHARE_FLODER%>${img}" onclick="toBigPic(${status.index})"/>
                                 <span class="iconfont icon-close"
                                       onclick="closeImg('${questionInfo.id}','${img}');"></span>
                                 <input type="hidden"/>
@@ -122,6 +125,7 @@
             </div>
         </form>
     </div>
+    <jsp:include page="img.jsp"></jsp:include>
     <div class="wrap-foot large-btn">
         <a href="#" onclick="checkQuestion();"><span>取消</span></a>
         <a href="#" onclick="save();"><span>保存</span></a>
@@ -131,7 +135,8 @@
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript" charset="utf-8"></script>
-<script src="<%=basePath%>resources/zoomify/js/zoomify.min.js" type="text/javascript"  charset="utf-8"></script>
+<script src="<%=basePath%>resources/zoomify/js/zoomify.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="<%=basePath%>resources/photoSwipe/js/myPhoto.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
     $(function () {
         enterprise.init();
@@ -355,10 +360,15 @@
                         mui.toast('上传成功', {duration: 'long(3500ms)', type: 'div'});
                         //追加图片预览 <span class="iconfont icon-close" onclick="closeImg('${questionInfo.id}','${img}');"></span>
                         //									<input type="hidden" />
-                        var imgs = "<div id=\"close_id\"><img class=\"zoomify\" src='<%=Constants.FTP_SHARE_FLODER%>" + obj.path + "'></img><span class=\"iconfont icon-close\" onclick=\"closeImg('+" + obj.id + "'," + "'" + obj.path + "');\"></span>\n</div>";
-                        $(".datum-upload.site-width").append(imgs);
+                        var imgsArr = document.getElementById("imgs").getElementsByTagName("img");
+                        var index = 0;
+                        if (imgsArr != null) {
+                            index = imgsArr.length;
+                        }
+                        var imgs = "<div id='close_id'><img src='<%=Constants.FTP_SHARE_FLODER%>" + obj.path + "'onclick='toBigPic(" + index + ")'></img><span class=\"iconfont icon-close\" onclick=\"closeImg('+" + obj.id + "'," + "'" + obj.path + "');\"></span>\n</div>";
+                        $("#imgs").append(imgs);
                         $("#id").val(obj.id);
-                        $('.zoomify').zoomify();
+                        // $('.zoomify').zoomify();
 
                     } else {
                         mui.toast('上传失败', {duration: 'long(3500ms)', type: 'div'});
@@ -512,16 +522,17 @@
         location.href = "<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId} " +
             "&questionId=${questionInfo.id}&type=" + type + "&source=${source}&menuName=" + encodeURI(menuName) + "&questionDesc=" + encodeURI(questionDesc) + "&priority=" + priority;
     }
+
     /**
      * 图片预览
      * @param url
      */
-    function showImage(url){
+    function showImage(url) {
         var height = document.body.offsetHeight * 0.9;
         var width = document.body.offsetWidth * 0.9;
-        $('#imgInModalID').attr('src',url);
-        $('#imgInModalID').attr('height',height);
-        $('#imgInModalID').attr('width',width);
+        $('#imgInModalID').attr('src', url);
+        $('#imgInModalID').attr('height', height);
+        $('#imgInModalID').attr('width', width);
         $('#imgModal').modal('show');
     }
 

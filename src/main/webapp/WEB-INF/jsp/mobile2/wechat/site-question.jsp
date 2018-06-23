@@ -22,6 +22,11 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/zoomify/css/zoomify.min.css"/>
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
+    <%--photoSwipe--%>
+    <link rel="stylesheet prefetch" href="<%=basePath%>resources/photoSwipe/css/photoswipe.css">
+    <link rel="stylesheet prefetch" href="<%=basePath%>resources/photoSwipe/css/default-skin.css">
+    <script src="<%=basePath%>resources/photoSwipe/js/photoswipe.min.js"></script>
+    <script src="<%=basePath%>resources/photoSwipe/js/photoswipe-ui-default.min.js"></script>
     <style type="text/css">
         .span_font {
             color: #666666;
@@ -36,17 +41,18 @@
 <input id="source" type="hidden" name="source" value="${source}">
 <div class="wrap">
     <%--<div class="wrap-header">--%>
-        <%--<div class="header" style="margin: 0;padding: 10px;">--%>
-            <%--<div style="text-align: left;line-height: 20px">--%>
-                <%--<a href="<%=basePath%>mobile/wechatSiteQuestion/list.do?serialNo=${serialNo}&userId=${userId}">采集列表</a>--%>
-            <%--</div>--%>
-        <%--</div>--%>
+    <%--<div class="header" style="margin: 0;padding: 10px;">--%>
+    <%--<div style="text-align: left;line-height: 20px">--%>
+    <%--<a href="<%=basePath%>mobile/wechatSiteQuestion/list.do?serialNo=${serialNo}&userId=${userId}">采集列表</a>--%>
+    <%--</div>--%>
+    <%--</div>--%>
     <%--</div>--%>
     <div class="wrap-cnt">
         <div class="column-2 collect-list">
             <strong>科室病区</strong>
             <div class="collect-list-dp">
-                <input type="hidden" id="siteName" name="siteName" value="${siteQuestionInfo.siteName == null ? logInfo.siteName : siteQuestionInfo.siteName}">
+                <input type="hidden" id="siteName" name="siteName"
+                       value="${siteQuestionInfo.siteName == null ? logInfo.siteName : siteQuestionInfo.siteName}">
                 <c:if test="${siteQuestionInfo.siteName != null || logInfo.siteName != null }">
                     <a href="#" onclick="openDeptOrSysWindow(1)"><span
                             class="span_font">${siteQuestionInfo.map.get("deptName") == null ? logInfo.map.get("deptName") : siteQuestionInfo.map.get("deptName")}</span><i
@@ -61,7 +67,9 @@
         <div class="column-2 collect-list">
             <strong>系统名称</strong>
             <div class="collect-list-dp">
-                <input id="productName" name="productName" value="${siteQuestionInfo.productName == null ? logInfo.productName : siteQuestionInfo.productName }" type="hidden"/>
+                <input id="productName" name="productName"
+                       value="${siteQuestionInfo.productName == null ? logInfo.productName : siteQuestionInfo.productName }"
+                       type="hidden"/>
                 <c:if test="${siteQuestionInfo.productName != null || logInfo.productName != null}">
                     <a href="#" onclick="openDeptOrSysWindow(2)"><span
                             class="span_font">${siteQuestionInfo.map.get("plName") == null ? logInfo.map.get("plName") : siteQuestionInfo.map.get("plName")}</span><i
@@ -106,7 +114,7 @@
         </div>
         <form id="file" action="" method="post" enctype="multipart/form-data">
             <div class="column-2 collect-list">
-                <div class="datum-upload site-width">
+                <div class="datum-upload site-width" id="imgs">
                     <div>
                         <i class="iconfont icon-plus"></i>
                         <input type="file" id="uploadFile" name="uploadFile" onchange="fileSelected2();"/>
@@ -114,7 +122,7 @@
                     <c:if test="${siteQuestionInfo.imgPath !=null && siteQuestionInfo.imgPath !=''}">
                         <c:forEach var="img" items="${siteQuestionInfo.imgs}">
                             <div id="close_id">
-                                <img src="<%=Constants.FTP_SHARE_FLODER%>${img}" class="zoomify"/>
+                                <img src="<%=Constants.FTP_SHARE_FLODER%>${img}" onclick="toBigPic(${status.index})"/>
                                 <span class="iconfont icon-close"
                                       onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>
                                 <input type="hidden"/>
@@ -125,6 +133,7 @@
             </div>
         </form>
     </div>
+    <jsp:include page="../enterprise/img.jsp"></jsp:include>
     <div class="wrap-foot large-btn">
         <a href="#" onclick="checkQuestion();"><span>取消</span></a>
         <a href="#" onclick="save();"><span>保存</span></a>
@@ -135,7 +144,8 @@
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript" charset="utf-8"></script>
-<script src="<%=basePath%>resources/zoomify/js/zoomify.min.js" type="text/javascript"  charset="utf-8"></script>
+<script src="<%=basePath%>resources/zoomify/js/zoomify.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="<%=basePath%>resources/photoSwipe/js/myPhoto.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
     $(function () {
         enterprise.init();
@@ -213,7 +223,7 @@
     function goToIndexPage() {
         if (${source == 2}) { //微信
             location.href = "<%=basePath%>mobile/tempSiteQuestion/laodList.do?processStatus=1&userId=${userId}&serialNo=${serialNo}";
-        } else{ //企业微信
+        } else { //企业微信
             location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=${userId}&serialNo=${serialNo}";
         }
 
@@ -304,9 +314,9 @@
             success: function (data) {
                 if (data.status) {
                     mui.toast('问题提交成功', {duration: 'long(3500ms)', type: 'div'});
-                    if(${source == 2}){ //微信端
+                    if (${source == 2}) { //微信端
                         location.href = "<%=basePath%>mobile/tempSiteQuestion/laodList.do?processStatus=1&userId=" + $("#userId").val() + "&serialNo=" + $("#serialNo").val();
-                    }else{
+                    } else {
                         //TODO 添加服务端首页跳转信息
                         location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=" + $("#userId").val() + "&serialNo=" + $("#serialNo").val();
                     }
@@ -354,12 +364,17 @@
                     var obj = JSON.parse(data);
                     if (obj.status == "1") {
                         mui.toast('上传成功', {duration: 'long(3500ms)', type: 'div'});
-                        //追加图片预览 <span class="iconfont icon-close" onclick="closeImg('${siteQuestionInfo.id}','${img}');"></span>
+                        //追加图片预览 <span class="iconfont icon-close" onclick="closeImg('${questionInfo.id}','${img}');"></span>
                         //									<input type="hidden" />
-                        var imgs = "<div id=\"close_id\"><img  class='zoomify' src='<%=Constants.FTP_SHARE_FLODER%>" + obj.path + "'></img><span class=\"iconfont icon-close\" onclick=\"closeImg('+" + obj.id + "'," + "'" + obj.path + "');\"></span>\n</div>";
-                        $(".datum-upload.site-width").append(imgs);
+                        var imgsArr = document.getElementById("imgs").getElementsByTagName("img");
+                        var index = 0;
+                        if (imgsArr != null) {
+                            index = imgsArr.length;
+                        }
+                        var imgs = "<div id='close_id'><img src='<%=Constants.FTP_SHARE_FLODER%>" + obj.path + "'onclick='toBigPic(" + index + ")'></img><span class=\"iconfont icon-close\" onclick=\"closeImg('+" + obj.id + "'," + "'" + obj.path + "');\"></span>\n</div>";
+                        $("#imgs").append(imgs);
                         $("#id").val(obj.id);
-                        $('.zoomify').zoomify();
+                        // $('.zoomify').zoomify();
                     } else {
                         mui.toast('上传失败', {duration: 'long(3500ms)', type: 'div'});
                     }
@@ -509,12 +524,12 @@
         var menuName = $('#menuName').val();
         var questionDesc = $('#questionDesc').val();
         var priority = getListLevelValue();
-        var questionId = ${siteQuestionInfo.id == null} ?$('#id').val():${siteQuestionInfo.id == null ? 0 :siteQuestionInfo.id};
+        var questionId = ${siteQuestionInfo.id == null} ? $('#id').val() :${siteQuestionInfo.id == null ? 0 :siteQuestionInfo.id};
         var logId = ${logInfo.id == null ? -1 : logInfo.id };
         location.href = "<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}" +
-            "&questionId="+questionId+"&type=" + type + "&source=${source}&menuName=" + encodeURI(menuName) +
+            "&questionId=" + questionId + "&type=" + type + "&source=${source}&menuName=" + encodeURI(menuName) +
             "&questionDesc=" + encodeURI(questionDesc) + "&priority=" + priority
-            +"&logId="+logId;
+            + "&logId=" + logId;
     }
 
 </script>
