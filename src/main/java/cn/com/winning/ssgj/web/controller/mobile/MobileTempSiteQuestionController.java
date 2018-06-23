@@ -1,13 +1,17 @@
 package cn.com.winning.ssgj.web.controller.mobile;
 
+import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.WxConstants;
+import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.WeixinUtil;
 import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
+import cn.com.winning.ssgj.domain.EtUserHospitalLog;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.session.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
+import java.sql.Timestamp;
 import java.util.*;
 
 @Controller
@@ -23,6 +28,8 @@ import java.util.*;
 @RequestMapping("/mobile/tempSiteQuestion")
 public class MobileTempSiteQuestionController  extends BaseController {
 
+    @Autowired
+    private SSGJHelper ssgjHelper;
     /**
      *  院方信息主页面
      * @param model
@@ -61,11 +68,6 @@ public class MobileTempSiteQuestionController  extends BaseController {
             qinfo.setCreator(userId);
             qinfo.setSerialNo(serialNo);
             qinfo.getMap().put("search_text",search_text);
-//            if("1".equals(processStatus)){
-//                qinfo.getMap().put("process_status_yes","5");//已确认完成
-//            }else{
-//                qinfo.getMap().put("process_status_no","5");
-//            }
             if(processStatus ==1){
                 qinfo.getMap().put("process_status_no","4,5");
             }else{
@@ -149,27 +151,48 @@ public class MobileTempSiteQuestionController  extends BaseController {
      * @return
      */
     @RequestMapping(value = "/wxStart.do")
-    public String wxStart(Model model,String code) {
+    public String wxStart(Model model,String code,Long userId,String serialNo,String serialName) {
         try{
-//            String access_token = super.getAccessToken();
-//            Cookie cookie = new Cookie("access_token",access_token);//将登录信息加入cookie中
-//            cookie.setMaxAge(60*60*24*3);   //设置cookie最大失效时间 3天　　　
-//            StringBuffer stringBuffer = new StringBuffer(WxConstants.QY_USER_INFO);
-//            stringBuffer.append("access_token=").append(access_token).append("&code=").append(code);
-//            JSONObject userInfo = WeixinUtil.getApiReturn(stringBuffer.toString());
-//            String user_id = (String)userInfo.get("UserId"); //员工工号
-//            logger.info("UserId=="+user_id);
+            if(userId == null){  //新用户
+                String access_token = super.getAccessToken();
+                Cookie cookie = new Cookie("access_token",access_token);//将登录信息加入cookie中
+                cookie.setMaxAge(60*60*24*3);   //设置cookie最大失效时间 3天　　　
+                StringBuffer stringBuffer = new StringBuffer(WxConstants.QY_USER_INFO);
+                stringBuffer.append("access_token=").append(access_token).append("&code=").append(code);
+                JSONObject userInfo = WeixinUtil.getApiReturn(stringBuffer.toString());
+                String user_id = (String)userInfo.get("UserId"); //员工工号
+                logger.info("UserId=="+user_id);
+                //String user_id="5823";
+                userId =super.user_id(user_id,"1"); //登录员工的ID
+                EtUserHospitalLog hospitalLog = new EtUserHospitalLog();
+                hospitalLog.setOperator(userId);
+                hospitalLog.setSourceType(2);
+                List<EtUserHospitalLog> logList = super.getFacade().getEtUserHospitalLogService().getEtUserHospitalLogList(hospitalLog);
+                if(logList.size() >0){ //第一次登录
+                    hospitalLog = logList.get(0);//按照时间排序取最新的
+                    model.addAttribute("serialNo",hospitalLog.getSerialNo());
+                    model.addAttribute("userId",userId);
+                    return "redirect:"+ Constants.HTTP_SERVER+"/mobile/tempSiteQuestion/index.do?userId="+userId+"&serialNo="+hospitalLog.getSerialNo();
+                }
+                model.addAttribute("userId",userId);
+            }else{ //旧用户切换
+                model.addAttribute("userId",userId);
+                model.addAttribute("serialNo",serialNo);
+                model.addAttribute("serialName",serialName);
 
+            }
 
-            String user_id="5823";
-            Long userId =super.user_id(user_id,"1"); //登录员工的ID
-            model.addAttribute("userId",userId);
         }catch (Exception e){
             e.printStackTrace();
         }
         return "mobile2/enterprise/start";
     }
 
+    /**
+     * 医院搜索界面
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/wxSearch.do")
     public String wxSearch(Model model,Long userId) {
         model.addAttribute("userId",userId);
@@ -178,29 +201,45 @@ public class MobileTempSiteQuestionController  extends BaseController {
 
 
 
-
     @RequestMapping(value = "/index.do")
-    public String index(Model model,Long questionId,Long userId,String serialNo,String openId,String code) {
+    public String index(Model model,Long questionId,Long userId,String serialNo) {
         try{
-            int isManager =0;//0：项目经理 1：非项目经理　
-            //userId =(long)7284;
-            isManager =super.getPosition("11403",userId);
+            EtUserHospitalLog log = new EtUserHospitalLog();
+            log.setOperator(userId);
+            log.setSerialNo(serialNo);
+            log.setSourceType(2);
+            log = super.getFacade().getEtUserHospitalLogService().getEtUserHospitalLog(log);
+            if(log == null){
+                EtUserHospitalLog info = new EtUserHospitalLog();
+                info.setId(ssgjHelper.createEtUserHospitalLog());
+                info.setCId(-2L);
+                info.setPmId(-2L);
+                info.setSerialNo(serialNo);
+                info.setSourceType(2);//1.采集日志 2.医院日志
+                info.setOperator(userId);
+                info.setOperatorTime(new Timestamp(new Date().getTime()));
+            }else{
+                log.setOperatorTime(new Timestamp(new Date().getTime()));
+                super.getFacade().getEtUserHospitalLogService().modifyEtUserHospitalLog(log);
+            }
 
+            int isManager =0;//0：项目经理 1：非项目经理　
+            isManager =super.getPosition(serialNo,userId);
             EtSiteQuestionInfo qInfo = new EtSiteQuestionInfo();
             if(isManager > 0){
                 qInfo.getMap().put("process_status_no","1,7");
                 qInfo.setAllocateUser(userId);
-                qInfo.setSerialNo(String.valueOf(11403));
+                qInfo.setSerialNo(String.valueOf(serialNo));
             }else{
                 qInfo.setCreator(null);
-                qInfo.setSerialNo(String.valueOf(11403));
+                qInfo.setSerialNo(String.valueOf(serialNo));
             }
             qInfo.getMap().put("isManager",isManager);
             model.addAttribute("questionList", super.getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(qInfo));
             model.addAttribute("process_num",mapList(qInfo,2,isManager));
             model.addAttribute("userId",userId);
             model.addAttribute("serialNo", qInfo.getSerialNo());
-            //model.addAttribute("openId",info.getOpenId());
+            model.addAttribute("serialName", getSerialName(Long.parseLong(serialNo)));
             model.addAttribute("active",0);
             model.addAttribute("isManager",isManager);//0 项目经理 1实施工程师
         }catch (Exception e){

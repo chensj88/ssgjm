@@ -25,7 +25,9 @@
         <div class="start_tit">欢迎使用实施工具</div>
         <!--后台登陆-->
         <%--<div class="start-desc__choose">请选择医院</div>--%>
-        <%--<div class="start-desc__Selected">鄂尔多斯市第一人民医院</div>--%>
+        <c:if test="${serialNo != null && serialNo != ''}">
+        <div class="start-desc__Selected">${serialName}</div>
+        </c:if>
         <div class="start-button" onclick="searchHospital();">
             请选择医院
         </div>

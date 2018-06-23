@@ -91,19 +91,15 @@
         </div>
         <div>
             <a href="#popover" id="openPopover" class="iconfont icon-wo"
-               style="color: #A4A5AB; display: block;">
-                <span style="color: #A4A5AB;">我</span>
+               style="color: #A4A5AB;">
+                <span style="color: #A4A5AB; display: block;">我</span>
             </a>
         </div>
     </div>
     <%--弹出菜单--%>
     <div id="popover" class="mui-popover">
         <ul class="mui-table-view">
-            <li class="mui-table-view-cell"><a href="#">切换医院</a></li>
-            <li class="mui-table-view-cell"><a href="#">Item2</a></li>
-            <li class="mui-table-view-cell"><a href="#">Item3</a></li>
-            <li class="mui-table-view-cell"><a href="#">Item4</a></li>
-            <li class="mui-table-view-cell"><a href="#">Item5</a></li>
+            <li class="mui-table-view-cell"><a href="<%=basePath%>/mobile/tempSiteQuestion/wxStart.do?userId=${userId}&serialNo=${serialNo}&serialName=${serialName}">注销：${serialName}</a></li>
         </ul>
     </div>
 </div>
