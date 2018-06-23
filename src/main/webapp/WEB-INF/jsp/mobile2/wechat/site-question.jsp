@@ -46,13 +46,13 @@
         <div class="column-2 collect-list">
             <strong>科室病区</strong>
             <div class="collect-list-dp">
-                <input type="hidden" id="siteName" name="siteName" value="${siteQuestionInfo.siteName == null ? siteId : siteQuestionInfo.siteName}">
-                <c:if test="${siteQuestionInfo.siteName != null || siteName != null }">
+                <input type="hidden" id="siteName" name="siteName" value="${siteQuestionInfo.siteName == null ? logInfo.siteName : siteQuestionInfo.siteName}">
+                <c:if test="${siteQuestionInfo.siteName != null || logInfo.siteName != null }">
                     <a href="#" onclick="openDeptOrSysWindow(1)"><span
-                            class="span_font">${siteQuestionInfo.map.get("deptName") == null ? siteName : siteQuestionInfo.map.get("deptName")}</span><i
+                            class="span_font">${siteQuestionInfo.map.get("deptName") == null ? logInfo.map.get("deptName") : siteQuestionInfo.map.get("deptName")}</span><i
                             class="iconfont icon-fanhui-copy"></i></a>
                 </c:if>
-                <c:if test="${siteQuestionInfo.siteName == null &&  siteName == null}">
+                <c:if test="${siteQuestionInfo.siteName == null &&  logInfo.siteName == null}">
                     <a href="#" onclick="openDeptOrSysWindow(1)"><span class="span_font" id="siteInfo">--请选择--</span><i
                             class="iconfont icon-fanhui-copy"></i></a>
                 </c:if>
@@ -61,13 +61,13 @@
         <div class="column-2 collect-list">
             <strong>系统名称</strong>
             <div class="collect-list-dp">
-                <input id="productName" name="productName" value="${siteQuestionInfo.productName == null ? productId : siteQuestionInfo.productName }" type="hidden"/>
-                <c:if test="${siteQuestionInfo.productName != null || productName != null}">
+                <input id="productName" name="productName" value="${siteQuestionInfo.productName == null ? logInfo.productName : siteQuestionInfo.productName }" type="hidden"/>
+                <c:if test="${siteQuestionInfo.productName != null || logInfo.productName != null}">
                     <a href="#" onclick="openDeptOrSysWindow(2)"><span
-                            class="span_font">${siteQuestionInfo.map.get("plName") == null ? productName : siteQuestionInfo.map.get("plName")}</span><i
+                            class="span_font">${siteQuestionInfo.map.get("plName") == null ? logInfo.map.get("plName") : siteQuestionInfo.map.get("plName")}</span><i
                             class="iconfont icon-fanhui-copy"></i></a>
                 </c:if>
-                <c:if test="${siteQuestionInfo.productName == null &&  productName == null}">
+                <c:if test="${siteQuestionInfo.productName == null &&  logInfo.productName == null}">
                     <a href="#" onclick="openDeptOrSysWindow(2)"><span class="span_font" id="productInfo">--请选择--</span><i
                             class="iconfont icon-fanhui-copy"></i></a>
                 </c:if>
@@ -131,13 +131,6 @@
 
     </div>
 </div>
-<%--<div class="modal fade text-center" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" >--%>
-    <%--<div class="modal-dialog modal-xs" >--%>
-        <%--<div class="modal-content">--%>
-            <%--<img  id="imgInModalID" src="" onclick="closeModal()" >--%>
-        <%--</div>--%>
-    <%--</div>--%>
-<%--</div>--%>
 </body>
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
@@ -152,22 +145,6 @@
         });
         setListLevel(${priority != null ? priority : siteQuestionInfo.priority});
         changeListLevel(${priority != null ? priority : siteQuestionInfo.priority});
-        if(${siteName !=null and siteId != null}){
-            setCookie('siteId',${siteId});
-            setCookie('siteName','${siteName}');
-        }
-        var siteId = getCookie('siteId');
-        var siteName = getCookie('siteName');
-        var productId = getCookie('productId');
-        var productName = getCookie('productName');
-        if(siteId && siteName){
-            $('#siteName').val(siteId);
-            $('#siteInfo').text(siteName);
-        }
-        if(productId && productName){
-            $('#productName').val(productId);
-            $('#productInfo').text(productName);
-        }
 
         $('.zoomify').zoomify();
     })
@@ -532,32 +509,12 @@
         var menuName = $('#menuName').val();
         var questionDesc = $('#questionDesc').val();
         var priority = getListLevelValue();
-        var siteId = getCookie('siteId') ? getCookie('siteId') : ${siteId == null ? 0 : siteId};
-        var siteName = getCookie('siteName') ? getCookie('siteName') : ${siteName == null ? '0  ' : siteName};
         var questionId = ${siteQuestionInfo.id == null} ?$('#id').val():${siteQuestionInfo.id == null ? 0 :siteQuestionInfo.id};
+        var logId = ${logInfo.id == null ? -1 : logInfo.id };
         location.href = "<%=basePath%>mobile/wechatSiteQuestion/openDept.do?serialNo=${serialNo}&userId=${userId}" +
             "&questionId="+questionId+"&type=" + type + "&source=${source}&menuName=" + encodeURI(menuName) +
             "&questionDesc=" + encodeURI(questionDesc) + "&priority=" + priority
-            +"&productId=${productId}&productName=${productName}&siteId="+siteId+"&siteName="+siteName+'&time='+((new Date()).getTime());
-    }
-
-    /**
-     * 从本地缓存中读取缓存数据
-     * @param name
-     */
-    function getCookie(name)
-    {
-        return window.localStorage.getItem(name);
-    }
-
-    /**
-     * 保存数据到本地缓存
-     * @param name
-     * @param value
-     */
-    function setCookie(name,value)
-    {
-        window.localStorage.setItem(name, value);
+            +"&logId="+logId;
     }
 
 </script>

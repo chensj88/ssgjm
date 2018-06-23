@@ -90,8 +90,10 @@
             上传
         </div>
         <div>
-            <a href="#popover" id="openPopover" class="iconfont icon-wo" style="color: #A4A5AB;"></a>
-            <span style="color: #A4A5AB;">我</span>
+            <a href="#popover" id="openPopover" class="iconfont icon-wo"
+               style="color: #A4A5AB; display: block;">
+                <span style="color: #A4A5AB;">我</span>
+            </a>
         </div>
     </div>
     <%--弹出菜单--%>

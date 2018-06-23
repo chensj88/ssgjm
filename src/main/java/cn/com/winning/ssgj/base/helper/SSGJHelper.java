@@ -266,6 +266,14 @@ public class SSGJHelper {
     @Qualifier(value = "etAccessTokenIdService")
     private StepSequenceFactory  etAccessTokenIdService;
 
+    @Autowired
+    @Qualifier(value = "etUserHospitalLogIdService")
+    private StepSequenceFactory  etUserHospitalLogIdService;
+
+
+    public long createEtUserHospitalLog(){
+        return (long) etUserHospitalLogIdService.create();
+    }
 
     public long createEtAccessTokenIdService() {
         return (long)etAccessTokenIdService.create();

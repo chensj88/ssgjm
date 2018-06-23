@@ -77,44 +77,67 @@
     mui.ready(function() {
         var header = document.querySelector('.wrap-header');
         var list = document.getElementById('list');
-        //list.style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
         list.style.height = (document.body.offsetHeight - 0) + 'px';
         window.indexedList = new mui.IndexedList(list);
     });
 
     $(function () {
-        var siteId = getCookie('siteId');
-        var productId = getCookie('productId');
-        if(siteId && ${type == 1}){
-            $('li[data-value='+siteId+']').css('color','#f40').css('font-weight','bolder');
+        if(${type == 1 && logInfo.siteName!= null}){
+            $('li[data-value=${logInfo.siteName}]').css('color','#f40').css('font-weight','bolder');
         }
-        if(productId && ${type == 2}){
-            $('li[data-value='+productId+']').css('color','#f40').css('font-weight','bolder');
+        if(${type == 2 && logInfo.productName!= null}){
+            $('li[data-value=${logInfo.productName}]').css('color','#f40').css('font-weight','bolder');
         }
     });
     function selectSiteName(id,name){
             if(${type == 1}){
-                location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&menuName=${menuName}&questionDesc=${questionDesc}&priority=${priority}"
-                    +"&siteId="+id + "&siteName="+encodeURI(name)+"&productId=${productId}&productName=${productName}";
-                    setCookie('siteId',id);
-                    setCookie('siteName',name);
+                var json = {
+                    operator:${userId},
+                    serialNo:${serialNo},
+                    siteName:id,
+                    id:${logInfo.id == null ? -1 : logInfo.id}
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "<%=basePath%>mobile/commons/addOperateDeptOrProductLog.do",
+                    data: json,
+                    cache: false,
+                    dataType: "json",
+                    async: false,
+                    error: function (request) {
+                        mui.toast('服务端错误，或网络不稳定，本次操作被终止。', {duration: 'long', type: 'div'})
+                    },
+                    success: function (data) {
+                        location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&menuName=${menuName}&questionDesc=${questionDesc}&priority=${priority}"
+                            +"&logId="+data.data;
+                    }
+                });
+
             }else{
-                location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&menuName=${menuName}&questionDesc=${questionDesc}&priority=${priority}"
-                    +"&siteId=${siteId}&siteName=${siteName}&productId="+id + "&productName="+encodeURI(name);
-                setCookie('productId',id);
-                setCookie('productName',name);
+                var json = {
+                    operator:${userId},
+                    serialNo:${serialNo},
+                    productName:id,
+                    id:${logInfo.id == null ? -1 : logInfo.id}
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "<%=basePath%>mobile/commons/addOperateDeptOrProductLog.do",
+                    data: json,
+                    cache: false,
+                    dataType: "json",
+                    async: false,
+                    error: function (request) {
+                        mui.toast('服务端错误，或网络不稳定，本次操作被终止。', {duration: 'long', type: 'div'})
+                    },
+                    success: function (data) {
+                        location.href = "<%=basePath%>mobile/wechatSiteQuestion/changeDept.do?questionId=${questionId}&serialNo=${serialNo}&userId=${userId}&type=${type}&source=${source}&menuName=${menuName}&questionDesc=${questionDesc}&priority=${priority}"
+                            +"&logId="+data.data;
+                    }
+                });
+
             }
 
-    }
-
-    function getCookie(name)
-    {
-        return window.localStorage.getItem(name);
-    }
-
-    function setCookie(name,value)
-    {
-        window.localStorage.setItem(name, value);
     }
 
 </script>

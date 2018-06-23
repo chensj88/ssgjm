@@ -2,7 +2,9 @@ package cn.com.winning.ssgj.web.controller.mobile;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.dao.EtUserHospitalLogDao;
 import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
+import cn.com.winning.ssgj.domain.EtUserHospitalLog;
 import cn.com.winning.ssgj.domain.EtUserLog;
 import cn.com.winning.ssgj.domain.PmisCustomerInformation;
 import cn.com.winning.ssgj.domain.support.Row;
@@ -142,6 +144,28 @@ public class EnterpriseQuestionCommonController extends BaseController {
         result.put("total", count);
         result.put("status", Constants.SUCCESS);
         result.put("data", customerInformationList);
+        return result;
+    }
+
+
+    @RequestMapping(value = "/addOperateDeptOrProductLog.do")
+    @ResponseBody
+    public Map<String, Object> addOperateDeptOrProduct(EtUserHospitalLog log) {
+        if(log.getId() == null || log.getId() == -1 ){
+            long id = ssgjHelper.createEtUserHospitalLog();
+            log.setId(id);
+            log.setCId(-2L);
+            log.setPmId(-2L);
+            log.setSourceType(1);
+            log.setOperatorTime(new Timestamp(new Date().getTime()));
+            getFacade().getEtUserHospitalLogService().createEtUserHospitalLog(log);
+        }else{
+            log.setOperatorTime(new Timestamp(new Date().getTime()));
+            getFacade().getEtUserHospitalLogService().modifyEtUserHospitalLog(log);
+        }
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", log.getId());
         return result;
     }
 

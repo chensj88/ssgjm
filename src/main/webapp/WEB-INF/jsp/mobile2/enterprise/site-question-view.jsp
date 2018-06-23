@@ -87,7 +87,7 @@
             <div class="column-2 large-list" id="solutionResultEditDiv">
                 <strong>解决方案</strong>
                 <div class="collect-list-text" style="width: 80%;">
-                    <textarea id="solutionResultEdit">${questionInfo.solutionResult}</textarea>
+                    <textarea id="solutionResultEdit" style="font-size:12px">${questionInfo.solutionResult}</textarea>
                 </div>
             </div>
         </c:if>
@@ -103,7 +103,7 @@
             <div class="column-2 large-list" id="suggestEditDiv">
                 <strong>打回意见</strong>
                 <div class="collect-list-text" style="width: 80%;">
-                    <textarea id="suggestEdit">${questionInfo.solutionResult}</textarea>
+                    <textarea id="suggestEdit" style="font-size:12px">${questionInfo.solutionResult}</textarea>
                 </div>
             </div>
         </c:if>
@@ -114,7 +114,7 @@
             <a href="javascript:void(0);" onclick="goDistribute();"><span>查看分配</span></a>
         </c:if>
         <%--项目经理未处理--%>
-        <c:if test="${(questionInfo.processStatus==3||questionInfo.processStatus==6)&&isManager==0&&status!='6'}">
+        <c:if test="${(questionInfo.processStatus==3||questionInfo.processStatus==6)&&isManager==0&&status=='3,6'}">
             <a href="javascript:void(0);" onclick="changeStatus(0,7,'打回');"><span>打回</span></a>
             <a href="javascript:void(0);" onclick="changeStatus(0,4,'确认');"><span>确认完成</span></a>
         </c:if>
@@ -124,7 +124,7 @@
             <a href="javascript:void(0);" onclick="changeStatus(1,3,'接受');"><span>接受</span></a>
         </c:if>
         <%--工程师未处理--%>
-        <c:if test="${(questionInfo.processStatus==3||questionInfo.processStatus==6)&&(questionInfo.allocateUser==userId||isManager==1)&&status!='6'}">
+        <c:if test="${(questionInfo.processStatus==3||questionInfo.processStatus==6)&&isManager==1&&status!='3,6'}">
             <a href="javascript:void(0);" onclick="changeStatus(1,7,'打回');"><span>打回</span></a>
             <a href="javascript:void(0);" onclick="changeStatus(1,4,'确认');"><span>确认完成</span></a>
         </c:if>
