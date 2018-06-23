@@ -205,13 +205,16 @@
                             }
                         }else{
                             $('.tab-cntent').empty();
-                            console.log('无数据');
+                            var content = " <a href='#'>" +
+                                "              <span class='tab_txt'>无相关的数据</span>\n" +
+                                "           </a>";
+                            $('.tab-cntent').append(content);
                         }
                     }
                 }
             });
         }else{
-            //location.href = "<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${status}&searchType="+searchType+"&searchText="+searchText+"&isManager=${isManager}";
+            location.href = "<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${status}&searchType="+searchType+"&searchText="+searchText+"&isManager=${isManager}";
         }
 
     }
