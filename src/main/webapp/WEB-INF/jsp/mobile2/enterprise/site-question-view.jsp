@@ -114,7 +114,7 @@
             <a href="javascript:void(0);" onclick="goDistribute();"><span>查看分配</span></a>
         </c:if>
         <%--项目经理未处理--%>
-        <c:if test="${(questionInfo.processStatus==3||questionInfo.processStatus==6)&&isManager==0&&status!='6'}">
+        <c:if test="${(questionInfo.processStatus==3||questionInfo.processStatus==6)&&isManager==0&&status=='3,6'}">
             <a href="javascript:void(0);" onclick="changeStatus(0,7,'打回');"><span>打回</span></a>
             <a href="javascript:void(0);" onclick="changeStatus(0,4,'确认');"><span>确认完成</span></a>
         </c:if>
@@ -124,7 +124,7 @@
             <a href="javascript:void(0);" onclick="changeStatus(1,3,'接受');"><span>接受</span></a>
         </c:if>
         <%--工程师未处理--%>
-        <c:if test="${(questionInfo.processStatus==3||questionInfo.processStatus==6)&&(questionInfo.allocateUser==userId||isManager==1)&&status!='6'}">
+        <c:if test="${(questionInfo.processStatus==3||questionInfo.processStatus==6)&&isManager==1&&status!='3,6'}">
             <a href="javascript:void(0);" onclick="changeStatus(1,7,'打回');"><span>打回</span></a>
             <a href="javascript:void(0);" onclick="changeStatus(1,4,'确认');"><span>确认完成</span></a>
         </c:if>
