@@ -195,7 +195,7 @@ public class EtContractTaskController extends BaseController {
      */
     @RequestMapping(value = "/exportExcel.do")
     public void wiriteExcel(EtContractTask task, HttpServletResponse response) throws IOException {
-            String fileName = "系统清单_"+ DateUtil.format(DateUtil.PATTERN_14)+".xls";
+        String fileName = "系统清单_"+ DateUtil.format(DateUtil.PATTERN_14)+".xls";
         super.getFacade().getEtContractTaskService().generateEtContractTask(task, response,fileName);
 
     }

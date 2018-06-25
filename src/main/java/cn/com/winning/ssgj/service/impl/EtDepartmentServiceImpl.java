@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
-import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
-import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.base.util.PinyinTools;
 import cn.com.winning.ssgj.domain.MobileSiteQuestion;
-import cn.com.winning.ssgj.domain.SysUserInfo;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -104,13 +104,17 @@ public class EtDepartmentServiceImpl implements EtDepartmentService {
 	}
 
 	@Override
-	public void generateDepartInfo(EtDepartment department, String path) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
+	public void generateDepartInfo(EtDepartment department, HttpServletResponse response, String fileName) {
 		List<EtDepartment> departmentList = this.etDepartmentDao.selectEntityList(department);
 		List<String> colList = new ArrayList<String>();
 		colList.add("typeName");
 		colList.add("deptName");
 		colList.add("deptLocation");
+
+		List<String> colNameList = new ArrayList<String>();
+		colNameList.add("科室分类 *");
+		colNameList.add("科室名称 *");
+		colNameList.add("科室地理位置 *");
 		List<Map> dataList = new ArrayList<Map>();
 
 		for (EtDepartment deptInfo : departmentList) {
@@ -120,10 +124,10 @@ public class EtDepartmentServiceImpl implements EtDepartmentService {
 			deptMap.put("deptLocation", deptInfo.getDeptLocation());
 			dataList.add(deptMap);
 		}
-		dataMap.put("colList", colList);
-		dataMap.put("colSize", colList.size());
-		dataMap.put("data", dataList);
-		ExcelUtil.writeExcel(dataList, colList, colList.size(), path);
+
+		//创建工作簿
+		Workbook workbook = new HSSFWorkbook();
+		ExcelUtil.exportExcelByStream(dataList, colList, colNameList, response, workbook, fileName);
 	}
 
 	@Override

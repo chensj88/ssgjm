@@ -1,10 +1,11 @@
 package cn.com.winning.ssgj.service;
 
 import java.util.List;
-import java.util.Map;
 
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.expand.FlotDataInfo;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -36,7 +37,7 @@ public interface SysUserInfoService {
 
     List<FlotDataInfo> countUserInfoByType();
 
-    void generateUserInfo(SysUserInfo queryUser, String path);
+    void generateUserInfo(SysUserInfo queryUser, HttpServletResponse response, String fileName);
 
     void createHospitalUserInfo(List<List<Object>> userList,SysUserInfo userInfo);
 

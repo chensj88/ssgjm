@@ -5,6 +5,8 @@ import java.util.List;
 import cn.com.winning.ssgj.domain.EtDepartment;
 import cn.com.winning.ssgj.domain.MobileSiteQuestion;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Coder AutoGenerator generate.
  *
@@ -29,7 +31,7 @@ public interface EtDepartmentService {
 
     void createEtDepartmentExcel(List<List<Object>> departList, EtDepartment department);
 
-    void generateDepartInfo(EtDepartment department, String path);
+    void generateDepartInfo(EtDepartment department, HttpServletResponse response, String fileName);
 
     List<EtDepartment> selectDepartmentTypeList(EtDepartment info);
 
