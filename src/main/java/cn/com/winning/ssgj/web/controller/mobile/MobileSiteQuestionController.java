@@ -72,7 +72,7 @@ public class MobileSiteQuestionController extends BaseController {
     }
 
     /**
-     * 显示当前操作人的全部问题 微信
+     * 显示当前操作人的全部问题 微信号
      *
      * @param model    主要用来传输参数
      * @param userId   用户id
@@ -680,16 +680,16 @@ public class MobileSiteQuestionController extends BaseController {
                 endDate = DateUtil.plusDay(0);
                 break;
             case 2 :
-                endDate = DateUtil.plusDay(3);
+                endDate = DateUtil.plusDay(2);
                 break;
             case 3 :
-                endDate = DateUtil.plusDay(7);
+                endDate = DateUtil.plusDay(6);
                 break;
             case 4 :
-                endDate = DateUtil.plusDay(15);
+                endDate = DateUtil.plusDay(14);
                 break;
             default:
-                endDate = DateUtil.plusDay(7);
+                endDate = DateUtil.plusDay(6);
         }
         return endDate;
     }
