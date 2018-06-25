@@ -5,6 +5,8 @@ import java.util.List;
 import cn.com.winning.ssgj.domain.EtContractTask;
 import cn.com.winning.ssgj.domain.MobileSiteQuestion;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Coder AutoGenerator generate.
  *
@@ -34,9 +36,10 @@ public interface EtContractTaskService {
 	/**
 	 * 生成Excel文档
 	 * @param task 产品任务单
-	 * @param path 路径
+	 * @param response  响应
+	 * @param fileName 文件保存名称
 	 */
-    void generateEtContractTask(EtContractTask task, String path);
+    void generateEtContractTask(EtContractTask task, HttpServletResponse response, String fileName);
 
 	String checkEtContractTaskIsUse(EtContractTask task);
 

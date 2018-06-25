@@ -14,6 +14,13 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/zoomify/css/zoomify.min.css"/>
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
+    <%--photoSwipe--%>
+    <link rel="stylesheet prefetch" href="<%=basePath%>resources/photoSwipe/css/photoswipe.css">
+    <link rel="stylesheet prefetch" href="<%=basePath%>resources/photoSwipe/css/default-skin.css">
+    <script src="<%=basePath%>resources/photoSwipe/js/photoswipe.min.js"></script>
+    <script src="<%=basePath%>resources/photoSwipe/js/photoswipe-ui-default.min.js"></script>
+    <script src="<%=basePath%>resources/photoSwipe/js/myPhoto.js" type="text/javascript" charset="utf-8"></script>
+
 </head>
 <body>
 <div class="wrap">
@@ -58,10 +65,11 @@
             <strong>影像资料</strong>
         </div>
         <div class="column-2 large-list">
-					<span class="large-img">
+					<span class="large-img" id="imgs">
                     <c:if test="${siteQuestionInfo.imgPath !=null && siteQuestionInfo.imgPath !=''}">
-                        <c:forEach var="img" items="${siteQuestionInfo.imgs}">
-                            <img style="width: 88px;height: 92px;" src="<%=Constants.FTP_SHARE_FLODER%>${img}" class="zoomify">
+                        <c:forEach var="img" items="${siteQuestionInfo.imgs}" varStatus="status">
+                            <img style="width: 88px;height: 92px;" src="<%=Constants.FTP_SHARE_FLODER%>${img}"
+                                 onclick="toBigPic(${status.index})">
                         </c:forEach>
                     </c:if>
 					</span>
@@ -82,6 +90,7 @@
             </div>
         </c:if>
     </div>
+    <jsp:include page="../enterprise/img.jsp"></jsp:include>
     <c:if test="${siteQuestionInfo.processStatus == 4}">
         <div class="wrap-foot large-btn">
             <a href="#" id="refuse"><span>打回</span></a>

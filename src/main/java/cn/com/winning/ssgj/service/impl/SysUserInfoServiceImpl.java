@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import cn.com.winning.ssgj.base.Constants;
 
@@ -14,6 +15,8 @@ import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.expand.FlotDataInfo;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -102,10 +105,8 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
     }
 
     @Override
-    public void generateUserInfo(SysUserInfo queryUser, String path) {
-        Map<String, Object> dataMap = new HashMap<String, Object>();
+    public void generateUserInfo(SysUserInfo queryUser, HttpServletResponse response, String fileName) {
         List<SysUserInfo> queryUserList = this.sysUserInfoDao.selectEntityList(queryUser);
-        int total = (Integer) this.sysUserInfoDao.selectEntityCount(queryUser);
         List<String> colList = new ArrayList<String>();
         colList.add("userid");
         colList.add("yhmc");
@@ -113,6 +114,13 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
         colList.add("clo2");
         colList.add("mobile");
         colList.add("email");
+        List<String> colNameList = new ArrayList<String>();
+        colNameList.add("工号 *");
+        colNameList.add("姓名 *");
+        colNameList.add("部门 *");
+        colNameList.add("角色 *");
+        colNameList.add("手机号码");
+        colNameList.add("邮箱");
         List<Map> dataList = new ArrayList<Map>();
 
         for (SysUserInfo userInfo : queryUserList) {
@@ -125,10 +133,9 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
             userMap.put("email", userInfo.getEmail());
             dataList.add(userMap);
         }
-        dataMap.put("colList", colList);
-        dataMap.put("colSize", colList.size());
-        dataMap.put("data", dataList);
-        ExcelUtil.writeExcel(dataList, colList, colList.size(), path);
+        //创建工作簿
+        Workbook workbook = new HSSFWorkbook();
+        ExcelUtil.exportExcelByStream(dataList, colList, colNameList, response, workbook, fileName);
     }
 
     @Override

@@ -3,10 +3,7 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
-import cn.com.winning.ssgj.base.util.ExcelUtil;
-import cn.com.winning.ssgj.base.util.MD5;
-import cn.com.winning.ssgj.base.util.PinyinTools;
-import cn.com.winning.ssgj.base.util.StringUtil;
+import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.EtDepartment;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
@@ -128,38 +125,10 @@ public class EtDepartmentController extends BaseController {
      * @throws IOException
      */
     @RequestMapping(value = "/exportExcel.do")
-    public HttpServletResponse wiriteExcel(EtDepartment department, HttpServletResponse response) throws IOException {
+    public void wiriteExcel(EtDepartment department, HttpServletResponse response) throws IOException {
         department.setIsDel(Constants.PMIS_STATUS_USE);
-        String fileName = "department.xls";
-        String path = getClass().getClassLoader().getResource("/template").getPath() + fileName;
-        super.getFacade().getEtDepartmentService().generateDepartInfo(department,path);
-        try {
-            // path是指欲下载的文件的路径。
-            File file = new File(path);
-            // 取得文件名。
-            String filename = file.getName();
-            // 取得文件的后缀名。
-            String ext = filename.substring(filename.lastIndexOf(".") + 1).toUpperCase();
-            // 以流的形式下载文件。
-            InputStream fis = new BufferedInputStream(new FileInputStream(path));
-            byte[] buffer = new byte[fis.available()];
-            fis.read(buffer);
-            fis.close();
-            // 清空response
-            response.reset();
-            // 设置response的Header
-            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("医院科室信息.xls","UTF-8"));
-            response.addHeader("Content-Length", "" + file.length());
-            OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
-            response.setContentType("application/octet-stream");
-            toClient.write(buffer);
-            toClient.flush();
-            toClient.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
-        return response;
+        String fileName = "医院科室信息_"+ DateUtil.format(DateUtil.PATTERN_14)+".xls";
+        super.getFacade().getEtDepartmentService().generateDepartInfo(department,response,fileName);
     }
 
 
