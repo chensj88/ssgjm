@@ -2,6 +2,8 @@ package cn.com.winning.ssgj.domain;
 
 import java.io.Serializable;
 import org.apache.ibatis.type.Alias;
+
+import java.sql.Timestamp;
 import java.util.Date;
 import cn.com.winning.ssgj.domain.BaseDomain;
 
@@ -28,7 +30,7 @@ public class EtAccessToken extends BaseDomain implements Serializable {
 	 */
 	private Integer type;
 	
-	private Date lastTime;
+	private java.sql.Timestamp lastTime;
 	
 	private String remark;
 	
@@ -73,15 +75,15 @@ public class EtAccessToken extends BaseDomain implements Serializable {
 	public void setType(Integer type) {
 		this.type = type;
 	}
-	
-	public Date getLastTime() {
+
+	public java.sql.Timestamp getLastTime() {
 		return lastTime;
 	}
-	
-	public void setLastTime(Date lastTime) {
+
+	public void setLastTime(java.sql.Timestamp lastTime) {
 		this.lastTime = lastTime;
 	}
-	
+
 	public String getRemark() {
 		return remark;
 	}

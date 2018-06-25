@@ -155,8 +155,8 @@ public class MobileTempSiteQuestionController  extends BaseController {
         try{
             if(userId == null){  //新用户
                 String access_token = super.getAccessToken();
-                Cookie cookie = new Cookie("access_token",access_token);//将登录信息加入cookie中
-                cookie.setMaxAge(60*60*24*3);   //设置cookie最大失效时间 3天　　　
+                //Cookie cookie = new Cookie("access_token",access_token);//将登录信息加入cookie中
+                //cookie.setMaxAge(60*60*24*3);   //设置cookie最大失效时间 3天　　　
                 StringBuffer stringBuffer = new StringBuffer(WxConstants.QY_USER_INFO);
                 stringBuffer.append("access_token=").append(access_token).append("&code=").append(code);
                 JSONObject userInfo = WeixinUtil.getApiReturn(stringBuffer.toString());
@@ -170,8 +170,6 @@ public class MobileTempSiteQuestionController  extends BaseController {
                 List<EtUserHospitalLog> logList = super.getFacade().getEtUserHospitalLogService().getEtUserHospitalLogList(hospitalLog);
                 if(logList.size() >0){ //第一次登录
                     hospitalLog = logList.get(0);//按照时间排序取最新的
-                    //model.addAttribute("serialNo",hospitalLog.getSerialNo());
-                    //model.addAttribute("userId",userId);
                     return "redirect:"+ Constants.HTTP_SERVER+"/mobile/tempSiteQuestion/index.do?userId="+userId+"&serialNo="+hospitalLog.getSerialNo();
                 }
                 model.addAttribute("userId",userId);

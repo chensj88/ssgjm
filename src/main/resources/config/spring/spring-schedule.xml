@@ -15,12 +15,21 @@
 	">
 	<!-- 任务实体 -->
 	<bean id="pmisJobDetail" class="cn.com.winning.ssgj.ws.job.ImportPmisDataJob" />
+	<bean id="accessTokenDetail" class="cn.com.winning.ssgj.ws.job.AccessTokenDataJob" />
 
 	<!-- 定时更新政策任务方法 -->
 	<!--不继承spring提供的QuartzJobBean-->
 	<bean id="pmisJobDetailMethod"
 		  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="pmisJobDetail" />
+		<!-- targetMethod 配置定时执行的方法名 -->
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<bean id="accessTokenDetailMethod"
+		  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="accessTokenDetail" />
 		<!-- targetMethod 配置定时执行的方法名 -->
 		<property name="targetMethod" value="execute" />
 		<property name="concurrent" value="false" />
@@ -35,13 +44,23 @@
 		<!--<property name="cronExpression" value="0 40 * * * ?" />-->
 	</bean>
 
+	<bean id="accessTokenTaskTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="accessTokenDetailMethod" />
+		<!--  每天4点执行一次 -->
+		<property name="cronExpression" value="0 0 1 * * ?" />
+		<!--每小时40分钟跑一次-->
+		<!--<property name="cronExpression" value="0 40 * * * ?" />-->
+	</bean>
+
 	<!-- 订制任务列表 -->
 	<bean id="scheduler"
 		  class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref bean="pmisJobTaskTrigger" />
-			</list>
+                <ref bean="pmisJobTaskTrigger" />
+                <ref bean="accessTokenTaskTrigger" />
+
+            </list>
 		</property>
 	</bean>
 </beans>
