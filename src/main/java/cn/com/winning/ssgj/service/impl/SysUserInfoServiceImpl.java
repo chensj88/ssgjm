@@ -115,10 +115,10 @@ public class SysUserInfoServiceImpl implements SysUserInfoService {
         colList.add("mobile");
         colList.add("email");
         List<String> colNameList = new ArrayList<String>();
-        colNameList.add("工号");
-        colNameList.add("姓名");
-        colNameList.add("部门");
-        colNameList.add("角色");
+        colNameList.add("工号 *");
+        colNameList.add("姓名 *");
+        colNameList.add("部门 *");
+        colNameList.add("角色 *");
         colNameList.add("手机号码");
         colNameList.add("邮箱");
         List<Map> dataList = new ArrayList<Map>();
