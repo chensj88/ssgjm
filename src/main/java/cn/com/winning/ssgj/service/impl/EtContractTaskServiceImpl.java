@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import cn.com.winning.ssgj.base.exception.SSGJException;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
@@ -13,6 +14,8 @@ import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.EtDepartment;
 import cn.com.winning.ssgj.domain.MobileSiteQuestion;
 import cn.com.winning.ssgj.domain.support.Row;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.EtContractTaskDao;
@@ -71,12 +74,7 @@ public class EtContractTaskServiceImpl implements EtContractTaskService {
     }
 
     @Override
-    public void generateEtContractTask(EtContractTask task, String path) {
-        Map<String, Object> dataMap = new HashMap<String, Object>();
-        int total = (Integer) this.etContractTaskDao.selectEntityCount(task);
-        ;
-        Row row = new Row(0, total);
-        task.setRow(row);
+    public void generateEtContractTask(EtContractTask task, HttpServletResponse response, String fileName) {
         List<EtContractTask> contractTaskList = this.etContractTaskDao.selectEntityList(task);
         List<String> colList = new ArrayList<String>();
         colList.add("zxtmc");
@@ -84,8 +82,14 @@ public class EtContractTaskServiceImpl implements EtContractTaskService {
         colList.add("teamMemeber");
         colList.add("mx");
         colList.add("bz");
-        List<Map> dataList = new ArrayList<Map>();
 
+        List<String> colNameList = new ArrayList<String>();
+        colNameList.add("系统名称");
+        colNameList.add("主力工程师");
+        colNameList.add("组员");
+        colNameList.add("产品大类");
+        colNameList.add("备注");
+        List<Map> dataList = new ArrayList<Map>();
         for (EtContractTask t : contractTaskList) {
             Map<String, String> userMap = new HashMap<>();
             userMap.put("zxtmc", t.getZxtmc());
@@ -95,10 +99,10 @@ public class EtContractTaskServiceImpl implements EtContractTaskService {
             userMap.put("bz", t.getBz());
             dataList.add(userMap);
         }
-        dataMap.put("colList", colList);
-        dataMap.put("colSize", colList.size());
-        dataMap.put("data", dataList);
-        ExcelUtil.writeExcel(dataList, colList, colList.size(), path);
+
+        //创建工作簿
+        Workbook workbook = new HSSFWorkbook();
+        ExcelUtil.exportExcelByStream(dataList, colList, colNameList, response, workbook, fileName);
     }
 
     private String queryUserByIdList(EtContractTask t) {

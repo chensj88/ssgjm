@@ -280,6 +280,19 @@ public class ExcelUtil {
             Font font=workBook.createFont();
             font.setBoldweight(Font.BOLDWEIGHT_BOLD);
             cellStyle.setFont(font);
+            cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 居中
+            cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); //下边框
+            cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
+            cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
+            cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
+
+            //除去第一行边框
+            CellStyle cellStyle1 = workBook.createCellStyle();
+            cellStyle1.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 居中
+            cellStyle1.setBorderBottom(HSSFCellStyle.BORDER_THIN); //下边框
+            cellStyle1.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
+            cellStyle1.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
+            cellStyle1.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
             // sheet 对应一个工作页
             Sheet sheet = workBook.createSheet();
             //第一行保存列名
@@ -316,6 +329,7 @@ public class ExcelUtil {
                         value = dataMap.get(colList.get(k)).toString();
                     }
                     cell.setCellValue(value);
+                    cell.setCellStyle(cellStyle1);
                 }
             }
             //获取响应输出流
