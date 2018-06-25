@@ -61,7 +61,11 @@
 	</sql>
 
 	<select id="selectEtContractTask" resultMap="etContractTaskResult" parameterType="etContractTask">
-		select * from ET_CONTRACT_TASK t where 1 = 1
+		select
+		t.*, ISNULL(u.YHMC,'未分配') AS ALLOCATE_NAME
+		from ET_CONTRACT_TASK t
+		LEFT  JOIN SYS_USER_INFO u ON t.ALLOCATE_USER = u.ID
+		where 1 = 1
 		<include refid="sf-etContractTask" />
 	</select>
 
