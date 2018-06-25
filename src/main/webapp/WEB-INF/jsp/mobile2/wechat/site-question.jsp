@@ -292,13 +292,13 @@
     function saveData() {
         var queryJson = {
             id: $('#id').val(),
-            serialNo: $('#serialNo').val(),
+            serialNo: ${serialNo},
             priority: getListLevelValue(),
             siteName: $('#siteName').val(),
             productName: $('#productName').val(),
             menuName: $('#menuName').val(),
             questionDesc: $('#questionDesc').val().trim(),
-            creator: $('#userId').val()
+            creator: ${userId}
         };
 
         $.ajax({

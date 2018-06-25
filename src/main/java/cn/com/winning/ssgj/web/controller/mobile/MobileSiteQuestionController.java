@@ -295,7 +295,7 @@ public class MobileSiteQuestionController extends BaseController {
             end = super.getFacade().getEtStartEndService().getEtStartEnd(end);
             if (end != null) { //判断是否自动分配
                 EtContractTask task = this.getAllocateUser(info.getSerialNo(), Long.parseLong(info.getProductName()));
-                addEtLog(info.getSerialNo(), "ET_SITE_QUESTION_INFO", info.getId(), "问题分配:自动分配给{" + task.getAllocateUser() + "}", 1, info.getCreator());
+                addEtLog(info.getSerialNo(), "ET_SITE_QUESTION_INFO", info.getId(), "问题分配:自动分配给{" + task.getMap().get("allocateName") + "}", Constants.ACCEPTED_UNTREATED, info.getCreator());
                 info.setAllocateUser(task.getAllocateUser());
                 info.setProcessStatus(Constants.ACCEPTED_UNTREATED); //默认将状态分配到接收待处理
                 info.setHopeFinishDate(getHopeFinishDateByPriority(info.getPriority()));
@@ -305,17 +305,17 @@ public class MobileSiteQuestionController extends BaseController {
             info.setOperator(info.getCreator());
             info.setOperatorTime(new Timestamp(new Date().getTime()));
             info.setCreator(null);
+            addEtLog(info.getSerialNo(), "ET_SITE_QUESTION_INFO", info.getId(), "内容变更:问题修改", 1, info.getOperator());
             EtStartEnd end = new EtStartEnd();
             end.setSerialNo(info.getSerialNo());
             end = super.getFacade().getEtStartEndService().getEtStartEnd(end);
             if (end != null) { //判断是否自动分配
                 EtContractTask task = this.getAllocateUser(info.getSerialNo(), Long.parseLong(info.getProductName()));
-                addEtLog(info.getSerialNo(), "ET_SITE_QUESTION_INFO", info.getId(), "问题分配:自动分配给{" + task.getAllocateUser() + "}", 1, info.getCreator());
                 info.setAllocateUser(task.getAllocateUser());
                 info.setProcessStatus(Constants.ACCEPTED_UNTREATED); //默认将状态分配到接收待处理
                 info.setHopeFinishDate(getHopeFinishDateByPriority(info.getPriority()));
+                addEtLog(info.getSerialNo(), "ET_SITE_QUESTION_INFO", info.getId(), "问题分配:自动分配给{" + task.getMap().get("allocateName") + "}", Constants.ACCEPTED_UNTREATED, info.getOperator());
             }
-            addEtLog(info.getSerialNo(), "ET_SITE_QUESTION_INFO", info.getId(), "内容变更:问题修改", 1, info.getCreator());
             getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
         }
         Map<String, Object> result = new HashMap<String, Object>();
@@ -666,7 +666,6 @@ public class MobileSiteQuestionController extends BaseController {
     }
 
     //    企业微信号相关controller》》》》》》》》》》》》》》》》》》》end
-
 
     /**
      * 按照优先级获取期望完成时间
