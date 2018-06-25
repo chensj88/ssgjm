@@ -420,7 +420,7 @@
     function changeListLevel(val) {
         switch (val) {
             case 1 :
-                $('#remark').text("注：A等级项目完成时间为1个工作日");
+                $('#remark').text("注：A等级项目完成时间为当天");
                 break;
             case 2 :
                 $('#remark').text("注：B等级项目完成时间为3个工作日");
