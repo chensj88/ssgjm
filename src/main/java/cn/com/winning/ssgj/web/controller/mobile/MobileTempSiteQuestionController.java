@@ -153,6 +153,7 @@ public class MobileTempSiteQuestionController  extends BaseController {
     @RequestMapping(value = "/wxStart.do")
     public String wxStart(Model model,String code,Long userId,String serialNo,String serialName) {
         try{
+            //userId = (long)7284;
             if(userId == null){  //新用户
                 String access_token = super.getAccessToken();
                 //Cookie cookie = new Cookie("access_token",access_token);//将登录信息加入cookie中
@@ -246,6 +247,25 @@ public class MobileTempSiteQuestionController  extends BaseController {
         }
 
         return "mobile2/enterprise/index";
+    }
+
+    /**
+     * 推广二维码
+     * @return
+     */
+    @RequestMapping(value = "/qrCode.do")
+    public String qrCode(Model model,Long questionId,Long userId,String serialNo){
+        try{
+            String url ="HTTP://wx.winning.com.cn/wechat/Hander/CustomerPMIS.ashx?type=QRCODE&OPENID="+userId+"&HOSPCODE="+serialNo+"&USERTYPE=2&GETSOURCE=SSGLGJ";
+            JSONObject imgUrl = WeixinUtil.getApiReturn(url);
+            String Headimgurl =(String)imgUrl.get("Headimgurl");
+            model.addAttribute("Headimgurl",Headimgurl);
+            model.addAttribute("serialNo",serialNo);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return "mobile2/enterprise/qrCode";
     }
 
 

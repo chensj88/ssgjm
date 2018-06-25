@@ -31,6 +31,8 @@
 <div id="popover" class="mui-popover">
     <ul class="mui-table-view">
         <li class="mui-table-view-cell"><a href="<%=basePath%>/mobile/tempSiteQuestion/wxStart.do?userId=${userId}&serialNo=${serialNo}&serialName=${serialName}">注销：${serialName}</a></li>
+        <li class="mui-table-view-cell"><a href="<%=basePath%>/mobile/tempSiteQuestion/qrCode.do?userId=${userId}&serialNo=${serialNo}">推广二维码</a></li>
+
     </ul>
 </div>
 <script type="text/javascript">
