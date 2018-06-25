@@ -254,13 +254,14 @@ public class MobileTempSiteQuestionController  extends BaseController {
      * @return
      */
     @RequestMapping(value = "/qrCode.do")
-    public String qrCode(Model model,Long questionId,Long userId,String serialNo){
+    public String qrCode(Model model,Long questionId,Long userId,String serialNo,String serialName){
         try{
             String url ="HTTP://wx.winning.com.cn/wechat/Hander/CustomerPMIS.ashx?type=QRCODE&OPENID="+userId+"&HOSPCODE="+serialNo+"&USERTYPE=2&GETSOURCE=SSGLGJ";
             JSONObject imgUrl = WeixinUtil.getApiReturn(url);
             String Headimgurl =(String)imgUrl.get("Headimgurl");
             model.addAttribute("Headimgurl",Headimgurl);
             model.addAttribute("serialNo",serialNo);
+            model.addAttribute("serialName",serialName);
         }catch (Exception e){
             e.printStackTrace();
         }

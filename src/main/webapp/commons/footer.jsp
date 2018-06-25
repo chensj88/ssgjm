@@ -29,9 +29,9 @@
 </div>
 <%--弹出菜单--%>
 <div id="popover" class="mui-popover">
-    <ul class="mui-table-view">
-        <li class="mui-table-view-cell"><a href="<%=basePath%>/mobile/tempSiteQuestion/wxStart.do?userId=${userId}&serialNo=${serialNo}&serialName=${serialName}">注销：${serialName}</a></li>
-        <li class="mui-table-view-cell"><a href="<%=basePath%>/mobile/tempSiteQuestion/qrCode.do?userId=${userId}&serialNo=${serialNo}">推广二维码</a></li>
+    <ul class="mui-table-view" style="line-height:30px;">
+        <li class="mui-table-view-cell" style="margin: 10px 10px 10px 10px;"><a href="<%=basePath%>/mobile/tempSiteQuestion/wxStart.do?userId=${userId}&serialNo=${serialNo}&serialName=${serialName}">注销：${serialName}</a></li>
+        <li class="mui-table-view-cell" style="margin: 10px 10px 10px 10px;"><a href="<%=basePath%>/mobile/tempSiteQuestion/qrCode.do?userId=${userId}&serialNo=${serialNo}&serialName=${serialName}">推广二维码</a></li>
 
     </ul>
 </div>
