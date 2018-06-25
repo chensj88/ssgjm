@@ -4,6 +4,7 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.CommonFtpUtils;
+import cn.com.winning.ssgj.base.util.DateUtil;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -71,7 +72,7 @@ public class MobileSiteQuestionController extends BaseController {
     }
 
     /**
-     * 显示当前操作人的全部问题
+     * 显示当前操作人的全部问题 微信号
      *
      * @param model    主要用来传输参数
      * @param userId   用户id
@@ -289,6 +290,16 @@ public class MobileSiteQuestionController extends BaseController {
             info.setOperator(info.getCreator());
             info.setOperatorTime(new Timestamp(new Date().getTime()));
             addEtLog(info.getSerialNo(), "ET_SITE_QUESTION_INFO", info.getId(), "内容创建:新建问题", 1, info.getCreator());
+            EtStartEnd end = new EtStartEnd();
+            end.setSerialNo(info.getSerialNo());
+            end = super.getFacade().getEtStartEndService().getEtStartEnd(end);
+            if (end != null) { //判断是否自动分配
+                EtContractTask task = this.getAllocateUser(info.getSerialNo(), Long.parseLong(info.getProductName()));
+                addEtLog(info.getSerialNo(), "ET_SITE_QUESTION_INFO", info.getId(), "问题分配:自动分配给{" + task.getAllocateUser() + "}", 1, info.getCreator());
+                info.setAllocateUser(task.getAllocateUser());
+                info.setProcessStatus(Constants.ACCEPTED_UNTREATED); //默认将状态分配到接收待处理
+                info.setHopeFinishDate(getHopeFinishDateByPriority(info.getPriority()));
+            }
             getFacade().getEtSiteQuestionInfoService().createEtSiteQuestionInfo(info);
         } else {
             info.setOperator(info.getCreator());
@@ -302,6 +313,7 @@ public class MobileSiteQuestionController extends BaseController {
                 addEtLog(info.getSerialNo(), "ET_SITE_QUESTION_INFO", info.getId(), "问题分配:自动分配给{" + task.getAllocateUser() + "}", 1, info.getCreator());
                 info.setAllocateUser(task.getAllocateUser());
                 info.setProcessStatus(Constants.ACCEPTED_UNTREATED); //默认将状态分配到接收待处理
+                info.setHopeFinishDate(getHopeFinishDateByPriority(info.getPriority()));
             }
             addEtLog(info.getSerialNo(), "ET_SITE_QUESTION_INFO", info.getId(), "内容变更:问题修改", 1, info.getCreator());
             getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
@@ -655,5 +667,31 @@ public class MobileSiteQuestionController extends BaseController {
 
     //    企业微信号相关controller》》》》》》》》》》》》》》》》》》》end
 
+
+    /**
+     * 按照优先级获取期望完成时间
+     * @param priority
+     * @return
+     */
+    private String getHopeFinishDateByPriority(int priority){
+        String endDate = "";
+        switch (priority){
+            case 1 :
+                endDate = DateUtil.plusDay(0);
+                break;
+            case 2 :
+                endDate = DateUtil.plusDay(2);
+                break;
+            case 3 :
+                endDate = DateUtil.plusDay(6);
+                break;
+            case 4 :
+                endDate = DateUtil.plusDay(14);
+                break;
+            default:
+                endDate = DateUtil.plusDay(6);
+        }
+        return endDate;
+    }
 
 }
