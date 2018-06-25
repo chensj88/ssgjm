@@ -425,7 +425,7 @@
     function changeListLevel(val) {
         switch (val) {
             case 1 :
-                $('#remark').text("注：A等级项目期望完成时间是当天，供项目经理参考安排工作");
+                $('#remark').text("注：A等级项目期望完成时间是当天内，供项目经理参考安排工作");
                 break;
             case 2 :
                 $('#remark').text("注：B等级项目期望完成时间是3天内，供项目经理参考安排工作");
