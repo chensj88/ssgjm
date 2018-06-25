@@ -4,6 +4,7 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.CommonFtpUtils;
+import cn.com.winning.ssgj.base.util.DateUtil;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -71,7 +72,7 @@ public class MobileSiteQuestionController extends BaseController {
     }
 
     /**
-     * 显示当前操作人的全部问题
+     * 显示当前操作人的全部问题 微信号
      *
      * @param model    主要用来传输参数
      * @param userId   用户id
@@ -106,16 +107,16 @@ public class MobileSiteQuestionController extends BaseController {
      */
     @RequestMapping(value = "/openDept.do")
     public String openDept(Model model, Long userId, String serialNo, Long questionId, String type,
-                           String siteName, String productName,Long logId,
+                           String siteName, String productName, Long logId,
                            String menuName, String questionDesc, String priority, String source) throws ParseException {
         EtDepartment dept = new EtDepartment();
         dept.setSerialNo(Long.parseLong(serialNo));
         EtUserHospitalLog log = new EtUserHospitalLog();
         log.setId(logId);
         log.setSerialNo(serialNo);
-        log.setSiteName("0".equals(siteName)? null : siteName);
+        log.setSiteName("0".equals(siteName) ? null : siteName);
         log.setSourceType(1);
-        log.setProductName("0".equals(productName)? null : productName);
+        log.setProductName("0".equals(productName) ? null : productName);
         log.setOperator(userId);
         model.addAttribute("questionId", questionId);
         model.addAttribute("userId", userId);
@@ -151,7 +152,7 @@ public class MobileSiteQuestionController extends BaseController {
      */
     @RequestMapping(value = "/changeDept.do")
     public String changeDept(Model model, String questionId, Long userId, String serialNo, String type,
-                             Long logId,String source, String menuName, String questionDesc, String priority) {
+                             Long logId, String source, String menuName, String questionDesc, String priority) {
         if (StringUtils.isNotBlank(questionId)) {
             EtSiteQuestionInfo info = new EtSiteQuestionInfo();
             info.setId(Long.parseLong(questionId));
@@ -289,21 +290,32 @@ public class MobileSiteQuestionController extends BaseController {
             info.setOperator(info.getCreator());
             info.setOperatorTime(new Timestamp(new Date().getTime()));
             addEtLog(info.getSerialNo(), "ET_SITE_QUESTION_INFO", info.getId(), "内容创建:新建问题", 1, info.getCreator());
-            getFacade().getEtSiteQuestionInfoService().createEtSiteQuestionInfo(info);
-        } else {
-            info.setOperator(info.getCreator());
-            info.setOperatorTime(new Timestamp(new Date().getTime()));
-            info.setCreator(null);
             EtStartEnd end = new EtStartEnd();
             end.setSerialNo(info.getSerialNo());
             end = super.getFacade().getEtStartEndService().getEtStartEnd(end);
             if (end != null) { //判断是否自动分配
                 EtContractTask task = this.getAllocateUser(info.getSerialNo(), Long.parseLong(info.getProductName()));
-                addEtLog(info.getSerialNo(), "ET_SITE_QUESTION_INFO", info.getId(), "问题分配:自动分配给{" + task.getAllocateUser() + "}", 1, info.getCreator());
+                addEtLog(info.getSerialNo(), "ET_SITE_QUESTION_INFO", info.getId(), "问题分配:自动分配给{" + task.getMap().get("allocateName") + "}", Constants.ACCEPTED_UNTREATED, info.getCreator());
                 info.setAllocateUser(task.getAllocateUser());
                 info.setProcessStatus(Constants.ACCEPTED_UNTREATED); //默认将状态分配到接收待处理
+                info.setHopeFinishDate(getHopeFinishDateByPriority(info.getPriority()));
             }
-            addEtLog(info.getSerialNo(), "ET_SITE_QUESTION_INFO", info.getId(), "内容变更:问题修改", 1, info.getCreator());
+            getFacade().getEtSiteQuestionInfoService().createEtSiteQuestionInfo(info);
+        } else {
+            info.setOperator(info.getCreator());
+            info.setOperatorTime(new Timestamp(new Date().getTime()));
+            info.setCreator(null);
+            addEtLog(info.getSerialNo(), "ET_SITE_QUESTION_INFO", info.getId(), "内容变更:问题修改", 1, info.getOperator());
+            EtStartEnd end = new EtStartEnd();
+            end.setSerialNo(info.getSerialNo());
+            end = super.getFacade().getEtStartEndService().getEtStartEnd(end);
+            if (end != null) { //判断是否自动分配
+                EtContractTask task = this.getAllocateUser(info.getSerialNo(), Long.parseLong(info.getProductName()));
+                info.setAllocateUser(task.getAllocateUser());
+                info.setProcessStatus(Constants.ACCEPTED_UNTREATED); //默认将状态分配到接收待处理
+                info.setHopeFinishDate(getHopeFinishDateByPriority(info.getPriority()));
+                addEtLog(info.getSerialNo(), "ET_SITE_QUESTION_INFO", info.getId(), "问题分配:自动分配给{" + task.getMap().get("allocateName") + "}", Constants.ACCEPTED_UNTREATED, info.getOperator());
+            }
             getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
         }
         Map<String, Object> result = new HashMap<String, Object>();
@@ -485,6 +497,7 @@ public class MobileSiteQuestionController extends BaseController {
             List<String> lists = Arrays.asList(imgs);
             questionInfo.setImgs(lists);
         }
+        addEtLog(questionInfo.getSerialNo(), "ET_SITE_QUESTION_INFO", questionInfo.getId(), "内容变更:问题修改", questionInfo.getProcessStatus(), userId);
         resultMap.put("questionInfo", questionInfo);
         resultMap.put("userId", userId);
         resultMap.put("serialNo", serialNo);
@@ -582,8 +595,11 @@ public class MobileSiteQuestionController extends BaseController {
         if (isManager == 0) {
             //接受人权限为项目经理默认直接接受（未处理）
             info.setProcessStatus(Constants.ACCEPTED_UNTREATED);
+            addEtLog(serialNo, "ET_SITE_QUESTION_INFO", id, "问题分配：确认接受", Constants.ACCEPTED_UNTREATED, userId);
         } else {
             info.setProcessStatus(Constants.ALLOCATED_UNACCEPTED);
+            addEtLog(serialNo, "ET_SITE_QUESTION_INFO", id, "问题分配：待接受", Constants.ALLOCATED_UNACCEPTED, userId);
+
         }
         try {
             super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
@@ -613,27 +629,32 @@ public class MobileSiteQuestionController extends BaseController {
                     //已分配，待接受
                     info.setProcessStatus(Constants.ALLOCATED_UNACCEPTED);
                     super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+                    addEtLog(serialNo, "ET_SITE_QUESTION_INFO", id, "问题分配：待接受", Constants.ALLOCATED_UNACCEPTED, userId);
                     break;
                 case 3:
                     //已接收任务，未处理
                     info.setProcessStatus(Constants.ACCEPTED_UNTREATED);
                     super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+                    addEtLog(serialNo, "ET_SITE_QUESTION_INFO", id, "问题接受：未处理 ", Constants.ACCEPTED_UNTREATED, userId);
                     break;
                 case 4:
                     //已处理
                     info.setSolutionResult(solutionResult);
                     info.setProcessStatus(Constants.TREATED_COMPLETE);
                     super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+                    addEtLog(serialNo, "ET_SITE_QUESTION_INFO", id, "问题已处理：待院方确认", Constants.TREATED_COMPLETE, userId);
                     break;
                 case 5:
                     //院方确认完成
                     info.setProcessStatus(Constants.CONFIRM_END);
                     super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+                    addEtLog(serialNo, "ET_SITE_QUESTION_INFO", id, "问题已处理：院方已确认", Constants.CONFIRM_END, userId);
                     break;
                 case 6:
                     //院方打回
                     info.setProcessStatus(Constants.REFUSE);
                     super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
+                    addEtLog(serialNo, "ET_SITE_QUESTION_INFO", id, "问题打回：院方打回", Constants.REFUSE, userId);
                     break;
                 case 7:
                     //工程师拒绝接受或打回
@@ -642,6 +663,7 @@ public class MobileSiteQuestionController extends BaseController {
                     info.setAllocateUser(null);
                     info.setProcessStatus(Constants.ENGINEER_REFUSE);
                     super.getFacade().getEtSiteQuestionInfoService().updateProcessStatus(info);
+                    addEtLog(serialNo, "ET_SITE_QUESTION_INFO", id, "问题打回：决绝接受", Constants.ENGINEER_REFUSE, userId);
                     break;
                 default:
                     break;
@@ -655,5 +677,31 @@ public class MobileSiteQuestionController extends BaseController {
 
     //    企业微信号相关controller》》》》》》》》》》》》》》》》》》》end
 
+    /**
+     * 按照优先级获取期望完成时间
+     *
+     * @param priority
+     * @return
+     */
+    private String getHopeFinishDateByPriority(int priority) {
+        String endDate = "";
+        switch (priority) {
+            case 1:
+                endDate = DateUtil.plusDay(0);
+                break;
+            case 2:
+                endDate = DateUtil.plusDay(2);
+                break;
+            case 3:
+                endDate = DateUtil.plusDay(6);
+                break;
+            case 4:
+                endDate = DateUtil.plusDay(14);
+                break;
+            default:
+                endDate = DateUtil.plusDay(6);
+        }
+        return endDate;
+    }
 
 }

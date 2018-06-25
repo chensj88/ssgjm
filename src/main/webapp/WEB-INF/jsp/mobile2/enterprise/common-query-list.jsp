@@ -106,9 +106,9 @@
         <div class="hide">
             分享
         </div>
-        <div class="hide">
-            我的
-        </div>
+        <%--<div class="hide">--%>
+            <%--我的--%>
+        <%--</div>--%>
     </div>
     <!--底部菜单-->
     <%@ include file="/commons/footer.jsp" %>
@@ -172,49 +172,49 @@
      * @param searchText
      */
     function findSearchResult(searchType,searchText) {
-        if(searchType === 1 || searchType === 3){
-            $.ajax({
-                type: "POST",
-                url: "<%=basePath%>mobile/commons/queryDept.do",
-                data: {searchText: searchText, searchType: searchType, serialNo:${serialNo}},
-                cache: false,
-                dataType: "json",
-                async: false,
-                error: function (request) {
-                    mui.toast('服务端错误，或网络不稳定，本次操作被终止。', {duration: 'long', type: 'div'})
-                },
-                success: function (result) {
-                    if(result.status === 'success'){
-                        if(result.data.length > 0){
-                            $('.tab-cntent').empty();
-                            if(searchType === 1){
-                                $.each(result.data,function (index,value,array) {
-                                    var content = " <a href=\"<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${status}&searchType="+searchType+"&searchText="+value.zxtmc+"&isManager=${isManager}\">" +
-                                        "               <span class=\"tab_txt\">"+value.zxtmc+"</span>\n" +
-                                        "           </a>";
-                                    $('.tab-cntent').append(content);
-                                });
-                            }else {
-                                $.each(result.data,function (index,value,array) {
-                                    var content = " <a href=\"<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${status}&searchType="+searchType+"&searchText="+value.deptName+"&isManager=${isManager}\">\n" +
-                                        "              <span class=\"tab_txt\">"+value.deptName+"</span>\n" +
-                                        "           </a>";
-                                    $('.tab-cntent').append(content);
-                                });
-                            }
-                        }else{
-                            $('.tab-cntent').empty();
-                            var content = " <a href='#'>" +
-                                "              <span class='tab_txt'>无相关的数据</span>\n" +
-                                "           </a>";
-                            $('.tab-cntent').append(content);
-                        }
-                    }
-                }
-            });
-        }else{
+        <%--if(searchType === 1 || searchType === 3){--%>
+            <%--$.ajax({--%>
+                <%--type: "POST",--%>
+                <%--url: "<%=basePath%>mobile/commons/queryDept.do",--%>
+                <%--data: {searchText: searchText, searchType: searchType, serialNo:${serialNo}},--%>
+                <%--cache: false,--%>
+                <%--dataType: "json",--%>
+                <%--async: false,--%>
+                <%--error: function (request) {--%>
+                    <%--mui.toast('服务端错误，或网络不稳定，本次操作被终止。', {duration: 'long', type: 'div'})--%>
+                <%--},--%>
+                <%--success: function (result) {--%>
+                    <%--if(result.status === 'success'){--%>
+                        <%--if(result.data.length > 0){--%>
+                            <%--$('.tab-cntent').empty();--%>
+                            <%--if(searchType === 1){--%>
+                                <%--$.each(result.data,function (index,value,array) {--%>
+                                    <%--var content = " <a href=\"<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${status}&searchType="+searchType+"&searchText="+value.zxtmc+"&isManager=${isManager}\">" +--%>
+                                        <%--"               <span class=\"tab_txt\">"+value.zxtmc+"</span>\n" +--%>
+                                        <%--"           </a>";--%>
+                                    <%--$('.tab-cntent').append(content);--%>
+                                <%--});--%>
+                            <%--}else {--%>
+                                <%--$.each(result.data,function (index,value,array) {--%>
+                                    <%--var content = " <a href=\"<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${status}&searchType="+searchType+"&searchText="+value.deptName+"&isManager=${isManager}\">\n" +--%>
+                                        <%--"              <span class=\"tab_txt\">"+value.deptName+"</span>\n" +--%>
+                                        <%--"           </a>";--%>
+                                    <%--$('.tab-cntent').append(content);--%>
+                                <%--});--%>
+                            <%--}--%>
+                        <%--}else{--%>
+                            <%--$('.tab-cntent').empty();--%>
+                            <%--var content = " <a href='#'>" +--%>
+                                <%--"              <span class='tab_txt'>无相关的数据</span>\n" +--%>
+                                <%--"           </a>";--%>
+                            <%--$('.tab-cntent').append(content);--%>
+                        <%--}--%>
+                    <%--}--%>
+                <%--}--%>
+            <%--});--%>
+        <%--}else{--%>
             location.href = "<%=basePath%>mobile/commons/list.do?userId=${userId}&serialNo=${serialNo}&status=${status}&searchType="+searchType+"&searchText="+searchText+"&isManager=${isManager}";
-        }
+//        }
 
     }
 </script>

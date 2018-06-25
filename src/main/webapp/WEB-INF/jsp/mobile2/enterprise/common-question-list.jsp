@@ -82,9 +82,9 @@
         <div class="hide">
             分享
         </div>
-        <div class="hide">
-            我的
-        </div>
+        <%--<div class="hide">--%>
+            <%--我的--%>
+        <%--</div>--%>
     </div>
     <!--新增-->
    <%-- <a href="<%=basePath%>/mobile/wechatSiteQuestion/addPage.do?userId=${userId}&serialNo=${serialNo}&source=2" class="wrap-add" >

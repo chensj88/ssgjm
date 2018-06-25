@@ -212,4 +212,16 @@ public final class DateUtil {
         df = new SimpleDateFormat("MM-dd");
         return df.format(date);
     }
+
+    /**
+     * 在当前日期增加制定的日期
+     * @param num
+     * @return
+     */
+    public static String plusDay(int num){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE,num);
+        return df.format(calendar.getTime());
+    }
 }

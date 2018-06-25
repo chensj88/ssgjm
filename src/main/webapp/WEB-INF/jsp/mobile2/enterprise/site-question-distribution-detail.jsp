@@ -144,6 +144,30 @@
 <script src="<%=basePath%>resources/bootstrap/js/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>
 <%--<script src="<%=basePath%>resources/jquery-ui/js/jquery-ui.min.js"></script>--%>
 <script type="text/javascript">
+    //增加日期天数
+    function addDate(date, days) {
+        if (days == undefined || days == '') {
+            days = 0;
+        }
+        var date = new Date(date);
+        date.setDate(date.getDate() + days);
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        return date.getFullYear() + '-' + getFormatDate(month) + '-' + getFormatDate(day);
+    }
+
+    // 日期月份/天的显示，如果是1位数，则在前面加上'0'
+    function getFormatDate(arg) {
+        if (arg == undefined || arg == '') {
+            return '';
+        }
+        var re = arg + '';
+        if (re.length < 2) {
+            re = '0' + re;
+        }
+        return re;
+    }
+
     $(function () {
         enterprise.init();
         setListLevel(${questionInfo.priority});
@@ -158,6 +182,18 @@
         <%--$("#userMessage").hide();--%>
         <%--$("#suggest").hide();--%>
         <%--}--%>
+        let priority =${questionInfo.priority};
+        let days = 0;
+        if (priority == 1) {
+            days = 0;
+        } else if (priority == 2) {
+            days = 2;
+        } else if (priority == 3) {
+            days = 6;
+        } else if (priority == 4) {
+            days = 14;
+        }
+        let date = addDate(new Date, days);
         $('#datePicker').datepicker({
             format: "yyyy-mm-dd",
             clearBtn: true,
@@ -165,8 +201,9 @@
             autoclose: true,
             todayHighlight: true,
             toggleActive: true,
-            startDate: new Date()
+            startDate: new Date(),
         });
+        $('#datePicker').datepicker('setDate', date);
 //        $( "#hopeDate" ).datepicker({
 //            showAnim:'slideDown', //显示动画样式
 //            dateFormat: 'yy-mm-dd',//时间样式
