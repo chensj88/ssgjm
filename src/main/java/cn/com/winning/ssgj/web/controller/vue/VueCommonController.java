@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.web.controller.vue;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.util.TemplateUtils;
 import cn.com.winning.ssgj.domain.SysDictInfo;
+import cn.com.winning.ssgj.domain.SysLoginUser;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.stereotype.Controller;
@@ -92,6 +93,17 @@ public class VueCommonController extends BaseController {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", nodeTreeList);
+        return result;
+    }
+
+
+    @RequestMapping(value = "/checkToken.do")
+    @ResponseBody
+    public Map<String, Object> checkToken(String token){
+        SysLoginUser loginUser = super.getFacade().getSysLoginUserService().getSysLoginUserBySelectiveKey(token);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", loginUser == null ? 0 : 1 );
         return result;
     }
 
