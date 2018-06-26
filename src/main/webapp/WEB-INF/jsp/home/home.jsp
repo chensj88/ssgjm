@@ -12,14 +12,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- basic styles -->
     <link href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
-    <%--<link href="<%=basePath%>resources//css/bootstrap.min.css" rel="stylesheet" />--%>
+    <%--<link href="<%=basePath%>resources/assets/css/bootstrap.min.css" rel="stylesheet" />--%>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/font-awesome.min.css" />
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <!--[if IE 7]>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/font-awesome-ie7.min.css" />
     <![endif]-->
     <!-- fonts -->
-    <%--<link rel="stylesheet" href="http://fonts.proxy.ustclug.org/css?family=Open+Sans:400,300" />--%>
+    <%--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />--%>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace.min.css" />
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace-rtl.min.css" />
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/ace-skins.min.css" />
@@ -31,17 +31,9 @@
     <script src="<%=basePath%>resources/assets/js/html5shiv.js"></script>
     <script src="<%=basePath%>resources/assets/js/respond.min.js"></script>
     <![endif]-->
-    <style type="text/css">
-        .content {
-            background-color: #cc85d9;
-            width: 100%;
-            position: absolute;
-        }
-    </style>
 </head>
-
 <body>
-<div class="navbar navbar-default" id="navbar">
+<div class="navbar navbar-default" id="navbar" style="height: 50px;">
     <script type="text/javascript">
         try{ace.settings.check('navbar' , 'fixed')}catch(e){}
     </script>
