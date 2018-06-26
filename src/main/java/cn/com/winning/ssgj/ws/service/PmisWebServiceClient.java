@@ -66,7 +66,7 @@ public class PmisWebServiceClient {
         String[] sqls = {
                 "INSERT INTO PMIS_CONTRACT_INFO (ID, ZHTXX, HTYHF, CODE, DAMC, NAME, SQRQ, SXRQ, QDNY, NF, HTLX, KPLX, XMLX, SFGQ, HTJE, KHXX, HTQYF, QYGS, HTQDRY, HTGZRY, XSSSJG, ZBJG, XSSSGS) VALUES (-99999, -99999, -99999, '实施工具研发', '实施工具研发', '实施工具研发', '2008-09-24 00:00:00', '2008-09-01 00:00:00', '200809', '2008', 1, 1, 1, 0, '800000.00', -99999, '实施工具研发', 2, 171, 171, 1137, 1121, 2)",
                 "INSERT INTO PMIS_CUSTOMER_INFORMATION (ID, CODE, NAME, PY, KHLB, KHLX, QYXX, CITY, SFCJ, YYLX, MZL, CWS, YYSL, FWJGS, ZYYW, GSGM, SSGS, SSJG, YYDJ, YYGM, YYBJDJ, KHDZ, YZBM, XXKZ, ZGYZ, SFSZKHJL, KHJL, SYCPTX, FWTRY, ZDKHBZ, LXR, LXFS, GLGS, REMARK, GXR, GXSJ, DJR, DJSJ, ZT) VALUES (-99999, '-99999', '实施工具研发', 'ssgjyf', 2, '0', '31', '0', '0', '0', 2222, 12, 0, 0, '0', '0', '99', '1686', '6', '1', '2', '安徽合肥', null, '0', '0', '1', '0', 'CIS;HIS;LIS;无线;系统集成;硬件', null, '0', null, null, '0', null, '7110', '2018-06-26 14:56:51', '0', null, 1)",
-                "INSERT INTO PMIS_PROJECT_BASIC_INFO (ID, FWLX, XMLX, XMDJ, NAME, KHJDQC, KHJDTJ, KHJDLJ, QS, XMMS, JHNR, XMJL, ZJZT, JHZT, ZKRY, SSGS, JSDQ, SSJG, KHJG, HTXX, HTLX, BZSM, GZRQ, GZSM, KHXX, KHSR, YWCKHSR, KHXS, KHXSSR, WCRQ, GXSJ, GXR, ZT, THFS, JDQRZT, QRBZSM, XDRQ, YJZT, YJRQ) VALUES (-99999, 0, '0', 0, '-99999_实施工具研发', '0', '0.00', '20', 1, '', '实施工具研发（一期）', 158, 1, 0, 0, 2, 1034, 1034, 1034, -99999, 1, '实施工具研发', '', '', -99999, '0', '0', '1.000000', '0', '2014-12-31 00:00:00', '2018-02-01 17:12:33', 6393, 1, 0, 1, '', '2012-08-17 00:00:00', 1, '2016-09-23 00:00:00 ')",
+                "INSERT INTO PMIS_PROJECT_BASIC_INFO (ID, FWLX, XMLX, XMDJ, NAME, KHJDQC, KHJDTJ, KHJDLJ, QS, XMMS, JHNR, XMJL, ZJZT, JHZT, ZKRY, SSGS, JSDQ, SSJG, KHJG, HTXX, HTLX, BZSM, GZRQ, GZSM, KHXX, KHSR, YWCKHSR, KHXS, KHXSSR, WCRQ, GXSJ, GXR, ZT, THFS, JDQRZT, QRBZSM, XDRQ, YJZT, YJRQ) VALUES (-99999, 0, '0', 0, '99999_实施工具研发', '0', '0.00', '20', 1, '', '实施工具研发（一期）', 158, 1, 0, 0, 2, 1034, 1034, 1034, -99999, 1, '实施工具研发', '', '', -99999, '0', '0', '1.000000', '0', '2014-12-31 00:00:00', '2018-02-01 17:12:33', 6393, 1, 0, 1, '', '2012-08-17 00:00:00', 1, '2016-09-23 00:00:00 ')",
                 "INSERT INTO PMIS_PROJCT_USER (ID, XMLCB, RYFL, RY) VALUES (-99999, -99999, 0, 7110)",
                 "INSERT INTO PMIS_PROJCT_USER (ID, XMLCB, RYFL, RY) VALUES (-99998, -99999, 0, 7284)",
                 "INSERT INTO PMIS_PROJCT_USER (ID, XMLCB, RYFL, RY) VALUES (-99997, -99999, 0, 7507)"
@@ -76,6 +76,7 @@ public class PmisWebServiceClient {
         try {
             connection = ConnectionUtil.getConnection();
             for (String sql : sqls) {
+                LOGGER.info(sql);
                 ps = connection.prepareStatement(sql);
                 ps.execute();
             }
