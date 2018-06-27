@@ -524,5 +524,15 @@ public class BaseController extends BaseSpringMvcMybatisController {
         return customerInformation.getName();
     }
 
+    /**
+     * 获取字典值 主要通过dictCode来获取
+     * @param dict 字典对应的实体类
+     * @return dictInfos
+     */
+    public List<SysDictInfo> getDictInfoList(SysDictInfo dict){
+        List<SysDictInfo> dictInfos = this.facade.getSysDictInfoService().getSysDictInfoList(dict);
+        return dictInfos;
+
+    }
 
 }

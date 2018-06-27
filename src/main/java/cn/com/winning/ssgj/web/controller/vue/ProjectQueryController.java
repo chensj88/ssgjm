@@ -77,10 +77,9 @@ public class ProjectQueryController extends BaseController {
     @RequestMapping(value = "/common/getCodes.do")
     @ResponseBody
     public Map<String, Object> queryDictInfo(SysDictInfo dict) {
-        List<SysDictInfo> dictInfos = super.getFacade().getSysDictInfoService().getSysDictInfoList(dict);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
-        result.put("data", dictInfos);
+        result.put("data", this.getDictInfoList(dict));
         return result;
 
     }
