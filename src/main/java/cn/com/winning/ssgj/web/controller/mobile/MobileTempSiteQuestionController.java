@@ -38,7 +38,7 @@ public class MobileTempSiteQuestionController  extends BaseController {
      */
     @RequestMapping(value = "/list.do")
     public String list(Model model, String parameter) {
-        // parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
+        //parameter = "eyJXT1JLTlVNIjoiNTgyMyIsIkhPU1BDT0RFIjoiMTE5ODAifQ==";
         //parameter = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
         try{
             SysUserInfo info = super.getUserInfo(parameter);
@@ -201,7 +201,7 @@ public class MobileTempSiteQuestionController  extends BaseController {
 
 
     @RequestMapping(value = "/index.do")
-    public String index(Model model,Long questionId,Long userId,String serialNo) {
+    public String index(Model model,Long userId,String serialNo,String service) {
         try{
             EtUserHospitalLog log = new EtUserHospitalLog();
             log.setOperator(userId);
@@ -223,13 +223,18 @@ public class MobileTempSiteQuestionController  extends BaseController {
                 super.getFacade().getEtUserHospitalLogService().modifyEtUserHospitalLog(log);
             }
 
-            int isManager =0;//0：项目经理 1：非项目经理　
-            isManager =super.getPosition(serialNo,userId);
+            int isManager =0;//0：项目经理 1：非项目经理　 2:临时院方
+            if(service ==null) service="0";
+            if(service.equals("1")){
+                isManager =0;
+            }else{
+                isManager =super.getPosition(serialNo,userId);
+            }
             EtSiteQuestionInfo qInfo = new EtSiteQuestionInfo();
             if(isManager > 0){
-                qInfo.getMap().put("process_status_no","1,7");
-                qInfo.setAllocateUser(userId);
-                qInfo.setSerialNo(String.valueOf(serialNo));
+                    qInfo.getMap().put("process_status_no","1,7");
+                    qInfo.setAllocateUser(userId);
+                    qInfo.setSerialNo(String.valueOf(serialNo));
             }else{
                 qInfo.setCreator(null);
                 qInfo.setSerialNo(String.valueOf(serialNo));

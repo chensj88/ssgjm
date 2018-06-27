@@ -137,10 +137,20 @@
 					分析
 				</div>
 				<div>
-					<i class="iconfont icon-wo"></i>
-					我
+					<a href="#popover" id="openPopover" class="iconfont icon-wo"
+					   style="color: #A4A5AB;">
+						<span style="color: #A4A5AB; display: block;">我</span>
+					</a>
 				</div>
 			</div>
+				<%--弹出菜单--%>
+				<div id="popover" class="mui-popover">
+					<ul class="mui-table-view" style="line-height:30px;">
+						<li class="mui-table-view-cell" style="margin: 10px 10px 10px 10px;">
+							<a href="<%=basePath%>/mobile/tempSiteQuestion/index.do?userId=${userId}&serialNo=${serialNo}&service=1">进入管理端</a>
+						</li>
+					</ul>
+				</div>
 		</div>
 		<script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
 		<script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>
