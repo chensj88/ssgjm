@@ -54,6 +54,11 @@
         a.row{
             font-size: 12px;
             color:#97AACC;
+            background:#F3F5F7;
+
+        }
+        a.index-date{
+            background:#F3F5F7;
         }
         .collect-item{
             font-size: 12px;
@@ -101,8 +106,7 @@
             </c:if>
             <c:if test="${status=='3,6'}">
                 <c:forEach var="vwr" items="${questionList}">
-                    <a href="#" class="row index-date">${vwr.groupName}（${vwr.num}条）
-                    </a>
+                    <a href="#" class="row index-date">${vwr.groupName}（${vwr.num}条）</a>
                     <ul class="mui-table-view OA_task_1">
                         <c:forEach var="vwr1" items="${vwr.listQuery}">
                             <li class="mui-table-view-cell liTitle">
