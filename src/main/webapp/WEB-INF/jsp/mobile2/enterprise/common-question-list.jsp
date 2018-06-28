@@ -58,7 +58,7 @@
         .collect-item{
             font-size: 12px;
             color: #333333;
-            border-bottom: 1px solid #F3F5F7;
+            /*border-bottom: 1px solid #F3F5F7;*/
         }
     </style>
 </head>
