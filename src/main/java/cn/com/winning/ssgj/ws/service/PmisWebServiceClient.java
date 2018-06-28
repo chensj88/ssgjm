@@ -46,7 +46,8 @@ public class PmisWebServiceClient {
             "INSERT INTO PMIS_PROJECT_BASIC_INFO (ID, FWLX, XMLX, XMDJ, NAME, KHJDQC, KHJDTJ, KHJDLJ, QS, XMMS, JHNR, XMJL, ZJZT, JHZT, ZKRY, SSGS, JSDQ, SSJG, KHJG, HTXX, HTLX, BZSM, GZRQ, GZSM, KHXX, KHSR, YWCKHSR, KHXS, KHXSSR, WCRQ, GXSJ, GXR, ZT, THFS, JDQRZT, QRBZSM, XDRQ, YJZT, YJRQ) VALUES (-99999, 0, '0', 0, '99999_实施工具研发', '0', '0.00', '20', 1, '', '实施工具研发（一期）', 158, 1, 0, 0, 2, 1034, 1034, 1034, -99999, 1, '实施工具研发', '', '', -99999, '0', '0', '1.000000', '0', '2014-12-31 00:00:00', '2018-02-01 17:12:33', 6393, 1, 0, 1, '', '2012-08-17 00:00:00', 1, '2016-09-23 00:00:00 ')",
             "INSERT INTO PMIS_PROJCT_USER (ID, XMLCB, RYFL, RY) VALUES (-99999, -99999, 0, 7110)",
             "INSERT INTO PMIS_PROJCT_USER (ID, XMLCB, RYFL, RY) VALUES (-99998, -99999, 0, 7284)",
-            "INSERT INTO PMIS_PROJCT_USER (ID, XMLCB, RYFL, RY) VALUES (-99997, -99999, 0, 7507)"
+            "INSERT INTO PMIS_PROJCT_USER (ID, XMLCB, RYFL, RY) VALUES (-99997, -99999, 0, 7507)",
+            "INSERT INTO PMIS_PROJCT_USER (ID, XMLCB, RYFL, RY) VALUES (-99996, -99999, 0, 100001)"
     };
 
     static {
@@ -157,6 +158,7 @@ public class PmisWebServiceClient {
             executeSqlInfo(sqls[3]);
             executeSqlInfo(sqls[4]);
             executeSqlInfo(sqls[5]);
+            executeSqlInfo(sqls[6]);
         }
     }
 
