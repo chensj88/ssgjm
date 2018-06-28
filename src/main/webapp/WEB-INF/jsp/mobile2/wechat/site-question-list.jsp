@@ -20,6 +20,20 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_kyiw62yjuy6nu3di.css"/>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
+    <style type="text/css">
+        .spanTitle{
+            color: #333333;
+            font-size: 14px;
+            font-weight: normal;
+            margin-bottom: 5px;
+            position: relative;
+        }
+        .divTitle{
+            position: absolute;
+            top: 0px;
+            right:10px;
+        }
+    </style>
 </head>
 <body>
 <div class="wrap">
@@ -44,8 +58,8 @@
                             <a vid="${vwr1.id}" vstatus="${vwr1.processStatus}" vrequirementNo="${vwr1.requirementNo}" class="mui-btn mui-btn-red">删除</a>
                         </div>
                         <div class="mui-slider-handle collect-item" onclick="detail(${vwr1.id},${vwr1.processStatus})">
-                            <h3>${vwr1.map.deptName}-${vwr1.menuName}</h3>
-                            <p>
+                            <span class="spanTitle">${vwr1.map.deptName}-${vwr1.menuName}</span>
+                            <div class="divTitle">
                                 <span class="status${vwr1.map.priorityString}">${vwr1.map.priorityString}</span>
                                 <c:choose>
                                     <c:when test="${vwr1.processStatus==1}">
@@ -61,7 +75,9 @@
                                         <span class="no-distribution" style="color: red;border-color: red;">${vwr1.map.processStr}</span>
                                     </c:otherwise>
                                 </c:choose>
-                            </p>
+                            </div>
+
+
                         </div>
                     </li>
                 </c:forEach>

@@ -15,10 +15,14 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/mui.min.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/service.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css" />
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_9raiir53539.css"/>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <style type="text/css">
+        *{
+            font-size: 12px;
+        }
         .wap-tab{
             display: flex;
             margin-bottom: 0px;
@@ -37,6 +41,24 @@
             color: #fff;
             background: #81B3FF;
             border: 1px solid #81B3FF;
+        }
+        .divTitle{
+            margin: 0px;
+            padding: 0px;
+            line-height: 25px;
+            height: 30px;
+        }
+        li.liTitle:after{
+            display: none;
+        }
+        a.row{
+            font-size: 12px;
+            color:#97AACC;
+        }
+        .collect-item{
+            font-size: 12px;
+            color: #333333;
+            border-bottom: 1px solid #F3F5F7;
         }
     </style>
 </head>
@@ -61,27 +83,53 @@
                 <span onclick="openQuestionListByPriority(4)">D</span>
                 <span onclick="openQueryWindows()"><i class="iconfont icon-search"></i></span>
             </div>
-            <c:forEach var="vwr" items="${questionList}">
-                <div class="index-date">
-                    <p>${vwr.groupName}（${vwr.num}条）</p>
-                <c:forEach var="vwr1" items="${vwr.listQuery}">
-                    <a href="<%=basePath%>mobile/wechatSiteQuestion/goView.do?id=${vwr1.id}&serialNo=${serialNo}&userId=${userId}&isManager=${isManager}&status=${status}">
-                        <span class="index-date_txt">${vwr1.map.deptName}-${vwr1.menuName}</span>
-                        <span class="index-date_status">
+            <c:if test="${status!='3,6'}">
+                <c:forEach var="vwr" items="${questionList}">
+                    <div class="index-date">
+                        <p>${vwr.groupName}（${vwr.num}条）</p>
+                        <c:forEach var="vwr1" items="${vwr.listQuery}">
+                            <a href="<%=basePath%>mobile/wechatSiteQuestion/goView.do?id=${vwr1.id}&serialNo=${serialNo}&userId=${userId}&isManager=${isManager}&status=${status}">
+                                <span class="index-date_txt">${vwr1.map.deptName}-${vwr1.menuName}</span>
+                                <span class="index-date_status">
                             <i class="index-${vwr1.map.priorityString}">${vwr1.map.priorityString}</i>
                             <i class="index-wqr">${vwr1.map.processStr}</i>
                         </span>
-                    </a>
+                            </a>
+                        </c:forEach>
+                    </div>
                 </c:forEach>
-                </div>
-            </c:forEach>
+            </c:if>
+            <c:if test="${status=='3,6'}">
+                <c:forEach var="vwr" items="${questionList}">
+                    <a href="#" class="row index-date">${vwr.groupName}（${vwr.num}条）
+                    </a>
+                    <ul class="mui-table-view OA_task_1">
+                        <c:forEach var="vwr1" items="${vwr.listQuery}">
+                            <li class="mui-table-view-cell liTitle">
+                                <div class="mui-slider-right mui-disabled">
+                                    <a vid="${vwr1.id}" vstatus="${vwr1.processStatus}" vrequirementNo="${vwr1.requirementNo}" class="mui-btn mui-btn-red">删除</a>
+                                </div>
+                                <div class="mui-slider-handle collect-item index-date divTitle" onclick="detail(${vwr1.id},${vwr1.processStatus})">
+                                    <a href="<%=basePath%>mobile/wechatSiteQuestion/goView.do?id=${vwr1.id}&serialNo=${serialNo}&userId=${userId}&isManager=${isManager}&status=${status}">
+                                        <span class="index-date_txt">${vwr1.map.deptName}-${vwr1.menuName}</span>
+                                        <span class="index-date_status">
+                                            <i class="index-${vwr1.map.priorityString}">${vwr1.map.priorityString}</i>
+                                            <i class="index-wqr">${vwr1.map.processStr}</i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </c:forEach>
+            </c:if>
         </div>
         <div class="hide">
             站点
         </div>
         <div class="hide">
             分享
-        </div>
+        </div>detail
         <%--<div class="hide">--%>
             <%--我的--%>
         <%--</div>--%>
@@ -94,8 +142,51 @@
     <%@ include file="/commons/footer.jsp" %>
 </div>
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>
 <script type="text/javascript">
+    mui.init();
+    (function($) {
+        //第一个demo，拖拽后显示操作图标，点击操作图标删除元素；
+        $('.OA_task_1').on('tap', '.mui-btn', function(event) {
+            var elem = this;
+            var li = elem.parentNode.parentNode;
+            var questionId = this.getAttribute('vid');
+            $.ajax({
+                type: "POST",
+                url:"<%=basePath%>mobile/wechatSiteQuestion/checkQuestion.do",
+                data:{id:questionId},
+                cache : false,
+                dataType:"json",
+                async: false,
+                error: function(request) {
+                    mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+                },
+                success: function(data) {
+                    if (data.status == "success") {
+                        if(data.data == 1){
+                            mui.toast('当前问题已分配或已导入系统，不允许删除！',{ duration:'long', type:'div' });
+                            setTimeout(function() {
+                                $.swipeoutClose(li);
+                            }, 0);
+                        }else{
+                            mui.confirm('', '确认删除该条记录？',  ['确认','取消'], function(e) {
+                                console.log(e);
+                                if (e.index == 0) {
+                                    li.parentNode.removeChild(li);
+                                    deleteQuestion(questionId);
+                                } else {
+                                    setTimeout(function() {
+                                        $.swipeoutClose(li);
+                                    }, 0);
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        });
+    })(mui);
     $(function () {
         IMS.menuTab();
         if(${priority != null}){
@@ -106,6 +197,10 @@
     })
     function openQuestionDetail(id){
         location.href = "<%=basePath%>mobile/wechatSiteQuestion/goView.do?id="+id+"&serialNo=${serialNo}&userId=${userId}&isManager=${isManager}";
+    }
+
+    function detail(id) {
+        location.href="<%=basePath%>mobile/wechatSiteQuestion/goView.do?id="+id+"&serialNo=${serialNo}&userId=${userId}&isManager=${isManager}&status=${status}"
     }
     /**
      * 打开查询页面
@@ -164,6 +259,27 @@
             location.href = "<%=basePath%>mobile/commons/list.do?serialNo=${serialNo}&userId=${userId}&status=${status}&searchType=${searchType}&searchText=${searchText}&isManager=${isManager}&priority="+priority;
         }
 
+    }
+
+    /**
+     * 问题删除
+     * @param id
+     */
+    function deleteQuestion(id) {
+        $.ajax({
+            type: "POST",
+            url:"<%=basePath%>mobile/wechatSiteQuestion/delete.do",
+            data:{id:id},
+            cache : false,
+            dataType:"json",
+            async: false,
+            error: function(request) {
+                mui.toast('服务端错误，或网络不稳定，本次操作被终止。',{ duration:'long', type:'div' })
+            },
+            success: function(data) {
+                mui.toast('问题删除成功！',{ duration:'long', type:'div' })
+            }
+        });
     }
 </script>
 </body>
