@@ -146,9 +146,16 @@
 				<%--弹出菜单--%>
 				<div id="popover" class="mui-popover">
 					<ul class="mui-table-view" style="line-height:30px;">
+						<c:if test="${userId == '100475'}">
 						<li class="mui-table-view-cell" style="margin: 10px 10px 10px 10px;">
-							<a href="<%=basePath%>/mobile/tempSiteQuestion/index.do?userId=${userId}&serialNo=${serialNo}&service=1">进入管理端</a>
+							<a href="<%=basePath%>/mobile/tempSiteQuestion/index.do?userId=${userId}&serialNo=${serialNo}&service=1">进入医院管理端</a>
 						</li>
+						</c:if>
+						<c:if test="${userId != '100475'}">
+							<li class="mui-table-view-cell" style="margin: 10px 10px 10px 10px;">
+								建设中.....
+							</li>
+						</c:if>
 					</ul>
 				</div>
 		</div>
