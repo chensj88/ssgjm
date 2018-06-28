@@ -47,7 +47,44 @@
             padding: 0px;
             line-height: 25px;
             height: 30px;
+            line-height: 30px;
         }
+        .divTitle > a{
+            margin: 0px;
+            padding: 0px;
+            height: 30px;
+            line-height: 30px;
+            position: relative;
+            display: block;
+            color: #333333;
+            position: relative;
+        }
+        .index-date-status{
+            position: absolute;
+            top:0px;
+            right: 14px;
+        }
+        .index-date_text{
+            display: inline-block;
+            height: 30px;
+            width: 70%;
+            line-height: 30px;
+            padding-left: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .index-date_status{
+            position: absolute;
+            top:16px;
+            right: 14px;
+        }
+        li.liTitle{
+            /*padding: 0 10px;*/
+            line-height: 30px;
+            padding: 5px 10px;
+        }
+
         li.liTitle:after{
             display: none;
         }
@@ -56,9 +93,16 @@
             color:#97AACC;
             background:#F3F5F7;
 
+
         }
         a.index-date{
+            padding-left: 14px;
+            line-height: 30px;
+            height: 30px;
             background:#F3F5F7;
+            color: #97AACC ;
+            font-size: 12px;
+            margin-bottom: 0px;
         }
         .collect-item{
             font-size: 12px;
@@ -88,7 +132,7 @@
                 <span onclick="openQuestionListByPriority(4)">D</span>
                 <span onclick="openQueryWindows()"><i class="iconfont icon-search"></i></span>
             </div>
-            <c:if test="${status!='3,6'}">
+            <c:if test="${status!='1,7'}">
                 <c:forEach var="vwr" items="${questionList}">
                     <div class="index-date">
                         <p>${vwr.groupName}（${vwr.num}条）</p>
@@ -104,7 +148,7 @@
                     </div>
                 </c:forEach>
             </c:if>
-            <c:if test="${status=='3,6'}">
+            <c:if test="${status=='1,7'}">
                 <c:forEach var="vwr" items="${questionList}">
                     <a href="#" class="row index-date">${vwr.groupName}（${vwr.num}条）</a>
                     <ul class="mui-table-view OA_task_1">
@@ -115,8 +159,8 @@
                                 </div>
                                 <div class="mui-slider-handle collect-item index-date divTitle" onclick="detail(${vwr1.id},${vwr1.processStatus})">
                                     <a href="<%=basePath%>mobile/wechatSiteQuestion/goView.do?id=${vwr1.id}&serialNo=${serialNo}&userId=${userId}&isManager=${isManager}&status=${status}">
-                                        <span class="index-date_txt">${vwr1.map.deptName}-${vwr1.menuName}</span>
-                                        <span class="index-date_status">
+                                        <span class="index-date_text">${vwr1.map.deptName}-${vwr1.menuName}</span>
+                                        <span class="index-date-status">
                                             <i class="index-${vwr1.map.priorityString}">${vwr1.map.priorityString}</i>
                                             <i class="index-wqr">${vwr1.map.processStr}</i>
                                         </span>
