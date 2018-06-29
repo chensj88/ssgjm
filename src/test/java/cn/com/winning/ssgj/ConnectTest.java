@@ -10,7 +10,8 @@ public class ConnectTest {
     /**
      * 存储过程调用
      */
-    //@Test
+
+    @Test
     public void testConnection(){
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
