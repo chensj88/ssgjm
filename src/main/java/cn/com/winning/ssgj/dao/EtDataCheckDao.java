@@ -13,4 +13,7 @@ public interface EtDataCheckDao extends EntityDao<EtDataCheck> {
 
     List<EtDataCheck> selectEtDataCheckListByPmIdAndDataType(EtDataCheck etDataCheck);
 
+    List<EtDataCheck> getInitEtDataCheck(EtDataCheck etDataCheck);
+
+
 }

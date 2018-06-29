@@ -76,20 +76,18 @@ public class EtDataCheckController extends BaseController {
         etDataCheck.setcId(cId);
         etDataCheck.setSerialNo(serialNo.toString());
         //根据pmId获取基础数据校验数据
-        List<EtDataCheck> etDataCheckList = getFacade().getEtDataCheckService().selectEtDataCheckListByPmIdAndDataType(etDataCheck);
+        List<EtDataCheck> etDataCheckList = getFacade().getEtDataCheckService().getInitEtDataCheck(etDataCheck);
         List<EtDataCheck> list = null;
         EtDataCheck etDataCheckTemp = null;
-        synchronized (this) {
-            for (EtDataCheck dataCheck : etDataCheckList) {
-                etDataCheckTemp = new EtDataCheck();
-                etDataCheckTemp.setPmId(dataCheck.getPmId());
-                etDataCheckTemp.setPlId(dataCheck.getPlId());
-                list = getFacade().getEtDataCheckService().getEtDataCheckList(etDataCheckTemp);
-                if (list.size() == 0) {
-                    //不存在则插入
-                    dataCheck.setId(ssgjHelper.createEtDataCheckId());
-                    getFacade().getEtDataCheckService().createEtDataCheck(dataCheck);
-                }
+        for (EtDataCheck dataCheck : etDataCheckList) {
+            etDataCheckTemp = new EtDataCheck();
+            etDataCheckTemp.setPmId(dataCheck.getPmId());
+            etDataCheckTemp.setSourceId(dataCheck.getSourceId());
+            list = getFacade().getEtDataCheckService().getEtDataCheckList(etDataCheckTemp);
+            if (list.size() == 0) {
+                //不存在则插入
+                dataCheck.setId(ssgjHelper.createEtDataCheckId());
+                getFacade().getEtDataCheckService().createEtDataCheck(dataCheck);
             }
         }
         map.put("status", Constants.SUCCESS);
@@ -139,7 +137,7 @@ public class EtDataCheckController extends BaseController {
             pmisProductLineInfo.setId(e.getPlId());
             pmisProductLineInfo = getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
             Map<String, Object> map = new HashMap();
-            map.put("type", pmisProductLineInfo.getName());
+//            map.put("type", pmisProductLineInfo.getName());
             String checkResult = e.getCheckResult();
             if (checkResult == null || "没问题".equals(checkResult) || "校验正常".equals(checkResult) || "".equals(checkResult)) {
                 map.put("state", 0);

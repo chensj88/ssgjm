@@ -17,4 +17,9 @@ public class EtDataCheckDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtDataCheck> i
     public List<EtDataCheck> selectEtDataCheckListByPmIdAndDataType(EtDataCheck etDataCheck) {
         return this.getSqlSession().selectList("selectEtDataCheckListByPmIdAndDataType", etDataCheck);
     }
+
+    @Override
+    public List<EtDataCheck> getInitEtDataCheck(EtDataCheck etDataCheck) {
+        return this.getSqlSession().selectList("getInitEtDataCheck", etDataCheck);
+    }
 }

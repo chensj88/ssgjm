@@ -61,4 +61,9 @@ public class EtDataCheckServiceImpl implements EtDataCheckService {
         return this.etDataCheckDao.selectEtDataCheckListByPmIdAndDataType(etDataCheck);
     }
 
+    @Override
+    public List<EtDataCheck> getInitEtDataCheck(EtDataCheck etDataCheck) {
+        return  this.etDataCheckDao.getInitEtDataCheck(etDataCheck);
+    }
+
 }
