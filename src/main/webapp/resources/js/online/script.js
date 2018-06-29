@@ -8,6 +8,8 @@ $(function () {
     var objMap = {};
     var selectedFlie = false;
     $('#isModifyDiv').hide();
+    $('#nameLabel').text('存储名称');
+    $('#name').attr('placeholder','请输入存储名称');
 
     function queryParams(params) {
         return {
@@ -33,24 +35,24 @@ $(function () {
             },
             fields: {
                 name: {
-                    message: '脚本名称验证失败',
+                    message: '脚本名称/存储名称验证失败',
                     validators: {
                         notEmpty: {
-                            message: '脚本名称不能为空'
+                            message: '脚本名称/存储名称不能为空'
                         },
                         threshold :  2 , //有2字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
                         remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}
                             url: Common.getRootPath() + '/admin/script/existName.do',//验证地址
-                            message: '脚本名称已存在',//提示消息
+                            message: '脚本名称/存储名称已存在',//提示消息
                             type: 'POST'//请求方式
                         },
                     }
                 },
                 sDesc : {
-                    message: '脚本描述验证失败',
+                    message: '校验内容验证失败',
                     validators: {
                         notEmpty: {
-                            message: '脚本描述不能为空'
+                            message: '校验内容不能为空'
                         }
                     }
                 },
@@ -191,13 +193,8 @@ $(function () {
             align: 'center'
         }, {
             field: "sDesc",
-            title: "脚本描述",
-            width: '20px',
-            align: 'center'
-        }, {
-            field: "appName",
-            title: "适用系统",
-            width: '20px',
+            title: "校验内容",
+            width: '120px',
             align: 'center'
         },{
             field: "dataType",
@@ -370,43 +367,43 @@ $(function () {
     /**
      * 客户姓名
      */
-    $('#appName').typeahead({
-        source : function (query,process) {
-            var matchCount =this.options.items;//允许返回结果集最大数量
-            $.ajax({
-                url : Common.getRootPath() + '/admin/script/queryAppName.do',
-                type: "post",
-                dataType: 'json',
-                async: false,
-                data: {'name':query.toUpperCase(),'matchCount':matchCount},
-                success: function (result) {
-                    var _result = eval(result);
-                    if (_result.status == Common.SUCCESS) {
-                        var data = _result.data;
-                        if (data == "" || data.length == 0) {
-                            console.log("没有查询到相关结果");
-                        };
-                        var results = [];
-                        for (var i = 0; i < data.length; i++) {
-                            objMap[data[i].name] = data[i].name + ',' + data[i].id ;
-                            results.push(data[i].name);
-                        }
-                        process(results);
-                    }
-                }
-            });
-        },
-        highlighter: function (item) {
-            return item ;
-        },
-        afterSelect: function (item) {       //选择项之后的事件，item是当前选中的选项
-            var selectItem = objMap[item];
-            var selectItemId = selectItem.split(',')[1];
-            $('#appId').val(selectItemId);
-
-        },
-        items : 10,
-    });
+    // $('#appName').typeahead({
+    //     source : function (query,process) {
+    //         var matchCount =this.options.items;//允许返回结果集最大数量
+    //         $.ajax({
+    //             url : Common.getRootPath() + '/admin/script/queryAppName.do',
+    //             type: "post",
+    //             dataType: 'json',
+    //             async: false,
+    //             data: {'name':query.toUpperCase(),'matchCount':matchCount},
+    //             success: function (result) {
+    //                 var _result = eval(result);
+    //                 if (_result.status == Common.SUCCESS) {
+    //                     var data = _result.data;
+    //                     if (data == "" || data.length == 0) {
+    //                         console.log("没有查询到相关结果");
+    //                     };
+    //                     var results = [];
+    //                     for (var i = 0; i < data.length; i++) {
+    //                         objMap[data[i].name] = data[i].name + ',' + data[i].id ;
+    //                         results.push(data[i].name);
+    //                     }
+    //                     process(results);
+    //                 }
+    //             }
+    //         });
+    //     },
+    //     highlighter: function (item) {
+    //         return item ;
+    //     },
+    //     afterSelect: function (item) {       //选择项之后的事件，item是当前选中的选项
+    //         var selectItem = objMap[item];
+    //         var selectItemId = selectItem.split(',')[1];
+    //         $('#appId').val(selectItemId);
+    //
+    //     },
+    //     items : 10,
+    // });
 
     $('#isModify').on('change',function () {
         var selectedOption = $(this).val();
@@ -437,8 +434,8 @@ $(function () {
             url:Common.getRootPath() + Common.url.script.uploadURL,
             autoUpload: true,
             multiple:false,
-            /*paramName:'uploadFile',*/
-            paramName:'file',
+            paramName:'uploadFile',
+            // paramName:'file',
             maxSize: FileAPI.MB*10, // max file size
             maxFiles:1,
             elements: {
@@ -556,4 +553,15 @@ $(function () {
             return false;
         }
     }
+
+    $('#dataType').on('change',function () {
+        var selVal = $(this).val();
+        if(selVal === '0'){
+            $('#nameLabel').text('存储名称');
+            $('#name').attr('placeholder','请输入存储名称');
+        }else{
+            $('#nameLabel').text('脚本名称');
+            $('#name').attr('placeholder','请输入脚本名称');
+        }
+    });
 });

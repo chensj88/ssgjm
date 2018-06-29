@@ -80,7 +80,7 @@
 <!--模态框  -->
 <div class="modal fade" id="scriptModal" tabindex="-1" role="dialog" aria-labelledby="scriptFormModal">
     <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width:450px;">
+        <div class="modal-content" style="width:500px;">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
@@ -91,25 +91,13 @@
                 <div class="container">
                     <div class="row">
                         <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="scriptForm">
-                            <div class="form-group" id="videoNameDiv">
-                                <label class="col-sm-3 control-label" for="name">脚本名称</label>
+
+                          <%--  <div class="form-group" >
+                                <label class="col-sm-3 control-label" for="appName">适用系统</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="name" name="name"
-                                           placeholder="请输入脚本名称">
+                                    <input type="text" class="form-control" id="appName" name="appName" appName="请输入适用系统" data-provide="typeahead">
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="sDesc">脚本描述</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="sDesc" name="sDesc" placeholder="请输入脚本描述">
-                                </div>
-                            </div>
-                                <div class="form-group" >
-                                    <label class="col-sm-3 control-label" for="appName">适用系统</label>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control" id="appName" name="appName" appName="请输入适用系统" data-provide="typeahead">
-                                    </div>
-                                </div>
+                            </div>--%>
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label" for="dataType">数据类型</label>
                                 <div class="col-sm-6">
@@ -119,7 +107,14 @@
                                     </select>
                                 </div>
                             </div>
-                                <input type="hidden" id="appId" name="appId">
+                              <div class="form-group" id="videoNameDiv">
+                                  <label class="col-sm-3 control-label" for="name" id="nameLabel">脚本名称</label>
+                                  <div class="col-sm-6">
+                                      <input type="text" class="form-control" id="name" name="name"
+                                             placeholder="请输入脚本名称">
+                                  </div>
+                              </div>
+                            <input type="hidden" id="appId" name="appId">
                             <div class="form-group" id="isModifyDiv">
                                 <label class="col-sm-3 control-label" for="isModify">文件替换</label>
                                 <div class="col-sm-6">
@@ -171,6 +166,12 @@
                             <input type="hidden" name="id" id="id">
                             <input type="hidden" name="vid" id="vid">
                             <input type="hidden" name="remotePath" id="remotePath">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="sDesc">校验内容</label>
+                                <div class="col-sm-6">
+                                    <textarea class="form-control" rows="6" id="sDesc" name="sDesc" placeholder="请输入校验内容"></textarea>
+                                </div>
+                            </div>
                             <input type="reset" style="display:none;"/>
                             <div class="col-sm-8 text-center">
                                 <button class="btn btn-primary" id="save" type="button">保存</button>
