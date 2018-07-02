@@ -58,6 +58,18 @@ public class EtBusinessProcess extends BaseDomain implements Serializable {
 	private java.sql.Timestamp operatorTime;
 
 	private List imgs;
+
+	private String ip;
+
+	private String dataName;
+
+	private String pw;
+
+	private String databaseName;
+
+	private String contentDesc;
+
+	private String configSql;
 	
 	public EtBusinessProcess() {
 
@@ -221,6 +233,54 @@ public class EtBusinessProcess extends BaseDomain implements Serializable {
 
 	public void setImgs(List imgs) {
 		this.imgs = imgs;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public String getDataName() {
+		return dataName;
+	}
+
+	public void setDataName(String dataName) {
+		this.dataName = dataName;
+	}
+
+	public String getPw() {
+		return pw;
+	}
+
+	public void setPw(String pw) {
+		this.pw = pw;
+	}
+
+	public String getDatabaseName() {
+		return databaseName;
+	}
+
+	public void setDatabaseName(String databaseName) {
+		this.databaseName = databaseName;
+	}
+
+	public String getContentDesc() {
+		return contentDesc;
+	}
+
+	public void setContentDesc(String contentDesc) {
+		this.contentDesc = contentDesc;
+	}
+
+	public String getConfigSql() {
+		return configSql;
+	}
+
+	public void setConfigSql(String configSql) {
+		this.configSql = configSql;
 	}
 
 }
