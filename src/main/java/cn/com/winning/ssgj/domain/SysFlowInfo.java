@@ -72,6 +72,14 @@ public class SysFlowInfo extends BaseDomain implements Serializable {
      * @val 是否必要 0 否，1 是
      */
     private Integer isMust;
+    /**
+     * @val 配置详细说明
+     */
+    private String contentDesc;
+    /**
+     * @val 配置实现SQL
+     */
+    private String configSQL;
 
 
     public SysFlowInfo() {
@@ -245,6 +253,22 @@ public class SysFlowInfo extends BaseDomain implements Serializable {
 
     public void setIsMust(Integer isMust) {
         this.isMust = isMust;
+    }
+
+    public String getContentDesc() {
+        return contentDesc;
+    }
+
+    public void setContentDesc(String contentDesc) {
+        this.contentDesc = contentDesc;
+    }
+
+    public String getConfigSQL() {
+        return configSQL;
+    }
+
+    public void setConfigSQL(String configSQL) {
+        this.configSQL = configSQL;
     }
 
     @Override

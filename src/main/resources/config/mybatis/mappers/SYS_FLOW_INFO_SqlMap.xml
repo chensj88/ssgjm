@@ -16,6 +16,8 @@
         <result column="FLOW_PARENT_NAME" property="flowParentName" jdbcType="VARCHAR"/>
         <result column="REMOTE_PATH" property="remotePath" jdbcType="VARCHAR"/>
         <result column="IS_MUST" property="isMust" jdbcType="INTEGER"/>
+        <result column="CONTENT_DESC" property="contentDesc" jdbcType="VARCHAR"/>
+        <result column="CONFIG_SQL" property="configSQL" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="sysFlowInfoResult" type="sysFlowInfo" extends="sysFlowInfoResultForList">
@@ -34,6 +36,8 @@
         <if test="lastUpdateTime != null ">and t.LAST_UPDATE_TIME = #{lastUpdateTime}</if>
         <if test="remotePath != null ">and t.REMOTE_PATH = #{remotePath}</if>
         <if test="isMust != null "> AND t.IS_MUST = #{isMust}</if>
+        <if test="contentDesc != null ">and t.CONTENT_DESC = #{contentDesc}</if>
+        <if test="configSQL != null ">and t.CONFIG_SQL = #{configSQL}</if>
     </sql>
 
     <sql id="query-sysFlowInfo">
@@ -114,6 +118,8 @@
             <if test="lastUpdateTime != null ">LAST_UPDATE_TIME,</if>
             <if test="remotePath != null ">REMOTE_PATH,</if>
             <if test="isMust != null ">  IS_MUST,</if>
+            <if test="contentDesc != null ">CONTENT_DESC,</if>
+            <if test="configSQL != null ">CONFIG_SQL,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -130,6 +136,8 @@
             <if test="lastUpdateTime != null ">#{lastUpdateTime, jdbcType=TIMESTAMP},</if>
             <if test="remotePath != null "> #{remotePath,jdbcType=VARCHAR},</if>
             <if test="isMust != null ">  #{isMust,jdbcType=INTEGER},</if>
+            <if test="contentDesc != null "> #{contentDesc,jdbcType=VARCHAR},</if>
+            <if test="configSQL != null "> #{configSQL,jdbcType=VARCHAR},</if>
         </trim>
     </insert>
 
@@ -153,6 +161,8 @@
                 </if>
                 <if test="remotePath != null ">REMOTE_PATH = #{remotePath},</if>
                 <if test="isMust != null ">IS_MUST = #{isMust,jdbcType=INTEGER}</if>
+                <if test="contentDesc != null ">REMOTE_PATH = #{contentDesc},</if>
+                <if test="configSQL != null ">CONFIG_SQL = #{configSQL},</if>
             </trim>
         </set>
         <where>
