@@ -47,12 +47,14 @@ public class FlowInfoController extends BaseController {
     @RequestMapping(value = "/list.do")
     @ResponseBody
     public Map<String, Object> getFlowList(Row row, SysFlowInfo flowInfo) {
-        flowInfo.setRow(row);
+//        flowInfo.setRow(row);
+//        flowInfo.setStatus(Constants.STATUS_USE);
+//        List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().getSysFlowInfoPaginatedListForSelective(flowInfo);
+//        int total = super.getFacade().getSysFlowInfoService().getSysFlowInfoCountForSelective(flowInfo);
         flowInfo.setStatus(Constants.STATUS_USE);
-        List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().getSysFlowInfoPaginatedListForSelective(flowInfo);
-        int total = super.getFacade().getSysFlowInfoService().getSysFlowInfoCountForSelective(flowInfo);
+        List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().getSysFlowInfoList(flowInfo);
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("total", total);
+        //result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows", flowInfos);
         return result;
@@ -60,12 +62,12 @@ public class FlowInfoController extends BaseController {
 
     @RequestMapping(value = "/queryFlowCode.do")
     @ResponseBody
-    public Map<String, Object> queryFlowCode(String flowCode, int matchCount) {
+    public Map<String, Object> queryFlowCode(String flowCode,int flowType, int matchCount) {
         Row row = new Row(0, matchCount);
         SysFlowInfo flowInfo = new SysFlowInfo();
         flowInfo.setRow(row);
         flowInfo.setFlowCode(flowCode);
-        flowInfo.setFlowType(Constants.Flow.FLOW_TYPE_BIG);
+        flowInfo.setFlowType(flowType+"");
         List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().querySysFlowInfoList(flowInfo);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", matchCount);
@@ -81,9 +83,10 @@ public class FlowInfoController extends BaseController {
     @ILog
     public Map<String, Object> addFlowInfo(SysFlowInfo flow) {
         flow.setId(ssgjHelper.createFlowId());
-        if (Constants.Flow.FLOW_TYPE_SMALL.equals(flow.getFlowType())) {
+        if (Constants.Flow.FLOW_TYPE_SMALL.equals(flow.getFlowType()) ||Constants.Flow.FLOW_TYPE_CONFIG.equals(flow.getFlowType()) ) {
             System.out.println(flow.getFlowCode());
         } else {
+            flow.setFlowPid(0L);
             flow.setFlowCode(ssgjHelper.createFlowCode());
         }
         flow.setLastUpdateTime(new Timestamp(new Date().getTime()));
@@ -102,7 +105,8 @@ public class FlowInfoController extends BaseController {
     @ILog
     public Map<String, Object> createFlowCode(String flowType, String flowCode) {
         String reFlowCode = "";
-        if (Constants.Flow.FLOW_TYPE_SMALL.equals(flowType) && !StringUtils.isBlank(flowCode)) {
+        if ((Constants.Flow.FLOW_TYPE_SMALL.equals(flowType) || Constants.Flow.FLOW_TYPE_CONFIG.equals(flowType))
+                && !StringUtils.isBlank(flowCode)) {
             flowCode += "-";
             reFlowCode = flowCode + super.getFacade().getSysFlowInfoService().createFlowCode(flowCode, flowType);
         }
