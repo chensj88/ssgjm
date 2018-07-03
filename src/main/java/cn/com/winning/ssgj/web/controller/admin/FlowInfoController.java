@@ -52,7 +52,7 @@ public class FlowInfoController extends BaseController {
 //        List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().getSysFlowInfoPaginatedListForSelective(flowInfo);
 //        int total = super.getFacade().getSysFlowInfoService().getSysFlowInfoCountForSelective(flowInfo);
         flowInfo.setStatus(Constants.STATUS_USE);
-        List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().getSysFlowInfoList(flowInfo);
+        List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().getSysFlowInfoListBySelectiveKey(flowInfo);
         Map<String, Object> result = new HashMap<String, Object>();
         //result.put("total", total);
         result.put("status", Constants.SUCCESS);

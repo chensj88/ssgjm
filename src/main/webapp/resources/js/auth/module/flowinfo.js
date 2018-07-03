@@ -95,7 +95,7 @@ $(function () {
             field: "flowCode",
             title: "流程编号",
             width: '35px',
-            align: 'center'
+            align: 'left'
         },  {
             field: "flowDesc",
             title: "流程描述",
