@@ -52,6 +52,25 @@ public class ConnectionUtil {
         return conn;
     }
 
+    /**
+     * @return Connection
+     */
+    public static synchronized Connection getConnection(String ip, String username, String password, String databaseName) {
+        // 读出配置信息
+        String driverClassName = properties.get("driverClassName");
+        String url = "jdbc:sqlserver://" + ip + ":1433;DatabaseName=" + databaseName;
+        Connection conn = null;
+        try {
+            // 加载数据库驱动程序
+            Class.forName(driverClassName);
+            conn = DriverManager.getConnection(url, username, password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return conn;
+    }
+
     public static void closeAll(Connection conn, PreparedStatement pstmt, ResultSet rs) {
         if (rs != null) {
             try {

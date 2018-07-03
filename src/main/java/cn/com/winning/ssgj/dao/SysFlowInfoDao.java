@@ -29,4 +29,5 @@ public interface SysFlowInfoDao extends EntityDao<SysFlowInfo> {
 
     List<SysFlowInfo> selectSysFlowInfoListForName(SysFlowInfo t);
 
+    List<SysFlowInfo> selectSysFlowInfoListBySelectiveKey(SysFlowInfo t);
 }

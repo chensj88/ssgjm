@@ -256,6 +256,7 @@ $(function () {
         //清空验证信息
         $('#scriptForm').bootstrapValidator("destroy");
         validateForm();
+        $('#dataType').val('0');
         initFileApiUpload('file-upload');
         $('#uploadFileDiv').show();
         $('#scriptModal').modal('show');

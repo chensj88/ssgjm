@@ -65,4 +65,9 @@ public class SysFlowInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysFlowInfo> i
         return super.getSqlSession().selectList(statement,flowInfo);
     }
 
+    @Override
+    public List<SysFlowInfo> selectSysFlowInfoListBySelectiveKey(SysFlowInfo flowInfo) {
+        return super.getSqlSession().selectList("selectSysFlowInfoListBySelectiveKey",flowInfo);
+    }
+
 }

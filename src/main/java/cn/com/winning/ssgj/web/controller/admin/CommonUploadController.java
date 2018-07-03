@@ -162,7 +162,7 @@ public class CommonUploadController extends BaseController {
         if (!uploadFile.isEmpty()) {
             // String filename = FileUtis.generateFileName(uploadFile.getOriginalFilename());
             String filename = uploadFile.getOriginalFilename();
-            String remotePath =  Constants.UPLOAD_PC_PREFIX + "/web/script/" + DateUtil.getTimstamp() + "/" + filename;
+            String remotePath =  Constants.UPLOAD_PC_PREFIX + "web/script/" + DateUtil.getTimstamp() + "/" + filename;
             String msg = "";
             boolean ftpStatus =CommonFtpUtils.commonUploadInfo(request,msg,remotePath,uploadFile);
             if (ftpStatus) {
