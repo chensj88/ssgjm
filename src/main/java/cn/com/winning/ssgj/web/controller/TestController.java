@@ -11,12 +11,17 @@ import cn.com.winning.ssgj.ws.work.service.PmisWorkingPaperService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -288,5 +293,31 @@ public class TestController extends BaseController{
     public String qyeryImplInfo(){
         return "mobile2/service/implement-work";
     }
+
+    @Test
+    public void sssTest(){
+        Connection con = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        String url = "jdbc:sqlserver://172.16.0.211:1433;user=sa;password=zyc@8468";//sa身份连接
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            con = DriverManager.getConnection(url);
+
+            String SQL = "SELECT * FROM sys.databases;";
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+            while (rs.next()) {
+                System.out.println(rs.getString(1) );
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+
 
 }

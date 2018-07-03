@@ -23,12 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.text.ParseException;
+import java.util.*;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author chenshijie
@@ -303,5 +301,40 @@ public class EtBusinessProcessController extends BaseController {
         }
         return result;
 
+    }
+
+
+    /**
+     * 获取全部数据库的连接
+     * @param process
+     * @return
+     */
+    @RequestMapping(value = "/changeDatabases.do")
+    @ResponseBody
+    public Map<String,Object> changeDatabases(EtBusinessProcess process){
+        Map<String,Object> result = new HashMap<String,Object>();
+        List<String> databases = new ArrayList();
+        Connection con = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        String url ="jdbc:sqlserver://"+process.getIp()+";user="+process.getDataName()+";password="+process.getPw();
+        //String url = "jdbc:sqlserver://172.16.0.200:1433;user=sa;password=zyc@8468";//sa身份连接
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            con = DriverManager.getConnection(url);
+            String SQL = "SELECT * FROM sys.databases;";
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+            while (rs.next()) {
+                databases.add(rs.getString(1));
+            }
+            result.put("status","true");
+
+        }catch (Exception e){
+            e.printStackTrace();
+            result.put("status","false");
+        }
+        result.put("databases",databases);
+        return result;
     }
 }

@@ -212,6 +212,13 @@ public class FacadeImpl implements Facade {
     @Resource
     EtUserLogService etUserLogService;
 
+    @Resource
+    EtDatabasesListService etDatabasesListService;
+
+    public EtDatabasesListService getEtDatabasesListService() {
+        return etDatabasesListService;
+    }
+
     public EtAccessTokenService getEtAccessTokenService() {
         return etAccessTokenService;
     }

@@ -149,4 +149,6 @@ public interface Facade {
 
     EtUserHospitalLogService getEtUserHospitalLogService();
 
+    EtDatabasesListService getEtDatabasesListService();
+
 }
