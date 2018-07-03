@@ -162,5 +162,10 @@ public class SysFlowInfoServiceImpl implements SysFlowInfoService {
         return this.sysFlowInfoDao.selectEntity(flowInfo);
     }
 
+    @Override
+    public List<SysFlowInfo> getSysFlowInfoListBySelectiveKey(SysFlowInfo t) {
+        return sysFlowInfoDao.selectSysFlowInfoListBySelectiveKey(t);
+    }
+
 
 }

@@ -63,4 +63,11 @@ public interface SysFlowInfoService {
      * @return
      */
     SysFlowInfo getSysFlowInfoById(Long id);
+
+    /**
+     * 模糊查询，主要根据名称和编码
+     * @param t
+     * @return
+     */
+    List<SysFlowInfo> getSysFlowInfoListBySelectiveKey(SysFlowInfo t);
 }
