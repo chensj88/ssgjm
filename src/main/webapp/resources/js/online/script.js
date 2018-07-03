@@ -277,7 +277,7 @@ $(function () {
         $('#remotePath').val(data.remotePath);
         initFileApiUpload('file-upload');
         //取消默认选中
-        $('#isModifyDiv').val('0');
+        $('#isModify').val('0');
         $('#isModifyDiv').show();
         $('#uploadFileDiv').hide();
         $('#videoNameDiv').show();

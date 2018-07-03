@@ -126,12 +126,6 @@
                 <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR =
                     #{lastUpdator, jdbcType=BIGINT},
                 </if>
-                <if test="ip != null and ip != ''">IP = #{ip, jdbcType=VARCHAR},</if>
-                <if test="userName != null and userName != ''">USER_NAME = #{userName, jdbcType=VARCHAR},</if>
-                <if test="pw != null and pw != ''">PW = #{pw, jdbcType=VARCHAR},</if>
-                <if test="databaseName != null and databaseName != ''">DATABASE_NAME =
-                    #{databaseName, jdbcType=VARCHAR},
-                </if>
             </trim>
         </set>
         where
