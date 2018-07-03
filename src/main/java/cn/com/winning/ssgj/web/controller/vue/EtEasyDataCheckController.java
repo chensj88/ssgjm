@@ -397,12 +397,9 @@ public class EtEasyDataCheckController extends BaseController {
         }
         //获取文件名
         String filename = scriptPath.substring(scriptPath.lastIndexOf("/") + 1);
-        ChannelSftp sftpConnect = null;
         byte[] bytes = null;
         try {
-            sftpConnect = SFtpUtils.getSftpConnect();
-            //sftpConnect.setFilenameEncoding("GBK");
-            bytes = SFtpUtils.downloadAsByte(scriptPath, sftpConnect);
+            bytes = SFtpUtils.downloadAsByte(scriptPath);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -568,12 +565,9 @@ public class EtEasyDataCheckController extends BaseController {
             //获取文件名
             String filename = scriptPath.substring(scriptPath.lastIndexOf("/") + 1);
             String saveFile = "/sql/" + filename.substring(0, filename.indexOf(".")) + "_" + i + "." + filename.substring(filename.indexOf(".") + 1);
-            ChannelSftp sftpConnect = null;
             File file = null;
             try {
-                sftpConnect = SFtpUtils.getSftpConnect();
-                //sftpConnect.setFilenameEncoding("GBK");
-                file = SFtpUtils.download(scriptPath, saveFile, sftpConnect);
+                file = SFtpUtils.download(scriptPath, saveFile);
                 fileList.add(file);
             } catch (Exception e) {
                 e.printStackTrace();

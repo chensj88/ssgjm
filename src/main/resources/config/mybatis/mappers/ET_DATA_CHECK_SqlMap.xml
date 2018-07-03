@@ -17,6 +17,10 @@
         <result column="OPERATOR" property="operator" jdbcType="BIGINT"/>
         <result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP"/>
         <result column="SOURCE_ID" property="sourceId" jdbcType="BIGINT"/>
+        <result column="IP" property="ip" jdbcType="VARCHAR"/>
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="PW" property="pw" jdbcType="VARCHAR"/>
+        <result column="DATABASE_NAME" property="databaseName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="etDataCheckResult" type="etDataCheck" extends="etDataCheckResultForList">
@@ -37,6 +41,10 @@
         <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
         <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
         <if test="(sourceId != null and sourceId != '') or sourceId == 0">and t.SOURCE_ID = #{sourceId}</if>
+        <if test="ip != null and ip != ''">and t.IP = #{ip}</if>
+        <if test="userName != null and userName != ''">and t.USER_NAME = #{userName}</if>
+        <if test="pw != null and pw != ''">and t.PW = #{pw}</if>
+        <if test="databaseName != null and databaseName != ''">and t.DATABASE_NAME = #{databaseName}</if>
     </sql>
 
     <select id="selectEtDataCheck" resultMap="etDataCheckResult" parameterType="etDataCheck">
@@ -84,6 +92,10 @@
             <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
             <if test="operatorTime != null ">OPERATOR_TIME,</if>
             <if test="(sourceId != null and sourceId != '') or sourceId == 0">SOURCE_ID,</if>
+            <if test="ip != null and ip != ''">IP,</if>
+            <if test="userName != null and userName != ''">USER_NAME,</if>
+            <if test="pw != null and pw != ''">PW,</if>
+            <if test="databaseName != null and databaseName != ''">DATABASE_NAME,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -101,6 +113,10 @@
             <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
             <if test="operatorTime != null ">#{operatorTime, jdbcType=TIMESTAMP},</if>
             <if test="(sourceId != null and sourceId != '') or sourceId == 0">#{sourceId, jdbcType=BIGINT},</if>
+            <if test="ip != null and ip != ''">#{ip,jdbcType=VARCHAR}</if>
+            <if test="userName != null and userName != ''">#{userName,jdbcType=VARCHAR}</if>
+            <if test="pw != null and pw != ''">#{pw,jdbcType=VARCHAR}</if>
+            <if test="databaseName != null and databaseName != ''">#{databaseName,jdbcType=VARCHAR}</if>
         </trim>
     </insert>
 
@@ -127,6 +143,12 @@
                 </if>
                 <if test="operatorTime != null ">OPERATOR_TIME =
                     #{operatorTime, jdbcType=TIMESTAMP},
+                </if>
+                <if test="ip != null and ip != ''">IP = #{ip, jdbcType=VARCHAR},</if>
+                <if test="userName != null and userName != ''">USER_NAME = #{userName, jdbcType=VARCHAR},</if>
+                <if test="pw != null and pw != ''">PW = #{pw, jdbcType=VARCHAR},</if>
+                <if test="databaseName != null and databaseName != ''">DATABASE_NAME =
+                    #{databaseName, jdbcType=VARCHAR},
                 </if>
             </trim>
         </set>
@@ -192,7 +214,7 @@
         #{serialNo} AS SERIAL_NO,
         0 AS PL_ID,
         0 AS PD_ID,
-        NULL AS SCRIPT_PATH,
+        s.REMOTE_PATH AS SCRIPT_PATH,
         0 AS CREATOR,
         GETDATE() AS CREATE_TIME,
         s.ID AS SOURCE_ID
