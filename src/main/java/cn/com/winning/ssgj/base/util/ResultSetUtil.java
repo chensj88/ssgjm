@@ -77,7 +77,7 @@ public class ResultSetUtil {
             //将属性值赋值第一行
             for (int i = 1; i <= colNum; i++) {
                 String columnName = metaData.getColumnLabel(i);
-                row_1.createCell(i).setCellValue(columnName);
+                row_1.createCell(i-1).setCellValue(columnName);
             }
             //数据行
             HSSFRow row_2 = sheet.createRow(1);
@@ -87,7 +87,7 @@ public class ResultSetUtil {
                 for (int i = 1; i <= colNum; i++) {
                     String columnName = metaData.getColumnLabel(i);
                     String value = resultSet.getString(columnName);
-                    row.createCell(i).setCellValue(value);
+                    row.createCell(i-1).setCellValue(value);
                 }
             }
         } catch (SQLException e) {

@@ -211,7 +211,7 @@ public class EtDataCheckController extends BaseController {
         EtDataCheck etDataCheck = getFacade().getEtDataCheckService().getEtDataCheck(temp);
         etDataCheck.setOperator(t.getOperator());
         SysDataCheckScript sysDataCheckScript = new SysDataCheckScript();
-        sysDataCheckScript.setAppId(etDataCheck.getPlId());
+        sysDataCheckScript.setId(etDataCheck.getSourceId());
         sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(sysDataCheckScript);
         Map<String, Object> result = new HashMap<String, Object>();
         //如果文件不为空，写入上传路径
@@ -255,14 +255,14 @@ public class EtDataCheckController extends BaseController {
                 }
                 etDataCheck.setCheckResult(checkResult);
                 //文件夹路径
-                String dir = Constants.UPLOAD_PC_PREFIX + pmId + "/dataCheck/" + sysDataCheckScript.getAppName() + "/";
-                String src = newFile.getAbsolutePath();
-                String fileName = newFile.getName();
-                etDataCheck.setScriptPath(dir + fileName);
+//                String dir = Constants.UPLOAD_PC_PREFIX + pmId + "/dataCheck/" + sysDataCheckScript.getAppName() + "/";
+//                String src = newFile.getAbsolutePath();
+//                String fileName = newFile.getName();
+//                etDataCheck.setScriptPath(dir + fileName);
                 etDataCheck.setOperatorTime(new Timestamp(new Date().getTime()));
                 getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheck);
                 //将文件上传到ftp服务器
-                SFtpUtils.uploadFile(src, dir, fileName);
+//                SFtpUtils.uploadFile(src, dir, fileName);
                 newFile.delete();
                 result.put("status", "success");
             } catch (Exception e) {
@@ -435,6 +435,7 @@ public class EtDataCheckController extends BaseController {
         String ip = etDataCheck.getIp();
         String userName = etDataCheck.getUserName();
         String pw = etDataCheck.getPw();
+//        String databaseName = etDataCheck.getDatabaseName();
         String databaseName = "THIS4";
         //连接数据库
         Connection connection = ConnectionUtil.getConnection(ip, userName, pw, databaseName);
@@ -462,6 +463,10 @@ public class EtDataCheckController extends BaseController {
         String createProcSql = sysDataCheckScript.getsDesc();
         String runProcSql = "exec " + procName + " '0'";
         ResultSet rs = null;
+        //错误计数
+        Integer failNum = 0;
+        //检测结果
+        String checkResult = "";
         try {
             PreparedStatement ps = connection.prepareStatement(existsProcSql);
             ps.execute();
@@ -476,21 +481,74 @@ public class EtDataCheckController extends BaseController {
             while (rs.next()) {
                 List<String> resetList = new ArrayList<>();
                 resetList.add(rs.getString(1));
+                if ("F".equalsIgnoreCase(rs.getString(1))) {
+                    failNum++;
+                }
                 resetList.add(rs.getString(2));
                 resetList.add(rs.getString(3));
                 System.out.println(rs.getString(1) + "--" + rs.getString(2) + "--" + rs.getString(3));
                 jsonArray.add(resetList);
             }
-            EtDataCheck etDataCheckTemp = new EtDataCheck();
-            etDataCheckTemp.setId(etDataCheck.getId());
-            etDataCheckTemp.setContent(jsonArray.toJSONString());
-            getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheckTemp);
+            etDataCheck.setId(etDataCheck.getId());
+            etDataCheck.setContent(jsonArray.toJSONString());
+            if (failNum == null || failNum == 0) {
+                checkResult = "校验正常";
+            } else {
+                checkResult = "校验出" + failNum + "个问题";
+            }
+            etDataCheck.setCheckResult(checkResult);
+            etDataCheck.setOperatorTime(new Timestamp(new Date().getTime()));
+            getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheck);
         } catch (Exception e) {
             e.printStackTrace();
         }
         resultMap.put("status", Constants.SUCCESS);
         return resultMap;
 
+    }
+
+
+    /**
+     * @param response
+     * @return
+     * @throws IOException
+     * @description 导出sql
+     */
+    @RequestMapping(value = "/exportExceptionResult.do")
+    @ResponseBody
+    public Map<String, Object> exportExceptionResult(HttpServletResponse response, String sql, String question, Long id) throws IOException {
+        EtDataCheck dataCheck = new EtDataCheck();
+        dataCheck.setId(id);
+        dataCheck = getFacade().getEtDataCheckService().getEtDataCheck(dataCheck);
+        Connection connection = null;
+        if (StringUtil.isEmptyOrNull(dataCheck.getIp())) {
+            connection = ConnectionUtil.getConnection();
+        } else {
+            connection = ConnectionUtil.getConnection(dataCheck.getIp(), dataCheck.getUserName(), dataCheck.getPw(), dataCheck.getDatabaseName());
+        }
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        //创建Excel工作簿 Excel 2003
+        Workbook wb = new HSSFWorkbook();
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            //将表数据写入表格
+            ResultSetUtil.resultSetToExcel(resultSet, wb);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        String filename = question + ".xls";
+        response.setContentType("application/msexcel;charset=UTF-8");
+        response.addHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode(filename, "UTF-8"))));
+        OutputStream toClient = response.getOutputStream();
+        wb.write(toClient);
+        toClient.flush();
+        toClient.close();
+        resultMap.put("status", Constants.SUCCESS);
+        return resultMap;
     }
 
 }
