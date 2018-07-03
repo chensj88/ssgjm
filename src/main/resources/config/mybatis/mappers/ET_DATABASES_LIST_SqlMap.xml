@@ -7,8 +7,9 @@
 		<result column="C_ID" property="cId" jdbcType="BIGINT" />
 		<result column="PM_ID" property="pmId" jdbcType="BIGINT" />
 		<result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR" />
+		<result column="DATA_ALIAS" property="dataAlias" jdbcType="VARCHAR" />
 		<result column="IP" property="ip" jdbcType="VARCHAR" />
-		<result column="DATA_NAME" property="dataName" jdbcType="VARCHAR" />
+		<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
 		<result column="PW" property="pw" jdbcType="VARCHAR" />
 		<result column="DATABASE_NAME" property="databaseName" jdbcType="VARCHAR" />
 		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
@@ -26,8 +27,9 @@
 	   <if test="(cId != null and cId != '') or cId == 0"> and t.C_ID = #{cId} </if>
 	   <if test="(pmId != null and pmId != '') or pmId == 0"> and t.PM_ID = #{pmId} </if>
 	   <if test="serialNo != null and serialNo != ''"> and t.SERIAL_NO = #{serialNo} </if>
-	   <if test="ip != null and ip != ''"> and t.IP = #{ip} </if>
-	   <if test="dataName != null and dataName != ''"> and t.DATA_NAME = #{dataName} </if>
+		<if test="dataAlias != null and dataAlias != ''"> and t.DATA_ALIAS = #{dataAlias} </if>
+		<if test="ip != null and ip != ''"> and t.IP = #{ip} </if>
+	   <if test="userName != null and userName != ''"> and t.USER_NAME = #{userName} </if>
 	   <if test="pw != null and pw != ''"> and t.PW = #{pw} </if>
 	   <if test="databaseName != null and databaseName != ''"> and t.DATABASE_NAME = #{databaseName} </if>
 	   <if test="remark != null and remark != ''"> and t.REMARK = #{remark} </if>
@@ -65,22 +67,22 @@
 	</select>
 
 	<insert id="insertEtDatabasesList" parameterType="etDatabasesList">
-	<selectKey resultType="String"  order="BEFORE"  keyProperty="id">SELECT CAST(NEWID() AS VARCHAR(36)) AS ID</selectKey>
-		insert into ET_DATABASES_LIST 
+		insert into ET_DATABASES_LIST
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 	       <if test="(id != null and id != '') or id == 0"> ID, </if>
 	       <if test="(cId != null and cId != '') or cId == 0"> C_ID, </if>
 	       <if test="(pmId != null and pmId != '') or pmId == 0"> PM_ID, </if>
 		   <if test="serialNo != null and serialNo != ''"> SERIAL_NO, </if>
-		   <if test="ip != null and ip != ''"> IP, </if>
-		   <if test="dataName != null and dataName != ''"> DATA_NAME, </if>
+			<if test="dataAlias != null and dataAlias != ''"> DATA_ALIAS, </if>
+			<if test="ip != null and ip != ''"> IP, </if>
+		   <if test="userName != null and userName != ''"> USER_NAME, </if>
 		   <if test="pw != null and pw != ''"> PW, </if>
 		   <if test="databaseName != null and databaseName != ''"> DATABASE_NAME, </if>
 		   <if test="remark != null and remark != ''"> REMARK, </if>
 	       <if test="(creator != null and creator != '') or creator == 0"> CREATOR, </if>
-		   <if test="createTime != null and createTime != ''"> CREATE_TIME, </if>
+		   <if test="createTime != null "> CREATE_TIME, </if>
 	       <if test="(operator != null and operator != '') or operator == 0"> OPERATOR, </if>
-		   <if test="operatorTime != null and operatorTime != ''"> OPERATOR_TIME, </if>
+		   <if test="operatorTime != null "> OPERATOR_TIME, </if>
 		</trim>
 		values
 		<trim prefix="(" suffix=")" suffixOverrides=",">
@@ -88,15 +90,16 @@
 	       <if test="(cId != null and cId != '') or cId == 0"> #{cId, jdbcType=BIGINT}, </if>
 	       <if test="(pmId != null and pmId != '') or pmId == 0"> #{pmId, jdbcType=BIGINT}, </if>
 		   <if test="serialNo != null and serialNo != ''"> #{serialNo, jdbcType=VARCHAR}, </if>
-		   <if test="ip != null and ip != ''"> #{ip, jdbcType=VARCHAR}, </if>
-		   <if test="dataName != null and dataName != ''"> #{dataName, jdbcType=VARCHAR}, </if>
+			<if test="dataAlias != null and dataAlias != ''"> #{dataAlias, jdbcType=VARCHAR}, </if>
+			<if test="ip != null and ip != ''"> #{ip, jdbcType=VARCHAR}, </if>
+		   <if test="userName != null and userName != ''"> #{userName, jdbcType=VARCHAR}, </if>
 		   <if test="pw != null and pw != ''"> #{pw, jdbcType=VARCHAR}, </if>
 		   <if test="databaseName != null and databaseName != ''"> #{databaseName, jdbcType=VARCHAR}, </if>
 		   <if test="remark != null and remark != ''"> #{remark, jdbcType=VARCHAR}, </if>
 	       <if test="(creator != null and creator != '') or creator == 0"> #{creator, jdbcType=BIGINT}, </if>
-		   <if test="createTime != null and createTime != ''"> #{createTime, jdbcType=TIMESTAMP}, </if>
+		   <if test="createTime != null "> #{createTime, jdbcType=TIMESTAMP}, </if>
 	       <if test="(operator != null and operator != '') or operator == 0"> #{operator, jdbcType=BIGINT}, </if>
-		   <if test="operatorTime != null and operatorTime != ''"> #{operatorTime, jdbcType=TIMESTAMP}, </if>
+		   <if test="operatorTime != null "> #{operatorTime, jdbcType=TIMESTAMP}, </if>
 		</trim>
 	</insert>
 
@@ -108,15 +111,16 @@
 			   <if test="(cId != null and cId != '') or cId == 0"> C_ID = #{cId, jdbcType=BIGINT}, </if>
 			   <if test="(pmId != null and pmId != '') or pmId == 0"> PM_ID = #{pmId, jdbcType=BIGINT}, </if>
 			   <if test="serialNo != null and serialNo != ''"> SERIAL_NO = #{serialNo, jdbcType=VARCHAR}, </if>
-			   <if test="ip != null and ip != ''"> IP = #{ip, jdbcType=VARCHAR}, </if>
-			   <if test="dataName != null and dataName != ''"> DATA_NAME = #{dataName, jdbcType=VARCHAR}, </if>
+				<if test="dataAlias != null and dataAlias != ''"> DATA_ALIAS = #{dataAlias, jdbcType=VARCHAR},
+               </if><if test="ip != null and ip != ''">IP = #{ip, jdbcType=VARCHAR}, </if>
+			   <if test="userName != null and userName != ''"> USER_NAME = #{userName, jdbcType=VARCHAR}, </if>
 			   <if test="pw != null and pw != ''"> PW = #{pw, jdbcType=VARCHAR}, </if>
 			   <if test="databaseName != null and databaseName != ''"> DATABASE_NAME = #{databaseName, jdbcType=VARCHAR}, </if>
 			   <if test="remark != null and remark != ''"> REMARK = #{remark, jdbcType=VARCHAR}, </if>
 			   <if test="(creator != null and creator != '') or creator == 0"> CREATOR = #{creator, jdbcType=BIGINT}, </if>
-			   <if test="createTime != null and createTime != ''"> CREATE_TIME = #{createTime, jdbcType=TIMESTAMP}, </if>
+			   <if test="createTime != null"> CREATE_TIME = #{createTime, jdbcType=TIMESTAMP}, </if>
 			   <if test="(operator != null and operator != '') or operator == 0"> OPERATOR = #{operator, jdbcType=BIGINT}, </if>
-			   <if test="operatorTime != null and operatorTime != ''"> OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP}, </if>
+			   <if test="operatorTime != null"> OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP}, </if>
 			</trim>
 		</set>
 		where

@@ -304,37 +304,4 @@ public class EtBusinessProcessController extends BaseController {
     }
 
 
-    /**
-     * 获取全部数据库的连接
-     * @param process
-     * @return
-     */
-    @RequestMapping(value = "/changeDatabases.do")
-    @ResponseBody
-    public Map<String,Object> changeDatabases(EtBusinessProcess process){
-        Map<String,Object> result = new HashMap<String,Object>();
-        List<String> databases = new ArrayList();
-        Connection con = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        String url ="jdbc:sqlserver://"+process.getIp()+";user="+process.getDataName()+";password="+process.getPw();
-        //String url = "jdbc:sqlserver://172.16.0.200:1433;user=sa;password=zyc@8468";//sa身份连接
-        try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            con = DriverManager.getConnection(url);
-            String SQL = "SELECT * FROM sys.databases;";
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(SQL);
-            while (rs.next()) {
-                databases.add(rs.getString(1));
-            }
-            result.put("status","true");
-
-        }catch (Exception e){
-            e.printStackTrace();
-            result.put("status","false");
-        }
-        result.put("databases",databases);
-        return result;
-    }
 }

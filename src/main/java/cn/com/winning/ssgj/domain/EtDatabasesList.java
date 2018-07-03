@@ -33,10 +33,15 @@ public class EtDatabasesList extends BaseDomain implements Serializable {
 	 * @val 单据号
 	 */
 	private String serialNo;
+
+	/**
+	 * @val 数据库别名
+	 */
+	private String dataAlias;
 	
 	private String ip;
 	
-	private String dataName;
+	private String userName;
 	
 	private String pw;
 	
@@ -52,7 +57,7 @@ public class EtDatabasesList extends BaseDomain implements Serializable {
 	/**
 	 * @val 创建时间
 	 */
-	private Date createTime;
+	private java.sql.Timestamp createTime;
 	
 	/**
 	 * @val 操作人
@@ -62,7 +67,7 @@ public class EtDatabasesList extends BaseDomain implements Serializable {
 	/**
 	 * @val 操作时间
 	 */
-	private Date operatorTime;
+	private java.sql.Timestamp operatorTime;
 	
 	public EtDatabasesList() {
 
@@ -125,15 +130,15 @@ public class EtDatabasesList extends BaseDomain implements Serializable {
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-	
-	public String getDataName() {
-		return dataName;
+
+	public String getUserName() {
+		return userName;
 	}
-	
-	public void setDataName(String dataName) {
-		this.dataName = dataName;
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
-	
+
 	public String getPw() {
 		return pw;
 	}
@@ -175,14 +180,14 @@ public class EtDatabasesList extends BaseDomain implements Serializable {
 	/**
 	 * @val 创建时间
 	 */
-	public Date getCreateTime() {
+	public java.sql.Timestamp getCreateTime() {
 		return createTime;
 	}
 	
 	/**
 	 * @val 创建时间
 	 */
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(java.sql.Timestamp createTime) {
 		this.createTime = createTime;
 	}
 	
@@ -203,15 +208,23 @@ public class EtDatabasesList extends BaseDomain implements Serializable {
 	/**
 	 * @val 操作时间
 	 */
-	public Date getOperatorTime() {
+	public java.sql.Timestamp getOperatorTime() {
 		return operatorTime;
 	}
 	
 	/**
 	 * @val 操作时间
 	 */
-	public void setOperatorTime(Date operatorTime) {
+	public void setOperatorTime(java.sql.Timestamp operatorTime) {
 		this.operatorTime = operatorTime;
 	}
-	
+
+	public String getDataAlias() {
+		return dataAlias;
+	}
+
+	public void setDataAlias(String dataAlias) {
+		this.dataAlias = dataAlias;
+	}
+
 }

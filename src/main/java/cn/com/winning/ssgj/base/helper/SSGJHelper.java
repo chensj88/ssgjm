@@ -270,6 +270,14 @@ public class SSGJHelper {
     @Qualifier(value = "etUserHospitalLogIdService")
     private StepSequenceFactory  etUserHospitalLogIdService;
 
+    @Autowired
+    @Qualifier(value = "etDataBasesListIdService")
+    private StepSequenceFactory  etDataBasesListIdService;
+
+    public long createEtDataBasesList(){
+        return (long) etDataBasesListIdService.create();
+    }
+
 
     public long createEtUserHospitalLog(){
         return (long) etUserHospitalLogIdService.create();
