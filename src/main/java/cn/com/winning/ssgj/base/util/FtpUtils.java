@@ -198,8 +198,13 @@ public class FtpUtils {
         return flag;
     }
 
-
-    public static void downloadFile(String ftpFileName, String localPath) throws IOException {
+    /**
+     * 从FTP上面下载文件
+     * @param ftpFileName FTP上全路径
+     * @param localFileName 保存文件全路径
+     * @throws IOException
+     */
+    public static void downloadFile(String ftpFileName, String localFileName) throws IOException {
         FTPClient ftp = new FTPClient();// 创建FTPClient对象
         // Download.
         OutputStream out = null;
@@ -220,7 +225,7 @@ public class FtpUtils {
                 throw new IOException("File " + ftpFileName + " is too large.");
             }
 
-            String localFile = localPath + fileInfo.getName();
+            String localFile = localFileName;
 
             // Download file.
             out = new BufferedOutputStream(new FileOutputStream(localFile));
