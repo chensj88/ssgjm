@@ -58,7 +58,7 @@ public class ConnectionUtil {
     public static synchronized Connection getConnection(String ip, String username, String password, String databaseName) {
         // 读出配置信息
         String driverClassName = properties.get("driverClassName");
-        String url = "jdbc:sqlserver://" + ip + ":1433;DatabaseName=" + databaseName;
+        String url = "jdbc:sqlserver://" + ip + ";DatabaseName=" + databaseName;
         Connection conn = null;
         try {
             // 加载数据库驱动程序

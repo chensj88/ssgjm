@@ -88,59 +88,12 @@ public class EtDataCheck extends BaseDomain implements Serializable {
     /**
      * @val 数据源id
      */
-    public Long sourceId;
+    private Long sourceId;
 
     /**
-     * @val 数据库ip
+     * @val 数据库连接id
      */
-    public String ip;
-
-    /**
-     * @val userName
-     */
-    public String userName;
-
-    /**
-     * @val password
-     */
-    public String pw;
-
-    /**
-     * @val databaseName
-     */
-    public String databaseName;
-
-    public String getDatabaseName() {
-        return databaseName;
-    }
-
-    public void setDatabaseName(String databaseName) {
-        this.databaseName = databaseName;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPw() {
-        return pw;
-    }
-
-    public void setPw(String pw) {
-        this.pw = pw;
-    }
+    private Long ipId;
 
     public EtDataCheck() {
 
@@ -329,5 +282,13 @@ public class EtDataCheck extends BaseDomain implements Serializable {
 
     public void setSourceId(Long sourceId) {
         this.sourceId = sourceId;
+    }
+
+    public Long getIpId() {
+        return ipId;
+    }
+
+    public void setIpId(Long ipId) {
+        this.ipId = ipId;
     }
 }

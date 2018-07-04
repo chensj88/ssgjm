@@ -153,9 +153,14 @@ public class EtDataCheckController extends BaseController {
         EtProcessManager etProcessManager = new EtProcessManager();
         etProcessManager.setPmId(pmId);
         etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
+        //获取ipList
+        EtDatabasesList etDatabasesList = new EtDatabasesList();
+        etDatabasesList.setPmId(pmId);
+        List<EtDatabasesList> etDatabasesListList = getFacade().getEtDatabasesListService().getEtDatabasesListList(etDatabasesList);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", etDataCheckList);
         map.put("total", total);
+        map.put("ipList", etDatabasesListList);
         map.put("status", Constants.SUCCESS);
         map.put("process", etProcessManager);
         return map;
@@ -429,14 +434,24 @@ public class EtDataCheckController extends BaseController {
     @ResponseBody
     @Transactional
     public Map<String, Object> doScriptCheck(EtDataCheck etDataCheck) {
-        //更新数据数据库配置
-        getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheck);
+        if (etDataCheck.getIpId() == null) {
+            resultMap.put("status", Constants.FAILD);
+            return resultMap;
+        }
+        //ipId
+        EtDatabasesList etDatabasesList = new EtDatabasesList();
+        etDatabasesList.setId(etDataCheck.getIpId());
+        etDatabasesList = getFacade().getEtDatabasesListService().getEtDatabasesList(etDatabasesList);
+        if (etDatabasesList == null) {
+            resultMap.put("status", Constants.FAILD);
+            return resultMap;
+        }
         //数据库参数
-        String ip = etDataCheck.getIp();
-        String userName = etDataCheck.getUserName();
-        String pw = etDataCheck.getPw();
+        String ip = etDatabasesList.getIp();
+        String userName = etDatabasesList.getUserName();
+        String pw = etDatabasesList.getPw();
 //        String databaseName = etDataCheck.getDatabaseName();
-        String databaseName = "THIS4";
+        String databaseName = etDatabasesList.getDatabaseName();
         //连接数据库
         Connection connection = ConnectionUtil.getConnection(ip, userName, pw, databaseName);
         if (connection == null) {
@@ -501,6 +516,9 @@ public class EtDataCheckController extends BaseController {
             getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheck);
         } catch (Exception e) {
             e.printStackTrace();
+            resultMap.put("status", Constants.FAILD);
+            resultMap.put("msg", e.getMessage());
+            return resultMap;
         }
         resultMap.put("status", Constants.SUCCESS);
         return resultMap;
@@ -520,11 +538,21 @@ public class EtDataCheckController extends BaseController {
         EtDataCheck dataCheck = new EtDataCheck();
         dataCheck.setId(id);
         dataCheck = getFacade().getEtDataCheckService().getEtDataCheck(dataCheck);
+
+        //ipId
+        EtDatabasesList etDatabasesList = new EtDatabasesList();
+        etDatabasesList.setId(dataCheck.getIpId());
+        etDatabasesList = getFacade().getEtDatabasesListService().getEtDatabasesList(etDatabasesList);
         Connection connection = null;
-        if (StringUtil.isEmptyOrNull(dataCheck.getIp())) {
+        if (etDatabasesList == null) {
             connection = ConnectionUtil.getConnection();
         } else {
-            connection = ConnectionUtil.getConnection(dataCheck.getIp(), dataCheck.getUserName(), dataCheck.getPw(), dataCheck.getDatabaseName());
+            //数据库参数
+            String ip = etDatabasesList.getIp();
+            String userName = etDatabasesList.getUserName();
+            String pw = etDatabasesList.getPw();
+            String databaseName = etDatabasesList.getDatabaseName();
+            connection = ConnectionUtil.getConnection(ip, userName, pw, databaseName);
         }
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;

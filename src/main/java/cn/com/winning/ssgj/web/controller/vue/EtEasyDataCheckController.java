@@ -157,6 +157,8 @@ public class EtEasyDataCheckController extends BaseController {
         EtProcessManager etProcessManager = new EtProcessManager();
         etProcessManager.setPmId(pmId);
         etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
+        //获取ipList
+
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", etEasyDataChecks);
         map.put("total", total);
