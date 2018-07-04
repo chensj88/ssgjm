@@ -120,7 +120,7 @@
                 <if test="sDesc != null and sDesc != ''">S_DESC = #{sDesc, jdbcType=LONGVARCHAR},</if>
                 <if test="appId != null ">APP_ID = #{appId,jdbcType=BIGINT},</if>
                 <if test="appName != null and appName != ''">APP_NAME = #{appName, jdbcType=VARCHAR},</if>
-                <if test="remotePath != null and remotePath != ''">REMOTE_PATH = #{remotePath, jdbcType=VARCHAR},</if>
+                <if test="remotePath != null">REMOTE_PATH = #{remotePath, jdbcType=VARCHAR},</if>
                 <if test="(dataType != null )">DATA_TYPE = #{dataType, jdbcType=INTEGER},</if>
                 <if test="status != null">STATUS = #{status, jdbcType=INTEGER},</if>
                 <if test="(lastUpdator != null and lastUpdator != '') or lastUpdator == 0">LAST_UPDATOR =

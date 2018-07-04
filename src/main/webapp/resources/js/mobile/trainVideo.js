@@ -238,7 +238,9 @@ $(function () {
         $('#videoNameDiv').hide();
         $('#isModifyDiv').hide();
         //清空验证信息
-        $('#trainForm').bootstrapValidator("destroy");
+        //$('#trainForm').bootstrapValidator("destroy");
+        //$("#trainForm").data('bootstrapValidator').resetForm();
+        $("#trainForm").bootstrapValidator('resetForm');
         validateForm();
         $('#uploadFileDiv').show();
         $('#save').text("上传文件");
@@ -257,7 +259,9 @@ $(function () {
         $('#remoteName').val('');
         $('#customer').hide();
         //清空验证信息
-        $('#trainForm').bootstrapValidator("destroy");
+        //$('#trainForm').bootstrapValidator("destroy");
+        //$("#trainForm").data('bootstrapValidator').resetForm();
+        $("#trainForm").bootstrapValidator('resetForm');
         validateForm();
         var vid = $(this).attr('aid');
         var data = queryInfoByDataId(vid);
@@ -507,7 +511,7 @@ $(function () {
         $('#downLoad').attr('path','');
         $('#delete').attr('path','');
         $.ajax({
-            url: Common.getRootPath() +'/admin/flow/deleteFile.do',
+            url: Common.getRootPath() +'/admin/train/deleteFile.do',
             data: {'id':$('#vid').val()},
             type: "post",
             dataType: 'json',

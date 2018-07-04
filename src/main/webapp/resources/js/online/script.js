@@ -254,7 +254,10 @@ $(function () {
         $('#videoNameDiv').show();
         $('#isModifyDiv').hide();
         //清空验证信息
-        $('#scriptForm').bootstrapValidator("destroy");
+        //$('#scriptForm').bootstrapValidator("destroy");
+        //$("#scriptForm").data('bootstrapValidator').resetForm();
+        //$("#scriptForm").bootstrapValidator('destroy');
+        $("#scriptForm").bootstrapValidator('resetForm');
         validateForm();
         $('#dataType').val('0');
         initFileApiUpload('file-upload');
@@ -270,7 +273,8 @@ $(function () {
         e.preventDefault();
         $('#customer').hide();
         //清空验证信息
-        $('#scriptForm').bootstrapValidator("destroy");
+        //$('#scriptForm').bootstrapValidator("destroy");
+        $("#scriptForm").bootstrapValidator('resetForm');
         validateForm();
         var vid = $(this).attr('aid');
         var data = queryInfoByDataId(vid);
@@ -284,6 +288,8 @@ $(function () {
         //赋值
         $('#scriptForm').initForm(data);
         $('#appId').val(data.appId);
+        $('#vid').val(data.id);
+        console.log(data);
         $('#scriptModal').modal('show');
 
     });
@@ -489,7 +495,7 @@ $(function () {
         $('#downLoad').attr('path','');
         $('#delete').attr('path','');
         $.ajax({
-            url: Common.getRootPath() +'/admin/flow/deleteFile.do',
+            url: Common.getRootPath() +'/admin/script/deleteFile.do',
             data: {'id':$('#vid').val()},
             type: "post",
             dataType: 'json',

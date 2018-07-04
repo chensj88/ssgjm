@@ -3,12 +3,10 @@ package cn.com.winning.ssgj.web.controller.admin;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.CommonFtpUtils;
 import cn.com.winning.ssgj.base.util.ConnectionUtil;
 import cn.com.winning.ssgj.base.util.DateUtil;
-import cn.com.winning.ssgj.domain.PmisProductLineInfo;
-import cn.com.winning.ssgj.domain.SysDataCheckScript;
-import cn.com.winning.ssgj.domain.SysTrainVideoRepo;
-import cn.com.winning.ssgj.domain.SysUserInfo;
+import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.apache.shiro.SecurityUtils;
@@ -114,6 +112,25 @@ public class SysDataScriptController extends BaseController {
         return result;
     }
 
+    /**
+     * 文件删除
+     * @param script
+     * @return
+     */
+    @RequestMapping(value = "/deleteFile.do")
+    @ResponseBody
+    @Transactional
+    @ILog
+    public Map<String, Object> deleteFile(SysDataCheckScript script) {
+        script = super.getFacade().getSysDataCheckScriptService().getSysDataCheckScript(script);
+        CommonFtpUtils.removeUploadFile(script.getRemotePath());
+        script.setRemotePath("");
+        super.getFacade().getSysDataCheckScriptService().modifySysDataCheckScript(script);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+
+    }
 
     @RequestMapping(value = "/modifyById.do")
     @ResponseBody

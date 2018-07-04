@@ -644,7 +644,9 @@ $(function () {
                 var fileInfo = data.all;
                 var fileName = data.all[0].name;
                 var suffix = fileName.substring(fileName.lastIndexOf('.'));
-                var isAllow = /(\.|\/)(xls?x|doc?x|pdf)$/i.test(suffix);
+                console.log(suffix);
+                var isAllow = /(\.|\/)(xls|xlsx|doc|docx|pdf)$/i.test(suffix);
+                console.log(isAllow);
                 if(!isAllow){
                     data.all = [];
                     data.files = [];
