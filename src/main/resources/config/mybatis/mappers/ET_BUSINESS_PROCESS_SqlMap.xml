@@ -27,7 +27,8 @@
 		<result column="PW" property="pw" jdbcType="VARCHAR" />
 		<result column="DATABASE_NAME" property="databaseName" jdbcType="VARCHAR" />
 		<result column="CONTENT_DESC" property="contentDesc" jdbcType="VARCHAR" />
-		<result column="CONFIG_SQL" property="configSql" jdbcType="VARCHAR" />
+		<result column="CONFIG_SQL" property="configSql" jdbcType="LONGVARCHAR" />
+		<result column="IS_CONFIG" property="isConfig" jdbcType="INTEGER" />
 	</resultMap>
 
 	<resultMap id="etBusinessProcessResult" type="etBusinessProcess" extends="etBusinessProcessResultForList">
@@ -158,6 +159,7 @@
 			<if test="databaseName != null and databaseName != ''"> DATABASE_NAME, </if>
 			<if test="contentDesc != null and contentDesc != ''"> CONTENT_DESC, </if>
 			<if test="configSql != null and configSql != ''"> CONFIG_SQL, </if>
+			<if test="isConfig != null and isConfig != ''"> IS_CONFIG, </if>
 		</trim>
 		values
 		<trim prefix="(" suffix=")" suffixOverrides=",">
@@ -185,7 +187,8 @@
 			<if test="pw != null and pw != ''"> #{pw, jdbcType=VARCHAR}, </if>
 			<if test="databaseName != null and databaseName != ''"> #{databaseName, jdbcType=VARCHAR}, </if>
 			<if test="contentDesc != null and contentDesc != ''"> #{contentDesc, jdbcType=VARCHAR}, </if>
-			<if test="configSql != null and configSql != ''"> #{configSql, jdbcType=VARCHAR}, </if>
+			<if test="configSql != null and configSql != ''"> #{configSql, jdbcType=LONGVARCHAR}, </if>
+			<if test="isConfig != null and isConfig != ''"> #{isConfig, jdbcType=INTEGER},</if>
 		</trim>
 	</insert>
 
@@ -217,7 +220,8 @@
 				<if test="pw != null and pw != ''"> PW = #{pw, jdbcType=VARCHAR}, </if>
 				<if test="databaseName != null and databaseName != ''"> DATABASE_NAME = #{databaseName, jdbcType=VARCHAR}, </if>
 				<if test="contentDesc != null and contentDesc != ''"> CONTENT_DESC = #{contentDesc, jdbcType=VARCHAR}, </if>
-				<if test="configSql != null and configSql != ''"> CONFIG_SQL = #{configSql, jdbcType=VARCHAR}, </if>
+				<if test="configSql != null and configSql != ''"> CONFIG_SQL = #{configSql, jdbcType=LONGVARCHAR}, </if>
+				<if test="isConfig != null and isConfig != ''"> IS_CONFIG = #{isConfig, jdbcType=INTEGER},</if>
 			</trim>
 		</set>
 		where

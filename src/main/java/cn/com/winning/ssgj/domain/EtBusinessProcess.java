@@ -70,6 +70,8 @@ public class EtBusinessProcess extends BaseDomain implements Serializable {
 	private String contentDesc;
 
 	private String configSql;
+
+	private Integer isConfig;
 	
 	public EtBusinessProcess() {
 
@@ -283,4 +285,11 @@ public class EtBusinessProcess extends BaseDomain implements Serializable {
 		this.configSql = configSql;
 	}
 
+	public Integer getIsConfig() {
+		return isConfig;
+	}
+
+	public void setIsConfig(Integer isConfig) {
+		this.isConfig = isConfig;
+	}
 }
