@@ -8,6 +8,7 @@ import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.service.EtEasyDataCheckDetailService;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import com.alibaba.fastjson.JSONArray;
 import com.jcraft.jsch.ChannelSftp;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -26,6 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -158,11 +162,14 @@ public class EtEasyDataCheckController extends BaseController {
         etProcessManager.setPmId(pmId);
         etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
         //获取ipList
-
+        EtDatabasesList etDatabasesList = new EtDatabasesList();
+        etDatabasesList.setPmId(pmId);
+        List<EtDatabasesList> etDatabasesListList = getFacade().getEtDatabasesListService().getEtDatabasesListList(etDatabasesList);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", etEasyDataChecks);
         map.put("total", total);
         map.put("status", Constants.SUCCESS);
+        map.put("ipList", etDatabasesListList);
         map.put("process", etProcessManager);
         return map;
     }
@@ -384,12 +391,12 @@ public class EtEasyDataCheckController extends BaseController {
         //获取数据校验信息
         EtEasyDataCheck etEasyDataCheck = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(t);
         SysDataCheckScript temp = new SysDataCheckScript();
-        Long plId = etEasyDataCheck.getPlId();
+        Long sourceId = etEasyDataCheck.getSourceId();
         Map map = new HashMap();
-        if (plId == null) {
+        if (sourceId == null) {
             return null;
         }
-        temp.setAppId(etEasyDataCheck.getPlId());
+        temp.setId(sourceId);
         SysDataCheckScript sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(temp);
         //增加null判断
         if (sysDataCheckScript == null) {
@@ -551,18 +558,18 @@ public class EtEasyDataCheckController extends BaseController {
         HashMap map = new HashMap();
         map.put("ids", ids);
         easyDataCheck.setMap(map);
-        List<File> fileList = new ArrayList();
+        List<List> fileByteList = new ArrayList();
         //获取数据校验信息
         List<EtEasyDataCheck> etEasyDataChecks = getFacade().getEtEasyDataCheckService().getEtEasyDataCheckList(easyDataCheck);
         for (int i = 0; i < etEasyDataChecks.size(); i++) {
             EtEasyDataCheck etEasyDataCheck = etEasyDataChecks.get(i);
             //获取
             SysDataCheckScript temp = new SysDataCheckScript();
-            Long plId = etEasyDataCheck.getPlId();
-            if (plId == null) {
+            Long sourceId = etEasyDataCheck.getSourceId();
+            if (sourceId == null) {
                 return;
             }
-            temp.setAppId(etEasyDataCheck.getPlId());
+            temp.setId(sourceId);
             SysDataCheckScript sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(temp);
             if (sysDataCheckScript == null) {
                 return;
@@ -574,11 +581,15 @@ public class EtEasyDataCheckController extends BaseController {
             }
             //获取文件名
             String filename = scriptPath.substring(scriptPath.lastIndexOf("/") + 1);
-            String saveFile = "/sql/" + filename.substring(0, filename.indexOf(".")) + "_" + i + "." + filename.substring(filename.indexOf(".") + 1);
-            File file = null;
+//            String saveFile = "/sql/" + filename.substring(0, filename.indexOf(".")) + "_" + i + "." + filename.substring(filename.indexOf(".") + 1);
+            String ftpPath = scriptPath.replace(filename, "");
+//            File file = null;
+            List byteList = new ArrayList();
+            byteList.add(0, filename);
             try {
-                file = SFtpUtils.download(scriptPath, saveFile);
-                fileList.add(file);
+                byte[] fileByte = CommonFtpUtils.downloadFileAsByte(filename, ftpPath);
+                byteList.add(1, fileByte);
+                fileByteList.add(byteList);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -598,24 +609,21 @@ public class EtEasyDataCheckController extends BaseController {
         FileInputStream fileInputStream = null;
         String fileName = null;
         //循环打包到输出流
-        for (File currentFile : fileList) {
-            fileName = currentFile.getName();
-            fileInputStream = new FileInputStream(currentFile);
-            byte[] buf = new byte[fileInputStream.available()];
+        for (List currentList : fileByteList) {
+            fileName = (String) currentList.get(0);
+            byte[] buf = (byte[]) currentList.get(1);
             //放入压缩zip包中;
             zipOutputStream.putNextEntry(new ZipEntry(fileName));
 
             //读取文件;
-            while ((len = fileInputStream.read(buf)) > 0) {
-                zipOutputStream.write(buf, 0, len);
-            }
+            zipOutputStream.write(buf);
+
             //关闭;
             zipOutputStream.closeEntry();
             if (fileInputStream != null) {
                 fileInputStream.close();
 
             }
-            currentFile.delete();
         }
         zipOutputStream.flush();
         zipOutputStream.close();
@@ -644,6 +652,108 @@ public class EtEasyDataCheckController extends BaseController {
         map.put("type", Constants.SUCCESS);
         map.put("msg", "范围修改成功！");
         return map;
+    }
+
+
+    /**
+     * 脚本校验
+     *
+     * @param etEasyDataCheck
+     * @return
+     */
+    @RequestMapping(value = "/doScriptCheck.do")
+    @ResponseBody
+    @Transactional
+    public Map<String, Object> doScriptCheck(EtEasyDataCheck etEasyDataCheck) {
+        if (etEasyDataCheck.getIpId() == null) {
+            resultMap.put("status", Constants.FAILD);
+            return resultMap;
+        }
+        //ipId
+        EtDatabasesList etDatabasesList = new EtDatabasesList();
+        etDatabasesList.setId(etEasyDataCheck.getIpId());
+        etDatabasesList = getFacade().getEtDatabasesListService().getEtDatabasesList(etDatabasesList);
+        if (etDatabasesList == null) {
+            resultMap.put("status", Constants.FAILD);
+            return resultMap;
+        }
+        //数据库参数
+        String ip = etDatabasesList.getIp();
+        String userName = etDatabasesList.getUserName();
+        String pw = etDatabasesList.getPw();
+//        String databaseName = etDataCheck.getDatabaseName();
+        String databaseName = etDatabasesList.getDatabaseName();
+        //连接数据库
+        Connection connection = ConnectionUtil.getConnection(ip, userName, pw, databaseName);
+        if (connection == null) {
+            resultMap.put("status", Constants.FAILD);
+            return resultMap;
+        }
+        EtEasyDataCheck temp = new EtEasyDataCheck();
+        temp.setId(etEasyDataCheck.getId());
+        temp = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(temp);
+        SysDataCheckScript sysDataCheckScript = new SysDataCheckScript();
+        sysDataCheckScript.setId(temp.getSourceId());
+        sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(sysDataCheckScript);
+        //获取存储过程名称
+        String procName = sysDataCheckScript.getName();
+        //判断存储过程是否存在
+        String existsProcSql = "if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[" + procName + "]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)   begin drop procedure [dbo].[" + procName + "] end";
+        //配置
+        String preSql = "set QUOTED_IDENTIFIER  OFF;\n" +
+                "set ANSI_NULLS  OFF;\n" +
+                "set ANSI_NULL_DFLT_ON OFF;\n" +
+                "set ANSI_PADDING OFF ;\n" +
+                "set ANSI_WARNINGS OFF; ";
+        //存储过程
+        String createProcSql = sysDataCheckScript.getsDesc();
+        String runProcSql = "exec " + procName + " '0'";
+        ResultSet rs = null;
+        //错误计数
+        Integer failNum = 0;
+        //检测结果
+        String checkResult = "";
+        try {
+            PreparedStatement ps = connection.prepareStatement(existsProcSql);
+            ps.execute();
+            ps = connection.prepareStatement(preSql);
+            ps.execute();
+            createProcSql = createProcSql.replace("\"", "\'");
+            ps = connection.prepareStatement(createProcSql);
+            ps.execute();
+            ps = connection.prepareStatement(runProcSql);
+            rs = ps.executeQuery();
+            JSONArray jsonArray = new JSONArray();
+            while (rs.next()) {
+                List<String> resetList = new ArrayList<>();
+                resetList.add(rs.getString(1));
+                if ("F".equalsIgnoreCase(rs.getString(1))) {
+                    failNum++;
+                }
+                resetList.add(rs.getString(2));
+                resetList.add(rs.getString(3));
+                System.out.println(rs.getString(1) + "--" + rs.getString(2) + "--" + rs.getString(3));
+                jsonArray.add(resetList);
+            }
+//            etDataCheck.setId(etDataCheck.getId());
+//            etDataCheck.setContent(jsonArray.toJSONString());
+            if (failNum == null || failNum == 0) {
+                checkResult = "校验正常";
+            } else {
+                checkResult = "校验出" + failNum + "个问题";
+            }
+//            etDataCheck.setCheckResult(checkResult);
+//            etDataCheck.setOperatorTime(new Timestamp(new Date().getTime()));
+//            getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheck);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put("status", Constants.FAILD);
+            resultMap.put("msg", e.getMessage());
+            return resultMap;
+        }
+        resultMap.put("status", Constants.SUCCESS);
+        return resultMap;
+
     }
 }
 

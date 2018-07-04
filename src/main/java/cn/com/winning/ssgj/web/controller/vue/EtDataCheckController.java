@@ -319,7 +319,7 @@ public class EtDataCheckController extends BaseController {
         try {
 //            sftpConnect = SFtpUtils.getSftpConnect();
             //sftpConnect.setFilenameEncoding("GBK");
-            bytes = FtpUtils.downloadFileAsByte(filename, ftpPath);
+            bytes = CommonFtpUtils.downloadFileAsByte(filename, ftpPath);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -425,7 +425,7 @@ public class EtDataCheckController extends BaseController {
     }
 
     /**
-     * 添加或者修单据件信息
+     * 脚本校验
      *
      * @param etDataCheck
      * @return

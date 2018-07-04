@@ -20,6 +20,7 @@
         <result column="IS_SCOPE" property="isScope" jdbcType="INTEGER"/>
         <result column="NO_SCOPE_CODE" property="noScopeCode" jdbcType="VARCHAR"/>
         <result column="SOURCE_ID" property="sourceId" jdbcType="BIGINT"/>
+        <result column="PD_ID" property="ipId" jdbcType="BIGINT"/>
     </resultMap>
 
     <resultMap id="etEasyDataCheckResult" type="etEasyDataCheck" extends="etEasyDataCheckResultForList">
@@ -48,6 +49,7 @@
                 #{item}
             </foreach>
         </if>
+        <if test="(ipId != null and ipId != '') or ipId == 0">and t.PD_ID = #{ipId}</if>
     </sql>
 
     <select id="selectEtEasyDataCheck" resultMap="etEasyDataCheckResult" parameterType="etEasyDataCheck">
@@ -68,7 +70,8 @@
         <include refid="sf-etEasyDataCheck"/>
     </select>
 
-    <select id="selectEtEasyDataCheckPaginatedList" resultMap="etEasyDataCheckResultForList" parameterType="etEasyDataCheck">
+    <select id="selectEtEasyDataCheckPaginatedList" resultMap="etEasyDataCheckResultForList"
+            parameterType="etEasyDataCheck">
         select * from (
         select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
         from ET_EASY_DATA_CHECK t where 1 = 1
@@ -98,6 +101,7 @@
             <if test="(isScope != null and isScope != '') or isScope == 0">IS_SCOPE,</if>
             <if test="noScopeCode != null and noScopeCode != ''">NO_SCOPE_CODE,</if>
             <if test="(sourceId != null and sourceId != '') or sourceId == 0">SOURCE_ID,</if>
+            <if test="(ipId != null and ipId != '') or ipId == 0">IP_ID,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -117,7 +121,8 @@
             <if test="(plId != null and plId != '') or plId == 0">#{plId,jdbcType=BIGINT},</if>
             <if test="(isScope != null and isScope != '') or isScope == 0">#{isScope,jdbcType=INTEGER},</if>
             <if test="noScopeCode != null and noScopeCode != ''">#{noScopeCode,jdbcType=VARCHAR},</if>
-            <if test="(sourceId != null and sourceId != '') or sourceId == 0">#{sourceId, jdbcType=BIGINT}</if>
+            <if test="(sourceId != null and sourceId != '') or sourceId == 0">#{sourceId, jdbcType=BIGINT},</if>
+            <if test="(ipId != null and ipId != '') or ipId == 0">#{ipId,jdbcType=BIGINT},</if>
         </trim>
     </insert>
 
@@ -147,7 +152,8 @@
                 </if>
                 <if test="(plId != null and plId != '') or plId == 0">PL_ID=#{plId,jdbcType=BIGINT},</if>
                 <if test="isScope != null and isScope != ''">IS_SCOPE = #{isScope,jdbcType=INTEGER},</if>
-                <if test="noScopeCode != null">NO_SCOPE_CODE = #{noScopeCode,jdbcType=VARCHAR}</if>
+                <if test="noScopeCode != null">NO_SCOPE_CODE = #{noScopeCode,jdbcType=VARCHAR},</if>
+                <if test="(ipId != null and ipId != '') or ipId == 0">IP_ID=#{ipId,jdbcType=BIGINT},</if>
             </trim>
         </set>
         <where>
