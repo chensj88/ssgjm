@@ -61,4 +61,9 @@ public class EtEasyDataCheckServiceImpl implements EtEasyDataCheckService {
         return this.etEasyDataCheckDao.selectEtEasyDataCheckListByPmIdAndDataType(etEasyDataCheck);
     }
 
+    @Override
+    public List<EtEasyDataCheck> getInitEtEasyDataCheck(EtEasyDataCheck etEasyDataCheck) {
+        return this.etEasyDataCheckDao.getInitEtEasyDataCheck(etEasyDataCheck);
+    }
+
 }

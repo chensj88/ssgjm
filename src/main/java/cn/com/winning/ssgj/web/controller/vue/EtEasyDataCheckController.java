@@ -78,21 +78,19 @@ public class EtEasyDataCheckController extends BaseController {
         etEasyDataCheck.setcId(cId);
         etEasyDataCheck.setSerialNo(serialNo.toString());
         //根据pmId获取易用数据校验数据
-        List<EtEasyDataCheck> etEasyDataChecks = getFacade().getEtEasyDataCheckService().selectEtEasyDataCheckListByPmIdAndDataType(etEasyDataCheck);
-        EtEasyDataCheck etEasyDataCheckTemp = null;
-        synchronized (this) {
-            for (EtEasyDataCheck easyDataCheck : etEasyDataChecks) {
-                etEasyDataCheckTemp = new EtEasyDataCheck();
-                etEasyDataCheckTemp.setPmId(easyDataCheck.getPmId());
-                etEasyDataCheckTemp.setPlId(easyDataCheck.getPlId());
-                etEasyDataCheckTemp = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(etEasyDataCheckTemp);
-                if (etEasyDataCheckTemp == null) {
-                    //不存在则插入
-                    easyDataCheck.setId(ssgjHelper.createEtEasyDataCheckId());
-                    getFacade().getEtEasyDataCheckService().createEtEasyDataCheck(easyDataCheck);
-                }
+        List<EtEasyDataCheck> etEasyDataChecks = getFacade().getEtEasyDataCheckService().getInitEtEasyDataCheck(etEasyDataCheck);
+        for (EtEasyDataCheck easyDataCheck : etEasyDataChecks) {
+            EtEasyDataCheck etEasyDataCheckTemp = new EtEasyDataCheck();
+            etEasyDataCheckTemp.setPmId(easyDataCheck.getPmId());
+            etEasyDataCheckTemp.setSourceId(easyDataCheck.getSourceId());
+            etEasyDataCheckTemp = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(etEasyDataCheckTemp);
+            if (etEasyDataCheckTemp == null) {
+                //不存在则插入
+                easyDataCheck.setId(ssgjHelper.createEtEasyDataCheckId());
+                getFacade().getEtEasyDataCheckService().createEtEasyDataCheck(easyDataCheck);
             }
         }
+
         map.put("status", Constants.SUCCESS);
         map.put("msg", "初始化数据成功！");
         return map;
@@ -120,30 +118,39 @@ public class EtEasyDataCheckController extends BaseController {
         //获取单据号即客户
         Long customerId = pmisProjectBasicInfo.getKhxx();
 
-        etEasyDataCheck.setRow(row);
+        EtEasyDataCheck easyDataCheckTemp = new EtEasyDataCheck();
 
-        etEasyDataCheck.setcId(contractId);
+        easyDataCheckTemp.setRow(row);
 
-        etEasyDataCheck.setSerialNo(customerId.toString());
+        easyDataCheckTemp.setPmId(pmId);
+
+        easyDataCheckTemp.setcId(contractId);
+
+        easyDataCheckTemp.setSerialNo(customerId.toString());
+
         //获取基础数据校验
         List<EtEasyDataCheck> etEasyDataChecks =
-                getFacade().getEtEasyDataCheckService().getEtEasyDataCheckPaginatedList(etEasyDataCheck);
-        int total = getFacade().getEtEasyDataCheckService().getEtEasyDataCheckCount(etEasyDataCheck);
+                getFacade().getEtEasyDataCheckService().getEtEasyDataCheckPaginatedList(easyDataCheckTemp);
+        int total = getFacade().getEtEasyDataCheckService().getEtEasyDataCheckCount(easyDataCheckTemp);
         //封装外参数
         PmisProductLineInfo pmisProductLineInfo = null;
         for (EtEasyDataCheck easyDataCheck : etEasyDataChecks) {
-            pmisProductLineInfo = new PmisProductLineInfo();
-            pmisProductLineInfo.setId(easyDataCheck.getPlId());
-            pmisProductLineInfo = getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
             //封装属性
             Map propMap = new HashMap();
+            SysDataCheckScript sysDataCheckScript = new SysDataCheckScript();
+            sysDataCheckScript.setId(easyDataCheck.getSourceId());
+            sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(sysDataCheckScript);
             String content = easyDataCheck.getContent();
             if (StringUtil.isEmptyOrNull(content) || "正常".equals(content)) {
                 propMap.put("state", 0);
             } else {
                 propMap.put("state", 1);
             }
-            propMap.put("type", pmisProductLineInfo.getName());
+            if (sysDataCheckScript != null) {
+                String scriptPath = sysDataCheckScript.getRemotePath();
+                scriptPath = scriptPath.substring(scriptPath.lastIndexOf("/") + 1, scriptPath.lastIndexOf("."));
+                propMap.put("type", scriptPath);
+            }
             easyDataCheck.setMap(propMap);
         }
         //根据pmid获取项目进程
@@ -397,9 +404,10 @@ public class EtEasyDataCheckController extends BaseController {
         }
         //获取文件名
         String filename = scriptPath.substring(scriptPath.lastIndexOf("/") + 1);
+        String path = scriptPath.replace(filename, "");
         byte[] bytes = null;
         try {
-            bytes = SFtpUtils.downloadAsByte(scriptPath);
+            bytes = CommonFtpUtils.downloadFileAsByte(path, filename);
 
         } catch (Exception e) {
             e.printStackTrace();
