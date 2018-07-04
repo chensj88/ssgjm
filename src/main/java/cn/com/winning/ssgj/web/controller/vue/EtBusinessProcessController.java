@@ -10,6 +10,7 @@ import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.EtBusinessProcess;
 import cn.com.winning.ssgj.domain.EtProcessManager;
 import cn.com.winning.ssgj.domain.PmisProjctUser;
+import cn.com.winning.ssgj.domain.SysFlowInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -303,5 +304,20 @@ public class EtBusinessProcessController extends BaseController {
 
     }
 
+    /**
+     * 加载流程的配置信息
+     * @param flowInfo
+     * @return map
+     */
+    @RequestMapping(value = "/loadConfig.do")
+    @ResponseBody
+    public Map<String, Object> loadConfig(SysFlowInfo flowInfo){
+        List<SysFlowInfo> configFlows = super.getFacade().getSysFlowInfoService().getSysFlowInfoList(flowInfo);
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", Constants.SUCCESS);
+        result.put("type", configFlows == null ? 0 : configFlows.size() > 0 ? 1 : 0  );
+        result.put("data", configFlows);
+        return result;
+    }
 
 }
