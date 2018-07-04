@@ -59,13 +59,7 @@ public class EtBusinessProcess extends BaseDomain implements Serializable {
 
 	private List imgs;
 
-	private String ip;
-
-	private String dataName;
-
-	private String pw;
-
-	private String databaseName;
+	private Long ipId;
 
 	private String contentDesc;
 
@@ -237,36 +231,12 @@ public class EtBusinessProcess extends BaseDomain implements Serializable {
 		this.imgs = imgs;
 	}
 
-	public String getIp() {
-		return ip;
+	public Long getIpId() {
+		return ipId;
 	}
 
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-
-	public String getDataName() {
-		return dataName;
-	}
-
-	public void setDataName(String dataName) {
-		this.dataName = dataName;
-	}
-
-	public String getPw() {
-		return pw;
-	}
-
-	public void setPw(String pw) {
-		this.pw = pw;
-	}
-
-	public String getDatabaseName() {
-		return databaseName;
-	}
-
-	public void setDatabaseName(String databaseName) {
-		this.databaseName = databaseName;
+	public void setIpId(Long ipId) {
+		this.ipId = ipId;
 	}
 
 	public String getContentDesc() {

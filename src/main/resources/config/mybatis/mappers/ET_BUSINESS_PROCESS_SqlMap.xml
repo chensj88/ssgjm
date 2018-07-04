@@ -22,10 +22,7 @@
 		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="OPERATOR" property="operator" jdbcType="BIGINT" />
 		<result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP" />
-		<result column="IP" property="ip" jdbcType="VARCHAR" />
-		<result column="DATA_NAME" property="dataName" jdbcType="VARCHAR" />
-		<result column="PW" property="pw" jdbcType="VARCHAR" />
-		<result column="DATABASE_NAME" property="databaseName" jdbcType="VARCHAR" />
+		<result column="IP_ID" property="ipId" jdbcType="BIGINT" />
 		<result column="CONTENT_DESC" property="contentDesc" jdbcType="VARCHAR" />
 		<result column="CONFIG_SQL" property="configSql" jdbcType="LONGVARCHAR" />
 		<result column="IS_CONFIG" property="isConfig" jdbcType="INTEGER" />
@@ -58,10 +55,7 @@
 	   <if test="createTime != null "> and t.CREATE_TIME = #{createTime} </if>
 	   <if test="(operator != null and operator != '') or operator == 0"> and t.OPERATOR = #{operator} </if>
 	   <if test="operatorTime != null "> and t.OPERATOR_TIME = #{operatorTime} </if>
-		<if test="ip != null and ip != ''"> and t.IP = #{ip} </if>
-		<if test="dataName != null and dataName != ''"> and t.DATA_NAME = #{dataName} </if>
-		<if test="pw != null and pw != ''"> and t.PW = #{pw} </if>
-		<if test="databaseName != null and databaseName != ''"> and t.DATABASE_NAME = #{databaseName} </if>
+		<if test="(ipId != null and ipId != '') or ipId == 0"> and t.IP_ID = #{ipId} </if>
 		<if test="contentDesc != null and contentDesc != ''"> and t.CONTENT_DESC = #{contentDesc} </if>
 		<if test="configSql != null and configSql != ''"> and t.CONFIG_SQL = #{configSql} </if>
 	</sql>
@@ -160,6 +154,7 @@
 			<if test="contentDesc != null and contentDesc != ''"> CONTENT_DESC, </if>
 			<if test="configSql != null and configSql != ''"> CONFIG_SQL, </if>
 			<if test="isConfig != null and isConfig != ''"> IS_CONFIG, </if>
+			<if test="(ipId != null and ipId != '') or ipId == 0"> IP_ID, </if>
 		</trim>
 		values
 		<trim prefix="(" suffix=")" suffixOverrides=",">
@@ -189,6 +184,7 @@
 			<if test="contentDesc != null and contentDesc != ''"> #{contentDesc, jdbcType=VARCHAR}, </if>
 			<if test="configSql != null and configSql != ''"> #{configSql, jdbcType=LONGVARCHAR}, </if>
 			<if test="isConfig != null and isConfig != ''"> #{isConfig, jdbcType=INTEGER},</if>
+			<if test="(ipId != null and ipId != '') or ipId == 0"> #{ipId, jdbcType=BIGINT}, </if>
 		</trim>
 	</insert>
 
@@ -215,13 +211,14 @@
 			   <if test="createTime != null "> CREATE_TIME = #{createTime, jdbcType=TIMESTAMP}, </if>
 			   <if test="(operator != null and operator != '') or operator == 0"> OPERATOR = #{operator, jdbcType=BIGINT}, </if>
 			   <if test="operatorTime != null "> OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP}, </if>
-				<if test="ip != null and ip != ''"> IP = #{ip, jdbcType=VARCHAR}, </if>
+				<if test="ipId != null and ipId != ''"> IP_ID = #{ipiD, jdbcType=VARCHAR}, </if>
 				<if test="dataName != null and dataName != ''"> DATA_NAME = #{dataName, jdbcType=VARCHAR}, </if>
 				<if test="pw != null and pw != ''"> PW = #{pw, jdbcType=VARCHAR}, </if>
 				<if test="databaseName != null and databaseName != ''"> DATABASE_NAME = #{databaseName, jdbcType=VARCHAR}, </if>
 				<if test="contentDesc != null and contentDesc != ''"> CONTENT_DESC = #{contentDesc, jdbcType=VARCHAR}, </if>
 				<if test="configSql != null and configSql != ''"> CONFIG_SQL = #{configSql, jdbcType=LONGVARCHAR}, </if>
 				<if test="isConfig != null and isConfig != ''"> IS_CONFIG = #{isConfig, jdbcType=INTEGER},</if>
+				<if test="(ipId != null and ipId != '') or ipId == 0"> IP_ID = #{ipId, jdbcType=BIGINT}, </if>
 			</trim>
 		</set>
 		where
