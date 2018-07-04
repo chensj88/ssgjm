@@ -508,6 +508,8 @@ $(function () {
      */
     function validateForm() {
         $('#flowForm').bootstrapValidator({
+            live: 'enabled',
+            submitButtons:'#saveFlow',
             message: '输入的值不符合规格',
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
