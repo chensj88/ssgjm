@@ -58,7 +58,7 @@ public class EtEasyDataCheckDetailServiceImpl implements EtEasyDataCheckDetailSe
 
     @Override
     public void insertEtEasyDataCheckDetailByList(List<EtEasyDataCheckDetail> etEasyDataCheckDetails) {
-        int pointsDataLimit = 200;
+        int pointsDataLimit = 250;
         Integer size = etEasyDataCheckDetails.size();
         //判断是否有必要分批
         if (pointsDataLimit < size) {
@@ -71,7 +71,7 @@ public class EtEasyDataCheckDetailServiceImpl implements EtEasyDataCheckDetailSe
                 etEasyDataCheckDetails.subList(0, pointsDataLimit).clear();
             }
             if (!etEasyDataCheckDetails.isEmpty()){
-                this.etEasyDataCheckDetailDao.insertEtEasyDataCheckDetailByList(list);
+                this.etEasyDataCheckDetailDao.insertEtEasyDataCheckDetailByList(etEasyDataCheckDetails);
             }
         }
     }
