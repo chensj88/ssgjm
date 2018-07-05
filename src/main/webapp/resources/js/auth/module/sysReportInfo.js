@@ -6,6 +6,7 @@
 
 function validateForm() {
     $('#sysReportInfoForm').bootstrapValidator({
+        live: 'enabled',
         message: '输入的值不符合规格',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -54,6 +55,9 @@ function edit(id,reportCode,reportName,reportDesc,reportType,pdId,pdName) {
 }
 $(function () {
 
+    toastr.options.positionClass = 'toast-top-center';
+    toastr.options.timeOut = 30;
+    toastr.options.extendedTimeOut = 60;
     function SearchData(){
         $('#infoTable').bootstrapTable('refresh', { pageNumber: 1 });
     }
@@ -201,12 +205,12 @@ $(function () {
                 dataType: 'json',
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
-                        Ewin.alert('提交数据成功');
+                        toastr.info('提交数据成功');
                         $("#infoTable").bootstrapTable('refresh');
                     }
                 },
-                error: function () {
-                    Ewin.alert('Error');
+                error: function (msg) {
+                    toastr.error(msg);
                 },
                 complete: function () {
                 }
@@ -239,10 +243,13 @@ $(function () {
             success: function (result) {
                 var _result = eval(result);
                 if (_result.status == Common.SUCCESS) {
+                    toastr.info('提交数据成功');
                     $('#sysReportInfoModal').modal('hide');
                     $("#infoTable").bootstrapTable('refresh');
                 }
-
+            },
+            error: function (msg) {
+                toastr.error(msg);
             }
         });
         }
@@ -270,6 +277,7 @@ $(function () {
                     if (_result.status == Common.SUCCESS) {
                         var data = _result.rows;
                         if (data == "" || data.length == 0) {
+                            toastr.info('没有查询到相关结果');
                             console.log("没有查询到相关结果");
                         };
                         var results = [];

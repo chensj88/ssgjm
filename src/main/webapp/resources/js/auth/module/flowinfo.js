@@ -253,12 +253,13 @@ $(function () {
                 success: function (data, status) {
                     var result = eval(data);
                     if (result.status == Common.SUCCESS) {
-                        Ewin.alert('提交数据成功');
+                        toastr.info('提交数据成功');
                         $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function (msg) {
-                    Ewin.alert(msg);
+                   // Ewin.alert(msg);
+                    toastr.info(msg);
                 },
                 complete: function () {
                 }
@@ -299,10 +300,14 @@ $(function () {
                 success: function (result) {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
+                        toastr.info('提交数据成功');
                         $('#vid').val(_result.data);
                         $('#flowModal').modal('hide');
                         $("#infoTable").bootstrapTable('refresh');
                     }
+                },
+                error: function (msg) {
+                    Ewin.alert(msg);
                 }
             });
         }
@@ -347,6 +352,7 @@ $(function () {
                     if (_result.status == Common.SUCCESS) {
                         var data = _result.data;
                         if (data == "" || data.length == 0) {
+                            toastr.info('没有查询到相关结果');
                             console.log("没有查询到相关结果");
                         };
                         var results = [];
@@ -405,6 +411,7 @@ $(function () {
                     if (_result.status == Common.SUCCESS) {
                         var data = _result.data;
                         if (data == "" || data.length == 0) {
+                            toastr.info('没有查询到相关结果');
                             console.log("没有查询到相关结果");
                         };
                         var results = [];
@@ -440,9 +447,13 @@ $(function () {
                 success :function (result) {
                     var _result = eval(result );
                     if(_result.status == Common.SUCCESS){
+                        toastr.info('提交数据成功');
                         $('#configCode').attr('readonly','true');
                         $('#configCode').val(_result.data);
                     }
+                },
+                error: function () {
+                    toastr.error('Error');
                 }
             });
         },
@@ -486,10 +497,14 @@ $(function () {
                 success: function (result) {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
+                        toastr.info('提交数据成功');
                         $('#vid').val(_result.data);
                         $('#flowModal').modal('hide');
                         $("#infoTable").bootstrapTable('refresh');
                     }
+                },
+                error: function () {
+                    toastr.error('Error');
                 }
             });
         }

@@ -10,6 +10,7 @@
  */
 function validateForm() {
     $('#sysDataInfoForm').bootstrapValidator({
+        live: 'enabled',
         message: '输入的值不符合规格',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -40,11 +41,6 @@ function validateForm() {
                         max: 20,
                         message: '数据库表名长度必须在2到20位之间'
                     }
-//                ,
-//                regexp: {
-//                    regexp: /[\u4e00-\u9fa5]/,
-//                    message: '数据库表名不能包含中文'
-//                }
                 }
             },
             tableCnName : {
@@ -89,6 +85,9 @@ function validateForm() {
 
 $(function () {
 
+    toastr.options.positionClass = 'toast-top-center';
+    toastr.options.timeOut = 30;
+    toastr.options.extendedTimeOut = 60;
     /**
      * 查询
      * @constructor
@@ -270,12 +269,12 @@ $(function () {
                 dataType: 'json',
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
-                        Ewin.alert('提交数据成功');
+                        toastr.info('提交数据成功');
                         $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function () {
-                    Ewin.alert('Error');
+                    toastr.error('Error');
                 },
                 complete: function () {
                 }
@@ -310,6 +309,7 @@ $(function () {
             success: function (result) {
                 var _result = eval(result);
                 if (_result.status == Common.SUCCESS) {
+                    toastr.info('提交数据成功');
                     $('#sysDataInfoModal').modal('hide');
                     $("#infoTable").bootstrapTable('refresh');
                 }

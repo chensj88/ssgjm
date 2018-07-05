@@ -4,6 +4,9 @@
  * @version 1.0.0
  */
 $(function () {
+    toastr.options.positionClass = 'toast-top-center';
+    toastr.options.timeOut = 30;
+    toastr.options.extendedTimeOut = 60;
     /**
      * 查询
      * @constructor
@@ -107,7 +110,7 @@ $(function () {
                 formatter: function (value) {
                     if (value == '1') {
                         return '生效';
-                    } else if (value = '0') {
+                    } else if (value == '0') {
                         return '失效';
                     }
                 },
@@ -163,12 +166,13 @@ $(function () {
                 dataType: 'json',
                 success: function (data, status) {
                     if (status == Common.SUCCESS) {
-                        Ewin.alert('提交数据成功');
+                        //Ewin.alert('提交数据成功');
+                        toastr.info('提交数据成功');
                         $("#infoTable").bootstrapTable('refresh');
                     }
                 },
-                error: function () {
-                    Ewin.alert('Error');
+                error: function (msg) {
+                    toastr.error(msg);
                 },
                 complete: function () {
                 }
@@ -204,10 +208,13 @@ $(function () {
             success: function (result) {
                 var _result = eval(result);
                 if (_result.status == Common.SUCCESS) {
+                    toastr.info('提交数据成功');
                     $('#interFaceInfoModal').modal('hide');
                     $("#infoTable").bootstrapTable('refresh');
                 }
-
+            },
+            error: function (msg) {
+                Ewin.alert(msg);
             }
         });
     });
@@ -228,6 +235,7 @@ function edit(id,interName,interCode,refProductName,interDesc) {
 function validateForm() {
     //表单验证
     $('#interFaceInfoForm').bootstrapValidator({
+        live: 'enabled',
         message: '输入的值不符合规格',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
