@@ -447,7 +447,6 @@ $(function () {
                 success :function (result) {
                     var _result = eval(result );
                     if(_result.status == Common.SUCCESS){
-                        toastr.info('提交数据成功');
                         $('#configCode').attr('readonly','true');
                         $('#configCode').val(_result.data);
                     }
