@@ -264,13 +264,13 @@ public class EtEasyDataCheckController extends BaseController {
                 //更新易用校验数据content
                 etEasyDataCheck.setContent(content);
                 //文件夹路径
-                String dir = Constants.UPLOAD_PC_PREFIX + pmId + "/easyDataCheck/" + pmisProductLineInfo.getName() + "/";
-                String src = newFile.getAbsolutePath();
-                String fileName = newFile.getName();
-                etEasyDataCheck.setScriptPath(dir + fileName);
+//                String dir = Constants.UPLOAD_PC_PREFIX + pmId + "/easyDataCheck/" + pmisProductLineInfo.getName() + "/";
+//                String src = newFile.getAbsolutePath();
+//                String fileName = newFile.getName();
+//                etEasyDataCheck.setScriptPath(dir + fileName);
                 getFacade().getEtEasyDataCheckService().modifyEtEasyDataCheck(etEasyDataCheck);
                 //将文件上传到ftp服务器
-                SFtpUtils.uploadFile(src, dir, fileName);
+//                SFtpUtils.uploadFile(src, dir, fileName);
                 newFile.delete();
                 result.put("status", "success");
             } catch (Exception e) {
@@ -713,7 +713,7 @@ public class EtEasyDataCheckController extends BaseController {
         getFacade().getEtEasyDataCheckDetailService().removeEtEasyDataCheckDetail(detailTemp);
         List<EtEasyDataCheckDetail> etEasyDataCheckDetails = new ArrayList<>();
         logger.info("start insert detail>>>>>>>>>>>>>>>>>>>>>>>>>");
-        logger.info("start time:{}",System.currentTimeMillis());
+        logger.info("start time:{}", System.currentTimeMillis());
         for (int i = 0; i < sqlList.size(); i++) {
             ResultSet rs = null;
             logger.info("sql:{}", sqlList.get(i));
@@ -765,7 +765,7 @@ public class EtEasyDataCheckController extends BaseController {
         }
 
         getFacade().getEtEasyDataCheckDetailService().insertEtEasyDataCheckDetailByList(etEasyDataCheckDetails);
-        logger.info("start time:{}",System.currentTimeMillis());
+        logger.info("start time:{}", System.currentTimeMillis());
         logger.info("end insert detail>>>>>>>>>>>>>>>>>>>>>>>>>");
         doctorMaintainNum--;
         doctorNotMaintainNum--;
