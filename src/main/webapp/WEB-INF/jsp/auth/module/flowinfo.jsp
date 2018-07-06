@@ -250,17 +250,25 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label" for="procName">存储名称</label>
                                         <div class="col-sm-6">
-                                            <textarea class="form-control" id="procName" name="procName"
-                                                      placeholder="请输入存储名称" rows="3"></textarea>
+                                            <input class="form-control" id="procName" name="procName"
+                                                      placeholder="请输入存储名称">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="configSQL">配置SQL</label>
+                                        <label class="col-sm-3 control-label" for="procParam">存储参数</label>
                                         <div class="col-sm-6">
-                                            <textarea class="form-control" id="configSQL" name="configSQL"
-                                                   placeholder="请输入配置SQL" rows="3"></textarea>
+                                            <input class="form-control" id="procParam" name="procParam"
+                                                   placeholder="请输入存储参数">
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="configSQL">存储SQL</label>
+                                        <div class="col-sm-6">
+                                            <textarea class="form-control" id="configSQL" name="configSQL"
+                                                   placeholder="请输入存储SQL" rows="3"></textarea>
+                                        </div>
+                                    </div>
+
                                     <div class="col-sm-8 text-center">
                                         <button class="btn btn-primary" id="saveConfig" type="button">保存</button>
                                         <button class="btn btn-danger" data-dismiss="modal">取消</button>

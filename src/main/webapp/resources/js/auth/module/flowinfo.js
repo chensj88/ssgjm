@@ -126,6 +126,16 @@ $(function () {
                 }
             }
         }, {
+                field: 'procName',
+                title: '存储名称',
+                width: '20px',
+                align: 'center'
+            },{
+                field: 'procParam',
+                title: '存储参数',
+                width: '20px',
+                align: 'center'
+            },{
             title: '操作',
             field: 'id',
             align: 'center',
@@ -484,6 +494,7 @@ $(function () {
            flowDesc : $('#configDesc').val(),
            contentDesc : $('#contentDesc').val(),
            procName : $('#procName').val(),
+           procParam : $('#procParam').val(),
            configSQL : $('#configSQL').val()
         };
         if (bootstrapValidator.isValid()) {
@@ -606,6 +617,14 @@ $(function () {
                     validators: {
                         notEmpty: {
                             message: '存储名称不能为空'
+                        }
+                    }
+                },
+                procParam : {
+                    message: '存储参数验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '存储参数不能为空'
                         }
                     }
                 },

@@ -86,6 +86,10 @@ public class SysFlowInfo extends BaseDomain implements Serializable {
      */
     private String procName;
 
+    /**
+     * @val 存储运行参数
+     */
+    private String procParam;
 
     public SysFlowInfo() {
 
@@ -282,6 +286,14 @@ public class SysFlowInfo extends BaseDomain implements Serializable {
 
     public void setProcName(String procName) {
         this.procName = procName;
+    }
+
+    public String getProcParam() {
+        return procParam;
+    }
+
+    public void setProcParam(String procParam) {
+        this.procParam = procParam;
     }
 
     @Override
