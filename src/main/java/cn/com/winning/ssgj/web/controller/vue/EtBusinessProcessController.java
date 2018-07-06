@@ -7,10 +7,7 @@ import cn.com.winning.ssgj.base.util.CommonFtpUtils;
 import cn.com.winning.ssgj.base.util.DateUtil;
 import cn.com.winning.ssgj.base.util.FileUtis;
 import cn.com.winning.ssgj.base.util.StringUtil;
-import cn.com.winning.ssgj.domain.EtBusinessProcess;
-import cn.com.winning.ssgj.domain.EtProcessManager;
-import cn.com.winning.ssgj.domain.PmisProjctUser;
-import cn.com.winning.ssgj.domain.SysFlowInfo;
+import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -319,5 +316,66 @@ public class EtBusinessProcessController extends BaseController {
         result.put("data", configFlows);
         return result;
     }
+
+    /**
+     * 执行配置的存储函数
+     * @param id
+     * @param sql
+     * @param flowId
+     * @param procName
+     * @return
+     */
+    @RequestMapping(value = "/useSql.do")
+    @ResponseBody
+    public Map<String, Object> useSql(Long id,String sql,Long flowId,String procName){
+        Connection con = null;
+        Statement stmt = null;
+        Map<String, Object> result = new HashMap<>();
+        //医院数据库连接
+        EtDatabasesList entity = new EtDatabasesList();
+        entity.setId(id);
+        entity = super.getFacade().getEtDatabasesListService().getEtDatabasesList(entity);
+        String url ="jdbc:sqlserver://"+entity.getIp()+";DatabaseName="+entity.getDatabaseName()+";user="+entity.getUserName()+";password="+entity.getPw();
+        //获取
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            con = DriverManager.getConnection(url);
+            if (con == null) {
+                resultMap.put("status", Constants.FAILD);
+                resultMap.put("message", "数据库无法连接，请检查网络!");
+                return result;
+            }
+            //String SQL = "SELECT * FROM sys.databases;";
+            stmt = con.createStatement();
+            String str[] =sql.split("update");
+            int i =stmt.executeUpdate(sql);
+
+
+
+
+
+
+
+//            while (rs.next()) {
+//                databases.add(rs.getString(1));
+//            }
+            //将已经执行的业务流程调研状态修改为1
+            EtBusinessProcess process = new EtBusinessProcess();
+            process.setId(flowId);
+            process.setIsConfig(1);
+            super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
+
+            result.put("status",Constants.SUCCESS);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            result.put("status",Constants.FAILD);
+        }
+
+
+        return result;
+
+    }
+
 
 }
