@@ -103,6 +103,7 @@ public class EtDataBasesListController extends BaseController {
         Map<String, Object> result = new HashMap<String, Object>();
         //IP+数据库名称 确定唯一性
         EtDatabasesList unique = new EtDatabasesList();
+        unique.setSerialNo(database.getSerialNo());
         unique.setIp(database.getIp());
         unique.setDatabaseName(database.getDatabaseName());
         List<EtDatabasesList> uniqueList = new ArrayList<EtDatabasesList>();
