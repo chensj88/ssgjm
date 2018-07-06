@@ -81,6 +81,11 @@ public class SysFlowInfo extends BaseDomain implements Serializable {
      */
     private String configSQL;
 
+    /**
+     * @val 存储名称
+     */
+    private String procName;
+
 
     public SysFlowInfo() {
 
@@ -269,6 +274,14 @@ public class SysFlowInfo extends BaseDomain implements Serializable {
 
     public void setConfigSQL(String configSQL) {
         this.configSQL = configSQL;
+    }
+
+    public String getProcName() {
+        return procName;
+    }
+
+    public void setProcName(String procName) {
+        this.procName = procName;
     }
 
     @Override
