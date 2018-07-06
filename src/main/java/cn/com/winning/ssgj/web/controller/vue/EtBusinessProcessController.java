@@ -328,8 +328,7 @@ public class EtBusinessProcessController extends BaseController {
     @RequestMapping(value = "/useSql.do")
     @ResponseBody
     public Map<String, Object> useSql(Long id,String sql,Long flowId,String procName){
-        Connection con = null;
-        Statement stmt = null;
+        ResultSet rs = null;
         Map<String, Object> result = new HashMap<>();
         //医院数据库连接
         EtDatabasesList entity = new EtDatabasesList();
@@ -339,26 +338,28 @@ public class EtBusinessProcessController extends BaseController {
         //获取
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            con = DriverManager.getConnection(url);
-            if (con == null) {
+            Connection connection = DriverManager.getConnection(url);
+            if (connection == null) {
                 resultMap.put("status", Constants.FAILD);
-                resultMap.put("message", "数据库无法连接，请检查网络!");
+                resultMap.put("msg", "数据库无法连接，请检查网络!");
                 return result;
             }
-            //String SQL = "SELECT * FROM sys.databases;";
-            stmt = con.createStatement();
-            String str[] =sql.split("update");
-            int i =stmt.executeUpdate(sql);
-
-
-
-
-
-
-
-//            while (rs.next()) {
-//                databases.add(rs.getString(1));
-//            }
+            //判断存储过程是否存在
+            String existsProcSql = "if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[" + procName + "]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)   begin drop procedure [dbo].[" + procName + "] end";
+            //配置
+            String preSql = "set QUOTED_IDENTIFIER  OFF;\n" + "set ANSI_NULLS  OFF;\n" + "set ANSI_NULL_DFLT_ON OFF;\n" +
+                    "set ANSI_PADDING OFF ;\n" + "set ANSI_WARNINGS OFF; ";
+            //存储过程
+            String runProcSql = "exec " + procName + " '1'";
+            PreparedStatement ps = connection.prepareStatement(existsProcSql);
+            ps.execute();
+            ps = connection.prepareStatement(preSql);
+            ps.execute();
+            sql = sql.replace("\"", "\'");
+            ps = connection.prepareStatement(sql);
+            ps.execute();
+            ps = connection.prepareStatement(runProcSql);
+            int i = ps.executeUpdate();
             //将已经执行的业务流程调研状态修改为1
             EtBusinessProcess process = new EtBusinessProcess();
             process.setId(flowId);
@@ -370,6 +371,7 @@ public class EtBusinessProcessController extends BaseController {
         }catch (Exception e){
             e.printStackTrace();
             result.put("status",Constants.FAILD);
+            resultMap.put("msg", e.getMessage());
         }
 
 
