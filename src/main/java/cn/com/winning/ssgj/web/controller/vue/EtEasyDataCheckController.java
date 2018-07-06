@@ -695,65 +695,99 @@ public class EtEasyDataCheckController extends BaseController {
         SysDataCheckScript sysDataCheckScript = new SysDataCheckScript();
         sysDataCheckScript.setId(temp.getSourceId());
         sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(sysDataCheckScript);
-        //获取存储过程名称
-        String procName = sysDataCheckScript.getName();
-        //判断存储过程是否存在
-        String existsProcSql = "if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[" + procName + "]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)   begin drop procedure [dbo].[" + procName + "] end";
-        //配置
-        String preSql = "set QUOTED_IDENTIFIER  OFF;\n" +
-                "set ANSI_NULLS  OFF;\n" +
-                "set ANSI_NULL_DFLT_ON OFF;\n" +
-                "set ANSI_PADDING OFF ;\n" +
-                "set ANSI_WARNINGS OFF; ";
-        //存储过程
-        String createProcSql = sysDataCheckScript.getsDesc();
-        String runProcSql = "exec " + procName + " '0'";
-        ResultSet rs = null;
-        //错误计数
-        Integer failNum = 0;
-        //检测结果
-        String checkResult = "";
-        try {
-            PreparedStatement ps = connection.prepareStatement(existsProcSql);
-            ps.execute();
-            ps = connection.prepareStatement(preSql);
-            ps.execute();
-            createProcSql = createProcSql.replace("\"", "\'");
-            ps = connection.prepareStatement(createProcSql);
-            ps.execute();
-            ps = connection.prepareStatement(runProcSql);
-            rs = ps.executeQuery();
-            JSONArray jsonArray = new JSONArray();
-            while (rs.next()) {
-                List<String> resetList = new ArrayList<>();
-                resetList.add(rs.getString(1));
-                if ("F".equalsIgnoreCase(rs.getString(1))) {
-                    failNum++;
+        //获取select sql 集合
+        String sqlStr = sysDataCheckScript.getsDesc();
+        String[] sqlArr = sqlStr.split(";");
+        List<String> sqlList = Arrays.asList(sqlArr);
+        //已经维护的个人协定数据
+        Integer doctorMaintainNum = 0;
+        //已经维护的科室协定数据
+        Integer deptMaintainNum = 0;
+        //未维护的个人协定数据
+        Integer doctorNotMaintainNum = 0;
+        //未维护的科室协定数据
+        Integer deptNotMaintainNum = 0;
+        //清空校验数据
+        EtEasyDataCheckDetail detailTemp = new EtEasyDataCheckDetail();
+        detailTemp.setSourceId(etEasyDataCheck.getId());
+        getFacade().getEtEasyDataCheckDetailService().removeEtEasyDataCheckDetail(detailTemp);
+        List<EtEasyDataCheckDetail> etEasyDataCheckDetails = new ArrayList<>();
+        logger.info("start insert detail>>>>>>>>>>>>>>>>>>>>>>>>>");
+        logger.info("start time:{}",System.currentTimeMillis());
+        for (int i = 0; i < sqlList.size(); i++) {
+            ResultSet rs = null;
+            logger.info("sql:{}", sqlList.get(i));
+            try {
+                PreparedStatement ps = connection.prepareStatement(sqlList.get(i));
+                rs = ps.executeQuery();
+                if (i == 0) {
+                    while (rs.next()) {
+                        doctorMaintainNum++;
+                    }
+                } else if (i == 1) {
+                    while (rs.next()) {
+                        doctorNotMaintainNum++;
+                        if (doctorNotMaintainNum > 1) {
+                            EtEasyDataCheckDetail detail = new EtEasyDataCheckDetail();
+                            detail.setId(ssgjHelper.createEtEasyDataCheckDetailId());
+                            detail.setSourceId(etEasyDataCheck.getId());
+                            detail.setDeptDoctorCode(rs.getString(1));
+                            detail.setDeptDoctorName(rs.getString(2));
+                            etEasyDataCheckDetails.add(detail);
+//                            getFacade().getEtEasyDataCheckDetailService().createEtEasyDataCheckDetail(detail);
+
+                        }
+                    }
+                } else if (i == 2) {
+                    while (rs.next()) {
+                        deptMaintainNum++;
+                    }
+                } else if (i == 3) {
+                    while (rs.next()) {
+                        deptNotMaintainNum++;
+                        if (deptNotMaintainNum > 1) {
+                            EtEasyDataCheckDetail detail = new EtEasyDataCheckDetail();
+                            detail.setId(ssgjHelper.createEtEasyDataCheckDetailId());
+                            detail.setSourceId(etEasyDataCheck.getId());
+                            detail.setDeptDoctorCode(rs.getString(1));
+                            detail.setDeptDoctorName(rs.getString(2));
+                            etEasyDataCheckDetails.add(detail);
+//                            getFacade().getEtEasyDataCheckDetailService().createEtEasyDataCheckDetail(detail);
+                        }
+                    }
                 }
-                resetList.add(rs.getString(2));
-                resetList.add(rs.getString(3));
-                System.out.println(rs.getString(1) + "--" + rs.getString(2) + "--" + rs.getString(3));
-                jsonArray.add(resetList);
+            } catch (Exception e) {
+                e.printStackTrace();
+                resultMap.put("status", Constants.FAILD);
+                resultMap.put("msg", e.getMessage());
+                return resultMap;
             }
-//            etDataCheck.setId(etDataCheck.getId());
-//            etDataCheck.setContent(jsonArray.toJSONString());
-            if (failNum == null || failNum == 0) {
-                checkResult = "校验正常";
-            } else {
-                checkResult = "校验出" + failNum + "个问题";
-            }
-//            etDataCheck.setCheckResult(checkResult);
-//            etDataCheck.setOperatorTime(new Timestamp(new Date().getTime()));
-//            getFacade().getEtDataCheckService().modifyEtDataCheck(etDataCheck);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultMap.put("status", Constants.FAILD);
-            resultMap.put("msg", e.getMessage());
-            return resultMap;
         }
+
+        getFacade().getEtEasyDataCheckDetailService().insertEtEasyDataCheckDetailByList(etEasyDataCheckDetails);
+        logger.info("start time:{}",System.currentTimeMillis());
+        logger.info("end insert detail>>>>>>>>>>>>>>>>>>>>>>>>>");
+        doctorMaintainNum--;
+        doctorNotMaintainNum--;
+        deptMaintainNum--;
+        deptNotMaintainNum--;
+        String content = "";
+        //当无未维护数据时，校验正常
+        if (doctorNotMaintainNum == 0 && deptNotMaintainNum == 0) {
+            content = "校验正常";
+
+        } else {
+            //计算医生维护率
+            String docStr = NumberParseUtil.parsePercent(doctorMaintainNum, doctorMaintainNum + doctorNotMaintainNum);
+            //计算科室维护率
+            String deptStr = NumberParseUtil.parsePercent(deptMaintainNum, deptMaintainNum + deptNotMaintainNum);
+            content = docStr + "的医生维护；" + deptStr + "的科室维护。";
+        }
+        //更新易用校验数据content
+        etEasyDataCheck.setContent(content);
+        getFacade().getEtEasyDataCheckService().modifyEtEasyDataCheck(etEasyDataCheck);
         resultMap.put("status", Constants.SUCCESS);
         return resultMap;
-
     }
 }
 

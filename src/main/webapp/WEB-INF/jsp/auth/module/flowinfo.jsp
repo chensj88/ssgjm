@@ -248,6 +248,13 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="procName">存储名称</label>
+                                        <div class="col-sm-6">
+                                            <textarea class="form-control" id="procName" name="procName"
+                                                      placeholder="请输入存储名称" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="col-sm-3 control-label" for="configSQL">配置SQL</label>
                                         <div class="col-sm-6">
                                             <textarea class="form-control" id="configSQL" name="configSQL"
