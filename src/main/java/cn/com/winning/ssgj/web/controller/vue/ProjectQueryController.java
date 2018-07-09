@@ -105,7 +105,7 @@ public class ProjectQueryController extends BaseController {
         Map<String, Object> result = new HashMap<String, Object>();
         if (user == null) {
             userAuth = 2;
-        } else {
+        } else if(user.getRy() != 100001L) {
             userAuth = user.getRyfl();
         }
         result.put("status", Constants.SUCCESS);
