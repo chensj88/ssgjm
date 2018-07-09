@@ -130,12 +130,12 @@ $(function () {
                 title: '存储名称',
                 width: '20px',
                 align: 'center'
-            },{
+            },/*{
                 field: 'procParam',
                 title: '存储参数',
                 width: '20px',
                 align: 'center'
-            },{
+            },*/{
             title: '操作',
             field: 'id',
             align: 'center',
