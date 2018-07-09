@@ -141,6 +141,25 @@ public class PmisWebServiceClient {
     }
 
     /**
+     * 用户登录(PMIS验证)
+     * @param userid 工号
+     * @param password 密码(MD5)
+     * @return
+     */
+    public QueryResult userLoginValidateByPmis(String userid,String password){
+        LBEBusinessService lbeBusinessService = PmisWSUtil.createLBEBusinessService();
+        LoginResult loginResult = PmisWSUtil.createLoginResult();
+        List<LbParameter> params = PmisWSUtil.createUserLoginLbParameter(userid,password);
+        QueryResult queryResult = lbeBusinessService.query(
+                loginResult.getSessionId(),
+                Constants.PmisWSConstants.USER_LOGIN_WS_SERVICE_OBJECT_NAME,
+                params,
+                "",
+                new QueryOption());
+        PmisWSUtil.createLogoutResult(loginResult);
+        return queryResult;
+    }
+    /**
      * 导入特定PMIS接口表数据
      *
      * @param dataType

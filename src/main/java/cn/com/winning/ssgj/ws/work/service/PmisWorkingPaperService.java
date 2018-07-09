@@ -4,8 +4,11 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.exception.SSGJException;
 import cn.com.winning.ssgj.base.util.PmisWSUtil;
 import cn.com.winning.ssgj.domain.EtSiteQuestionInfo;
+import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.ws.work.client.*;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -47,6 +50,40 @@ public class PmisWorkingPaperService {
         return result;
     }
 
+
+    public QueryResult userLoginPmis(String userid,String password) throws Exception {
+        LBEBusinessService lbeBusinessService = createLBEBusinessService();
+        LoginResult loginResult = createLoginResult();
+        QueryOption option = new QueryOption();
+        List<LbParameter> params = new ArrayList<>();
+        LbParameter param = new LbParameter();
+        param.setName("Puserid");
+        param.setValue(userid);
+        params.add(param);
+        param = new LbParameter();
+        param.setName("Ppassword");
+        param.setValue(password);
+        params.add(param);
+        param = new LbParameter();
+        param.setName("Ptype");
+        param.setValue("2");
+        params.add(param);
+        QueryResult result = lbeBusinessService.query(loginResult.getSessionId(),
+                Constants.PmisWSConstants.USER_LOGIN_WS_SERVICE_OBJECT_NAME
+                ,params,"",option);
+        int resultNum = Integer.parseInt(result.getRecords().get(0).getValues().get(0).toString());
+        System.out.println(result.getRecords().get(0).getValues().get(0).toString());
+        System.out.println(result.getRecords().get(0).getValues().get(1).toString());
+        System.out.println(result.getRecords().get(0).getValues().get(2).toString());
+        System.out.println(resultNum);
+
+        createLogoutResult(loginResult);
+        if(resultNum == -1){
+            throw new Exception(result.getRecords().get(0).getValues().get(2).toString());
+        }
+        return  result;
+
+    }
     /**
      * 测试环境
      * 查询当前底稿的处理状态

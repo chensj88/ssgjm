@@ -16,8 +16,8 @@
     <meta name="author" content="卫宁实施工具">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/fileinput.min.css"/>
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/upload/css/style.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/js/fileapi/css/jquery.Jcrop.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/common.css"/>
     <%--<base href="<%=basePath%>">--%>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
@@ -58,6 +58,28 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="scriptForm">
+            <div class="form-group" >
+                <label class="col-sm-3 control-label" for="userid">工号</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="userid" name="userid"
+                           placeholder="请输入工号">
+                </div>
+            </div>
+            <div class="form-group" >
+                <label class="col-sm-3 control-label" for="password">密码</label>
+                <div class="col-sm-6">
+                    <input type="password" class="form-control" id="password" name="password"
+                           placeholder="请输入密码">
+                </div>
+            </div>
+            <div class="col-sm-8 text-center">
+                <button class="btn btn-primary" id="save" type="button">保存</button>
+                <button class="btn btn-danger" data-dismiss="modal">取消</button>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
@@ -65,9 +87,13 @@
 <script type="text/javascript" src="<%=basePath%>resources/assets/js/fileapi/FileAPI/FileAPI.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/assets/js/fileapi/FileAPI/FileAPI.exif.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/assets/js/fileapi/jquery.fileapi.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/toastr.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
 <%--<script type="text/javascript" src="<%=basePath%>resources/js/test/test.js"></script>--%>
 <script type="text/javascript">
+    toastr.options.positionClass = 'toast-top-center';
+    toastr.options.timeOut = 30;
+    toastr.options.extendedTimeOut = 60;
     jQuery(function ($){
 
         initFileApiUpload('file-upload','/admin/upload/test.do');
@@ -146,6 +172,24 @@
             $('#reset').hide();
             $('#fileUpload').show();
         }
+
+        $('#save').on('click',function(){
+            var userid = $("#userid").val();
+            var password = $("#password").val();
+            $.ajax({
+                type: "POST",
+                url:Common.getRootPath()+"/test/userLogin.do",
+                data:{"userid":userid,"password":password},
+                dataType:"json",
+                cache : false,
+                error: function(request) {
+                    toastr.error(request.responseText);
+                },
+                success: function(data) {
+                    toastr.success(data.data.records[0].values[1]+":"+data.data.records[0].values[2]);
+                }
+            });
+        });
     });
 //
 </script>

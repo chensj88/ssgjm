@@ -361,6 +361,10 @@ public class Constants implements Serializable {
          */
         public static final String QUERY_WORK_WS_SERVICE_OBJECT_NAME = "WS_DS_CXDGZT";
         /**
+         * 用户登录服务
+         */
+        public static final String USER_LOGIN_WS_SERVICE_OBJECT_NAME = "PUB_DS_YHXY";
+        /**
          * PMIS WS 服务类型  1 用户
          */
         public static final String WS_SERVICE_QUERY_USER = "1";

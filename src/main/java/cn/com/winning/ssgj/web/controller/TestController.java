@@ -2,11 +2,14 @@ package cn.com.winning.ssgj.web.controller;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
+import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import cn.com.winning.ssgj.ws.service.PmisWebServiceClient;
 import cn.com.winning.ssgj.ws.work.client.BizProcessResult;
+import cn.com.winning.ssgj.ws.work.client.QueryResult;
 import cn.com.winning.ssgj.ws.work.service.PmisWorkingPaperService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -41,6 +44,8 @@ public class TestController extends BaseController{
 
     @Autowired
     private PmisWorkingPaperService pmisWorkingPaperService;
+    @Autowired
+    private PmisWebServiceClient pmisWebServiceClient;
 
     @RequestMapping(value = "/page.do")
     public String pageInfo(){
@@ -317,6 +322,21 @@ public class TestController extends BaseController{
 
     }
 
+
+    @RequestMapping(value = "/userLogin")
+    @ResponseBody
+    public Map<String, Object> userLogin(String userid,String password) throws Exception {
+        System.out.println(userid);
+        System.out.println(password);
+        //QueryResult queryResult = pmisWorkingPaperService.userLoginPmis(userid,MD5.stringMD5(password));
+        cn.com.winning.ssgj.ws.client.QueryResult
+        queryResult =
+        pmisWebServiceClient.userLoginValidateByPmis(userid,MD5.stringMD5(password));
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", queryResult);
+        return result;
+    }
 
 
 

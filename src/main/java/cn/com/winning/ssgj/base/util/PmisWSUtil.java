@@ -349,4 +349,27 @@ public class PmisWSUtil {
         params.add(param);
         return  params;
     }
+
+    /**
+     * 用户登录验证参数
+     * @param userid
+     * @param password
+     * @return
+     */
+    public static List<LbParameter> createUserLoginLbParameter(String userid, String password) {
+        List<LbParameter> params = new ArrayList<>();
+        LbParameter param = new LbParameter();
+        param.setName("Puserid");
+        param.setValue(userid);
+        params.add(param);
+        param = new LbParameter();
+        param.setName("Ppassword");
+        param.setValue(password);
+        params.add(param);
+        param = new LbParameter();
+        param.setName("Ptype");
+        param.setValue("2");
+        params.add(param);
+        return params;
+    }
 }
