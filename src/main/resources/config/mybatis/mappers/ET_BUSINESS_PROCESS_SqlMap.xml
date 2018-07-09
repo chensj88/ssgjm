@@ -180,7 +180,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateEtBusinessProcess" parameterType="EtBusinessProcess">
+	<update id="updateEtBusinessProcess" parameterType="etBusinessProcess">
 		update ET_BUSINESS_PROCESS
 		<set>
 			<trim suffixOverrides=",">
@@ -237,4 +237,13 @@
 			<if test="serialNo != null and serialNo != ''"> AND A.SERIAL_NO = #{serialNo, jdbcType=VARCHAR} </if>
 		</where>
 	</select>
+
+	<!--批量初始化为配置流程参数的数据-->
+	<update id="updateEtBusinessProcessConfigBatch" parameterType="etBusinessProcess">
+		update ET_BUSINESS_PROCESS
+		 SET  IS_CONFIG = 0
+		 WHERE
+		 FLOW_ID = #{flowId, jdbcType=BIGINT}
+		 AND IS_CONFIG IS  NULL
+	</update>
 </mapper>

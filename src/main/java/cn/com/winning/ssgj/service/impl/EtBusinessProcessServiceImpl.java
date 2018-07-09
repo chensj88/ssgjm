@@ -56,4 +56,9 @@ public class EtBusinessProcessServiceImpl implements EtBusinessProcessService {
 		return this.etBusinessProcessDao.selectUnInitEtBusinessProcess(process);
 	}
 
+	@Override
+	public int modifyEtBusinessProcessConfigBatch(EtBusinessProcess process) {
+		return  this.etBusinessProcessDao.updateEtBusinessProcessConfigBatch(process);
+	}
+
 }

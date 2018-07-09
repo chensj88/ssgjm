@@ -4,6 +4,7 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.CommonFtpUtils;
+import cn.com.winning.ssgj.domain.EtBusinessProcess;
 import cn.com.winning.ssgj.domain.SysFlowInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
@@ -94,6 +95,11 @@ public class FlowInfoController extends BaseController {
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         flow.setLastUpdator(userInfo.getId());
         super.getFacade().getSysFlowInfoService().createSysFlowInfo(flow);
+        if(Constants.Flow.FLOW_TYPE_CONFIG.equals(flow.getFlowType())){ //创建流程配置时候自动更新业务流程信息
+            EtBusinessProcess process = new EtBusinessProcess();
+            process.setFlowId(flow.getFlowPid());
+            super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcessConfigBatch(process);
+        }
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", flow.getId());
