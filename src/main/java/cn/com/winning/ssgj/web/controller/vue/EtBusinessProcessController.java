@@ -350,7 +350,7 @@ public class EtBusinessProcessController extends BaseController {
             String preSql = "set QUOTED_IDENTIFIER  OFF;\n" + "set ANSI_NULLS  OFF;\n" + "set ANSI_NULL_DFLT_ON OFF;\n" +
                     "set ANSI_PADDING OFF ;\n" + "set ANSI_WARNINGS OFF; ";
             //存储过程
-            String runProcSql = "exec " + procName + procParam;
+            String runProcSql = "exec " + procName +" '"+ procParam+"'";
             PreparedStatement ps = connection.prepareStatement(existsProcSql);
             ps.execute();
             ps = connection.prepareStatement(preSql);
@@ -367,6 +367,7 @@ public class EtBusinessProcessController extends BaseController {
             super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
 
             result.put("status",Constants.SUCCESS);
+            result.put("result",i);
 
         }catch (Exception e){
             e.printStackTrace();
