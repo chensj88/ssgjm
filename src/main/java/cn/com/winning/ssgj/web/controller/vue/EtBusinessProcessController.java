@@ -361,10 +361,12 @@ public class EtBusinessProcessController extends BaseController {
             ps = connection.prepareStatement(runProcSql);
             int i = ps.executeUpdate();
             //将已经执行的业务流程调研状态修改为1
-            EtBusinessProcess process = new EtBusinessProcess();
-            process.setId(flowId);
-            process.setIsConfig(1);
-            super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
+            if(i == 1){
+                EtBusinessProcess process = new EtBusinessProcess();
+                process.setId(flowId);
+                process.setIsConfig(1);
+                super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
+            }
 
             result.put("status",Constants.SUCCESS);
             result.put("result",i);
