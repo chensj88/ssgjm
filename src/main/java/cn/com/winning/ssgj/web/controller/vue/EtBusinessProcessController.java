@@ -327,7 +327,7 @@ public class EtBusinessProcessController extends BaseController {
      */
     @RequestMapping(value = "/useSql.do")
     @ResponseBody
-    public Map<String, Object> useSql(Long id,String sql,Long flowId,String procName){
+    public Map<String, Object> useSql(Long id,String sql,Long flowId,String procName,String procParam){
         ResultSet rs = null;
         Map<String, Object> result = new HashMap<>();
         //医院数据库连接
@@ -350,7 +350,7 @@ public class EtBusinessProcessController extends BaseController {
             String preSql = "set QUOTED_IDENTIFIER  OFF;\n" + "set ANSI_NULLS  OFF;\n" + "set ANSI_NULL_DFLT_ON OFF;\n" +
                     "set ANSI_PADDING OFF ;\n" + "set ANSI_WARNINGS OFF; ";
             //存储过程
-            String runProcSql = "exec " + procName + " '1'";
+            String runProcSql = "exec " + procName +" '"+ procParam+"'";
             PreparedStatement ps = connection.prepareStatement(existsProcSql);
             ps.execute();
             ps = connection.prepareStatement(preSql);
@@ -361,12 +361,15 @@ public class EtBusinessProcessController extends BaseController {
             ps = connection.prepareStatement(runProcSql);
             int i = ps.executeUpdate();
             //将已经执行的业务流程调研状态修改为1
-            EtBusinessProcess process = new EtBusinessProcess();
-            process.setId(flowId);
-            process.setIsConfig(1);
-            super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
+            if(i == 1){
+                EtBusinessProcess process = new EtBusinessProcess();
+                process.setId(flowId);
+                process.setIsConfig(1);
+                super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
+            }
 
             result.put("status",Constants.SUCCESS);
+            result.put("result",i);
 
         }catch (Exception e){
             e.printStackTrace();

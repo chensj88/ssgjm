@@ -300,9 +300,17 @@ public class PmisWebServiceClient {
      */
     private static void resolveUserInfoData(QueryResult result) {
         StringBuilder sb = new StringBuilder();
-        sb.append("insert into SYS_USER_INFO values \n");
+        sb.append("insert into SYS_USER_INFO (");
         List<LbRecord> recordList = result.getRecords();
         List<ColInfo> colInfos = result.getMetaData().getColInfo();
+        for ( int colNum = 0 ; colNum < colInfos.size() ;colNum++) {
+            if(colNum == colInfos.size() -1){
+                sb.append(colInfos.get(colNum).getLabel().toUpperCase()+",USER_TYPE");
+            }else{
+                sb.append(colInfos.get(colNum).getLabel().toUpperCase()+",");
+            }
+        }
+        sb.append(" ) values \n");
         for (int i = 0; i < recordList.size(); i++) {
             LbRecord record = recordList.get(i);
             List<Object> values = record.getValues();
@@ -311,9 +319,9 @@ public class PmisWebServiceClient {
                     sb.append("(" + values.get(j) + ",");
                 } else if ((j == values.size() - 1) && (colInfos.get(j).getType() == 1) &&
                         (i == recordList.size() - 1)) {
-                    sb.append(values.get(j) + ",\'1\',-1 ,null,null,null,null,null,null,null);  \n");
+                    sb.append(values.get(j) + ",\'1\');  \n");
                 } else if ((j == values.size() - 1) && (colInfos.get(j).getType() == 1)) {
-                    sb.append(values.get(j) + ",\'1\',-1 ,null,null,null,null,null,null,null),  \n");
+                    sb.append(values.get(j) + ",\'1\'),  \n");
                 } else if (j == 0 && colInfos.get(j).getType() == 0) {
                     sb.append("(\'" + values.get(j) + "\',");
                 } else if ((j == values.size() - 1) && (colInfos.get(j).getType() == 0)) {
@@ -325,6 +333,7 @@ public class PmisWebServiceClient {
                 }
             }
         }
+        System.out.println(sb);
         executeSqlInfo(sb.toString());
     }
 
