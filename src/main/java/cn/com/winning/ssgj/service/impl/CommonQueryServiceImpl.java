@@ -428,8 +428,8 @@ public class CommonQueryServiceImpl implements CommonQueryService {
                     queryProcess.setFlowName(flowInfo.getFlowName());
                     queryProcess.setIsScope(Constants.STATUS_USE);
                     queryProcess.setStatus(Constants.STATUS_USE);
-                    //检查流程是否配置流程模板信息
-                    queryProcess.setIsConfig(checkFlowHasConfig(flowInfo.getId()) == true ? 0 : null);
+                    //检查流程是否配置流程模板信息 存在配置方案 为 1 ，不存在为 0
+                    queryProcess.setIsConfig(checkFlowHasConfig(flowInfo.getId()) == true ? 1 : 0);
                     queryProcess.setCreator(100001L);
                     queryProcess.setCreateTime(new Timestamp(new Date().getTime()));
                     etBusinessProcessService.createEtBusinessProcess(queryProcess);
