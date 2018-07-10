@@ -364,7 +364,7 @@ public class EtBusinessProcessController extends BaseController {
             if(i == 1){
                 EtBusinessProcess process = new EtBusinessProcess();
                 process.setId(flowId);
-                process.setIsConfig(1);
+                process.setIsConfig(2);
                 super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
             }
 
