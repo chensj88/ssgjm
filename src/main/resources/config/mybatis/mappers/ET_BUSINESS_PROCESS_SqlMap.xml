@@ -58,6 +58,7 @@
 		<if test="(ipId != null and ipId != '') or ipId == 0"> and t.IP_ID = #{ipId} </if>
 		<if test="contentDesc != null and contentDesc != ''"> and t.CONTENT_DESC = #{contentDesc} </if>
 		<if test="configSql != null and configSql != ''"> and t.CONFIG_SQL = #{configSql} </if>
+		<if test="isConfig != null "> and t.IS_CONFIG = #{isConfig}  </if>
 	</sql>
 
 	<sql id="query-etBusinessProcess">
@@ -149,7 +150,7 @@
 		   <if test="operatorTime != null "> OPERATOR_TIME, </if>
 			<if test="contentDesc != null and contentDesc != ''"> CONTENT_DESC, </if>
 			<if test="configSql != null and configSql != ''"> CONFIG_SQL, </if>
-			<if test="isConfig != null and isConfig != ''"> IS_CONFIG, </if>
+			<if test="isConfig != null "> IS_CONFIG, </if>
 			<if test="(ipId != null and ipId != '') or ipId == 0"> IP_ID, </if>
 		</trim>
 		values
@@ -175,7 +176,7 @@
 		   <if test="operatorTime != null "> #{operatorTime, jdbcType=TIMESTAMP}, </if>
 			<if test="contentDesc != null and contentDesc != ''"> #{contentDesc, jdbcType=VARCHAR}, </if>
 			<if test="configSql != null and configSql != ''"> #{configSql, jdbcType=LONGVARCHAR}, </if>
-			<if test="isConfig != null and isConfig != ''"> #{isConfig, jdbcType=INTEGER},</if>
+			<if test="isConfig != null "> #{isConfig, jdbcType=INTEGER},</if>
 			<if test="(ipId != null and ipId != '') or ipId == 0"> #{ipId, jdbcType=BIGINT}, </if>
 		</trim>
 	</insert>
@@ -205,7 +206,7 @@
 			   <if test="operatorTime != null "> OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP}, </if>
 				<if test="contentDesc != null and contentDesc != ''"> CONTENT_DESC = #{contentDesc, jdbcType=VARCHAR}, </if>
 				<if test="configSql != null and configSql != ''"> CONFIG_SQL = #{configSql, jdbcType=LONGVARCHAR}, </if>
-				<if test="isConfig != null and isConfig != ''"> IS_CONFIG = #{isConfig, jdbcType=INTEGER},</if>
+				<if test="isConfig != null "> IS_CONFIG = #{isConfig, jdbcType=INTEGER},</if>
 				<if test="(ipId != null and ipId != '') or ipId == 0"> IP_ID = #{ipId, jdbcType=BIGINT}, </if>
 			</trim>
 		</set>
