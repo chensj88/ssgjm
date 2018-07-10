@@ -425,7 +425,7 @@ public class EtEasyDataCheckController extends BaseController {
         String path = scriptPath.replace(filename, "");
         byte[] bytes = null;
         try {
-            bytes = CommonFtpUtils.downloadFileAsByte(path, filename);
+            bytes = CommonFtpUtils.downloadFileAsByte(filename, path);
 
         } catch (Exception e) {
             e.printStackTrace();
