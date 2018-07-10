@@ -448,6 +448,7 @@ public class CommonQueryServiceImpl implements CommonQueryService {
        SysFlowInfo flowInfo = new SysFlowInfo();
        flowInfo.setFlowType(Constants.Flow.FLOW_TYPE_CONFIG);
        flowInfo.setFlowPid(flowId);
+       flowInfo.setStatus(Constants.STATUS_USE);
        int count = sysFlowInfoService.getSysFlowInfoCount(flowInfo);
        if(count > 0){
            hasConfig = true;
