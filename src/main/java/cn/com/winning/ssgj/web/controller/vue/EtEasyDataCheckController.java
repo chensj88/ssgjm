@@ -155,6 +155,15 @@ public class EtEasyDataCheckController extends BaseController {
                 scriptPath = scriptPath.substring(scriptPath.lastIndexOf("/") + 1, scriptPath.lastIndexOf("."));
                 propMap.put("type", scriptPath);
             }
+            Long ipId = easyDataCheck.getIpId();
+            String databaseIp = "";
+            if (ipId != null) {
+                EtDatabasesList database = new EtDatabasesList();
+                database.setId(ipId);
+                database = getFacade().getEtDatabasesListService().getEtDatabasesList(database);
+                databaseIp = database == null ? "" : database.getDataAlias();
+            }
+            propMap.put("ip", databaseIp);
             easyDataCheck.setMap(propMap);
         }
         //根据pmid获取项目进程

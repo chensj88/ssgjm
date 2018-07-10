@@ -20,7 +20,7 @@
         <result column="IS_SCOPE" property="isScope" jdbcType="INTEGER"/>
         <result column="NO_SCOPE_CODE" property="noScopeCode" jdbcType="VARCHAR"/>
         <result column="SOURCE_ID" property="sourceId" jdbcType="BIGINT"/>
-        <result column="PD_ID" property="ipId" jdbcType="BIGINT"/>
+        <result column="IP_ID" property="ipId" jdbcType="BIGINT"/>
     </resultMap>
 
     <resultMap id="etEasyDataCheckResult" type="etEasyDataCheck" extends="etEasyDataCheckResultForList">

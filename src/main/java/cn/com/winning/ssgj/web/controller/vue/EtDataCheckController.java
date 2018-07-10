@@ -146,6 +146,16 @@ public class EtDataCheckController extends BaseController {
             } else {
                 map.put("state", 1);
             }
+            Long ipId = e.getIpId();
+            String databaseIp = "";
+            if (ipId != null) {
+                EtDatabasesList database = new EtDatabasesList();
+                database.setId(ipId);
+                database = getFacade().getEtDatabasesListService().getEtDatabasesList(database);
+                databaseIp = database == null ? "" : database.getDataAlias();
+            }
+//            String ip = databaseIp.split(":")[0];
+            map.put("ip", databaseIp);
             e.setMap(map);
         }
         int total = getFacade().getEtDataCheckService().getEtDataCheckCount(etDataCheck);
