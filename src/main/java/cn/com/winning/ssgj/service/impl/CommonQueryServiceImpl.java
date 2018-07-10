@@ -428,6 +428,8 @@ public class CommonQueryServiceImpl implements CommonQueryService {
                     queryProcess.setFlowName(flowInfo.getFlowName());
                     queryProcess.setIsScope(Constants.STATUS_USE);
                     queryProcess.setStatus(Constants.STATUS_USE);
+                    //检查流程是否配置流程模板信息
+                    queryProcess.setIsConfig(checkFlowHasConfig(flowInfo.getId()) == true ? 0 : null);
                     queryProcess.setCreator(100001L);
                     queryProcess.setCreateTime(new Timestamp(new Date().getTime()));
                     etBusinessProcessService.createEtBusinessProcess(queryProcess);
@@ -436,6 +438,23 @@ public class CommonQueryServiceImpl implements CommonQueryService {
         }
     }
 
+    /**
+     * 根据流程ID查看是否具有配置信息
+     * @param flowId
+     * @return
+     */
+    private boolean checkFlowHasConfig(long flowId){
+       boolean hasConfig = false;
+       SysFlowInfo flowInfo = new SysFlowInfo();
+       flowInfo.setFlowType(Constants.Flow.FLOW_TYPE_CONFIG);
+       flowInfo.setFlowPid(flowId);
+       int count = sysFlowInfoService.getSysFlowInfoCount(flowInfo);
+       if(count > 0){
+           hasConfig = true;
+       }
+       return hasConfig;
+
+    }
     /**
      * 查询项目信息,根据客户ID和项目ID
      *

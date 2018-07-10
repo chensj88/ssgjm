@@ -254,13 +254,13 @@
                                                       placeholder="请输入存储名称">
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <%--<div class="form-group">
                                         <label class="col-sm-3 control-label" for="procParam">存储参数</label>
                                         <div class="col-sm-6">
                                             <input class="form-control" id="procParam" name="procParam"
                                                    placeholder="请输入存储参数">
                                         </div>
-                                    </div>
+                                    </div>--%>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label" for="configSQL">存储SQL</label>
                                         <div class="col-sm-6">
