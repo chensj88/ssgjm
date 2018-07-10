@@ -309,6 +309,7 @@ public class EtBusinessProcessController extends BaseController {
     @RequestMapping(value = "/loadConfig.do")
     @ResponseBody
     public Map<String, Object> loadConfig(SysFlowInfo flowInfo){
+        flowInfo.setStatus(Constants.STATUS_USE);
         List<SysFlowInfo> configFlows = super.getFacade().getSysFlowInfoService().getSysFlowInfoList(flowInfo);
         Map<String, Object> result = new HashMap<>();
         result.put("status", Constants.SUCCESS);
