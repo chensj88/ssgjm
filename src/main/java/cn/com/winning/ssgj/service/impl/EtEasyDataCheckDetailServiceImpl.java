@@ -70,9 +70,9 @@ public class EtEasyDataCheckDetailServiceImpl implements EtEasyDataCheckDetailSe
                 this.etEasyDataCheckDetailDao.insertEtEasyDataCheckDetailByList(list);
                 etEasyDataCheckDetails.subList(0, pointsDataLimit).clear();
             }
-            if (!etEasyDataCheckDetails.isEmpty()){
-                this.etEasyDataCheckDetailDao.insertEtEasyDataCheckDetailByList(etEasyDataCheckDetails);
-            }
+        }
+        if (!etEasyDataCheckDetails.isEmpty()){
+            this.etEasyDataCheckDetailDao.insertEtEasyDataCheckDetailByList(etEasyDataCheckDetails);
         }
     }
 
