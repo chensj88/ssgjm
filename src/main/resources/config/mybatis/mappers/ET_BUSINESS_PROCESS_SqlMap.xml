@@ -116,7 +116,7 @@
 			 t1.DICT_LABEL AS stateTxt,
 		     t2.YHMC AS CREATE_USER,
 		     CONVERT(VARCHAR(32),t.CREATE_TIME,111) CREATE_DATE,
-		     ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+		     ROW_NUMBER() OVER ( order by t.IS_CONFIG desc ) as _rn
 			 from ET_BUSINESS_PROCESS t
              LEFT JOIN SYS_DICT_INFO t1 ON t.STATUS = CAST(t1.DICT_VALUE AS INT) AND t1.DICT_CODE ='audiType'
 		     LEFT JOIN SYS_USER_INFO t2 ON t.CREATOR = t2.ID
