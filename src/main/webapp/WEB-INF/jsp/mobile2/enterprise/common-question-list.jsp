@@ -177,7 +177,7 @@
         </div>
         <div class="hide">
             分享
-        </div>detail
+        </div>
         <%--<div class="hide">--%>
             <%--我的--%>
         <%--</div>--%>
