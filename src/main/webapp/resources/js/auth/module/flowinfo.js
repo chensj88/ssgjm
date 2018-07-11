@@ -332,6 +332,7 @@ $(function () {
             $('#uploadFileDiv').show();
             $('#flowInfo').show();
             $('#configDiv').hide();
+            $('#isMustDiv').show();
         }else if(selEle == '2'){
             $('#flowInfo').hide();
             $('#configDiv').show();
@@ -342,6 +343,7 @@ $(function () {
             $('#uploadFileDiv').hide();
             $('#flowInfo').show();
             $('#configDiv').hide();
+            $('#isMustDiv').hide();
         }
     });
 
