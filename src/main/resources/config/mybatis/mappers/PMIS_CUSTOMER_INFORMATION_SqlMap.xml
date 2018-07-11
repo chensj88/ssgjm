@@ -383,6 +383,7 @@
                 AND B.JHZT = 0
                 AND  B.FWLX = 0
                 AND B.ZJZT = 1
+                AND B.HTLX = 1
                 AND  CAST(KHJDLJ AS NUMERIC(10,2)) &lt; 90
          )
         <!-- order by ID asc -->

@@ -5,6 +5,7 @@ import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.EtDepartment;
+import cn.com.winning.ssgj.domain.EtEasyDataCheck;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -20,15 +21,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @history
- *  @add chen.kuai
- *  @modify  chensj 2018-05-23 添加模糊查询
+ * @add chen.kuai
+ * @modify chensj 2018-05-23 添加模糊查询
  */
 @Controller
 @CrossOrigin
@@ -39,6 +37,7 @@ public class EtDepartmentController extends BaseController {
 
     /**
      * 查询项目下医院科室信息
+     *
      * @param queryDepart
      * @param row
      * @return
@@ -49,7 +48,7 @@ public class EtDepartmentController extends BaseController {
         queryDepart.setRow(row);
         queryDepart.setIsDel(Constants.PMIS_STATUS_USE);
         List<EtDepartment> queryDepartList = super.getFacade().getEtDepartmentService().getEtDepartmentPaginatedList(queryDepart);
-        int total =super.getFacade().getEtDepartmentService().getEtDepartmentCount(queryDepart);
+        int total = super.getFacade().getEtDepartmentService().getEtDepartmentCount(queryDepart);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
@@ -60,6 +59,7 @@ public class EtDepartmentController extends BaseController {
 
     /**
      * 添加或者修改用户信息
+     *
      * @param depart
      * @return
      */
@@ -85,17 +85,17 @@ public class EtDepartmentController extends BaseController {
             depart.setId(ssgjHelper.createSysHospitalDeptIdService());
             depart.setIsDel(1);
             depart.setDeptCode(String.valueOf(depart.getId()));
-            List<EtDepartment> deptTypeList= super.getFacade().getEtDepartmentService().getEtDepartmentList(DeptType);
-            if(deptTypeList.size()>0){
+            List<EtDepartment> deptTypeList = super.getFacade().getEtDepartmentService().getEtDepartmentList(DeptType);
+            if (deptTypeList.size() > 0) {
                 depart.setDeptType(deptTypeList.get(0).getDeptType());
-            }else{
+            } else {
                 depart.setDeptType(String.valueOf(ssgjHelper.createSysHospitalDeptTypeIdService()));
             }
 
-            if(uniqueList==null||uniqueList.size()==0){
+            if (uniqueList == null || uniqueList.size() == 0) {
                 depart.setSerialName(PinyinTools.cn2GetFirstSpell(depart.getDeptName()).toUpperCase());
                 super.getFacade().getEtDepartmentService().createEtDepartment(depart);
-            }else{
+            } else {
                 result.put("status", "repeat");
             }
         } else {
@@ -104,12 +104,12 @@ public class EtDepartmentController extends BaseController {
             unique_old.setSerialNo(depart.getSerialNo());
             unique_old.setTypeName(depart.getTypeName());
             unique_old.setDeptName(depart.getDeptName());
-            unique_old.getMap().put("not_id",depart.getId());
+            unique_old.getMap().put("not_id", depart.getId());
             unique_old = super.getFacade().getEtDepartmentService().getEtDepartment(unique_old);
-            if(unique_old==null){
+            if (unique_old == null) {
                 depart.setSerialName(PinyinTools.cn2GetFirstSpell(depart.getDeptName()).toUpperCase());
                 super.getFacade().getEtDepartmentService().modifyEtDepartment(depart);
-            }else{
+            } else {
                 result.put("status", "repeat");
             }
         }
@@ -119,6 +119,7 @@ public class EtDepartmentController extends BaseController {
 
     /**
      * 导出医院科室信息
+     *
      * @param department
      * @param response
      * @return
@@ -127,14 +128,14 @@ public class EtDepartmentController extends BaseController {
     @RequestMapping(value = "/exportExcel.do")
     public void wiriteExcel(EtDepartment department, HttpServletResponse response) throws IOException {
         department.setIsDel(Constants.PMIS_STATUS_USE);
-        String fileName = "医院科室信息_"+ DateUtil.format(DateUtil.PATTERN_14)+".xls";
-        super.getFacade().getEtDepartmentService().generateDepartInfo(department,response,fileName);
+        String fileName = "医院科室信息_" + DateUtil.format(DateUtil.PATTERN_14) + ".xls";
+        super.getFacade().getEtDepartmentService().generateDepartInfo(department, response, fileName);
     }
-
 
 
     /**
      * 上传医院用户信息Excel
+     *
      * @param request
      * @param department
      * @param file
@@ -145,7 +146,7 @@ public class EtDepartmentController extends BaseController {
     @ResponseBody
     @Transactional
     public Map<String, Object> uploadDept(HttpServletRequest request, EtDepartment department,
-                                                          MultipartFile file) throws IOException {
+                                          MultipartFile file) throws IOException {
         Map<String, Object> result = new HashMap<String, Object>();
         //如果文件不为空，写入上传路径
         if (!file.isEmpty()) {
@@ -167,13 +168,13 @@ public class EtDepartmentController extends BaseController {
 
             try {
                 List<List<Object>> departList = ExcelUtil.importExcel(newFile.getPath());
-                super.getFacade().getEtDepartmentService().createEtDepartmentExcel(departList,department);
+                super.getFacade().getEtDepartmentService().createEtDepartmentExcel(departList, department);
                 newFile.delete();
                 result.put("status", "success");
             } catch (Exception e) {
                 e.printStackTrace();
                 result.put("status", "error");
-                result.put("msg", "上传文件失败,原因是："+e.getMessage());
+                result.put("msg", "上传文件失败,原因是：" + e.getMessage());
             }
         } else {
             result.put("status", "error");
@@ -187,23 +188,48 @@ public class EtDepartmentController extends BaseController {
      * 需要判断科室是否在站点问题和站点问题中是否使用
      * 使用 则不允许删除
      * 反之 则允许删除
+     *
      * @param department
      * @return
      */
     @RequestMapping(value = "/delete.do")
     @ResponseBody
     @Transactional
-    public Map<String, Object> deleteDept(EtDepartment department){
+    public Map<String, Object> deleteDept(EtDepartment department) {
         String msg = getFacade().getEtDepartmentService().checkEtDepartmentIsUse(department);
-        Map<String,Object> result = new HashMap<String,Object>();
-        if(StringUtil.isEmptyOrNull(msg)){
+        Map<String, Object> result = new HashMap<String, Object>();
+        if (StringUtil.isEmptyOrNull(msg)) {
             super.getFacade().getEtDepartmentService().removeEtDepartment(department);
             result.put("status", Constants.SUCCESS);
-        }else{
+        } else {
             result.put("status", Constants.FAILD);
             result.put("msg", msg);
         }
         return result;
+    }
+
+
+    /**
+     * 批量删除
+     *
+     * @param idsStr
+     * @return
+     */
+    @RequestMapping(value = "/bantchDelete.do")
+    @ResponseBody
+    @Transactional
+    public Map<String, Object> bantchDelete(String idsStr) {
+        if (StringUtil.isEmptyOrNull(idsStr)) {
+            resultMap.put("status", Constants.FAILD);
+            return resultMap;
+        }
+        String[] split = idsStr.split(",");
+        List<String> ids = Arrays.asList(split);
+        EtDepartment etDepartment = new EtDepartment();
+        etDepartment.getMap().put("pks", ids);
+        getFacade().getEtDepartmentService().removeEtDepartment(etDepartment);
+        resultMap.put("status", Constants.SUCCESS);
+        return resultMap;
     }
 
 
