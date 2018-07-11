@@ -2,221 +2,232 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.winning.ssgj.dao.EtDepartmentDao">
 
-	<resultMap id="etDepartmentResultForList" type="etDepartment">
-		<result column="ID" property="id" jdbcType="BIGINT" />
-		<result column="SERIAL_NO" property="serialNo" jdbcType="BIGINT" />
-		<result column="SERIAL_NAME" property="serialName" jdbcType="VARCHAR" />
-		<result column="DEPT_TYPE" property="deptType" jdbcType="VARCHAR" />
-		<result column="TYPE_NAME" property="typeName" jdbcType="VARCHAR" />
-		<result column="DEPT_CODE" property="deptCode" jdbcType="VARCHAR" />
-		<result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
-		<result column="IS_DEL" property="isDel" jdbcType="INTEGER" />
-		<result column="DEPT_LOCATION" property="deptLocation" jdbcType="VARCHAR"/>
-	</resultMap>
+    <resultMap id="etDepartmentResultForList" type="etDepartment">
+        <result column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="SERIAL_NO" property="serialNo" jdbcType="BIGINT"/>
+        <result column="SERIAL_NAME" property="serialName" jdbcType="VARCHAR"/>
+        <result column="DEPT_TYPE" property="deptType" jdbcType="VARCHAR"/>
+        <result column="TYPE_NAME" property="typeName" jdbcType="VARCHAR"/>
+        <result column="DEPT_CODE" property="deptCode" jdbcType="VARCHAR"/>
+        <result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR"/>
+        <result column="IS_DEL" property="isDel" jdbcType="INTEGER"/>
+        <result column="DEPT_LOCATION" property="deptLocation" jdbcType="VARCHAR"/>
+    </resultMap>
 
-	<resultMap id="etDepartmentResult" type="etDepartment" extends="etDepartmentResultForList">
-	</resultMap>
+    <resultMap id="etDepartmentResult" type="etDepartment" extends="etDepartmentResultForList">
+    </resultMap>
 
-	<sql id="sf-etDepartment">
-	   <if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
-	   <if test="(serialNo != null and serialNo != '') or serialNo == 0"> and t.SERIAL_NO = #{serialNo} </if>
-	   <if test="serialName != null and serialName != ''"> and t.SERIAL_NAME = #{serialName} </if>
-	   <if test="deptType != null and deptType != ''"> and t.DEPT_TYPE = #{deptType} </if>
-	   <if test="typeName != null and typeName != ''"> and t.TYPE_NAME = #{typeName} </if>
-	   <if test="deptCode != null and deptCode != ''"> and t.DEPT_CODE = #{deptCode} </if>
-	   <if test="deptName != null and deptName != ''"> and t.DEPT_NAME = #{deptName} </if>
-	   <if test="(isDel != null and isDel != '') or isDel == 0"> and t.IS_DEL = #{isDel} </if>
-	   <if test="deptLocation != null and deptLocation != ''">and t.DEPT_LOCATION = #{deptLocation}</if>
-	</sql>
-   <!--模糊查询使用动态SQL add chensj 2018-05-23-->
-	<sql id="query-etDepartment">
-		<if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
-		<if test="(serialNo != null and serialNo != '') or serialNo == 0"> and t.SERIAL_NO = #{serialNo} </if>
-		<if test="serialName != null and serialName != ''"> and t.SERIAL_NAME = #{serialName} </if>
-		<if test="deptType != null and deptType != ''"> and t.DEPT_TYPE = #{deptType} </if>
-		<if test="deptCode != null and deptCode != ''"> and t.DEPT_CODE = #{deptCode} </if>
-		<if test="typeName != null and typeName != '' and (deptName == null or deptName == '')"> and (t.TYPE_NAME LIKE '%${typeName}%')</if>
-		<if test="deptName != null and deptName != '' and (typeName == null or typeName == '')"> and (t.DEPT_NAME LIKE '%${deptName}%')</if>
-		<if test="typeName != null and typeName != '' and deptName != null and deptName != ''"> and (t.TYPE_NAME LIKE '%${typeName}%' OR t.DEPT_NAME LIKE '%${deptName}%' )</if>
-		<if test="(isDel != null and isDel != '') or isDel == 0"> and t.IS_DEL = #{isDel} </if>
-		<if test="deptLocation != null and deptLocation != ''">and t.DEPT_LOCATION = #{deptLocation}</if>
-	</sql>
+    <sql id="sf-etDepartment">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(serialNo != null and serialNo != '') or serialNo == 0">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="serialName != null and serialName != ''">and t.SERIAL_NAME = #{serialName}</if>
+        <if test="deptType != null and deptType != ''">and t.DEPT_TYPE = #{deptType}</if>
+        <if test="typeName != null and typeName != ''">and t.TYPE_NAME = #{typeName}</if>
+        <if test="deptCode != null and deptCode != ''">and t.DEPT_CODE = #{deptCode}</if>
+        <if test="deptName != null and deptName != ''">and t.DEPT_NAME = #{deptName}</if>
+        <if test="(isDel != null and isDel != '') or isDel == 0">and t.IS_DEL = #{isDel}</if>
+        <if test="deptLocation != null and deptLocation != ''">and t.DEPT_LOCATION = #{deptLocation}</if>
+    </sql>
+    <!--模糊查询使用动态SQL add chensj 2018-05-23-->
+    <sql id="query-etDepartment">
+        <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
+        <if test="(serialNo != null and serialNo != '') or serialNo == 0">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="serialName != null and serialName != ''">and t.SERIAL_NAME = #{serialName}</if>
+        <if test="deptType != null and deptType != ''">and t.DEPT_TYPE = #{deptType}</if>
+        <if test="deptCode != null and deptCode != ''">and t.DEPT_CODE = #{deptCode}</if>
+        <if test="typeName != null and typeName != '' and (deptName == null or deptName == '')">and (t.TYPE_NAME LIKE
+            '%${typeName}%')
+        </if>
+        <if test="deptName != null and deptName != '' and (typeName == null or typeName == '')">and (t.DEPT_NAME LIKE
+            '%${deptName}%')
+        </if>
+        <if test="typeName != null and typeName != '' and deptName != null and deptName != ''">and (t.TYPE_NAME LIKE
+            '%${typeName}%' OR t.DEPT_NAME LIKE '%${deptName}%' )
+        </if>
+        <if test="(isDel != null and isDel != '') or isDel == 0">and t.IS_DEL = #{isDel}</if>
+        <if test="deptLocation != null and deptLocation != ''">and t.DEPT_LOCATION = #{deptLocation}</if>
+    </sql>
 
-	<select id="selectEtDepartment" resultMap="etDepartmentResult" parameterType="etDepartment">
-		select * from ET_DEPARTMENT t where 1 = 1
-		<include refid="sf-etDepartment" />
-		<if test="(map.not_id != null and map.not_id != '') or map.not_id == 0"> and t.ID NOT IN (#{map.not_id}) </if>
-	</select>
+    <select id="selectEtDepartment" resultMap="etDepartmentResult" parameterType="etDepartment">
+        select * from ET_DEPARTMENT t where 1 = 1
+        <include refid="sf-etDepartment"/>
+        <if test="(map.not_id != null and map.not_id != '') or map.not_id == 0">and t.ID NOT IN (#{map.not_id})</if>
+    </select>
 
-	<select id="selectEtDepartmentList" resultMap="etDepartmentResultForList" parameterType="etDepartment">
-		select
-		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
-		 * from ET_DEPARTMENT t where 1 = 1
-		<include refid="sf-etDepartment" />
-		<!-- order by ID asc -->
-	</select>
+    <select id="selectEtDepartmentList" resultMap="etDepartmentResultForList" parameterType="etDepartment">
+        select
+        <if test="row.count != null and row.count != ''">top ${row.count}</if>
+        * from ET_DEPARTMENT t where 1 = 1
+        <include refid="sf-etDepartment"/>
+        <!-- order by ID asc -->
+    </select>
 
-	<select id="selectEtDepartmentCount" resultType="int" parameterType="etDepartment">
-		select count(*) from ET_DEPARTMENT t where 1 = 1
-		<include refid="query-etDepartment" />
-	</select>
+    <select id="selectEtDepartmentCount" resultType="int" parameterType="etDepartment">
+        select count(*) from ET_DEPARTMENT t where 1 = 1
+        <include refid="query-etDepartment"/>
+    </select>
 
-	<select id="selectEtDepartmentPaginatedList" resultMap="etDepartmentResult" parameterType="etDepartment">
-		select * from (
-			select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
-				from ET_DEPARTMENT t where 1 = 1
-			<include refid="query-etDepartment" />
-			<!-- order by ID asc -->
-		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
-	</select>
+    <select id="selectEtDepartmentPaginatedList" resultMap="etDepartmentResult" parameterType="etDepartment">
+        select * from (
+        select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
+        from ET_DEPARTMENT t where 1 = 1
+        <include refid="query-etDepartment"/>
+        <!-- order by ID asc -->
+        ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+    </select>
 
-	<!-- Chen,Kuai 获取部门分类 -->
-	<select id="selectDepartmentTypeList" resultMap="etDepartmentResult" parameterType="etDepartment">
-		SELECT t.DEPT_TYPE,t.TYPE_NAME FROM ET_DEPARTMENT t where 1 = 1
-		<include refid="sf-etDepartment" />  GROUP BY t.DEPT_TYPE,t.TYPE_NAME
-	</select>
+    <!-- Chen,Kuai 获取部门分类 -->
+    <select id="selectDepartmentTypeList" resultMap="etDepartmentResult" parameterType="etDepartment">
+        SELECT t.DEPT_TYPE,t.TYPE_NAME FROM ET_DEPARTMENT t where 1 = 1
+        <include refid="sf-etDepartment"/>
+        GROUP BY t.DEPT_TYPE,t.TYPE_NAME
+    </select>
 
-	<insert id="insertEtDepartment" parameterType="etDepartment">
-		insert into ET_DEPARTMENT 
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-	       <if test="(id != null and id != '') or id == 0"> ID, </if>
-	       <if test="(serialNo != null and serialNo != '') or serialNo == 0"> SERIAL_NO, </if>
-		   <if test="serialName != null and serialName != ''"> SERIAL_NAME, </if>
-		   <if test="deptType != null and deptType != ''"> DEPT_TYPE, </if>
-		   <if test="typeName != null and typeName != ''"> TYPE_NAME, </if>
-		   <if test="deptCode != null and deptCode != ''"> DEPT_CODE, </if>
-		   <if test="deptName != null and deptName != ''"> DEPT_NAME, </if>
-	       <if test="(isDel != null and isDel != '') or isDel == 0"> IS_DEL, </if>
-		   <if test="deptLocation != null and deptLocation != ''">DEPT_LOCATION,</if>
-		</trim>
-		values
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-	       <if test="(id != null and id != '') or id == 0"> #{id, jdbcType=BIGINT}, </if>
-	       <if test="(serialNo != null and serialNo != '') or serialNo == 0"> #{serialNo, jdbcType=BIGINT}, </if>
-		   <if test="serialName != null and serialName != ''"> #{serialName, jdbcType=VARCHAR}, </if>
-		   <if test="deptType != null and deptType != ''"> #{deptType, jdbcType=VARCHAR}, </if>
-		   <if test="typeName != null and typeName != ''"> #{typeName, jdbcType=VARCHAR}, </if>
-		   <if test="deptCode != null and deptCode != ''"> #{deptCode, jdbcType=VARCHAR}, </if>
-		   <if test="deptName != null and deptName != ''"> #{deptName, jdbcType=VARCHAR}, </if>
-	       <if test="(isDel != null and isDel != '') or isDel == 0"> #{isDel, jdbcType=INTEGER}, </if>
-			<if test="deptLocation != null and deptLocation != ''">#{deptLocation, jdbcType=VARCHAR},</if>
-		</trim>
-	</insert>
+    <insert id="insertEtDepartment" parameterType="etDepartment">
+        insert into ET_DEPARTMENT
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">ID,</if>
+            <if test="(serialNo != null and serialNo != '') or serialNo == 0">SERIAL_NO,</if>
+            <if test="serialName != null and serialName != ''">SERIAL_NAME,</if>
+            <if test="deptType != null and deptType != ''">DEPT_TYPE,</if>
+            <if test="typeName != null and typeName != ''">TYPE_NAME,</if>
+            <if test="deptCode != null and deptCode != ''">DEPT_CODE,</if>
+            <if test="deptName != null and deptName != ''">DEPT_NAME,</if>
+            <if test="(isDel != null and isDel != '') or isDel == 0">IS_DEL,</if>
+            <if test="deptLocation != null and deptLocation != ''">DEPT_LOCATION,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
+            <if test="(serialNo != null and serialNo != '') or serialNo == 0">#{serialNo, jdbcType=BIGINT},</if>
+            <if test="serialName != null and serialName != ''">#{serialName, jdbcType=VARCHAR},</if>
+            <if test="deptType != null and deptType != ''">#{deptType, jdbcType=VARCHAR},</if>
+            <if test="typeName != null and typeName != ''">#{typeName, jdbcType=VARCHAR},</if>
+            <if test="deptCode != null and deptCode != ''">#{deptCode, jdbcType=VARCHAR},</if>
+            <if test="deptName != null and deptName != ''">#{deptName, jdbcType=VARCHAR},</if>
+            <if test="(isDel != null and isDel != '') or isDel == 0">#{isDel, jdbcType=INTEGER},</if>
+            <if test="deptLocation != null and deptLocation != ''">#{deptLocation, jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
 
-	<update id="updateEtDepartment" parameterType="EtDepartment">
-		update ET_DEPARTMENT
-		<set>
-			<trim suffixOverrides=",">
-			   <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>
-			   <if test="(serialNo != null and serialNo != '') or serialNo == 0"> SERIAL_NO = #{serialNo, jdbcType=BIGINT}, </if>
-			   <if test="serialName != null and serialName != ''"> SERIAL_NAME = #{serialName, jdbcType=VARCHAR}, </if>
-			   <if test="deptType != null and deptType != ''"> DEPT_TYPE = #{deptType, jdbcType=VARCHAR}, </if>
-			   <if test="typeName != null and typeName != ''"> TYPE_NAME = #{typeName, jdbcType=VARCHAR}, </if>
-			   <if test="deptCode != null and deptCode != ''"> DEPT_CODE = #{deptCode, jdbcType=VARCHAR}, </if>
-			   <if test="deptName != null and deptName != ''"> DEPT_NAME = #{deptName, jdbcType=VARCHAR}, </if>
-			   <if test="(isDel != null and isDel != '') or isDel == 0"> IS_DEL = #{isDel, jdbcType=INTEGER}, </if>
-			   <if test="deptLocation != null and deptLocation != ''"> DEPT_LOCATION = #{deptLocation, jdbcType=VARCHAR},</if>
-			</trim>
-		</set>
-		where
-		<if test="id != null and id != ''"> ID = #{id} </if>
-		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
-			ID in
-			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-		</if>
-	</update>
+    <update id="updateEtDepartment" parameterType="EtDepartment">
+        update ET_DEPARTMENT
+        <set>
+            <trim suffixOverrides=",">
+                <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
+                <if test="(serialNo != null and serialNo != '') or serialNo == 0">SERIAL_NO =
+                    #{serialNo, jdbcType=BIGINT},
+                </if>
+                <if test="serialName != null and serialName != ''">SERIAL_NAME = #{serialName, jdbcType=VARCHAR},</if>
+                <if test="deptType != null and deptType != ''">DEPT_TYPE = #{deptType, jdbcType=VARCHAR},</if>
+                <if test="typeName != null and typeName != ''">TYPE_NAME = #{typeName, jdbcType=VARCHAR},</if>
+                <if test="deptCode != null and deptCode != ''">DEPT_CODE = #{deptCode, jdbcType=VARCHAR},</if>
+                <if test="deptName != null and deptName != ''">DEPT_NAME = #{deptName, jdbcType=VARCHAR},</if>
+                <if test="(isDel != null and isDel != '') or isDel == 0">IS_DEL = #{isDel, jdbcType=INTEGER},</if>
+                <if test="deptLocation != null and deptLocation != ''">DEPT_LOCATION =
+                    #{deptLocation, jdbcType=VARCHAR},
+                </if>
+            </trim>
+        </set>
+        where
+        <if test="id != null and id != ''">ID = #{id}</if>
+        <if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </update>
 
-	<delete id="deleteEtDepartment" parameterType="EtDepartment">
-		delete from ET_DEPARTMENT where
-		<if test="id != null and id != ''"> id = #{id} </if>
-		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
-			ID in
-			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
-		</if>
-	</delete>
+    <delete id="deleteEtDepartment" parameterType="EtDepartment">
+        delete from ET_DEPARTMENT where
+        <if test="id != null and id != ''">id = #{id}</if>
+        <if test="(id == null or id == '') and map.pks != null ">
+            ID in
+            <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+        </if>
+    </delete>
 
-	<!--检查当前科室是否存在已久安装的站点信息-->
-	<select id="selectDepartmentForSiteInstallCount" resultType="int" parameterType="etDepartment">
-		SELECT count(1) FROM
-		ET_SITE_INSTALL
-		<where>
-			<if test="id != null ">
-				and DEPT_CODE = #{id}
-			</if>
-			<if test="serialNo != null ">
-				AND SERIAL_NO = #{serialNo}
-			</if>
+    <!--检查当前科室是否存在已久安装的站点信息-->
+    <select id="selectDepartmentForSiteInstallCount" resultType="int" parameterType="etDepartment">
+        SELECT count(1) FROM
+        ET_SITE_INSTALL
+        <where>
+            <if test="id != null ">
+                and DEPT_CODE = #{id}
+            </if>
+            <if test="serialNo != null ">
+                AND SERIAL_NO = #{serialNo}
+            </if>
 
-		</where>
-	</select>
+        </where>
+    </select>
 
-	<!--检查当前科室是否存在已久安装的站点信息-->
-	<select id="selectDepartmentForSiteQuestionCount" resultType="int" parameterType="etDepartment">
-		SELECT count(1) FROM
-		ET_SITE_QUESTION_INFO
-		<where>
-			<if test="id != null ">
-				and SITE_NAME = #{id}
-			</if>
-			<if test="serialNo != null ">
-				AND SERIAL_NO = #{serialNo}
-			</if>
-		</where>
-	</select>
-	<!--查询部门信息的首字母信息-->
-	<select id="selectDepartmentInitCode" resultType="string" parameterType="etDepartment">
-		SELECT
-		DISTINCT t.SERIAL_NAME
-		FROM
-			(
-				SELECT
-				CASE  WHEN  SERIAL_NAME IN ('1','2','3','4','5','6','7','8','9','0') THEN '#'
-				ELSE SERIAL_NAME END  SERIAL_NAME
-				FROM ET_DEPARTMENT
-				<where>
-					<if test="serialNo != null ">
-						AND SERIAL_NO = #{serialNo}
-					</if>
-					<if test="serialNo != null ">
-						AND IS_DEL = 1
-					</if>
-				</where>
+    <!--检查当前科室是否存在已久安装的站点信息-->
+    <select id="selectDepartmentForSiteQuestionCount" resultType="int" parameterType="etDepartment">
+        SELECT count(1) FROM
+        ET_SITE_QUESTION_INFO
+        <where>
+            <if test="id != null ">
+                and SITE_NAME = #{id}
+            </if>
+            <if test="serialNo != null ">
+                AND SERIAL_NO = #{serialNo}
+            </if>
+        </where>
+    </select>
+    <!--查询部门信息的首字母信息-->
+    <select id="selectDepartmentInitCode" resultType="string" parameterType="etDepartment">
+        SELECT
+        DISTINCT t.SERIAL_NAME
+        FROM
+        (
+        SELECT
+        CASE WHEN SERIAL_NAME IN ('1','2','3','4','5','6','7','8','9','0') THEN '#'
+        ELSE SERIAL_NAME END SERIAL_NAME
+        FROM ET_DEPARTMENT
+        <where>
+            <if test="serialNo != null ">
+                AND SERIAL_NO = #{serialNo}
+            </if>
+            <if test="serialNo != null ">
+                AND IS_DEL = 1
+            </if>
+        </where>
 
-			) t
-	</select>
+        ) t
+    </select>
 
-	<!--根据首字母信息查询符合要求的部门 仅限字母-->
-	<select id="selectDepartmentByInitCode" resultMap="etDepartmentResult" parameterType="etDepartment">
-		SELECT
-		 *
-		FROM ET_DEPARTMENT
-		<where>
-			<if test="serialNo != null ">
-				AND SERIAL_NO = #{serialNo}
-			</if>
-			<if test="serialName != null and serialName != '' ">
-				 AND SERIAL_NAME = #{serialName}
-			</if>
-			<if test="serialNo != null ">
-				AND IS_DEL = 1
-			</if>
-		</where>
-	</select>
-	<!--根据首字母信息查询符合要求的部门 仅限数字-->
-	<select id="selectDepartmentByInitCodeForNum" resultMap="etDepartmentResult" parameterType="etDepartment">
-		SELECT
-		*
-		FROM ET_DEPARTMENT
-		<where>
-			<if test="serialNo != null ">
-				AND SERIAL_NO = #{serialNo}
-			</if>
-			<if test="serialName != null and serialName != '' ">
-				AND SERIAL_NAME IN ('1','2','3','4','5','6','7','8','9','0')
-			</if>
-			<if test="serialNo != null ">
-				AND IS_DEL = 1
-			</if>
-		</where>
-	</select>
+    <!--根据首字母信息查询符合要求的部门 仅限字母-->
+    <select id="selectDepartmentByInitCode" resultMap="etDepartmentResult" parameterType="etDepartment">
+        SELECT
+        *
+        FROM ET_DEPARTMENT
+        <where>
+            <if test="serialNo != null ">
+                AND SERIAL_NO = #{serialNo}
+            </if>
+            <if test="serialName != null and serialName != '' ">
+                AND SERIAL_NAME = #{serialName}
+            </if>
+            <if test="serialNo != null ">
+                AND IS_DEL = 1
+            </if>
+        </where>
+    </select>
+    <!--根据首字母信息查询符合要求的部门 仅限数字-->
+    <select id="selectDepartmentByInitCodeForNum" resultMap="etDepartmentResult" parameterType="etDepartment">
+        SELECT
+        *
+        FROM ET_DEPARTMENT
+        <where>
+            <if test="serialNo != null ">
+                AND SERIAL_NO = #{serialNo}
+            </if>
+            <if test="serialName != null and serialName != '' ">
+                AND SERIAL_NAME IN ('1','2','3','4','5','6','7','8','9','0')
+            </if>
+            <if test="serialNo != null ">
+                AND IS_DEL = 1
+            </if>
+        </where>
+    </select>
 </mapper>
