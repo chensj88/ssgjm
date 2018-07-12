@@ -17,11 +17,7 @@
     <meta name="author" content="卫宁实施工具">
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-table.min.css"/>
-    <%--<link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrapValidator.min.css"/>--%>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/bootstrapValidator/css/bootstrapValidator.min.css"/>
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-treeview.min.css"/>
-    <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/fileinput.min.css"/>
-    <link rel="stylesheet" href="<%=basePath%>resources/assets/js/fileapi/css/jquery.Jcrop.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/file/css/fileinput.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/common.css"/>
     <%--<base href="<%=basePath%>">--%>
@@ -93,13 +89,6 @@
                 <div class="container">
                     <div class="row">
                         <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="scriptForm">
-
-                          <%--  <div class="form-group" >
-                                <label class="col-sm-3 control-label" for="appName">适用系统</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="appName" name="appName" appName="请输入适用系统" data-provide="typeahead">
-                                </div>
-                            </div>--%>
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label" for="dataType">数据类型</label>
                                 <div class="col-sm-6">
@@ -158,28 +147,22 @@
 </div>
 
 </body>
-<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
+<!--[if !IE]> -->
+<script src="<%=basePath%>resources/bootstrap/js/jquery-2.2.4.min.js"></script>
+<!-- <![endif]-->
+<!--[if IE]>
+<script src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
+<![endif]-->
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap-table.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap-table-zh-CN.min.js"></script>
-<%--<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrapValidator.min.js"></script>--%>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/bootstrapValidator/js/bootstrapValidator.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/bootstrapValidator/js/zh_CN.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/language/zh_CN.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap-treeview.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap3-typeahead.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/fileinput.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/fileinput_locale_zh.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap3-typeahead.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/assets/js/fileapi/FileAPI/FileAPI.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/assets/js/fileapi/FileAPI/FileAPI.exif.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/assets/js/fileapi/jquery.fileapi.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/file/js/fileinput.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/file/js/zh.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/js/online/script.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/js/test/script.js"></script>
 <script>
-
     initBootstrapFileInput();
     function initBootstrapFileInput(json){
         if(json){
@@ -187,8 +170,7 @@
                 theme: 'zh',//设置语言
                 language: 'zh',//设置语言
                 uploadUrl: Common.getRootPath() + Common.url.script.uploadURL,//上传的地址
-                allowedFileExtensions: ['jpg', 'png','sql','txt', 'gif'], //接收的文件后缀
-                //uploadExtraData:{"id": 1, "fileName":'123.mp3'}, 额外参数
+                allowedFileExtensions: ['sql','txt'], //接收的文件后缀
                 hideThumbnailContent:true, //不显示内容信息，只显示文件名称和大小
                 showCaption:true,//是否显示标题
                 showPreview :true, //是否显示预览
@@ -209,30 +191,45 @@
                 validateInitialCount:true,
                 previewFileIcon: "<iclass='glyphicon glyphicon-king'></i>",
                 msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
-                initialPreview: [
+                fileActionSettings:{showUpload:false,showDownload:true},
+                showDownload: true, //显示下载按钮
+                downloadIcon: '<i class="glyphicon glyphicon-download"></i>', //按钮ICON
+                downloadClass: 'btn btn-kv btn-default btn-outline-secondary',//按钮样式
+                initialPreviewDownloadUrl:json.url, //文件下载路径
+                downloadTitle: json.name, //下载文件名称
+                deleteUrl:json.deleteUrl+'?id='+json.key, //删除url
+                initialPreview: [ //预览内容
                     json.content
                 ],
                 initialPreviewAsData: true, // defaults markup
-                initialPreviewConfig: [
-                    {type: "text",previewAsData: true,caption: json.name,url: json.url, key: json.key,frameAttr: {style: 'height:80px'},},
+                initialPreviewConfig: [ //预览配置
+                    {
+                        type: "text",
+                        previewAsData: true,
+                        caption: json.name,
+                        url: json.deleteUrl+'?id='+json.key,
+                        key: json.key,
+                        frameAttr: {
+                            style: 'height:80px'
+                        },
+                    },
                 ],
-                deleteUrl:json.deleteUrl+'?id='+json.key
+
             }).on("filebatchselected", function(event, files) {
-                isUpload = true;
                 $("#uploadFile").fileinput("upload");
+                isUpload = true;
             }).on('filepreupload', function() {
-                $('#kv-success-box').html('');
             }).on('fileuploaded', function(event, data) {
-                $('#kv-success-box').append(data.response.path+""+data.response.path);
-                console.log(data.response.path);
-                $('#kv-success-modal').modal('show');
+                console.log('fileuploaded',data);
+                isUpload = false;
+                $('#remotePath').val(data.response.path);
             });
         }else{
             $('#uploadFile').fileinput({
                 theme: 'zh',//设置语言
                 language: 'zh',//设置语言
                 uploadUrl: Common.getRootPath() + Common.url.script.uploadURL,//上传的地址
-                allowedFileExtensions: ['jpg', 'png','sql','txt', 'gif'], //接收的文件后缀
+                allowedFileExtensions: ['sql','txt'], //接收的文件后缀
                 hideThumbnailContent:true, //不显示内容信息，只显示文件名称和大小
                 showCaption:true,//是否显示标题
                 showPreview :true, //是否显示预览
@@ -244,7 +241,7 @@
                 showBrowse:true, //显示浏览按钮
                 browseOnZoneClick:false, //点击浏览按钮或者点击上传区域
                 autoReplace:true, //自动替换
-                uploadAsync: false, //默认异步上传
+                uploadAsync: true, //默认异步上传
                 browseClass:"btn btn-primary", //按钮样式
                 dropZoneEnabled: false,//是否显示拖拽区域
                 maxFileSize:0,//单位为kb，如果为0表示不限制文件大小
@@ -253,31 +250,24 @@
                 validateInitialCount:true,
                 previewFileIcon: "<iclass='glyphicon glyphicon-king'></i>",
                 msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+                fileActionSettings:{showUpload:false,showDownload:false},
             }).on("filebatchselected", function(event, files) {
-                isUpload = true;
                 $("#uploadFile").fileinput("upload");
+                isUpload = true;
             }).on('filepreupload', function() {
-                $('#kv-success-box').html('');
             }).on('fileuploaded', function(event, data) {
-                $('#kv-success-box').append(data.response.url+""+data.response.path);
-                console.log(data);
-                console.log(data.response.url+""+data.response.path);
+                console.log('fileuploaded',data);
+                isUpload = false;
                 $('#remotePath').val(data.response.path);
-                $('#kv-success-modal').modal('show');
             });
-
-
         }
-
     }
 
 
-    $('#uploadFile').on('fileuploaded', function(event, data) {
-        $('#kv-success-box').append(data.response.url+""+data.response.path);
-        console.log(data);
-        console.log(data.response.url+""+data.response.path);
+    $('#uploadFile').on('filebatchuploadsuccess', function(event, data) {
         $('#remotePath').val(data.response.path);
-        $('#kv-success-modal').modal('show');
+        isUpload = false;
+        console.log('filebatchuploadsuccess',data);
     });
 </script>
 </html>

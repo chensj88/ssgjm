@@ -185,7 +185,7 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <div class="col-sm-10">
-                                    <div id="tree" style="height: 300px;overflow:auto;"></div>
+                                    <div id="tree" style="height: 300px;overflow:auto; width: 380px;"></div>
                                 </div>
                             </div>
                         </div>

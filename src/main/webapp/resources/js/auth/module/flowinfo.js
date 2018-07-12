@@ -188,7 +188,7 @@ $(function () {
         $('#isModifyDiv').hide();
         $('#flowInfo').show();
         $('#configDiv').hide();
-        $('.error_font').remove();
+        $('#flowType').val('1');
         $('#flowCodeDiv').attr('readonly',true);
         $('#flowModal').modal('show');
     });
@@ -496,7 +496,6 @@ $(function () {
            flowDesc : $('#configDesc').val(),
            contentDesc : $('#contentDesc').val(),
            procName : $('#procName').val(),
-           procParam : $('#procParam').val(),
            configSQL : $('#configSQL').val()
         };
         if (bootstrapValidator.isValid()) {

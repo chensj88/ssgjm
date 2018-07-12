@@ -26,7 +26,11 @@
         .table-align tr td:nth-child(3),
         .table-align tr td:nth-child(4),
         .table-align tr td:nth-child(6) {
-
+            word-break:keep-all;/* 不换行 */
+            white-space:nowrap;/* 不换行 */
+            overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+            text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+            font-size:12px;
         }
         .table-align tr td:nth-child(5) {
             word-break:keep-all;/* 不换行 */
@@ -81,7 +85,7 @@
                     <div class="container">
                         <div class="row">
                             <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-6" role="form" id="flowForm">
-                                <div class="form-group">
+                                <div class="form-group" id="flowTypeDiv">
                                     <label class="col-sm-3 control-label" for="flowType">流程类型</label>
                                     <div class="col-sm-6">
                                       <select class="form-control" name="flowType" id="flowType">

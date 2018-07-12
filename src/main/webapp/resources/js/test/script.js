@@ -43,7 +43,7 @@ $(function () {
                         notEmpty: {
                             message: '脚本名称/存储名称不能为空'
                         },
-                        threshold :  2 , //有2字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
+                        threshold: 2, //有2字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
                         remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}
                             url: Common.getRootPath() + '/admin/script/existName.do',//验证地址
                             message: '脚本名称/存储名称已存在',//提示消息
@@ -51,7 +51,7 @@ $(function () {
                         },
                     }
                 },
-                sDesc : {
+                sDesc: {
                     message: '校验内容验证失败',
                     validators: {
                         notEmpty: {
@@ -59,44 +59,16 @@ $(function () {
                         }
                     }
                 },
-                appName : {
-                    message: '适用系统验证失败',
-                    validators: {
-                        notEmpty: {
-                            message: '适用系统不能为空'
-                        }
-                    }
-                },
-                dataType:{
+                dataType: {
                     message: '数据类型验证失败',
                     validators: {
                         notEmpty: {
                             message: '数据类型不能为空'
-                        },
-                        threshold :  2 , //有2字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
-                        remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}
-                            url: Common.getRootPath() + '/admin/script/existScript.do',//验证地址
-                            message: '该条线的校验脚本已经存在,请删除或者更新原有校验脚本信息。',//提示消息
-                            type: 'POST',//请求方式
-                            data: function(validator) {
-                                return {
-                                    appId: $('#appId').val(),
-                                    dataType: $('#dataType').val()
-                                };
-                            }
-                        }
-                    }
-                },
-                uploadFile:{
-                    message: '上传文件验证失败',
-                    validators: {
-                        notEmpty: {
-                            message: '上传文件不能为空'
                         }
                     }
                 }
             }
-        });
+        })
     }
 
     function initFileInput(ele,url) {
@@ -374,7 +346,8 @@ $(function () {
         if (bootstrapValidator.isValid()) {
             console.log(isUpload);
             if(isUpload){
-                $('#uploadFile').on('upload');
+               toastr.info('文件正在上传请稍后！');
+               return ;
             }
             $.ajax({
                 url: url,

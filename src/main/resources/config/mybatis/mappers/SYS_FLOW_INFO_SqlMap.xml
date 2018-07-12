@@ -144,7 +144,7 @@
             <if test="isMust != null ">  #{isMust,jdbcType=INTEGER},</if>
             <if test="contentDesc != null "> #{contentDesc,jdbcType=VARCHAR},</if>
             <if test="configSQL != null "> #{configSQL,jdbcType=LONGVARCHAR},</if>
-            <if test="procName != null "> #{configSQL,jdbcType=VARCHAR},</if>
+            <if test="procName != null "> #{procName,jdbcType=VARCHAR},</if>
             <if test="procParam != null "> #{procParam,jdbcType=VARCHAR},</if>
         </trim>
     </insert>
