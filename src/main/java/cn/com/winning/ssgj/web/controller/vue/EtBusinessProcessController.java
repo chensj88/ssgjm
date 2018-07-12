@@ -7,9 +7,7 @@ import cn.com.winning.ssgj.base.util.CommonFtpUtils;
 import cn.com.winning.ssgj.base.util.DateUtil;
 import cn.com.winning.ssgj.base.util.FileUtis;
 import cn.com.winning.ssgj.base.util.StringUtil;
-import cn.com.winning.ssgj.domain.EtBusinessProcess;
-import cn.com.winning.ssgj.domain.EtProcessManager;
-import cn.com.winning.ssgj.domain.PmisProjctUser;
+import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.text.ParseException;
+import java.util.*;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author chenshijie
@@ -304,4 +300,88 @@ public class EtBusinessProcessController extends BaseController {
         return result;
 
     }
+
+    /**
+     * 加载流程的配置信息
+     * @param flowInfo
+     * @return map
+     */
+    @RequestMapping(value = "/loadConfig.do")
+    @ResponseBody
+    public Map<String, Object> loadConfig(SysFlowInfo flowInfo){
+        flowInfo.setStatus(Constants.STATUS_USE);
+        List<SysFlowInfo> configFlows = super.getFacade().getSysFlowInfoService().getSysFlowInfoList(flowInfo);
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", Constants.SUCCESS);
+        result.put("type", configFlows == null ? 0 : configFlows.size() > 0 ? 1 : 0  );
+        result.put("data", configFlows);
+        return result;
+    }
+
+    /**
+     * 执行配置的存储函数
+     * @param id
+     * @param sql
+     * @param flowId
+     * @param procName
+     * @return
+     */
+    @RequestMapping(value = "/useSql.do")
+    @ResponseBody
+    public Map<String, Object> useSql(Long id,String sql,Long flowId,String procName,String procParam){
+        ResultSet rs = null;
+        Map<String, Object> result = new HashMap<>();
+        //医院数据库连接
+        EtDatabasesList entity = new EtDatabasesList();
+        entity.setId(id);
+        entity = super.getFacade().getEtDatabasesListService().getEtDatabasesList(entity);
+        String url ="jdbc:sqlserver://"+entity.getIp()+";DatabaseName="+entity.getDatabaseName()+";user="+entity.getUserName()+";password="+entity.getPw();
+        //获取
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection connection = DriverManager.getConnection(url);
+            if (connection == null) {
+                resultMap.put("status", Constants.FAILD);
+                resultMap.put("msg", "数据库无法连接，请检查网络!");
+                return result;
+            }
+            //判断存储过程是否存在
+            String existsProcSql = "if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[" + procName + "]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)   begin drop procedure [dbo].[" + procName + "] end";
+            //配置
+            String preSql = "set QUOTED_IDENTIFIER  OFF;\n" + "set ANSI_NULLS  OFF;\n" + "set ANSI_NULL_DFLT_ON OFF;\n" +
+                    "set ANSI_PADDING OFF ;\n" + "set ANSI_WARNINGS OFF; ";
+            //存储过程
+            String runProcSql = "exec " + procName ;
+            PreparedStatement ps = connection.prepareStatement(existsProcSql);
+            ps.execute();
+            ps = connection.prepareStatement(preSql);
+            ps.execute();
+            sql = sql.replace("\"", "\'");
+            ps = connection.prepareStatement(sql);
+            ps.execute();
+            ps = connection.prepareStatement(runProcSql);
+            int i = ps.executeUpdate();
+            //将已经执行的业务流程调研状态修改为1
+            if(i == 1){
+                EtBusinessProcess process = new EtBusinessProcess();
+                process.setId(flowId);
+                process.setIsConfig(2);
+                super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
+            }
+
+            result.put("status",Constants.SUCCESS);
+            result.put("result",i);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            result.put("status",Constants.FAILD);
+            resultMap.put("msg", e.getMessage());
+        }
+
+
+        return result;
+
+    }
+
+
 }

@@ -7,6 +7,7 @@
 function initVliadate() {
     // 表单验证
     $('#sysSoftHardwareInfoForm').bootstrapValidator({
+        live: 'enabled',
         message: '输入的值不符合规格',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -211,7 +212,7 @@ $(function () {
                 formatter: function (value) {
                     if (value == '1') {
                         return '生效';
-                    } else if (value = '0') {
+                    } else if (value == '0') {
                         return '失效';
                     }
                 },
@@ -297,6 +298,7 @@ $(function () {
             success: function (result) {
                 var _result = eval(result);
                 if (_result.status == Common.SUCCESS) {
+                    toastr.success('提交数据成功');
                     $('#sysSoftHardwareInfoModal').modal('hide');
                     $("#infoTable").bootstrapTable('refresh');
                 }

@@ -1,13 +1,141 @@
 /**
  * 培训视频js
  */
-$(function () {
+let isUpload= false;
 
-    var videoType = {};
-    var videoCType = {};
-    var objMap = {};
+/**
+ * 初始化上传框
+ * @param json
+ */
+function initBootstrapFileInput(json){
+    if(json){
+        $('#uploadFile').fileinput({
+            theme: 'zh',//设置语言
+            language: 'zh',//设置语言
+            uploadUrl: Common.getRootPath() + Common.url.script.uploadURL,//上传的地址
+            allowedFileExtensions: ['sql','txt'], //接收的文件后缀
+            hideThumbnailContent:true, //不显示内容信息，只显示文件名称和大小
+            showCaption:true,//是否显示标题
+            showPreview :true, //是否显示预览
+            showRemove :false, //显示移除按钮
+            showUpload:false, //是否显示上传按钮
+            showCancel:true, //ajax上传显示取消按钮 仅在ajax时候
+            showClose:false, //文件预览情况下显示关闭按钮
+            showUploadedThumbs:true, //显示上传文件
+            showBrowse:true, //显示浏览按钮
+            browseOnZoneClick:false, //点击浏览按钮或者点击上传区域
+            autoReplace:true, //自动替换
+            uploadAsync: true, //默认异步上传
+            browseClass:"btn btn-primary", //按钮样式
+            dropZoneEnabled: false,//是否显示拖拽区域
+            maxFileSize:0,//单位为kb，如果为0表示不限制文件大小
+            maxFileCount:1, //表示允许同时上传的最大文件个数
+            enctype:'multipart/form-data',
+            validateInitialCount:true,
+            previewFileIcon: "<iclass='glyphicon glyphicon-king'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+            fileActionSettings:{showUpload:false,showDownload:true},
+            showDownload: true, //显示下载按钮
+            downloadIcon: '<i class="glyphicon glyphicon-download"></i>', //按钮ICON
+            downloadClass: 'btn btn-kv btn-default btn-outline-secondary',//按钮样式
+            initialPreviewDownloadUrl:json.url, //文件下载路径
+            downloadTitle: json.name, //下载文件名称
+            deleteUrl:json.deleteUrl+'?id='+json.key, //删除url
+            initialPreview: [ //预览内容
+                json.content
+            ],
+            initialPreviewAsData: true, // defaults markup
+            initialPreviewConfig: [ //预览配置
+                {
+                    type: "text",
+                    previewAsData: true,
+                    caption: json.name,
+                    url: json.deleteUrl+'?id='+json.key,
+                    key: json.key,
+                    frameAttr: {
+                        style: 'height:80px'
+                    },
+                },
+            ],
+
+        }).on("filebatchselected", function(event, files) {
+            $("#uploadFile").fileinput("upload");
+            isUpload = true;
+        }).on('filepreupload', function() {
+        }).on('fileuploaded', function(event, data) {
+            isUpload = false;
+            $('#remotePath').val(data.response.path);
+        });
+    }else{
+        $('#uploadFile').fileinput({
+            theme: 'zh',//设置语言
+            language: 'zh',//设置语言
+            uploadUrl: Common.getRootPath() + Common.url.script.uploadURL,//上传的地址
+            allowedFileExtensions: ['sql','txt'], //接收的文件后缀
+            hideThumbnailContent:true, //不显示内容信息，只显示文件名称和大小
+            showCaption:true,//是否显示标题
+            showPreview :true, //是否显示预览
+            showRemove :false, //显示移除按钮
+            showUpload:false, //是否显示上传按钮
+            showCancel:true, //ajax上传显示取消按钮 仅在ajax时候
+            showClose:false, //文件预览情况下显示关闭按钮
+            showUploadedThumbs:true, //显示上传文件
+            showBrowse:true, //显示浏览按钮
+            browseOnZoneClick:false, //点击浏览按钮或者点击上传区域
+            autoReplace:true, //自动替换
+            uploadAsync: true, //默认异步上传
+            browseClass:"btn btn-primary", //按钮样式
+            dropZoneEnabled: false,//是否显示拖拽区域
+            maxFileSize:0,//单位为kb，如果为0表示不限制文件大小
+            maxFileCount:1, //表示允许同时上传的最大文件个数
+            enctype:'multipart/form-data',
+            validateInitialCount:true,
+            previewFileIcon: "<iclass='glyphicon glyphicon-king'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+            fileActionSettings:{showUpload:false,showDownload:false},
+        }).on("filebatchselected", function(event, files) {
+            $("#uploadFile").fileinput("upload");
+            isUpload = true;
+        }).on('filepreupload', function() {
+        }).on('fileuploaded', function(event, data) {
+            isUpload = false;
+            $('#remotePath').val(data.response.path);
+        });
+    }
+}
+
+//上传框事件
+$('#uploadFile').on('filebatchuploadsuccess', function(event, data) {
+    $('#remotePath').val(data.response.path);
+    isUpload = false;
+});
+
+function getShareURL() {
+    if(Common.FTP_SHARE_URL === ''){
+        $.ajax({
+            url: Common.getRootPath() + "/admin/common/getShareURL.do",
+            data: {},
+            type: "post",
+            dataType: 'json',
+            cache:false,
+            async: false,
+            success: function (result) {
+                if(result.status === 'success'){
+                    Common.FTP_SHARE_URL = result.url;
+                }
+                return  Common.FTP_SHARE_URL;
+            }
+        });
+    }else {
+        return  Common.FTP_SHARE_URL;
+    }
+}
+
+$(function () {
+    getShareURL();
     var selectedFlie = false;
-    $('#isModifyDiv').hide();
+    $('#nameLabel').text('存储名称');
+    $('#name').attr('placeholder','请输入存储名称');
 
     function queryParams(params) {
         return {
@@ -25,6 +153,8 @@ $(function () {
 
     function validateForm() {
         $('#scriptForm').bootstrapValidator({
+            live: 'enabled',
+            submitButtons:'#save',
             message: '输入的值不符合规格',
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
@@ -33,24 +163,24 @@ $(function () {
             },
             fields: {
                 name: {
-                    message: '脚本名称验证失败',
+                    message: '脚本名称/存储名称验证失败',
                     validators: {
                         notEmpty: {
-                            message: '脚本名称不能为空'
+                            message: '脚本名称/存储名称不能为空'
                         },
                         threshold :  2 , //有2字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
                         remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}
                             url: Common.getRootPath() + '/admin/script/existName.do',//验证地址
-                            message: '脚本名称已存在',//提示消息
+                            message: '脚本名称/存储名称已存在',//提示消息
                             type: 'POST'//请求方式
                         },
                     }
                 },
                 sDesc : {
-                    message: '脚本描述验证失败',
+                    message: '校验内容验证失败',
                     validators: {
                         notEmpty: {
-                            message: '脚本描述不能为空'
+                            message: '校验内容不能为空'
                         }
                     }
                 },
@@ -81,61 +211,8 @@ $(function () {
                             }
                         }
                     }
-                },
-                uploadFile:{
-                    message: '上传文件验证失败',
-                    validators: {
-                        notEmpty: {
-                            message: '上传文件不能为空'
-                        }
-                    }
                 }
             }
-        });
-    }
-
-    function initFileInput(ele,url) {
-        ele.fileinput({
-            language: "zh",//配置语言
-            uploadUrl: Common.getRootPath() +"/admin/upload/script.do",
-            showUpload : false,
-            showRemove : true,
-            showPreview : false,
-            showCaption: true,//是否显示标题
-            uploadAsync: true,
-            dropZoneEnabled:false,
-            uploadLabel: "上传",//设置上传按钮的汉字
-            uploadClass: "btn btn-primary",//设置上传按钮样式
-            maxFileSize : 0,
-            maxFileCount: 1,/*允许最大上传数，可以多个，当前设置单个*/
-            enctype: 'multipart/form-data',
-            /*allowedPreviewTypes : [ 'video' ],*/
-            allowedFileExtensions : ["sql", "txt"],/*上传文件格式*/
-            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
-            showBrowse: false,
-            browseOnZoneClick: true,
-            uploadExtraData:function (previewId, index) {
-                return {'id':$('#vid').val()};
-            },
-            slugCallback : function(filename) {
-                return filename.replace('(', '_').replace(']', '_');
-            }
-        }).on("filebatchselected",function(event, files){
-            if(files.length > 0) {
-                var name = Common.substr(files[0].name, '.');
-                $('#name').val(name);
-                $('#videoNameDiv').show();
-                selectedFlie = true;
-            }
-        }).on('filepreupload', function(event, data, previewId, index) {     //上传中
-        }).on('fileuploaded',function(event, data, previewId, index){    //一个文件上传成功
-            var _data = data.response;
-            if(_data.status == Common.SUCCESS){
-                $("#infoTable").bootstrapTable('refresh');
-            }else{
-                Ewin.alert(_data.msg)
-            }
-            $('#vid').val('');
         });
     }
 
@@ -191,13 +268,8 @@ $(function () {
             align: 'center'
         }, {
             field: "sDesc",
-            title: "脚本描述",
-            width: '20px',
-            align: 'center'
-        }, {
-            field: "appName",
-            title: "适用系统",
-            width: '20px',
+            title: "校验内容",
+            width: '120px',
             align: 'center'
         },{
             field: "dataType",
@@ -253,14 +325,12 @@ $(function () {
         $("input[type=reset]").trigger("click");
         $('#id').val('');
         $('#vid').val('');
-        $('#appId').val('');
-        $('#videoNameDiv').show();
-        $('#isModifyDiv').hide();
         //清空验证信息
-        $('#scriptForm').bootstrapValidator("destroy");
+        $("#scriptForm").bootstrapValidator('destroy');
         validateForm();
-        initFileApiUpload('file-upload');
-        $('#uploadFileDiv').show();
+        $('#dataType').val('0');
+        $('#uploadFile').fileinput('destroy');
+        initBootstrapFileInput();
         $('#scriptModal').modal('show');
     });
 
@@ -272,20 +342,33 @@ $(function () {
         e.preventDefault();
         $('#customer').hide();
         //清空验证信息
-        $('#scriptForm').bootstrapValidator("destroy");
+        $("#scriptForm").bootstrapValidator('destroy');
         validateForm();
         var vid = $(this).attr('aid');
         var data = queryInfoByDataId(vid);
         $('#remotePath').val(data.remotePath);
-        initFileApiUpload('file-upload');
+        var remotePath = data.remotePath;
+        if(remotePath && remotePath !== ''){
+            let fileJson = {
+                name : remotePath.substring(remotePath.lastIndexOf('/')+1),
+                content : data.sDesc,
+                key:data.id,
+                deleteUrl: Common.getRootPath() +'/admin/script/deleteFile.do',
+                url: getShareURL() + remotePath
+            };
+            $('#uploadFile').fileinput('destroy');
+            initBootstrapFileInput(fileJson);
+            isUpload = false;
+        }else {
+            $('#uploadFile').fileinput('destroy');
+            initBootstrapFileInput();
+            isUpload = false;
+        }
         //取消默认选中
-        $('#isModifyDiv').val('0');
-        $('#isModifyDiv').show();
-        $('#uploadFileDiv').hide();
-        $('#videoNameDiv').show();
+
         //赋值
         $('#scriptForm').initForm(data);
-        $('#appId').val(data.appId);
+        $('#vid').val(data.id);
         $('#scriptModal').modal('show');
 
     });
@@ -348,6 +431,10 @@ $(function () {
             url = Common.getRootPath() + '/admin/script/update.do';
         }
         if (bootstrapValidator.isValid()) {
+            if(isUpload){
+                toastr.info('文件正在上传请稍后！');
+                return ;
+            }
             $.ajax({
                 url: url,
                 data: $("#scriptForm").serialize(),
@@ -367,193 +454,15 @@ $(function () {
         }
     });
 
-    /**
-     * 客户姓名
-     */
-    $('#appName').typeahead({
-        source : function (query,process) {
-            var matchCount =this.options.items;//允许返回结果集最大数量
-            $.ajax({
-                url : Common.getRootPath() + '/admin/script/queryAppName.do',
-                type: "post",
-                dataType: 'json',
-                async: false,
-                data: {'name':query.toUpperCase(),'matchCount':matchCount},
-                success: function (result) {
-                    var _result = eval(result);
-                    if (_result.status == Common.SUCCESS) {
-                        var data = _result.data;
-                        if (data == "" || data.length == 0) {
-                            console.log("没有查询到相关结果");
-                        };
-                        var results = [];
-                        for (var i = 0; i < data.length; i++) {
-                            objMap[data[i].name] = data[i].name + ',' + data[i].id ;
-                            results.push(data[i].name);
-                        }
-                        process(results);
-                    }
-                }
-            });
-        },
-        highlighter: function (item) {
-            return item ;
-        },
-        afterSelect: function (item) {       //选择项之后的事件，item是当前选中的选项
-            var selectItem = objMap[item];
-            var selectItemId = selectItem.split(',')[1];
-            $('#appId').val(selectItemId);
 
-        },
-        items : 10,
-    });
-
-    $('#isModify').on('change',function () {
-        var selectedOption = $(this).val();
-        if(selectedOption == "1"){
-            var fileInfo = Common.getFileInfo($('#remotePath').val());
-            if(fileInfo){
-                showFlowFileInfo(fileInfo.name,fileInfo.url);
-                hideUploadDiv();
-            }else{
-                showFlowFileInfo('','');
-                showUploadDiv();
-            }
-            $('#uploadFileDiv').show();
-        }else {
-            $('#uploadFileDiv').hide();
+    $('#dataType').on('change',function () {
+        var selVal = $(this).val();
+        if(selVal === '0'){
+            $('#nameLabel').text('存储名称');
+            $('#name').attr('placeholder','请输入存储名称');
+        }else{
+            $('#nameLabel').text('脚本名称');
+            $('#name').attr('placeholder','请输入脚本名称');
         }
     });
-
-
-    var uploadStatus =  Common.STATUS_BEFORE_UPLOAD; //0 初始化  1 上传  2 完成
-    var url = Common.getShareURL();
-
-    function initFileApiUpload(ele) {
-        uploadStatus = Common.STATUS_BEFORE_UPLOAD;
-        var $ele = $('#'+ele);
-        $ele.fileapi({
-            clearOnComplete: false,
-            url:Common.getRootPath() + Common.url.script.uploadURL,
-            autoUpload: true,
-            multiple:false,
-            /*paramName:'uploadFile',*/
-            paramName:'file',
-            maxSize: FileAPI.MB*10, // max file size
-            maxFiles:1,
-            elements: {
-                name: '#fileName',
-                size: '#fileSize',
-                empty: { hide: '#jsInfo' }
-            },
-            onSelect:function (evt, data) {
-                $('#fileInfo').html('');
-                var fileInfo = data.all;
-                var fileName = data.all[0].name;
-                var suffix = fileName.substring(fileName.lastIndexOf('.'));
-                var isAllow = /(\.|\/)(sql|txt)$/i.test(suffix);
-                if(!isAllow){
-                    data.all = [];
-                    data.files = [];
-                    $('#fileInfo').html('当前文件【'+fileName+'】文件格式不支持，<br>只支持sql,txt').css('color','red');
-                    return ;
-                }
-                uploadStatus = Common.STATUS_PROCESS_UPLOAD;
-                /*$('#reset').show();*/
-                $('#fileUpload').hide();
-                $('#save').attr('disabled',true);
-            },
-            onFileComplete: function (evt, uiEvt){
-                var file = uiEvt.file;
-                var json = uiEvt.result;
-                var url = json.url + json.path;
-                $('#uploadFileName').text(file.name);
-                $('#downLoadFile').attr('path',url);
-                $('#deleteFile').attr('path',url);
-                $('#jsInfo').html('');
-                hideUploadDiv();
-                uploadStatus = Common.STATUS_FINISH_UPLOAD;
-                $('#remotePath').val(json.path);
-                $('#save').attr('disabled',false);
-            }
-        });
-        showUploadDiv();
-    }
-
-    $('#downLoadFile').on('click',function () {
-        window.open($(this).attr('path'));
-    });
-
-    $('#deleteFile').on('click',function (e)  {
-        //阻止默认行为
-        e.preventDefault();
-        $('#uploadFileName').text('');
-        $('#downLoad').attr('path','');
-        $('#delete').attr('path','');
-        $.ajax({
-            url: Common.getRootPath() +'/admin/flow/deleteFile.do',
-            data: {'id':$('#vid').val()},
-            type: "post",
-            dataType: 'json',
-            async: false,
-            cache : false,
-            success: function (result) {
-                var _result = eval(result);
-                if (_result.status == Common.SUCCESS) {
-                    $('#remotePath').val('');
-                    showFlowFileInfo('','');
-                    showUploadDiv();
-                }
-            }
-        });
-        showUploadDiv();
-    });
-
-    $('#reset').on('click',function () {
-        $('#fileUpload').show();
-        $('#reset').hide();
-    });
-
-    /**
-     * 已经上传的文件展示
-     * @param name
-     * @param url
-     */
-    function showFlowFileInfo(name,url) {
-        $('#uploadFileName').text(name);
-        $('#downLoadFile').attr('path',url);
-        $('#deleteFile').attr('path',url);
-        hideUploadDiv();
-    }
-
-    /**
-     * 隐藏上传区域
-     */
-    function hideUploadDiv() {
-        uploadStatus = Common.STATUS_FINISH_UPLOAD;
-        $('#uploadFile').show();
-        $('#fileUploadDiv').hide();
-    }
-    /**
-     * 显示上传区域
-     */
-    function showUploadDiv() {
-        uploadStatus = Common.STATUS_BEFORE_UPLOAD ;
-        $('#fileUploadDiv').show();
-        $('#uploadFile').hide();
-        $('#reset').hide();
-        $('#fileUpload').show();
-    }
-
-    /**
-     * 检查上传的状态
-     * @returns {boolean}
-     */
-    function checkUploadStatus(){
-        if(uploadStatus === Common.STATUS_BEFORE_UPLOAD  || uploadStatus === Common.STATUS_FINISH_UPLOAD){
-            return true;
-        }else {
-            return false;
-        }
-    }
 });

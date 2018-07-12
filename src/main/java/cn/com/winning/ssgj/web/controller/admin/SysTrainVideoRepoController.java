@@ -3,12 +3,10 @@ package cn.com.winning.ssgj.web.controller.admin;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.CommonFtpUtils;
 import cn.com.winning.ssgj.base.util.DateUtil;
 import cn.com.winning.ssgj.base.util.VideoUtil;
-import cn.com.winning.ssgj.domain.PmisCustomerInformation;
-import cn.com.winning.ssgj.domain.SysDictInfo;
-import cn.com.winning.ssgj.domain.SysTrainVideoRepo;
-import cn.com.winning.ssgj.domain.SysUserInfo;
+import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.apache.shiro.SecurityUtils;
@@ -159,6 +157,25 @@ public class SysTrainVideoRepoController extends BaseController {
     @ILog
     public Map<String, Object> deleteTrainVideo(SysTrainVideoRepo repo) {
         super.getFacade().getSysTrainVideoRepoService().deleteSysTrainVideoRepo(repo);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+    }
+
+    /**
+     * 文件删除
+     * @param repo
+     * @return
+     */
+    @RequestMapping(value = "/deleteFile.do")
+    @ResponseBody
+    @Transactional
+    @ILog
+    public Map<String, Object> deleteFile(SysTrainVideoRepo repo) {
+        repo = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepo(repo);
+        CommonFtpUtils.removeUploadFile(repo.getRemotePath());
+        repo.setRemotePath("");
+        super.getFacade().getSysTrainVideoRepoService().modifySysTrainVideoRepo(repo);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;

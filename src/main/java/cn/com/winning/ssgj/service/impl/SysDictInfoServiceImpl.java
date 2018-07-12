@@ -121,6 +121,11 @@ public class SysDictInfoServiceImpl implements SysDictInfoService {
         return this.sysDictInfoDao.selectSysDictInfoListBySelectKey(info);
     }
 
+    @Override
+    public List<SysDictInfo> getSysDictInfoListByDesc(SysDictInfo dict) {
+        return this.sysDictInfoDao.selectSysDictInfoListByDesc(dict);
+    }
+
     /**
      * 生成排序值
      *

@@ -195,8 +195,38 @@ public final class DateUtil {
         return System.currentTimeMillis() +"";
     }
 
+    public static String getYYYYMMDDHHmmSSTimstamp(){
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+        return df.format(new Date(System.currentTimeMillis()));
+    }
+
     public static Timestamp convertDateStringToTimestap(String dateString) throws ParseException {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return new Timestamp(df.parse(dateString).getTime());
+    }
+
+    /**
+     * 时间格式转换 2017/08/09 --> 08-09
+     * @param dateString
+     * @return
+     * @throws ParseException
+     */
+    public static String convertDateToMMDD(String dateString) throws ParseException {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+        Date date = df.parse(dateString);
+        df = new SimpleDateFormat("MM-dd");
+        return df.format(date);
+    }
+
+    /**
+     * 在当前日期增加制定的日期
+     * @param num
+     * @return
+     */
+    public static String plusDay(int num){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE,num);
+        return df.format(calendar.getTime());
     }
 }

@@ -12,6 +12,8 @@ import cn.com.winning.ssgj.dao.SysUserInfoDao;
 import cn.com.winning.ssgj.domain.EtUserLookProject;
 import cn.com.winning.ssgj.domain.SysOrgExt;
 import cn.com.winning.ssgj.domain.SysUserInfo;
+import cn.com.winning.ssgj.ws.client.QueryResult;
+import cn.com.winning.ssgj.ws.service.PmisWebServiceClient;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -46,6 +48,8 @@ public class WinningRealm extends AuthorizingRealm {
 	private EtUserLookProjectDao etUserLookProjectDao;
 	@Autowired
 	private SysOrgExtDao sysOrgExtDao;
+	@Autowired
+	private PmisWebServiceClient pmisWebServiceClient;
 	/**
 	 * 
 	 * @param principals
@@ -85,23 +89,44 @@ public class WinningRealm extends AuthorizingRealm {
 			throw new UnknownAccountException("该用户不存在");
 		} else {
 			String password = new String((char[]) token.getCredentials());
-			if (userInfo.getPassword().equals(password)) {
-				EtUserLookProject etUserLookProject = etUserLookProjectDao.selectLastUserLookProject(userInfo.getId());
-				SysOrgExt orgExt = sysOrgExtDao.selectUserOrgExtByUserOrgId(userInfo.getOrgid());
-				if(etUserLookProject != null){
-					userInfo.getMap().put("C_ID",etUserLookProject.getCId());
-					userInfo.getMap().put("CU_ID",etUserLookProject.getSerialNo());
-					userInfo.getMap().put("PM_ID",etUserLookProject.getPmId());
+			if( User.USER_TYPE_COMPANY.equals(userInfo.getUserType())){ // 公司用户 统一使用PMIS提供验证接口来进行验证
+				QueryResult  result = pmisWebServiceClient.userLoginValidateByPmis(userid,password);
+				//通过返回值中记录record中记录信息来验证登录是否错误
+				int resultNum = Integer.parseInt(result.getRecords().get(0).getValues().get(0).toString());
+				if( resultNum == userInfo.getId().intValue()){
+					initUserInfo(userInfo);
+					return new SimpleAuthenticationInfo(userInfo, password, "memberRealm");
+				}else{
+					throw new IncorrectCredentialsException(result.getRecords().get(0).getValues().get(2).toString());
 				}
-				if(orgExt != null ){
-					userInfo.getMap().put("orgExt",orgExt.getOrgNameExt());
+			}else{ //医院用户或者管理员
+				if (userInfo.getPassword().equals(password)) {
+					initUserInfo(userInfo);
+					return new SimpleAuthenticationInfo(userInfo, password, "memberRealm");
+				} else {
+					throw new IncorrectCredentialsException("密码错误");
 				}
-				return new SimpleAuthenticationInfo(userInfo, password, "memberRealm");
-			} else {
-				throw new IncorrectCredentialsException("密码错误");
 			}
+
 		}
 
+	}
+
+	/**
+	 * 初始化用户信息
+	 * @param userInfo
+	 */
+	private void initUserInfo(SysUserInfo userInfo){
+		EtUserLookProject etUserLookProject = etUserLookProjectDao.selectLastUserLookProject(userInfo.getId());
+		SysOrgExt orgExt = sysOrgExtDao.selectUserOrgExtByUserOrgId(userInfo.getOrgid());
+		if(etUserLookProject != null){
+			userInfo.getMap().put("C_ID",etUserLookProject.getCId());
+			userInfo.getMap().put("CU_ID",etUserLookProject.getSerialNo());
+			userInfo.getMap().put("PM_ID",etUserLookProject.getPmId());
+		}
+		if(orgExt != null ){
+			userInfo.getMap().put("orgExt",orgExt.getOrgNameExt());
+		}
 	}
 	
 }

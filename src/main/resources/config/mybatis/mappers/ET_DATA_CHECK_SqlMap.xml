@@ -16,6 +16,8 @@
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="OPERATOR" property="operator" jdbcType="BIGINT"/>
         <result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP"/>
+        <result column="SOURCE_ID" property="sourceId" jdbcType="BIGINT"/>
+        <result column="IP_ID" property="ipId" jdbcType="BIGINT"/>
     </resultMap>
 
     <resultMap id="etDataCheckResult" type="etDataCheck" extends="etDataCheckResultForList">
@@ -35,6 +37,8 @@
         <if test="createTime != null ">and t.CREATE_TIME = #{createTime}</if>
         <if test="(operator != null and operator != '') or operator == 0">and t.OPERATOR = #{operator}</if>
         <if test="operatorTime != null ">and t.OPERATOR_TIME = #{operatorTime}</if>
+        <if test="(sourceId != null and sourceId != '') or sourceId == 0">and t.SOURCE_ID = #{sourceId}</if>
+        <if test="(ipId != null and ipId != '') or ipId == 0">and t.IP_ID = #{ipId}</if>
     </sql>
 
     <select id="selectEtDataCheck" resultMap="etDataCheckResult" parameterType="etDataCheck">
@@ -81,6 +85,8 @@
             <if test="createTime != null ">CREATE_TIME,</if>
             <if test="(operator != null and operator != '') or operator == 0">OPERATOR,</if>
             <if test="operatorTime != null ">OPERATOR_TIME,</if>
+            <if test="(sourceId != null and sourceId != '') or sourceId == 0">SOURCE_ID,</if>
+            <if test="(ipId != null and ipId != '') or ipId == 0">IP_ID,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -97,6 +103,8 @@
             <if test="createTime != null ">#{createTime, jdbcType=TIMESTAMP},</if>
             <if test="(operator != null and operator != '') or operator == 0">#{operator, jdbcType=BIGINT},</if>
             <if test="operatorTime != null ">#{operatorTime, jdbcType=TIMESTAMP},</if>
+            <if test="(sourceId != null and sourceId != '') or sourceId == 0">#{sourceId, jdbcType=BIGINT},</if>
+            <if test="(ipId != null and ipId != '') or ipId == 0">#{ipId, jdbcType=BIGINT},</if>
         </trim>
     </insert>
 
@@ -124,6 +132,7 @@
                 <if test="operatorTime != null ">OPERATOR_TIME =
                     #{operatorTime, jdbcType=TIMESTAMP},
                 </if>
+                <if test="(ipId != null and ipId != '') or ipId == 0">IP_ID = #{ipId, jdbcType=BIGINT},</if>
             </trim>
         </set>
         <where>
@@ -177,6 +186,26 @@
                 AND p.ZT = 1
                 AND p.HTCPLB = 1
             )
+    </select>
+
+    <select id="getInitEtDataCheck" resultMap="etDataCheckResultForList"
+            parameterType="etDataCheck">
+        SELECT
+        0 AS ID,
+        #{cId} AS C_ID,
+        #{pmId} AS PM_ID,
+        #{serialNo} AS SERIAL_NO,
+        0 AS PL_ID,
+        0 AS PD_ID,
+        s.REMOTE_PATH AS SCRIPT_PATH,
+        0 AS CREATOR,
+        GETDATE() AS CREATE_TIME,
+        s.ID AS SOURCE_ID
+        FROM
+        SYS_DATA_CHECK_SCRIPT s
+        WHERE
+        s.STATUS = 1
+        AND s.DATA_TYPE =0
     </select>
 
 

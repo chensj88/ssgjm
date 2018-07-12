@@ -44,55 +44,18 @@ public class TrainVideoListController extends BaseController {
     private SSGJHelper ssgjHelper;
 
     @RequestMapping(value = "/list.do")
-    public String TrainVideoTypeList(Model model, String parameter) {
+    public String TrainVideoTypeList(Model model, String userId,String serialNo,String openId ) {
 
-        //绑定注册用户信息  parameter 后面base64解密结果是：
-        //{"OPENID":"oyDyLxBcj0rTd9rVWyV5vTOD_Np4","HOSPCODE":"11980","WORKNUM":"1420","USERNAME":"张克福","USERPHONE":"13312345678"}
-        byte[] bt = null;
         try {
-            //parameter = "eyJPUEVOSUQiOiJveUR5THhCY2owclRkOXJWV3lWNXZUT0RfTnA0IiwiSE9TUENPREUiOiIxMTk4MCIsIldPUktOVU0iOiIxNDIwIiwiVVNFUk5BTUUiOiLlvKDlhYvnpo8iLCJVU0VSUEhPTkUiOiIxMzMxMjM0NTY3OCJ9";
-            byte[] byteArray = Base64Utils.decryptBASE64(parameter);
-            String userJsonStr = "[" + new String(Base64Utils.decryptBASE64(parameter), "UTF-8") + "]";
-            ArrayList<JSONObject> userList = JSON.parseObject(userJsonStr, ArrayList.class);
-            SysUserInfo info = new SysUserInfo();
-            SysTrainVideoRepo repo = new SysTrainVideoRepo();
-            if (userList != null && !userList.equals("")) {
-                for (int i = 0; i < userList.size(); i++) { //  推荐用这个
-                    JSONObject io = userList.get(i);
-                    info.setId(ssgjHelper.createUserId());
-                    info.setUserType("0");
-                    info.setOpenId((String) io.get("OPENID"));
-                    info.setName((String) io.get("USERNAME"));
-                    info.setUserid((String) io.get("HOSPCODE") + (String) io.get("WORKNUM"));
-                    info.setPassword(MD5.stringMD5ForBarCode((String) io.get("WORKNUM")));
-                    info.setMobile((String) io.get("USERPHONE"));
-                    info.setSsgs(Long.parseLong((String) io.get("HOSPCODE")));
-                }
-                //判断用户 userId 是否存在
-                SysUserInfo info_old = new SysUserInfo();
-                info_old.setUserid(info.getUserid());
-                List<SysUserInfo> userIfonList = super.getFacade().getSysUserInfoService().getSysUserInfoList(info_old);
-
-                if (info.getSsgs() != 11980) {
-                    //真实用户
-                    if (userIfonList.size() == 0 || userIfonList == null) {
-                        info.setYhmc(info.getName());
-                        super.getFacade().getSysUserInfoService().createSysUserInfo(info);
-                        return "/mobile/bridge-null";
-                    } else {
-                        info_old = userIfonList.get(0);
-                        repo.getMap().put("video_droit_list", info_old.getVideoDroit());
-                    }
-                } else {
-                    if (userIfonList.size() == 0 || userIfonList == null) {
-                        super.getFacade().getSysUserInfoService().createSysUserInfo(info);
-                    }
-                }
-            }
             //获取全部视频
+            SysTrainVideoRepo repo = new SysTrainVideoRepo();
+            //repo.getMap().put("video_droit_list", info_old.getVideoDroit());
             List<SysTrainVideoRepo> repoTypeList = super.getFacade().getSysTrainVideoRepoService().getSysTrainVideoRepoTypeList(repo);
             model.addAttribute("repoTypeList", repoTypeList);
-            model.addAttribute("OPENID", info.getOpenId());
+            model.addAttribute("OPENID", openId);
+            model.addAttribute("userId", userId);
+            model.addAttribute("serialNo", serialNo);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -14,4 +14,6 @@ import java.util.List;
 public interface EtBusinessProcessDao extends EntityDao<EtBusinessProcess> {
 
     List<Long> selectUnInitEtBusinessProcess(EtBusinessProcess process);
+
+    int updateEtBusinessProcessConfigBatch(EtBusinessProcess process);
 }

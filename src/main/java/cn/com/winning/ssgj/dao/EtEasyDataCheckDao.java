@@ -13,4 +13,6 @@ public interface EtEasyDataCheckDao extends EntityDao<EtEasyDataCheck> {
 
     List<EtEasyDataCheck> selectEtEasyDataCheckListByPmIdAndDataType(EtEasyDataCheck etEasyDataCheck);
 
+    List<EtEasyDataCheck> getInitEtEasyDataCheck(EtEasyDataCheck etEasyDataCheck);
+
 }

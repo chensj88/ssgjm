@@ -58,6 +58,14 @@ public class EtBusinessProcess extends BaseDomain implements Serializable {
 	private java.sql.Timestamp operatorTime;
 
 	private List imgs;
+
+	private Long ipId;
+
+	private String contentDesc;
+
+	private String configSql;
+
+	private Integer isConfig;
 	
 	public EtBusinessProcess() {
 
@@ -223,4 +231,35 @@ public class EtBusinessProcess extends BaseDomain implements Serializable {
 		this.imgs = imgs;
 	}
 
+	public Long getIpId() {
+		return ipId;
+	}
+
+	public void setIpId(Long ipId) {
+		this.ipId = ipId;
+	}
+
+	public String getContentDesc() {
+		return contentDesc;
+	}
+
+	public void setContentDesc(String contentDesc) {
+		this.contentDesc = contentDesc;
+	}
+
+	public String getConfigSql() {
+		return configSql;
+	}
+
+	public void setConfigSql(String configSql) {
+		this.configSql = configSql;
+	}
+
+	public Integer getIsConfig() {
+		return isConfig;
+	}
+
+	public void setIsConfig(Integer isConfig) {
+		this.isConfig = isConfig;
+	}
 }

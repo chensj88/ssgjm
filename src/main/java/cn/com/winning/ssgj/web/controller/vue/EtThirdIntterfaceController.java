@@ -589,13 +589,10 @@ public class EtThirdIntterfaceController extends BaseController {
         }
         //获取文件名
         String filename = etThirdIntterface.getInterfaceName() + filePath.substring(filePath.lastIndexOf("."));
-        ChannelSftp sftpConnect = null;
+        String path=filePath.replace(filename,"");
         byte[] bytes = null;
         try {
-            sftpConnect = SFtpUtils.getSftpConnect();
-            //sftpConnect.setFilenameEncoding("GBK");
-            bytes = SFtpUtils.downloadAsByte(filePath, sftpConnect);
-
+            bytes = CommonFtpUtils.downloadFileAsByte(path,filename);
         } catch (Exception e) {
             e.printStackTrace();
         }

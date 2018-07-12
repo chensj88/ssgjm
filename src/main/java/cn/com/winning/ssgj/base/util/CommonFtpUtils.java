@@ -116,4 +116,57 @@ public class CommonFtpUtils {
         newFile.delete();
         return ftpStatus;
     }
+
+    /**
+     *  FTP文件下载到本地
+     * @param ftpFileName FTP文件路径
+     * @param localFileName 本地保存文件路径
+     * @throws IOException
+     */
+    public static void downloadFile(String ftpFileName, String localFileName) throws IOException {
+        logger.info("====开启FTP服务器下载文件功能====");
+        logger.info("下载FTP文件：[{}]",ftpFileName);
+        if (Constants.FTP_PORT == 21) {
+            try {
+               FtpUtils.downloadFile(ftpFileName,localFileName);
+            } catch (IOException e) {
+                throw new IOException(e.getMessage());
+            }
+        } else if (Constants.FTP_PORT == 22) {
+            try {
+                SFtpUtils.download(ftpFileName,localFileName);
+            } catch (Exception e) {
+                throw new IOException(e.getMessage());
+            }
+        }
+        logger.info("下载FTP文件到本地：[{}]成功",localFileName);
+    }
+
+    /**
+     * 下载FTP文件到字节数组中
+     * @param ftpFileName 文件名
+     * @param ftpPath 文件所在路径
+     * @return 
+     * @throws IOException
+     */
+    public static byte[] downloadFileAsByte(String ftpFileName, String ftpPath) throws IOException {
+        logger.info("====开启FTP服务器下载文件功能====");
+        logger.info("下载FTP文件：[{}]",ftpPath+ftpFileName);
+        if (Constants.FTP_PORT == 21) {
+            try {
+                return FtpUtils.downloadFileAsByte(ftpFileName,ftpPath);
+            } catch (IOException e) {
+                throw new IOException(e.getMessage());
+            }
+        } else if (Constants.FTP_PORT == 22) {
+            try {
+                return  SFtpUtils.downloadAsByte(ftpPath+ftpFileName);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new IOException(e.getMessage());
+            }
+        }
+        return null;
+    }
+
 }

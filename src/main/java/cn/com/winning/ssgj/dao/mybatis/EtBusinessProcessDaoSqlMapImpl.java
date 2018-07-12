@@ -22,4 +22,9 @@ public class EtBusinessProcessDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtBusine
     public List<Long> selectUnInitEtBusinessProcess(EtBusinessProcess process) {
         return super.getSqlSession().selectList("selectUnInitEtBusinessProcess",process);
     }
+
+    @Override
+    public int updateEtBusinessProcessConfigBatch(EtBusinessProcess process) {
+        return  super.getSqlSession().update("updateEtBusinessProcessConfigBatch",process);
+    }
 }

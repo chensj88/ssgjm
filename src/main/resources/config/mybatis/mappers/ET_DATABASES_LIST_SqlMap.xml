@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.EtDatabasesListDao">
+
+	<resultMap id="etDatabasesListResultForList" type="etDatabasesList">
+		<result column="ID" property="id" jdbcType="BIGINT" />
+		<result column="C_ID" property="cId" jdbcType="BIGINT" />
+		<result column="PM_ID" property="pmId" jdbcType="BIGINT" />
+		<result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR" />
+		<result column="DATA_ALIAS" property="dataAlias" jdbcType="VARCHAR" />
+		<result column="IP" property="ip" jdbcType="VARCHAR" />
+		<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+		<result column="PW" property="pw" jdbcType="VARCHAR" />
+		<result column="DATABASE_NAME" property="databaseName" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="CREATOR" property="creator" jdbcType="BIGINT" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="OPERATOR" property="operator" jdbcType="BIGINT" />
+		<result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<resultMap id="etDatabasesListResult" type="etDatabasesList" extends="etDatabasesListResultForList">
+	</resultMap>
+
+	<sql id="sf-etDatabasesList">
+	   <if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
+	   <if test="(cId != null and cId != '') or cId == 0"> and t.C_ID = #{cId} </if>
+	   <if test="(pmId != null and pmId != '') or pmId == 0"> and t.PM_ID = #{pmId} </if>
+	   <if test="serialNo != null and serialNo != ''"> and t.SERIAL_NO = #{serialNo} </if>
+		<if test="dataAlias != null and dataAlias != ''"> and t.DATA_ALIAS = #{dataAlias} </if>
+		<if test="ip != null and ip != ''"> and t.IP = #{ip} </if>
+	   <if test="userName != null and userName != ''"> and t.USER_NAME = #{userName} </if>
+	   <if test="pw != null and pw != ''"> and t.PW = #{pw} </if>
+	   <if test="databaseName != null and databaseName != ''"> and t.DATABASE_NAME = #{databaseName} </if>
+	   <if test="remark != null and remark != ''"> and t.REMARK = #{remark} </if>
+	   <if test="(creator != null and creator != '') or creator == 0"> and t.CREATOR = #{creator} </if>
+	   <if test="createTime != null and createTime != ''"> and t.CREATE_TIME = #{createTime} </if>
+	   <if test="(operator != null and operator != '') or operator == 0"> and t.OPERATOR = #{operator} </if>
+	   <if test="operatorTime != null and operatorTime != ''"> and t.OPERATOR_TIME = #{operatorTime} </if>
+	</sql>
+
+	<select id="selectEtDatabasesList" resultMap="etDatabasesListResult" parameterType="etDatabasesList">
+		select * from ET_DATABASES_LIST t where 1 = 1
+		<include refid="sf-etDatabasesList" />
+	</select>
+
+	<select id="selectEtDatabasesListList" resultMap="etDatabasesListResultForList" parameterType="etDatabasesList">
+		select
+		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
+		 * from ET_DATABASES_LIST t where 1 = 1
+		<include refid="sf-etDatabasesList" />
+		<!-- order by ID asc -->
+	</select>
+
+	<select id="selectEtDatabasesListCount" resultType="int" parameterType="etDatabasesList">
+		select count(*) from ET_DATABASES_LIST t where 1 = 1
+		<include refid="sf-etDatabasesList" />
+	</select>
+
+	<select id="selectEtDatabasesListPaginatedList" resultMap="etDatabasesListResult" parameterType="etDatabasesList">
+		select * from (
+			select *, ROW_NUMBER() OVER ( order by id desc ) as _rn 
+				from ET_DATABASES_LIST t where 1 = 1
+			<include refid="sf-etDatabasesList" />
+			<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
+
+	<insert id="insertEtDatabasesList" parameterType="etDatabasesList">
+		insert into ET_DATABASES_LIST
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> ID, </if>
+	       <if test="(cId != null and cId != '') or cId == 0"> C_ID, </if>
+	       <if test="(pmId != null and pmId != '') or pmId == 0"> PM_ID, </if>
+		   <if test="serialNo != null and serialNo != ''"> SERIAL_NO, </if>
+			<if test="dataAlias != null and dataAlias != ''"> DATA_ALIAS, </if>
+			<if test="ip != null and ip != ''"> IP, </if>
+		   <if test="userName != null and userName != ''"> USER_NAME, </if>
+		   <if test="pw != null and pw != ''"> PW, </if>
+		   <if test="databaseName != null and databaseName != ''"> DATABASE_NAME, </if>
+		   <if test="remark != null and remark != ''"> REMARK, </if>
+	       <if test="(creator != null and creator != '') or creator == 0"> CREATOR, </if>
+		   <if test="createTime != null "> CREATE_TIME, </if>
+	       <if test="(operator != null and operator != '') or operator == 0"> OPERATOR, </if>
+		   <if test="operatorTime != null "> OPERATOR_TIME, </if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> #{id, jdbcType=BIGINT}, </if>
+	       <if test="(cId != null and cId != '') or cId == 0"> #{cId, jdbcType=BIGINT}, </if>
+	       <if test="(pmId != null and pmId != '') or pmId == 0"> #{pmId, jdbcType=BIGINT}, </if>
+		   <if test="serialNo != null and serialNo != ''"> #{serialNo, jdbcType=VARCHAR}, </if>
+			<if test="dataAlias != null and dataAlias != ''"> #{dataAlias, jdbcType=VARCHAR}, </if>
+			<if test="ip != null and ip != ''"> #{ip, jdbcType=VARCHAR}, </if>
+		   <if test="userName != null and userName != ''"> #{userName, jdbcType=VARCHAR}, </if>
+		   <if test="pw != null and pw != ''"> #{pw, jdbcType=VARCHAR}, </if>
+		   <if test="databaseName != null and databaseName != ''"> #{databaseName, jdbcType=VARCHAR}, </if>
+		   <if test="remark != null and remark != ''"> #{remark, jdbcType=VARCHAR}, </if>
+	       <if test="(creator != null and creator != '') or creator == 0"> #{creator, jdbcType=BIGINT}, </if>
+		   <if test="createTime != null "> #{createTime, jdbcType=TIMESTAMP}, </if>
+	       <if test="(operator != null and operator != '') or operator == 0"> #{operator, jdbcType=BIGINT}, </if>
+		   <if test="operatorTime != null "> #{operatorTime, jdbcType=TIMESTAMP}, </if>
+		</trim>
+	</insert>
+
+	<update id="updateEtDatabasesList" parameterType="EtDatabasesList">
+		update ET_DATABASES_LIST
+		<set>
+			<trim suffixOverrides=",">
+			   <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>
+			   <if test="(cId != null and cId != '') or cId == 0"> C_ID = #{cId, jdbcType=BIGINT}, </if>
+			   <if test="(pmId != null and pmId != '') or pmId == 0"> PM_ID = #{pmId, jdbcType=BIGINT}, </if>
+			   <if test="serialNo != null and serialNo != ''"> SERIAL_NO = #{serialNo, jdbcType=VARCHAR}, </if>
+				<if test="dataAlias != null and dataAlias != ''"> DATA_ALIAS = #{dataAlias, jdbcType=VARCHAR},
+               </if><if test="ip != null and ip != ''">IP = #{ip, jdbcType=VARCHAR}, </if>
+			   <if test="userName != null and userName != ''"> USER_NAME = #{userName, jdbcType=VARCHAR}, </if>
+			   <if test="pw != null and pw != ''"> PW = #{pw, jdbcType=VARCHAR}, </if>
+			   <if test="databaseName != null and databaseName != ''"> DATABASE_NAME = #{databaseName, jdbcType=VARCHAR}, </if>
+			   <if test="remark != null and remark != ''"> REMARK = #{remark, jdbcType=VARCHAR}, </if>
+			   <if test="(creator != null and creator != '') or creator == 0"> CREATOR = #{creator, jdbcType=BIGINT}, </if>
+			   <if test="createTime != null"> CREATE_TIME = #{createTime, jdbcType=TIMESTAMP}, </if>
+			   <if test="(operator != null and operator != '') or operator == 0"> OPERATOR = #{operator, jdbcType=BIGINT}, </if>
+			   <if test="operatorTime != null"> OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP}, </if>
+			</trim>
+		</set>
+		where
+		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</update>
+
+	<delete id="deleteEtDatabasesList" parameterType="EtDatabasesList">
+		delete from ET_DATABASES_LIST where
+		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</delete>
+
+</mapper>

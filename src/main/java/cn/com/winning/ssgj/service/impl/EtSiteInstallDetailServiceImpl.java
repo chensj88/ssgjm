@@ -67,4 +67,9 @@ public class EtSiteInstallDetailServiceImpl implements EtSiteInstallDetailServic
         this.etSiteInstallDetailDao.updateEtSiteInstallDetailSourceId(t);
     }
 
+    @Override
+    public List<EtSiteInstallDetail> getEtSiteInstallHardDetailList(EtSiteInstallDetail t) {
+        return this.etSiteInstallDetailDao.selectEtSiteInstallHardDetailList(t);
+    }
+
 }

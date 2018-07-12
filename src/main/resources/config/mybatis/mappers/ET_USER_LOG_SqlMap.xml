@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.winning.ssgj.dao.EtUserLogDao">
+
+	<resultMap id="etUserLogResultForList" type="etUserLog">
+		<result column="ID" property="id" jdbcType="BIGINT" />
+		<result column="C_ID" property="cId" jdbcType="BIGINT" />
+		<result column="PM_ID" property="pmId" jdbcType="BIGINT" />
+		<result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR" />
+		<result column="SOURCE_TYPE" property="sourceType" jdbcType="INTEGER" />
+		<result column="CONTENT" property="content" jdbcType="VARCHAR" />
+		<result column="OPERATOR" property="operator" jdbcType="BIGINT" />
+		<result column="OPERATOR_TIME" property="operatorTime" jdbcType="TIMESTAMP" />
+		<result column="PROCESS_STATUS" property="processStatus" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<resultMap id="etUserLogResult" type="etUserLog" extends="etUserLogResultForList">
+	</resultMap>
+
+	<sql id="sf-etUserLog">
+	   <if test="(id != null and id != '') or id == 0"> and t.ID = #{id} </if>
+	   <if test="(cId != null and cId != '') or cId == 0"> and t.C_ID = #{cId} </if>
+	   <if test="(pmId != null and pmId != '') or pmId == 0"> and t.PM_ID = #{pmId} </if>
+	   <if test="serialNo != null and serialNo != ''"> and t.SERIAL_NO = #{serialNo} </if>
+	   <if test="(sourceType != null and sourceType != '') or sourceType == 0"> and t.SOURCE_TYPE = #{sourceType} </if>
+	   <if test="content != null and content != ''"> and t.CONTENT = #{content} </if>
+	   <if test="(operator != null and operator != '') or operator == 0"> and t.OPERATOR = #{operator} </if>
+	   <if test="operatorTime != null "> and t.OPERATOR_TIME = #{operatorTime} </if>
+		<if test="(processStatus != null and processStatus != '') or processStatus == 0"> and t.PROCESS_STATUS = #{processStatus} </if>
+	</sql>
+
+	<select id="selectEtUserLog" resultMap="etUserLogResult" parameterType="etUserLog">
+		select * from ET_USER_LOG t where 1 = 1
+		<include refid="sf-etUserLog" />
+	</select>
+
+	<select id="selectEtUserLogList" resultMap="etUserLogResultForList" parameterType="etUserLog">
+		select
+		 <if test="row.count != null and row.count != ''"> top ${row.count} </if>
+		 * from ET_USER_LOG t where 1 = 1
+		<include refid="sf-etUserLog" />
+		 order by OPERATOR_TIME desc
+	</select>
+
+	<select id="selectEtUserLogCount" resultType="int" parameterType="etUserLog">
+		select count(*) from ET_USER_LOG t where 1 = 1
+		<include refid="sf-etUserLog" />
+	</select>
+
+	<select id="selectEtUserLogPaginatedList" resultMap="etUserLogResult" parameterType="etUserLog">
+		select * from (
+			select *, ROW_NUMBER() OVER ( order by id desc ) as _rn 
+				from ET_USER_LOG t where 1 = 1
+			<include refid="sf-etUserLog" />
+			<!-- order by ID asc -->
+		) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
+	</select>
+
+	<insert id="insertEtUserLog" parameterType="etUserLog">
+		insert into ET_USER_LOG 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> ID, </if>
+	       <if test="(cId != null and cId != '') or cId == 0"> C_ID, </if>
+	       <if test="(pmId != null and pmId != '') or pmId == 0"> PM_ID, </if>
+		   <if test="serialNo != null and serialNo != ''"> SERIAL_NO, </if>
+	       <if test="(sourceType != null and sourceType != '') or sourceType == 0"> SOURCE_TYPE, </if>
+		   <if test="content != null and content != ''"> CONTENT, </if>
+	       <if test="(operator != null and operator != '') or operator == 0"> OPERATOR, </if>
+		   <if test="operatorTime != null "> OPERATOR_TIME, </if>
+			<if test="(processStatus != null and processStatus != '') or processStatus == 0">PROCESS_STATUS,</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	       <if test="(id != null and id != '') or id == 0"> #{id, jdbcType=BIGINT}, </if>
+	       <if test="(cId != null and cId != '') or cId == 0"> #{cId, jdbcType=BIGINT}, </if>
+	       <if test="(pmId != null and pmId != '') or pmId == 0"> #{pmId, jdbcType=BIGINT}, </if>
+		   <if test="serialNo != null and serialNo != ''"> #{serialNo, jdbcType=VARCHAR}, </if>
+	       <if test="(sourceType != null and sourceType != '') or sourceType == 0"> #{sourceType, jdbcType=INTEGER}, </if>
+		   <if test="content != null and content != ''"> #{content, jdbcType=VARCHAR}, </if>
+	       <if test="(operator != null and operator != '') or operator == 0"> #{operator, jdbcType=BIGINT}, </if>
+		   <if test="operatorTime != null "> #{operatorTime, jdbcType=TIMESTAMP}, </if>
+			<if test="(processStatus != null and processStatus != '') or processStatus == 0"> #{processStatus , jdbcType=VARCHAR},</if>
+		</trim>
+	</insert>
+
+	<update id="updateEtUserLog" parameterType="EtUserLog">
+		update ET_USER_LOG
+		<set>
+			<trim suffixOverrides=",">
+			   <if test="(id != null and id != '') or id == 0"> ID = #{id, jdbcType=BIGINT}, </if>
+			   <if test="(cId != null and cId != '') or cId == 0"> C_ID = #{cId, jdbcType=BIGINT}, </if>
+			   <if test="(pmId != null and pmId != '') or pmId == 0"> PM_ID = #{pmId, jdbcType=BIGINT}, </if>
+			   <if test="serialNo != null and serialNo != ''"> SERIAL_NO = #{serialNo, jdbcType=VARCHAR}, </if>
+			   <if test="(sourceType != null and sourceType != '') or sourceType == 0"> SOURCE_TYPE = #{sourceType, jdbcType=INTEGER}, </if>
+			   <if test="content != null and content != ''"> CONTENT = #{content, jdbcType=VARCHAR}, </if>
+			   <if test="(operator != null and operator != '') or operator == 0"> OPERATOR = #{operator, jdbcType=BIGINT}, </if>
+			   <if test="operatorTime != null "> OPERATOR_TIME = #{operatorTime, jdbcType=TIMESTAMP}, </if>
+				<if test="(processStatus != null and processStatus != '') or processStatus == 0"> PROCESS_STATUS = #{processStatus, jdbcType=VARCHAR},</if>
+			</trim>
+		</set>
+		where
+		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</update>
+
+	<delete id="deleteEtUserLog" parameterType="EtUserLog">
+		delete from ET_USER_LOG where
+		<if test="id != null and id != ''"> id = #{id} </if>
+		<if test="(id == null or id == '') and (map.pks != null and map.pks != '')">
+			ID in
+			<foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+	</delete>
+
+</mapper>

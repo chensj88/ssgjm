@@ -3,11 +3,10 @@ package cn.com.winning.ssgj.web.controller.admin;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.base.util.CommonFtpUtils;
+import cn.com.winning.ssgj.base.util.ConnectionUtil;
 import cn.com.winning.ssgj.base.util.DateUtil;
-import cn.com.winning.ssgj.domain.PmisProductLineInfo;
-import cn.com.winning.ssgj.domain.SysDataCheckScript;
-import cn.com.winning.ssgj.domain.SysTrainVideoRepo;
-import cn.com.winning.ssgj.domain.SysUserInfo;
+import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.apache.shiro.SecurityUtils;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -79,10 +78,22 @@ public class SysDataScriptController extends BaseController {
     @ResponseBody
     @Transactional
     @ILog
-    public Map<String, Object> updateDataCheckScript(SysDataCheckScript script) {
+    public Map<String, Object> updateDataCheckScript(SysDataCheckScript script) throws ClassNotFoundException, SQLException {
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         script.setLastUpdateTime(DateUtil.getCurrentTimestamp());
         script.setLastUpdator(userInfo.getId());
+//        String content = script.getsDesc();
+//        System.out.println(content);
+//        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+//        Connection connection
+//                = DriverManager.getConnection("jdbc:sqlserver://172.16.0.200:1433;DatabaseName=THIS4","sa","zyc@8468");
+//        PreparedStatement ps = connection.prepareStatement(content);
+//        ps.execute();
+//        ps = connection.prepareStatement("exec usp_yy_jcsj_his '0'");
+//        ResultSet rs = ps.executeQuery();
+//        while (rs.next()){
+//            System.out.println(rs.getString(1)+"--"+rs.getString(2)+"--"+rs.getString(3));
+//        }
         super.getFacade().getSysDataCheckScriptService().modifySysDataCheckScript(script);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
@@ -101,6 +112,25 @@ public class SysDataScriptController extends BaseController {
         return result;
     }
 
+    /**
+     * 文件删除
+     * @param script
+     * @return
+     */
+    @RequestMapping(value = "/deleteFile.do")
+    @ResponseBody
+    @Transactional
+    @ILog
+    public Map<String, Object> deleteFile(SysDataCheckScript script) {
+        script = super.getFacade().getSysDataCheckScriptService().getSysDataCheckScript(script);
+        CommonFtpUtils.removeUploadFile(script.getRemotePath());
+        script.setRemotePath("");
+        super.getFacade().getSysDataCheckScriptService().modifySysDataCheckScript(script);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        return result;
+
+    }
 
     @RequestMapping(value = "/modifyById.do")
     @ResponseBody

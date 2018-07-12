@@ -17,13 +17,13 @@
 
 	<body>
 		<div class="mui-content course">
-			<!--header-->
+			<%--<!--header-->
 			<div class="header">
 				<span class="mui-icon mui-icon-arrowleft" onclick="history.go(-1)"></span>
 				<div>课程学习</div>
 				<span class="mui-icon mui-icon-more"></span>
 			</div>
-			<div class="hole"></div>
+			<div class="hole"></div>--%>
 			<div class="course-study">
 				<div class="left">
 					<p>学习耗时(小时) </p>
@@ -104,7 +104,26 @@
 					</div>
 				</div>
 			</div>
-		</div>
+			<!--底部菜单-->
+			<div class="wrap-foot">
+				<div class="active">
+					<a href="<%=basePath%>/mobile/trainVideoList/list.do">  </a>
+					<i class="iconfont icon-ck"></i>
+					查看
+				</div>
+				<div onclick="videoLoad();">
+					<i class="iconfont icon-sp"></i>
+					视频
+				</div>
+				<div>
+					<i class="iconfont icon-fx"></i>
+					分析
+				</div>
+				<div>
+					<i class="iconfont icon-wo"></i>
+					我
+				</div>
+			</div>		</div>
 		<ul>
 		</ul>
 		<script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>

@@ -91,7 +91,9 @@
                                                     <span class="lbl"> 记住密码</span>
                                                 </label>
 
-                                                <button id="sub_btn"  type="button" class="width-35 pull-right btn btn-sm btn-primary">
+                                                <button id="sub_btn"
+                                                        type="button" class="width-35 pull-right btn btn-sm btn-primary"
+                                                   >
                                                     <i class="icon-key"></i>
                                                     登陆
                                                 </button>
@@ -131,6 +133,13 @@
         jQuery('.widget-box.visible').removeClass('visible');
         jQuery('#'+id).addClass('visible');
     }
+
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == "13") {
+            $("#sub_btn").click();
+        }
+    });
 
    //登陆判断
    $("#sub_btn").click(function() {

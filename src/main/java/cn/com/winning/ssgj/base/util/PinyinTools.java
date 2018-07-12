@@ -75,4 +75,22 @@ public class PinyinTools {
 		return pybf.toString();
 	}
 
+	/**
+	 * 获取首字母，只获取第一位
+	 * @param chinese
+	 * @return
+	 */
+	public static String cn2GetFirstSpell(String chinese) {
+		String chStr = cn2FirstSpell(chinese);
+		String fisrtPYCode = "";
+		if(chStr.startsWith("(")||chStr.startsWith("（")){
+			fisrtPYCode= cn2FirstSpell(chinese).substring(1,2);
+		}else{
+			fisrtPYCode= cn2FirstSpell(chinese).substring(0,1);
+		}
+		return fisrtPYCode;
+	}
+	public static void main(String[] args){
+		System.out.println(cn2GetFirstSpell("（这是一个测试"));
+	}
 }

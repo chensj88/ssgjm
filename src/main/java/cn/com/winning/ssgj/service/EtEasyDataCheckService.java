@@ -5,8 +5,6 @@ import java.util.List;
 import cn.com.winning.ssgj.domain.EtEasyDataCheck;
 
 /**
- *
- *
  * @author SSGJ
  * @date 2018-01-18 10:11:48
  */
@@ -27,6 +25,8 @@ public interface EtEasyDataCheckService {
     List<EtEasyDataCheck> getEtEasyDataCheckPaginatedList(EtEasyDataCheck t);
 
     List<EtEasyDataCheck> selectEtEasyDataCheckListByPmIdAndDataType(EtEasyDataCheck etEasyDataCheck);
+
+    List<EtEasyDataCheck> getInitEtEasyDataCheck(EtEasyDataCheck etEasyDataCheck);
 
 
 }

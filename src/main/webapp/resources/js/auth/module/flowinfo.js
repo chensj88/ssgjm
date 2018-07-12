@@ -7,6 +7,8 @@ $(function () {
     toastr.options.positionClass = 'toast-top-center';
     toastr.options.timeOut = 30;
     toastr.options.extendedTimeOut = 60;
+
+    $('#configDiv').hide();
     /**
      * 查询
      * @constructor
@@ -31,10 +33,11 @@ $(function () {
         };
     }
 
+    let $table = $('#infoTable');
     /**
      * 初始化Table
      */
-    $('#infoTable').bootstrapTable({
+    $table.bootstrapTable({
         url: Common.getRootPath() + '/admin/flow/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -67,49 +70,50 @@ $(function () {
         selectItemName: '单选框',
         // 得到查询的参数
         queryParams: queryParams,
-        columns: [ {
-            field: "id",
-            title: "序号",
-            width: '40px',
-            align: 'center'
-        }, {
+        columns: [{
+            field: "flowName",
+            title: "流程名称",
+            width: '60px',
+            align: 'left'
+        },  {
             field: "flowType",
             title: "流程类型",
-            width: '40px',
+            width: '20px',
             align: 'center',
             formatter :function (value) {
                 if( value == '0'){
                     return '流程大类';
-                }else {
+                }else  if( value == '1') {
                     return '流程小类';
+                }else if(value == '2'){
+                    return '流程配置';
+                }else{
+                    return '未定义';
                 }
             }
-        }, {
+        },{
             field: "flowCode",
             title: "流程编号",
-            width: '50px',
-            align: 'center'
-        }, {
-            field: "flowName",
-            title: "流程名称",
-            width: '60px',
-            align: 'center'
-        }, {
+            width: '35px',
+            align: 'left'
+        },  {
             field: "flowDesc",
             title: "流程描述",
-            width: '60px',
+            width: '80px',
             align: 'center'
-        }, {
-            field: "flowParentCode",
-            title: "上级流程编号",
-            width: '40px',
-            align: 'center'
-        }, {
-            field: 'flowParentName',
-            title: '上级流程名称',
-            width: '40px',
-            align: 'center'
-        }, {
+        },
+        //     {
+        //     field: "flowParentCode",
+        //     title: "上级流程编号",
+        //     width: '40px',
+        //     align: 'center'
+        // }, {
+        //     field: 'flowParentName',
+        //     title: '上级流程名称',
+        //     width: '40px',
+        //     align: 'center'
+        // },
+            {
             field: 'isMust',
             title: '是否必须',
             width: '20px',
@@ -122,6 +126,16 @@ $(function () {
                 }
             }
         }, {
+                field: 'procName',
+                title: '存储名称',
+                width: '20px',
+                align: 'center'
+            },/*{
+                field: 'procParam',
+                title: '存储参数',
+                width: '20px',
+                align: 'center'
+            },*/{
             title: '操作',
             field: 'id',
             align: 'center',
@@ -132,6 +146,21 @@ $(function () {
                 return e + d;
             }
         }],
+        striped:true,
+        treeShowField: 'flowName',
+        parentIdField: 'flowPid',
+        onLoadSuccess: function(data) {
+            $table.treegrid({
+                initialState: 'collapsed',//收缩
+                treeColumn: 0,//指明第几列数据改为树形
+                expanderExpandedClass: 'glyphicon glyphicon-minus',
+                expanderCollapsedClass: 'glyphicon glyphicon-plus',
+                onChange: function() {
+                    $table.bootstrapTable('resetWidth');
+                }
+            });
+        }
+
     });
 
     $.fn.typeahead.Constructor.prototype.blur = function () {
@@ -157,6 +186,9 @@ $(function () {
         $('#flowCodeDiv').show();
         $('#uploadFileDiv').show();
         $('#isModifyDiv').hide();
+        $('#flowInfo').show();
+        $('#configDiv').hide();
+        $('#flowType').val('1');
         $('#flowCodeDiv').attr('readonly',true);
         $('#flowModal').modal('show');
     });
@@ -191,10 +223,18 @@ $(function () {
                         $('#flowParent').hide();
                         $('#uploadFileDiv').hide();
                         $('#isModifyDiv').hide();
+                        $('#flowInfo').show();
+                        $('#configDiv').hide();
+                    }else if(_result.data.flowType == "2"){
+                        initFlowConfig(_result.data);
+                        $('#flowInfo').hide();
+                        $('#configDiv').show();
                     }else{
                         $('#flowParent').show();
                         $('#isModifyDiv').show();
                         $('#uploadFileDiv').hide();
+                        $('#flowInfo').show();
+                        $('#configDiv').hide();
                     }
                     //initFileInput();
                     $('#vid').val(_result.data.id);
@@ -223,12 +263,13 @@ $(function () {
                 success: function (data, status) {
                     var result = eval(data);
                     if (result.status == Common.SUCCESS) {
-                        Ewin.alert('提交数据成功');
+                        toastr.info('提交数据成功');
                         $("#infoTable").bootstrapTable('refresh');
                     }
                 },
                 error: function (msg) {
-                    Ewin.alert(msg);
+                   // Ewin.alert(msg);
+                    toastr.info(msg);
                 },
                 complete: function () {
                 }
@@ -269,10 +310,14 @@ $(function () {
                 success: function (result) {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
+                        toastr.info('提交数据成功');
                         $('#vid').val(_result.data);
                         $('#flowModal').modal('hide');
                         $("#infoTable").bootstrapTable('refresh');
                     }
+                },
+                error: function (msg) {
+                    Ewin.alert(msg);
                 }
             });
         }
@@ -280,14 +325,25 @@ $(function () {
     //流程类型切换
     $('#flowType').on('change',function () {
         var selEle = $(this).val();
+        console.log(selEle);
         if(selEle == '1'){
             $('#flowParent').show();
             $('#flowCodeDiv').show();
             $('#uploadFileDiv').show();
+            $('#flowInfo').show();
+            $('#configDiv').hide();
+            $('#isMustDiv').show();
+        }else if(selEle == '2'){
+            $('#flowInfo').hide();
+            $('#configDiv').show();
+            $('#configCodeDiv').hide();
         }else{
             $('#flowParent').hide();
             $('#flowCodeDiv').hide();
             $('#uploadFileDiv').hide();
+            $('#flowInfo').show();
+            $('#configDiv').hide();
+            $('#isMustDiv').hide();
         }
     });
 
@@ -300,12 +356,15 @@ $(function () {
                 type: "post",
                 dataType: 'json',
                 async: false,
-                data: {'flowCode':query.toUpperCase(),'matchCount':matchCount},
+                data: {'flowCode':query.toUpperCase(),
+                    'flowType':parseInt($('#flowType option:selected').val())-1,
+                    'matchCount':matchCount},
                 success: function (result) {
                     var _result = eval(result);
                     if (_result.status == Common.SUCCESS) {
                         var data = _result.data;
                         if (data == "" || data.length == 0) {
+                            toastr.info('没有查询到相关结果');
                             console.log("没有查询到相关结果");
                         };
                         var results = [];
@@ -347,11 +406,137 @@ $(function () {
         },
         items : 8,
     });
+
+    $('#flowPCode').typeahead({
+        source : function (query,process) {
+            var matchCount =this.options.items;//允许返回结果集最大数量
+            $.ajax({
+                url : Common.getRootPath() + '/admin/flow/queryFlowCode.do',
+                type: "post",
+                dataType: 'json',
+                async: false,
+                data: {'flowCode':query.toUpperCase(),
+                    'flowType':parseInt($('#flowType option:selected').val())-1,
+                    'matchCount':matchCount},
+                success: function (result) {
+                    var _result = eval(result);
+                    if (_result.status == Common.SUCCESS) {
+                        var data = _result.data;
+                        if (data == "" || data.length == 0) {
+                            toastr.info('没有查询到相关结果');
+                            console.log("没有查询到相关结果");
+                        };
+                        var results = [];
+                        for (var i = 0; i < data.length; i++) {
+                            objMap[data[i].flowCode] = data[i].flowName + ',' + data[i].id ;
+                            results.push(data[i].flowCode);
+                        }
+                        process(results);
+                    }
+                }
+            });
+        },
+        highlighter: function (item) {
+            return item +'['+objMap[item].split(',')[0] + ']';
+        },
+        afterSelect: function (item) {       //选择项之后的事件，item是当前选中的选项
+            var selectItem = objMap[item];
+            var selectItemName = selectItem.split(',')[0];
+            var selectItemId = selectItem.split(',')[1];
+            $('#flowPName').val(selectItemName);
+            $('#flowPid').val(selectItemId);
+            $('#flowPCode').parent().find('div.error_font').remove();
+
+            $.ajax({
+                url: Common.getRootPath() + '/admin/flow/createFlowCode.do',
+                data:{
+                    'flowType': $('#flowType').val(),
+                    'flowCode': $('#flowPCode').val()
+                },
+                type: "post",
+                dataType: 'json',
+                async: false,
+                success :function (result) {
+                    var _result = eval(result );
+                    if(_result.status == Common.SUCCESS){
+                        $('#configCode').attr('readonly','true');
+                        $('#configCode').val(_result.data);
+                    }
+                },
+                error: function () {
+                    toastr.error('Error');
+                }
+            });
+        },
+        items : 8,
+    });
+
+    $('#saveConfig').on('click',function (e) {
+       e.preventDefault();
+        //阻止默认行为
+        e.preventDefault();
+        let bootstrapValidator = $("#flowForm").data('bootstrapValidator');
+        //修复记忆的组件不验证
+        if (bootstrapValidator) {
+            bootstrapValidator.validate();
+        }
+
+        let url = '';
+        if ($('#id').val().length == 0) {
+            url = Common.getRootPath() + '/admin/flow/add.do';
+        } else {
+            url = Common.getRootPath() + '/admin/flow/update.do';
+        }
+        let json = {
+           id : $('#id').val(),
+           flowPid : $('#flowPid').val(),
+           flowType :$('#flowType').val(),
+           flowCode : $('#configCode').val(),
+           flowName : $('#configName').val(),
+           flowDesc : $('#configDesc').val(),
+           contentDesc : $('#contentDesc').val(),
+           procName : $('#procName').val(),
+           configSQL : $('#configSQL').val()
+        };
+        if (bootstrapValidator.isValid()) {
+            $.ajax({
+                url: url,
+                data: json,
+                type: "post",
+                dataType: 'json',
+                async: false,
+                cache : false,
+                success: function (result) {
+                    var _result = eval(result);
+                    if (_result.status == Common.SUCCESS) {
+                        toastr.info('提交数据成功');
+                        $('#vid').val(_result.data);
+                        $('#flowModal').modal('hide');
+                        $("#infoTable").bootstrapTable('refresh');
+                    }
+                },
+                error: function () {
+                    toastr.error('Error');
+                }
+            });
+        }
+    });
+
+    function initFlowConfig(data){
+        $('#flowPCode').val(data.flowParentCode);
+        $('#flowPName').val(data.flowParentName);
+        $('#configCode').val(data.flowCode);
+        $('#configName').val(data.flowName);
+        $('#configDesc').val(data.flowDesc);
+
+    }
     /**
      * 表单校验规则
      */
     function validateForm() {
         $('#flowForm').bootstrapValidator({
+            live: 'enabled',
+            submitButtons:'#saveFlow',
             message: '输入的值不符合规格',
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
@@ -385,6 +570,62 @@ $(function () {
                     validators: {
                         notEmpty: {
                             message: '流程描述不能为空'
+                        }
+                    }
+                },
+                flowPCode : {
+                    message: '流程编号验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '流程编号不能为空'
+                        }
+                    }
+                },
+                configName : {
+                    message: '配置名称验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '配置名称不能为空'
+                        }
+                    }
+                },
+                configDesc : {
+                    message: '配置说明验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '配置说明不能为空'
+                        }
+                    }
+                },
+                contentDesc : {
+                    message: '明细说明验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '明细说明不能为空'
+                        }
+                    }
+                },
+                configSQL : {
+                    message: '配置SQL验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '配置SQL不能为空'
+                        }
+                    }
+                },
+                procName : {
+                    message: '存储名称验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '存储名称不能为空'
+                        }
+                    }
+                },
+                procParam : {
+                    message: '存储参数验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '存储参数不能为空'
                         }
                     }
                 },
@@ -448,7 +689,9 @@ $(function () {
                 var fileInfo = data.all;
                 var fileName = data.all[0].name;
                 var suffix = fileName.substring(fileName.lastIndexOf('.'));
-                var isAllow = /(\.|\/)(xls?x|doc?x|pdf)$/i.test(suffix);
+                console.log(suffix);
+                var isAllow = /(\.|\/)(xls|xlsx|doc|docx|pdf)$/i.test(suffix);
+                console.log(isAllow);
                 if(!isAllow){
                     data.all = [];
                     data.files = [];

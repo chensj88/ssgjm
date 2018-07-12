@@ -19,6 +19,8 @@
         <result column="PL_ID" property="plId" jdbcType="BIGINT"/>
         <result column="IS_SCOPE" property="isScope" jdbcType="INTEGER"/>
         <result column="NO_SCOPE_CODE" property="noScopeCode" jdbcType="VARCHAR"/>
+        <result column="SOURCE_ID" property="sourceId" jdbcType="BIGINT"/>
+        <result column="IP_ID" property="ipId" jdbcType="BIGINT"/>
     </resultMap>
 
     <resultMap id="etEasyDataCheckResult" type="etEasyDataCheck" extends="etEasyDataCheckResultForList">
@@ -41,11 +43,13 @@
         <if test="(plId != null and plId != '') or plId == 0">and t.PL_ID = #{plId}</if>
         <if test="(isScope != null and isScope != '') or isScope == 0">and t.IS_SCOPE = #{isScope}</if>
         <if test="noScopeCode != null and noScopeCode != ''">and t.NO_SCOPE_CODE = #{noScopeCode}</if>
+        <if test="(sourceId != null and sourceId != '') or sourceId == 0">and t.SOURCE_ID = #{sourceId}</if>
         <if test="(map.ids != null and (id == null or id == 0))">and t.ID IN
             <foreach collection="map.ids" item="item" open="(" separator="," close=")">
                 #{item}
             </foreach>
         </if>
+        <if test="(ipId != null and ipId != '') or ipId == 0">and t.PD_ID = #{ipId}</if>
     </sql>
 
     <select id="selectEtEasyDataCheck" resultMap="etEasyDataCheckResult" parameterType="etEasyDataCheck">
@@ -66,7 +70,8 @@
         <include refid="sf-etEasyDataCheck"/>
     </select>
 
-    <select id="selectEtEasyDataCheckPaginatedList" resultMap="etEasyDataCheckResult" parameterType="etEasyDataCheck">
+    <select id="selectEtEasyDataCheckPaginatedList" resultMap="etEasyDataCheckResultForList"
+            parameterType="etEasyDataCheck">
         select * from (
         select *, ROW_NUMBER() OVER ( order by ID desc ) as _rn
         from ET_EASY_DATA_CHECK t where 1 = 1
@@ -95,6 +100,8 @@
             <if test="(plId != null and plId != '') or plId == 0">PL_ID,</if>
             <if test="(isScope != null and isScope != '') or isScope == 0">IS_SCOPE,</if>
             <if test="noScopeCode != null and noScopeCode != ''">NO_SCOPE_CODE,</if>
+            <if test="(sourceId != null and sourceId != '') or sourceId == 0">SOURCE_ID,</if>
+            <if test="(ipId != null and ipId != '') or ipId == 0">IP_ID,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -113,7 +120,9 @@
             <if test="operatorTime != null ">#{operatorTime, jdbcType=TIMESTAMP},</if>
             <if test="(plId != null and plId != '') or plId == 0">#{plId,jdbcType=BIGINT},</if>
             <if test="(isScope != null and isScope != '') or isScope == 0">#{isScope,jdbcType=INTEGER},</if>
-            <if test="noScopeCode != null and noScopeCode != ''">#{noScopeCode,jdbcType=VARCHAR}</if>
+            <if test="noScopeCode != null and noScopeCode != ''">#{noScopeCode,jdbcType=VARCHAR},</if>
+            <if test="(sourceId != null and sourceId != '') or sourceId == 0">#{sourceId, jdbcType=BIGINT},</if>
+            <if test="(ipId != null and ipId != '') or ipId == 0">#{ipId,jdbcType=BIGINT},</if>
         </trim>
     </insert>
 
@@ -143,7 +152,8 @@
                 </if>
                 <if test="(plId != null and plId != '') or plId == 0">PL_ID=#{plId,jdbcType=BIGINT},</if>
                 <if test="isScope != null and isScope != ''">IS_SCOPE = #{isScope,jdbcType=INTEGER},</if>
-                <if test="noScopeCode != null">NO_SCOPE_CODE = #{noScopeCode,jdbcType=VARCHAR}</if>
+                <if test="noScopeCode != null">NO_SCOPE_CODE = #{noScopeCode,jdbcType=VARCHAR},</if>
+                <if test="(ipId != null and ipId != '') or ipId == 0">IP_ID=#{ipId,jdbcType=BIGINT},</if>
             </trim>
         </set>
         <where>
@@ -201,5 +211,28 @@
         AND p.ZT = 1
         AND p.HTCPLB = 1
         )
+    </select>
+    <select id="getInitEtEasyDataCheck" resultMap="etEasyDataCheckResult"
+            parameterType="EtEasyDataCheck">
+        SELECT
+        0 AS ID,
+        #{cId} AS C_ID,
+        #{pmId} AS PM_ID,
+        #{serialNo} AS SERIAL_NO,
+        NULL AS DATABASE_NAME,
+        NULL AS TABLE_NAME,
+        s.REMOTE_PATH AS SCRIPT_PATH,
+        0 AS CREATOR,
+        GETDATE() AS CREATE_TIME,
+        NULL AS OPERATOR,
+        0 AS PL_ID,
+        1 AS IS_SCOPE,
+        NULL AS NO_SCOPE_CODE,
+        s.ID AS SOURCE_ID
+        FROM
+        SYS_DATA_CHECK_SCRIPT s
+        WHERE
+        s.STATUS = 1
+        AND s.DATA_TYPE =1
     </select>
 </mapper>

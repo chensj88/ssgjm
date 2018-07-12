@@ -8,6 +8,7 @@ import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.service.EtEasyDataCheckDetailService;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
+import com.alibaba.fastjson.JSONArray;
 import com.jcraft.jsch.ChannelSftp;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -26,6 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -78,21 +82,19 @@ public class EtEasyDataCheckController extends BaseController {
         etEasyDataCheck.setcId(cId);
         etEasyDataCheck.setSerialNo(serialNo.toString());
         //根据pmId获取易用数据校验数据
-        List<EtEasyDataCheck> etEasyDataChecks = getFacade().getEtEasyDataCheckService().selectEtEasyDataCheckListByPmIdAndDataType(etEasyDataCheck);
-        EtEasyDataCheck etEasyDataCheckTemp = null;
-        synchronized (this) {
-            for (EtEasyDataCheck easyDataCheck : etEasyDataChecks) {
-                etEasyDataCheckTemp = new EtEasyDataCheck();
-                etEasyDataCheckTemp.setPmId(easyDataCheck.getPmId());
-                etEasyDataCheckTemp.setPlId(easyDataCheck.getPlId());
-                etEasyDataCheckTemp = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(etEasyDataCheckTemp);
-                if (etEasyDataCheckTemp == null) {
-                    //不存在则插入
-                    easyDataCheck.setId(ssgjHelper.createEtEasyDataCheckId());
-                    getFacade().getEtEasyDataCheckService().createEtEasyDataCheck(easyDataCheck);
-                }
+        List<EtEasyDataCheck> etEasyDataChecks = getFacade().getEtEasyDataCheckService().getInitEtEasyDataCheck(etEasyDataCheck);
+        for (EtEasyDataCheck easyDataCheck : etEasyDataChecks) {
+            EtEasyDataCheck etEasyDataCheckTemp = new EtEasyDataCheck();
+            etEasyDataCheckTemp.setPmId(easyDataCheck.getPmId());
+            etEasyDataCheckTemp.setSourceId(easyDataCheck.getSourceId());
+            etEasyDataCheckTemp = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(etEasyDataCheckTemp);
+            if (etEasyDataCheckTemp == null) {
+                //不存在则插入
+                easyDataCheck.setId(ssgjHelper.createEtEasyDataCheckId());
+                getFacade().getEtEasyDataCheckService().createEtEasyDataCheck(easyDataCheck);
             }
         }
+
         map.put("status", Constants.SUCCESS);
         map.put("msg", "初始化数据成功！");
         return map;
@@ -120,40 +122,63 @@ public class EtEasyDataCheckController extends BaseController {
         //获取单据号即客户
         Long customerId = pmisProjectBasicInfo.getKhxx();
 
-        etEasyDataCheck.setRow(row);
+        EtEasyDataCheck easyDataCheckTemp = new EtEasyDataCheck();
 
-        etEasyDataCheck.setcId(contractId);
+        easyDataCheckTemp.setRow(row);
 
-        etEasyDataCheck.setSerialNo(customerId.toString());
+        easyDataCheckTemp.setPmId(pmId);
+
+        easyDataCheckTemp.setcId(contractId);
+
+        easyDataCheckTemp.setSerialNo(customerId.toString());
+
         //获取基础数据校验
         List<EtEasyDataCheck> etEasyDataChecks =
-                getFacade().getEtEasyDataCheckService().getEtEasyDataCheckPaginatedList(etEasyDataCheck);
-        int total = getFacade().getEtEasyDataCheckService().getEtEasyDataCheckCount(etEasyDataCheck);
+                getFacade().getEtEasyDataCheckService().getEtEasyDataCheckPaginatedList(easyDataCheckTemp);
+        int total = getFacade().getEtEasyDataCheckService().getEtEasyDataCheckCount(easyDataCheckTemp);
         //封装外参数
         PmisProductLineInfo pmisProductLineInfo = null;
         for (EtEasyDataCheck easyDataCheck : etEasyDataChecks) {
-            pmisProductLineInfo = new PmisProductLineInfo();
-            pmisProductLineInfo.setId(easyDataCheck.getPlId());
-            pmisProductLineInfo = getFacade().getPmisProductLineInfoService().getPmisProductLineInfo(pmisProductLineInfo);
             //封装属性
             Map propMap = new HashMap();
+            SysDataCheckScript sysDataCheckScript = new SysDataCheckScript();
+            sysDataCheckScript.setId(easyDataCheck.getSourceId());
+            sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(sysDataCheckScript);
             String content = easyDataCheck.getContent();
             if (StringUtil.isEmptyOrNull(content) || "正常".equals(content)) {
                 propMap.put("state", 0);
             } else {
                 propMap.put("state", 1);
             }
-            propMap.put("type", pmisProductLineInfo.getName());
+            if (sysDataCheckScript != null) {
+                String scriptPath = sysDataCheckScript.getRemotePath();
+                scriptPath = scriptPath.substring(scriptPath.lastIndexOf("/") + 1, scriptPath.lastIndexOf("."));
+                propMap.put("type", scriptPath);
+            }
+            Long ipId = easyDataCheck.getIpId();
+            String databaseIp = "";
+            if (ipId != null) {
+                EtDatabasesList database = new EtDatabasesList();
+                database.setId(ipId);
+                database = getFacade().getEtDatabasesListService().getEtDatabasesList(database);
+                databaseIp = database == null ? "" : database.getDataAlias();
+            }
+            propMap.put("ip", databaseIp);
             easyDataCheck.setMap(propMap);
         }
         //根据pmid获取项目进程
         EtProcessManager etProcessManager = new EtProcessManager();
         etProcessManager.setPmId(pmId);
         etProcessManager = getFacade().getEtProcessManagerService().getEtProcessManager(etProcessManager);
+        //获取ipList
+        EtDatabasesList etDatabasesList = new EtDatabasesList();
+        etDatabasesList.setPmId(pmId);
+        List<EtDatabasesList> etDatabasesListList = getFacade().getEtDatabasesListService().getEtDatabasesListList(etDatabasesList);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rows", etEasyDataChecks);
         map.put("total", total);
         map.put("status", Constants.SUCCESS);
+        map.put("ipList", etDatabasesListList);
         map.put("process", etProcessManager);
         return map;
     }
@@ -248,13 +273,13 @@ public class EtEasyDataCheckController extends BaseController {
                 //更新易用校验数据content
                 etEasyDataCheck.setContent(content);
                 //文件夹路径
-                String dir = Constants.UPLOAD_PC_PREFIX + pmId + "/easyDataCheck/" + pmisProductLineInfo.getName() + "/";
-                String src = newFile.getAbsolutePath();
-                String fileName = newFile.getName();
-                etEasyDataCheck.setScriptPath(dir + fileName);
+//                String dir = Constants.UPLOAD_PC_PREFIX + pmId + "/easyDataCheck/" + pmisProductLineInfo.getName() + "/";
+//                String src = newFile.getAbsolutePath();
+//                String fileName = newFile.getName();
+//                etEasyDataCheck.setScriptPath(dir + fileName);
                 getFacade().getEtEasyDataCheckService().modifyEtEasyDataCheck(etEasyDataCheck);
                 //将文件上传到ftp服务器
-                SFtpUtils.uploadFile(src, dir, fileName);
+//                SFtpUtils.uploadFile(src, dir, fileName);
                 newFile.delete();
                 result.put("status", "success");
             } catch (Exception e) {
@@ -375,12 +400,12 @@ public class EtEasyDataCheckController extends BaseController {
         //获取数据校验信息
         EtEasyDataCheck etEasyDataCheck = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(t);
         SysDataCheckScript temp = new SysDataCheckScript();
-        Long plId = etEasyDataCheck.getPlId();
+        Long sourceId = etEasyDataCheck.getSourceId();
         Map map = new HashMap();
-        if (plId == null) {
+        if (sourceId == null) {
             return null;
         }
-        temp.setAppId(etEasyDataCheck.getPlId());
+        temp.setId(sourceId);
         SysDataCheckScript sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(temp);
         //增加null判断
         if (sysDataCheckScript == null) {
@@ -397,12 +422,10 @@ public class EtEasyDataCheckController extends BaseController {
         }
         //获取文件名
         String filename = scriptPath.substring(scriptPath.lastIndexOf("/") + 1);
-        ChannelSftp sftpConnect = null;
+        String path = scriptPath.replace(filename, "");
         byte[] bytes = null;
         try {
-            sftpConnect = SFtpUtils.getSftpConnect();
-            //sftpConnect.setFilenameEncoding("GBK");
-            bytes = SFtpUtils.downloadAsByte(scriptPath, sftpConnect);
+            bytes = CommonFtpUtils.downloadFileAsByte(filename, path);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -544,18 +567,18 @@ public class EtEasyDataCheckController extends BaseController {
         HashMap map = new HashMap();
         map.put("ids", ids);
         easyDataCheck.setMap(map);
-        List<File> fileList = new ArrayList();
+        List<List> fileByteList = new ArrayList();
         //获取数据校验信息
         List<EtEasyDataCheck> etEasyDataChecks = getFacade().getEtEasyDataCheckService().getEtEasyDataCheckList(easyDataCheck);
         for (int i = 0; i < etEasyDataChecks.size(); i++) {
             EtEasyDataCheck etEasyDataCheck = etEasyDataChecks.get(i);
             //获取
             SysDataCheckScript temp = new SysDataCheckScript();
-            Long plId = etEasyDataCheck.getPlId();
-            if (plId == null) {
+            Long sourceId = etEasyDataCheck.getSourceId();
+            if (sourceId == null) {
                 return;
             }
-            temp.setAppId(etEasyDataCheck.getPlId());
+            temp.setId(sourceId);
             SysDataCheckScript sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(temp);
             if (sysDataCheckScript == null) {
                 return;
@@ -567,14 +590,15 @@ public class EtEasyDataCheckController extends BaseController {
             }
             //获取文件名
             String filename = scriptPath.substring(scriptPath.lastIndexOf("/") + 1);
-            String saveFile = "/sql/" + filename.substring(0, filename.indexOf(".")) + "_" + i + "." + filename.substring(filename.indexOf(".") + 1);
-            ChannelSftp sftpConnect = null;
-            File file = null;
+//            String saveFile = "/sql/" + filename.substring(0, filename.indexOf(".")) + "_" + i + "." + filename.substring(filename.indexOf(".") + 1);
+            String ftpPath = scriptPath.replace(filename, "");
+//            File file = null;
+            List byteList = new ArrayList();
+            byteList.add(0, filename);
             try {
-                sftpConnect = SFtpUtils.getSftpConnect();
-                //sftpConnect.setFilenameEncoding("GBK");
-                file = SFtpUtils.download(scriptPath, saveFile, sftpConnect);
-                fileList.add(file);
+                byte[] fileByte = CommonFtpUtils.downloadFileAsByte(filename, ftpPath);
+                byteList.add(1, fileByte);
+                fileByteList.add(byteList);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -594,24 +618,21 @@ public class EtEasyDataCheckController extends BaseController {
         FileInputStream fileInputStream = null;
         String fileName = null;
         //循环打包到输出流
-        for (File currentFile : fileList) {
-            fileName = currentFile.getName();
-            fileInputStream = new FileInputStream(currentFile);
-            byte[] buf = new byte[fileInputStream.available()];
+        for (List currentList : fileByteList) {
+            fileName = (String) currentList.get(0);
+            byte[] buf = (byte[]) currentList.get(1);
             //放入压缩zip包中;
             zipOutputStream.putNextEntry(new ZipEntry(fileName));
 
             //读取文件;
-            while ((len = fileInputStream.read(buf)) > 0) {
-                zipOutputStream.write(buf, 0, len);
-            }
+            zipOutputStream.write(buf);
+
             //关闭;
             zipOutputStream.closeEntry();
             if (fileInputStream != null) {
                 fileInputStream.close();
 
             }
-            currentFile.delete();
         }
         zipOutputStream.flush();
         zipOutputStream.close();
@@ -640,6 +661,142 @@ public class EtEasyDataCheckController extends BaseController {
         map.put("type", Constants.SUCCESS);
         map.put("msg", "范围修改成功！");
         return map;
+    }
+
+
+    /**
+     * 脚本校验
+     *
+     * @param etEasyDataCheck
+     * @return
+     */
+    @RequestMapping(value = "/doScriptCheck.do")
+    @ResponseBody
+    @Transactional
+    public Map<String, Object> doScriptCheck(EtEasyDataCheck etEasyDataCheck) {
+        if (etEasyDataCheck.getIpId() == null) {
+            resultMap.put("status", Constants.FAILD);
+            return resultMap;
+        }
+        //ipId
+        EtDatabasesList etDatabasesList = new EtDatabasesList();
+        etDatabasesList.setId(etEasyDataCheck.getIpId());
+        etDatabasesList = getFacade().getEtDatabasesListService().getEtDatabasesList(etDatabasesList);
+        if (etDatabasesList == null) {
+            resultMap.put("status", Constants.FAILD);
+            return resultMap;
+        }
+        //数据库参数
+        String ip = etDatabasesList.getIp();
+        String userName = etDatabasesList.getUserName();
+        String pw = etDatabasesList.getPw();
+//        String databaseName = etDataCheck.getDatabaseName();
+        String databaseName = etDatabasesList.getDatabaseName();
+        //连接数据库
+        Connection connection = ConnectionUtil.getConnection(ip, userName, pw, databaseName);
+        if (connection == null) {
+            resultMap.put("status", Constants.FAILD);
+            return resultMap;
+        }
+        EtEasyDataCheck temp = new EtEasyDataCheck();
+        temp.setId(etEasyDataCheck.getId());
+        temp = getFacade().getEtEasyDataCheckService().getEtEasyDataCheck(temp);
+        SysDataCheckScript sysDataCheckScript = new SysDataCheckScript();
+        sysDataCheckScript.setId(temp.getSourceId());
+        sysDataCheckScript = getFacade().getSysDataCheckScriptService().getSysDataCheckScript(sysDataCheckScript);
+        //获取select sql 集合
+        String sqlStr = sysDataCheckScript.getsDesc();
+        String[] sqlArr = sqlStr.split(";");
+        List<String> sqlList = Arrays.asList(sqlArr);
+        //已经维护的个人协定数据
+        Integer doctorMaintainNum = 0;
+        //已经维护的科室协定数据
+        Integer deptMaintainNum = 0;
+        //未维护的个人协定数据
+        Integer doctorNotMaintainNum = 0;
+        //未维护的科室协定数据
+        Integer deptNotMaintainNum = 0;
+        //清空校验数据
+        EtEasyDataCheckDetail detailTemp = new EtEasyDataCheckDetail();
+        detailTemp.setSourceId(etEasyDataCheck.getId());
+        getFacade().getEtEasyDataCheckDetailService().removeEtEasyDataCheckDetail(detailTemp);
+        List<EtEasyDataCheckDetail> etEasyDataCheckDetails = new ArrayList<>();
+        logger.info("start insert detail>>>>>>>>>>>>>>>>>>>>>>>>>");
+        logger.info("start time:{}", System.currentTimeMillis());
+        for (int i = 0; i < sqlList.size(); i++) {
+            ResultSet rs = null;
+            logger.info("sql:{}", sqlList.get(i));
+            try {
+                PreparedStatement ps = connection.prepareStatement(sqlList.get(i));
+                rs = ps.executeQuery();
+                if (i == 0) {
+                    while (rs.next()) {
+                        doctorMaintainNum++;
+                    }
+                } else if (i == 1) {
+                    while (rs.next()) {
+                        doctorNotMaintainNum++;
+                        if (doctorNotMaintainNum > 1) {
+                            EtEasyDataCheckDetail detail = new EtEasyDataCheckDetail();
+                            detail.setId(ssgjHelper.createEtEasyDataCheckDetailId());
+                            detail.setSourceId(etEasyDataCheck.getId());
+                            detail.setDeptDoctorCode(rs.getString(1));
+                            detail.setDeptDoctorName(rs.getString(2));
+                            etEasyDataCheckDetails.add(detail);
+//                            getFacade().getEtEasyDataCheckDetailService().createEtEasyDataCheckDetail(detail);
+
+                        }
+                    }
+                } else if (i == 2) {
+                    while (rs.next()) {
+                        deptMaintainNum++;
+                    }
+                } else if (i == 3) {
+                    while (rs.next()) {
+                        deptNotMaintainNum++;
+                        if (deptNotMaintainNum > 1) {
+                            EtEasyDataCheckDetail detail = new EtEasyDataCheckDetail();
+                            detail.setId(ssgjHelper.createEtEasyDataCheckDetailId());
+                            detail.setSourceId(etEasyDataCheck.getId());
+                            detail.setDeptDoctorCode(rs.getString(1));
+                            detail.setDeptDoctorName(rs.getString(2));
+                            etEasyDataCheckDetails.add(detail);
+//                            getFacade().getEtEasyDataCheckDetailService().createEtEasyDataCheckDetail(detail);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                resultMap.put("status", Constants.FAILD);
+                resultMap.put("msg", e.getMessage());
+                return resultMap;
+            }
+        }
+
+        getFacade().getEtEasyDataCheckDetailService().insertEtEasyDataCheckDetailByList(etEasyDataCheckDetails);
+        logger.info("start time:{}", System.currentTimeMillis());
+        logger.info("end insert detail>>>>>>>>>>>>>>>>>>>>>>>>>");
+        doctorMaintainNum--;
+        doctorNotMaintainNum--;
+        deptMaintainNum--;
+        deptNotMaintainNum--;
+        String content = "";
+        //当无未维护数据时，校验正常
+        if (doctorNotMaintainNum == 0 && deptNotMaintainNum == 0) {
+            content = "校验正常";
+
+        } else {
+            //计算医生维护率
+            String docStr = NumberParseUtil.parsePercent(doctorMaintainNum, doctorMaintainNum + doctorNotMaintainNum);
+            //计算科室维护率
+            String deptStr = NumberParseUtil.parsePercent(deptMaintainNum, deptMaintainNum + deptNotMaintainNum);
+            content = docStr + "的医生维护；" + deptStr + "的科室维护。";
+        }
+        //更新易用校验数据content
+        etEasyDataCheck.setContent(content);
+        getFacade().getEtEasyDataCheckService().modifyEtEasyDataCheck(etEasyDataCheck);
+        resultMap.put("status", Constants.SUCCESS);
+        return resultMap;
     }
 }
 

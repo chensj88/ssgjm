@@ -45,4 +45,6 @@ public interface SysDictInfoDao extends EntityDao<SysDictInfo> {
     List<SysDictInfo> selectSysDictInfoListByValue(SysDictInfo dict);
 
     List<SysDictInfo> selectSysDictInfoListBySelectKey(SysDictInfo info);
+
+    List<SysDictInfo> selectSysDictInfoListByDesc(SysDictInfo dict);
 }

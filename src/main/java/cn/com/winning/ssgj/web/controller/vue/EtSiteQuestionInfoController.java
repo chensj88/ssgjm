@@ -107,7 +107,9 @@ public class EtSiteQuestionInfoController extends BaseController {
         result.put("data", this.getEtUserInfo(pmid));
         result.put("nameList", nameList);
         result.put("numList", numList);
-        result.put("plList", this.getProductLineList());
+        //产品信息更
+        result.put("plList", this.getProductDictInfo(info.getSerialNo()));
+        /*result.put("plList", this.getProductLineList());*/
         result.put("deptList", this.getDepartmentList(Long.valueOf(serialNo), null));
         return result;
     }
@@ -148,6 +150,10 @@ public class EtSiteQuestionInfoController extends BaseController {
     @ResponseBody
     @Transactional
     public Map<String, Object> updateOperate(EtSiteQuestionInfo info) {
+        if(info.getOperType() == null && info.getPriority() == null
+                && info.getAllocateUser() != null){
+            info.setProcessStatus(Constants.ALLOCATED_UNACCEPTED);
+        }
         info.setOperatorTime(new Timestamp(new Date().getTime()));
         super.getFacade().getEtSiteQuestionInfoService().modifyEtSiteQuestionInfo(info);
         Map<String, Object> result = new HashMap<String, Object>();

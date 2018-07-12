@@ -75,7 +75,7 @@ public class SysDataCheckScriptServiceImpl implements SysDataCheckScriptService 
 
     public boolean existDataCheckScriptName(SysDataCheckScript script) {
         int count = this.sysDataCheckScriptDao.selectExistDataCheckScriptName(script);
-        if (count > 0) {
+        if (count > 1) {
             return false;
         }
         return true;
@@ -84,7 +84,7 @@ public class SysDataCheckScriptServiceImpl implements SysDataCheckScriptService 
     @Override
     public boolean existDataCheckScript(SysDataCheckScript script) {
         int count = this.sysDataCheckScriptDao.existDataCheckScript(script);
-        if (count > 0) {
+        if (count > 1) {
             return false;
         }
         return true;

@@ -41,4 +41,6 @@ public interface SysDictInfoService {
     List<SysDictInfo> getSysDictInfoListByValue(List<String> valueList, String serialNo);
 
     List<SysDictInfo> getSysDictInfoListBySelectKey(SysDictInfo info);
+
+    List<SysDictInfo> getSysDictInfoListByDesc(SysDictInfo dict);
 }

@@ -32,4 +32,10 @@ public interface EtBusinessProcessService {
 	 * @return
 	 */
     List<Long> getUnInitEtBusinessProcess(EtBusinessProcess process);
+
+	/**
+	 * 流程配置信息创建的时候，自动更新业务流程信息的配置
+	 * @param process
+	 */
+	int modifyEtBusinessProcessConfigBatch(EtBusinessProcess process);
 }

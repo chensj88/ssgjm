@@ -14,6 +14,8 @@ public class Constants implements Serializable {
     public static String FTP_SERVER = FtpPropertiesLoader.getProperty("ftp.server");
     public static String FTP_SHARE_SERVER = FtpPropertiesLoader.getProperty("ftp.share");
     public static String FTP_SHARE_FLODER = "http://" + FTP_SHARE_SERVER + ":8081/shareFolder";
+    public static String HTTP_SERVER = "http://" + FTP_SHARE_SERVER + ":8081/ssgjm";
+
     /**
      * FTP上传文件前缀  PC端
      */
@@ -291,6 +293,10 @@ public class Constants implements Serializable {
          * 流程小类
          */
         public static final String FLOW_TYPE_SMALL = "1";
+        /**
+         * 流程配置
+         */
+        public static final String FLOW_TYPE_CONFIG = "2";
 
         /**
          * 一级流程ID
@@ -354,6 +360,10 @@ public class Constants implements Serializable {
          * 查询底稿状态
          */
         public static final String QUERY_WORK_WS_SERVICE_OBJECT_NAME = "WS_DS_CXDGZT";
+        /**
+         * 用户登录服务
+         */
+        public static final String USER_LOGIN_WS_SERVICE_OBJECT_NAME = "PUB_DS_YHXY";
         /**
          * PMIS WS 服务类型  1 用户
          */
@@ -449,6 +459,7 @@ public class Constants implements Serializable {
     public class Vue {
         public static final String VUE_LOGIN_URL = "/ssgjm/vue/login.do";
         public static final String VUE_LOGOUT_URL = "/ssgjm/vue/logout.do";
+        public static final String VUE_TOKEN_CHECK_URL = "/ssgjm/vue/commons/checkToken.do";
         public static final String VUE_TOKEN_NAME = "token";
         public static final String COMMON_EXPORT_TAG = "export";
         public static final String COMMON_DOWNLOAD_TAG = "download";
@@ -474,7 +485,7 @@ public class Constants implements Serializable {
         public static final int RP_BB = 2;
     }
 
-    public class DictInfo{
+    public class DictInfo {
         /**
          * 地区信息
          */
@@ -484,11 +495,11 @@ public class Constants implements Serializable {
          */
         public static final String AUDI_TYPE = "audiType";
         /**
-         *数据类型
+         * 数据类型
          */
         public static final String DATA_TYPE = "dataType";
         /**
-         *难度级别
+         * 难度级别
          */
         public static final String DIFFCULT_LEVEL = "diffcultLevel";
         /**
@@ -573,4 +584,35 @@ public class Constants implements Serializable {
         public static final String VIDEO_TYPE = "videoType";
 
     }
+
+    /**
+     * 新建（待分配）
+     */
+    public static final int CREATE_UNALLOCATED = 1;
+    /**
+     * 已分配（未接受）
+     */
+    public static final int ALLOCATED_UNACCEPTED = 2;
+    /**
+     * 接受（未处理）
+     */
+    public static final int ACCEPTED_UNTREATED = 3;
+    /**
+     * 已处理（完成）
+     */
+    public static final int TREATED_COMPLETE = 4;
+    /**
+     * 院方确认完成（结束）
+     */
+    public static final int CONFIRM_END = 5;
+    /**
+     * 院方打回
+     */
+    public static final int REFUSE = 6;
+
+    /**
+     * 工程师打回
+     */
+    public static final int ENGINEER_REFUSE = 7;
+
 }

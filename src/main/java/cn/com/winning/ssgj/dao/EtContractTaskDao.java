@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.dao;
 
 import cn.com.winning.ssgj.domain.EtContractTask;
 import cn.com.winning.ssgj.dao.EntityDao;
+import cn.com.winning.ssgj.domain.MobileSiteQuestion;
 import org.springframework.dao.DataAccessException;
 
 import java.util.List;
@@ -40,4 +41,10 @@ public interface EtContractTaskDao extends EntityDao<EtContractTask> {
     String selectEtContractTaskForSiteInstall(EtContractTask task);
 
     String selectTaskTeamMemebers(EtContractTask task);
+
+    List<String> selectEtContractTaskFirstInitCode(EtContractTask task);
+
+    List<EtContractTask> selectWechatContractTaskData(EtContractTask task);
+
+    List<EtContractTask> selectWechatContractTaskDataForNum(EtContractTask task);
 }

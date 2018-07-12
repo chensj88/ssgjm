@@ -1,7 +1,9 @@
 package cn.com.winning.ssgj.web.controller.vue;
 
 import cn.com.winning.ssgj.base.Constants;
+import cn.com.winning.ssgj.base.util.TemplateUtils;
 import cn.com.winning.ssgj.domain.SysDictInfo;
+import cn.com.winning.ssgj.domain.SysLoginUser;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.stereotype.Controller;
@@ -34,37 +36,8 @@ public class VueCommonController extends BaseController {
      * @throws IOException
      */
     @RequestMapping(value = "/downloadWorkreport.do")
-    public HttpServletResponse exportWorkTemplate( HttpServletResponse response) throws IOException {
-        String fileName = "EtWorkReportTemplate.xls";
-        String path = getClass().getClassLoader().getResource("/template").getPath() + fileName;
-        try {
-            // path是指欲下载的文件的路径。
-            File file = new File(path);
-            // 取得文件名。
-            String filename = file.getName();
-            // 取得文件的后缀名。
-            String ext = filename.substring(filename.lastIndexOf(".") + 1).toUpperCase();
-
-            // 以流的形式下载文件。
-            InputStream fis = new BufferedInputStream(new FileInputStream(path));
-            byte[] buffer = new byte[fis.available()];
-            fis.read(buffer);
-            fis.close();
-            // 清空response
-            response.reset();
-            // 设置response的Header
-            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("站点问题导入模板.xls","UTF-8"));
-            response.addHeader("Content-Length", "" + file.length());
-            OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
-            response.setContentType("application/octet-stream");
-            toClient.write(buffer);
-            toClient.flush();
-            toClient.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
-        return response;
+    public void exportWorkTemplate( HttpServletResponse response,String serialNo) throws IOException {
+        TemplateUtils.createWorkreport(getFacade(),response,serialNo,"工作底稿导入.xls");
     }
 
     /**
@@ -77,19 +50,22 @@ public class VueCommonController extends BaseController {
         SysDictInfo dict = new SysDictInfo();
         dict.setDictCode(Constants.DictInfo.PRODUCT_NAME);
         dict.getMap().put("type","1");
-        List<SysDictInfo> firstDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByType(dict);
+        List<SysDictInfo> firstDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByDesc(dict);
         dict.getMap().put("type","2");
-        List<SysDictInfo> secondDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByType(dict);
+        List<SysDictInfo> secondDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByDesc(dict);
         dict.getMap().put("type","3");
-        List<SysDictInfo> thirdDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByType(dict);
+        List<SysDictInfo> thirdDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByDesc(dict);
         dict.getMap().put("type","4");
-        List<SysDictInfo> fourDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByType(dict);
+        List<SysDictInfo> fourDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByDesc(dict);
+        dict.getMap().put("type","5");
+        List<SysDictInfo> fiveDicts = super.getFacade().getSysDictInfoService().getSysDictInfoListByDesc(dict);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data1",firstDicts);
         result.put("data2",secondDicts );
         result.put("data3",thirdDicts);
         result.put("data4",fourDicts);
+        result.put("data5",fiveDicts);
         return result;
 
     }
@@ -117,6 +93,17 @@ public class VueCommonController extends BaseController {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", nodeTreeList);
+        return result;
+    }
+
+
+    @RequestMapping(value = "/checkToken.do")
+    @ResponseBody
+    public Map<String, Object> checkToken(String token){
+        SysLoginUser loginUser = super.getFacade().getSysLoginUserService().getSysLoginUserBySelectiveKey(token);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("status", Constants.SUCCESS);
+        result.put("data", loginUser == null ? 0 : 1 );
         return result;
     }
 

@@ -311,6 +311,7 @@
             AND B.JHZT = 0
             AND  B.FWLX = 0
             AND B.ZJZT = 1
+            AND B.HTLX = 1
             AND  CAST(KHJDLJ AS NUMERIC(10,2)) &lt; 90
             <if test="map.userId != null">
                 AND A.RY = #{map.userId}
@@ -327,8 +328,10 @@
             AND B.JHZT = 0
             AND  B.FWLX = 0
             AND B.ZJZT = 1
+            AND B.HTLX = 1
             AND  CAST(KHJDLJ AS NUMERIC(10,2)) &lt; 90
-            AND  A.IS_DEL=1
+            AND A.IS_DEL=1
+            AND A.POSITION_NAME != '4'
             <if test="map.userId != null">
                 AND A.USER_ID = #{map.userId}
             </if>

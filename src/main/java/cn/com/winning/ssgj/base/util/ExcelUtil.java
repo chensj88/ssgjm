@@ -1,8 +1,6 @@
 package cn.com.winning.ssgj.base.util;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.xssf.usermodel.*;
@@ -352,6 +350,19 @@ public class ExcelUtil {
             Font font=workBook.createFont();
             font.setBoldweight(Font.BOLDWEIGHT_BOLD);
             cellStyle.setFont(font);
+            cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 居中
+            cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); //下边框
+            cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
+            cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
+            cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
+
+            //除去第一行边框
+            CellStyle cellStyle1 = workBook.createCellStyle();
+            cellStyle1.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 居中
+            cellStyle1.setBorderBottom(HSSFCellStyle.BORDER_THIN); //下边框
+            cellStyle1.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
+            cellStyle1.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
+            cellStyle1.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
             // sheet 对应一个工作页
             Sheet sheet = workBook.createSheet();
             //第一行保存列名
@@ -388,6 +399,7 @@ public class ExcelUtil {
                         value = dataMap.get(colList.get(k)).toString();
                     }
                     cell.setCellValue(value);
+                    cell.setCellStyle(cellStyle1);
                 }
             }
             //获取响应输出流
@@ -404,4 +416,116 @@ public class ExcelUtil {
         }
         System.out.println("数据导出成功");
     }
+
+
+    /**
+     * 书写导入数据的模板
+     * @param response
+     * @param columnNameOfFirstRow 第一行数据的列明
+     * @param workBook Excel
+     * @param validateRoles 数据有效性
+     * @param filename 文件名
+     */
+    public static void writeTemplateExcel(
+            HttpServletResponse response,
+            List<String> columnNameOfFirstRow,
+            Workbook workBook,
+            List<Map<String,Object>> validateRoles,
+            List<Map<String,Object>> hiddenValidateRoles,
+            String filename){
+        OutputStream out = null;
+        try {
+            // sheet 对应一个工作页
+            Sheet sheet = workBook.createSheet();
+            Sheet hidden = null;
+            DataValidationConstraint dvConstraint = null;
+            CellRangeAddressList addressList = null;
+            DataValidation validation = null;
+            //多值匹配使用hidden sheet
+            for (int j = 0; j < hiddenValidateRoles.size(); j++) {
+                hidden = workBook.createSheet("hidden"+j);
+                Cell cell1 = null;
+                Map<String, Object> hiddenValidateRole =  hiddenValidateRoles.get(j);
+                String[] roles = (String[]) hiddenValidateRole.get("roles");
+                for (int i = 0, length= roles.length; i < length; i++) {
+                    String name = roles[i];
+                    Row row = hidden.createRow(i);
+                    cell1 = row.createCell(0);
+                    cell1.setCellValue(name);
+                }
+
+                addressList =
+                        new CellRangeAddressList(Integer.parseInt(hiddenValidateRole.get("firstRow").toString()),
+                                Integer.parseInt(hiddenValidateRole.get("lastRow").toString()),
+                                Integer.parseInt(hiddenValidateRole.get("firstCol").toString()),
+                                Integer.parseInt(hiddenValidateRole.get("lastCol").toString()));
+                Name namedCell = workBook.createName();
+                namedCell.setNameName("hidden"+j);
+                namedCell.setRefersToFormula("hidden"+j+"!$A$1:$A$" + roles.length);
+                dvConstraint = DVConstraint.createFormulaListConstraint("hidden"+j);
+                validation = new HSSFDataValidation(addressList, dvConstraint);
+
+                workBook.setSheetHidden(j+1, true);
+                sheet.addValidationData(validation);
+            }
+
+            //样式
+            CellStyle cellStyle = workBook.createCellStyle();
+            Font font=workBook.createFont();
+            font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            cellStyle.setFont(font);
+            cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 居中
+            cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); //下边框
+            cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
+            cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
+            cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
+            //设置Excel数据有效性
+            //DataValidationHelper dvHelper = new XSSFDataValidationHelper((XSSFSheet) sheet);
+
+
+
+            for (Map<String, Object> validateRole : validateRoles) {
+                dvConstraint =   DVConstraint.createExplicitListConstraint((String[]) validateRole.get("roles"));
+                addressList = new CellRangeAddressList(
+                        Integer.parseInt(validateRole.get("firstRow").toString()),
+                        Integer.parseInt(validateRole.get("lastRow").toString()),
+                        Integer.parseInt(validateRole.get("firstCol").toString()),
+                        Integer.parseInt(validateRole.get("lastCol").toString()));
+                validation = new HSSFDataValidation(addressList, dvConstraint);
+                //数据有效性对象
+                sheet.addValidationData(validation);
+            }
+
+            //第一行保存列名
+            Row colRow = sheet.createRow(0);
+            for (int i = 0; i < columnNameOfFirstRow.size(); i++) {
+                Cell cell = colRow.createCell(i);
+                cell.setCellStyle(cellStyle);
+                cell.setCellValue(columnNameOfFirstRow.get(i).toString());
+                sheet.setColumnWidth(i, 20 * 256);
+            }
+            //获取响应输出流
+            OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
+            // 设置response的Header
+            response.setContentType("application/msexcel;charset=UTF-8");
+            response.addHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode(filename, "UTF-8"))));
+            workBook.write(outputStream);
+            outputStream.flush();
+            outputStream.close();
+            workBook.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.flush();
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 }

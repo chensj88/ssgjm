@@ -97,6 +97,23 @@ public class EtEasyDataCheck extends BaseDomain implements Serializable {
      */
     private String noScopeCode;
 
+    /**
+     * @val 数据源ID
+     */
+    private Long sourceId;
+
+    /**
+     * @val 数据源ID
+     */
+    private Long ipId;
+
+    public Long getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(Long sourceId) {
+        this.sourceId = sourceId;
+    }
 
     public Integer getIsScope() {
         return isScope;
@@ -303,4 +320,11 @@ public class EtEasyDataCheck extends BaseDomain implements Serializable {
         this.operatorTime = operatorTime;
     }
 
+    public Long getIpId() {
+        return ipId;
+    }
+
+    public void setIpId(Long ipId) {
+        this.ipId = ipId;
+    }
 }

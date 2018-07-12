@@ -4,6 +4,7 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.CommonFtpUtils;
+import cn.com.winning.ssgj.domain.EtBusinessProcess;
 import cn.com.winning.ssgj.domain.SysFlowInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.domain.support.Row;
@@ -47,12 +48,14 @@ public class FlowInfoController extends BaseController {
     @RequestMapping(value = "/list.do")
     @ResponseBody
     public Map<String, Object> getFlowList(Row row, SysFlowInfo flowInfo) {
-        flowInfo.setRow(row);
+//        flowInfo.setRow(row);
+//        flowInfo.setStatus(Constants.STATUS_USE);
+//        List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().getSysFlowInfoPaginatedListForSelective(flowInfo);
+//        int total = super.getFacade().getSysFlowInfoService().getSysFlowInfoCountForSelective(flowInfo);
         flowInfo.setStatus(Constants.STATUS_USE);
-        List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().getSysFlowInfoPaginatedListForSelective(flowInfo);
-        int total = super.getFacade().getSysFlowInfoService().getSysFlowInfoCountForSelective(flowInfo);
+        List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().getSysFlowInfoListBySelectiveKey(flowInfo);
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("total", total);
+        //result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows", flowInfos);
         return result;
@@ -60,12 +63,13 @@ public class FlowInfoController extends BaseController {
 
     @RequestMapping(value = "/queryFlowCode.do")
     @ResponseBody
-    public Map<String, Object> queryFlowCode(String flowCode, int matchCount) {
+    public Map<String, Object> queryFlowCode(String flowCode,int flowType, int matchCount) {
         Row row = new Row(0, matchCount);
         SysFlowInfo flowInfo = new SysFlowInfo();
         flowInfo.setRow(row);
         flowInfo.setFlowCode(flowCode);
-        flowInfo.setFlowType(Constants.Flow.FLOW_TYPE_BIG);
+        flowInfo.setFlowType(flowType+"");
+        flowInfo.setStatus(Constants.STATUS_USE);
         List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().querySysFlowInfoList(flowInfo);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", matchCount);
@@ -81,9 +85,10 @@ public class FlowInfoController extends BaseController {
     @ILog
     public Map<String, Object> addFlowInfo(SysFlowInfo flow) {
         flow.setId(ssgjHelper.createFlowId());
-        if (Constants.Flow.FLOW_TYPE_SMALL.equals(flow.getFlowType())) {
+        if (Constants.Flow.FLOW_TYPE_SMALL.equals(flow.getFlowType()) ||Constants.Flow.FLOW_TYPE_CONFIG.equals(flow.getFlowType()) ) {
             System.out.println(flow.getFlowCode());
         } else {
+            flow.setFlowPid(0L);
             flow.setFlowCode(ssgjHelper.createFlowCode());
         }
         flow.setLastUpdateTime(new Timestamp(new Date().getTime()));
@@ -91,6 +96,11 @@ public class FlowInfoController extends BaseController {
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
         flow.setLastUpdator(userInfo.getId());
         super.getFacade().getSysFlowInfoService().createSysFlowInfo(flow);
+        if(Constants.Flow.FLOW_TYPE_CONFIG.equals(flow.getFlowType())){ //创建流程配置时候自动更新业务流程信息
+            EtBusinessProcess process = new EtBusinessProcess();
+            process.setFlowId(flow.getFlowPid());
+            super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcessConfigBatch(process);
+        }
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         result.put("data", flow.getId());
@@ -102,7 +112,8 @@ public class FlowInfoController extends BaseController {
     @ILog
     public Map<String, Object> createFlowCode(String flowType, String flowCode) {
         String reFlowCode = "";
-        if (Constants.Flow.FLOW_TYPE_SMALL.equals(flowType) && !StringUtils.isBlank(flowCode)) {
+        if ((Constants.Flow.FLOW_TYPE_SMALL.equals(flowType) || Constants.Flow.FLOW_TYPE_CONFIG.equals(flowType))
+                && !StringUtils.isBlank(flowCode)) {
             flowCode += "-";
             reFlowCode = flowCode + super.getFacade().getSysFlowInfoService().createFlowCode(flowCode, flowType);
         }

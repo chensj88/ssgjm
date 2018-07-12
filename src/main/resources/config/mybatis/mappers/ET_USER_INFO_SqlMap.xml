@@ -24,6 +24,7 @@
         <result column="POSITION_NAME_LABEL" property="map.positionName" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <!--不含高权限用户-->
     <sql id="sf-etUserInfo">
         <if test="(id != null) or id == 0">and t.ID = #{id}</if>
         <if test="(pmId != null ) or pmId == 0">and t.PM_ID = #{pmId}</if>
@@ -39,8 +40,10 @@
         <if test="email != null and email != ''">and t.EMAIL = #{email}</if>
         <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
         <if test="(isDel != null ) ">and t.IS_DEL = #{isDel}</if>
+        and t.IS_DEL !=2
     </sql>
 
+    <!--不含高权限用户-->
     <sql id="query-etUserInfo">
         <if test="(id != null) or id == 0">and t.ID = #{id}</if>
         <if test="(pmId != null ) or pmId == 0">and t.PM_ID = #{pmId}</if>
@@ -48,20 +51,53 @@
         <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
         <if test="(userId != null ) or userId == 0">and t.USER_ID = #{userId}</if>
         <if test="(userType != null ) or userType == 0">and t.USER_TYPE = #{userType}</if>
-        <if test="userCard != null and userCard != '' and ( cName == null or cName == '' )">and t.USER_CARD LIKE '%${userCard}%'</if>
-        <if test="cName != null and cName != '' and  ( userCard == null or userCard == '' )">and t.C_NAME LIKE '%${cName}%'</if>
-        <if test="userCard != null and userCard != '' and cName != null and cName != ''">and (t.USER_CARD LIKE '%${userCard}%' OR t.C_NAME LIKE '%${cName}%') </if>
+        <if test="userCard != null and userCard != '' and ( cName == null or cName == '' )">and t.USER_CARD LIKE
+            '%${userCard}%'
+        </if>
+        <if test="cName != null and cName != '' and  ( userCard == null or userCard == '' )">and t.C_NAME LIKE
+            '%${cName}%'
+        </if>
+        <if test="userCard != null and userCard != '' and cName != null and cName != ''">and (t.USER_CARD LIKE
+            '%${userCard}%' OR t.C_NAME LIKE '%${cName}%')
+        </if>
         <if test="orgName != null and orgName != ''">and t.ORG_NAME = #{orgName}</if>
         <if test="positionName != null and positionName != ''">and t.POSITION_NAME = #{positionName}</if>
         <if test="telephone != null and telephone != ''">and t.TELEPHONE = #{telephone}</if>
         <if test="email != null and email != ''">and t.EMAIL = #{email}</if>
         <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
         <if test="(isDel != null ) ">and t.IS_DEL = #{isDel}</if>
+        and t.IS_DEL !=2
     </sql>
 
     <select id="selectEtUserInfo" resultMap="etUserInfoResult" parameterType="etUserInfo">
         select * from ET_USER_INFO t where 1 = 1
         <include refid="sf-etUserInfo"/>
+    </select>
+
+    <!--查询用户，最高权限用户可见。Evol-->
+    <select id="getAllEtUserInfo" resultMap="etUserInfoResult" parameterType="etUserInfo">
+        select * from ET_USER_INFO t where 1 = 1
+        <if test="(id != null) or id == 0">and t.ID = #{id}</if>
+        <if test="(pmId != null ) or pmId == 0">and t.PM_ID = #{pmId}</if>
+        <if test="(cId != null ) or cId == 0">and t.C_ID = #{cId}</if>
+        <if test="serialNo != null and serialNo != ''">and t.SERIAL_NO = #{serialNo}</if>
+        <if test="(userId != null ) or userId == 0">and t.USER_ID = #{userId}</if>
+        <if test="(userType != null ) or userType == 0">and t.USER_TYPE = #{userType}</if>
+        <if test="userCard != null and userCard != '' and ( cName == null or cName == '' )">and t.USER_CARD LIKE
+            '%${userCard}%'
+        </if>
+        <if test="cName != null and cName != '' and  ( userCard == null or userCard == '' )">and t.C_NAME LIKE
+            '%${cName}%'
+        </if>
+        <if test="userCard != null and userCard != '' and cName != null and cName != ''">and (t.USER_CARD LIKE
+            '%${userCard}%' OR t.C_NAME LIKE '%${cName}%')
+        </if>
+        <if test="orgName != null and orgName != ''">and t.ORG_NAME = #{orgName}</if>
+        <if test="positionName != null and positionName != ''">and t.POSITION_NAME = #{positionName}</if>
+        <if test="telephone != null and telephone != ''">and t.TELEPHONE = #{telephone}</if>
+        <if test="email != null and email != ''">and t.EMAIL = #{email}</if>
+        <if test="remark != null and remark != ''">and t.REMARK = #{remark}</if>
+        <if test="(isDel != null ) ">and t.IS_DEL = #{isDel}</if>
     </select>
 
     <select id="selectEtUserInfoList" resultMap="etUserInfoResult" parameterType="etUserInfo">
@@ -81,7 +117,7 @@
         <if test="( map.admin != null and map.admin != '' )">
             AND t.USER_ID NOT IN ('100001')
         </if>
-        <if test="(isDel != null ) ">and t.USER_ID != 100001 </if>
+        <if test="(isDel != null ) ">and t.USER_ID != 100001</if>
         <!-- order by ID asc -->
     </select>
 
@@ -89,23 +125,23 @@
     <select id="selectEtUserInfoCount" resultType="int" parameterType="etUserInfo">
         select count(*) from ET_USER_INFO t where 1 = 1
         <include refid="query-etUserInfo"/>
-        <if test="(isDel != null ) ">and t.USER_ID != 100001 </if>
+        <if test="(isDel != null ) ">and t.USER_ID != 100001</if>
     </select>
 
     <select id="selectEtUserInfoPaginatedList" resultMap="etUserInfoResult" parameterType="etUserInfo">
         select * from (
-            select
-            t.*,
-            A.DICT_LABEL AS USER_TYPE_LABEL,
-            CASE WHEN B.DICT_LABEL IS NOT NULL THEN B.DICT_LABEL ELSE t.POSITION_NAME END AS POSITION_NAME_LABEL,
-            ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
-            from ET_USER_INFO t
-            LEFT JOIN SYS_DICT_INFO A ON A.DICT_VALUE = t.USER_TYPE AND A.DICT_CODE='userType'
-            LEFT JOIN SYS_DICT_INFO B ON t.POSITION_NAME = B.DICT_VALUE AND B.DICT_CODE='positionName'
-            <where>
-                <include refid="query-etUserInfo"/>
-                <if test="(isDel != null ) ">and t.USER_ID != 100001 </if>
-            </where>
+        select
+        t.*,
+        A.DICT_LABEL AS USER_TYPE_LABEL,
+        CASE WHEN B.DICT_LABEL IS NOT NULL THEN B.DICT_LABEL ELSE t.POSITION_NAME END AS POSITION_NAME_LABEL,
+        ROW_NUMBER() OVER ( order by t.ID desc ) as _rn
+        from ET_USER_INFO t
+        LEFT JOIN SYS_DICT_INFO A ON A.DICT_VALUE = t.USER_TYPE AND A.DICT_CODE='userType'
+        LEFT JOIN SYS_DICT_INFO B ON t.POSITION_NAME = B.DICT_VALUE AND B.DICT_CODE='positionName'
+        <where>
+            <include refid="query-etUserInfo"/>
+            <if test="(isDel != null ) ">and t.USER_ID != 100001</if>
+        </where>
         <!-- order by ID asc -->
         ) temp_table where _rn between #{row.first} + 1 and #{row.first} + #{row.count}
     </select>
@@ -166,10 +202,10 @@
                 <if test="positionName != null and positionName != ''">POSITION_NAME =
                     #{positionName, jdbcType=VARCHAR},
                 </if>
-                <if test="telephone != null and telephone != ''">TELEPHONE = #{telephone, jdbcType=VARCHAR},</if>
-                <if test="email != null and email != ''">EMAIL = #{email, jdbcType=VARCHAR},</if>
-                <if test="remark != null and remark != ''">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
-                <if test="(isDel != null   )">IS_DEL = #{isDel, jdbcType=INTEGER},</if>
+                <if test="telephone != null">TELEPHONE = #{telephone, jdbcType=VARCHAR},</if>
+                <if test="email != null">EMAIL = #{email, jdbcType=VARCHAR},</if>
+                <if test="remark != null">REMARK = #{remark, jdbcType=LONGVARCHAR},</if>
+                <if test="isDel != null">IS_DEL = #{isDel, jdbcType=INTEGER},</if>
             </trim>
         </set>
         <where>

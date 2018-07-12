@@ -82,6 +82,7 @@ public class EtSiteInstallServiceImpl implements EtSiteInstallService {
     @Override
     public void getNerateSiteIntallExcel(EtSiteInstall info, String path) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
+        info.setStatus(1);//有效的站点
         List<EtSiteInstall> querySiteList = this.etSiteInstallDao.selectEtSiteInstallListWithInfo(info);
         int total = (Integer) this.etSiteInstallDao.selectEntityCount(info);
         List<String> colList = new ArrayList<String>();

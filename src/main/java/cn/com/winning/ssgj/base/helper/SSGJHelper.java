@@ -250,6 +250,43 @@ public class SSGJHelper {
     @Qualifier(value = "tempWorkReportGenerateService")
     private StepSequenceFactory  tempWorkReportGenerateService;
 
+    @Autowired
+    @Qualifier(value = "etLogIdService")
+    private StepSequenceFactory  etLogIdService;
+
+    @Autowired
+    @Qualifier(value = "etStartEndIdService")
+    private StepSequenceFactory  etStartEndIdService;
+
+    @Autowired
+    @Qualifier(value = "etUserLogIdService")
+    private StepSequenceFactory  etUserLogIdService;
+
+    @Autowired
+    @Qualifier(value = "etAccessTokenIdService")
+    private StepSequenceFactory  etAccessTokenIdService;
+
+    @Autowired
+    @Qualifier(value = "etUserHospitalLogIdService")
+    private StepSequenceFactory  etUserHospitalLogIdService;
+
+    @Autowired
+    @Qualifier(value = "etDataBasesListIdService")
+    private StepSequenceFactory  etDataBasesListIdService;
+
+    public long createEtDataBasesList(){
+        return (long) etDataBasesListIdService.create();
+    }
+
+
+    public long createEtUserHospitalLog(){
+        return (long) etUserHospitalLogIdService.create();
+    }
+
+    public long createEtAccessTokenIdService() {
+        return (long)etAccessTokenIdService.create();
+    }
+
     /**
      * 导入站点问题临时表ID
      * @return
@@ -327,9 +364,16 @@ public class SSGJHelper {
     public long createFloorQuestionIdService(){ return (long) floorQuestionIdService.create(); }
     public long createEtSoftHardwareIdService(){ return (long) etSoftHardwareIdService.create(); }
     public long createEtReportIdService(){ return (long) etReportIdService.create(); }
+    public long createEtLogIdService(){ return (long) etLogIdService.create(); }
+    public long createEtStartEndIdService(){ return (long) etStartEndIdService.create(); }
 
-
-
+    /**
+     * 用户搜索历史记录表
+     * @return
+     */
+    public long createEtUserLogIdService(){
+        return (long) etUserLogIdService.create();
+    }
     /**
      * 获取报表类信息表Id
      *

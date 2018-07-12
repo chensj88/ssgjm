@@ -9,6 +9,7 @@
         <result column="DICT_SORT" property="dictSort" jdbcType="VARCHAR"/>
         <result column="DICT_DESC" property="dictDesc" jdbcType="VARCHAR"/>
         <result column="PY_CODE" property="pyCode" jdbcType="VARCHAR"/>
+        <result column="PRODUCT_TYPE" property="productType" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="sysDictInfoResult" type="sysDictInfo" extends="sysDictInfoResultForList">
@@ -158,9 +159,46 @@
         ORDER BY t.PY_CODE ASC
     </select>
 
+    <select id="selectSysDictInfoListByDesc" resultMap="sysDictInfoResult" parameterType="sysDictInfo">
+        select
+        t.*,
+        CASE
+            WHEN t.DICT_DESC = 'productType1' THEN '临床'
+            WHEN t.DICT_DESC = 'productType2' THEN '护理'
+            WHEN t.DICT_DESC = 'productType3' THEN '平台'
+            WHEN t.DICT_DESC = 'productType4' THEN 'HIS'
+            WHEN t.DICT_DESC = 'productType5' THEN '其他'
+            ELSE '未知' END PRODUCT_TYPE
+        from SYS_DICT_INFO t where 1 = 1
+        <include refid="sf-sysDictInfo"/>
+        <if test="map.type == 1">
+            AND  t.DICT_DESC = 'productType1'
+        </if>
+        <if test="map.type == 2">
+            AND  t.DICT_DESC = 'productType2'
+        </if>
+        <if test="map.type == 3">
+            AND  t.DICT_DESC = 'productType3'
+        </if>
+        <if test="map.type == 4">
+            AND  t.DICT_DESC = 'productType4'
+        </if>
+        <if test="map.type == 5">
+            AND  t.DICT_DESC = 'productType5'
+        </if>
+        ORDER BY t.PY_CODE ASC
+    </select>
+
 
     <select id="selectSysDictInfoListByValue" resultMap="sysDictInfoResult" parameterType="sysDictInfo">
-        select *
+        select t.*,
+        CASE
+        WHEN t.DICT_DESC = 'productType1' THEN '临床'
+        WHEN t.DICT_DESC = 'productType2' THEN '护理'
+        WHEN t.DICT_DESC = 'productType3' THEN '平台'
+        WHEN t.DICT_DESC = 'productType4' THEN 'HIS'
+        WHEN t.DICT_DESC = 'productType5' THEN '其他'
+        ELSE '未知' END PRODUCT_TYPE
         from SYS_DICT_INFO t where 1 = 1
         <include refid="sf-sysDictInfo"/>
         <if test="(map.pks != null and map.pks.size >0)">

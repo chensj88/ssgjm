@@ -345,7 +345,7 @@
         </where>
         )
     </select>
-
+    <!--查看用户可以查看的客户信息-->
     <select id="selectUserCanViewCustomerList" parameterType="java.lang.Long" resultMap="pmisCustomerInformationResult">
        SELECT * FROM PMIS_CUSTOMER_INFORMATION
        WHERE  ID IN (
@@ -365,6 +365,7 @@
             WHERE T.USER_ID = #{userId}
             AND  T.IS_DEL = 1
             AND T.USER_TYPE = 1
+            AND t.POSITION_NAME != '4'
         )
     </select>
 
@@ -382,6 +383,7 @@
                 AND B.JHZT = 0
                 AND  B.FWLX = 0
                 AND B.ZJZT = 1
+                AND B.HTLX = 1
                 AND  CAST(KHJDLJ AS NUMERIC(10,2)) &lt; 90
          )
         <!-- order by ID asc -->

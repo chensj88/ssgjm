@@ -64,13 +64,13 @@ public class SFtpUtils {
      * 下载文件-sftp协议.
      * @param downloadFile 下载的文件
      * @param saveFile 存在本地的路径
-     * @param sftp sftp连接
      * @return 文件
      * @throws Exception 异常
      */
-    public static File download(final String downloadFile, final String saveFile, final ChannelSftp sftp)
+    public static File download(final String downloadFile, final String saveFile)
             throws Exception {
         FileOutputStream os = null;
+        final ChannelSftp sftp = getSftpConnect();
         File file = new File(saveFile);
         try {
             if (!file.exists()) {
@@ -95,11 +95,11 @@ public class SFtpUtils {
     /**
      * 下载文件-sftp协议.
      * @param downloadFile 下载的文件
-     * @param sftp sftp连接
      * @return 文件 byte[]
      * @throws Exception 异常
      */
-    public static byte[] downloadAsByte(final String downloadFile, final ChannelSftp sftp) throws Exception {
+    public static byte[] downloadAsByte(final String downloadFile) throws Exception {
+        final ChannelSftp sftp = getSftpConnect();
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             List<String> list = formatPath(downloadFile);

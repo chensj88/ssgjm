@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- basic styles -->
     <link href="<%=basePath%>resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
-    <%--<link href="<%=basePath%>resources//css/bootstrap.min.css" rel="stylesheet" />--%>
+    <%--<link href="<%=basePath%>resources/assets/css/bootstrap.min.css" rel="stylesheet" />--%>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/font-awesome.min.css" />
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <!--[if IE 7]>
@@ -31,17 +31,9 @@
     <script src="<%=basePath%>resources/assets/js/html5shiv.js"></script>
     <script src="<%=basePath%>resources/assets/js/respond.min.js"></script>
     <![endif]-->
-    <style type="text/css">
-        .content {
-            background-color: #cc85d9;
-            width: 100%;
-            position: absolute;
-        }
-    </style>
 </head>
-
 <body>
-<div class="navbar navbar-default" id="navbar">
+<div class="navbar navbar-default" id="navbar" style="height: 50px;">
     <script type="text/javascript">
         try{ace.settings.check('navbar' , 'fixed')}catch(e){}
     </script>

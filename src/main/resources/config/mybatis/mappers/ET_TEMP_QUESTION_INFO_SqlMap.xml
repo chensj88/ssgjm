@@ -261,7 +261,7 @@
         SITE_ID =
         (SELECT  ID  FROM ET_DEPARTMENT WHERE  A.SITE_NAME = DEPT_NAME AND  A.SERIAL_NO = SERIAL_NO    ),
         PRODUCT_ID =
-        (SELECT  ID  FROM PMIS_PRODUCT_LINE_INFO WHERE A.PRODUCT_NAME = NAME) FROM ET_TEMP_QUESTION_INFO A
+        (SELECT  ID  FROM ET_CONTRACT_TASK WHERE A.PRODUCT_NAME = ZXTMC AND  A.SERIAL_NO = SERIAL_NO ) FROM ET_TEMP_QUESTION_INFO A
         <where>
             <if test="(serialNo != null and serialNo != '')"> and A.SERIAL_NO = #{serialNo} </if>
         </where>

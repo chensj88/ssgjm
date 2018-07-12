@@ -19,6 +19,8 @@ public interface EtUserInfoService {
 
     int removeEtUserInfo(EtUserInfo t);
 
+    EtUserInfo getAllEtUserInfo(EtUserInfo t);
+
     EtUserInfo getEtUserInfo(EtUserInfo t);
 
     List<EtUserInfo> getEtUserInfoList(EtUserInfo t);

@@ -36,6 +36,26 @@ const IMS = {
            	$("#pageContent input[type='checkbox']").prop("checked",$(this).prop("checked"));
       	});
     },
+	menuTab:function () {
+        $('.wap-tab>span').click(function () {
+            $(this).addClass('active')
+                .siblings('span')
+                .removeClass('active');
+            $('.wap-tab-cnt>div').eq($(this).index())
+                .removeClass('hide')
+                .siblings('div')
+                .addClass('hide');
+        });
+        $('.wrap-foot>div').click(function () {
+            $(this).addClass('active')
+                .siblings('div')
+                .removeClass('active');
+            $('.wrap-cnt>div').eq($(this).index())
+                .removeClass('hide')
+                .siblings('div')
+                .addClass('hide');
+        });
+    },
     /*
 	 * dropdown
 	 * */
@@ -63,7 +83,45 @@ const IMS = {
 				.removeClass('active');
 			return false;
 		});
-	}
+	},
+	selectAll:function () {
+    var uncheckUrl = '../images/uncheck.svg';
+    var checkUrl = '../images/check.svg';
+    $(".selection-header").on('click', '#total', function(event) {
+
+      var imgDom = $(this);
+
+      if(imgDom.attr("src") == checkUrl){
+
+        $(".select_flag").attr("src",uncheckUrl);
+        imgDom.attr("src",uncheckUrl);
+
+      } else {
+
+        imgDom.attr("src",checkUrl);
+        $(".select_flag").attr("src",checkUrl);
+
+      }
+    });
+  },
+	selectSingle:function () {
+    var uncheckUrl = '../images/uncheck.svg';
+    var checkUrl = '../images/check.svg';
+    $(".select_flag").on('click', function(event) {
+
+      var imgDom = $(this);
+
+      if(imgDom.attr("src") == checkUrl){
+
+        imgDom.attr("src",uncheckUrl);
+
+      } else {
+
+        imgDom.attr("src",checkUrl);
+
+      }
+    });
+  }
 };
 /*服务号*/
 const service = {
@@ -145,32 +203,12 @@ const enterprise = {
 		});
 		//删除当前条目
 		$('.del-item').click(function(){
-            var btnArray = ['否', '是'];
-            var id=$(this).find('input').val();
-            var isTrue = false;
-            // mui.confirm( '是否删除该站点', '消息框', btnArray, function(e) {
-             //    if(e.index == 1){
-             //
-             //    }
-			// });
-            delItem(id);
-            $(this).parent('.site-register').remove();
-            $('.site-register').removeClass('delete');
-
+			$(this).parent('.site-register').remove();
+			$('.site-register').removeClass('delete');
 		});
 		//显示删除
 		$('.register-button .icon-reduce').click(function(){
 			$('.site-register').addClass('delete');
 		});
-	},
-
-    siteAddItetm:function () {
-        $('.icon-increase').click(function () {
-            addItem();
-
-        });
-    }
-
-
-
+	}
 };

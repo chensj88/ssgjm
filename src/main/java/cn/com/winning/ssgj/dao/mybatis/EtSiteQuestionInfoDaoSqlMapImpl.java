@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
- *
  * @author SSGJ
  * @date 2018-01-18 10:11:47
  */
@@ -20,22 +18,57 @@ public class EtSiteQuestionInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<EtSiteQ
 
     @Override
     public void updateEtSiteQuestionInfoImg(EtSiteQuestionInfo t) {
-        this.getSqlSession().update("updateEtSiteQuestionInfoImg",t);
+        this.getSqlSession().update("updateEtSiteQuestionInfoImg", t);
     }
 
     @Override
     public List<EtSiteQuestionInfo> selectEtSiteQuestionInfoUserTotal(EtSiteQuestionInfo t) {
-        return this.getSqlSession().selectList("selectEtSiteQuestionInfoUserTotal",t);
+        return this.getSqlSession().selectList("selectEtSiteQuestionInfoUserTotal", t);
     }
 
     @Override
     public List<Map<String, Object>> selectEtSiteQuestionCountInfo(EtSiteQuestionInfo info) {
-        return this.getSqlSession().selectList("selectEtSiteQuestionCountInfo",info);
+        return this.getSqlSession().selectList("selectEtSiteQuestionCountInfo", info);
     }
 
     @Override
     public List<EtSiteQuestionInfo> selectEtSiteQuestionInfoTotalCountByUser(EtSiteQuestionInfo t) {
-        return this.getSqlSession().selectList("selectEtSiteQuestionInfoTotalCountByUser",t);
+        return this.getSqlSession().selectList("selectEtSiteQuestionInfoTotalCountByUser", t);
+    }
+
+    @Override
+    public List<EtSiteQuestionInfo> selectMobileEtSiteQuestionInfo(EtSiteQuestionInfo t) {
+        return this.getSqlSession().selectList("selectMobileEtSiteQuestionInfo", t);
+    }
+
+    @Override
+    public List<Map<String, Object>> selectEtSiteQuestionInfoCountByUser(EtSiteQuestionInfo t) {
+        return this.getSqlSession().selectList("selectEtSiteQuestionInfoCountByUser", t);
+    }
+
+    @Override
+    public List<EtSiteQuestionInfo> selectEtSiteQuestionInfoListByUserAndDate(EtSiteQuestionInfo t) {
+        return this.getSqlSession().selectList("selectEtSiteQuestionInfoListByUserAndDate", t);
+    }
+
+    @Override
+    public EtSiteQuestionInfo selectEtSiteQuestionProcessStatus(EtSiteQuestionInfo t) {
+        return this.getSqlSession().selectOne("selectEtSiteQuestionProcessStatus", t);
+    }
+
+    @Override
+    public EtSiteQuestionInfo selectEtSiteQuestionProcessStatusService(EtSiteQuestionInfo t) {
+        return this.getSqlSession().selectOne("selectEtSiteQuestionProcessStatusService", t);
+    }
+
+    @Override
+    public List<EtSiteQuestionInfo> selectEtSiteQuestionInfoUserTotalBySerialNo(EtSiteQuestionInfo etSiteQuestionInfo) {
+        return this.getSqlSession().selectList("selectEtSiteQuestionInfoUserTotalBySerialNo", etSiteQuestionInfo);
+    }
+
+    @Override
+    public void updateProcessStatus(EtSiteQuestionInfo etSiteQuestionInfo) {
+        this.getSqlSession().update("updateProcessStatus", etSiteQuestionInfo);
     }
 
 }

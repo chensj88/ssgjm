@@ -85,7 +85,18 @@ public class EtDataCheck extends BaseDomain implements Serializable {
      */
     private java.sql.Timestamp operatorTime;
 
+    /**
+     * @val 数据源id
+     */
+    private Long sourceId;
+
+    /**
+     * @val 数据库连接id
+     */
+    private Long ipId;
+
     public EtDataCheck() {
+
 
     }
 
@@ -265,4 +276,19 @@ public class EtDataCheck extends BaseDomain implements Serializable {
         this.operatorTime = operatorTime;
     }
 
+    public Long getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(Long sourceId) {
+        this.sourceId = sourceId;
+    }
+
+    public Long getIpId() {
+        return ipId;
+    }
+
+    public void setIpId(Long ipId) {
+        this.ipId = ipId;
+    }
 }

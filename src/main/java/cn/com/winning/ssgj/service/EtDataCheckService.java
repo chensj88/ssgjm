@@ -28,4 +28,7 @@ public interface EtDataCheckService {
 
     List<EtDataCheck> selectEtDataCheckListByPmIdAndDataType(EtDataCheck etDataCheck);
 
+    List<EtDataCheck> getInitEtDataCheck(EtDataCheck etEasyDataCheck);
+
+
 }

@@ -55,4 +55,9 @@ public class SysDictInfoDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysDictInfo> i
     public List<SysDictInfo> selectSysDictInfoListBySelectKey(SysDictInfo info) {
         return  super.getSqlSession().selectList("selectSysDictInfoListBySelectKey",info);
     }
+
+    @Override
+    public List<SysDictInfo> selectSysDictInfoListByDesc(SysDictInfo dict) {
+        return  super.getSqlSession().selectList("selectSysDictInfoListByDesc",dict);
+    }
 }

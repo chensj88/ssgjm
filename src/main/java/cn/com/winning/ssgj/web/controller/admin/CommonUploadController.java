@@ -127,7 +127,7 @@ public class CommonUploadController extends BaseController {
         //如果文件不为空，写入上传路径
         if (!uploadFile.isEmpty()) {
             String filename = uploadFile.getOriginalFilename();
-            String remotePath = Constants.UPLOAD_PC_PREFIX + "web/template/flow/" + DateUtil.getTimstamp()  + "/" + filename;
+            String remotePath = Constants.UPLOAD_PC_PREFIX + "web/template/flow/" + DateUtil.getYYYYMMDDHHmmSSTimstamp()  + "/" + filename;
             String msg = "";
             boolean ftpStatus =CommonFtpUtils.commonUploadInfo(request,msg,remotePath,uploadFile);
             if (ftpStatus) {
@@ -162,7 +162,7 @@ public class CommonUploadController extends BaseController {
         if (!uploadFile.isEmpty()) {
             // String filename = FileUtis.generateFileName(uploadFile.getOriginalFilename());
             String filename = uploadFile.getOriginalFilename();
-            String remotePath =  Constants.UPLOAD_PC_PREFIX + "/web/script/" + DateUtil.getTimstamp() + "/" + filename;
+            String remotePath =  Constants.UPLOAD_PC_PREFIX + "web/script/" + DateUtil.getYYYYMMDDHHmmSSTimstamp() + "/" + filename;
             String msg = "";
             boolean ftpStatus =CommonFtpUtils.commonUploadInfo(request,msg,remotePath,uploadFile);
             if (ftpStatus) {
@@ -234,7 +234,7 @@ public class CommonUploadController extends BaseController {
             String filename = file.getOriginalFilename();
             String msg = "";
             try {
-                String remotePath = Constants.UPLOAD_PC_PREFIX+"web/template/" + DateUtil.getTimstamp() + "/" + filename;
+                String remotePath = Constants.UPLOAD_PC_PREFIX+"web/template/" + DateUtil.getYYYYMMDDHHmmSSTimstamp() + "/" + filename;
                 boolean ftpStatus =CommonFtpUtils.commonUploadInfo(request,msg,remotePath,file);
                 result.put("status", "success");
                 result.put("path", remotePath);

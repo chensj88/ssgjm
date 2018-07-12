@@ -141,4 +141,14 @@ public interface Facade {
 
     EtAccessTokenService getEtAccessTokenService();
 
+    EtLogService getEtLogService();
+
+    EtStartEndService getEtStartEndService();
+
+    EtUserLogService getEtUserLogService();
+
+    EtUserHospitalLogService getEtUserHospitalLogService();
+
+    EtDatabasesListService getEtDatabasesListService();
+
 }
