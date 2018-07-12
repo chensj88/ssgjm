@@ -2,6 +2,11 @@
  * 培训视频js
  */
 let isUpload= false;
+
+/**
+ * 初始化上传框
+ * @param json
+ */
 function initBootstrapFileInput(json){
     if(json){
         $('#uploadFile').fileinput({
@@ -58,7 +63,6 @@ function initBootstrapFileInput(json){
             isUpload = true;
         }).on('filepreupload', function() {
         }).on('fileuploaded', function(event, data) {
-            console.log('fileuploaded',data);
             isUpload = false;
             $('#remotePath').val(data.response.path);
         });
@@ -94,18 +98,16 @@ function initBootstrapFileInput(json){
             isUpload = true;
         }).on('filepreupload', function() {
         }).on('fileuploaded', function(event, data) {
-            console.log('fileuploaded',data);
             isUpload = false;
             $('#remotePath').val(data.response.path);
         });
     }
 }
 
-
+//上传框事件
 $('#uploadFile').on('filebatchuploadsuccess', function(event, data) {
     $('#remotePath').val(data.response.path);
     isUpload = false;
-    console.log('filebatchuploadsuccess',data);
 });
 
 function getShareURL() {
@@ -128,6 +130,7 @@ function getShareURL() {
         return  Common.FTP_SHARE_URL;
     }
 }
+
 $(function () {
     getShareURL();
     var selectedFlie = false;
@@ -322,8 +325,6 @@ $(function () {
         $("input[type=reset]").trigger("click");
         $('#id').val('');
         $('#vid').val('');
-        $('#appId').val('');
-        $('#videoNameDiv').show();
         //清空验证信息
         $("#scriptForm").bootstrapValidator('destroy');
         validateForm();
@@ -341,8 +342,7 @@ $(function () {
         e.preventDefault();
         $('#customer').hide();
         //清空验证信息
-        //$('#scriptForm').bootstrapValidator("destroy");
-        $("#scriptForm").bootstrapValidator('resetForm');
+        $("#scriptForm").bootstrapValidator('destroy');
         validateForm();
         var vid = $(this).attr('aid');
         var data = queryInfoByDataId(vid);
@@ -356,7 +356,6 @@ $(function () {
                 deleteUrl: Common.getRootPath() +'/admin/script/deleteFile.do',
                 url: getShareURL() + remotePath
             };
-            console.log(fileJson);
             $('#uploadFile').fileinput('destroy');
             initBootstrapFileInput(fileJson);
             isUpload = false;
@@ -436,7 +435,6 @@ $(function () {
                 toastr.info('文件正在上传请稍后！');
                 return ;
             }
-            console.log($("#scriptForm").serialize());
             $.ajax({
                 url: url,
                 data: $("#scriptForm").serialize(),
