@@ -341,8 +341,8 @@ public class EtBusinessProcessController extends BaseController {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Connection connection = DriverManager.getConnection(url);
             if (connection == null) {
-                resultMap.put("status", Constants.FAILD);
-                resultMap.put("msg", "数据库无法连接，请检查网络!");
+                result.put("status", Constants.FAILD);
+                result.put("msg", "数据库无法连接，请检查网络!");
                 return result;
             }
             //判断存储过程是否存在
@@ -375,7 +375,7 @@ public class EtBusinessProcessController extends BaseController {
         }catch (Exception e){
             e.printStackTrace();
             result.put("status",Constants.FAILD);
-            resultMap.put("msg", e.getMessage());
+            result.put("msg", e.getMessage());
         }
 
 
