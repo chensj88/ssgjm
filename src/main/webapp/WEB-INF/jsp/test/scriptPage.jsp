@@ -196,17 +196,33 @@
                 downloadIcon: '<i class="glyphicon glyphicon-download"></i>', //按钮ICON
                 downloadClass: 'btn btn-kv btn-default btn-outline-secondary',//按钮样式
                 initialPreviewDownloadUrl:json.url, //文件下载路径
-                downloadTitle: json.name,
-                initialPreview: [
+                downloadTitle: json.name, //下载文件名称
+                deleteUrl:json.deleteUrl+'?id='+json.key, //删除url
+                initialPreview: [ //预览内容
                     json.content
                 ],
                 initialPreviewAsData: true, // defaults markup
-                initialPreviewConfig: [
-                    {type: "text",previewAsData: true,caption: json.name,url: json.url, key: json.key,frameAttr: {style: 'height:80px'},},
+                initialPreviewConfig: [ //预览配置
+                    {
+                        type: "text",
+                        previewAsData: true,
+                        caption: json.name,
+                        url: json.deleteUrl+'?id='+json.key,
+                        key: json.key,
+                        frameAttr: {
+                            style: 'height:80px'
+                        },
+                    },
                 ],
-                deleteUrl:json.deleteUrl+'?id='+json.key
+
             }).on("filebatchselected", function(event, files) {
                 $("#uploadFile").fileinput("upload");
+                isUpload = true;
+            }).on('filepreupload', function() {
+            }).on('fileuploaded', function(event, data) {
+                console.log('fileuploaded',data);
+                isUpload = false;
+                $('#remotePath').val(data.response.path);
             });
         }else{
             $('#uploadFile').fileinput({
@@ -237,6 +253,12 @@
                 fileActionSettings:{showUpload:false,showDownload:false},
             }).on("filebatchselected", function(event, files) {
                 $("#uploadFile").fileinput("upload");
+                isUpload = true;
+            }).on('filepreupload', function() {
+            }).on('fileuploaded', function(event, data) {
+                console.log('fileuploaded',data);
+                isUpload = false;
+                $('#remotePath').val(data.response.path);
             });
         }
     }
@@ -244,7 +266,8 @@
 
     $('#uploadFile').on('filebatchuploadsuccess', function(event, data) {
         $('#remotePath').val(data.response.path);
-        isUpload = true;
+        isUpload = false;
+        console.log('filebatchuploadsuccess',data);
     });
 </script>
 </html>
