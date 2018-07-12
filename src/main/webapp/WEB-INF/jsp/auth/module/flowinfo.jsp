@@ -91,8 +91,8 @@
                                       <select class="form-control" name="flowType" id="flowType">
                                           <option value="1">流程小类</option>
                                           <option value="2">流程配置</option>
-                                          <option value="3">配置SQL</option>
                                           <option value="0">流程大类</option>
+
                                       </select>
                                     </div>
                                 </div>
@@ -223,7 +223,7 @@
                                                    placeholder="请输入流程名称">
                                         </div>
                                     </div>
-                                    <div class="form-group" id="configCodeDiv">
+                                    <div class="form-group" >
                                         <label class="col-sm-3 control-label" for="configCode" >配置编号</label>
                                         <div class="col-sm-6">
                                             <input type="text" class="form-control" id="configCode" name="configCode"
@@ -258,6 +258,13 @@
                                                       placeholder="请输入存储名称">
                                         </div>
                                     </div>
+                                    <%--<div class="form-group">
+                                        <label class="col-sm-3 control-label" for="procParam">存储参数</label>
+                                        <div class="col-sm-6">
+                                            <input class="form-control" id="procParam" name="procParam"
+                                                   placeholder="请输入存储参数">
+                                        </div>
+                                    </div>--%>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label" for="configSQL">存储SQL</label>
                                         <div class="col-sm-6">
