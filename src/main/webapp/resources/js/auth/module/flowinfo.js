@@ -122,12 +122,17 @@ function editFlowInfo(id,flowType,flowName,flowCode){
     $('#flowInfo').show();
     $('#configDiv').hide();
     $('#flowType').val(parseInt(flowType)+1+"");
+    $('#uploadFile').fileinput('destroy');
+    initBootstrapFileInput();
     if(parseInt(flowType)+1 == 2){
         $('#flowPCode').val(flowCode);
         $('#flowPName').val(flowName);
         $('#configCodeDiv').hide();
         $('#configDiv').show();
         $('#flowInfo').hide();
+        $('#isMustDiv').hide();
+        $('#isMustDiv').hide();
+        $('#uploadFileDiv').hide();
     }else{
         $('#flowParentCode').val(flowCode);
         $('#flowParentName').val(flowName);
@@ -135,11 +140,17 @@ function editFlowInfo(id,flowType,flowName,flowCode){
         $('#flowParentName').attr('readonly',true);
         $('#flowInfo').show();
         $('#configDiv').hide();
+        if(parseInt(flowType)+1 == 1){
+            $('#isMustDiv').show();
+            $('#uploadFileDiv').show();
+        }else{
+            $('#isMustDiv').hide();
+            $('#uploadFileDiv').hide();
+        }
     }
     $('#flowCodeDiv').hide();
     $('#flowType').attr('disabled',true);
     $('#flowCodeDiv').attr('readonly',true);
-
     $('#flowModal').modal('show');
 }
 
@@ -155,7 +166,7 @@ function initBootstrapFileInput(json){
             theme: 'zh',//设置语言
             language: 'zh',//设置语言
             uploadUrl: Common.getRootPath() + Common.url.script.uploadURL,//上传的地址
-            allowedFileExtensions: ['sql','txt'], //接收的文件后缀
+            allowedFileExtensions: ['xls','xlsx','docx','doc','pdf'], //接收的文件后缀
             hideThumbnailContent:true, //不显示内容信息，只显示文件名称和大小
             showCaption:true,//是否显示标题
             showPreview :true, //是否显示预览
@@ -458,12 +469,12 @@ $(function () {
         //清空验证信息
         $('#flowForm').bootstrapValidator("destroy");
         validateForm();
+        $('#uploadFile').fileinput('destroy');
+        initBootstrapFileInput();
         $('#flowParent').show();
         $('#flowCodeDiv').show();
         $('#uploadFileDiv').show();
         $('#isModifyDiv').hide();
-        $('#flowInfo').show();
-        $('#configDiv').hide();
         $('#flowType').val('1');
         $('#flowCodeDiv').attr('readonly',true);
         $('#flowType').attr('disabled',false);
@@ -607,16 +618,16 @@ $(function () {
         var selEle = $(this).val();
         console.log(selEle);
         if(selEle == '1'){
+            $('#flowParent').show(); //上级流程
+            $('#flowCodeDiv').show();//流程编码
+            $('#uploadFileDiv').show(); //上传文件
+            $('#isMustDiv').show(); //前端初始化
+        }else if(selEle == '2'){
             $('#flowParent').show();
             $('#flowCodeDiv').show();
-            $('#uploadFileDiv').show();
-            $('#flowInfo').show();
-            $('#configDiv').hide();
-            $('#isMustDiv').show();
-        }else if(selEle == '2'){
-            $('#flowInfo').hide();
-            $('#configDiv').show();
             $('#configCodeDiv').hide();
+            $('#isMustDiv').hide();
+            $('#uploadFileDiv').hide();
         }else{
             $('#flowParent').hide();
             $('#flowCodeDiv').hide();

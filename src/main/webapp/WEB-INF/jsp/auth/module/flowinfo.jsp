@@ -89,143 +89,76 @@
                                     <div class="col-sm-6">
                                       <select class="form-control" name="flowType" id="flowType">
                                           <option value="1">流程小类</option>
-                                          <option value="2">流程配置</option>
+                                          <option value="2">流程方案</option>
                                           <option value="3">配置SQL</option>
                                           <option value="0">流程大类</option>
                                       </select>
                                     </div>
                                 </div>
-                                <div id="flowInfo">
-                                    <div id='flowParent'>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="flowParentCode" id="flowParentCodeLabel">上级流程编号</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="flowParentCode" name="flowParentCode"
-                                                       data-provide="typeahead" placeholder="请输入上级流程编号">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="flowParentName" id="flowParentNameLabel">上级流程名称</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="flowParentName" name="flowParentName" readonly="true"
-                                                       placeholder="请输入上级流程名称">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="flowCodeDiv">
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="flowCode" id="flowCodeLabel">流程编号</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="flowCode" name="flowCode"
-                                                       placeholder="请输入流程编号" readonly>
-                                            </div>
+                                <div id='flowParent'>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="flowParentCode" id="flowParentCodeLabel">上级流程编号</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" id="flowParentCode" name="flowParentCode"
+                                                   data-provide="typeahead" placeholder="请输入上级流程编号">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="flowName" id="flowNameLabel">流程名称</label>
+                                        <label class="col-sm-3 control-label" for="flowParentName" id="flowParentNameLabel">上级流程名称</label>
                                         <div class="col-sm-6">
-                                            <input type="text" class="form-control" id="flowName" name="flowName"
-                                                   placeholder="请输入流程名称">
+                                            <input type="text" class="form-control" id="flowParentName" name="flowParentName" readonly="true"
+                                                   placeholder="请输入上级流程名称">
                                         </div>
                                     </div>
+                                </div>
+                                <div id="flowCodeDiv">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="flowCode" id="flowCodeLabel">流程编号</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" id="flowCode" name="flowCode"
+                                                   placeholder="请输入流程编号" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="flowName" id="flowNameLabel">流程名称</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="flowName" name="flowName"
+                                               placeholder="请输入流程名称">
+                                    </div>
+                                </div>
 
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="flowDesc" id="flowDescLabel">流程描述</label>
-                                        <div class="col-sm-6">
-                                            <input type="text" class="form-control" id="flowDesc" name="flowDesc"
-                                                   placeholder="请输入流程描述">
-                                        </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="flowDesc" id="flowDescLabel">流程描述</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="flowDesc" name="flowDesc"
+                                               placeholder="请输入流程描述">
                                     </div>
-                                    <div class="form-group" id="isMustDiv">
-                                        <label class="col-sm-3 control-label" for="isMust">是否必须</label>
-                                        <div class="col-sm-6">
-                                            <select class="form-control" id="isMust" name="isMust">
-                                                <option value="0">否</option>
-                                                <option value="1">是</option>
-                                            </select>
-                                        </div>
+                                </div>
+                                <div class="form-group" id="isMustDiv">
+                                    <label class="col-sm-3 control-label" for="isMust">是否必须</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="isMust" name="isMust">
+                                            <option value="0">否</option>
+                                            <option value="1">是</option>
+                                        </select>
                                     </div>
-                                    <div class="form-group" id="uploadFileDiv">
-                                        <label class="col-sm-3 control-label" for="remotePath">调研问卷</label>
-                                        <div class="col-sm-6">
-                                            <input name="uploadFile" type="file" class="file" id="uploadFile">
-                                        </div>
+                                </div>
+                                <div class="form-group" id="uploadFileDiv">
+                                    <label class="col-sm-3 control-label" for="remotePath">调研问卷</label>
+                                    <div class="col-sm-6">
+                                        <input name="uploadFile" type="file" class="file" id="uploadFile">
                                     </div>
-                                    <div class="col-sm-8 text-center">
-                                        <button class="btn btn-primary" id="saveFlow" type="button">保存</button>
-                                        <button class="btn btn-danger" data-dismiss="modal">取消</button>
-                                    </div>
+                                </div>
+                                <div class="col-sm-8 text-center">
+                                    <button class="btn btn-primary" id="saveFlow" type="button">保存</button>
+                                    <button class="btn btn-danger" data-dismiss="modal">取消</button>
                                 </div>
                                 <input type="hidden" name="id" id="id">
                                 <input type="hidden" name="vid" id="vid">
                                 <input type="hidden" name="flowPid" id="flowPid">
                                 <input type="hidden" name="remotePath" id="remotePath">
                                 <input type="reset" style="display:none;"/>
-
-                                <div id="configDiv">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="flowPCode" >流程编号</label>
-                                        <div class="col-sm-6">
-                                            <input type="text" class="form-control" id="flowPCode" name="flowPCode"
-                                                   data-provide="typeahead" placeholder="请输入流程编号">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="flowPName" >流程名称</label>
-                                        <div class="col-sm-6">
-                                            <input type="text" class="form-control" id="flowPName" name="flowPName" readonly="true"
-                                                   placeholder="请输入流程名称">
-                                        </div>
-                                    </div>
-                                    <div class="form-group" id="configCodeDiv">
-                                        <label class="col-sm-3 control-label" for="configCode" >配置编号</label>
-                                        <div class="col-sm-6">
-                                            <input type="text" class="form-control" id="configCode" name="configCode"
-                                                   placeholder="请输入配置编号" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="configName">配置名称</label>
-                                        <div class="col-sm-6">
-                                            <input type="text" class="form-control" id="configName" name="configName"
-                                                   placeholder="请输入配置名称">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="configDesc" >配置说明</label>
-                                        <div class="col-sm-6">
-                                            <textarea class="form-control" id="configDesc" name="configDesc"
-                                                      placeholder="请输入配置说明" rows="3"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="contentDesc" >明细说明</label>
-                                        <div class="col-sm-6">
-                                            <textarea class="form-control" id="contentDesc" name="contentDesc"
-                                                      placeholder="请输入明细说明" rows="3"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="procName">存储名称</label>
-                                        <div class="col-sm-6">
-                                            <input class="form-control" id="procName" name="procName"
-                                                      placeholder="请输入存储名称">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="configSQL">存储SQL</label>
-                                        <div class="col-sm-6">
-                                            <textarea class="form-control" id="configSQL" name="configSQL"
-                                                   placeholder="请输入存储SQL" rows="3"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-8 text-center">
-                                        <button class="btn btn-primary" id="saveConfig" type="button">保存</button>
-                                        <button class="btn btn-danger" data-dismiss="modal">取消</button>
-                                    </div>
-                                </div>
-
                             </form>
                         </div>
                     </div>
