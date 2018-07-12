@@ -3,6 +3,293 @@
  * chensj
  * 2018-01-25
  */
+function initFlowConfig(data){
+    $('#flowPCode').val(data.flowParentCode);
+    $('#flowPName').val(data.flowParentName);
+    $('#configCode').val(data.flowCode);
+    $('#configName').val(data.flowName);
+    $('#configDesc').val(data.flowDesc);
+
+}
+/**
+ * 表单校验规则
+ */
+function validateForm() {
+    $('#flowForm').bootstrapValidator({
+        live: 'enabled',
+        submitButtons:'#saveFlow',
+        message: '输入的值不符合规格',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            flowName: {
+                message: '流程名称验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '流程名称不能为空'
+                    },
+                    threshold: 6, //有1字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
+                    remote: {
+                        url: Common.getRootPath() + Common.url.flow.existName,//验证地址
+                        message: '流程名称已存在',//提示消息
+                        delay: 2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+                        type: 'POST'/*,//请求方式
+                            data: function (validator) { //自定义提交数据，默认值提交当前input value
+                                return {
+                                    flowName: $('#flowName').val(),
+                                    id: $('#vid').val()
+                                };
+                            }*/
+                    }
+                }
+            },
+            flowDesc : {
+                message: '流程描述验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '流程描述不能为空'
+                    }
+                }
+            },
+            flowPCode : {
+                message: '流程编号验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '流程编号不能为空'
+                    }
+                }
+            },
+            configName : {
+                message: '配置名称验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '配置名称不能为空'
+                    }
+                }
+            },
+            configDesc : {
+                message: '配置说明验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '配置说明不能为空'
+                    }
+                }
+            },
+            contentDesc : {
+                message: '明细说明验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '明细说明不能为空'
+                    }
+                }
+            },
+            configSQL : {
+                message: '配置SQL验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '配置SQL不能为空'
+                    }
+                }
+            },
+            procName : {
+                message: '存储名称验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '存储名称不能为空'
+                    }
+                }
+            },
+            procParam : {
+                message: '存储参数验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '存储参数不能为空'
+                    }
+                }
+            },
+        }
+    });
+}
+/**
+ * 初始化上传
+ * @param ele 元素
+ * @param url 远程URL
+ * @param uploadType 上传文件类型 Common.UPLOAD_TYPE_*
+ */
+function initFileApiUpload(ele) {
+    uploadStatus = Common.STATUS_BEFORE_UPLOAD;
+    var $ele = $('#'+ele);
+    $ele.fileapi({
+        clearOnComplete: false,
+        url:Common.getRootPath() + Common.url.flow.uploadURL,
+        autoUpload: true,
+        multiple:false,
+        paramName:'uploadFile',
+        maxSize: FileAPI.MB*10, // max file size
+        maxFiles:1,
+        elements: {
+            name: '#fileName',
+            size: '#fileSize',
+            empty: { hide: '#jsInfo' }
+        },
+        onSelect:function (evt, data) {
+            $('#fileInfo').html('');
+            var fileInfo = data.all;
+            var fileName = data.all[0].name;
+            var suffix = fileName.substring(fileName.lastIndexOf('.'));
+            console.log(suffix);
+            var isAllow = /(\.|\/)(xls|xlsx|doc|docx|pdf)$/i.test(suffix);
+            console.log(isAllow);
+            if(!isAllow){
+                data.all = [];
+                data.files = [];
+                $('#fileInfo').html('当前文件【'+fileName+'】文件格式不支持，<br>只支持doc,docx,xls,xlsx,pdf').css('color','red');
+                return ;
+            }
+            uploadStatus = Common.STATUS_PROCESS_UPLOAD;
+            /*$('#reset').show();*/
+            $('#fileUpload').hide();
+        },
+        onFileComplete: function (evt, uiEvt){
+            var file = uiEvt.file;
+            var json = uiEvt.result;
+            var url = json.url + json.path;
+            $('#uploadFileName').text(file.name);
+            $('#downLoadFile').attr('path',url);
+            $('#deleteFile').attr('path',url);
+            $('#jsInfo').html('');
+            hideUploadDiv();
+            uploadStatus = Common.STATUS_FINISH_UPLOAD;
+
+            $('#remotePath').val(json.path);
+        }
+    });
+    showUploadDiv();
+}
+
+//================================== 文件上传框处理 =====================================================//
+var uploadStatus =  Common.STATUS_BEFORE_UPLOAD; //0 初始化  1 上传  2 完成
+var url = Common.getShareURL();
+
+initFileApiUpload('file-upload');
+
+
+$('#downLoadFile').on('click',function () {
+    window.open($(this).attr('path'));
+});
+
+$('#deleteFile').on('click',function (e)  {
+    //阻止默认行为
+    e.preventDefault();
+    $('#uploadFileName').text('');
+    $('#downLoad').attr('path','');
+    $('#delete').attr('path','');
+    $.ajax({
+        url: Common.getRootPath() +'/admin/flow/deleteFile.do',
+        data: {'id':$('#vid').val()},
+        type: "post",
+        dataType: 'json',
+        async: false,
+        cache : false,
+        success: function (result) {
+            var _result = eval(result);
+            if (_result.status == Common.SUCCESS) {
+                $('#remotePath').val('');
+                showFlowFileInfo('','');
+                showUploadDiv();
+            }
+        }
+    });
+    showUploadDiv();
+});
+
+$('#reset').on('click',function () {
+    $('#fileUpload').show();
+    $('#reset').hide();
+});
+
+/**
+ * 已经上传的文件展示
+ * @param name
+ * @param url
+ */
+function showFlowFileInfo(name,url) {
+    $('#uploadFileName').text(name);
+    $('#downLoadFile').attr('path',url);
+    $('#deleteFile').attr('path',url);
+    hideUploadDiv();
+}
+
+/**
+ * 隐藏上传区域
+ */
+function hideUploadDiv() {
+    uploadStatus = Common.STATUS_FINISH_UPLOAD;
+    $('#uploadFile').show();
+    $('#fileUploadDiv').hide();
+}
+/**
+ * 显示上传区域
+ */
+function showUploadDiv() {
+    uploadStatus = Common.STATUS_BEFORE_UPLOAD ;
+    $('#fileUploadDiv').show();
+    $('#uploadFile').hide();
+    $('#reset').hide();
+    $('#fileUpload').show();
+}
+
+/**
+ * 检查上传的状态
+ * @returns {boolean}
+ */
+function checkUploadStatus(){
+    if(uploadStatus === Common.STATUS_BEFORE_UPLOAD  || uploadStatus === Common.STATUS_FINISH_UPLOAD){
+        return true;
+    }else {
+        return false;
+    }
+}
+function editFlowInfo(id,flowType,flowName,flowCode){
+    $("input[type=reset]").trigger("click");
+    $('#id').val('');
+    $('#flowPid').val(id);
+    $('#vid').val('');
+    $('#remotePath').val('');
+    //清空验证信息
+    $('#flowForm').bootstrapValidator("destroy");
+    validateForm();
+    initFileApiUpload('file-upload');
+    $('#flowParent').show();
+    $('#flowCodeDiv').show();
+    $('#uploadFileDiv').show();
+    $('#isModifyDiv').hide();
+    $('#flowInfo').show();
+    $('#configDiv').hide();
+    $('#flowType').val(parseInt(flowType)+1+"");
+    if(parseInt(flowType)+1 == 2){
+        $('#flowPCode').val(flowCode);
+        $('#flowPName').val(flowName);
+        $('#configCodeDiv').hide();
+        $('#configDiv').show();
+        $('#flowInfo').hide();
+    }else{
+        $('#flowParentCode').val(flowCode);
+        $('#flowParentName').val(flowName);
+        $('#flowParentCode').attr('readonly',true);
+        $('#flowParentName').attr('readonly',true);
+        $('#flowInfo').show();
+        $('#configDiv').hide();
+    }
+    $('#flowCodeDiv').hide();
+    $('#flowType').attr('disabled',true);
+    $('#flowCodeDiv').attr('readonly',true);
+
+    $('#flowModal').modal('show');
+}
 $(function () {
     toastr.options.positionClass = 'toast-top-center';
     toastr.options.timeOut = 30;
@@ -130,20 +417,23 @@ $(function () {
                 title: '存储名称',
                 width: '20px',
                 align: 'center'
-            },/*{
-                field: 'procParam',
-                title: '存储参数',
-                width: '20px',
-                align: 'center'
-            },*/{
+            },{
             title: '操作',
             field: 'id',
             align: 'center',
             width: '40px',
             formatter: function (value, row, index) {
-                var e = '<a href="####" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.id + '">编辑</a> ';
-                var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
-                return e + d;
+                if(row.flowType < 2){
+                    var f = '<a href="####" class="btn btn-primary btn-xs" name="add" mce_href="#" onclick="editFlowInfo(\''+row.id+'\',\''+row.flowType+'\',\''+row.flowName+'\',\''+row.flowCode+'\',)">添加子节点</a> ';
+                    var e = '<a href="####" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.id + '">编辑</a> ';
+                    var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
+                    return f + e + d;
+                }else{
+                    var e = '<a href="####" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.id + '">编辑</a> ';
+                    var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '">删除</a> ';
+                    return  e + d;
+                }
+
             }
         }],
         striped:true,
@@ -190,6 +480,7 @@ $(function () {
         $('#configDiv').hide();
         $('#flowType').val('1');
         $('#flowCodeDiv').attr('readonly',true);
+        $('#flowType').attr('disabled',false);
         $('#flowModal').modal('show');
     });
     /**
@@ -219,6 +510,7 @@ $(function () {
                     $('#flowCode').attr('readonly','true');
                     $('#isMust').val(_result.data.isMust);
                     $('#remotePath').val(_result.data.remotePath);
+                    $('#flowType').attr('disabled',false);
                     if(_result.data.flowType == "0"){
                         $('#flowParent').hide();
                         $('#uploadFileDiv').hide();
@@ -228,6 +520,7 @@ $(function () {
                     }else if(_result.data.flowType == "2"){
                         initFlowConfig(_result.data);
                         $('#flowInfo').hide();
+                        $('#configCodeDiv').show();
                         $('#configDiv').show();
                     }else{
                         $('#flowParent').show();
@@ -244,6 +537,7 @@ $(function () {
             }
         });
     });
+
     /**
      * 列表中按钮
      *   删除流程信息
@@ -522,116 +816,7 @@ $(function () {
         }
     });
 
-    function initFlowConfig(data){
-        $('#flowPCode').val(data.flowParentCode);
-        $('#flowPName').val(data.flowParentName);
-        $('#configCode').val(data.flowCode);
-        $('#configName').val(data.flowName);
-        $('#configDesc').val(data.flowDesc);
 
-    }
-    /**
-     * 表单校验规则
-     */
-    function validateForm() {
-        $('#flowForm').bootstrapValidator({
-            live: 'enabled',
-            submitButtons:'#saveFlow',
-            message: '输入的值不符合规格',
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-            fields: {
-                flowName: {
-                    message: '流程名称验证失败',
-                    validators: {
-                        notEmpty: {
-                            message: '流程名称不能为空'
-                        },
-                        threshold: 6, //有1字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
-                        remote: {
-                            url: Common.getRootPath() + Common.url.flow.existName,//验证地址
-                            message: '流程名称已存在',//提示消息
-                            delay: 2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
-                            type: 'POST'/*,//请求方式
-                            data: function (validator) { //自定义提交数据，默认值提交当前input value
-                                return {
-                                    flowName: $('#flowName').val(),
-                                    id: $('#vid').val()
-                                };
-                            }*/
-                        }
-                    }
-                },
-                flowDesc : {
-                    message: '流程描述验证失败',
-                    validators: {
-                        notEmpty: {
-                            message: '流程描述不能为空'
-                        }
-                    }
-                },
-                flowPCode : {
-                    message: '流程编号验证失败',
-                    validators: {
-                        notEmpty: {
-                            message: '流程编号不能为空'
-                        }
-                    }
-                },
-                configName : {
-                    message: '配置名称验证失败',
-                    validators: {
-                        notEmpty: {
-                            message: '配置名称不能为空'
-                        }
-                    }
-                },
-                configDesc : {
-                    message: '配置说明验证失败',
-                    validators: {
-                        notEmpty: {
-                            message: '配置说明不能为空'
-                        }
-                    }
-                },
-                contentDesc : {
-                    message: '明细说明验证失败',
-                    validators: {
-                        notEmpty: {
-                            message: '明细说明不能为空'
-                        }
-                    }
-                },
-                configSQL : {
-                    message: '配置SQL验证失败',
-                    validators: {
-                        notEmpty: {
-                            message: '配置SQL不能为空'
-                        }
-                    }
-                },
-                procName : {
-                    message: '存储名称验证失败',
-                    validators: {
-                        notEmpty: {
-                            message: '存储名称不能为空'
-                        }
-                    }
-                },
-                procParam : {
-                    message: '存储参数验证失败',
-                    validators: {
-                        notEmpty: {
-                            message: '存储参数不能为空'
-                        }
-                    }
-                },
-            }
-        });
-    }
     /**
      * 查询按钮
      */
@@ -657,142 +842,5 @@ $(function () {
         }
     });
 
-    //================================== 文件上传框处理 =====================================================//
-    var uploadStatus =  Common.STATUS_BEFORE_UPLOAD; //0 初始化  1 上传  2 完成
-    var url = Common.getShareURL();
 
-    initFileApiUpload('file-upload');
-    /**
-     * 初始化上传
-     * @param ele 元素
-     * @param url 远程URL
-     * @param uploadType 上传文件类型 Common.UPLOAD_TYPE_*
-     */
-    function initFileApiUpload(ele) {
-        uploadStatus = Common.STATUS_BEFORE_UPLOAD;
-        var $ele = $('#'+ele);
-        $ele.fileapi({
-            clearOnComplete: false,
-            url:Common.getRootPath() + Common.url.flow.uploadURL,
-            autoUpload: true,
-            multiple:false,
-            paramName:'uploadFile',
-            maxSize: FileAPI.MB*10, // max file size
-            maxFiles:1,
-            elements: {
-                name: '#fileName',
-                size: '#fileSize',
-                empty: { hide: '#jsInfo' }
-            },
-            onSelect:function (evt, data) {
-                $('#fileInfo').html('');
-                var fileInfo = data.all;
-                var fileName = data.all[0].name;
-                var suffix = fileName.substring(fileName.lastIndexOf('.'));
-                console.log(suffix);
-                var isAllow = /(\.|\/)(xls|xlsx|doc|docx|pdf)$/i.test(suffix);
-                console.log(isAllow);
-                if(!isAllow){
-                    data.all = [];
-                    data.files = [];
-                    $('#fileInfo').html('当前文件【'+fileName+'】文件格式不支持，<br>只支持doc,docx,xls,xlsx,pdf').css('color','red');
-                    return ;
-                }
-                uploadStatus = Common.STATUS_PROCESS_UPLOAD;
-                /*$('#reset').show();*/
-                $('#fileUpload').hide();
-            },
-            onFileComplete: function (evt, uiEvt){
-                var file = uiEvt.file;
-                var json = uiEvt.result;
-                var url = json.url + json.path;
-                $('#uploadFileName').text(file.name);
-                $('#downLoadFile').attr('path',url);
-                $('#deleteFile').attr('path',url);
-                $('#jsInfo').html('');
-                hideUploadDiv();
-                uploadStatus = Common.STATUS_FINISH_UPLOAD;
-
-                $('#remotePath').val(json.path);
-            }
-        });
-        showUploadDiv();
-    }
-
-    $('#downLoadFile').on('click',function () {
-        window.open($(this).attr('path'));
-    });
-
-    $('#deleteFile').on('click',function (e)  {
-        //阻止默认行为
-        e.preventDefault();
-        $('#uploadFileName').text('');
-        $('#downLoad').attr('path','');
-        $('#delete').attr('path','');
-        $.ajax({
-            url: Common.getRootPath() +'/admin/flow/deleteFile.do',
-            data: {'id':$('#vid').val()},
-            type: "post",
-            dataType: 'json',
-            async: false,
-            cache : false,
-            success: function (result) {
-                var _result = eval(result);
-                if (_result.status == Common.SUCCESS) {
-                    $('#remotePath').val('');
-                    showFlowFileInfo('','');
-                    showUploadDiv();
-                }
-            }
-        });
-        showUploadDiv();
-    });
-
-    $('#reset').on('click',function () {
-        $('#fileUpload').show();
-        $('#reset').hide();
-    });
-
-    /**
-     * 已经上传的文件展示
-     * @param name
-     * @param url
-     */
-    function showFlowFileInfo(name,url) {
-        $('#uploadFileName').text(name);
-        $('#downLoadFile').attr('path',url);
-        $('#deleteFile').attr('path',url);
-        hideUploadDiv();
-    }
-
-    /**
-     * 隐藏上传区域
-     */
-    function hideUploadDiv() {
-        uploadStatus = Common.STATUS_FINISH_UPLOAD;
-        $('#uploadFile').show();
-        $('#fileUploadDiv').hide();
-    }
-    /**
-     * 显示上传区域
-     */
-    function showUploadDiv() {
-        uploadStatus = Common.STATUS_BEFORE_UPLOAD ;
-        $('#fileUploadDiv').show();
-        $('#uploadFile').hide();
-        $('#reset').hide();
-        $('#fileUpload').show();
-    }
-
-    /**
-     * 检查上传的状态
-     * @returns {boolean}
-     */
-    function checkUploadStatus(){
-        if(uploadStatus === Common.STATUS_BEFORE_UPLOAD  || uploadStatus === Common.STATUS_FINISH_UPLOAD){
-            return true;
-        }else {
-            return false;
-        }
-    }
 });
