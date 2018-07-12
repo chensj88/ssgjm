@@ -55,6 +55,10 @@ public class TestController extends BaseController{
     public String upload(){
         return "test/upload";
     }
+    @RequestMapping(value = "/script.do")
+    public String script(){
+        return "test/scriptPage";
+    }
 
     @RequestMapping(value = "/exec.do")
     @ResponseBody
