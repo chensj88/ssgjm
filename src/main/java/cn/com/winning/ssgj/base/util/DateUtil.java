@@ -195,6 +195,11 @@ public final class DateUtil {
         return System.currentTimeMillis() +"";
     }
 
+    public static String getYYYYMMDDHHmmSSTimstamp(){
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+        return df.format(new Date(System.currentTimeMillis()));
+    }
+
     public static Timestamp convertDateStringToTimestap(String dateString) throws ParseException {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return new Timestamp(df.parse(dateString).getTime());

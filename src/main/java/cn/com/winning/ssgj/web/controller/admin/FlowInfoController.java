@@ -69,6 +69,7 @@ public class FlowInfoController extends BaseController {
         flowInfo.setRow(row);
         flowInfo.setFlowCode(flowCode);
         flowInfo.setFlowType(flowType+"");
+        flowInfo.setStatus(Constants.STATUS_USE);
         List<SysFlowInfo> flowInfos = super.getFacade().getSysFlowInfoService().querySysFlowInfoList(flowInfo);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", matchCount);

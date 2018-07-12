@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/bootstrapValidator/css/bootstrapValidator.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/file/css/fileinput.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/assets/css/common.css"/>
+    <%--<base href="<%=basePath%>">--%>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <style type="text/css">
         .table-align{
@@ -104,6 +105,9 @@
                                              placeholder="请输入脚本名称">
                                   </div>
                               </div>
+                            <input type="hidden" id="appId" name="appId">
+
+
                             <input type="hidden" name="id" id="id">
                             <input type="hidden" name="vid" id="vid">
                             <input type="hidden" name="remotePath" id="remotePath">
@@ -113,12 +117,22 @@
                                     <textarea class="form-control" rows="6" id="sDesc" name="sDesc" placeholder="请输入校验内容"></textarea>
                                 </div>
                             </div>
+                              <div class="form-group" id="isModifyDiv">
+                                  <label class="col-sm-3 control-label" for="isModify">文件替换</label>
+                                  <div class="col-sm-6">
+                                      <select class="form-control" id="isModify" name="isModify">
+                                          <option value="0">否</option>
+                                          <option value="1">是</option>
+                                      </select>
+                                  </div>
+                              </div>
                             <div class="form-group" id="uploadFileDiv">
-                                <label class="col-sm-3 control-label" for="uploadFile">校验脚本</label>
-                                <div class="col-sm-6">
-                                    <input name="uploadFile" type="file" class="file" id="uploadFile">
-                                </div>
+                                  <label class="col-sm-3 control-label" for="uploadFile">上传脚本</label>
+                                  <div class="col-sm-6">
+                                      <input name="uploadFile" type="file" class="file" id="uploadFile">
+                                  </div>
                             </div>
+
                             <input type="reset" style="display:none;"/>
                             <div class="col-sm-8 text-center">
                                 <button class="btn btn-primary" id="save" type="button">保存</button>
@@ -133,16 +147,127 @@
 </div>
 
 </body>
-<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
+<!--[if !IE]> -->
+<script src="<%=basePath%>resources/bootstrap/js/jquery-2.2.4.min.js"></script>
+<!-- <![endif]-->
+<!--[if IE]>
+<script src="<%=basePath%>resources/bootstrap/js/jquery-1.12.4.min.js"></script>
+<![endif]-->
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap-table.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap-table-zh-CN.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/bootstrapValidator/js/bootstrapValidator.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/bootstrapValidator/js/zh_CN.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap3-typeahead.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/file/js/fileinput.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/file/js/zh.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap3-typeahead.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
-<script type="text/javascript" src="<%=basePath%>resources/js/online/script.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/js/test/script.js"></script>
+<script>
+    initBootstrapFileInput();
+    function initBootstrapFileInput(json){
+        if(json){
+            $('#uploadFile').fileinput({
+                theme: 'zh',//设置语言
+                language: 'zh',//设置语言
+                uploadUrl: Common.getRootPath() + Common.url.script.uploadURL,//上传的地址
+                allowedFileExtensions: ['sql','txt'], //接收的文件后缀
+                hideThumbnailContent:true, //不显示内容信息，只显示文件名称和大小
+                showCaption:true,//是否显示标题
+                showPreview :true, //是否显示预览
+                showRemove :false, //显示移除按钮
+                showUpload:false, //是否显示上传按钮
+                showCancel:true, //ajax上传显示取消按钮 仅在ajax时候
+                showClose:false, //文件预览情况下显示关闭按钮
+                showUploadedThumbs:true, //显示上传文件
+                showBrowse:true, //显示浏览按钮
+                browseOnZoneClick:false, //点击浏览按钮或者点击上传区域
+                autoReplace:true, //自动替换
+                uploadAsync: true, //默认异步上传
+                browseClass:"btn btn-primary", //按钮样式
+                dropZoneEnabled: false,//是否显示拖拽区域
+                maxFileSize:0,//单位为kb，如果为0表示不限制文件大小
+                maxFileCount:1, //表示允许同时上传的最大文件个数
+                enctype:'multipart/form-data',
+                validateInitialCount:true,
+                previewFileIcon: "<iclass='glyphicon glyphicon-king'></i>",
+                msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+                fileActionSettings:{showUpload:false,showDownload:true},
+                showDownload: true, //显示下载按钮
+                downloadIcon: '<i class="glyphicon glyphicon-download"></i>', //按钮ICON
+                downloadClass: 'btn btn-kv btn-default btn-outline-secondary',//按钮样式
+                initialPreviewDownloadUrl:json.url, //文件下载路径
+                downloadTitle: json.name, //下载文件名称
+                deleteUrl:json.deleteUrl+'?id='+json.key, //删除url
+                initialPreview: [ //预览内容
+                    json.content
+                ],
+                initialPreviewAsData: true, // defaults markup
+                initialPreviewConfig: [ //预览配置
+                    {
+                        type: "text",
+                        previewAsData: true,
+                        caption: json.name,
+                        url: json.deleteUrl+'?id='+json.key,
+                        key: json.key,
+                        frameAttr: {
+                            style: 'height:80px'
+                        },
+                    },
+                ],
+
+            }).on("filebatchselected", function(event, files) {
+                $("#uploadFile").fileinput("upload");
+                isUpload = true;
+            }).on('filepreupload', function() {
+            }).on('fileuploaded', function(event, data) {
+                console.log('fileuploaded',data);
+                isUpload = false;
+                $('#remotePath').val(data.response.path);
+            });
+        }else{
+            $('#uploadFile').fileinput({
+                theme: 'zh',//设置语言
+                language: 'zh',//设置语言
+                uploadUrl: Common.getRootPath() + Common.url.script.uploadURL,//上传的地址
+                allowedFileExtensions: ['sql','txt'], //接收的文件后缀
+                hideThumbnailContent:true, //不显示内容信息，只显示文件名称和大小
+                showCaption:true,//是否显示标题
+                showPreview :true, //是否显示预览
+                showRemove :false, //显示移除按钮
+                showUpload:false, //是否显示上传按钮
+                showCancel:true, //ajax上传显示取消按钮 仅在ajax时候
+                showClose:false, //文件预览情况下显示关闭按钮
+                showUploadedThumbs:true, //显示上传文件
+                showBrowse:true, //显示浏览按钮
+                browseOnZoneClick:false, //点击浏览按钮或者点击上传区域
+                autoReplace:true, //自动替换
+                uploadAsync: true, //默认异步上传
+                browseClass:"btn btn-primary", //按钮样式
+                dropZoneEnabled: false,//是否显示拖拽区域
+                maxFileSize:0,//单位为kb，如果为0表示不限制文件大小
+                maxFileCount:1, //表示允许同时上传的最大文件个数
+                enctype:'multipart/form-data',
+                validateInitialCount:true,
+                previewFileIcon: "<iclass='glyphicon glyphicon-king'></i>",
+                msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+                fileActionSettings:{showUpload:false,showDownload:false},
+            }).on("filebatchselected", function(event, files) {
+                $("#uploadFile").fileinput("upload");
+                isUpload = true;
+            }).on('filepreupload', function() {
+            }).on('fileuploaded', function(event, data) {
+                console.log('fileuploaded',data);
+                isUpload = false;
+                $('#remotePath').val(data.response.path);
+            });
+        }
+    }
+
+
+    $('#uploadFile').on('filebatchuploadsuccess', function(event, data) {
+        $('#remotePath').val(data.response.path);
+        isUpload = false;
+        console.log('filebatchuploadsuccess',data);
+    });
+</script>
 </html>
