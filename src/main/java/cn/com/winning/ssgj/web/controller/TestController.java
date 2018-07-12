@@ -1,15 +1,9 @@
 package cn.com.winning.ssgj.web.controller;
 
 import cn.com.winning.ssgj.base.Constants;
-<<<<<<< HEAD
-import cn.com.winning.ssgj.domain.EtBusinessProcess;
-import cn.com.winning.ssgj.domain.EtDepartment;
-import cn.com.winning.ssgj.domain.PmisProductInfo;
-=======
 import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.base.util.MD5;
 import cn.com.winning.ssgj.domain.*;
->>>>>>> 88475f27c4d1fa9b299c02adb5d2d4a630a9b4ce
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
@@ -27,14 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
-<<<<<<< HEAD
-=======
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.ParseException;
->>>>>>> 88475f27c4d1fa9b299c02adb5d2d4a630a9b4ce
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -151,31 +142,10 @@ public class TestController extends BaseController{
         result.put("status", Constants.SUCCESS);
         result.put("data",pmisWorkingPaperService.queryWorkReport(code));
         return result;
-    }
-
-    @RequestMapping(value = "/testExcel.do")
-    public void wiriteExcel(HttpServletResponse response){
-        String serialNo = "10159";
-        EtDepartment dept = new EtDepartment();
-        List<EtDepartment> deps = getDepartmentList(Long.parseLong(serialNo),null);
-        List<Map<String,Object>> validateRoles = new ArrayList<>();
-        Map<String,Object> deptValidate = new HashMap<>();
-        String[] deptArr = new String[deps.size()];
-        for (int i = 0; i < deps.size(); i++) {
-            deptArr[i] = deps.get(i).getDeptName();
-        }
-        deptValidate.put("roles",deptArr);
-        deptValidate.put("firstRow",2);
-        deptValidate.put("lastRow",4000);
-        deptValidate.put("firstCol",2);
-        deptValidate.put("lastCol",2);
-        validateRoles.add(deptValidate);
 
     }
 
 
-<<<<<<< HEAD
-=======
     @RequestMapping(value = "/testExcel.do")
     public void wiriteExcel(HttpServletResponse response){
         List<Map<String,Object>> validateRoles = new ArrayList<>();
@@ -378,5 +348,4 @@ public class TestController extends BaseController{
 
 
 
->>>>>>> 88475f27c4d1fa9b299c02adb5d2d4a630a9b4ce
 }

@@ -100,20 +100,7 @@ public class EtContractTaskController extends BaseController {
         result.put("total", total);
         result.put("status", Constants.SUCCESS);
         result.put("rows", taskList);
-<<<<<<< HEAD:src/main/java/cn/com/winning/ssgj/web/controller/vue/EtContractProjectController.java
         return result;
-    }
-
-    @RequestMapping(value = "/process.do")
-    @ResponseBody
-    public Map<String, Object>  listProductOfProject(EtContractTask task){
-        Map<String,Object> result = new HashMap<String,Object>();
-        result.put("status", Constants.SUCCESS);
-        result.put("process", this.getProcessManager(task.getPmId()));
-=======
->>>>>>> 88475f27c4d1fa9b299c02adb5d2d4a630a9b4ce:src/main/java/cn/com/winning/ssgj/web/controller/vue/EtContractTaskController.java
-        return result;
-
     }
 
     @RequestMapping(value = "/process.do")
