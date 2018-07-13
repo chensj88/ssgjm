@@ -11,6 +11,7 @@
 		<result column="IP" property="ip" jdbcType="VARCHAR" />
 		<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
 		<result column="PW" property="pw" jdbcType="VARCHAR" />
+		<result column="DB_TYPE" property="dbType" jdbcType="INTEGER" />
 		<result column="DATABASE_NAME" property="databaseName" jdbcType="VARCHAR" />
 		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
 		<result column="CREATOR" property="creator" jdbcType="BIGINT" />
@@ -31,7 +32,8 @@
 		<if test="ip != null and ip != ''"> and t.IP = #{ip} </if>
 	   <if test="userName != null and userName != ''"> and t.USER_NAME = #{userName} </if>
 	   <if test="pw != null and pw != ''"> and t.PW = #{pw} </if>
-	   <if test="databaseName != null and databaseName != ''"> and t.DATABASE_NAME = #{databaseName} </if>
+		<if test="(dbType != null )"> and t.DB_TYPE = #{dbType} </if>
+		<if test="databaseName != null and databaseName != ''"> and t.DATABASE_NAME = #{databaseName} </if>
 	   <if test="remark != null and remark != ''"> and t.REMARK = #{remark} </if>
 	   <if test="(creator != null and creator != '') or creator == 0"> and t.CREATOR = #{creator} </if>
 	   <if test="createTime != null and createTime != ''"> and t.CREATE_TIME = #{createTime} </if>
@@ -77,7 +79,8 @@
 			<if test="ip != null and ip != ''"> IP, </if>
 		   <if test="userName != null and userName != ''"> USER_NAME, </if>
 		   <if test="pw != null and pw != ''"> PW, </if>
-		   <if test="databaseName != null and databaseName != ''"> DATABASE_NAME, </if>
+			<if test="(dbType != null )"> DB_TYPE, </if>
+			<if test="databaseName != null and databaseName != ''"> DATABASE_NAME, </if>
 		   <if test="remark != null and remark != ''"> REMARK, </if>
 	       <if test="(creator != null and creator != '') or creator == 0"> CREATOR, </if>
 		   <if test="createTime != null "> CREATE_TIME, </if>
@@ -94,7 +97,8 @@
 			<if test="ip != null and ip != ''"> #{ip, jdbcType=VARCHAR}, </if>
 		   <if test="userName != null and userName != ''"> #{userName, jdbcType=VARCHAR}, </if>
 		   <if test="pw != null and pw != ''"> #{pw, jdbcType=VARCHAR}, </if>
-		   <if test="databaseName != null and databaseName != ''"> #{databaseName, jdbcType=VARCHAR}, </if>
+			<if test="(dbType != null )"> #{dbType, jdbcType=INTEGER}, </if>
+			<if test="databaseName != null and databaseName != ''"> #{databaseName, jdbcType=VARCHAR}, </if>
 		   <if test="remark != null and remark != ''"> #{remark, jdbcType=VARCHAR}, </if>
 	       <if test="(creator != null and creator != '') or creator == 0"> #{creator, jdbcType=BIGINT}, </if>
 		   <if test="createTime != null "> #{createTime, jdbcType=TIMESTAMP}, </if>
@@ -115,7 +119,8 @@
                </if><if test="ip != null and ip != ''">IP = #{ip, jdbcType=VARCHAR}, </if>
 			   <if test="userName != null and userName != ''"> USER_NAME = #{userName, jdbcType=VARCHAR}, </if>
 			   <if test="pw != null and pw != ''"> PW = #{pw, jdbcType=VARCHAR}, </if>
-			   <if test="databaseName != null and databaseName != ''"> DATABASE_NAME = #{databaseName, jdbcType=VARCHAR}, </if>
+				<if test="(dbType != null )"> DB_TYPE = #{dbType, jdbcType=INTEGER}, </if>
+				<if test="databaseName != null and databaseName != ''"> DATABASE_NAME = #{databaseName, jdbcType=VARCHAR}, </if>
 			   <if test="remark != null and remark != ''"> REMARK = #{remark, jdbcType=VARCHAR}, </if>
 			   <if test="(creator != null and creator != '') or creator == 0"> CREATOR = #{creator, jdbcType=BIGINT}, </if>
 			   <if test="createTime != null"> CREATE_TIME = #{createTime, jdbcType=TIMESTAMP}, </if>

@@ -48,6 +48,8 @@ public class EtDatabasesList extends BaseDomain implements Serializable {
 	private String databaseName;
 	
 	private String remark;
+
+	private String dbType;
 	
 	/**
 	 * @val 创建人
@@ -225,6 +227,15 @@ public class EtDatabasesList extends BaseDomain implements Serializable {
 
 	public void setDataAlias(String dataAlias) {
 		this.dataAlias = dataAlias;
+	}
+
+
+	public String getDbType() {
+		return dbType;
+	}
+
+	public void setDbType(String dbType) {
+		this.dbType = dbType;
 	}
 
 }
