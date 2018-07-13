@@ -38,10 +38,9 @@ $(function () {
                     initConfigtable(data);
                 }
             },
-            error: function (e) {
-                console.log(e);
-                Ewin.alert('Error:' + e.statusText);
-            }
+            error: function (response) {
+                toastr.error(response.responseText);
+            },
         });
     }
 
@@ -338,10 +337,9 @@ $(function () {
                     initConfigtable(data);
                 }
             },
-            error: function (e) {
-                console.log(e);
-                Ewin.alert('Error:' + e.statusText);
-            }
+            error: function (response) {
+                toastr.error(response.responseText);
+            },
         });
     }
     /**
@@ -510,10 +508,9 @@ $(function () {
                     initConfigtable(data);
                 }
             },
-            error: function (e) {
-                console.log(e);
-                Ewin.alert('Error:' + e.statusText);
-            }
+            error: function (response) {
+                toastr.error(response.responseText);
+            },
         });
 
     });
@@ -559,9 +556,9 @@ $(function () {
                     showModalWindow('需要删除的信息',data);
                 }
             },
-            error: function (e) {
-                Ewin.alert('Error:' + e.statusText);
-            }
+            error: function (response) {
+                toastr.error(response.responseText);
+            },
         });
 
 
@@ -610,9 +607,9 @@ $(function () {
                     toastr.success('映射关系添加成功');
                 }
             },
-            error: function (e) {
-                Ewin.alert('Error:' + e.statusText);
-            }
+            error: function (response) {
+                toastr.error(response.responseText);
+            },
         });
     });
 
@@ -643,9 +640,9 @@ $(function () {
                     refreshConfigTable(pdId);
                 }
             },
-            error: function (e) {
-                Ewin.alert('Error:' + e.statusText);
-            }
+            error: function (response) {
+                toastr.error(response.responseText);
+            },
         });
     });
 

@@ -209,8 +209,8 @@ $(function () {
                         $("#infoTable").bootstrapTable('refresh');
                     }
                 },
-                error: function (msg) {
-                    toastr.error(msg);
+                error: function (response) {
+                    toastr.error(response.responseText);
                 },
                 complete: function () {
                 }
@@ -248,8 +248,8 @@ $(function () {
                     $("#infoTable").bootstrapTable('refresh');
                 }
             },
-            error: function (msg) {
-                toastr.error(msg);
+            error: function (response) {
+                toastr.error(response.responseText);
             }
         });
         }
