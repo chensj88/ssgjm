@@ -136,8 +136,7 @@
     <jsp:include page="../enterprise/img.jsp"></jsp:include>
     <div class="wrap-foot large-btn">
         <a href="#" onclick="checkQuestion();"><span>取消</span></a>
-        <a href="#" onclick="save();"><span>保存</span></a>
-
+        <a href="#" onclick="save();" ><span>保存</span></a>
     </div>
 </div>
 </body>
@@ -147,6 +146,7 @@
 <script src="<%=basePath%>resources/zoomify/js/zoomify.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=basePath%>resources/photoSwipe/js/myPhoto.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
+    let status = 0;
     $(function () {
         enterprise.init();
         /*优先等级切换*/
@@ -159,6 +159,7 @@
         $('.zoomify').zoomify();
     })
 
+    $('#saveBtn').attr('disabled',true);
     /**
      * 初始化优先级
      *@param val
@@ -254,6 +255,12 @@
             mui.toast('问题描述不能为空', {duration: 'long(3500ms)', type: 'div'});
             return false;
         }
+        if(status == 1){
+            mui.toast('问题已经提交后台，请稍候!', {duration: 'long(3500ms)', type: 'div'});
+            return false;
+        }
+        status = 1 ;
+
         $.ajax({
             type: "POST",
             url: "<%=basePath%>mobile/wechatSiteQuestion/checkIsAutomatic.do",
@@ -277,8 +284,7 @@
                             }
                         });
                     }
-
-
+                    status = 0;
                 }
             }
         });
