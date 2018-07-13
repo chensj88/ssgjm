@@ -88,10 +88,10 @@
                                     <label class="col-sm-3 control-label" for="flowType">流程类型</label>
                                     <div class="col-sm-6">
                                       <select class="form-control" name="flowType" id="flowType">
+                                          <option value="0">流程大类</option>
                                           <option value="1">流程小类</option>
                                           <option value="2">流程方案</option>
-                                          <option value="3">配置SQL</option>
-                                          <option value="0">流程大类</option>
+                                          <option value="3">配置脚本</option>
                                       </select>
                                     </div>
                                 </div>
@@ -120,6 +120,18 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group" id="dbTypeDiv">
+                                    <label class="col-sm-3 control-label" for="dbType">数据库类型</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="dbType" name="dbType">
+                                            <option value="1">HIS</option>
+                                            <option value="2">CISDB</option>
+                                            <option value="3">CISDB_DATA</option>
+                                            <option value="4">NIS</option>
+                                            <option value="5">BQHS</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label" for="flowName" id="flowNameLabel">流程名称</label>
                                     <div class="col-sm-6">
@@ -127,12 +139,11 @@
                                                placeholder="请输入流程名称">
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="flowDesc" id="flowDescLabel">流程描述</label>
+                                <div class="form-group" id="procDiv">
+                                    <label class="col-sm-3 control-label" for="procName" id="procNameLabel">存储名称</label>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control" id="flowDesc" name="flowDesc"
-                                               placeholder="请输入流程描述">
+                                        <input type="text" class="form-control" id="procName" name="procName"
+                                               placeholder="请输入存储名称">
                                     </div>
                                 </div>
                                 <div class="form-group" id="isMustDiv">
@@ -144,6 +155,21 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="form-group" id="flowDescDiv">
+                                    <label class="col-sm-3 control-label" for="flowDesc" id="flowDescLabel">流程描述</label>
+                                    <div class="col-sm-6">
+                                        <textarea class="form-control" id="flowDesc" name="flowDesc" rows="5"
+                                                  placeholder="请输入流程描述"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="contentDescDiv">
+                                    <label class="col-sm-3 control-label" for="contentDesc" id="contentDescLabel">详细说明</label>
+                                    <div class="col-sm-6">
+                                        <textarea class="form-control" id="contentDesc" name="contentDesc" rows="5"
+                                                  placeholder="请输入详细说明"></textarea>
+                                    </div>
+                                </div>
+
                                 <div class="form-group" id="uploadFileDiv">
                                     <label class="col-sm-3 control-label" for="remotePath">调研问卷</label>
                                     <div class="col-sm-6">

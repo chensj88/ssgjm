@@ -87,9 +87,9 @@ public class SysFlowInfo extends BaseDomain implements Serializable {
     private String procName;
 
     /**
-     * @val 存储运行参数
+     * @val 适用数据库类型
      */
-    private String procParam;
+    private Integer dbType;
 
     public SysFlowInfo() {
 
@@ -288,12 +288,12 @@ public class SysFlowInfo extends BaseDomain implements Serializable {
         this.procName = procName;
     }
 
-    public String getProcParam() {
-        return procParam;
+    public Integer getDbType() {
+        return dbType;
     }
 
-    public void setProcParam(String procParam) {
-        this.procParam = procParam;
+    public void setDbType(Integer dbType) {
+        this.dbType = dbType;
     }
 
     @Override

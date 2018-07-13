@@ -294,9 +294,13 @@ public class Constants implements Serializable {
          */
         public static final String FLOW_TYPE_SMALL = "1";
         /**
-         * 流程配置
+         * 配置方案
          */
         public static final String FLOW_TYPE_CONFIG = "2";
+        /**
+         * 配置脚本
+         */
+        public static final String FLOW_TYPE_CONFIG_SQL = "3";
 
         /**
          * 一级流程ID

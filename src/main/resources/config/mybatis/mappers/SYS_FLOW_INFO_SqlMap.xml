@@ -19,7 +19,7 @@
         <result column="CONTENT_DESC" property="contentDesc" jdbcType="VARCHAR"/>
         <result column="CONFIG_SQL" property="configSQL" jdbcType="LONGVARCHAR"/>
         <result column="PROC_NAME" property="procName" jdbcType="VARCHAR"/>
-        <result column="PROC_PARAM" property="procParam" jdbcType="VARCHAR"/>
+        <result column="DB_TYPE" property="dbType" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="sysFlowInfoResult" type="sysFlowInfo" extends="sysFlowInfoResultForList">
@@ -41,7 +41,7 @@
         <if test="contentDesc != null ">and t.CONTENT_DESC = #{contentDesc}</if>
         <if test="configSQL != null ">and t.CONFIG_SQL = #{configSQL}</if>
         <if test="procName != null ">and t.PROC_NAME = #{procName}</if>
-        <if test="procParam != null ">and t.PROC_PARAM = #{procParam}</if>
+        <if test="dbType != null ">and t.DB_TYPE = #{dbType}</if>
     </sql>
 
     <sql id="query-sysFlowInfo">
@@ -125,7 +125,7 @@
             <if test="contentDesc != null ">CONTENT_DESC,</if>
             <if test="configSQL != null ">CONFIG_SQL,</if>
             <if test="procName != null ">PROC_NAME,</if>
-            <if test="procParam != null ">PROC_PARAM,</if>
+            <if test="dbType != null ">DB_TYPE,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -145,7 +145,7 @@
             <if test="contentDesc != null "> #{contentDesc,jdbcType=VARCHAR},</if>
             <if test="configSQL != null "> #{configSQL,jdbcType=LONGVARCHAR},</if>
             <if test="procName != null "> #{procName,jdbcType=VARCHAR},</if>
-            <if test="procParam != null "> #{procParam,jdbcType=VARCHAR},</if>
+            <if test="dbType != null "> #{dbType,jdbcType=INTEGER},</if>
         </trim>
     </insert>
 
@@ -172,7 +172,7 @@
                 <if test="contentDesc != null ">CONTENT_DESC = #{contentDesc},</if>
                 <if test="configSQL != null ">CONFIG_SQL = #{configSQL},</if>
                 <if test="procName != null ">PROC_NAME = #{procName},</if>
-                <if test="procParam != null ">PROC_PARAM = #{procParam},</if>
+                <if test="dbType != null ">DB_TYPE = #{dbType},</if>
             </trim>
         </set>
         <where>
@@ -277,6 +277,6 @@
         <if test="contentDesc != null ">and t.CONTENT_DESC = #{contentDesc}</if>
         <if test="configSQL != null ">and t.CONFIG_SQL = #{configSQL}</if>
         <if test="procName != null ">and t.PROC_NAME = #{procName}</if>
-        <if test="procParam != null ">and t.PROC_PARAM = #{procParam}</if>
+        <if test="dbType != null ">and t.DB_TYPE = #{dbType}</if>
     </sql>
 </mapper>

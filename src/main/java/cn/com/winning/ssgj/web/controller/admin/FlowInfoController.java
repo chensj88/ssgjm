@@ -85,8 +85,11 @@ public class FlowInfoController extends BaseController {
     @ILog
     public Map<String, Object> addFlowInfo(SysFlowInfo flow) {
         flow.setId(ssgjHelper.createFlowId());
-        if (Constants.Flow.FLOW_TYPE_SMALL.equals(flow.getFlowType()) ||Constants.Flow.FLOW_TYPE_CONFIG.equals(flow.getFlowType()) ) {
+        if (Constants.Flow.FLOW_TYPE_SMALL.equals(flow.getFlowType())
+                ||Constants.Flow.FLOW_TYPE_CONFIG.equals(flow.getFlowType())
+                ||Constants.Flow.FLOW_TYPE_CONFIG_SQL.equals(flow.getFlowType()) ) {
             System.out.println(flow.getFlowCode());
+            flow.setFlowCode(generateFlowCode(flow.getFlowType(),flow.getFlowParentCode()));
         } else {
             flow.setFlowPid(0L);
             flow.setFlowCode(ssgjHelper.createFlowCode());
@@ -200,4 +203,19 @@ public class FlowInfoController extends BaseController {
 
     }
 
+    /**
+     * 根据流程类型和上级流程编号生成子级流程序号
+     * @param flowType
+     * @param flowCode
+     * @return
+     */
+    public String generateFlowCode(String flowType, String flowCode) {
+        String reFlowCode = "";
+        if ((Constants.Flow.FLOW_TYPE_SMALL.equals(flowType) || Constants.Flow.FLOW_TYPE_CONFIG.equals(flowType)|| Constants.Flow.FLOW_TYPE_CONFIG_SQL.equals(flowType))
+                && !StringUtils.isBlank(flowCode)) {
+            flowCode += "-";
+            reFlowCode = flowCode + super.getFacade().getSysFlowInfoService().createFlowCode(flowCode, flowType);
+        }
+        return reFlowCode;
+    }
 }
