@@ -228,7 +228,7 @@ function initBootstrapFileInput(json){
             validateInitialCount:true,
             previewFileIcon: "<iclass='glyphicon glyphicon-king'></i>",
             msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
-            fileActionSettings:{showUpload:false,showDownload:false},
+            fileActionSettings:{showUpload:false,showDownload:false,showZoom:false},
         }).on("filebatchselected", function(event, files) {
             $("#uploadFile").fileinput("upload");
             isUpload = true;
