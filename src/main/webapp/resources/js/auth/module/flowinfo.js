@@ -844,59 +844,6 @@ $(function () {
         items : 8,
     });
 
-    $('#saveConfig').on('click',function (e) {
-       e.preventDefault();
-        //阻止默认行为
-        e.preventDefault();
-        let bootstrapValidator = $("#flowForm").data('bootstrapValidator');
-        //修复记忆的组件不验证
-        if (bootstrapValidator) {
-            bootstrapValidator.validate();
-        }
-
-        let url = '';
-        if ($('#id').val().length == 0) {
-            url = Common.getRootPath() + '/admin/flow/add.do';
-        } else {
-            url = Common.getRootPath() + '/admin/flow/update.do';
-        }
-        let json = {
-           id : $('#id').val(),
-           flowPid : $('#flowPid').val(),
-           flowType :$('#flowType').val(),
-           flowCode : $('#configCode').val(),
-           flowName : $('#configName').val(),
-           flowDesc : $('#configDesc').val(),
-           contentDesc : $('#contentDesc').val(),
-           procName : $('#procName').val(),
-           configSQL : $('#configSQL').val()
-        };
-        if (bootstrapValidator.isValid()) {
-            console.log(paramj);
-            // $.ajax({
-            //     url: url,
-            //     data: json,
-            //     type: "post",
-            //     dataType: 'json',
-            //     async: false,
-            //     cache : false,
-            //     success: function (result) {
-            //         var _result = eval(result);
-            //         if (_result.status == Common.SUCCESS) {
-            //             toastr.info('提交数据成功');
-            //             $('#vid').val(_result.data);
-            //             $('#flowModal').modal('hide');
-            //             $("#infoTable").bootstrapTable('refresh');
-            //         }
-            //     },
-            //     error: function () {
-            //         toastr.error('Error');
-            //     }
-            // });
-        }
-    });
-
-
     /**
      * 查询按钮
      */
