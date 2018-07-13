@@ -660,9 +660,8 @@ $(function () {
                         $("#infoTable").bootstrapTable('refresh');
                     }
                 },
-                error: function (msg) {
-                   // Ewin.alert(msg);
-                    toastr.info(msg);
+                error: function (response) {
+                    toastr.error(response.responseText);
                 },
                 complete: function () {
                 }
@@ -837,8 +836,8 @@ $(function () {
                         $('#configCode').val(_result.data);
                     }
                 },
-                error: function () {
-                    toastr.error('Error');
+                error: function (response) {
+                    toastr.error(response.responseText);
                 }
             });
         },

@@ -55,9 +55,9 @@ $(function () {
                     multiSelect: true     //多选
                 });
             },
-            error: function () {
-                alert("树形结构加载失败！")
-            }
+            error: function (response) {
+                toastr.error(response.responseText);
+            },
         });
 
     }
@@ -235,8 +235,8 @@ $(function () {
                         $("#infoTable").bootstrapTable('refresh');
                     }
                 },
-                error: function () {
-                    Ewin.alert('Error');
+                error: function (response) {
+                    toastr.error(response.responseText);
                 },
                 complete: function () {
                 }
@@ -304,8 +304,8 @@ $(function () {
                         $("#infoTable").bootstrapTable('refresh');
                     }
                 },
-                error: function () {
-                    Ewin.alert('Error');
+                error: function (response) {
+                    toastr.error(response.responseText);
                 },
                 complete: function () {
                 }

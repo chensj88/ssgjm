@@ -326,8 +326,8 @@ $(function () {
                         initUserBootstrapTable();
                     }
                 },
-                error: function () {
-                    Ewin.alert('Error');
+                error: function (response) {
+                    toastr.error(response.responseText);
                 },
                 complete: function () {
                 }
