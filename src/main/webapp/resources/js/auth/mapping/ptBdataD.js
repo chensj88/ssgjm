@@ -138,10 +138,9 @@ $(function () {
                     initDoublebox(data.nsData,data.sData);
                 }
             },
-            error: function (e) {
-                console.log(e);
-                Ewin.alert('Error:' + e.statusText);
-            }
+            error: function (response) {
+                toastr.error(response.responseText);
+            },
         });
 
     }

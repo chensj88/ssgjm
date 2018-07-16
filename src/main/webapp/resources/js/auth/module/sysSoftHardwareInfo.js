@@ -265,8 +265,8 @@ $(function () {
                         $("#infoTable").bootstrapTable('refresh');
                     }
                 },
-                error: function () {
-                    toastr.error('Error');
+                error: function (response) {
+                    toastr.error(response.responseText);
                 },
                 complete: function () {
                 }

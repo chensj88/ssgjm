@@ -129,8 +129,8 @@ $(function () {
                         $("#infoTable").bootstrapTable('refresh');
                     }
                 },
-                error: function (msg) {
-                    Ewin.alert(msg);
+                error: function (response) {
+                    toastr.error(response.responseText);
                 },
                 complete: function () {
                 }

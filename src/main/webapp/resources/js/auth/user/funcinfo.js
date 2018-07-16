@@ -132,8 +132,8 @@ $(function () {
                         $("#infoTable").bootstrapTable('refresh');
                     }
                 },
-                error: function (data) {
-                    Ewin.alert(data);
+                error: function (response) {
+                    toastr.error(response.responseText);
                 },
                 complete: function () {
                 }
@@ -171,9 +171,9 @@ $(function () {
                         $("#infoTable").bootstrapTable('refresh');
                     }
                 },
-                error: function (result) {
-                    Ewin.alert(result);
-                }
+                error: function (response) {
+                    toastr.error(response.responseText);
+                },
             });
         }
     });

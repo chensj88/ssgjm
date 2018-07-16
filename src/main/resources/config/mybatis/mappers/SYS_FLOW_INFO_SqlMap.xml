@@ -19,7 +19,7 @@
         <result column="CONTENT_DESC" property="contentDesc" jdbcType="VARCHAR"/>
         <result column="CONFIG_SQL" property="configSQL" jdbcType="LONGVARCHAR"/>
         <result column="PROC_NAME" property="procName" jdbcType="VARCHAR"/>
-        <result column="DB_TYPE" property="dbType" jdbcType="INTEGER" />
+        <result column="DB_TYPE" property="dbType" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="sysFlowInfoResult" type="sysFlowInfo" extends="sysFlowInfoResultForList">
@@ -145,7 +145,7 @@
             <if test="contentDesc != null "> #{contentDesc,jdbcType=VARCHAR},</if>
             <if test="configSQL != null "> #{configSQL,jdbcType=LONGVARCHAR},</if>
             <if test="procName != null "> #{procName,jdbcType=VARCHAR},</if>
-            <if test="dbType != null "> #{dbType,jdbcType=VARCHAR},</if>
+            <if test="dbType != null "> #{dbType,jdbcType=INTEGER},</if>
         </trim>
     </insert>
 

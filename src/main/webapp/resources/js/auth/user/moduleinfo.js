@@ -45,9 +45,9 @@ $(function () {
 
                 });
             },
-            error: function () {
-                alert("树形结构加载失败！")
-            }
+            error: function (response) {
+                toastr.error(response.responseText);
+            },
         });
 
     }
@@ -330,8 +330,8 @@ $(function () {
                         $("#infoTable").bootstrapTable('refresh');
                     }
                 },
-                error: function () {
-                    toastr.error('Error');
+                error: function (response) {
+                    toastr.error(response.responseText);
                 },
                 complete: function () {
                 }
