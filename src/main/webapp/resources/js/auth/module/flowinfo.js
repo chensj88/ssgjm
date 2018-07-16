@@ -17,7 +17,7 @@ function initFlowConfig(data){
 function validateForm() {
     $('#flowForm').bootstrapValidator({
         live: 'enabled',
-        submitButtons:'#saveFlow',
+        //submitButtons:'#saveFlow',
         message: '输入的值不符合规格',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -31,19 +31,19 @@ function validateForm() {
                     notEmpty: {
                         message: '流程名称不能为空'
                     },
-                    threshold: 6, //有1字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
-                    remote: {
-                        url: Common.getRootPath() + Common.url.flow.existName,//验证地址
-                        message: '流程名称已存在',//提示消息
-                        delay: 2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
-                        type: 'POST'/*,//请求方式
-                            data: function (validator) { //自定义提交数据，默认值提交当前input value
-                                return {
-                                    flowName: $('#flowName').val(),
-                                    id: $('#vid').val()
-                                };
-                            }*/
-                    }
+                    // threshold: 6, //有1字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
+                    // remote: {
+                    //     url: Common.getRootPath() + Common.url.flow.existName,//验证地址
+                    //     message: '流程名称已存在',//提示消息
+                    //     delay: 2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+                    //     type: 'POST'/*,//请求方式
+                    //         data: function (validator) { //自定义提交数据，默认值提交当前input value
+                    //             return {
+                    //                 flowName: $('#flowName').val(),
+                    //                 id: $('#vid').val()
+                    //             };
+                    //         }*/
+                    // }
                 }
             },
             flowDesc : {
@@ -274,7 +274,7 @@ function getShareURL() {
 
 function changeDivShow(selEle,type){
     if(type){
-        console.log(type);
+       // console.log(type);
         $('#flowCodeDiv').show();
         if(selEle == '1'){
             $('#flowParent').show(); //上级流程
@@ -706,9 +706,9 @@ $(function () {
             flowDesc:$('#flowDesc').val(),
             contentDesc:$('#contentDesc').val(),
             remotePath:$('#remotePath').val(),
-    };
+        };
         if (bootstrapValidator.isValid()) {
-            console.log(paramJson);
+            // console.log(paramJson);
             $.ajax({
                 url: url,
                 data: paramJson,
@@ -755,7 +755,7 @@ $(function () {
                         var data = _result.data;
                         if (data == "" || data.length == 0) {
                             toastr.info('没有查询到相关结果');
-                            console.log("没有查询到相关结果");
+                          //  console.log("没有查询到相关结果");
                         };
                         var results = [];
                         for (var i = 0; i < data.length; i++) {
@@ -797,7 +797,7 @@ $(function () {
                         var data = _result.data;
                         if (data == "" || data.length == 0) {
                             toastr.info('没有查询到相关结果');
-                            console.log("没有查询到相关结果");
+                          //  console.log("没有查询到相关结果");
                         };
                         var results = [];
                         for (var i = 0; i < data.length; i++) {
@@ -856,7 +856,7 @@ $(function () {
         if(selectedOption == "1"){
             $('#uploadFileDiv').show();
             var fileInfo = Common.getFileInfo($('#remotePath').val());
-            console.log(fileInfo);
+           // console.log(fileInfo);
             if(fileInfo){
                 showFlowFileInfo(fileInfo.name,fileInfo.url);
                 hideUploadDiv();
