@@ -439,7 +439,7 @@ $(function () {
         url: Common.getRootPath() + '/admin/flow/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-        pagination: true,                   // 是否显示分页（*）
+        pagination: false,                   // 是否显示分页（*）
         sortable: true,                     // 是否启用排序
         sortOrder: "asc",                   // 排序方式
         sidePagination: "server",           // 分页方式：client客户端分页，server服务端分页（*）
@@ -550,8 +550,8 @@ $(function () {
             $table.treegrid({
                 initialState: 'collapsed',//收缩
                 treeColumn: 0,//指明第几列数据改为树形
-                expanderExpandedClass: 'glyphicon glyphicon-minus',
-                expanderCollapsedClass: 'glyphicon glyphicon-plus',
+                expanderExpandedClass: 'glyphicon glyphicon-chevron-down',
+                expanderCollapsedClass: 'glyphicon glyphicon-chevron-right',
                 onChange: function() {
                     $table.bootstrapTable('resetWidth');
                 }
