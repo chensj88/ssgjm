@@ -4,6 +4,7 @@ import cn.com.winning.ssgj.base.Constants;
 
 import cn.com.winning.ssgj.base.annoation.ILog;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
+import cn.com.winning.ssgj.domain.SysModPopedom;
 import cn.com.winning.ssgj.domain.SysModule;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 import cn.com.winning.ssgj.domain.support.Row;
@@ -73,6 +74,11 @@ public class SysModuleController extends BaseController {
             module.setParId(-1L);
         }
         super.getFacade().getSysModuleService().createSysModule(module);
+        SysModPopedom modPopedom = new SysModPopedom();
+        modPopedom.setRoleId(2L);
+        modPopedom.setModId(module.getModId());
+        modPopedom.setId(ssgjHelper.createSysRoleModId());
+        getFacade().getSysModPopedomService().createSysModPopedom(modPopedom);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;

@@ -274,7 +274,7 @@ function getShareURL() {
 
 function changeDivShow(selEle,type){
     if(type){
-        console.log(type);
+       // console.log(type);
         $('#flowCodeDiv').show();
         if(selEle == '1'){
             $('#flowParent').show(); //上级流程
@@ -708,7 +708,7 @@ $(function () {
             remotePath:$('#remotePath').val(),
     };
         if (bootstrapValidator.isValid()) {
-            console.log(paramJson);
+            // console.log(paramJson);
             $.ajax({
                 url: url,
                 data: paramJson,
@@ -755,7 +755,7 @@ $(function () {
                         var data = _result.data;
                         if (data == "" || data.length == 0) {
                             toastr.info('没有查询到相关结果');
-                            console.log("没有查询到相关结果");
+                          //  console.log("没有查询到相关结果");
                         };
                         var results = [];
                         for (var i = 0; i < data.length; i++) {
@@ -797,7 +797,7 @@ $(function () {
                         var data = _result.data;
                         if (data == "" || data.length == 0) {
                             toastr.info('没有查询到相关结果');
-                            console.log("没有查询到相关结果");
+                          //  console.log("没有查询到相关结果");
                         };
                         var results = [];
                         for (var i = 0; i < data.length; i++) {
@@ -856,7 +856,7 @@ $(function () {
         if(selectedOption == "1"){
             $('#uploadFileDiv').show();
             var fileInfo = Common.getFileInfo($('#remotePath').val());
-            console.log(fileInfo);
+           // console.log(fileInfo);
             if(fileInfo){
                 showFlowFileInfo(fileInfo.name,fileInfo.url);
                 hideUploadDiv();
