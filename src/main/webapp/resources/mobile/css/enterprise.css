@@ -687,8 +687,6 @@ div.select-user-cnt{
     color: #595959;
     background: #EFEFEF;
 }
-
-
 .index-wqr,
 .index-ydh,
 .index-yqr{
@@ -706,4 +704,76 @@ div.select-user-cnt{
 .index-yqr{
     color: #6ADB70;
     border: 1px solid #6ADB70;
+}
+/*user-center*/
+.user-center{
+    height: 100%;
+    background: #ebebeb;
+}
+.user-center_inform{
+	display: flex;
+    padding: 10px;
+    background: #fff;
+}
+.user-center_inform img{
+	width: 60px;
+	height: 60px;
+	border-radius: 3px;
+}
+.user-center_name{
+    margin-left: 10px;
+}
+.user-center_name span{
+    margin-right: 20px;
+    font-size: 16px;
+}
+.user-center_name p:nth-child(1){
+    margin-bottom: 5px;
+    color: #353535;
+}
+.user-center_name p:nth-child(2){
+    font-size: 12px;
+    line-height: normal;
+}
+.user-row.first{
+    margin: 10px auto;
+}
+.user-row{
+    margin-bottom: 10px;
+}
+.user-row,
+.user-row-group{
+    display: flex;
+    padding: 10px;
+    background: #fff;
+}
+.user-row>span,
+.user-row-group>span{
+    flex: 1;
+    margin-left: 10px;
+    color: #353535;
+    font-size: 16px;
+}
+.user-row-group>span{
+    position: relative;
+}
+.user-row-group>span:after{
+    position: absolute;
+    content: '';
+    left:0px;
+    right: 0px;
+    bottom: -10px;
+    border-bottom: 1px solid #d9d9d9;
+}
+.user-row-group.last>span:after{
+    border:none;
+}
+.icon-hospital-name{
+    color: #ff3939;
+}
+.icon-collect-list{
+    color:#4a94ff
+}
+.icon-qr-code{
+    color: #3e7eff;
 }
