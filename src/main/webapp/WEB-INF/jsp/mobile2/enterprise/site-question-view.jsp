@@ -202,7 +202,11 @@
             $("#solutionResult").show();
             $("#userMessage").show();
 
-        } else {
+        } else if( status == "5"){
+            $("#solutionResult").show();
+            $("#userMessage").show();
+            $("#suggest").show();
+        }else {
             $("#solutionResult").hide();
             $("#userMessage").hide();
             $("#suggest").hide();

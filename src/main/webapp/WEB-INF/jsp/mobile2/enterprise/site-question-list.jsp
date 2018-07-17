@@ -226,6 +226,12 @@
         let statusVar = '';
         if(status == 1 ||status == 7){
             statusVar = '1,7';
+        }else if(status == 2){
+            statusVar = '2';
+        }else if(status == 4){
+            statusVar = '4';
+        }else if(status == 5){
+            statusVar = '5';
         }else {
             statusVar = '6';
         }
