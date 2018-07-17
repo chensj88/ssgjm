@@ -37,9 +37,9 @@ const IMS = {
       	});
     },
 	menuTab:function () {
-        $('.wap-tab>span').click(function () {
+        $('.wap-tab>div').click(function () {
             $(this).addClass('active')
-                .siblings('span')
+                .siblings('div')
                 .removeClass('active');
             $('.wap-tab-cnt>div').eq($(this).index())
                 .removeClass('hide')
@@ -83,45 +83,7 @@ const IMS = {
 				.removeClass('active');
 			return false;
 		});
-	},
-	selectAll:function () {
-    var uncheckUrl = '../images/uncheck.svg';
-    var checkUrl = '../images/check.svg';
-    $(".selection-header").on('click', '#total', function(event) {
-
-      var imgDom = $(this);
-
-      if(imgDom.attr("src") == checkUrl){
-
-        $(".select_flag").attr("src",uncheckUrl);
-        imgDom.attr("src",uncheckUrl);
-
-      } else {
-
-        imgDom.attr("src",checkUrl);
-        $(".select_flag").attr("src",checkUrl);
-
-      }
-    });
-  },
-	selectSingle:function () {
-    var uncheckUrl = '../images/uncheck.svg';
-    var checkUrl = '../images/check.svg';
-    $(".select_flag").on('click', function(event) {
-
-      var imgDom = $(this);
-
-      if(imgDom.attr("src") == checkUrl){
-
-        imgDom.attr("src",uncheckUrl);
-
-      } else {
-
-        imgDom.attr("src",checkUrl);
-
-      }
-    });
-  }
+	}
 };
 /*服务号*/
 const service = {

@@ -362,28 +362,57 @@ span.nosolve{
 }
 .wap-tab{
 	display: flex;
-	margin-bottom: 10px;
 	padding: 0px 10px;
 }
-.wap-tab>span{
-	flex: 1;
+.wap-tab>div{
+    width: 86px;
+}
+.wap-tab>div,
+.wap-tab>a{
 	height: 40px;
 	line-height: 40px;
 	font-size: 14px;
-	color: #666666;
-	text-align: center;
-	border: 1px solid #E2E2E2;
+	color: #999;
 }
-.wap-tab>span.active{
-	color: #fff;
-	background: #81B3FF;
-	border: 1px solid #81B3FF;
+.wap-tab>div:nth-child(2){
+    flex: 1;
+    margin-left: 20px;
 }
-.wap-tab>span:first-child{
-	border-radius: 4px 0 0 4px;
+.wap-tab>div.active span{
+	color: #5196FF;
+    font-size: 14px;
+	border-bottom: 2px solid #5196FF;
+}d
+.wap-tab>div span{
+    position: relative;
+    display: inline-block;
+    padding-right: 25px;
+    font-size: 14px;
 }
-.wap-tab>span:last-child{
-	border-radius:0 4px 4px 0;
+.wap-tab div>span>i{
+    position: absolute;
+    top: 0px;
+    right: -15px;
+    left: 45px;
+    font-size: 12px;
+    line-height: normal;
+    color: #999;
+}
+.wap-tab div.active>span>i{
+    color: #5196FF;
+}
+.wap-tab>a>span{
+    position: relative;
+    font-size: 14px;
+    color: #81A3D0;
+}
+.wap-tab>a>span i{
+    position: absolute;
+    content: '';
+    left: -14px;
+    top: 0px;
+    height: 20px;
+    border-left:1px solid #F5F5F5;
 }
 .row{
 	display: block;
@@ -729,11 +758,11 @@ span.nosolve{
 
 .wrap-start-cnt .start_tit{
 	font-family: PingFangSC-Regular;
-	font-size: 28px;
+	font-size: 24px;
 	color: #333333;
 	letter-spacing: 0;
 	margin-top: 5vh;
-	/*line-height:30px;*/
+	line-height:5px;
 }
 .wrap-start-cnt .start-desc{
 	font-family: PingFangSC-Regular;

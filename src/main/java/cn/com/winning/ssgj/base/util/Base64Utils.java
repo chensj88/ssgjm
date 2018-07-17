@@ -1,5 +1,6 @@
 package cn.com.winning.ssgj.base.util;
 
+import com.alibaba.fastjson.JSONObject;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -13,6 +14,7 @@ public class Base64Utils{
 
     public static void main(String[] args) throws Exception
     {
+
         String data = Base64Utils.encryptBASE64("http://aub.iteye.com/".getBytes());
         System.out.println("加密前："+data);
 
