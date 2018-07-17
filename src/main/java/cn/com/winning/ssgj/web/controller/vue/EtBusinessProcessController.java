@@ -309,75 +309,92 @@ public class EtBusinessProcessController extends BaseController {
     @RequestMapping(value = "/loadConfig.do")
     @ResponseBody
     public Map<String, Object> loadConfig(SysFlowInfo flowInfo){
+        List<SysFlowInfo> configFlowSql = new ArrayList<>();
         flowInfo.setStatus(Constants.STATUS_USE);
         List<SysFlowInfo> configFlows = super.getFacade().getSysFlowInfoService().getSysFlowInfoList(flowInfo);
+        //获取该方案下的全部脚本执行
+        if(configFlows.size() > 0){
+            SysFlowInfo sql = new SysFlowInfo();
+            sql.setStatus(Constants.STATUS_USE);
+            sql.setFlowPid(configFlows.get(0).getId());
+            configFlowSql = super.getFacade().getSysFlowInfoService().getSysFlowInfoList(sql);
+        }
+
         Map<String, Object> result = new HashMap<>();
         result.put("status", Constants.SUCCESS);
         result.put("type", configFlows == null ? 0 : configFlows.size() > 0 ? 1 : 0  );
         result.put("data", configFlows);
+        result.put("configFlowSql",configFlowSql);
         return result;
     }
 
     /**
      * 执行配置的存储函数
      * @param id
-     * @param sql
+     * @param serialNo
      * @param flowId
-     * @param procName
      * @return
      */
     @RequestMapping(value = "/useSql.do")
     @ResponseBody
-    public Map<String, Object> useSql(Long id,String sql,Long flowId,String procName,String procParam){
+    public Map<String, Object> useSql(Long id,String serialNo,Long flowId){
         ResultSet rs = null;
-        Map<String, Object> result = new HashMap<>();
-        //医院数据库连接
-        EtDatabasesList entity = new EtDatabasesList();
-        entity.setId(id);
-        entity = super.getFacade().getEtDatabasesListService().getEtDatabasesList(entity);
-        String url ="jdbc:sqlserver://"+entity.getIp()+";DatabaseName="+entity.getDatabaseName()+";user="+entity.getUserName()+";password="+entity.getPw();
-        //获取
+        Map<String, Object> result = new HashMap<>(); //返回结果集
+        List<String> sqlResult = new ArrayList<>(); //返回的提示语句
+        //int config =0; //返回配置完成的结果
+        SysFlowInfo info = new SysFlowInfo();
+        info.setFlowPid(id);
+        List<SysFlowInfo> sysFlowInfoList = super.getFacade().getSysFlowInfoService().getSysFlowInfoList(info);
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            Connection connection = DriverManager.getConnection(url);
-            if (connection == null) {
-                result.put("status", Constants.FAILD);
-                result.put("msg", "数据库无法连接，请检查网络!");
-                return result;
-            }
-            //判断存储过程是否存在
-            String existsProcSql = "if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[" + procName + "]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)   begin drop procedure [dbo].[" + procName + "] end";
-            //配置
-            String preSql = "set QUOTED_IDENTIFIER  OFF;\n" + "set ANSI_NULLS  OFF;\n" + "set ANSI_NULL_DFLT_ON OFF;\n" +
-                    "set ANSI_PADDING OFF ;\n" + "set ANSI_WARNINGS OFF; ";
-            //存储过程
-            String runProcSql = "exec " + procName ;
-            PreparedStatement ps = connection.prepareStatement(existsProcSql);
-            ps.execute();
-            ps = connection.prepareStatement(preSql);
-            ps.execute();
-            sql = sql.replace("\"", "\'");
-            ps = connection.prepareStatement(sql);
-            ps.execute();
-            ps = connection.prepareStatement(runProcSql);
-            int i = ps.executeUpdate();
-            //将已经执行的业务流程调研状态修改为1
-            if(i == 1){
+            for (SysFlowInfo flowInfo:sysFlowInfoList) {
                 EtBusinessProcess process = new EtBusinessProcess();
-                process.setId(flowId);
-                process.setIsConfig(2);
+                EtDatabasesList dataInfo = new EtDatabasesList();
+                dataInfo.setSerialNo(serialNo);
+                dataInfo.setDbType(flowInfo.getDbType());
+                dataInfo = super.getFacade().getEtDatabasesListService().getEtDatabasesList(dataInfo);
+                String url ="jdbc:sqlserver://"+dataInfo.getIp()+";DatabaseName="+dataInfo.getDatabaseName()+";user="+dataInfo.getUserName()+";password="+dataInfo.getPw();
+                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                Connection connection = DriverManager.getConnection(url);
+                if (connection == null) {
+                    result.put("status", Constants.FAILD);
+                    result.put("msg", "数据库无法连接，请检查网络!");
+                    return result;
+                }
+                //判断存储过程是否存在
+                String existsProcSql = "if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[" + flowInfo.getProcName() + "]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)   begin drop procedure [dbo].[" + flowInfo.getProcName() + "] end";
+                //配置
+                String preSql = "set QUOTED_IDENTIFIER  OFF;\n" + "set ANSI_NULLS  OFF;\n" + "set ANSI_NULL_DFLT_ON OFF;\n" +
+                        "set ANSI_PADDING OFF ;\n" + "set ANSI_WARNINGS OFF; ";
+                //存储过程
+                String runProcSql = "exec " + flowInfo.getProcName() ;
+                PreparedStatement ps = connection.prepareStatement(existsProcSql);
+                ps.execute();
+                ps = connection.prepareStatement(preSql);
+                ps.execute();
+                String sql = flowInfo.getFlowDesc().replace("\"", "\'");
+                ps = connection.prepareStatement(sql);
+                ps.execute();
+                ps = connection.prepareStatement(runProcSql);
+                int i = ps.executeUpdate();
+                if(i == 0){
+                    sqlResult.add(flowInfo.getFlowName()+":执行无结果");
+                }else {
+                    sqlResult.add(flowInfo.getFlowName()+":执行成功");
+                    //将已经执行的业务流程调研状态修改为1
+                    process.setId(flowId);
+                    process.setIsConfig(2);
+                }
                 super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
-            }
 
+            }
             result.put("status",Constants.SUCCESS);
-            result.put("result",i);
+            result.put("result",1);
 
         }catch (Exception e){
             e.printStackTrace();
             result.put("status",Constants.FAILD);
             result.put("msg", e.getMessage());
         }
-
 
         return result;
 

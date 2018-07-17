@@ -4,9 +4,7 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.PinyinTools;
 import cn.com.winning.ssgj.base.util.StringUtil;
-import cn.com.winning.ssgj.domain.EtBusinessProcess;
-import cn.com.winning.ssgj.domain.EtDatabasesList;
-import cn.com.winning.ssgj.domain.EtDepartment;
+import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.support.Row;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +46,13 @@ public class EtDataBasesListController extends BaseController {
         databases.setRow(row);
         List<EtDatabasesList> queryDatabasesList = super.getFacade().getEtDatabasesListService().getEtDatabasesListList(databases);
         int total = super.getFacade().getEtDatabasesListService().getEtDatabasesListCount(databases);
+        //获取数据库类型集合
+        SysDictInfo info = new SysDictInfo();
+        info.setDictCode("dbType");
+        List<SysDictInfo> dbTypes = super.getFacade().getSysDictInfoService().getSysDictInfoList(info);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
+        result.put("dbTypes",dbTypes);
         result.put("status", Constants.SUCCESS);
         result.put("rows", queryDatabasesList);
         return result;
