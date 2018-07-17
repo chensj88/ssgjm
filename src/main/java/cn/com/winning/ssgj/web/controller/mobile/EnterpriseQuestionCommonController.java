@@ -107,6 +107,18 @@ public class EnterpriseQuestionCommonController extends BaseController {
         return "mobile2/enterprise/common-question-list";
     }
 
+    @RequestMapping(value = "colList.do")
+    public String collectionList(Model model, Long userId, Integer isManager,String serialNo) throws ParseException {
+        EtSiteQuestionInfo info = new EtSiteQuestionInfo();
+        //判断用户类型  项目经理，默认查看所有问题信息
+        info.setCreator(userId);
+        info.setSerialNo(serialNo); //客户号
+        model.addAttribute("questionList", getFacade().getEtSiteQuestionInfoService().getSiteQuestionInfoByUser(info));
+        model.addAttribute("serialNo", serialNo);
+        model.addAttribute("userId", userId);
+        model.addAttribute("isManager", isManager);
+        return "mobile2/enterprise/site-question-list";
+    }
     /**
      * 跳转查询列表
      * @param model

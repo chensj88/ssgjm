@@ -284,6 +284,8 @@ function changeDivShow(selEle,type){
             $('#isMust').val('1');
             $('#procDiv').hide();
             $('#dbTypeDiv').hide();
+            $('#flowNameLabel').text('流程名称');
+            $('#flowName').attr('placeholder','请输入流程名称');
             $('#flowDescLabel').text('流程描述');
             $('#flowDesc').attr('placeholder','请输入流程描述');
             $('#contentDescDiv').hide();
