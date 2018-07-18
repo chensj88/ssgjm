@@ -77,7 +77,7 @@ public class OnlineFileController extends BaseController {
             }
             model.addAttribute("userId",userId);
             model.addAttribute("serialNo",serialNo);
-
+            model.addAttribute("serialName", getSerialName(Long.parseLong(serialNo)));
         }catch (Exception e){
             e.printStackTrace();
         }

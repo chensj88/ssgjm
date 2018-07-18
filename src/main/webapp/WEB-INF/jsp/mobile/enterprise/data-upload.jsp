@@ -127,14 +127,13 @@
 			</div>
 		</div>
 
-
 		<!--底部菜单-->
 		<div class="wrap-foot">
 			<div onclick="openIndexPage()">
 				<i class="iconfont icon-task"></i>
 				任务
 			</div>
-			<div onclick="siteLoad();">
+			<div   onclick="siteLoad();">
 				<i class="iconfont icon-site"></i>
 				站点
 			</div>
@@ -142,9 +141,9 @@
 				<i class="iconfont icon-upload"></i>
 				上传
 			</div>
-			<div>
-				<a href="#popover" id="openPopover" class="iconfont icon-wo" style="color: #A4A5AB;"></a>
-				<span style="color: #A4A5AB;">我</span>
+			<div onclick="userCenter();">
+				<i class="iconfont icon-wo"></i>
+				我的
 			</div>
 		</div>
 	</div>
@@ -159,19 +158,8 @@
 			function fileDatail(id) {
 				alert(id);
             }
-
-            function openIndexPage() {
-                location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=${userId}&serialNo=${serialNo}";
-            }
-
-            function siteLoad() {
-                location.href="<%=basePath%>/mobile/siteInstall/list.do?userId=${userId}&serialNo=${serialNo}";
-            }
-
-            function onlineLoad() {
-                location.href="<%=basePath%>/mobile/implementData/list.do?userId=${userId}&serialNo=${serialNo}"
-            }
 		</script>
+		<%@ include file="/commons/footer.jsp" %>
 	</body>
 
 </html>

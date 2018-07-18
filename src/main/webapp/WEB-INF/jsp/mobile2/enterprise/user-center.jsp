@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/commons/header.jsp" %>
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -12,11 +12,13 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/common.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/mobile/css/enterprise.css" />
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_575705_f9wiufvt6zf.css"/>
+    <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
+    <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
 </head>
 <body>
 <!--用户中心-->
 <div class="wrap">
-     <div class="user-center">
+        <div class="user-center">
             <div class="user-center_inform">
                 <div><img src="${user_img}" alt=""></div>
                 <div class="user-center_name">
@@ -28,7 +30,7 @@
                 <img src="<%=basePath%>resources/mobile/images/hospital.png">
                 <span>${serialName}</span>
             </a>
-            <a href="<%=basePath%>/mobile/commons/colList.do?userId=${userId}&serialNo=${serialNo}&isManager=${isManager}" class="user-row first">
+            <a href="<%=basePath%>/mobile/commons/colList.do?userId=7110&serialNo=11403&isManager=1" class="user-row first">
                 <img src="<%=basePath%>resources/mobile/images/collect-list.png">
                     <span>采集列表</span>
             </a>
@@ -51,9 +53,34 @@
                 <%--<span>推广二维码</span>--%>
             <%--</a>--%>
         </div>
-    <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
-    <%@ include file="/commons/footer.jsp" %>
-</div>
 
+    <!--底部菜单-->
+    <div class="wrap-foot">
+        <div onclick="openIndexPage()">
+            <i class="iconfont icon-task"></i>
+            任务
+        </div>
+        <div   onclick="siteLoad();">
+            <i class="iconfont icon-site"></i>
+            站点
+        </div>
+        <div onclick="onlineLoad();">
+            <i class="iconfont icon-upload"></i>
+            上传
+        </div>
+        <div class="active" onclick="userCenter();">
+            <i class="iconfont icon-wo"></i>
+            我的
+        </div>
+    </div>
+</div>
+<script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        IMS.menuTab();
+    })
+</script>
+<%@ include file="/commons/footer.jsp" %>
 </body>
 </html>
