@@ -59,11 +59,11 @@
 
 		<!--底部菜单-->
 		<div class="wrap-foot">
-			<div onclick="openIndexPage()">
+			<div  onclick="openIndexPage()">
 				<i class="iconfont icon-task"></i>
 				任务
 			</div>
-			<div  class="active" onclick="siteLoad();">
+			<div  class="active"  onclick="siteLoad();">
 				<i class="iconfont icon-site"></i>
 				站点
 			</div>
@@ -71,9 +71,9 @@
 				<i class="iconfont icon-upload"></i>
 				上传
 			</div>
-			<div>
-				<a href="#popover" id="openPopover" class="iconfont icon-wo" style="color: #A4A5AB;"></a>
-				<span style="color: #A4A5AB;">我</span>
+			<div onclick="userCenter();">
+				<i class="iconfont icon-wo"></i>
+				我的
 			</div>
 		</div>
 
@@ -83,23 +83,10 @@
             $(function () {
                 IMS.menuTab();
             })
-                function detail(id){
-                    location.href="<%=basePath%>mobile/siteInstall/addAndUpdate.do?id="+id+"&serialNo=${hospcode}&userId=${work_num}";
-                }
-                function openIndexPage() {
-                    location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=${userId}&serialNo=${serialNo}";
-                }
-
-                function siteLoad() {
-                    location.href="<%=basePath%>/mobile/siteInstall/list.do?userId=${userId}&serialNo=${serialNo}";
-                }
-
-                function onlineLoad() {
-                    location.href="<%=basePath%>/mobile/implementData/list.do?userId=${userId}&serialNo=${serialNo}"
-                }
-
+			function detail(id){
+				location.href="<%=basePath%>mobile/siteInstall/addAndUpdate.do?id="+id+"&serialNo=${hospcode}&userId=${work_num}";
+			}
 		</script>
+		<%@ include file="/commons/footer.jsp" %>
 	</body>
-
-
 </html>
