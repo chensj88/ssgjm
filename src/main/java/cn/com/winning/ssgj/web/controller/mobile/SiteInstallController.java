@@ -81,6 +81,7 @@ public class SiteInstallController extends BaseController {
             model.addAttribute("installList",installList);
             model.addAttribute("userId",userId);
             model.addAttribute("serialNo",serialNo);
+            model.addAttribute("serialName", getSerialName(Long.parseLong(serialNo)));
         }catch (Exception e){
 
         }
