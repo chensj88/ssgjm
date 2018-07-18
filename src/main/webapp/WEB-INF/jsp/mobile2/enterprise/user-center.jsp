@@ -16,7 +16,7 @@
 <body>
 <!--用户中心-->
 <div class="wrap">
-        <div class="user-center">
+     <div class="user-center">
             <div class="user-center_inform">
                 <div><img src="${user_img}" alt=""></div>
                 <div class="user-center_name">
@@ -28,7 +28,7 @@
                 <img src="<%=basePath%>resources/mobile/images/hospital.png">
                 <span>${serialName}</span>
             </a>
-            <a href="<%=basePath%>/mobile/commons/colList.do?userId=7110&serialNo=11403&isManager=1" class="user-row first">
+            <a href="<%=basePath%>/mobile/commons/colList.do?userId=${userId}&serialNo=${serialNo}&isManager=${isManager}" class="user-row first">
                 <img src="<%=basePath%>resources/mobile/images/collect-list.png">
                     <span>采集列表</span>
             </a>
@@ -51,9 +51,9 @@
                 <%--<span>推广二维码</span>--%>
             <%--</a>--%>
         </div>
-<%@ include file="/commons/footer.jsp" %>
+    <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+    <%@ include file="/commons/footer.jsp" %>
 </div>
-
 
 </body>
 </html>

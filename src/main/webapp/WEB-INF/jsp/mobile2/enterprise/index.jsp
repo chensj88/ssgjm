@@ -106,11 +106,10 @@
 </div>
 <script src="<%=basePath%>resources/mobile/js/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript"></script>
-<script src="<%=basePath%>resources/mobile/js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
-    $(function () {
-        IMS.menuTab();
-    })
+    // $(function () {
+    //     IMS.menuTab();
+    // })
 
 </script>
 </body>

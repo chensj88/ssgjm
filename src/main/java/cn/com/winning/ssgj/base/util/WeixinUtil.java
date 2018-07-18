@@ -34,8 +34,11 @@ public class WeixinUtil extends BaseSpringMvcMybatisController {
     public static JSONObject getApiReturn(String apiUrl) throws Exception{
         java.net.URL url = new URL(apiUrl);
         HttpURLConnection urlcon = (HttpURLConnection)url.openConnection();
+        urlcon.setRequestProperty("user-agent","Mozilla/5.0 (Windows NT 6.1; WOW64; rv:21.0) Gecko/20100101 Firefox/21.0)");
+        urlcon.setDoOutput(true);
+        urlcon.setDoInput(true);
         InputStream is = urlcon.getInputStream();
-        BufferedReader buffer = new BufferedReader(new InputStreamReader(is));
+        BufferedReader buffer = new BufferedReader(new InputStreamReader(is,"UTF-8"));
         StringBuffer bs = new StringBuffer();
         String l = null;
         while((l=buffer.readLine())!=null){

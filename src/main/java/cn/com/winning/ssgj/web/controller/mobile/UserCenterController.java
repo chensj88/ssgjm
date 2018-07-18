@@ -29,9 +29,9 @@ public class UserCenterController extends BaseController {
     @RequestMapping(value="/list.do")
     public String userCenter(Model model ,String parameter,Long userId,String serialNo,String serialName,String isManager){
         String access_token = super.getAccessToken();
-//        userId ="5823";
-//        serialNo ="11403";
-//        serialName ="通州市医院";
+        userId =(long)7110;
+        serialNo ="11403";
+        serialName ="通州市医院";
 
         String userId_str = super.id_user(userId,"1");
         StringBuffer stringBuffer = new StringBuffer(WxConstants.QY_USER_INFO2);
@@ -51,7 +51,7 @@ public class UserCenterController extends BaseController {
             }
 
             String user_name = (String)userInfo.get("name");
-            user_name =new String(user_name.getBytes(),"UTF-8");
+            //user_name =new String(user_name.getBytes(),"UTF-8");
             model.addAttribute("name",user_name);
             model.addAttribute("user_img",(String)userInfo.get("avatar"));
             model.addAttribute("department_name",organization.getJgqc());

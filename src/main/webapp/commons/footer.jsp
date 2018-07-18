@@ -8,7 +8,7 @@
 <%@ page pageEncoding="UTF-8" %>
 <!--底部菜单-->
 <div class="wrap-foot">
-    <div class="active" onclick="openIndexPage()">
+    <div onclick="openIndexPage()">
         <i class="iconfont icon-task"></i>
         任务
     </div>
@@ -49,6 +49,15 @@
     }
 
     function userCenter() {
-        location.href="<%=basePath%>/mobile/userCenter/list.do?userId=${userId}&serialNo=${serialNo}&serialName=${serialName}";
+        location.href="<%=basePath%>/mobile/userCenter/list.do?userId=${userId}&serialNo=${serialNo}&serialName=${serialName}&isManager=${isManager}";
     }
+
+    $('.wrap-foot>div').click(function () {
+        alert("来呀");
+        $('.wrap-foot>div').removeClass('active');
+        $(this).addClass('active');
+
+    });
+
+
 </script>
