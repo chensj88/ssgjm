@@ -78,7 +78,6 @@
 		</div>
 
 	</div>
-		<script src="<%=basePath%>resources/mobile/js/ims.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
             $(function () {
                 IMS.menuTab();
