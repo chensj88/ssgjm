@@ -12,14 +12,14 @@
         location.href = "<%=basePath%>mobile/tempSiteQuestion/index.do?userId=${userId}&serialNo=${serialNo}";
     }
     function siteLoad() {
-        location.href="<%=basePath%>/mobile/siteInstall/list.do?userId=${userId}&serialNo=${serialNo}";
+        location.href="<%=basePath%>/mobile/siteInstall/list.do?userId=${userId}&serialNo=${serialNo}&serialName=${serialName}";
     }
 
     function onlineLoad() {
-        location.href="<%=basePath%>/mobile/implementData/list.do?userId=${userId}&serialNo=${serialNo}"
+        location.href="<%=basePath%>/mobile/implementData/list.do?userId=${userId}&serialNo=${serialNo}&serialName=${serialName}"
     }
 
     function userCenter() {
-        location.href="<%=basePath%>/mobile/userCenter/list.do?userId=${userId}&serialNo=${serialNo}&serialName=${serialName}";
+        location.href="<%=basePath%>/mobile/userCenter/list.do?userId=${userId}&serialNo=${serialNo}&serialName=${serialName}&isManager=${isManager}";
     }
 </script>
