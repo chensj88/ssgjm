@@ -612,6 +612,7 @@ $(function () {
                     $('#flowCode').attr('readonly','true');
                     $('#isMust').val(_result.data.isMust);
                     $('#remotePath').val(_result.data.remotePath);
+                    $('#flowType').val(_result.data.flowType);
                     $('#flowType').attr('disabled',true);
                     changeDivShow(_result.data.flowType,true);
                     let remotePath = _result.data.remotePath;
@@ -709,6 +710,7 @@ $(function () {
             contentDesc:$('#contentDesc').val(),
             remotePath:$('#remotePath').val(),
         };
+        console.log(paramJson);
         if (bootstrapValidator.isValid()) {
             // console.log(paramJson);
             $.ajax({
