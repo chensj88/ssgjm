@@ -49,7 +49,7 @@ public class EtDatabasesList extends BaseDomain implements Serializable {
 	
 	private String remark;
 
-	private int dbType;
+	private Integer dbType;
 	
 	/**
 	 * @val 创建人
@@ -229,12 +229,11 @@ public class EtDatabasesList extends BaseDomain implements Serializable {
 		this.dataAlias = dataAlias;
 	}
 
-	public int getDbType() {
+	public Integer getDbType() {
 		return dbType;
 	}
 
-	public void setDbType(int dbType) {
+	public void setDbType(Integer dbType) {
 		this.dbType = dbType;
 	}
-
 }

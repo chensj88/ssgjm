@@ -30,7 +30,7 @@
                 <img src="<%=basePath%>resources/mobile/images/hospital.png">
                 <span>${serialName}</span>
             </a>
-            <a href="<%=basePath%>/mobile/commons/colList.do?userId=7110&serialNo=11403&isManager=1" class="user-row first">
+            <a href="<%=basePath%>/mobile/commons/colList.do?userId=${userId}&serialNo=${serialNo}&isManager=${isManager}" class="user-row first">
                 <img src="<%=basePath%>resources/mobile/images/collect-list.png">
                     <span>采集列表</span>
             </a>
