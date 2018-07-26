@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import cn.com.winning.ssgj.base.helper.SSGJHelper;
 import cn.com.winning.ssgj.base.util.ExcelUtil;
 import cn.com.winning.ssgj.base.util.PinyinTools;
+import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.domain.MobileSiteQuestion;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -69,7 +70,10 @@ public class EtDepartmentServiceImpl implements EtDepartmentService {
 			for (List<Object> params : departList) {
 				String typeName = params.get(0).toString();
 				String deptName = params.get(1).toString();
-				String deptLocation = params.get(2).toString();
+				String deptLocation = "";
+				if(params.size() >= 3){
+					deptLocation = params.get(2).toString();
+				}
 				EtDepartment repeat = new EtDepartment();
 				repeat.setDeptName(deptName);
 				repeat.setTypeName(typeName);

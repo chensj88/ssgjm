@@ -3,7 +3,7 @@
 <configuration>
     <settings>
         <!-- 打印查询语句 -->
-        <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <!--<setting name="logImpl" value="STDOUT_LOGGING"/>-->
         <!-- 全局的映射器启用或禁用缓存。 -->
         <setting name="cacheEnabled" value="true" />
         <!-- 全局启用或禁用延迟加载 -->
