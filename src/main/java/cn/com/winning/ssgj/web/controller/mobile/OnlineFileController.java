@@ -217,7 +217,8 @@ public class OnlineFileController extends BaseController {
                             process.setImgPath(remotePath);
                         }
                         process.setFlowName(dataName);
-                        process.setOperator(super.user_id(userId,"1"));
+                        //process.setOperator(super.user_id(userId,"1"));
+                        process.setOperator(Long.parseLong(userId));
                         process.setOperatorTime(new Timestamp(new Date().getTime()));
                         super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
 
@@ -232,7 +233,7 @@ public class OnlineFileController extends BaseController {
                         }
                         report.setReportName(dataName);
                         report.setReportType(Integer.valueOf(dataType));
-                        report.setOperator(super.user_id(userId,"1"));
+                        report.setOperator(Long.parseLong(userId));
                         report.setOperatorTime(new Timestamp(new Date().getTime()));
                         super.getFacade().getEtReportService().modifyEtReport(report);
 
@@ -268,7 +269,7 @@ public class OnlineFileController extends BaseController {
                         info.setFileType(fileType);
                         info.setCreator((long)super.user_id(userId,"1"));
                         info.setCreateTime(new Timestamp(new Date().getTime()));
-                        info.setOperator(super.user_id(userId,"1"));
+                        info.setOperator(Long.parseLong(userId));
                         info.setOperatorTime(new Timestamp(new Date().getTime()));
                         super.getFacade().getEtOnlineFileService().createEtOnlineFile(info);
                     }
@@ -343,7 +344,7 @@ public class OnlineFileController extends BaseController {
                         msg = e.getMessage();
                     }
                 }
-                EtUserLookProject lastProject= super.getFacade().getEtUserLookProjectService().getLastUserLookProject(super.user_id(userId,"1"));
+                EtUserLookProject lastProject= super.getFacade().getEtUserLookProjectService().getLastUserLookProject(Long.parseLong(userId));
                 if(ftpStatus){
                     if(fileType.equals("1")){  //调研报告
                         EtBusinessProcess process = new EtBusinessProcess();
@@ -364,7 +365,8 @@ public class OnlineFileController extends BaseController {
                             process.setSourceType(Constants.STATUS_USE);
                             process.setStatus(Constants.STATUS_USE);
                             process.setIsScope(1);
-                            process.setCreator(super.user_id(userId,"1"));
+                            //process.setCreator(super.user_id(userId,"1"));
+                            process.setCreator(Long.parseLong(userId));
                             process.setCreateTime(new Timestamp(new Date().getTime()));
                             super.getFacade().getEtBusinessProcessService().createEtBusinessProcess(process);
                             map.put("onlineId",String.valueOf(onlineId));
@@ -376,7 +378,7 @@ public class OnlineFileController extends BaseController {
                             }else{
                                 process.setImgPath(remotePath);
                             }
-                            process.setOperator(super.user_id(userId,"1"));
+                            process.setOperator(Long.parseLong(userId));
                             process.setOperatorTime(new Timestamp(new Date().getTime()));
                             super.getFacade().getEtBusinessProcessService().modifyEtBusinessProcess(process);
                             map.put("onlineId",String.valueOf(id));
@@ -400,9 +402,9 @@ public class OnlineFileController extends BaseController {
                             report.setReportType(Integer.parseInt(dataType));
                             report.setStatus(1);//未审核
                             report.setSourceType(0);//自定义
-                            report.setCreator(super.user_id(userId,"1"));
+                            report.setCreator(Long.parseLong(userId));
                             report.setCreateTime(new Timestamp(new Date().getTime()));
-                            report.setOperator(super.user_id(userId,"1"));
+                            report.setOperator(Long.parseLong(userId));
                             report.setOperatorTime(new Timestamp(new Date().getTime()));
                             super.getFacade().getEtReportService().createEtReport(report);
                             map.put("onlineId",String.valueOf(report.getId()));
@@ -414,7 +416,7 @@ public class OnlineFileController extends BaseController {
                             }else{
                                 report.setImgPath(remotePath+";");
                             }
-                            report.setOperator(super.user_id(userId,"1"));
+                            report.setOperator(Long.parseLong(userId));
                             report.setOperatorTime(new Timestamp(new Date().getTime()));
                             super.getFacade().getEtReportService().modifyEtReport(report);
                             map.put("onlineId",String.valueOf(id));
@@ -429,7 +431,7 @@ public class OnlineFileController extends BaseController {
                         }else{
                             info.setImgPath(remotePath);
                         }
-                        info.setOperator(super.user_id(userId,"1"));
+                        info.setOperator(Long.parseLong(userId));
                         info.setOperatorTime(new Timestamp(new Date().getTime()));
                         super.getFacade().getEtOnlineFileService().modifyEtOnlineFile(info);
                     }
