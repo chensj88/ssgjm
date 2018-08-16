@@ -9,22 +9,22 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>lbRecord complex type的 Java 类。
+ * <p>Java class for lbRecord complex type.
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="lbRecord"&gt;
- *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
- *       &lt;sequence&gt;
- *         &lt;element name="size" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
- *         &lt;element name="values" type="{http://www.w3.org/2001/XMLSchema}anyType" maxOccurs="unbounded" minOccurs="0"/&gt;
- *         &lt;element name="strings" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/&gt;
- *       &lt;/sequence&gt;
- *     &lt;/restriction&gt;
- *   &lt;/complexContent&gt;
- * &lt;/complexType&gt;
+ * &lt;complexType name="lbRecord">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="size" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="values" type="{http://www.w3.org/2001/XMLSchema}anyType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="strings" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
  * </pre>
  * 
  * 
@@ -42,7 +42,7 @@ public class LbRecord {
     protected List<String> strings;
 
     /**
-     * 获取size属性的值。
+     * Gets the value of the size property.
      * 
      */
     public int getSize() {
@@ -50,7 +50,7 @@ public class LbRecord {
     }
 
     /**
-     * 设置size属性的值。
+     * Sets the value of the size property.
      * 
      */
     public void setSize(int value) {

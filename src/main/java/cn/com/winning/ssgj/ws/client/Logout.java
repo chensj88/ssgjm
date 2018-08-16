@@ -7,20 +7,20 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>logout complex type的 Java 类。
+ * <p>Java class for logout complex type.
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="logout"&gt;
- *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
- *       &lt;sequence&gt;
- *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *       &lt;/sequence&gt;
- *     &lt;/restriction&gt;
- *   &lt;/complexContent&gt;
- * &lt;/complexType&gt;
+ * &lt;complexType name="logout">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
  * </pre>
  * 
  * 
@@ -34,7 +34,7 @@ public class Logout {
     protected String sessionId;
 
     /**
-     * 获取sessionId属性的值。
+     * Gets the value of the sessionId property.
      * 
      * @return
      *     possible object is
@@ -46,7 +46,7 @@ public class Logout {
     }
 
     /**
-     * 设置sessionId属性的值。
+     * Sets the value of the sessionId property.
      * 
      * @param value
      *     allowed object is

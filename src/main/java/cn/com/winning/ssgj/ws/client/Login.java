@@ -7,24 +7,24 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>login complex type的 Java 类。
+ * <p>Java class for login complex type.
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="login"&gt;
- *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
- *       &lt;sequence&gt;
- *         &lt;element name="userid" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="password" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="scheme" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="algorithm" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="securityCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *       &lt;/sequence&gt;
- *     &lt;/restriction&gt;
- *   &lt;/complexContent&gt;
- * &lt;/complexType&gt;
+ * &lt;complexType name="login">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="userid" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="password" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="scheme" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="algorithm" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="securityCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
  * </pre>
  * 
  * 
@@ -46,7 +46,7 @@ public class Login {
     protected String securityCode;
 
     /**
-     * 获取userid属性的值。
+     * Gets the value of the userid property.
      * 
      * @return
      *     possible object is
@@ -58,7 +58,7 @@ public class Login {
     }
 
     /**
-     * 设置userid属性的值。
+     * Sets the value of the userid property.
      * 
      * @param value
      *     allowed object is
@@ -70,7 +70,7 @@ public class Login {
     }
 
     /**
-     * 获取password属性的值。
+     * Gets the value of the password property.
      * 
      * @return
      *     possible object is
@@ -82,7 +82,7 @@ public class Login {
     }
 
     /**
-     * 设置password属性的值。
+     * Sets the value of the password property.
      * 
      * @param value
      *     allowed object is
@@ -94,7 +94,7 @@ public class Login {
     }
 
     /**
-     * 获取scheme属性的值。
+     * Gets the value of the scheme property.
      * 
      * @return
      *     possible object is
@@ -106,7 +106,7 @@ public class Login {
     }
 
     /**
-     * 设置scheme属性的值。
+     * Sets the value of the scheme property.
      * 
      * @param value
      *     allowed object is
@@ -118,7 +118,7 @@ public class Login {
     }
 
     /**
-     * 获取algorithm属性的值。
+     * Gets the value of the algorithm property.
      * 
      * @return
      *     possible object is
@@ -130,7 +130,7 @@ public class Login {
     }
 
     /**
-     * 设置algorithm属性的值。
+     * Sets the value of the algorithm property.
      * 
      * @param value
      *     allowed object is
@@ -142,7 +142,7 @@ public class Login {
     }
 
     /**
-     * 获取securityCode属性的值。
+     * Gets the value of the securityCode property.
      * 
      * @return
      *     possible object is
@@ -154,7 +154,7 @@ public class Login {
     }
 
     /**
-     * 设置securityCode属性的值。
+     * Sets the value of the securityCode property.
      * 
      * @param value
      *     allowed object is

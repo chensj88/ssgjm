@@ -7,20 +7,20 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>workActionResult complex type的 Java 类。
+ * <p>Java class for workActionResult complex type.
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="workActionResult"&gt;
- *   &lt;complexContent&gt;
- *     &lt;extension base="{http://ws.livebos.apex.com/}lbeResult"&gt;
- *       &lt;sequence&gt;
- *         &lt;element name="instanceId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
- *       &lt;/sequence&gt;
- *     &lt;/extension&gt;
- *   &lt;/complexContent&gt;
- * &lt;/complexType&gt;
+ * &lt;complexType name="workActionResult">
+ *   &lt;complexContent>
+ *     &lt;extension base="{http://ws.livebos.apex.com/}lbeResult">
+ *       &lt;sequence>
+ *         &lt;element name="instanceId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *       &lt;/sequence>
+ *     &lt;/extension>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
  * </pre>
  * 
  * 
@@ -36,7 +36,7 @@ public class WorkActionResult
     protected long instanceId;
 
     /**
-     * 获取instanceId属性的值。
+     * Gets the value of the instanceId property.
      * 
      */
     public long getInstanceId() {
@@ -44,7 +44,7 @@ public class WorkActionResult
     }
 
     /**
-     * 设置instanceId属性的值。
+     * Sets the value of the instanceId property.
      * 
      */
     public void setInstanceId(long value) {

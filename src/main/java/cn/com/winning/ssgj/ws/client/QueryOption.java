@@ -3,30 +3,29 @@ package cn.com.winning.ssgj.ws.client;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>queryOption complex type的 Java 类。
+ * <p>Java class for queryOption complex type.
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="queryOption"&gt;
- *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
- *       &lt;sequence&gt;
- *         &lt;element name="batchNo" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
- *         &lt;element name="batchSize" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
- *         &lt;element name="orderBy" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="queryCount" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
- *         &lt;element name="queryId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="valueOption" type="{http://ws.livebos.apex.com/}valueOption" minOccurs="0"/&gt;
- *       &lt;/sequence&gt;
- *     &lt;/restriction&gt;
- *   &lt;/complexContent&gt;
- * &lt;/complexType&gt;
+ * &lt;complexType name="queryOption">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="batchNo" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="batchSize" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="orderBy" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="queryCount" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         &lt;element name="queryId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="valueOption" type="{http://ws.livebos.apex.com/}valueOption" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
  * </pre>
  * 
  * 
@@ -47,11 +46,10 @@ public class QueryOption {
     protected String orderBy;
     protected boolean queryCount;
     protected String queryId;
-    @XmlSchemaType(name = "string")
     protected ValueOption valueOption;
 
     /**
-     * 获取batchNo属性的值。
+     * Gets the value of the batchNo property.
      * 
      */
     public int getBatchNo() {
@@ -59,7 +57,7 @@ public class QueryOption {
     }
 
     /**
-     * 设置batchNo属性的值。
+     * Sets the value of the batchNo property.
      * 
      */
     public void setBatchNo(int value) {
@@ -67,7 +65,7 @@ public class QueryOption {
     }
 
     /**
-     * 获取batchSize属性的值。
+     * Gets the value of the batchSize property.
      * 
      */
     public int getBatchSize() {
@@ -75,7 +73,7 @@ public class QueryOption {
     }
 
     /**
-     * 设置batchSize属性的值。
+     * Sets the value of the batchSize property.
      * 
      */
     public void setBatchSize(int value) {
@@ -83,7 +81,7 @@ public class QueryOption {
     }
 
     /**
-     * 获取orderBy属性的值。
+     * Gets the value of the orderBy property.
      * 
      * @return
      *     possible object is
@@ -95,7 +93,7 @@ public class QueryOption {
     }
 
     /**
-     * 设置orderBy属性的值。
+     * Sets the value of the orderBy property.
      * 
      * @param value
      *     allowed object is
@@ -107,7 +105,7 @@ public class QueryOption {
     }
 
     /**
-     * 获取queryCount属性的值。
+     * Gets the value of the queryCount property.
      * 
      */
     public boolean isQueryCount() {
@@ -115,7 +113,7 @@ public class QueryOption {
     }
 
     /**
-     * 设置queryCount属性的值。
+     * Sets the value of the queryCount property.
      * 
      */
     public void setQueryCount(boolean value) {
@@ -123,7 +121,7 @@ public class QueryOption {
     }
 
     /**
-     * 获取queryId属性的值。
+     * Gets the value of the queryId property.
      * 
      * @return
      *     possible object is
@@ -135,7 +133,7 @@ public class QueryOption {
     }
 
     /**
-     * 设置queryId属性的值。
+     * Sets the value of the queryId property.
      * 
      * @param value
      *     allowed object is
@@ -147,7 +145,7 @@ public class QueryOption {
     }
 
     /**
-     * 获取valueOption属性的值。
+     * Gets the value of the valueOption property.
      * 
      * @return
      *     possible object is
@@ -159,7 +157,7 @@ public class QueryOption {
     }
 
     /**
-     * 设置valueOption属性的值。
+     * Sets the value of the valueOption property.
      * 
      * @param value
      *     allowed object is

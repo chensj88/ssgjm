@@ -8,20 +8,20 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>createResponse complex type的 Java 类。
+ * <p>Java class for createResponse complex type.
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="createResponse"&gt;
- *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
- *       &lt;sequence&gt;
- *         &lt;element name="CreateResult" type="{http://ws.livebos.apex.com/}createResult" minOccurs="0"/&gt;
- *       &lt;/sequence&gt;
- *     &lt;/restriction&gt;
- *   &lt;/complexContent&gt;
- * &lt;/complexType&gt;
+ * &lt;complexType name="createResponse">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="CreateResult" type="{http://ws.livebos.apex.com/}createResult" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
  * </pre>
  * 
  * 
@@ -36,7 +36,7 @@ public class CreateResponse {
     protected CreateResult createResult;
 
     /**
-     * 获取createResult属性的值。
+     * Gets the value of the createResult property.
      * 
      * @return
      *     possible object is
@@ -48,7 +48,7 @@ public class CreateResponse {
     }
 
     /**
-     * 设置createResult属性的值。
+     * Sets the value of the createResult property.
      * 
      * @param value
      *     allowed object is

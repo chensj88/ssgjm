@@ -7,26 +7,26 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>userInfo complex type的 Java 类。
+ * <p>Java class for userInfo complex type.
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="userInfo"&gt;
- *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
- *       &lt;sequence&gt;
- *         &lt;element name="grade" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
- *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
- *         &lt;element name="lastLogin" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="loginId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="orgId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
- *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
- *       &lt;/sequence&gt;
- *     &lt;/restriction&gt;
- *   &lt;/complexContent&gt;
- * &lt;/complexType&gt;
+ * &lt;complexType name="userInfo">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="grade" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="lastLogin" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="loginId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="orgId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
  * </pre>
  * 
  * 
@@ -52,7 +52,7 @@ public class UserInfo {
     protected int status;
 
     /**
-     * 获取grade属性的值。
+     * Gets the value of the grade property.
      * 
      */
     public int getGrade() {
@@ -60,7 +60,7 @@ public class UserInfo {
     }
 
     /**
-     * 设置grade属性的值。
+     * Sets the value of the grade property.
      * 
      */
     public void setGrade(int value) {
@@ -68,7 +68,7 @@ public class UserInfo {
     }
 
     /**
-     * 获取id属性的值。
+     * Gets the value of the id property.
      * 
      */
     public long getId() {
@@ -76,7 +76,7 @@ public class UserInfo {
     }
 
     /**
-     * 设置id属性的值。
+     * Sets the value of the id property.
      * 
      */
     public void setId(long value) {
@@ -84,7 +84,7 @@ public class UserInfo {
     }
 
     /**
-     * 获取lastLogin属性的值。
+     * Gets the value of the lastLogin property.
      * 
      * @return
      *     possible object is
@@ -96,7 +96,7 @@ public class UserInfo {
     }
 
     /**
-     * 设置lastLogin属性的值。
+     * Sets the value of the lastLogin property.
      * 
      * @param value
      *     allowed object is
@@ -108,7 +108,7 @@ public class UserInfo {
     }
 
     /**
-     * 获取loginId属性的值。
+     * Gets the value of the loginId property.
      * 
      * @return
      *     possible object is
@@ -120,7 +120,7 @@ public class UserInfo {
     }
 
     /**
-     * 设置loginId属性的值。
+     * Sets the value of the loginId property.
      * 
      * @param value
      *     allowed object is
@@ -132,7 +132,7 @@ public class UserInfo {
     }
 
     /**
-     * 获取name属性的值。
+     * Gets the value of the name property.
      * 
      * @return
      *     possible object is
@@ -144,7 +144,7 @@ public class UserInfo {
     }
 
     /**
-     * 设置name属性的值。
+     * Sets the value of the name property.
      * 
      * @param value
      *     allowed object is
@@ -156,7 +156,7 @@ public class UserInfo {
     }
 
     /**
-     * 获取orgId属性的值。
+     * Gets the value of the orgId property.
      * 
      */
     public long getOrgId() {
@@ -164,7 +164,7 @@ public class UserInfo {
     }
 
     /**
-     * 设置orgId属性的值。
+     * Sets the value of the orgId property.
      * 
      */
     public void setOrgId(long value) {
@@ -172,7 +172,7 @@ public class UserInfo {
     }
 
     /**
-     * 获取status属性的值。
+     * Gets the value of the status property.
      * 
      */
     public int getStatus() {
@@ -180,7 +180,7 @@ public class UserInfo {
     }
 
     /**
-     * 设置status属性的值。
+     * Sets the value of the status property.
      * 
      */
     public void setStatus(int value) {

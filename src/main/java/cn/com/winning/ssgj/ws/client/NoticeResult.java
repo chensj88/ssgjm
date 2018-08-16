@@ -7,20 +7,20 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>noticeResult complex type的 Java 类。
+ * <p>Java class for noticeResult complex type.
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="noticeResult"&gt;
- *   &lt;complexContent&gt;
- *     &lt;extension base="{http://ws.livebos.apex.com/}lbeResult"&gt;
- *       &lt;sequence&gt;
- *         &lt;element name="workflowCount" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
- *       &lt;/sequence&gt;
- *     &lt;/extension&gt;
- *   &lt;/complexContent&gt;
- * &lt;/complexType&gt;
+ * &lt;complexType name="noticeResult">
+ *   &lt;complexContent>
+ *     &lt;extension base="{http://ws.livebos.apex.com/}lbeResult">
+ *       &lt;sequence>
+ *         &lt;element name="workflowCount" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *       &lt;/sequence>
+ *     &lt;/extension>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
  * </pre>
  * 
  * 
@@ -36,7 +36,7 @@ public class NoticeResult
     protected int workflowCount;
 
     /**
-     * 获取workflowCount属性的值。
+     * Gets the value of the workflowCount property.
      * 
      */
     public int getWorkflowCount() {
@@ -44,7 +44,7 @@ public class NoticeResult
     }
 
     /**
-     * 设置workflowCount属性的值。
+     * Sets the value of the workflowCount property.
      * 
      */
     public void setWorkflowCount(int value) {

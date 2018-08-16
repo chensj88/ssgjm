@@ -10,24 +10,24 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>queryResult complex type的 Java 类。
+ * <p>Java class for queryResult complex type.
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="queryResult"&gt;
- *   &lt;complexContent&gt;
- *     &lt;extension base="{http://ws.livebos.apex.com/}lbeResult"&gt;
- *       &lt;sequence&gt;
- *         &lt;element name="count" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
- *         &lt;element name="hasMore" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
- *         &lt;element name="metaData" type="{http://ws.livebos.apex.com/}lbMetaData" minOccurs="0"/&gt;
- *         &lt;element name="queryId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="records" type="{http://ws.livebos.apex.com/}lbRecord" maxOccurs="unbounded" minOccurs="0"/&gt;
- *       &lt;/sequence&gt;
- *     &lt;/extension&gt;
- *   &lt;/complexContent&gt;
- * &lt;/complexType&gt;
+ * &lt;complexType name="queryResult">
+ *   &lt;complexContent>
+ *     &lt;extension base="{http://ws.livebos.apex.com/}lbeResult">
+ *       &lt;sequence>
+ *         &lt;element name="count" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="hasMore" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         &lt;element name="metaData" type="{http://ws.livebos.apex.com/}lbMetaData" minOccurs="0"/>
+ *         &lt;element name="queryId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="records" type="{http://ws.livebos.apex.com/}lbRecord" maxOccurs="unbounded" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/extension>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
  * </pre>
  * 
  * 
@@ -52,7 +52,7 @@ public class QueryResult
     protected List<LbRecord> records;
 
     /**
-     * 获取count属性的值。
+     * Gets the value of the count property.
      * 
      */
     public int getCount() {
@@ -60,7 +60,7 @@ public class QueryResult
     }
 
     /**
-     * 设置count属性的值。
+     * Sets the value of the count property.
      * 
      */
     public void setCount(int value) {
@@ -68,7 +68,7 @@ public class QueryResult
     }
 
     /**
-     * 获取hasMore属性的值。
+     * Gets the value of the hasMore property.
      * 
      */
     public boolean isHasMore() {
@@ -76,7 +76,7 @@ public class QueryResult
     }
 
     /**
-     * 设置hasMore属性的值。
+     * Sets the value of the hasMore property.
      * 
      */
     public void setHasMore(boolean value) {
@@ -84,7 +84,7 @@ public class QueryResult
     }
 
     /**
-     * 获取metaData属性的值。
+     * Gets the value of the metaData property.
      * 
      * @return
      *     possible object is
@@ -96,7 +96,7 @@ public class QueryResult
     }
 
     /**
-     * 设置metaData属性的值。
+     * Sets the value of the metaData property.
      * 
      * @param value
      *     allowed object is
@@ -108,7 +108,7 @@ public class QueryResult
     }
 
     /**
-     * 获取queryId属性的值。
+     * Gets the value of the queryId property.
      * 
      * @return
      *     possible object is
@@ -120,7 +120,7 @@ public class QueryResult
     }
 
     /**
-     * 设置queryId属性的值。
+     * Sets the value of the queryId property.
      * 
      * @param value
      *     allowed object is

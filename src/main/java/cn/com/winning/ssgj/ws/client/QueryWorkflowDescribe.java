@@ -7,22 +7,22 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>queryWorkflowDescribe complex type的 Java 类。
+ * <p>Java class for queryWorkflowDescribe complex type.
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="queryWorkflowDescribe"&gt;
- *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
- *       &lt;sequence&gt;
- *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="uid" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="startupOnly" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
- *       &lt;/sequence&gt;
- *     &lt;/restriction&gt;
- *   &lt;/complexContent&gt;
- * &lt;/complexType&gt;
+ * &lt;complexType name="queryWorkflowDescribe">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="uid" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="startupOnly" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
  * </pre>
  * 
  * 
@@ -40,7 +40,7 @@ public class QueryWorkflowDescribe {
     protected boolean startupOnly;
 
     /**
-     * 获取sessionId属性的值。
+     * Gets the value of the sessionId property.
      * 
      * @return
      *     possible object is
@@ -52,7 +52,7 @@ public class QueryWorkflowDescribe {
     }
 
     /**
-     * 设置sessionId属性的值。
+     * Sets the value of the sessionId property.
      * 
      * @param value
      *     allowed object is
@@ -64,7 +64,7 @@ public class QueryWorkflowDescribe {
     }
 
     /**
-     * 获取uid属性的值。
+     * Gets the value of the uid property.
      * 
      * @return
      *     possible object is
@@ -76,7 +76,7 @@ public class QueryWorkflowDescribe {
     }
 
     /**
-     * 设置uid属性的值。
+     * Sets the value of the uid property.
      * 
      * @param value
      *     allowed object is
@@ -88,7 +88,7 @@ public class QueryWorkflowDescribe {
     }
 
     /**
-     * 获取startupOnly属性的值。
+     * Gets the value of the startupOnly property.
      * 
      */
     public boolean isStartupOnly() {
@@ -96,7 +96,7 @@ public class QueryWorkflowDescribe {
     }
 
     /**
-     * 设置startupOnly属性的值。
+     * Sets the value of the startupOnly property.
      * 
      */
     public void setStartupOnly(boolean value) {

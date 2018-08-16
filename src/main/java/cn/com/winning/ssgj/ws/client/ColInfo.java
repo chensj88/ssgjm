@@ -7,24 +7,24 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>colInfo complex type的 Java 类。
+ * <p>Java class for colInfo complex type.
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="colInfo"&gt;
- *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
- *       &lt;sequence&gt;
- *         &lt;element name="label" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="length" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
- *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="scale" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
- *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
- *       &lt;/sequence&gt;
- *     &lt;/restriction&gt;
- *   &lt;/complexContent&gt;
- * &lt;/complexType&gt;
+ * &lt;complexType name="colInfo">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="label" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="length" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="scale" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
  * </pre>
  * 
  * 
@@ -46,7 +46,7 @@ public class ColInfo {
     protected int type;
 
     /**
-     * 获取label属性的值。
+     * Gets the value of the label property.
      * 
      * @return
      *     possible object is
@@ -58,7 +58,7 @@ public class ColInfo {
     }
 
     /**
-     * 设置label属性的值。
+     * Sets the value of the label property.
      * 
      * @param value
      *     allowed object is
@@ -70,7 +70,7 @@ public class ColInfo {
     }
 
     /**
-     * 获取length属性的值。
+     * Gets the value of the length property.
      * 
      */
     public int getLength() {
@@ -78,7 +78,7 @@ public class ColInfo {
     }
 
     /**
-     * 设置length属性的值。
+     * Sets the value of the length property.
      * 
      */
     public void setLength(int value) {
@@ -86,7 +86,7 @@ public class ColInfo {
     }
 
     /**
-     * 获取name属性的值。
+     * Gets the value of the name property.
      * 
      * @return
      *     possible object is
@@ -98,7 +98,7 @@ public class ColInfo {
     }
 
     /**
-     * 设置name属性的值。
+     * Sets the value of the name property.
      * 
      * @param value
      *     allowed object is
@@ -110,7 +110,7 @@ public class ColInfo {
     }
 
     /**
-     * 获取scale属性的值。
+     * Gets the value of the scale property.
      * 
      */
     public int getScale() {
@@ -118,7 +118,7 @@ public class ColInfo {
     }
 
     /**
-     * 设置scale属性的值。
+     * Sets the value of the scale property.
      * 
      */
     public void setScale(int value) {
@@ -126,7 +126,7 @@ public class ColInfo {
     }
 
     /**
-     * 获取type属性的值。
+     * Gets the value of the type property.
      * 
      */
     public int getType() {
@@ -134,7 +134,7 @@ public class ColInfo {
     }
 
     /**
-     * 设置type属性的值。
+     * Sets the value of the type property.
      * 
      */
     public void setType(int value) {

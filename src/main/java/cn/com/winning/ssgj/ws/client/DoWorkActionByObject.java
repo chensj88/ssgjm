@@ -9,26 +9,26 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>doWorkActionByObject complex type的 Java 类。
+ * <p>Java class for doWorkActionByObject complex type.
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="doWorkActionByObject"&gt;
- *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
- *       &lt;sequence&gt;
- *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="objectName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="actionId" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
- *         &lt;element name="params" type="{http://ws.livebos.apex.com/}lbParameter" maxOccurs="unbounded" minOccurs="0"/&gt;
- *         &lt;element name="caller" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="summary" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *       &lt;/sequence&gt;
- *     &lt;/restriction&gt;
- *   &lt;/complexContent&gt;
- * &lt;/complexType&gt;
+ * &lt;complexType name="doWorkActionByObject">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="objectName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="actionId" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="params" type="{http://ws.livebos.apex.com/}lbParameter" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="caller" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="summary" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
  * </pre>
  * 
  * 
@@ -54,7 +54,7 @@ public class DoWorkActionByObject {
     protected String summary;
 
     /**
-     * 获取sessionId属性的值。
+     * Gets the value of the sessionId property.
      * 
      * @return
      *     possible object is
@@ -66,7 +66,7 @@ public class DoWorkActionByObject {
     }
 
     /**
-     * 设置sessionId属性的值。
+     * Sets the value of the sessionId property.
      * 
      * @param value
      *     allowed object is
@@ -78,7 +78,7 @@ public class DoWorkActionByObject {
     }
 
     /**
-     * 获取objectName属性的值。
+     * Gets the value of the objectName property.
      * 
      * @return
      *     possible object is
@@ -90,7 +90,7 @@ public class DoWorkActionByObject {
     }
 
     /**
-     * 设置objectName属性的值。
+     * Sets the value of the objectName property.
      * 
      * @param value
      *     allowed object is
@@ -102,7 +102,7 @@ public class DoWorkActionByObject {
     }
 
     /**
-     * 获取id属性的值。
+     * Gets the value of the id property.
      * 
      * @return
      *     possible object is
@@ -114,7 +114,7 @@ public class DoWorkActionByObject {
     }
 
     /**
-     * 设置id属性的值。
+     * Sets the value of the id property.
      * 
      * @param value
      *     allowed object is
@@ -126,7 +126,7 @@ public class DoWorkActionByObject {
     }
 
     /**
-     * 获取actionId属性的值。
+     * Gets the value of the actionId property.
      * 
      */
     public int getActionId() {
@@ -134,7 +134,7 @@ public class DoWorkActionByObject {
     }
 
     /**
-     * 设置actionId属性的值。
+     * Sets the value of the actionId property.
      * 
      */
     public void setActionId(int value) {
@@ -171,7 +171,7 @@ public class DoWorkActionByObject {
     }
 
     /**
-     * 获取caller属性的值。
+     * Gets the value of the caller property.
      * 
      * @return
      *     possible object is
@@ -183,7 +183,7 @@ public class DoWorkActionByObject {
     }
 
     /**
-     * 设置caller属性的值。
+     * Sets the value of the caller property.
      * 
      * @param value
      *     allowed object is
@@ -195,7 +195,7 @@ public class DoWorkActionByObject {
     }
 
     /**
-     * 获取summary属性的值。
+     * Gets the value of the summary property.
      * 
      * @return
      *     possible object is
@@ -207,7 +207,7 @@ public class DoWorkActionByObject {
     }
 
     /**
-     * 设置summary属性的值。
+     * Sets the value of the summary property.
      * 
      * @param value
      *     allowed object is
