@@ -335,7 +335,7 @@ public class Constants implements Serializable {
         /**
          * PMIS WS URL
          */
-        public static final String WS_URL = "http://weberp.winning.com.cn:9080/service/LBEBusiness?wsdl";
+        public static final String WS_URL = "http://203.110.176.178:9089/service/LBEBusiness?wsdl";
         /**
          * PMIS 工作底稿 WS URL
          */
