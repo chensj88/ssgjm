@@ -148,4 +148,9 @@
             </if>
         </where>
     </select>
+
+    <update id="updateSysModPopedomAllPopedomCode" parameterType="sysModPopedom" >
+        update SYS_MOD_POPEDOM set POPEDOM_CODE = #{popedomCode, jdbcType=LONGVARCHAR}
+        where ROLE_ID = #{roleId, jdbcType=BIGINT}
+    </update>
 </mapper>

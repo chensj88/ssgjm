@@ -6,9 +6,7 @@ import javax.annotation.Resource;
 
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.util.StringUtil;
-import cn.com.winning.ssgj.dao.EtUserLookProjectDao;
-import cn.com.winning.ssgj.dao.SysOrgExtDao;
-import cn.com.winning.ssgj.dao.SysUserInfoDao;
+import cn.com.winning.ssgj.dao.*;
 import cn.com.winning.ssgj.domain.EtUserLookProject;
 import cn.com.winning.ssgj.domain.SysOrgExt;
 import cn.com.winning.ssgj.domain.SysUserInfo;
@@ -28,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import cn.com.winning.ssgj.base.Constants.User;
-import cn.com.winning.ssgj.dao.EntityDao;
 
 /**
  * @description 自定义认证、授权管理类
@@ -49,6 +46,8 @@ public class WinningRealm extends AuthorizingRealm {
 	@Autowired
 	private SysOrgExtDao sysOrgExtDao;
 	@Autowired
+	private CommonQueryDao commonQueryDao;
+	@Autowired
 	private PmisWebServiceClient pmisWebServiceClient;
 	/**
 	 * 
@@ -61,12 +60,8 @@ public class WinningRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		String username = (String) principals.getPrimaryPrincipal();// 取得用户登录名
 		SimpleAuthorizationInfo auth = new SimpleAuthorizationInfo();
-	/*	try {
-			auth.setRoles(userdao.listRolesByMEember(username));// 获取所有的角色
-			auth.setStringPermissions(userdao.listActionsByMEember(username));// 获取所有的权限
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}*/
+		auth.setRoles(commonQueryDao.listUserRolesByUserId(username));// 获取所有的角色
+		//auth.setStringPermissions(userdao.listActionsByMEember(username));// 获取所有的权限
 		return auth;
 	}
 
@@ -127,6 +122,7 @@ public class WinningRealm extends AuthorizingRealm {
 		if(orgExt != null ){
 			userInfo.getMap().put("orgExt",orgExt.getOrgNameExt());
 		}
+		userInfo.getMap().put("roles",commonQueryDao.listUserRolesByUserId(userInfo.getUserid()));
 	}
 	
 }

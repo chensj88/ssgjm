@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.base.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -257,6 +258,22 @@ public class StringUtil {
         }
         return  resIdList;
     }
+
+
+    public static String generateString(Set<String> strings) {
+        StringBuilder sb = new StringBuilder();
+        String[] strs = new String[strings.size()];
+        strings.toArray(strs);
+        for (int i = 0; i < strs.length; i++) {
+            if(i == strs.length-1){
+                sb.append(strs[i]);
+            }else{
+                sb.append(strs[i]+",");
+            }
+        }
+        return  sb.toString();
+    }
+
 
 
     public static String generateStringSql(List<Long> idLists){

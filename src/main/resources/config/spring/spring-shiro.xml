@@ -70,6 +70,7 @@
         <property name="filterChainDefinitions">
             <value>
                 /login/** = anon
+                /test/** = anon
                 /resources/** = anon
                 /admin/** = authc
                 /vue/** = anon

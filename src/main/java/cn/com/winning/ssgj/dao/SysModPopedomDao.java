@@ -21,4 +21,6 @@ public interface SysModPopedomDao extends EntityDao<SysModPopedom> {
     List<SysModPopedom> selectModulePopedomInfoList(SysModPopedom modPopedom);
 
     List<SysModPopedom> selectSysModPopedomHasPopedomList(SysModPopedom modPopedom);
+
+    void updateSysModPopedomAllPopedomCode(SysModPopedom modPopedom);
 }

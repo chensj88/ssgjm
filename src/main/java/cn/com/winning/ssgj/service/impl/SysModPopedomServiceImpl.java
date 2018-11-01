@@ -92,16 +92,24 @@ public class SysModPopedomServiceImpl implements SysModPopedomService {
     @Override
 
     public void modifyModPopedomMapping(String idList) {
-        String[] modPopeInfoList = idList.split(";");
-        for (String s : modPopeInfoList) {
-            String[] modPope = s.split(":");
+        if(idList.contains(":")){
+            String[] modPopeInfoList = idList.split(";");
+            for (String s : modPopeInfoList) {
+                String[] modPope = s.split(":");
+                SysModPopedom mod = new SysModPopedom();
+                mod.setId(Long.parseLong(modPope[0]));
+                mod.setModId(Long.parseLong(modPope[1]));
+                mod.setRoleId(Long.parseLong(modPope[2]));
+                mod.setPopedomCode(modPope[3]);
+                this.sysModPopedomDao.updateEntity(mod);
+            }
+        }else{
             SysModPopedom mod = new SysModPopedom();
-            mod.setId(Long.parseLong(modPope[0]));
-            mod.setModId(Long.parseLong(modPope[1]));
-            mod.setRoleId(Long.parseLong(modPope[2]));
-            mod.setPopedomCode(modPope[3]);
-            this.sysModPopedomDao.updateEntity(mod);
+            mod.setRoleId(Long.parseLong(idList));
+            mod.setPopedomCode(null);
+            this.sysModPopedomDao.updateSysModPopedomAllPopedomCode(mod);
         }
+
     }
 
     @Override

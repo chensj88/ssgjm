@@ -77,8 +77,8 @@
                 </div>
             </div>
             <div class="col-sm-8 text-center">
-                <button class="btn btn-primary" id="save" type="button">保存</button>
-                <button class="btn btn-danger" data-dismiss="modal">取消</button>
+                <button class="btn btn-primary save-flag" id="save" type="button">保存</button>
+                <button class="btn btn-danger cancel-flag" data-dismiss="modal">取消</button>
             </div>
         </form>
     </div>
@@ -102,6 +102,26 @@
     toastr.options.timeOut = 30;
     toastr.options.extendedTimeOut = 60;
     jQuery(function ($) {
+      /*  var ctrl = Common.getControllerPath();
+        var rootUrl = Common.getRootPath();
+        var pageUrl = ctrl.substring(rootUrl.length,ctrl.length-1);
+        $.ajax({
+            type: "POST",
+            url: Common.getRootPath() + "/auth/initBtnList.do",
+            data: {"modUrl": pageUrl},
+            async:true,
+            dataType: "json",
+            cache: false,
+            error: function (request) {
+                toastr.error(request.responseText);
+            },
+            success: function (data) {
+                toastr.success("data:" +data.data +"\n" +"roles:"+data.roles);
+                console.log("data:" +data.data +"\n" +"roles:"+data.roles);
+            }
+        });*/
+
+
 
         initFileApiUpload('file-upload', '/admin/upload/test.do');
 

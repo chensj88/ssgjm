@@ -567,23 +567,28 @@ $(function () {
         var checkedArr = $('#gridTable').find('input[type=checkbox]:checked');
         var roleId = $('#roleQId').val();
         var btnMap = {};
-        $.each(checkedArr,function (index,value,array) {
-            var mid = $(value).attr('aid');
-            var val = $(value).val();
-            if(btnMap[mid]){
-                btnMap[mid] += val +',';
-            }else{
-                btnMap[mid] = val +',';
-            }
-        });
-
         var idList = '';
-        for( var key in btnMap){
-            var value = Common.substr(btnMap[key],',');
-            idList += key +':' +roleId +':' + value +';';
+        if(checkedArr.size() > 0){
+            $.each(checkedArr,function (index,value,array) {
+                var mid = $(value).attr('aid');
+                var val = $(value).val();
+                if(btnMap[mid]){
+                    btnMap[mid] += val +',';
+                }else{
+                    btnMap[mid] = val +',';
+                }
+            });
+            console.log(checkedArr);
+            for( var key in btnMap){
+                var value = Common.substr(btnMap[key],',');
+                idList += key +':' +roleId +':' + value +';';
+            }
+            idList = Common.substr(idList,';')
+            console.log(idList);
+        }else{
+            idList = roleId;
         }
-        idList = Common.substr(idList,';')
-        console.log(idList);
+
         $.ajax({
             url: Common.getRootPath() + '/admin/rolemodule/addPopedom.do',
             data: {"idList":idList},

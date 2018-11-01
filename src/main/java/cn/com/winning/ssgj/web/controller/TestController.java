@@ -1,8 +1,7 @@
 package cn.com.winning.ssgj.web.controller;
 
 import cn.com.winning.ssgj.base.Constants;
-import cn.com.winning.ssgj.base.util.ExcelUtil;
-import cn.com.winning.ssgj.base.util.MD5;
+import cn.com.winning.ssgj.base.util.*;
 import cn.com.winning.ssgj.domain.*;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
 import cn.com.winning.ssgj.domain.support.Row;
@@ -17,16 +16,18 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.io.IOException;
+import java.sql.*;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,10 +52,10 @@ public class TestController extends BaseController{
     public String pageInfo(){
         return "test/test";
     }
-    @RequestMapping(value = "/upload.do")
+    /*@RequestMapping(value = "/upload.do")
     public String upload(){
         return "test/scriptPage";
-    }
+    }*/
     @RequestMapping(value = "/script.do")
     public String script(){
         return "test/scriptPage";
@@ -348,5 +349,27 @@ public class TestController extends BaseController{
     }
 
 
+    @RequestMapping(value = "/upload.do")
+    @ResponseBody
+    @Transactional
+    public Map<String,Object> uploadOnline(HttpServletRequest request, MultipartFile file) throws IOException {
+        String prefix = Constants.UPLOAD_PC_PREFIX  ;
+        String parentFile = prefix+"_"+System.currentTimeMillis();
+        Map<String, Object> result = new HashMap<String, Object>();
+        if (!file.isEmpty()) {
+            // String filename = FileUtis.generateFileName(file.getOriginalFilename());
+            String filename = file.getOriginalFilename();
+            String remotePath = prefix+"/" + DateUtil.getTimstamp() + "/" + filename;
+            String msg = "";
+            boolean ftpStatus =CommonFtpUtils.commonUploadInfo(request,msg,remotePath,file);
+            result.put("status", "success");
+            result.put("msg", "上传文件成功");
+            result.put("path", Constants.FTP_SHARE_FLODER+remotePath);
+        } else {
+            result.put("status", "error");
+            result.put("msg", "上传文件失败,原因是：上传文件为空");
+        }
+        return result;
 
+    }
 }

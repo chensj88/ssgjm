@@ -39,4 +39,9 @@ public class SysModPopedomDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysModPopedo
     public List<SysModPopedom> selectSysModPopedomHasPopedomList(SysModPopedom modPopedom) {
         return super.getSqlSession().selectList("selectSysModPopedomHasPopedomList",modPopedom);
     }
+
+    @Override
+    public void updateSysModPopedomAllPopedomCode(SysModPopedom modPopedom) {
+        super.getSqlSession().update("updateSysModPopedomAllPopedomCode",modPopedom);
+    }
 }
