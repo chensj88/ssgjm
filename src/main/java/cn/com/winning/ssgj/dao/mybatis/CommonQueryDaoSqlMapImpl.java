@@ -31,7 +31,7 @@ public class CommonQueryDaoSqlMapImpl extends SqlSessionDaoSupport implements Co
     }
 
     @Override
-    public List<String> loadButtonFlagForPageByUrlAndRoles(@Param("params")Map<String, String> param) {
-        return super.getSqlSession().selectList("loadButtonFlagForPageByUrlAndRoles",param);
+    public List<String> loadButtonFlagForPageByUrlAndRoles(@Param("params")Map<String, String> params) {
+        return super.getSqlSession().selectList("loadButtonFlagForPageByUrlAndRoles",params);
     }
 }

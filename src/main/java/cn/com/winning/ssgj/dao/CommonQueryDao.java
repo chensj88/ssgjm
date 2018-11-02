@@ -17,5 +17,5 @@ public interface CommonQueryDao {
 
     Set<String> listUserRolesByUserId(@Param(value="userId")String userId) ;
 
-    List<String> loadButtonFlagForPageByUrlAndRoles(@Param(value="param")Map<String, String> param);
+    List<String> loadButtonFlagForPageByUrlAndRoles(@Param(value="params")Map<String, String> params);
 }

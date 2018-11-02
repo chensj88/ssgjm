@@ -27,11 +27,10 @@ import java.util.Set;
 @RequestMapping(value = "/auth")
 public class UserAuthController extends BaseController {
 
-    @Autowired
-    private CommonQueryDao commonQueryDao;
 
 
-    /*@RequestMapping(value = "/initBtnList.do")
+
+    @RequestMapping(value = "/initBtnList.do")
     @ResponseBody
     public Map<String, Object> initBtnList(String modUrl){
         SysUserInfo userInfo = (SysUserInfo) SecurityUtils.getSubject().getPrincipal();
@@ -44,12 +43,12 @@ public class UserAuthController extends BaseController {
             Map<String, String> param = new HashMap<String, String>();
             param.put("modUrl",modUrl+".do");
             param.put("roles", StringUtil.generateString(roles));
-            List<String> aa = commonQueryDao.loadButtonFlagForPageByUrlAndRoles(param);
+            Set<String> btnList = getFacade().getCommonQueryService().loadButtonFlagForPageByUrlAndRoles(param);
             result.put("status", Constants.SUCCESS);
-            result.put("data", modUrl);
+            result.put("data", btnList);
             result.put("roles", roles);
         }
         return result;
 
-    }*/
+    }
 }

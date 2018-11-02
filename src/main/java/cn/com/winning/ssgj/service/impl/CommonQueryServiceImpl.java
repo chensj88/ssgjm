@@ -66,6 +66,8 @@ public class CommonQueryServiceImpl implements CommonQueryService {
     private EtContractTaskService etContractTaskService;
     @Autowired
     private EtUserLookProjectService etUserLookProjectService;
+    @Autowired
+    private CommonQueryDao commonQueryDao;
 
     @Override
     public List<NodeTree> queryUserCustomerProjectTreeInfo(Long userId) {
@@ -614,6 +616,21 @@ public class CommonQueryServiceImpl implements CommonQueryService {
             }
         }
         return nodeTrees;
+    }
+
+    @Override
+    public Set<String> loadButtonFlagForPageByUrlAndRoles(Map<String, String> param) {
+        List<String> btnFlagStrs = commonQueryDao.loadButtonFlagForPageByUrlAndRoles(param);
+        Set<String> btnSet = new HashSet<>();
+        if(btnFlagStrs != null || btnFlagStrs.size() > 0){
+            for (String s : btnFlagStrs) {
+                if(s != null){
+                    btnSet.addAll(Arrays.asList(s.split(",")));
+                }
+            }
+        }
+
+        return btnSet;
     }
 
 

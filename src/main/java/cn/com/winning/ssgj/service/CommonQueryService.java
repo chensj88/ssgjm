@@ -5,6 +5,7 @@ import cn.com.winning.ssgj.domain.expand.NodeTree;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author chenshijie
@@ -102,4 +103,10 @@ public interface CommonQueryService {
      * @return noteTrees
      */
     List<NodeTree> queryUserManagerCustomer(long userid, String name);
+
+    /**
+     * 加载按钮权限信息
+     * @param param
+     */
+    Set<String> loadButtonFlagForPageByUrlAndRoles(Map<String, String> param);
 }

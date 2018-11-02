@@ -15,7 +15,7 @@
 		 b.POPEDOM_CODE
 		from SYS_MODULE a
 		left join SYS_MOD_POPEDOM b on a.MOD_ID = b.MOD_ID
-		where  a.MOD_URL = #{params.modUrl}
-		and b.ROLE_ID in (#{params.roles})
+		where  a.MOD_URL = #{modUrl}
+		and b.ROLE_ID in (#{roles})
 	</select>
 </mapper>
