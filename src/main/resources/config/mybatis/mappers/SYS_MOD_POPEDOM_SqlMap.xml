@@ -8,6 +8,7 @@
         <result column="MOD_LEVEL" property="modLevel" jdbcType="BIGINT"/>
         <result column="ROLE_ID" property="roleId" jdbcType="BIGINT"/>
         <result column="POPEDOM_CODE" property="popedomCode" jdbcType="LONGVARCHAR"/>
+        <result column="MOD_URL" property="modUrl" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="sysModPopedomResult" type="sysModPopedom" extends="sysModPopedomResultForList">
@@ -19,6 +20,7 @@
         <if test="(modLevel != null and modLevel != '') or modLevel == 0">and t.MOD_LEVEL = #{modLevel}</if>
         <if test="(roleId != null and roleId != '') or roleId == 0">and t.ROLE_ID = #{roleId}</if>
         <if test="popedomCode != null and popedomCode != ''">and t.POPEDOM_CODE = #{popedomCode}</if>
+        <if test="modUrl != null and modUrl != ''">and t.MOD_URL = #{modUrl}</if>
     </sql>
 
     <select id="selectSysModPopedom" resultMap="sysModPopedomResult" parameterType="sysModPopedom">
@@ -57,6 +59,7 @@
             <if test="(modLevel != null and modLevel != '') or modLevel == 0">MOD_LEVEL,</if>
             <if test="(roleId != null and roleId != '') or roleId == 0">ROLE_ID,</if>
             <if test="popedomCode != null and popedomCode != ''">POPEDOM_CODE,</if>
+            <if test="modUrl != null and modUrl != ''">MOD_URL,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -65,6 +68,7 @@
             <if test="(modLevel != null and modLevel != '') or modLevel == 0">#{modLevel, jdbcType=BIGINT},</if>
             <if test="(roleId != null and roleId != '') or roleId == 0">#{roleId, jdbcType=BIGINT},</if>
             <if test="popedomCode != null and popedomCode != ''">#{popedomCode, jdbcType=LONGVARCHAR},</if>
+            <if test="modUrl != null and modUrl != ''">#{modUrl, jdbcType=VARCHAR},</if>
         </trim>
     </insert>
 
@@ -79,6 +83,7 @@
                 <if test="popedomCode != null and popedomCode != ''">POPEDOM_CODE =
                     #{popedomCode, jdbcType=LONGVARCHAR},
                 </if>
+                <if test="modUrl != null and modUrl != ''">MOD_URL =#{modUrl, jdbcType=VARCHAR},</if>
             </trim>
         </set>
         <where>

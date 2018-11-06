@@ -24,6 +24,7 @@ public class ZTreeNode {
     private String icon;
     private String iconClose;
     private String iconOpen;
+    private String nodeUrl;
     private List<ZTreeNode> children = new ArrayList<>();
 
     public String getNodeId() {
@@ -128,5 +129,13 @@ public class ZTreeNode {
 
     public void setNodeLevel(Integer nodeLevel) {
         this.nodeLevel = nodeLevel;
+    }
+
+    public String getNodeUrl() {
+        return nodeUrl;
+    }
+
+    public void setNodeUrl(String nodeUrl) {
+        this.nodeUrl = nodeUrl;
     }
 }

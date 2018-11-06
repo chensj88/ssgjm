@@ -223,6 +223,7 @@
         <result column="hiddenFlag" property="hiddenFlag" jdbcType="BOOLEAN"/>
         <result column="iconClose" property="iconClose" jdbcType="VARCHAR"/>
         <result column="iconOpen" property="iconOpen" jdbcType="VARCHAR"/>
+        <result column="nodeUrl" property="nodeUrl" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="selectSysModuleParentTree" resultMap="ztreeNodeResult" >
         select
@@ -233,7 +234,8 @@
                MOD_LEVEL as nodeLevel,
                case when  IS_DEL = 0 then 'FALSE' ELSE 'TRUE'  END as  hiddenFlag,
                CASE when  (select  count(1) from SYS_MODULE b where a.MOD_ID = b.PAR_ID ) > 0
-                         then 'TRUE' else 'FALSE' end as parentFlag
+                         then 'TRUE' else 'FALSE' end as parentFlag,
+               MOD_URL AS nodeUrl
         from SYS_MODULE a where MOD_LEVEL = 1
     </select>
     <select id="selectSysModuleChildTree" resultMap="ztreeNodeResult"  parameterType="sysModule">
@@ -245,7 +247,8 @@
                MOD_LEVEL as nodeLevel,
                case when  IS_DEL = 0 then 'FALSE' ELSE 'TRUE'  END as  hiddenFlag,
                CASE when  (select  count(1) from SYS_MODULE b where a.MOD_ID = b.PAR_ID ) > 0
-                         then 'TRUE' else 'FALSE' end as parentFlag
+                         then 'TRUE' else 'FALSE' end as parentFlag,
+               MOD_URL AS nodeUrl
         from SYS_MODULE a where PAR_ID = #{parId}
     </select>
 
@@ -259,7 +262,8 @@
                MOD_LEVEL as nodeLevel,
                case when  IS_DEL = 0 then 'FALSE' ELSE 'TRUE'  END as  hiddenFlag,
                CASE when  (select  count(1) from SYS_MODULE b where a.MOD_ID = b.PAR_ID ) > 0
-                         then 'TRUE' else 'FALSE' end as parentFlag
+                         then 'TRUE' else 'FALSE' end as parentFlag,
+               MOD_URL AS nodeUrl
         from SYS_MODULE a
     </select>
 </mapper>

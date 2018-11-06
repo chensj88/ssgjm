@@ -191,6 +191,7 @@ $(function () {
     //表格初始化
     $table.bootstrapTable({
         url: Common.getRootPath() + '/admin/role/list.do',// 要请求数据的文件路径
+        height:600,
         method: 'GET', // 请求方法<b class="arrow icon-angle-down"></b>
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         pagination: true,                   // 是否显示分页（*）
@@ -424,7 +425,7 @@ $(function () {
         var nodeLength = menuArrays.length;
         var roleModule = [];
         $.each(menuArrays,function (index,value,array) {
-            roleModule[index]= {modId:value.nodeId,roleId:roleId,modLevel:value.nodeLevel};
+            roleModule[index]= {modId:value.nodeId,roleId:roleId,modLevel:value.nodeLevel,modUrl:value.nodeUrl};
         });
         $.ajax({
             url: Common.getRootPath() + '/admin/rolemodule/add.do',

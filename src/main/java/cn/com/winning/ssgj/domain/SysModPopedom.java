@@ -28,7 +28,7 @@ public class SysModPopedom extends BaseDomain implements Serializable {
 
     private String popedomCode;
 
-
+    private String modUrl;
 
     public SysModPopedom() {
 
@@ -74,5 +74,11 @@ public class SysModPopedom extends BaseDomain implements Serializable {
         this.popedomCode = popedomCode;
     }
 
+    public String getModUrl() {
+        return modUrl;
+    }
 
+    public void setModUrl(String modUrl) {
+        this.modUrl = modUrl;
+    }
 }

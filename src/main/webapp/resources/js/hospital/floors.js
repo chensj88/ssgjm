@@ -85,6 +85,7 @@ $(function () {
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         pagination: true,                   // 是否显示分页（*）
         sortable: true,                     // 是否启用排序
+        height: 600,
         sortOrder: "asc",                   // 排序方式
         sidePagination: "server",           // 分页方式：client客户端分页，server服务端分页（*）
         pageNumber: 1,                      // 初始化加载第一页，默认第一页,并记录

@@ -126,6 +126,7 @@ $(function () {
     $('#infoTable').bootstrapTable({
         url: Common.getRootPath() + '/admin/fq/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法
+        height: 600,
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         pagination: true,                   // 是否显示分页（*）
         sortable: true,                     // 是否启用排序
