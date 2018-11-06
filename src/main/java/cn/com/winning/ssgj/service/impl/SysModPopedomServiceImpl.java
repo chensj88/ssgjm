@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.service.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -128,6 +129,11 @@ public class SysModPopedomServiceImpl implements SysModPopedomService {
             popedom.setId(ssgjHelper.createSysRoleModId());
             this.sysModPopedomDao.insertEntity(popedom);
         }
+    }
+
+    @Override
+    public Set<String> getButtonFlagForPageByModUrlAndRoles(SysModPopedom modPopedom) {
+        return this.sysModPopedomDao.selectButtonFlagForPageByModUrlAndRoles(modPopedom);
     }
 
 }

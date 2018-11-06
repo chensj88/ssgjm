@@ -6,8 +6,10 @@ import cn.com.winning.ssgj.dao.SysModPopedomDao;
 import cn.com.winning.ssgj.domain.SysModPopedom;
 import cn.com.winning.ssgj.dao.mybatis.EntityDaoSqlMapImpl;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -43,5 +45,13 @@ public class SysModPopedomDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysModPopedo
     @Override
     public void updateSysModPopedomAllPopedomCode(SysModPopedom modPopedom) {
         super.getSqlSession().update("updateSysModPopedomAllPopedomCode",modPopedom);
+    }
+
+    @Override
+    public Set<String> selectButtonFlagForPageByModUrlAndRoles(SysModPopedom modPopedom) {
+        List<String> btnGlag = super.getSqlSession().selectList("selectButtonFlagForPageByModUrlAndRoles",modPopedom);
+        Set<String> btnGlagSet = new HashSet<>();
+        btnGlagSet.addAll(btnGlag);
+        return btnGlagSet;
     }
 }

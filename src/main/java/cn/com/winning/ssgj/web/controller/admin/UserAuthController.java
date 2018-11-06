@@ -3,6 +3,7 @@ package cn.com.winning.ssgj.web.controller.admin;
 import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.dao.CommonQueryDao;
+import cn.com.winning.ssgj.domain.SysModPopedom;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.apache.shiro.SecurityUtils;
@@ -40,10 +41,10 @@ public class UserAuthController extends BaseController {
             result.put("status", Constants.SUCCESS);
             result.put("data", modUrl);
         }else{
-            Map<String, String> param = new HashMap<String, String>();
-            param.put("modUrl",modUrl+".do");
-            param.put("roles", StringUtil.generateString(roles));
-            Set<String> btnList = getFacade().getCommonQueryService().loadButtonFlagForPageByUrlAndRoles(param);
+            SysModPopedom modPopedom = new SysModPopedom();
+            modPopedom.setModUrl(modUrl+".do");
+            modPopedom.getMap().put("pks",roles);
+            Set<String> btnList = getFacade().getSysModPopedomService().getButtonFlagForPageByModUrlAndRoles(modPopedom);
             result.put("status", Constants.SUCCESS);
             result.put("data", btnList);
             result.put("roles", roles);

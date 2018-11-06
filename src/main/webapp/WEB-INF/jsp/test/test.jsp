@@ -106,6 +106,8 @@
         var ctrl = Common.getControllerPath();
         var rootUrl = Common.getRootPath();
         var pageUrl = ctrl.substring(rootUrl.length,ctrl.length-1);
+        console.log(ctrl);
+        console.log(rootUrl);
         $.ajax({
             type: "POST",
             url: Common.getRootPath() + "/auth/initBtnList.do",
@@ -119,9 +121,10 @@
             success: function (data) {
                 // toastr.success("data:" +data.data +"\n" +"roles:"+data.roles);
                 // console.log("data:" +data.data +"\n" +"roles:"+data.roles);
+                $('.btn').attr('style','display:none');
                 $.each(data.data,function (index,value,array) {
                     var className = btnType+'.'+ value;
-                    $(className).attr("style","display:none;");
+                    $(className).attr("style","display:inline;");
                 });
             }
         });

@@ -103,7 +103,7 @@ $(function () {
         },
         check: {
             enable: true,
-            chkboxType: { "Y" : "ps", "N" : "ps" }
+            chkboxType: { "Y" : "p", "N" : "s" } /*勾选操作，只影响父级节点；取消勾选操作，只影响子级节点*/
         }
     };
 
@@ -425,7 +425,7 @@ $(function () {
         var nodeLength = menuArrays.length;
         var roleModule = [];
         $.each(menuArrays,function (index,value,array) {
-            roleModule[index]= {modId:value.nodeId,roleId:roleId,modLevel:value.nodeLevel,modUrl:value.nodeUrl};
+            roleModule[index]= {modId:value.nodeId,roleId:roleId,modLevel:value.nodeLevel,modUrl:value.nodeUrl,modPid:value.nodePid};
         });
         $.ajax({
             url: Common.getRootPath() + '/admin/rolemodule/add.do',

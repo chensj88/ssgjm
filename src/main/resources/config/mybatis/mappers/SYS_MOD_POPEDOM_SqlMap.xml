@@ -9,6 +9,7 @@
         <result column="ROLE_ID" property="roleId" jdbcType="BIGINT"/>
         <result column="POPEDOM_CODE" property="popedomCode" jdbcType="LONGVARCHAR"/>
         <result column="MOD_URL" property="modUrl" jdbcType="VARCHAR"/>
+        <result column="MOD_PID" property="modPid" jdbcType="BIGINT"/>
     </resultMap>
 
     <resultMap id="sysModPopedomResult" type="sysModPopedom" extends="sysModPopedomResultForList">
@@ -21,6 +22,7 @@
         <if test="(roleId != null and roleId != '') or roleId == 0">and t.ROLE_ID = #{roleId}</if>
         <if test="popedomCode != null and popedomCode != ''">and t.POPEDOM_CODE = #{popedomCode}</if>
         <if test="modUrl != null and modUrl != ''">and t.MOD_URL = #{modUrl}</if>
+        <if test="modPid != null ">and t.MOD_PID = #{modPid}</if>
     </sql>
 
     <select id="selectSysModPopedom" resultMap="sysModPopedomResult" parameterType="sysModPopedom">
@@ -60,6 +62,7 @@
             <if test="(roleId != null and roleId != '') or roleId == 0">ROLE_ID,</if>
             <if test="popedomCode != null and popedomCode != ''">POPEDOM_CODE,</if>
             <if test="modUrl != null and modUrl != ''">MOD_URL,</if>
+            <if test="modPid != null ">MOD_PID,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -69,6 +72,7 @@
             <if test="(roleId != null and roleId != '') or roleId == 0">#{roleId, jdbcType=BIGINT},</if>
             <if test="popedomCode != null and popedomCode != ''">#{popedomCode, jdbcType=LONGVARCHAR},</if>
             <if test="modUrl != null and modUrl != ''">#{modUrl, jdbcType=VARCHAR},</if>
+            <if test="modPid != null ">#{modPid, jdbcType=BIGINT},</if>
         </trim>
     </insert>
 
@@ -84,6 +88,7 @@
                     #{popedomCode, jdbcType=LONGVARCHAR},
                 </if>
                 <if test="modUrl != null and modUrl != ''">MOD_URL =#{modUrl, jdbcType=VARCHAR},</if>
+                <if test="modPid != null ">MOD_PID = #{modPid, jdbcType=BIGINT},</if>
             </trim>
         </set>
         <where>
@@ -155,4 +160,19 @@
         update SYS_MOD_POPEDOM set POPEDOM_CODE = #{popedomCode, jdbcType=LONGVARCHAR}
         where ROLE_ID = #{roleId, jdbcType=BIGINT}
     </update>
+
+    <select id="selectButtonFlagForPageByModUrlAndRoles" parameterType="sysModPopedom" resultType="string">
+        select
+		 c.MOD_NAME
+		from  SYS_MOD_POPEDOM a
+        left join SYS_MODULE b on a.MOD_PID = b.MOD_ID
+        left join SYS_MODULE c on c.MOD_ID = a.MOD_ID
+		<where>
+            <if test="modUrl != null and modUrl != ''">and b.MOD_URL = #{modUrl}</if>
+            <if test="map.pks != null and map.pks.size >0">
+                and a.ROLE_ID in
+                <foreach item="item" collection="map.pks" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </select>
 </mapper>

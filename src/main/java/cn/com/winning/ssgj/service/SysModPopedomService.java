@@ -1,6 +1,7 @@
 package cn.com.winning.ssgj.service;
 
 import java.util.List;
+import java.util.Set;
 
 import cn.com.winning.ssgj.domain.SysModPopedom;
 import cn.com.winning.ssgj.domain.expand.NodeTree;
@@ -36,4 +37,6 @@ public interface SysModPopedomService {
     List<SysModPopedom> getSysModPopedomHasPopedomList(SysModPopedom modPopedom);
 
     void createSysModPopedomByList(List<SysModPopedom> modPopedomList);
+
+    Set<String> getButtonFlagForPageByModUrlAndRoles(SysModPopedom modPopedom);
 }

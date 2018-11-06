@@ -30,6 +30,8 @@ public class SysModPopedom extends BaseDomain implements Serializable {
 
     private String modUrl;
 
+    private Long modPid;
+
     public SysModPopedom() {
 
     }
@@ -80,5 +82,13 @@ public class SysModPopedom extends BaseDomain implements Serializable {
 
     public void setModUrl(String modUrl) {
         this.modUrl = modUrl;
+    }
+
+    public Long getModPid() {
+        return modPid;
+    }
+
+    public void setModPid(Long modPid) {
+        this.modPid = modPid;
     }
 }

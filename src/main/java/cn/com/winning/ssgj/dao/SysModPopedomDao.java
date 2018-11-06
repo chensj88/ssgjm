@@ -5,6 +5,7 @@ import cn.com.winning.ssgj.dao.EntityDao;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -23,4 +24,6 @@ public interface SysModPopedomDao extends EntityDao<SysModPopedom> {
     List<SysModPopedom> selectSysModPopedomHasPopedomList(SysModPopedom modPopedom);
 
     void updateSysModPopedomAllPopedomCode(SysModPopedom modPopedom);
+
+    Set<String> selectButtonFlagForPageByModUrlAndRoles(SysModPopedom modPopedom);
 }
