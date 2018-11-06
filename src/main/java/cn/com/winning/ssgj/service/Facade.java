@@ -151,4 +151,6 @@ public interface Facade {
 
     EtDatabasesListService getEtDatabasesListService();
 
+    ZTreeNodeService getZTreeNodeService();
+
 }

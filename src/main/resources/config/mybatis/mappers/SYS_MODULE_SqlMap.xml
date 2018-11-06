@@ -38,6 +38,7 @@
     </sql>
 
     <sql id="queryFuzzy">
+        <if test="(parId != null and parId != '') or parId == 0">and t.PAR_ID = #{parId}</if>
         <if test="modName != null and modName != ''">and t.MOD_NAME LIKE '%${modName}%'</if>
         <if test="(modLevel != null and modLevel != '') or modLevel == 0">and t.MOD_LEVEL = #{modLevel}</if>
         <if test="(isDel != null ) ">and t.IS_DEL = #{isDel}</if>
@@ -67,7 +68,7 @@
 
     <select id="selectSysModulePaginatedList" resultMap="sysModuleResult" parameterType="sysModule">
         select * from (
-        select *, ROW_NUMBER() OVER ( order by t.MOD_ID desc ) as _rn
+        select *, ROW_NUMBER() OVER ( order by t.MOD_ID asc ) as _rn
         from SYS_MODULE t where 1 = 1
         <include refid="sf-sysModule"/>
         <!-- order by ID asc -->
@@ -153,7 +154,7 @@
 
     <select id="selectSysModulePaginatedListFuzzy" resultMap="sysModuleResult" parameterType="sysModule">
         select * from (
-        select t.*,t1.MOD_NAME AS MOD_PNAME, ROW_NUMBER() OVER ( order by t.MOD_ID desc ) as _rn
+        select t.*,t1.MOD_NAME AS MOD_PNAME, ROW_NUMBER() OVER ( order by t.MOD_ID asc ) as _rn
         from SYS_MODULE t
         left join SYS_MODULE t1 on t.PAR_ID = t1.MOD_ID
         where 1 = 1
@@ -180,7 +181,7 @@
         FROM SYS_ROLE_USER A
         LEFT JOIN SYS_MOD_POPEDOM B ON A.ROLE_ID = B.ROLE_ID
         LEFT JOIN SYS_MODULE C ON B.MOD_ID = C.MOD_ID
-        WHERE A.USER_ID = ${id} AND  C.MOD_LEVEL = 1  AND C.IS_DEL = 0
+        WHERE A.USER_ID = ${id} AND  C.MOD_LEVEL = 1  AND C.IS_DEL = 0 and IS_MANAGER = 1
     </select>
 
     <select id="selectUserChildMenuList" resultMap="sysModuleResult" parameterType="java.util.Map">
@@ -189,7 +190,7 @@
         FROM SYS_ROLE_USER A
         LEFT JOIN SYS_MOD_POPEDOM B ON A.ROLE_ID = B.ROLE_ID
         LEFT JOIN SYS_MODULE C ON B.MOD_ID = C.MOD_ID
-        WHERE A.USER_ID = ${userId} AND  C.MOD_LEVEL = 2  AND C.IS_DEL = 0 AND C.PAR_ID =${parId}
+        WHERE A.USER_ID = ${userId} AND  C.MOD_LEVEL <![CDATA[<>]]>9   AND C.IS_DEL = 0 AND C.PAR_ID =${parId} and IS_MANAGER = 1
     </select>
 
     <!--查询角色父级菜单-->
@@ -210,5 +211,55 @@
         LEFT JOIN SYS_MODULE C ON B.MOD_ID = C.MOD_ID
         LEFT JOIN  SYS_MODULE D ON C.PAR_ID = D.MOD_ID
         WHERE B.ROLE_ID = ${roleId} AND  C.MOD_LEVEL = 2  AND C.IS_DEL = 0
+    </select>
+    <resultMap id="ztreeNodeResult" type="cn.com.winning.ssgj.domain.expand.ZTreeNode">
+        <result column="nodeId" property="nodeId" jdbcType="VARCHAR"/>
+        <result column="nodePid" property="nodePid" jdbcType="VARCHAR"/>
+        <result column="nodeName" property="nodeName" jdbcType="VARCHAR"/>
+        <result column="nodeDesc" property="nodeDesc" jdbcType="VARCHAR"/>
+        <result column="nodeLevel" property="nodeLevel" jdbcType="INTEGER"/>
+        <result column="icon" property="icon" jdbcType="VARCHAR"/>
+        <result column="parentFlag" property="parentFlag" jdbcType="BOOLEAN"/>
+        <result column="hiddenFlag" property="hiddenFlag" jdbcType="BOOLEAN"/>
+        <result column="iconClose" property="iconClose" jdbcType="VARCHAR"/>
+        <result column="iconOpen" property="iconOpen" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="selectSysModuleParentTree" resultMap="ztreeNodeResult" >
+        select
+               MOD_ID as nodeId,
+               PAR_ID as nodePid,
+               MOD_NAME as nodeName,
+               MOD_DESC as nodeDesc,
+               MOD_LEVEL as nodeLevel,
+               case when  IS_DEL = 0 then 'FALSE' ELSE 'TRUE'  END as  hiddenFlag,
+               CASE when  (select  count(1) from SYS_MODULE b where a.MOD_ID = b.PAR_ID ) > 0
+                         then 'TRUE' else 'FALSE' end as parentFlag
+        from SYS_MODULE a where MOD_LEVEL = 1
+    </select>
+    <select id="selectSysModuleChildTree" resultMap="ztreeNodeResult"  parameterType="sysModule">
+        select
+               MOD_ID as nodeId,
+               PAR_ID as nodePid,
+               case when MOD_LEVEL = 9 then MOD_NAME + '[按钮]' else MOD_NAME end as nodeName,
+               MOD_DESC as nodeDesc,
+               MOD_LEVEL as nodeLevel,
+               case when  IS_DEL = 0 then 'FALSE' ELSE 'TRUE'  END as  hiddenFlag,
+               CASE when  (select  count(1) from SYS_MODULE b where a.MOD_ID = b.PAR_ID ) > 0
+                         then 'TRUE' else 'FALSE' end as parentFlag
+        from SYS_MODULE a where PAR_ID = #{parId}
+    </select>
+
+
+    <select id="selectSysModuleTree" resultMap="ztreeNodeResult" >
+        select
+               MOD_ID as nodeId,
+               PAR_ID as nodePid,
+               MOD_NAME as nodeName,
+               MOD_DESC as nodeDesc,
+               MOD_LEVEL as nodeLevel,
+               case when  IS_DEL = 0 then 'FALSE' ELSE 'TRUE'  END as  hiddenFlag,
+               CASE when  (select  count(1) from SYS_MODULE b where a.MOD_ID = b.PAR_ID ) > 0
+                         then 'TRUE' else 'FALSE' end as parentFlag
+        from SYS_MODULE a
     </select>
 </mapper>

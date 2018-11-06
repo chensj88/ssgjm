@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/toastr.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/bootstrap-treeview.min.css"/>
     <link rel="stylesheet" href="<%=basePath%>resources/bootstrap/css/jquery.treegrid.css"/>
+    <link rel="stylesheet" href="<%=basePath%>resources/assets/ztree/css/zTreeStyle/zTreeStyle.css">
     <%--<base href="<%=basePath%>">--%>
     <link rel="shortcut icon" href="<%=basePath%>resources/img/logo.ico"/>
     <style type="text/css">
@@ -109,6 +110,7 @@
         </div>
     </div>
 </div>
+<%--tree--%>
 <div class="modal fade" id="treeModal" tabindex="-1" role="dialog" aria-labelledby="treeFormModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content" style="width:500px;">
@@ -121,25 +123,13 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row"  style="font-size: 12px">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <div class="input-group col-sm-10">
-                                <label class="col-sm-3 control-label text-left" for="modName">模块名称：</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control input-sm" id="modName" name="modName" placeholder="请输入角色名称"/>
-                                </div>
-                                <button type="button" class="btn btn-success btn-sm" id="queryMod">
-                                    <span class="glyphicon glyphicon-search"></span>
-                                    查询
-                                </button>
-                            </div>
-                        </div>
                         <input type="hidden" id="roleIdQ">
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <div class="col-sm-10">
-                                <div id="tree" style="height: 300px;overflow:auto;"></div>
+                                <div id="menuTree" style="height: 400px;overflow:auto;" class="ztree"></div>
                             </div>
                         </div>
                     </div>
@@ -147,39 +137,6 @@
                     <div class="row">
                         <div class="col-sm-5 text-center">
                             <button class="btn btn-primary" id="saveRoleModule" type="button">保存</button>
-                            <button class="btn btn-danger" data-dismiss="modal">取消</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="gridModal" tabindex="-1" role="dialog" aria-labelledby="gridFormModal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width:650px;">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <h4 class="modal-title" id="gridModalLabel">按钮信息</h4>
-            </div>
-            <div class="modal-body" >
-                <div class="container">
-                    <input type="hidden" id="roleQId">
-                    <div class="row" style="height: 300px;overflow:auto;">
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                            <div class="col-sm-10">
-                               <table id="gridTable" class="table-align" >
-                               </table>
-                            </div>
-                        </div>
-                    </div>
-                    <br><br>
-                    <div class="row">
-                        <div class="col-sm-5 text-center">
-                            <button class="btn btn-primary" id="saveP" type="button">保存</button>
                             <button class="btn btn-danger" data-dismiss="modal">取消</button>
                         </div>
                     </div>
@@ -199,6 +156,10 @@
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/bootstrap-treeview.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery.treegrid.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/bootstrap/js/jquery.treegrid.bootstrap3.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/assets/ztree/js/jquery.ztree.core.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/assets/ztree/js/jquery.ztree.exedit.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/assets/ztree/js/jquery.ztree.excheck.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>resources/assets/ztree/js/jquery.ztree.exhide.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/auth/user/roleinfo.js"></script>
 </html>

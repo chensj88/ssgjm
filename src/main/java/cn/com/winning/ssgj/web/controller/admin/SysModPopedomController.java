@@ -38,7 +38,7 @@ public class SysModPopedomController extends BaseController {
         return result;
     }
 
-    @RequestMapping(value = "/add.do")
+   /* @RequestMapping(value = "/add.do")
     @ResponseBody
     @ILog
     public Map<String, Object> addModPopedomMapping(String idList) {
@@ -46,8 +46,17 @@ public class SysModPopedomController extends BaseController {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("status", Constants.SUCCESS);
         return result;
-    }
+    }*/
 
+   @RequestMapping(value = "/add.do")
+   @ResponseBody
+   @ILog
+   public Map<String, Object> addModPopedomMapping(@RequestBody List<SysModPopedom> modPopedomList) {
+       super.getFacade().getSysModPopedomService().createSysModPopedomByList(modPopedomList);
+       Map<String, Object> result = new HashMap<String, Object>();
+       result.put("status", Constants.SUCCESS);
+       return result;
+   }
     @RequestMapping(value = "/delete.do")
     @ResponseBody
     @ILog

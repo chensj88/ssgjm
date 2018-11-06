@@ -4,6 +4,7 @@ import cn.com.winning.ssgj.domain.SysModule;
 import cn.com.winning.ssgj.dao.EntityDao;
 import cn.com.winning.ssgj.domain.SysRoleInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
+import cn.com.winning.ssgj.domain.expand.ZTreeNode;
 
 import java.util.List;
 import java.util.Map;
@@ -31,4 +32,10 @@ public interface SysModuleDao extends EntityDao<SysModule> {
     List<SysModule> selectRoleParentMenuList(SysRoleInfo sysRoleInfo);
 
     List<SysModule> selectRoleChildMenuList(Map<String,Object> param);
+
+    List<ZTreeNode> selectSysModuleParentTree();
+
+    List<ZTreeNode> selectSysModuleChildTree(SysModule module);
+
+    List<ZTreeNode> selectSysModuleTree();
 }

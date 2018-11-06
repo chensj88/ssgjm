@@ -2,6 +2,7 @@ package cn.com.winning.ssgj.dao.mybatis;
 
 import cn.com.winning.ssgj.domain.SysRoleInfo;
 import cn.com.winning.ssgj.domain.SysUserInfo;
+import cn.com.winning.ssgj.domain.expand.ZTreeNode;
 import org.springframework.stereotype.Service;
 
 import cn.com.winning.ssgj.dao.SysModuleDao;
@@ -18,7 +19,7 @@ import java.util.Map;
  * @date 2018-01-18 10:11:47
  */
 @Service
-public class SysModuleDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysModule> implements SysModuleDao {
+public class SysModuleDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysModule> implements SysModuleDao  {
 
     @Override
     public List<SysModule> selectSysModulePaginatedListFuzzy(SysModule module) {
@@ -64,5 +65,20 @@ public class SysModuleDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysModule> imple
     @Override
     public List<SysModule> selectRoleChildMenuList(Map<String, Object> param) {
         return super.getSqlSession().selectList("selectRoleChildMenuList",param);
+    }
+
+    @Override
+    public List<ZTreeNode> selectSysModuleParentTree() {
+        return super.getSqlSession().selectList("selectSysModuleParentTree",null);
+    }
+
+    @Override
+    public List<ZTreeNode> selectSysModuleChildTree(SysModule module) {
+        return super.getSqlSession().selectList("selectSysModuleChildTree",module);
+    }
+
+    @Override
+    public List<ZTreeNode> selectSysModuleTree() {
+        return super.getSqlSession().selectList("selectSysModuleTree",null);
     }
 }

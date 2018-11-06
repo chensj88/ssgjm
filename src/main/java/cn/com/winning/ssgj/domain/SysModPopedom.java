@@ -22,19 +22,13 @@ public class SysModPopedom extends BaseDomain implements Serializable {
 
     private Long modId;
 
-    private Long userId;
+    private Long modLevel;
 
     private Long roleId;
 
     private String popedomCode;
 
-    private Long parId;
 
-    private String modName;
-
-    private Integer modLevel;
-
-    private NodeTree nodeTree = new NodeTree();
 
     public SysModPopedom() {
 
@@ -56,12 +50,12 @@ public class SysModPopedom extends BaseDomain implements Serializable {
         this.modId = modId;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getModLevel() {
+        return modLevel;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setModLevel(Long modLevel) {
+        this.modLevel = modLevel;
     }
 
     public Long getRoleId() {
@@ -80,40 +74,5 @@ public class SysModPopedom extends BaseDomain implements Serializable {
         this.popedomCode = popedomCode;
     }
 
-    public String getModName() {
-        return modName;
-    }
 
-    public void setModName(String modName) {
-        this.modName = modName;
-    }
-
-    public Long getParId() {
-        return parId;
-    }
-
-    public void setParId(Long parId) {
-        this.parId = parId;
-    }
-
-    public Integer getModLevel() {
-        return modLevel;
-    }
-
-    public void setModLevel(Integer modLevel) {
-        this.modLevel = modLevel;
-    }
-
-
-    public NodeTree getNodeTree() {
-        nodeTree.setId(id);
-        nodeTree.setNodeId(id);
-        nodeTree.setText(modName);
-        nodeTree.setNodePid(parId);
-        return nodeTree;
-    }
-
-    public void setNodeTree(NodeTree nodeTree) {
-        this.nodeTree = nodeTree;
-    }
 }

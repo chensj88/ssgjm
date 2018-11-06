@@ -5,12 +5,9 @@
     <resultMap id="sysModPopedomResultForList" type="sysModPopedom">
         <result column="ID" property="id" jdbcType="BIGINT"/>
         <result column="MOD_ID" property="modId" jdbcType="BIGINT"/>
-        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="MOD_LEVEL" property="modLevel" jdbcType="BIGINT"/>
         <result column="ROLE_ID" property="roleId" jdbcType="BIGINT"/>
         <result column="POPEDOM_CODE" property="popedomCode" jdbcType="LONGVARCHAR"/>
-        <result column="MOD_NAME" property="modName" jdbcType="VARCHAR"/>
-        <result column="PAR_ID" property="parId" jdbcType="BIGINT"/>
-        <result column="MOD_LEVEL" property="modLevel" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="sysModPopedomResult" type="sysModPopedom" extends="sysModPopedomResultForList">
@@ -19,7 +16,7 @@
     <sql id="sf-sysModPopedom">
         <if test="(id != null and id != '') or id == 0">and t.ID = #{id}</if>
         <if test="(modId != null and modId != '') or modId == 0">and t.MOD_ID = #{modId}</if>
-        <if test="(userId != null and userId != '') or userId == 0">and t.USER_ID = #{userId}</if>
+        <if test="(modLevel != null and modLevel != '') or modLevel == 0">and t.MOD_LEVEL = #{modLevel}</if>
         <if test="(roleId != null and roleId != '') or roleId == 0">and t.ROLE_ID = #{roleId}</if>
         <if test="popedomCode != null and popedomCode != ''">and t.POPEDOM_CODE = #{popedomCode}</if>
     </sql>
@@ -57,7 +54,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(id != null and id != '') or id == 0">ID,</if>
             <if test="(modId != null and modId != '') or modId == 0">MOD_ID,</if>
-            <if test="(userId != null and userId != '') or userId == 0">USER_ID,</if>
+            <if test="(modLevel != null and modLevel != '') or modLevel == 0">MOD_LEVEL,</if>
             <if test="(roleId != null and roleId != '') or roleId == 0">ROLE_ID,</if>
             <if test="popedomCode != null and popedomCode != ''">POPEDOM_CODE,</if>
         </trim>
@@ -65,7 +62,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="(id != null and id != '') or id == 0">#{id, jdbcType=BIGINT},</if>
             <if test="(modId != null and modId != '') or modId == 0">#{modId, jdbcType=BIGINT},</if>
-            <if test="(userId != null and userId != '') or userId == 0">#{userId, jdbcType=BIGINT},</if>
+            <if test="(modLevel != null and modLevel != '') or modLevel == 0">#{modLevel, jdbcType=BIGINT},</if>
             <if test="(roleId != null and roleId != '') or roleId == 0">#{roleId, jdbcType=BIGINT},</if>
             <if test="popedomCode != null and popedomCode != ''">#{popedomCode, jdbcType=LONGVARCHAR},</if>
         </trim>
@@ -77,7 +74,7 @@
             <trim suffixOverrides=",">
                 <if test="(id != null and id != '') or id == 0">ID = #{id, jdbcType=BIGINT},</if>
                 <if test="(modId != null and modId != '') or modId == 0">MOD_ID = #{modId, jdbcType=BIGINT},</if>
-                <if test="(userId != null and userId != '') or userId == 0">USER_ID = #{userId, jdbcType=BIGINT},</if>
+                <if test="(modLevel != null and modLevel != '') or modLevel == 0">MOD_LEVEL = #{modLevel, jdbcType=BIGINT},</if>
                 <if test="(roleId != null and roleId != '') or roleId == 0">ROLE_ID = #{roleId, jdbcType=BIGINT},</if>
                 <if test="popedomCode != null and popedomCode != ''">POPEDOM_CODE =
                     #{popedomCode, jdbcType=LONGVARCHAR},

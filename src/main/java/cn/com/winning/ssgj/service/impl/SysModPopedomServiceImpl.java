@@ -115,8 +115,19 @@ public class SysModPopedomServiceImpl implements SysModPopedomService {
     @Override
 
     public List<SysModPopedom> getSysModPopedomHasPopedomList(SysModPopedom modPopedom) {
-
         return this.sysModPopedomDao.selectSysModPopedomHasPopedomList(modPopedom);
+    }
+
+    @Override
+    public void createSysModPopedomByList(List<SysModPopedom> modPopedomList) {
+        long roleId  = modPopedomList.get(0).getRoleId();
+        SysModPopedom rolePopedom = new SysModPopedom();
+        rolePopedom.setRoleId(roleId);
+        this.sysModPopedomDao.deleteEntity(rolePopedom);
+        for (SysModPopedom popedom : modPopedomList) {
+            popedom.setId(ssgjHelper.createSysRoleModId());
+            this.sysModPopedomDao.insertEntity(popedom);
+        }
     }
 
 }

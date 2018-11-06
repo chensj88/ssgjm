@@ -215,8 +215,16 @@ public class FacadeImpl implements Facade {
     @Resource
     EtDatabasesListService etDatabasesListService;
 
+    @Resource
+    ZTreeNodeService zTreeNodeService;
+
     public EtDatabasesListService getEtDatabasesListService() {
         return etDatabasesListService;
+    }
+
+    @Override
+    public ZTreeNodeService getZTreeNodeService() {
+        return zTreeNodeService;
     }
 
     public EtAccessTokenService getEtAccessTokenService() {

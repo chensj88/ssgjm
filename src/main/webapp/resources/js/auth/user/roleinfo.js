@@ -5,6 +5,22 @@
  */
 
 
+/**
+ * 数据转换
+ * @param treeId
+ * @param parentNode
+ * @param childNodes
+ * @returns {*}
+ */
+function filter(treeId, parentNode, childNodes) {
+    if (!childNodes) return null;
+    var result = childNodes.data;
+    for (var i=0, l=result.length; i<l; i++) {
+        result[i].nodeName = result[i].nodeName.replace(/\.n/g, '.');
+    }
+    return result;
+}
+
 // 选中父节点时，选中所有子节点
 function getChildNodeIdArr(node) {
     var ts = [];
@@ -40,27 +56,64 @@ function getChildNodeIdSelectArr(node) {
     }
     return ts;
 }
+/**
+ * 角色编辑信息
+ * @param data
+ */
+function editRole(data) {
+    $('#id').val(data.id);
+    $('#roleName').val(data.roleName);
+    $('#roleDesc').val(data.roleDesc);
+    $('#isDel').val(data.isDel);
+    $('#isLock').val(data.isLock);
+    $('#roleModal').modal('show');
+}
 
 $(function () {
 
-    /**
-     * 角色编辑信息
-     * @param data
-     */
-    function editRole(data) {
-        $('#id').val(data.id);
-        $('#roleName').val(data.roleName);
-        $('#roleDesc').val(data.roleDesc);
-        $('#isDel').val(data.isDel);
-        $('#isLock').val(data.isLock);
-        $('#roleModal').modal('show');
-    }
+    var $table = $('#infoTable');
+    var $form = $('#roleForm');
+    var menuTree = $('#menuTree');
+    //菜单树
+    var menuSetting = {
+        view: {
+            checkable:true,
+            dblClickExpand: false,
+            showLine: true,
+            selectedMulti: true,
+            showIcon:false
+        },
+        expandSpeed: "",
+        data: {
+            keep:{
+                parent:true,
+            },
+            key:{
+                name:'nodeName',
+                isParent: "parentFlag",
+                isHidden: "hiddenFlag",
+                checked: "checked"
+            },
+            simpleData: {
+                enable: true,
+                idKey: "nodeId",
+                pIdKey: "nodePid",
+                rootPId: ""
+            }
+        },
+        check: {
+            enable: true,
+            chkboxType: { "Y" : "ps", "N" : "ps" }
+        }
+    };
+
+
     /**
      * 查询
      * @constructor
      */
     function SearchData(){
-        $('#infoTable').bootstrapTable('refresh', { pageNumber: 1 });
+        $table.bootstrapTable('refresh', { pageNumber: 1 });
     }
 
     /**
@@ -79,7 +132,7 @@ $(function () {
     }
 
     function validateForm() {
-        $('#roleForm').bootstrapValidator({
+        $form.bootstrapValidator({
             message: '输入的值不符合规格',
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
@@ -119,65 +172,24 @@ $(function () {
 
     function initTreeView() {
         $.ajax({
-            type: "post",
-            url: Common.getRootPath() + "/admin/module/tree.do",
-            dataType: "json",
-            data:{'modName':$('#modName').val()},
-            cache : false,
+            type: "POST",
             async: false,
-            success: function (result) {
-                $('#tree').treeview({
-                    data: result.data,         // 数据源
-                    showCheckbox: true,   //是否显示复选框
-                    highlightSelected: true,    //是否高亮选中
-                    icon:'',                                  //列表树节点上的图标，通常是节点左边的图标。
-                    uncheckedIcon:"",                         //设置图标为未选择状态的checkbox图标。
-                    nodeIcon:'glyphicon glyphicon-unchecked', //设置所有列表树节点上的默认图标。
-                    selectedIcon:"glyphicon glyphicon-check", //设置所有被选择的节点上的默认图标。
-                    color:"#000000",
-                    backColor:"#FFFFFF",
-                    emptyIcon: '',    //设置列表树中没有子节点的节点的图标。
-                    multiSelect: true,      //多选
-                    onNodeSelected:function (event,node) {
-                        var selectNodes = getChildNodeIdArr(node);
-                        console.log(selectNodes);
-                        console.log(node);
-                        if (selectNodes) { //子节点不为空，则选中所有子节点
-                            $('#tree').treeview('selectNode', [selectNodes, { silent: true }]);
-                        }
-                        $('#tree').treeview('selectNode', [node.nodeId, { silent: true }]);
-                        $('#tree').treeview('selectNode', [node.parentId, { silent: true }]);
-                    },
-                    onNodeUnselected:function (event,node) {
-                        var selectNodes = getChildNodeIdArr(node);
-                        console.log(selectNodes);
-                        console.log(node);
-                        if (selectNodes) { //子节点不为空，则取消选中所有子节点
-                            $('#tree').treeview('unselectNode', [selectNodes, { silent: true }]);
-                        }
-                        $('#tree').treeview('unselectNode', [node.nodeId, { silent: true }]);
-                        var pNode = $('#tree').treeview('getNode', node.parentId);
-                        var cNodes = getChildNodeIdSelectArr(pNode);
-                        console.log(cNodes);
-                        if(cNodes.length == 0){
-                            $('#tree').treeview('unselectNode', [node.parentId, { silent: true }]);
-                        }
-                    }
-
-                });
+            url: Common.getRootPath() + "/admin/ztree/moduleTree.do",
+            cache:false,
+            dataType: "json",
+            success: function (data) {
+                menuTree = $.fn.zTree.init($("#menuTree"), menuSetting,data.data);
             },
-            error: function (response) {
+            error: function ( response) {
                 toastr.error(response.responseText);
-            },
+            }
         });
-
+        menuTree.expandAll(true);
     }
-
-    function generateTreeGrid(data) {
-
-    }
-    
-    $('#infoTable').bootstrapTable({
+    //初始化菜单结构树
+    initTreeView();
+    //表格初始化
+    $table.bootstrapTable({
         url: Common.getRootPath() + '/admin/role/list.do',// 要请求数据的文件路径
         method: 'GET', // 请求方法<b class="arrow icon-angle-down"></b>
         cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -253,8 +265,7 @@ $(function () {
                 var e = '<a href="#" class="btn btn-info btn-xs" name="edit" mce_href="#" aid="' + row.id +'" >编辑</a> ';
                 var d = '<a href="####" class="btn btn-danger btn-xs" name="delete" mce_href="#" aid="' + row.id + '" aname="' + row.roleName + '">删除</a> ';
                 var f = '<a href="####" class="btn btn-success btn-xs" name="tree" mce_href="#" aid="' + row.id + '">配置菜单</a> ';
-                var g = '<a href="####" class="btn btn-success btn-xs" name="button" mce_href="#" aid="' + row.id + '" aname="' + row.roleName + '">配置按钮</a> ';
-                return e + d + f + g;
+                return e + d + f ;
             }
         },],
     });
@@ -264,13 +275,17 @@ $(function () {
      */
     $('#add').on('click', function () {
         $("input[type=reset]").trigger("click");
-        $('#roleForm').bootstrapValidator("destroy");
+        $form.bootstrapValidator("destroy");
         validateForm();
         $('#roleId').val('');
         $('#roleModal').modal('show');
     });
 
-    $('#infoTable').on('click', 'a[name="edit"]', function (e) {
+
+    /**
+     * 列表中按钮 编辑
+     */
+    $table.on('click', 'a[name="edit"]', function (e) {
         e.preventDefault();
         $('#roleForm').bootstrapValidator('destroy');
         validateForm();
@@ -291,9 +306,9 @@ $(function () {
         });
     });
     /**
-     * 列表中按钮
+     *列表中按钮 删除
      */
-    $('#infoTable').on('click', 'a[name="delete"]', function (e) {
+    $table.on('click', 'a[name="delete"]', function (e) {
         e.preventDefault();
         var roleId = $(this).attr('aid');
         var roleName = $(this).attr('aname');
@@ -320,11 +335,13 @@ $(function () {
             });
         });
     });
-
-    $('#infoTable').on('click', 'a[name="tree"]', function (e) {
+    /**
+     * 列表中按钮 菜单
+     */
+    $table.on('click', 'a[name="tree"]', function (e) {
         e.preventDefault();
         var roleId = $(this).attr('aid');
-        initTreeView();
+        menuTree.checkAllNodes(false);
         $.ajax({
             type: "post",
             url: Common.getRootPath() + "/admin/rolemodule/query.do",
@@ -336,14 +353,10 @@ $(function () {
                 if(result.status == Common.SUCCESS){
                     $('#roleIdQ').val(roleId);
                     var data = result.data;
-                    var enableNode = $('#tree').treeview('getEnabled');
-                    $.each(data,function (index,value,array) {
-                        $.each(enableNode,function (eindex,evalue,earray) {
-                            if(value == evalue.id){
-                                $('#tree').treeview('selectNode',
-                                    [ evalue.nodeId, { silent: true }]);
-                            }
-                        })
+                    $.each(data,function(index,value) {
+                        var node1 = menuTree.getNodeByParam("nodeId", value, null);
+                        menuTree.checkNode(node1, true, false);
+                        menuTree.selectNode(node1);
                     });
                 }
             }
@@ -352,62 +365,6 @@ $(function () {
 
     });
 
-    function configButtonTable(roleId) {
-        $.ajax({
-            type: "post",
-            url: Common.getRootPath() + "/admin/rolemodule/queryRolePopedom.do",
-            dataType: "json",
-            data:{'roleId':roleId},
-            cache : false,
-            async: false,
-            success: function (result) {
-                if(result.status == Common.SUCCESS) {
-                    var data = result.data;
-                    $.each(data, function (index, value, array) {
-                        var aid = value.id +":" + value.modId;
-                        var popedomCode = value.popedomCode.split(",");
-                        $.each(popedomCode,function (ii,v) {
-                          var e = $('input[aid=\''+aid+'\']');
-                          for(var i=0;i<e.length;i++){
-                              if($(e[i]).val() == v){
-                                  $(e[i]).attr("checked",true);
-                              }
-                          }
-                        });
-                    });
-                }
-            }
-        });
-    }
-
-    $('#infoTable').on('click', 'a[name="button"]', function (e) {
-        e.preventDefault();
-        var roleId = $(this).attr('aid');
-        var roleName = $(this).attr('aname');
-        $.ajax({
-            type: "post",
-            url: Common.getRootPath() + "/admin/rolemodule/queryBtn.do",
-            dataType: "json",
-            data:{'roleId':roleId},
-            cache : false,
-            async: false,
-            success: function (result) {
-                if(result.status == Common.SUCCESS){
-                    $('#roleQId').val(roleId);
-                    if(result.data.length <= 0){
-                        Ewin.alert('角色['+roleName+']配置的菜单中<span style="background-color: red;">没有</span>需要配置的按钮');
-                    }else{
-                        $('#gridModalLabel').text(roleName+'按钮信息');
-                        initModuleButton(result.data);
-                        configButtonTable(roleId);
-                        $('#gridModal').modal('show');
-                    }
-                }
-            }
-        });
-
-
-    });
 
     /**
      * 保存按钮
@@ -416,7 +373,7 @@ $(function () {
     $('#saveRole').on('click', function (e) {
         //阻止默认行为
         e.preventDefault();
-        var bootstrapValidator = $("#roleForm").data('bootstrapValidator');
+        var bootstrapValidator = $form.data('bootstrapValidator');
         //修复记忆的组件不验证
         if (bootstrapValidator) {
             bootstrapValidator.validate();
@@ -430,7 +387,7 @@ $(function () {
         if (bootstrapValidator.isValid()) {
             $.ajax({
                 url: url,
-                data: $("#roleForm").serialize(),
+                data: $form.serialize(),
                 type: "post",
                 dataType: 'json',
                 async: false,
@@ -458,153 +415,36 @@ $(function () {
     $('#saveRoleModule').on('click',function (e) {
         //阻止默认行为
         e.preventDefault();
-        var selectNode = $('#tree').treeview('getSelected');
-        var nodeLength = selectNode.length;
-        console.log(selectNode);
+        var menuArrays = menuTree.getCheckedNodes(true);
         var roleId = $('#roleIdQ').val();
-        var roleModule = '';
-        if(nodeLength > 0){
-            $.each(selectNode,function (index,value,array) {
-                if(index == nodeLength -1 ){
-                    roleModule += roleId +','+value.id;
-                }else{
-                    roleModule += roleId +','+value.id +';';
-                }
-            });
-            $.ajax({
-                url: Common.getRootPath() + '/admin/rolemodule/add.do',
-                data: {'idList':roleModule},
-                type: "post",
-                dataType: 'json',
-                async: false,
-                cache: false,
-                success: function (result) {
-                    var _result = eval(result);
-                    if (_result.status == Common.SUCCESS) {
-                        $('#treeModal').modal('hide');
-                    }
-                },
-                error :function (msg) {
-                    alert(msg.statusText);
-                    console.log(msg);
-                }
-            });
-        }else {
-            $.ajax({
-                url: Common.getRootPath() + '/admin/rolemodule/delete.do',
-                data: {'roleId': roleId},
-                type: "post",
-                dataType: 'json',
-                async: false,
-                cache: false,
-                success: function (result) {
-                    var _result = eval(result);
-                    if (_result.status == Common.SUCCESS) {
-                        $('#treeModal').modal('hide');
-                    }
-                },
-                error: function (response) {
-                    toastr.error(response.responseText);
-                },
-            });
+        if(menuArrays == undefined || menuArrays.length <= 0){
+            toastr.error('请选择菜单');
+            return ;
         }
-    });
-
-    /**
-     * 生成一级菜单
-     * @param data
-     */
-    function initModuleButton(data) {
-        $('#gridTable').bootstrapTable("destroy").bootstrapTable({
-            data: data,
-            cache: false,                       // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-            pagination: false,                   // 是否显示分页（*）
-            sortable: true,                     // 是否启用排序
-            sortOrder: "asc",                   // 排序方式
-            sidePagination: "server",           // 分页方式：client客户端分页，server服务端分页（*）
-            strictSearch: true,
-            showColumns: false,                  // 是否显示所有的列（选择显示的列）
-            showRefresh: false,                  // 是否显示刷新按钮
-            minimumCountColumns: 2,             // 最少允许的列数
-            clickToSelect: true,                // 是否启用点击选中行
-            idField: 'id',
-            sortName: 'id',
-            uniqueId: "id",                 // 每一行的唯一标识，一般为主键列
-            cardView: false,                    // 是否显示详细视图
-            detailView: false,                  // 是否显示父子表
-            toolbarAlign: 'right',
-            paginationLoop: false, //分页条无限循环的功能
-            singleSelect: false,
-            columns: [{
-                field: "text",
-                title: "菜单信息",
-                width: '55px',
-                align: 'center'
-            }, {
-                field: "funInfo",
-                title: "按钮信息",
-                width: '45px',
-                align: 'center',
-                formatter: generateMenuButton
-            }],
+        var nodeLength = menuArrays.length;
+        var roleModule = [];
+        $.each(menuArrays,function (index,value,array) {
+            roleModule[index]= {modId:value.nodeId,roleId:roleId,modLevel:value.nodeLevel};
         });
-    }
-
-    function generateMenuButton(value,row) {
-        var funArr = value.split(';');
-        var modId = row.id +':' + row.nodeId;
-        var content = "";
-        for( var i=0;i<funArr.length - 1;i++){
-            var btn = funArr[i];
-            var btnArr = btn.split(":");
-            content +="<input type='checkbox' aid="+modId+" value='"+btnArr[0]+"'>"+btnArr[1]+"";
-        }
-        return content;
-    }
-
-    $('#saveP').on('click',function (e) {
-        e.preventDefault();
-        var checkedArr = $('#gridTable').find('input[type=checkbox]:checked');
-        var roleId = $('#roleQId').val();
-        var btnMap = {};
-        var idList = '';
-        if(checkedArr.size() > 0){
-            $.each(checkedArr,function (index,value,array) {
-                var mid = $(value).attr('aid');
-                var val = $(value).val();
-                if(btnMap[mid]){
-                    btnMap[mid] += val +',';
-                }else{
-                    btnMap[mid] = val +',';
-                }
-            });
-            console.log(checkedArr);
-            for( var key in btnMap){
-                var value = Common.substr(btnMap[key],',');
-                idList += key +':' +roleId +':' + value +';';
-            }
-            idList = Common.substr(idList,';')
-            console.log(idList);
-        }else{
-            idList = roleId;
-        }
-
         $.ajax({
-            url: Common.getRootPath() + '/admin/rolemodule/addPopedom.do',
-            data: {"idList":idList},
-            type: "post",
+            url: Common.getRootPath() + '/admin/rolemodule/add.do',
             dataType: 'json',
+            contentType :'application/json',
+            data:  JSON.stringify(roleModule),
+            type: "post",
             async: false,
+            cache: false,
             success: function (result) {
                 var _result = eval(result);
                 if (_result.status == Common.SUCCESS) {
-                    $('#gridModal').modal('hide');
-                    $("#infoTable").bootstrapTable('refresh');
+                    $('#treeModal').modal('hide');
                 }
             },
-            error: function (response) {
-                toastr.error(response.responseText);
-            },
+            error :function (msg) {
+                alert(msg.statusText);
+                console.log(msg);
+            }
         });
-    })
+
+    });
 });
