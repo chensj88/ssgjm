@@ -96,40 +96,11 @@
 <script type="text/javascript" src="<%=basePath%>resources/summernote/summernote.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/summernote/lang/summernote-zh-CN.js"></script>
 <script type="text/javascript" src="<%=basePath%>resources/js/common.js"></script>
-<%--<script type="text/javascript" src="<%=basePath%>resources/js/test/test.js"></script>--%>
+<script type="text/javascript" src="<%=basePath%>resources/js/auth/auth.js"></script>
 <script type="text/javascript">
     toastr.options.positionClass = 'toast-top-center';
     toastr.options.timeOut = 30;
     toastr.options.extendedTimeOut = 60;
-
-    function checkUserButtonAuth(btnType){
-        var ctrl = Common.getControllerPath();
-        var rootUrl = Common.getRootPath();
-        var pageUrl = ctrl.substring(rootUrl.length,ctrl.length-1);
-        console.log(ctrl);
-        console.log(rootUrl);
-        $.ajax({
-            type: "POST",
-            url: Common.getRootPath() + "/auth/initBtnList.do",
-            data: {"modUrl": pageUrl},
-            async:false,
-            dataType: "json",
-            cache: false,
-            error: function (request) {
-                toastr.error(request.responseText);
-            },
-            success: function (data) {
-                // toastr.success("data:" +data.data +"\n" +"roles:"+data.roles);
-                // console.log("data:" +data.data +"\n" +"roles:"+data.roles);
-                $('.btn').attr('style','display:none');
-                $.each(data.data,function (index,value,array) {
-                    var className = btnType+'.'+ value;
-                    $(className).attr("style","display:inline;");
-                });
-            }
-        });
-    }
-
     jQuery(function ($) {
 
         checkUserButtonAuth('button');

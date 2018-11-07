@@ -356,8 +356,8 @@ $(function () {
                     var data = result.data;
                     $.each(data,function(index,value) {
                         var node1 = menuTree.getNodeByParam("nodeId", value, null);
-                        menuTree.checkNode(node1, true, false);
-                        menuTree.selectNode(node1);
+                            menuTree.checkNode(node1, true, false);
+                        /*menuTree.selectNode(node1);*/
                     });
                 }
             }

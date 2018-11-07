@@ -52,10 +52,11 @@ public class TestController extends BaseController{
     public String pageInfo(){
         return "test/test";
     }
-    /*@RequestMapping(value = "/upload.do")
+
+    @RequestMapping(value = "/upload.do")
     public String upload(){
         return "test/scriptPage";
-    }*/
+    }
     @RequestMapping(value = "/script.do")
     public String script(){
         return "test/scriptPage";
@@ -349,7 +350,7 @@ public class TestController extends BaseController{
     }
 
 
-    @RequestMapping(value = "/upload.do")
+  /*  @RequestMapping(value = "/upload.do")
     @ResponseBody
     @Transactional
     public Map<String,Object> uploadOnline(HttpServletRequest request, MultipartFile file) throws IOException {
@@ -371,5 +372,5 @@ public class TestController extends BaseController{
         }
         return result;
 
-    }
+    }*/
 }
