@@ -229,7 +229,7 @@
         select
                MOD_ID as nodeId,
                PAR_ID as nodePid,
-               MOD_NAME as nodeName,
+               case when MOD_LEVEL = 9 then MOD_NAME + '[按钮]' else MOD_NAME + '[菜单]'  end as nodeName,
                MOD_DESC as nodeDesc,
                MOD_LEVEL as nodeLevel,
                case when  IS_DEL = 0 then 'FALSE' ELSE 'TRUE'  END as  hiddenFlag,
@@ -242,7 +242,7 @@
         select
                MOD_ID as nodeId,
                PAR_ID as nodePid,
-               case when MOD_LEVEL = 9 then MOD_NAME + '[按钮]' else MOD_NAME end as nodeName,
+               case when MOD_LEVEL = 9 then MOD_NAME + '[按钮]' else MOD_NAME + '[菜单]'  end as nodeName,
                MOD_DESC as nodeDesc,
                MOD_LEVEL as nodeLevel,
                case when  IS_DEL = 0 then 'FALSE' ELSE 'TRUE'  END as  hiddenFlag,
@@ -257,7 +257,7 @@
         select
                MOD_ID as nodeId,
                PAR_ID as nodePid,
-               MOD_NAME as nodeName,
+               case when MOD_LEVEL = 9 then MOD_NAME + '[按钮]' else MOD_NAME + '[菜单]'  end as nodeName,
                MOD_DESC as nodeDesc,
                MOD_LEVEL as nodeLevel,
                case when  IS_DEL = 0 then 'FALSE' ELSE 'TRUE'  END as  hiddenFlag,
