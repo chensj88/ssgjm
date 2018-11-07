@@ -266,4 +266,13 @@
                MOD_URL AS nodeUrl
         from SYS_MODULE a
     </select>
+
+    <select id="selectBtnModuleListByModuleURL" parameterType="SysModule" resultType="string">
+        select distinct c.MOD_NAME
+        from  SYS_MODULE b
+        left join SYS_MODULE c on b.MOD_ID = c.PAR_ID and c.MOD_LEVEL = 9
+        <where>
+            <if test="modUrl != null and modUrl != ''">and b.MOD_URL = #{modUrl}</if>
+        </where>
+    </select>
 </mapper>

@@ -81,4 +81,9 @@ public class SysModuleDaoSqlMapImpl extends EntityDaoSqlMapImpl<SysModule> imple
     public List<ZTreeNode> selectSysModuleTree() {
         return super.getSqlSession().selectList("selectSysModuleTree",null);
     }
+
+    @Override
+    public List<String> selectBtnModuleListByModuleURL(SysModule module) {
+        return super.getSqlSession().selectList("selectBtnModuleListByModuleURL",module);
+    }
 }

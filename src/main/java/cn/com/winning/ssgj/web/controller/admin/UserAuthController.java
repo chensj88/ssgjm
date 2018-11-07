@@ -4,6 +4,7 @@ import cn.com.winning.ssgj.base.Constants;
 import cn.com.winning.ssgj.base.util.StringUtil;
 import cn.com.winning.ssgj.dao.CommonQueryDao;
 import cn.com.winning.ssgj.domain.SysModPopedom;
+import cn.com.winning.ssgj.domain.SysModule;
 import cn.com.winning.ssgj.domain.SysUserInfo;
 import cn.com.winning.ssgj.web.controller.common.BaseController;
 import org.apache.shiro.SecurityUtils;
@@ -44,10 +45,16 @@ public class UserAuthController extends BaseController {
             SysModPopedom modPopedom = new SysModPopedom();
             modPopedom.setModUrl(modUrl+".do");
             modPopedom.getMap().put("pks",roles);
-            Set<String> btnList = getFacade().getSysModPopedomService().getButtonFlagForPageByModUrlAndRoles(modPopedom);
+            SysModule module = new SysModule();
+            module.setModPath(modUrl+".do");
+            //获取全部按钮
+            Set<String> allBtnList = getFacade().getSysModuleService().getBtnModuleListByModuleURL(module);
+            //获取具有权限的按钮
+            Set<String> authBtnList = getFacade().getSysModPopedomService().getButtonFlagForPageByModUrlAndRoles(modPopedom);
             result.put("status", Constants.SUCCESS);
-            result.put("data", btnList);
-            result.put("roles", roles);
+            result.put("allData", allBtnList);
+            result.put("authData", authBtnList);
+            //result.put("roles", roles);
         }
         return result;
 

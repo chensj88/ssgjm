@@ -38,4 +38,6 @@ public interface SysModuleDao extends EntityDao<SysModule> {
     List<ZTreeNode> selectSysModuleChildTree(SysModule module);
 
     List<ZTreeNode> selectSysModuleTree();
+
+    List<String> selectBtnModuleListByModuleURL(SysModule module);
 }

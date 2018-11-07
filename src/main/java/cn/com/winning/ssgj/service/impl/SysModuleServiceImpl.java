@@ -1,9 +1,6 @@
 package cn.com.winning.ssgj.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
@@ -139,6 +136,17 @@ public class SysModuleServiceImpl implements SysModuleService {
         List<SysModule> childModule = this.sysModuleDao.selectRoleChildMenuList(param);
         roleMenu = getChildNodeList(childModule);
         return roleMenu;
+    }
+
+    /**
+     * 根据菜单URL获取下级按钮信息，主要获取className信息
+     * @param module
+     * @return
+     */
+    @Override
+    public Set<String> getBtnModuleListByModuleURL(SysModule module) {
+        List<String> allBtnList = sysModuleDao.selectBtnModuleListByModuleURL(module);
+        return null;
     }
 
     private List<NodeTree> getChildNodeListWithoutFun(List<SysModule> moduleList) {

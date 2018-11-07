@@ -18,11 +18,19 @@ function checkUserButtonAuth(btnType){
             toastr.error(request.responseText);
         },
         success: function (data) {
-            $('.btn').attr('style','display:none');
-            $.each(data.data,function (index,value,array) {
-                var className = btnType+'.'+ value;
-                $(className).attr("style","display:inline;");
-            });
+            if(data.status === 'success'){
+                //将已配置按钮全部消失
+                $.each(data.allData,function (index,value,array) {
+                    var className = btnType+'.'+ value;
+                    $(className).attr("style","display:none;");
+                });
+                //显示具有权限按钮
+                $.each(data.authData,function (index,value,array) {
+                    var className = btnType+'.'+ value;
+                    $(className).attr("style","display:inline;");
+                });
+            }
+
         }
     });
 }
