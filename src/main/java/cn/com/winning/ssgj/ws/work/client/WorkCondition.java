@@ -7,27 +7,27 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for workCondition complex type.
+ * <p>workCondition complex type的 Java 类。
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
- * &lt;complexType name="workCondition">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="beginTime" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="dateRange" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="endTime" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="incEntrust" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="subject" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="workName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="workCondition"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="beginTime" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="dateRange" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="endTime" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="incEntrust" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="subject" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="workName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -55,7 +55,7 @@ public class WorkCondition {
     protected String workName;
 
     /**
-     * Gets the value of the beginTime property.
+     * 获取beginTime属性的值。
      * 
      * @return
      *     possible object is
@@ -67,7 +67,7 @@ public class WorkCondition {
     }
 
     /**
-     * Sets the value of the beginTime property.
+     * 设置beginTime属性的值。
      * 
      * @param value
      *     allowed object is
@@ -79,7 +79,7 @@ public class WorkCondition {
     }
 
     /**
-     * Gets the value of the dateRange property.
+     * 获取dateRange属性的值。
      * 
      * @return
      *     possible object is
@@ -91,7 +91,7 @@ public class WorkCondition {
     }
 
     /**
-     * Sets the value of the dateRange property.
+     * 设置dateRange属性的值。
      * 
      * @param value
      *     allowed object is
@@ -103,7 +103,7 @@ public class WorkCondition {
     }
 
     /**
-     * Gets the value of the endTime property.
+     * 获取endTime属性的值。
      * 
      * @return
      *     possible object is
@@ -115,7 +115,7 @@ public class WorkCondition {
     }
 
     /**
-     * Sets the value of the endTime property.
+     * 设置endTime属性的值。
      * 
      * @param value
      *     allowed object is
@@ -127,7 +127,7 @@ public class WorkCondition {
     }
 
     /**
-     * Gets the value of the incEntrust property.
+     * 获取incEntrust属性的值。
      * 
      */
     public boolean isIncEntrust() {
@@ -135,7 +135,7 @@ public class WorkCondition {
     }
 
     /**
-     * Sets the value of the incEntrust property.
+     * 设置incEntrust属性的值。
      * 
      */
     public void setIncEntrust(boolean value) {
@@ -143,7 +143,7 @@ public class WorkCondition {
     }
 
     /**
-     * Gets the value of the status property.
+     * 获取status属性的值。
      * 
      */
     public int getStatus() {
@@ -151,7 +151,7 @@ public class WorkCondition {
     }
 
     /**
-     * Sets the value of the status property.
+     * 设置status属性的值。
      * 
      */
     public void setStatus(int value) {
@@ -159,7 +159,7 @@ public class WorkCondition {
     }
 
     /**
-     * Gets the value of the subject property.
+     * 获取subject属性的值。
      * 
      * @return
      *     possible object is
@@ -171,7 +171,7 @@ public class WorkCondition {
     }
 
     /**
-     * Sets the value of the subject property.
+     * 设置subject属性的值。
      * 
      * @param value
      *     allowed object is
@@ -183,7 +183,7 @@ public class WorkCondition {
     }
 
     /**
-     * Gets the value of the type property.
+     * 获取type属性的值。
      * 
      * @return
      *     possible object is
@@ -195,7 +195,7 @@ public class WorkCondition {
     }
 
     /**
-     * Sets the value of the type property.
+     * 设置type属性的值。
      * 
      * @param value
      *     allowed object is
@@ -207,7 +207,7 @@ public class WorkCondition {
     }
 
     /**
-     * Gets the value of the workName property.
+     * 获取workName属性的值。
      * 
      * @return
      *     possible object is
@@ -219,7 +219,7 @@ public class WorkCondition {
     }
 
     /**
-     * Sets the value of the workName property.
+     * 设置workName属性的值。
      * 
      * @param value
      *     allowed object is

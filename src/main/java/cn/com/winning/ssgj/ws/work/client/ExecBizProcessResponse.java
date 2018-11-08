@@ -8,20 +8,20 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for execBizProcessResponse complex type.
+ * <p>execBizProcessResponse complex type的 Java 类。
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
- * &lt;complexType name="execBizProcessResponse">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="BizProcessResult" type="{http://ws.livebos.apex.com/}bizProcessResult" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="execBizProcessResponse"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="BizProcessResult" type="{http://ws.livebos.apex.com/}bizProcessResult" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -36,7 +36,7 @@ public class ExecBizProcessResponse {
     protected BizProcessResult bizProcessResult;
 
     /**
-     * Gets the value of the bizProcessResult property.
+     * 获取bizProcessResult属性的值。
      * 
      * @return
      *     possible object is
@@ -48,7 +48,7 @@ public class ExecBizProcessResponse {
     }
 
     /**
-     * Sets the value of the bizProcessResult property.
+     * 设置bizProcessResult属性的值。
      * 
      * @param value
      *     allowed object is

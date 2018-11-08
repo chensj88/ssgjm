@@ -8,20 +8,20 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for getWorkOwnerResponse complex type.
+ * <p>getWorkOwnerResponse complex type的 Java 类。
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
- * &lt;complexType name="getWorkOwnerResponse">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="WorkOwnerResponse" type="{http://ws.livebos.apex.com/}workOwnerResponse" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="getWorkOwnerResponse"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="WorkOwnerResponse" type="{http://ws.livebos.apex.com/}workOwnerResponse" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -36,7 +36,7 @@ public class GetWorkOwnerResponse {
     protected WorkOwnerResponse workOwnerResponse;
 
     /**
-     * Gets the value of the workOwnerResponse property.
+     * 获取workOwnerResponse属性的值。
      * 
      * @return
      *     possible object is
@@ -48,7 +48,7 @@ public class GetWorkOwnerResponse {
     }
 
     /**
-     * Sets the value of the workOwnerResponse property.
+     * 设置workOwnerResponse属性的值。
      * 
      * @param value
      *     allowed object is

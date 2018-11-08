@@ -8,20 +8,20 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for getUserInfoResponse complex type.
+ * <p>getUserInfoResponse complex type的 Java 类。
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
- * &lt;complexType name="getUserInfoResponse">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="UserInfo" type="{http://ws.livebos.apex.com/}userInfo" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="getUserInfoResponse"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="UserInfo" type="{http://ws.livebos.apex.com/}userInfo" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -36,7 +36,7 @@ public class GetUserInfoResponse {
     protected UserInfo userInfo;
 
     /**
-     * Gets the value of the userInfo property.
+     * 获取userInfo属性的值。
      * 
      * @return
      *     possible object is
@@ -48,7 +48,7 @@ public class GetUserInfoResponse {
     }
 
     /**
-     * Sets the value of the userInfo property.
+     * 设置userInfo属性的值。
      * 
      * @param value
      *     allowed object is

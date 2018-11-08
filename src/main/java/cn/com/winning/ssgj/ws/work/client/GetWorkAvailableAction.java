@@ -7,21 +7,21 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for getWorkAvailableAction complex type.
+ * <p>getWorkAvailableAction complex type的 Java 类。
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
- * &lt;complexType name="getWorkAvailableAction">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="instanceId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="getWorkAvailableAction"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="instanceId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -37,7 +37,7 @@ public class GetWorkAvailableAction {
     protected long instanceId;
 
     /**
-     * Gets the value of the sessionId property.
+     * 获取sessionId属性的值。
      * 
      * @return
      *     possible object is
@@ -49,7 +49,7 @@ public class GetWorkAvailableAction {
     }
 
     /**
-     * Sets the value of the sessionId property.
+     * 设置sessionId属性的值。
      * 
      * @param value
      *     allowed object is
@@ -61,7 +61,7 @@ public class GetWorkAvailableAction {
     }
 
     /**
-     * Gets the value of the instanceId property.
+     * 获取instanceId属性的值。
      * 
      */
     public long getInstanceId() {
@@ -69,7 +69,7 @@ public class GetWorkAvailableAction {
     }
 
     /**
-     * Sets the value of the instanceId property.
+     * 设置instanceId属性的值。
      * 
      */
     public void setInstanceId(long value) {

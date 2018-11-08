@@ -7,20 +7,20 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for loginResult complex type.
+ * <p>loginResult complex type的 Java 类。
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
- * &lt;complexType name="loginResult">
- *   &lt;complexContent>
- *     &lt;extension base="{http://ws.livebos.apex.com/}lbeResult">
- *       &lt;sequence>
- *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="loginResult"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://ws.livebos.apex.com/}lbeResult"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -36,7 +36,7 @@ public class LoginResult
     protected String sessionId;
 
     /**
-     * Gets the value of the sessionId property.
+     * 获取sessionId属性的值。
      * 
      * @return
      *     possible object is
@@ -48,7 +48,7 @@ public class LoginResult
     }
 
     /**
-     * Sets the value of the sessionId property.
+     * 设置sessionId属性的值。
      * 
      * @param value
      *     allowed object is

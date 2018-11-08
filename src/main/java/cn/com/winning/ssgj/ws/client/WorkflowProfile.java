@@ -7,26 +7,26 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for workflowProfile complex type.
+ * <p>workflowProfile complex type的 Java 类。
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
- * &lt;complexType name="workflowProfile">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="attribute" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="category" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="describe" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="i18NCategory" type="{http://ws.livebos.apex.com/}i18NString" minOccurs="0"/>
- *         &lt;element name="i18NDescribe" type="{http://ws.livebos.apex.com/}i18NString" minOccurs="0"/>
- *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="workflowProfile"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="attribute" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="category" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="describe" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="i18NCategory" type="{http://ws.livebos.apex.com/}i18NString" minOccurs="0"/&gt;
+ *         &lt;element name="i18NDescribe" type="{http://ws.livebos.apex.com/}i18NString" minOccurs="0"/&gt;
+ *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -52,7 +52,7 @@ public class WorkflowProfile {
     protected int type;
 
     /**
-     * Gets the value of the attribute property.
+     * 获取attribute属性的值。
      * 
      */
     public int getAttribute() {
@@ -60,7 +60,7 @@ public class WorkflowProfile {
     }
 
     /**
-     * Sets the value of the attribute property.
+     * 设置attribute属性的值。
      * 
      */
     public void setAttribute(int value) {
@@ -68,7 +68,7 @@ public class WorkflowProfile {
     }
 
     /**
-     * Gets the value of the category property.
+     * 获取category属性的值。
      * 
      * @return
      *     possible object is
@@ -80,7 +80,7 @@ public class WorkflowProfile {
     }
 
     /**
-     * Sets the value of the category property.
+     * 设置category属性的值。
      * 
      * @param value
      *     allowed object is
@@ -92,7 +92,7 @@ public class WorkflowProfile {
     }
 
     /**
-     * Gets the value of the describe property.
+     * 获取describe属性的值。
      * 
      * @return
      *     possible object is
@@ -104,7 +104,7 @@ public class WorkflowProfile {
     }
 
     /**
-     * Sets the value of the describe property.
+     * 设置describe属性的值。
      * 
      * @param value
      *     allowed object is
@@ -116,7 +116,7 @@ public class WorkflowProfile {
     }
 
     /**
-     * Gets the value of the i18NCategory property.
+     * 获取i18NCategory属性的值。
      * 
      * @return
      *     possible object is
@@ -128,7 +128,7 @@ public class WorkflowProfile {
     }
 
     /**
-     * Sets the value of the i18NCategory property.
+     * 设置i18NCategory属性的值。
      * 
      * @param value
      *     allowed object is
@@ -140,7 +140,7 @@ public class WorkflowProfile {
     }
 
     /**
-     * Gets the value of the i18NDescribe property.
+     * 获取i18NDescribe属性的值。
      * 
      * @return
      *     possible object is
@@ -152,7 +152,7 @@ public class WorkflowProfile {
     }
 
     /**
-     * Sets the value of the i18NDescribe property.
+     * 设置i18NDescribe属性的值。
      * 
      * @param value
      *     allowed object is
@@ -164,7 +164,7 @@ public class WorkflowProfile {
     }
 
     /**
-     * Gets the value of the name property.
+     * 获取name属性的值。
      * 
      * @return
      *     possible object is
@@ -176,7 +176,7 @@ public class WorkflowProfile {
     }
 
     /**
-     * Sets the value of the name property.
+     * 设置name属性的值。
      * 
      * @param value
      *     allowed object is
@@ -188,7 +188,7 @@ public class WorkflowProfile {
     }
 
     /**
-     * Gets the value of the type property.
+     * 获取type属性的值。
      * 
      */
     public int getType() {
@@ -196,7 +196,7 @@ public class WorkflowProfile {
     }
 
     /**
-     * Sets the value of the type property.
+     * 设置type属性的值。
      * 
      */
     public void setType(int value) {

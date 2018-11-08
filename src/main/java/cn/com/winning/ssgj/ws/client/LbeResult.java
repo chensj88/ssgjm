@@ -8,21 +8,21 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for lbeResult complex type.
+ * <p>lbeResult complex type的 Java 类。
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
- * &lt;complexType name="lbeResult">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="message" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="result" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="lbeResult"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="message" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="result" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -33,16 +33,16 @@ import javax.xml.bind.annotation.XmlType;
     "result"
 })
 @XmlSeeAlso({
-    WorkActionResult.class,
-    LogoutResult.class,
-    LoginResult.class,
-    CreateResult.class,
-    AvailableWorkActionResponse.class,
     QueryResult.class,
-    BizFunctionResult.class,
-    NoticeResult.class,
+    WorkActionResult.class,
+    AvailableWorkActionResponse.class,
+    CreateResult.class,
     WorkOwnerResponse.class,
-    BizProcessResult.class
+    BizProcessResult.class,
+    NoticeResult.class,
+    LogoutResult.class,
+    BizFunctionResult.class,
+    LoginResult.class
 })
 public class LbeResult {
 
@@ -50,7 +50,7 @@ public class LbeResult {
     protected int result;
 
     /**
-     * Gets the value of the message property.
+     * 获取message属性的值。
      * 
      * @return
      *     possible object is
@@ -62,7 +62,7 @@ public class LbeResult {
     }
 
     /**
-     * Sets the value of the message property.
+     * 设置message属性的值。
      * 
      * @param value
      *     allowed object is
@@ -74,7 +74,7 @@ public class LbeResult {
     }
 
     /**
-     * Gets the value of the result property.
+     * 获取result属性的值。
      * 
      */
     public int getResult() {
@@ -82,7 +82,7 @@ public class LbeResult {
     }
 
     /**
-     * Sets the value of the result property.
+     * 设置result属性的值。
      * 
      */
     public void setResult(int value) {

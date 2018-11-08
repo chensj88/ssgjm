@@ -7,22 +7,22 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for queryTasks complex type.
+ * <p>queryTasks complex type的 Java 类。
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
- * &lt;complexType name="queryTasks">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="caller" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="queryOption" type="{http://ws.livebos.apex.com/}queryOption" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="queryTasks"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="caller" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="queryOption" type="{http://ws.livebos.apex.com/}queryOption" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -40,7 +40,7 @@ public class QueryTasks {
     protected QueryOption queryOption;
 
     /**
-     * Gets the value of the sessionId property.
+     * 获取sessionId属性的值。
      * 
      * @return
      *     possible object is
@@ -52,7 +52,7 @@ public class QueryTasks {
     }
 
     /**
-     * Sets the value of the sessionId property.
+     * 设置sessionId属性的值。
      * 
      * @param value
      *     allowed object is
@@ -64,7 +64,7 @@ public class QueryTasks {
     }
 
     /**
-     * Gets the value of the caller property.
+     * 获取caller属性的值。
      * 
      * @return
      *     possible object is
@@ -76,7 +76,7 @@ public class QueryTasks {
     }
 
     /**
-     * Sets the value of the caller property.
+     * 设置caller属性的值。
      * 
      * @param value
      *     allowed object is
@@ -88,7 +88,7 @@ public class QueryTasks {
     }
 
     /**
-     * Gets the value of the queryOption property.
+     * 获取queryOption属性的值。
      * 
      * @return
      *     possible object is
@@ -100,7 +100,7 @@ public class QueryTasks {
     }
 
     /**
-     * Sets the value of the queryOption property.
+     * 设置queryOption属性的值。
      * 
      * @param value
      *     allowed object is

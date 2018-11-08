@@ -10,21 +10,21 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for lbMetaData complex type.
+ * <p>lbMetaData complex type的 Java 类。
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
- * &lt;complexType name="lbMetaData">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="colInfo" type="{http://ws.livebos.apex.com/}colInfo" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="columnCount" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="lbMetaData"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="colInfo" type="{http://ws.livebos.apex.com/}colInfo" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;element name="columnCount" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -70,7 +70,7 @@ public class LbMetaData {
     }
 
     /**
-     * Gets the value of the columnCount property.
+     * 获取columnCount属性的值。
      * 
      */
     public int getColumnCount() {
@@ -78,7 +78,7 @@ public class LbMetaData {
     }
 
     /**
-     * Sets the value of the columnCount property.
+     * 设置columnCount属性的值。
      * 
      */
     public void setColumnCount(int value) {

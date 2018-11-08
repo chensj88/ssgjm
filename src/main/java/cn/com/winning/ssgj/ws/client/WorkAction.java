@@ -7,23 +7,23 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for workAction complex type.
+ * <p>workAction complex type的 Java 类。
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
- * &lt;complexType name="workAction">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="actionId" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="actionName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="stepId" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="stepName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="workAction"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="actionId" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="actionName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="stepId" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="stepName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -43,7 +43,7 @@ public class WorkAction {
     protected String stepName;
 
     /**
-     * Gets the value of the actionId property.
+     * 获取actionId属性的值。
      * 
      */
     public int getActionId() {
@@ -51,7 +51,7 @@ public class WorkAction {
     }
 
     /**
-     * Sets the value of the actionId property.
+     * 设置actionId属性的值。
      * 
      */
     public void setActionId(int value) {
@@ -59,7 +59,7 @@ public class WorkAction {
     }
 
     /**
-     * Gets the value of the actionName property.
+     * 获取actionName属性的值。
      * 
      * @return
      *     possible object is
@@ -71,7 +71,7 @@ public class WorkAction {
     }
 
     /**
-     * Sets the value of the actionName property.
+     * 设置actionName属性的值。
      * 
      * @param value
      *     allowed object is
@@ -83,7 +83,7 @@ public class WorkAction {
     }
 
     /**
-     * Gets the value of the stepId property.
+     * 获取stepId属性的值。
      * 
      */
     public int getStepId() {
@@ -91,7 +91,7 @@ public class WorkAction {
     }
 
     /**
-     * Sets the value of the stepId property.
+     * 设置stepId属性的值。
      * 
      */
     public void setStepId(int value) {
@@ -99,7 +99,7 @@ public class WorkAction {
     }
 
     /**
-     * Gets the value of the stepName property.
+     * 获取stepName属性的值。
      * 
      * @return
      *     possible object is
@@ -111,7 +111,7 @@ public class WorkAction {
     }
 
     /**
-     * Sets the value of the stepName property.
+     * 设置stepName属性的值。
      * 
      * @param value
      *     allowed object is

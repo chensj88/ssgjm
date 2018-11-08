@@ -7,22 +7,22 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for getWorkOwner complex type.
+ * <p>getWorkOwner complex type的 Java 类。
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
- * &lt;complexType name="getWorkOwner">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="instanceId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="stepId" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="getWorkOwner"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="instanceId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="stepId" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -40,7 +40,7 @@ public class GetWorkOwner {
     protected int stepId;
 
     /**
-     * Gets the value of the sessionId property.
+     * 获取sessionId属性的值。
      * 
      * @return
      *     possible object is
@@ -52,7 +52,7 @@ public class GetWorkOwner {
     }
 
     /**
-     * Sets the value of the sessionId property.
+     * 设置sessionId属性的值。
      * 
      * @param value
      *     allowed object is
@@ -64,7 +64,7 @@ public class GetWorkOwner {
     }
 
     /**
-     * Gets the value of the instanceId property.
+     * 获取instanceId属性的值。
      * 
      */
     public long getInstanceId() {
@@ -72,7 +72,7 @@ public class GetWorkOwner {
     }
 
     /**
-     * Sets the value of the instanceId property.
+     * 设置instanceId属性的值。
      * 
      */
     public void setInstanceId(long value) {
@@ -80,7 +80,7 @@ public class GetWorkOwner {
     }
 
     /**
-     * Gets the value of the stepId property.
+     * 获取stepId属性的值。
      * 
      */
     public int getStepId() {
@@ -88,7 +88,7 @@ public class GetWorkOwner {
     }
 
     /**
-     * Sets the value of the stepId property.
+     * 设置stepId属性的值。
      * 
      */
     public void setStepId(int value) {
