@@ -146,7 +146,9 @@ public class SysModuleServiceImpl implements SysModuleService {
     @Override
     public Set<String> getBtnModuleListByModuleURL(SysModule module) {
         List<String> allBtnList = sysModuleDao.selectBtnModuleListByModuleURL(module);
-        return null;
+        Set<String> allBtnSet = new HashSet<>();
+        allBtnSet.addAll(allBtnList);
+        return allBtnSet;
     }
 
     private List<NodeTree> getChildNodeListWithoutFun(List<SysModule> moduleList) {

@@ -46,7 +46,7 @@ public class UserAuthController extends BaseController {
             modPopedom.setModUrl(modUrl+".do");
             modPopedom.getMap().put("pks",roles);
             SysModule module = new SysModule();
-            module.setModPath(modUrl+".do");
+            module.setModUrl(modUrl+".do");
             //获取全部按钮
             Set<String> allBtnList = getFacade().getSysModuleService().getBtnModuleListByModuleURL(module);
             //获取具有权限的按钮

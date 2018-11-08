@@ -103,7 +103,7 @@
     toastr.options.extendedTimeOut = 60;
     jQuery(function ($) {
 
-        checkUserButtonAuth('button');
+        checkUserButtonAuth();
 
         initFileApiUpload('file-upload', '/admin/upload/test.do');
 
